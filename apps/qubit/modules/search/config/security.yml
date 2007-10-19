@@ -1,0 +1,6 @@
+BuildIndex:
+  is_secure:   on
+  credentials: administrator
+
+all:
+  is_secure:   off

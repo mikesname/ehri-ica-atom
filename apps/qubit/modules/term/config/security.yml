@@ -1,0 +1,25 @@
+create:
+  is_secure:   on
+  credentials: [[ editor, administrator ]]
+
+delete:
+  is_secure:   on
+  credentials: [[ editor, administrator ]]
+
+edit:
+  is_secure:   on
+  credentials: [[ editor, administrator ]]
+
+list:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator ]]
+
+show:
+  is_secure:  off
+
+update:
+  is_secure:   on
+  credentials: [[ editor, administrator ]]
+
+all:
+  is_secure:   off

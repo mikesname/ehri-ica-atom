@@ -1,0 +1,25 @@
+default:
+  http_metas:
+    content-type: text/html; charset=UTF-8
+
+  metas:
+    title:        Qubit - Open Information Management Toolkit
+    robots:       index, follow
+    description:  Qubit - Open Information Management Toolkit
+    keywords:     qubit
+    language:     en
+
+  stylesheets:    [form, graphic, layout, menu]
+
+  javascripts:    []
+
+  has_layout:     on
+  layout:         layout
+
+  components:
+    footer:       []
+    sidebar:      []
+    MainMenu:                     [menu, MainMenu]
+    SearchSidebar:                [search, Sidebar]
+    BrowseSidebar:                [browse, Sidebar]
+    LanguageSidebar:              [staticpage, Sidebar]

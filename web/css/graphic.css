@@ -1,0 +1,608 @@
+/*********************************************************
+                ABOUT: graphic.css
+**********************************************************/
+
+/* This stylesheet is used to assign styles to all graphic elements except for:
+- menu.css, which is used to structure and style menus
+- form.css, which is used to structure and style forms
+- layout.css,which is used to structure and style the physical page layout */
+
+
+
+/*********************************************************
+                WEBSITE NAME & LOGO
+**********************************************************/
+
+#website-name {
+font: bold 64px/68px verdana, georgia, garamond, serif;
+letter-spacing: 3px;
+color: #04025C;
+border: 0;
+margin-bottom: 10px;
+text-align: left;
+/*background-image: url(../images/background.gif);*/
+}
+
+#website-name a:hover, #website-name a:link, #website-name a:visited, #website-name a:active {
+text-decoration: none;
+border: 0;
+color: #04025C;
+background-color: transparent;
+}
+
+#website-description {
+color: #04025C;
+font: bold 15px/16px georgia, garamond, serif;
+margin: 12px 0 0 10px;
+text-align: left;
+}
+
+#logo a:hover, #logo a:link, #logo a:visited, #logo a:active {
+border: 0;
+color: #ffffff;
+background-color: transparent;
+text-decoration: none;
+padding: 0;
+}
+
+#logo img {
+margin-right: 470px;
+float: right;
+}
+
+/*********************************************************
+                GENERAL TEXT STYLING
+**********************************************************/
+
+body {
+font: normal 11px/14px verdana, lucida, sans-serif;
+color: #000000;
+}
+/* see also .staticPageContent below */
+
+
+p {
+margin: 15px 0 0 0;
+text-align: left;
+}
+
+img {
+/* vertical-align: middle; */
+border: 0;
+background-color: transparent;
+text-decoration: none;
+}
+
+img.static_page {
+padding: 5px;
+border: 1px solid #000000;
+background-color: #ffffff;
+}
+
+/*headers*/
+h1
+{
+font: bold 20px/20px georgia, garamond, serif;
+margin: 15px 0 0 0;
+color: #000033;
+background-color: #ff9933;
+border-bottom: 1px solid #000066;
+border-top: 1px solid #000066;
+}
+
+h1#first
+{
+margin: 0;
+}
+
+h1#page-title
+{
+font: bold 22px/22px georgia, garamond, serif;
+margin: 0 0 10px 0;
+color: #000066;
+background-color: #ff9933;
+border-bottom: 2px solid #000066;
+}
+
+h2
+{
+font: normal 16px/18px georgia, garamond, serif;
+font-weight: bold;
+margin: 15px 0 10px 0;
+color: #000066;
+}
+
+h2.browseList
+{
+border-bottom: 2px solid #ff9933;
+}
+
+h3
+{
+font: normal 14px/16px georgia, garamond, serif;
+font-weight: bold;
+margin: 5px 0 0 0;
+padding: 0;
+border: 0;
+}
+
+.heading-link {
+font: bold 16px/18px georgia, garamond, serif;
+margin: 3px 0 0 0;
+padding: 0 0 3px 0;
+}
+
+div.pageTitle {
+font: bold 25px/25px Lucida Sans Unicode, Lucida Grande, sans-serif;
+color: #cccccc;
+letter-spacing: -4px;
+padding: 3px 10px 2px 0;
+border: 0;
+margin: 0;
+text-align: right;
+height: 25px;
+}
+
+div.pageTitle:first-letter {
+	text-transform: capitalize;
+}
+
+/*lists*/
+
+ol li
+{
+margin: 5px 0 0 0;
+}
+
+/*links*/
+
+a:link, a:visited, a:active {
+text-decoration: none;
+color: #0066cc;
+}
+
+a:hover {
+text-decoration: none;
+color: #ffffff;
+background: #000000;
+}
+
+/*line*/
+.line {
+width: 100%;
+border-bottom: 2px solid #a5bcca;
+}
+
+
+/*********************************************************
+                SEARCH/BROWSE RESULTS LIST
+**********************************************************/
+
+#search-info {
+font-weight: bold;
+margin: 20px 0 20px 0;
+}
+
+#search-results {
+padding: 10px 3px 10px 3px;
+}
+
+#search-results table {
+width: 90%;
+border: 0;
+border-collapse: collapse;
+margin-bottom: 20px;
+}
+
+.search-result-number {
+width: 40px;
+text-align: right;
+padding: 5px 0 5px 0;
+background-color: transparent;
+border-bottom: solid 1px #999999;
+}
+
+.search-result {
+text-align: left;
+padding-left: 5px;
+background-color: transparent;
+border-bottom: solid 1px #999999;
+}
+
+.search-results-page-number {
+width: 10px;
+text-align: center;
+font: normal 14px/17px verdana, lucida, sans-serif;
+margin: 3px;
+float: left;
+border: 1px solid #999999;
+background: #ccccff;
+}
+
+.search-results-page-number a {
+text-decoration: none;
+color: #000000;
+background: #ccccff;
+}
+
+.search-results-page-number a:visited {
+text-decoration: none;
+color: #000000;
+background: #ccccff;
+}
+
+.search-results-page-number a:hover {
+text-decoration: none;
+color: #ffffff;
+background: #000000;
+}
+
+.search-results-page-number-current {
+width: 10px;
+text-align: center;
+font: normal 14px/17px verdana, lucida, sans-serif;
+margin: 3px;
+float: left;
+border: 1px solid #999999;
+background: #dddddd;
+}
+
+.search-results-page-button {
+float: left;
+padding-top: 2px;
+}
+
+#search-results-summary {
+float: left;
+margin-left: 10px;
+padding-top: 3px;
+}
+
+
+/*********************************************************
+                SEARCH FORM - ADVANCED
+**********************************************************/
+
+#search-form table {
+border: 0;
+border-collapse: collapse;
+margin: 0;
+padding: 0;
+}
+
+#search-form td {
+ border: 0;
+ vertical-align: center;
+}
+
+#search-form .textbox {
+	background-color: #FFFFFF;
+	border: 2px solid #a3a3a3;
+	width: 500px;
+	padding: 0 3px 3px 3px;
+	margin: 0 0 0 10px;
+	font: bold 20px Verdana, Arial, Sans-Serif;
+    float: left;
+}
+
+#search-form .submit {
+height: 30px;
+font: 15px Verdana, Arial, Sans-Serif;
+margin: 0 5px 0 5px;
+width: 100px;
+}
+
+#search-form .submithover {
+height: 30px;
+font: 15px Verdana, Arial, Sans-Serif;
+margin: 0 0 0 5px;
+width: 100px;
+}
+
+/*********************************************************
+              DETAIL (SHOW/EDIT) TABLES
+**********************************************************/
+
+table.detail {
+width: 99%;
+margin: 0;
+/*border-collapse: collapse;*/
+overflow: hidden;
+border: 0x solid #999999;
+font: normal 11px/14px verdana, lucida, sans-serif;
+color: #000000;
+}
+
+table.detail tr {
+vertical-align: top;
+}
+
+table.detail td {
+  border: 0;
+  border-bottom: 1px solid #cccccc;
+	padding: 4px;
+	font-weight: normal;
+}
+
+table.detail th {
+	padding: 4px;
+	font-weight: bold;
+	vertical-align:top;
+	text-align:right;
+  width: 15%;
+	border-bottom: 1px solid #999999;
+	border-right: 1px solid #999999;
+	border-left: 0;
+	border-top: 0;
+	background-color: #a0a9bc;
+	color: #ffffff;
+}
+
+table.list th:first-letter,
+table.detail th:first-letter {
+	text-transform: capitalize;
+}
+
+table.detail td.headerCell {
+	padding: 4px;
+	vertical-align:top;
+	text-align:left;
+  font: bold 18px/18px georgia, verdana, sans-serif;
+  border: 0;
+	border-bottom: 1px solid #999999;
+	border-top: 2px solid #999999;
+  color: #000033;
+	background-color: #FF9D3C;
+	height: 20px;
+}
+
+table.detail td.headerCell a {
+  color: #000000;
+	background-color: #FF9D3C;
+}
+
+table.detail td.headerCell a:hover {
+color: #ffffff;
+background-color: #000000;
+}
+
+table.detail td.headerCell-name {
+	border: 0;
+	border-bottom: 1px solid #333333;
+	background-color: #006699;
+	color: #ffffff;
+	padding: 4px;
+	vertical-align:top;
+	text-align:center;
+	font: bold 16px/17px verdana, lucida, sans-serif;
+}
+
+table.detail td.subHeaderCell {
+	padding: 2px;
+	vertical-align: top;
+	text-align: right;
+  font: normal 14px/14px georgia, verdana, sans-serif;
+  border: 0;
+	border-bottom: 1px solid #999999;
+	border-top: 1px solid #999999;
+  color: #000033;
+	background-color: #FF9D3C;
+}
+
+/*********************************************************
+              INLINE TABLES
+**********************************************************/
+
+table.inline {
+  width: 100%;
+  border: 0;
+}
+
+table.inline td.headerCell {
+  border: 0;
+  background-color: #cccccc;
+  color: #ffffff;
+  font: bold 10px verdana, lucida, sans-serif;
+  font-weight: bold;
+  text-align: left;
+  width: 15%;
+}
+
+table.inline tr {
+vertical-align: top;
+}
+
+table.inline td {
+border: 0;
+border-top: 1px solid #cccccc;
+text-align: left;
+}
+
+table.inlineClear {
+ width: 100%;
+ border: 0;
+ margin: 0;
+ padding: 0;
+}
+
+table.inlineClear tr {
+vertical-align: top;
+ margin: 0;
+ padding: 0;
+}
+
+table.inlineClear th {
+  text-align: left;
+  border: 0;
+  width: 30%;
+  background: transparent;
+}
+
+table.inlineClear td {
+  width: 70%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+}
+
+
+
+
+/*********************************************************
+              NOTE SPAN
+**********************************************************/
+
+span.note {
+font-size: 9px;
+font-style: italic;
+margin-left: 10px;
+}
+
+
+/*********************************************************
+              LIST TABLES
+**********************************************************/
+
+table.list {
+width: 99%;
+margin: 0;
+/*border-collapse: collapse;*/
+overflow: hidden;
+border: 0x solid #000066;
+font: normal 11px/14px verdana, lucida, sans-serif;
+color: #000000;
+}
+
+table.list tr {
+}
+
+table.list td {
+	padding: 4px 4px 4px 10px;
+    text-align: left;
+    border-spacing: 20px;
+    border: 0;
+    border-bottom: 1px solid #cccccc;
+}
+
+table.list th {
+	border: 1px solid #999999;
+	background-color: #ff9933;
+	color: #000000;
+    padding: 4px 4px 4px 10px;
+  	font-weight: bold;
+	vertical-align: top;
+	text-align: left;
+}
+
+table.list th.header {
+	border: 1px solid #999999;
+	background-color: #cccccc;
+	color: #000000;
+  padding: 4px 4px 4px 10px;
+  font-weight: bold;
+  font-size: 14px;
+	vertical-align: top;
+	text-align: left;
+}
+
+
+table.list td.headerCell {
+	border: 0;
+	border-bottom: 1px solid #999999;
+	background-color: #eeeeee;
+	color: #000000;
+}
+
+table.list td.headerCell-name {
+	border: 0;
+	border-bottom: 1px solid #999999;
+	background-color: #006699;
+	color: #ffffff;
+}
+
+table.list th a {
+    color: #000000;
+    padding: 0;
+    margin: 0;
+}
+
+table.list th a:visited {
+    color: #000000;
+    padding: 0;
+    margin: 0;
+}
+
+table.list th a:active {
+    color: #000000;
+    padding: 0;
+    margin: 0;
+}
+
+
+
+table.list th a:hover {
+    color: #ffffff;
+}
+
+table.list td.headerCell {
+	padding: 4px;
+	vertical-align:top;
+	text-align:center;
+}
+
+table.list td.headerCell-name {
+	padding: 4px;
+	vertical-align:top;
+	text-align:center;
+	font: bold 16px/17px verdana, lucida, sans-serif;
+}
+
+.th-link {
+font-weight: normal;
+}
+
+
+}
+
+.th-link a:hover {
+color: #ffffff;
+background: #000000;
+}
+
+.plus {
+background-image: url('../images/tree_plus.gif');
+background-repeat: no-repeat;
+background-position: top left;
+}
+
+
+/*********************************************************
+                STATIC PAGE
+**********************************************************/
+
+.staticPageContent {
+font: normal 14px/16px verdana, lucida, sans-serif;
+margin-top: 5px;
+}
+
+.editLink {
+margin-top: 15px;
+color: #999999;
+}
+
+.editLink a {
+color: #999999;
+}
+
+
+/*********************************************************
+                CAPITALIZATION
+**********************************************************/
+
+.firstLetter:first-letter {
+	text-transform: uppercase;
+}
+
+.capitalize {
+	text-transform: capitalize;
+}

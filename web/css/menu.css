@@ -1,0 +1,465 @@
+﻿/*********************************************************
+                ABOUT: menu.css
+**********************************************************/
+
+/* This stylesheet is used to assign styles to all menu elements
+/* layout.css is used to structure and style the physical page layout
+/* form.css is used to structure and style input forms
+/* all other graphical elements are handled by graphic.css
+
+
+
+/*****************************************/
+/*           MENU - TOP                  */
+/*****************************************/
+
+
+.menu-top
+{
+margin: 0;
+padding: 3px 0 0 0;
+height: 12px;
+background-color: #ffffff;
+border: 0;
+}
+
+.menu-top a
+{
+float: right;
+height: 12px;
+padding: 0px 5px 0px 5px;
+margin: 0;
+text-decoration: none;
+display: block;
+text-align: center;
+font: normal 11px/12px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+background:  #ffffff;
+border: 0;
+border-left: 1px solid #cccccc;
+color: #999999;
+}
+
+.menu-top a:link, .menu-top a:visited
+{
+background: #ffffff;
+color: #999999;
+text-decoration: none;
+}
+
+.menu-top a:hover
+{
+background: #000000;
+color: #ffffff;
+}
+
+.menu-top a.active
+{
+border-bottom: 3px solid #999999;
+}
+
+.menu-top a#first
+{
+border-left: none;
+}
+
+
+/*****************************************/
+/*           MENU -  MAIN                */
+/*****************************************/
+
+#menu-main
+{
+/* background-image: url(Images/back.gif);
+background-repeat: repeat-x; */
+margin: 0;
+padding: 0;
+height: 28px;
+background-color: #ffffff;
+border-top: 0;
+border-bottom: 1px solid #999999;
+border-left: 1px solid #999999;
+border-right: 1px solid #999999;
+}
+
+
+#menu-main a
+{
+float: left;
+padding: 5px 20px 4px 20px;
+margin: 0;
+text-decoration: none;
+display: block;
+text-align: center;
+text-decoration: none;
+min-width: 80px;
+height: 19px;
+font: normal 17px/18px georgia, serif;
+background:  #a0a9bc;
+color: #ffffff;
+border:0;
+border-right: 1px solid #999999;
+}
+
+#menu-main a:link, #menu-main a:visited, #menu-main a:active
+{
+background:  #a0a9bc;
+color: #ffffff;
+text-decoration: none;
+}
+
+#menu-main a:hover
+{
+background: #000000;
+color: #ffffff;
+text-decoration: none;
+}
+
+#menu-main a#selected
+{
+background: #006699;
+color: #ffffff;
+padding-bottom: 4px;
+text-decoration: none;
+}
+
+#menu-main a#first {
+border-left: 1px solid #000066;
+}
+
+/*****************************************/
+/*            MENU - SECONDARY           */
+/*****************************************/
+
+.menu-secondary
+{
+margin: 0;
+padding: 8px 0 0 30px;
+height: 25px;
+background-color: #006699;
+border-bottom: solid 1px #999999;
+border-left: solid 1px #999999;
+border-right: solid 1px #999999;
+}
+
+.menu-secondary a
+{
+float:left;
+height: 15px;
+border: 0;
+padding: 0 0 3px 0;
+margin: 3px 15px 0 15px;
+color: #ffffff;
+text-decoration: none;
+display: block;
+text-align: center;
+font: normal 15px/15px georgia, serif;
+}
+
+.menu-secondary a:link, .menu-secondary a:visited, .menu-secondary a:active
+{
+background-color: #006699;
+color: #ffffff;
+text-decoration: none;
+}
+
+.menu-secondary a:hover
+{
+background-color: #006699;
+color: #ffffff;
+border: 0;
+border-bottom: 5px solid #ffffff;
+text-decoration: none;
+}
+
+.menu-secondary a.selected
+{
+background: #006699;
+color: #ffffff;
+border-bottom: 5px solid #ffffff;
+text-decoration: none;
+font-weight: bold;
+}
+
+
+
+/****************************************************/
+/*            MENU - ACTION                         */
+/****************************************************/
+
+
+.menu-action {
+margin: 15px 0 15px 0;
+border: 0px solid #000000;
+height: 40px;
+}
+
+.menu-action a:link, .menu-action a:visited, .menu-action a:active  {
+text-decoration: none;
+color: #ffffff;
+background-color: #000000;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+padding: 3px 8px 4px 8px;
+margin: 0 0 0 5px;
+font: normal 15px/15px georgia, serif;
+float: left;
+}
+
+.menu-action a:hover {
+color: #000000;
+background-color: #ffffff;
+text-decoration: none;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+float: left;
+
+}
+
+/* see also graphic.css: EDIT FORMS (i.e. more styles for #content form) */
+
+
+.submit {
+color: #ffffff;
+background-color: #000000;
+text-decoration: none;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+padding: 0 6px 1px 6px;
+margin: 0 0 0 5px;
+font: normal 15px/15px georgia, serif;
+width: 60px;
+height: 25px;
+float: left;
+}
+
+.submithover {
+color: #000000;
+background-color: #ffffff;
+text-decoration: none;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+padding: 0 6px 1px 6px;
+margin: 0 0 0 5px;
+font: normal 15px/15px georgia, serif;
+width: 60px;
+height: 25px;
+float: left;
+}
+
+form input.submitImage{
+vertical-align: top;
+border: 0;
+padding: 0;
+margin: 0;
+width: 100%;
+}
+
+form input.submitAdd{
+vertical-align: top;
+border: 0;
+padding: 0;
+margin: 0;
+height: 15px;
+width: 15px;
+}
+
+/*****************************************/
+/*            MENU - DETAIL              */
+/*****************************************/
+
+.menu-detail
+{
+margin: 0;
+padding: 15px 0 10px 60px;
+float: left;
+}
+
+.menu-detail a
+{
+background-color: #006699;
+color: #ffffff;
+padding: 0 5px 0 5px;
+}
+
+.menu-detail a:link, .menu-detail a:visited, .menu-detail a:active
+{
+border-left: 1px solid #cccccc;
+border-bottom: 2px solid #cccccc;
+border-top: 2px solid #cccccc;
+border-right: 1px solid #cccccc;
+}
+
+.menu-detail a:hover
+{
+border-left: 1px solid #cccccc;
+border-bottom: 2px solid #cccccc;
+border-top: 2px solid #cccccc;
+border-right: 1px solid #cccccc;
+background-color: #000000;
+color: #ffffff;
+}
+
+#menu-detail-selected, #menu-detail-selected a:hover
+{
+color: #006699;
+background-color: #ffffff;
+border-left: 1px solid #cccccc;
+border-bottom: 2px solid #cccccc;
+border-top: 2px solid #cccccc;
+border-right: 1px solid #cccccc;
+}
+
+
+
+
+/****************************************************/
+/*            MENU - EXTRA                            */
+/****************************************************/
+
+
+.menu-extra {
+margin: 15px 0 10px 0;
+border: 0px solid #000000;
+height: 25px;
+clear: both;
+}
+
+.menu-extra a:link, .menu-extra a:visited, .menu-extra a:active  {
+color: #000000;
+background-color: #cccccc;
+text-decoration: none;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+padding: 3px 8px 4px 8px;
+margin: 0 0 0 5px;
+font: normal 15px/15px georgia, serif;
+float: left;
+}
+
+.menu-extra a:hover {
+color: #000000;
+background: #ffffff;
+text-decoration: none;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+float: left;
+}
+
+
+
+
+/****************************************************/
+/*            MENU - CONTEXT                        */
+/****************************************************/
+
+.contextMenu {
+overflow: hidden;
+}
+
+.contextMenu .label {
+width: 100%;
+overflow: hidden;
+color: #ffffff;
+border: 0;
+border-bottom: 1px solid #999999;
+margin: 4px 0 0 0;
+padding: 1px 0 4px 3px;
+background-color: #006699;
+font: normal 14px/16px georgia, serif;
+
+}
+
+/****************************************************/
+/*            MULTI-LEVEL TREE                      */
+/****************************************************/
+
+.contextMenu .node {
+width: 100%;
+overflow: hidden;
+border-bottom: 0;
+padding-left: 5px;
+}
+
+.contextMenu .currentNode {
+overflow: hidden;
+width: 100%;
+border: 0;
+color: #000000;
+background-color: #ffffff;
+font-weight: bold;
+}
+
+.contextMenu .currentNode a {
+color: #000000;
+}
+
+.contextMenu .currentNode a:hover {
+color: #ffffff;
+}
+
+
+
+.contextMenu .node .plus {
+background-image: url('../images/tree_plus.gif');
+background-repeat: no-repeat;
+padding-left: 17px;
+background-position: top left;
+}
+
+.contextMenu .currentNode .plus {
+background-image: url('../images/tree_plus.gif');
+background-repeat: no-repeat;
+padding-left: 17px;
+background-position: top left;
+}
+
+.contextMenu .node .minus {
+padding-left: 17px;
+background-image: url('../images/tree_minus.gif');
+background-repeat: no-repeat;
+background-position: top left;
+}
+
+.contextMenu .currentNode .minus {
+padding-left: 17px;
+background-image: url('../images/tree_minus.gif');
+background-repeat: no-repeat;
+background-position: top left;
+}
+
+.contextMenu .node .rootPath {
+background-image: url('../images/tree_minus.gif');
+background-repeat: no-repeat;
+padding-left: 17px;
+background-position: top left;
+}
+
+.contextMenu .currentNode .rootPath {
+padding-left: 17px;
+background-image: url('../images/tree_minus.gif');
+background-repeat: no-repeat;
+background-position: top left;
+}
+
+/****************************************************/
+/*            MENU - EDIT                            */
+/****************************************************/
+
+
+.menu-edit {
+border: 0px solid #000000;
+}
+
+.menu-edit a:link, .menu-edit a:visited, .menu-edit a:active  {
+color: #000000;
+background-color: #cccccc;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+}
+
+.menu-edit a:hover {
+color: #000000;
+background: #ffffff;
+border-right: 3px solid #999999;
+border-bottom: 3px solid #999999;
+}

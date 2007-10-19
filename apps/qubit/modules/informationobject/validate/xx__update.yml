@@ -1,0 +1,18 @@
+methods:
+  post: [title, actor_id, repository_id]
+
+names:
+  title:
+    required:     true
+    required_msg: title is a required field
+
+  creator_id:
+    required:     true
+    required_msg: creator is a required field. if the required creator record does not exist yet, please create it first, then return to this form.
+
+  repository_id:
+    required:     true
+    required_msg: repository is a required field. if the required repository record does not exist yet, please create it first, then return to this form.
+
+
+

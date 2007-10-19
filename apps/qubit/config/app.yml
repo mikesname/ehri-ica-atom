@@ -1,0 +1,6 @@
+# default values
+all:
+  pager:
+    browse_list_max: 5
+  accepted:
+    languages: [en, fr]

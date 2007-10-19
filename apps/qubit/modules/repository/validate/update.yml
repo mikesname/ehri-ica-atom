@@ -1,0 +1,11 @@
+﻿fillin:
+  enabled: true
+  param:
+    name: mainForm
+
+methods:
+  post: [actor_id]
+names:
+  actor_id:
+    required: true
+    required_msg: you must provide a name

@@ -1,0 +1,10 @@
+editSuccess:
+  javascripts: [jquery, drupal, collapse]
+
+listSuccess:
+  components:
+    sidebar: []
+
+all:
+  components:
+    sidebar: [repository, contextMenu]

@@ -1,0 +1,55 @@
+﻿COPYRIGHTS
+==========
+
+Qubit Toolkit
+-------------
+
+Url:       http://www.qubit-toolkit.org/
+Copyright: Peter Van Garderen
+License:   LGPL v2.1 - see LICENSE file
+
+symfony
+-------
+
+Qubit Toolkit is based on the symfony framework.
+
+Url:       http://www.symfony-project.com/
+Copyright: Fabien Potencier
+License:   MIT - see lib/vendor/symfony/LICENSE
+
+symfony contains additional software.  See lib/vendor/symfony/COPYRIGHT and
+lib/vendor/symfony/licenses/
+
+In addition to symfony and the software it contains, Qubit Toolkit also uses
+the following:
+
+Zend Framework
+--------------
+
+Qubit Toolkit uses the Zend Search component.
+
+Url:       http://zend.framework.com
+Copyright: Zend Technologies USA Inc.
+License:   new BSD - see http://framework.zend.com/license/new-bsd
+
+GoogleMapAPI
+------------
+
+Url:       http://www.phpinsider.com/php/code/GoogleMapAPI/
+Author:    Monte Ohrt
+Copyright: New Digital Group, Inc.
+License:   LGPL v2.1 - see LICENSE file
+
+sfPropelActAsNestedSetBehaviorPlugin
+------------------------------------
+
+Url:       http://trac.symfony-project.com/wiki/sfPropelActAsNestedSetBehaviorPlugin
+Copyright: Tristan Rivoallan <tristan@rivoallan.net>
+License:   LGPL v2.1 - see LICENSE file
+
+sfUJSPlugin
+-----------
+
+Url:       http://trac.symfony-project.com/wiki/sfUJSPlugin
+Copyright: François Zaninotto <francois.zaninotto@symfony-project.com>
+License:   LGPL v2.1 - see LICENSE file

@@ -1,0 +1,43 @@
+# default rules
+homepage:
+  url:   /
+  param: { module: staticpage, action: static, permalink: homepage }
+
+login: 
+  url:   /login
+  param: { module: user, action: login }
+
+search:
+  url:  /search
+  param:  {module: search, action: keyword }
+
+search-trailing_slash:
+  url:  /search/
+  param:  {module: search, action: keyword }
+  
+browse:
+  url:  /browse
+  param:  {module: browse, action: subjectList }
+
+browse_trailing_slash:
+  url:  /browse/
+  param:  {module: browse, action: subjectList }
+
+default_module:
+  url:    /:permalink
+  param:  { module: staticpage, action: static }
+
+default_index:
+  url:   /:module
+  param: { action: index }
+
+default_symfony:
+  url:   /symfony/:action/*
+  param: { module: default }
+
+default:
+  url:   /:module/:action/*
+
+
+
+

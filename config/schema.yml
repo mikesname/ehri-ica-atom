@@ -1,0 +1,1249 @@
+propel:
+  _attributes:
+    package: lib.model
+    defaultIdMethod: native
+    noxsd: true
+  information_object:
+    _attributes:
+      phpName: informationObject
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    identifier:
+      type: varchar
+      size: 255
+    title:
+      type: varchar
+      size: 255
+    alternateTitle:
+      type: varchar
+      size: 255
+    version:
+      type: varchar
+      size: 255
+    level_of_description_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    extent_and_medium:
+      type: longvarchar
+    archival_history:
+      type: longvarchar
+    acquisition:
+      type: longvarchar
+    scope_and_content:
+      type: longvarchar
+    appraisal:
+      type: longvarchar
+    accruals:
+      type: longvarchar
+    arrangement:
+      type: longvarchar
+    access_conditions:
+      type: longvarchar
+    reproduction_conditions:
+      type: longvarchar
+    physical_characteristics:
+      type: longvarchar
+    finding_aids:
+      type: longvarchar
+    location_of_originals:
+      type: longvarchar
+    location_of_copies:
+      type: longvarchar
+    related_units_of_description:
+      type: longvarchar
+    rules:
+      type: longvarchar
+    collection_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    repository_id:
+      type: integer
+      foreignTable: repository
+      foreignReference: id
+      onDelete: set null
+    tree_id:
+      type: integer
+    tree_left_id:
+      type: integer
+    tree_right_id:
+      type: integer
+    tree_parent_id:
+      type: integer
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  information_object_term_relationship:
+    _attributes:
+      phpName: informationObjectTermRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_note:
+      type: longvarchar
+    relationship_start_date:
+      type: bu_date
+    relationship_end_date:
+      type: bu_date
+    date_display:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  information_object_recursive_relationship:
+    _attributes:
+      phpName: informationObjectRecursiveRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    related_information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_description:
+      type: longvarchar
+    relationship_start_date:
+      type: bu_date
+    relationship_end_date:
+      type: bu_date
+    date_display:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  note:
+    _attributes:
+      phpName: Note
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    repository_id:
+      type: integer
+      foreignTable: repository
+      foreignReference: id
+      onDelete: cascade
+    function_description_id:
+      type: integer
+      foreignTable: function_description
+      foreignReference: id
+      onDelete: cascade
+    note:
+      type: longvarchar
+    note_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    user_id:
+      type: integer
+      foreignTable: user
+      foreignReference: id
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  digital_object:
+    _attributes:
+      phpName: digitalObject
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    useage_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    name:
+      type: varchar
+      size: 255
+    description:
+      type: longvarchar
+    mime_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    media_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    sequence:
+      type: integer
+    byte_size:
+      type: integer
+    checksum:
+      type: varchar
+      size: 100
+    checksum_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    location_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    tree_id:
+      type: integer
+    tree_left_id:
+      type: integer
+    tree_right_id:
+      type: integer
+    tree_parent_id:
+      type: integer
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  digital_object_metadata:
+    _attributes:
+      phpName: digitalObjectMetadata
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    digital_object_id:
+      type: integer
+      foreignTable: digital_object
+      foreignReference: id
+      onDelete: cascade
+    element:
+      type: varchar
+      size: 255
+    value:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  digital_object_recursive_relationship:
+    _attributes:
+      phpName: digitalObjectRecursiveRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    digital_object_id:
+      type: integer
+      foreignTable: digital_object
+      foreignReference: id
+      onDelete: cascade
+    related_digital_object_id:
+      type: integer
+      foreignTable: digital_object
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  physical_object:
+    _attributes:
+      phpName: physicalObject
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    name:
+      type: varchar
+      size: 255
+    description:
+      type: longvarchar
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    location_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    tree_id:
+      type: integer
+    tree_left_id:
+      type: integer
+    tree_right_id:
+      type: integer
+    tree_parent_id:
+      type: integer
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  actor:
+    _attributes:
+      phpName: Actor
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    authorized_form_of_name:
+      type: varchar
+      size: 255
+      required: true
+    type_of_entity_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    identifiers:
+      type: varchar
+      size: 255
+    history:
+      type: longvarchar
+    legal_status:
+      type: longvarchar
+    functions:
+      type: longvarchar
+    mandates:
+      type: longvarchar
+    internal_structures:
+      type: longvarchar
+    general_context:
+      type: longvarchar
+    authority_record_identifier:
+      type: varchar
+      size: 255
+    institution_identifier:
+      type: varchar
+      size: 255
+    rules:
+      type: longvarchar
+    status_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    level_of_detail_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    sources:
+      type: longvarchar
+    tree_id:
+      type: integer
+    tree_left_id:
+      type: integer
+    tree_right_id:
+      type: integer
+    tree_parent_id:
+      type: integer
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  actor_name:
+    _attributes:
+      phpName: actorName
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    name:
+      type: varchar
+      size: 255
+    name_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    name_note:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  actor_recursive_relationship:
+    _attributes:
+      phpName: actorRecursiveRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    related_actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_description:
+      type: longvarchar
+    relationship_start_date:
+      type: bu_date
+    relationship_end_date:
+      type: bu_date
+    date_display:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  actor_term_relationship:
+    _attributes:
+      phpName: actorTermRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_note:
+      type: longvarchar
+    relationship_start_date:
+      type: bu_date
+    relationship_end_date:
+      type: bu_date
+    date_display:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  contact_information:
+    _attributes:
+      phpName: contactInformation
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    contact_type:
+      type: varchar
+      size: 255
+    primary_contact:
+      type: boolean
+    street_address:
+      type: longvarchar
+    city:
+      type: varchar
+      size: 255
+    region:
+      type: varchar
+      size: 255
+    postal_code:
+      type: varchar
+      size: 20
+    country_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    longtitude:
+      type: float
+    latitude:
+      type: float
+    telephone:
+      type: varchar
+      size: 255
+    fax:
+      type: varchar
+      size: 255
+    website:
+      type: varchar
+      size: 255
+    email:
+      type: varchar
+      size: 255
+    note:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  place:
+    _attributes:
+      phpName: Place
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    address:
+      type: longvarchar
+    country_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    place_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    longtitude:
+      type: float
+    latitude:
+      type: float
+    altitude:
+      type: float
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  map:
+    _attributes:
+      phpName: Map
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    title:
+      type: varchar
+      size: 255
+    description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  place_map_relationship:
+    _attributes:
+      phpName: placeMapRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    place_id:
+      type: integer
+      foreignTable: place
+      foreignReference: id
+      onDelete: cascade
+    map_id:
+      type: integer
+      foreignTable: map
+      foreignReference: id
+      onDelete: cascade
+    map_icon_image_id:
+      type: integer
+      foreignTable: digital_object
+      foreignReference: id
+      onDelete: set null
+    map_icon_description:
+      type: longvarchar
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_note:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  repository:
+    _attributes:
+      phpName: Repository
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: set null
+    identifier:
+      type: varchar
+      size: 255
+    repository_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    officers_in_charge:
+      type: longvarchar
+    geocultural_context:
+      type: longvarchar
+    collecting_policies:
+      type: longvarchar
+    buildings:
+      type: longvarchar
+    holdings:
+      type: longvarchar
+    finding_aids:
+      type: longvarchar
+    opening_times:
+      type: longvarchar
+    access_conditions:
+      type: longvarchar
+    disabled_access:
+      type: longvarchar
+    transport:
+      type: longvarchar
+    research_services:
+      type: longvarchar
+    reproduction_services:
+      type: longvarchar
+    public_facilities:
+      type: longvarchar
+    description_identifier:
+      type: varchar
+      size: 255
+    institution_identifier:
+      type: varchar
+      size: 255
+    rules:
+      type: longvarchar
+    status_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    level_of_detail_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    sources:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  repository_term_relationship:
+    _attributes:
+      phpName: repositoryTermRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    repository_id:
+      type: integer
+      foreignTable: repository
+      foreignReference: id
+      onDelete: cascade
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_note:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  term:
+    _attributes:
+      phpName: Term
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    taxonomy_id:
+      type: integer
+      foreignTable: taxonomy
+      foreignReference: id
+      onDelete: cascade
+    term_name:
+      type: varchar
+      size: 255
+    scope_note:
+      type: longvarchar
+    code_alpha:
+      type: varchar
+      size: 5
+    code_alpha2:
+      type: varchar
+      size: 5
+    code_numeric:
+      type: integer
+    sort_order:
+      type: integer
+    source:
+      type: varchar
+      size: 255
+    locked:
+      type: boolean
+    tree_id:
+      type: integer
+    tree_left_id:
+      type: integer
+    tree_right_id:
+      type: integer
+    tree_parent_id:
+      type: integer
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  taxonomy:
+    _attributes:
+      phpName: Taxonomy
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    name:
+      type: varchar
+      size: 50
+    term_use:
+      type: varchar
+      size: 5
+    note:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  term_recursive_relationship:
+    _attributes:
+      phpName: termRecursiveRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    related_term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    relationship_description:
+      type: varchar
+      size: 255
+    relationship_start_date:
+      type: bu_date
+    relationship_end_date:
+      type: bu_date
+    date_display:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  event:
+    _attributes:
+      phpName: Event
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    name:
+      type: varchar
+      size: 255
+    description:
+      type: longvarchar
+    start_date:
+      type: bu_date
+    start_time:
+      type: time
+    end_date:
+      type: bu_date
+    end_time:
+      type: time
+    date_display:
+      type: varchar
+      size: 255
+    event_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    actor_role_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: cascade
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  event_term_relationship:
+    _attributes:
+      phpName: eventTermRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    event_id:
+      type: integer
+      foreignTable: event
+      foreignReference: id
+      onDelete: cascade
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  system_event:
+    _attributes:
+      phpName: systemEvent
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    system_event_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    object_class:
+      type: varchar
+      size: 255
+    object_id:
+      type: integer
+    pre_event_snapshot:
+      type: longvarchar
+    post_event_snapshot:
+      type: longvarchar
+    date:
+      type: timestamp
+    user_name:
+      type: varchar
+      size: 255
+    user_id:
+      type: integer
+      foreignTable: user
+      foreignReference: id
+      onDelete: set null
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  historical_event:
+    _attributes:
+      phpName: historicalEvent
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    historical_event_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    start_date:
+      type: bu_date
+    start_time:
+      type: time
+    end_date:
+      type: bu_date
+    end_time:
+      type: time
+    date_display:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  function_description:
+    _attributes:
+      phpName: functionDescription
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    function_description_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    classification:
+      type: longvarchar
+    domain:
+      type: longvarchar
+    dates:
+      type: longvarchar
+    history:
+      type: longvarchar
+    legislation:
+      type: longvarchar
+    general_context:
+      type: longvarchar
+    description_identifier:
+      type: varchar
+      size: 255
+    institution_identifier:
+      type: varchar
+      size: 255
+    rules:
+      type: longvarchar
+    status_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    level_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    sources:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  right:
+    _attributes:
+      phpName: Right
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    information_object_id:
+      type: integer
+      foreignTable: information_object
+      foreignReference: id
+      onDelete: cascade
+    digital_object_id:
+      type: integer
+      foreignTable: digital_object
+      foreignReference: id
+      onDelete: cascade
+    physical_object_id:
+      type: integer
+      foreignTable: physical_object
+      foreignReference: id
+      onDelete: cascade
+    permission_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: set null
+    description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  right_term_relationship:
+    _attributes:
+      phpName: rightTermRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    right_id:
+      type: integer
+      foreignTable: right
+      foreignReference: id
+      onDelete: cascade
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  right_actor_relationship:
+    _attributes:
+      phpName: rightActorRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    right_id:
+      type: integer
+      foreignTable: right
+      foreignReference: id
+      onDelete: cascade
+    actor_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  menu:
+    _attributes:
+      phpName: Menu
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    name:
+      type: varchar
+      size: 100
+    url:
+      type: varchar
+      size: 255
+    tree_id:
+      type: integer
+    tree_left_id:
+      type: integer
+    tree_right_id:
+      type: integer
+    tree_parent_id:
+      type: integer
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  static_page:
+    _attributes:
+      phpName: staticPage
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    title:
+      type: varchar
+      size: 255
+    permalink:
+      type: varchar
+      size: 255
+    page_content:
+      type: longvarchar
+    stylesheet:
+      type: varchar
+      size: 255
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+    _uniques:
+      unique_permalink:
+        - permalink
+  user:
+    _attributes:
+      phpName: User
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    user_name:
+      type: varchar
+      size: 50
+    email:
+      type: varchar
+      size: 100
+    sha1_password:
+      type: varchar
+      size: 40
+    salt:
+      type: varchar
+      size: 32
+    actor_id:
+      type: integer
+      foreignTable: actor
+      foreignReference: id
+      onDelete: set null
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp
+  user_term_relationship:
+    _attributes:
+      phpName: userTermRelationship
+    id:
+      type: integer
+      required: true
+      primaryKey: true
+      autoIncrement: true
+    user_id:
+      type: integer
+      foreignTable: user
+      foreignReference: id
+      onDelete: cascade
+    term_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+      onDelete: cascade
+    relationship_type_id:
+      type: integer
+      foreignTable: term
+      foreignReference: id
+    repository_id:
+      type: integer
+      foreignTable: repository
+      foreignReference: id
+      onDelete: cascade
+    description:
+      type: longvarchar
+    created_at:
+      type: timestamp
+    updated_at:
+      type: timestamp

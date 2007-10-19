@@ -1,0 +1,11 @@
+prod:
+  enabled: off
+  level:  err
+
+dev:
+
+test:
+
+all:
+#  enabled: on
+#  level:  debug
