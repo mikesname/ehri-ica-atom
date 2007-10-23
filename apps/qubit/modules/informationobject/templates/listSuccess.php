@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('list').' '.__('information objects'); ?></div>
+﻿<div class="pageTitle"><?php echo __('list').' '.__('archival descriptions'); ?></div>
 
 <table class="list">
 <thead>
@@ -60,6 +60,6 @@
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-	<?php echo link_to (__('add').' '.__('new').' '.__('information object'), 'informationobject/create') ?>
+	<?php echo link_to (__('add').' '.__('new').' '.__('archival description'), 'informationobject/create') ?>
 </div>
 <?php endif; ?>

@@ -1,4 +1,4 @@
-<div class="pageTitle"><?php echo __('list').' '.__('repositories'); ?></div>
+<div class="pageTitle"><?php echo __('list').' '.__('archival institutions'); ?></div>
 
 <table class="list">
 <thead>
@@ -69,6 +69,6 @@
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-	<?php echo link_to(__('add').' '.__('new').' '.__('repository'), 'repository/create'); ?>
+	<?php echo link_to(__('add').' '.__('new').' '.__('archival institution'), 'repository/create'); ?>
 </div>
 <?php endif; ?>

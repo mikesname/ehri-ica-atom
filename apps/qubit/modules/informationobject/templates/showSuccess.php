@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('view').' '.__('information object'); ?></div>
+﻿<div class="pageTitle"><?php echo __('view').' '.__('archival description'); ?></div>
 
 <table class="detail">
 <tbody>
@@ -252,6 +252,6 @@
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-	<?php echo link_to (__('edit').' '.__('information object'), 'informationobject/edit?id='.$informationObject->getId()) ?>
+	<?php echo link_to (__('edit').' '.__('archival description'), 'informationobject/edit?id='.$informationObject->getId()) ?>
 </div>
 <?php endif; ?>

@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('view').' '.__('person').' / '.__('organization') ?></div>
+﻿<div class="pageTitle"><?php echo __('view').' '.__('authority file') ?></div>
 
 <table class="detail">
 <tbody>

@@ -1,6 +1,6 @@
 ﻿<?php use_helper('DateForm') ?>
 
-<div class="pageTitle"><?php echo __('edit').' '.__('information object'); ?></div>
+<div class="pageTitle"><?php echo __('edit').' '.__('archival description'); ?></div>
 
 <?php echo form_tag('informationobject/update') ?>
   <?php echo object_input_hidden_tag($informationObject, 'getId') ?>
@@ -292,6 +292,6 @@
 </form>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add').' '.__('new').' '.__('information object'), 'informationobject/create'); ?>
-	<?php echo link_to(__('list').' '.__('all').' '.__('information objects'), 'informationobject/list'); ?>
+  <?php echo link_to(__('add').' '.__('new').' '.__('archival description'), 'informationobject/create'); ?>
+	<?php echo link_to(__('list').' '.__('all').' '.__('archival descriptions'), 'informationobject/list'); ?>
 </div>

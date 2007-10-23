@@ -118,7 +118,7 @@ class menuComponents extends sfComponents
       \n<a ".$this->secondarymenu_css_class[0]." href='".$rootURL."/browse/subjectList'>".__('subjects')."</a>
       \n<a ".$this->secondarymenu_css_class[1]." href='".$rootURL."/browse/languageList'>languages</a>
       \n<a ".$this->secondarymenu_css_class[2]." href='".$rootURL."/browse/countryList'>countries</a>
-      \n<a ".$this->secondarymenu_css_class[3]." href='".$rootURL."/browse/repositoryList'>".__('repositories')."</a>
+      \n<a ".$this->secondarymenu_css_class[3]." href='".$rootURL."/browse/repositoryList'>".__('archival institutions')."</a>
       \n<a ".$this->secondarymenu_css_class[4]." href='".$rootURL."/browse/creatorList'>creators</a>
       \n<a ".$this->secondarymenu_css_class[5]." href='".$rootURL."/browse/recentList'>recent updates</a>
       \n</div> <!-- close menu-secondary -->";
@@ -190,7 +190,7 @@ class menuComponents extends sfComponents
                     \n<a ".$this->secondarymenu_css_class[0]." href='".$rootURL."/browse/subjectList'>".__('subjects')."</a>
                     \n<a ".$this->secondarymenu_css_class[1]." href='".$rootURL."/browse/languageList'>languages</a>
                     \n<a ".$this->secondarymenu_css_class[2]." href='".$rootURL."/browse/countryList'>countries</a>
-                    \n<a ".$this->secondarymenu_css_class[3]." href='".$rootURL."/browse/repositoryList'>".__('repositories')."</a>
+                    \n<a ".$this->secondarymenu_css_class[3]." href='".$rootURL."/browse/repositoryList'>".__('archival institutions')."</a>
                     \n<a ".$this->secondarymenu_css_class[4]." href='".$rootURL."/browse/creatorList'>creators</a>
                     \n<a ".$this->secondarymenu_css_class[5]." href='".$rootURL."/browse/recentList'>recent updates</a>
                     \n</div> <!-- close menu-secondary -->";
@@ -222,9 +222,9 @@ class menuComponents extends sfComponents
               $this->secondarymenu_css_class = $secondarymenu_css_class;
 
             $this->secondary_menu = "<div class='menu-secondary'>
-        \n<a ".$this->secondarymenu_css_class[0]." href='".$rootURL."/informationobject/list'>".__('information objects')."</a>
-        \n<a ".$this->secondarymenu_css_class[1]." href='".$rootURL."/actor/list'>".__('people').' / '.__('organizations')."</a>
-        \n<a ".$this->secondarymenu_css_class[2]." href='".$rootURL."/repository/list'>".__('repositories')."</a>
+        \n<a ".$this->secondarymenu_css_class[0]." href='".$rootURL."/informationobject/list'>".__('archival descriptions')."</a>
+        \n<a ".$this->secondarymenu_css_class[1]." href='".$rootURL."/actor/list'>".__('authority files')."</a>
+        \n<a ".$this->secondarymenu_css_class[2]." href='".$rootURL."/repository/list'>".__('archival institutions')."</a>
         \n<a ".$this->secondarymenu_css_class[3]." href='".$rootURL."/term/list/taxonomyId/14'>".__('subjects')."</a>
         \n</div> <!-- close menu-secondary -->";
             }
@@ -257,9 +257,9 @@ class menuComponents extends sfComponents
        $this->secondarymenu_css_class = $secondarymenu_css_class;
 
        $this->secondary_menu = "<div class='menu-secondary'>
-        \n<a ".$this->secondarymenu_css_class[0]." href='".$rootURL."/informationobject/list'>".__('information objects')."</a>
-        \n<a ".$this->secondarymenu_css_class[1]." href='".$rootURL."/actor/list'>".__('people').' / '.__('organizations')."</a>
-        \n<a ".$this->secondarymenu_css_class[2]." href='".$rootURL."/repository/list'>".__('repositories')."</a>
+        \n<a ".$this->secondarymenu_css_class[0]." href='".$rootURL."/informationobject/list'>".__('archival descriptions')."</a>
+        \n<a ".$this->secondarymenu_css_class[1]." href='".$rootURL."/actor/list'>".__('authority files')."</a>
+        \n<a ".$this->secondarymenu_css_class[2]." href='".$rootURL."/repository/list'>".__('archival institutions')."</a>
         \n<a ".$this->secondarymenu_css_class[3]." href='".$rootURL."/term/list/taxonomyId/14'>".__('subjects')."</a>
         \n</div> <!-- close menu-secondary -->";
         }

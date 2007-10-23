@@ -19,7 +19,7 @@
 
 <!-- use a Javascript hack to set the focus on the text box -->
 <script type="text/javascript">
-document.forms[3][0].focus();
+document.forms[2][0].focus();
 </script>
 
 <div class="menu-action">

@@ -31,7 +31,7 @@ background-color: transparent;
 }
 
 #website-description {
-color: #CC3204;
+color: #004080;
 font: bold 17px/19px georgia, garamond, serif;
 margin: 5px 0 0 2px;
 text-align: left;
@@ -46,7 +46,7 @@ padding: 0;
 }
 
 #logo img {
-margin-right: 385px;
+margin-right: 370px;
 float: right;
 }
 
@@ -84,7 +84,7 @@ h1
 {
 font: bold 20px/20px georgia, garamond, serif;
 margin: 15px 0 0 0;
-color: #000033;
+color: #000066;
 background-color: #ff9933;
 border-bottom: 1px solid #000066;
 border-top: 1px solid #000066;

@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('list').' '.__('people').' / '.__('organizations'); ?></div>
+﻿<div class="pageTitle"><?php echo __('list').' '.__('authority files'); ?></div>
 
 <table class="list">
 <thead>

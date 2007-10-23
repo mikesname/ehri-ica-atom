@@ -30,12 +30,15 @@ class actorComponents extends sfComponents
   {
 
   if ($this->getRequestParameter('id'))
-    {
-    $this->actor = ActorPeer::retrieveByPk($this->getRequestParameter('id'));
+    if(!$this->getRequestParameter('repositoryReroute'))
+      {
+        {
+        $this->actor = ActorPeer::retrieveByPk($this->getRequestParameter('id'));
 
-    $this->informationObjectRelationships = $this->actor->getInformationObjectRelationships();
-    }
-  else
+        $this->informationObjectRelationships = $this->actor->getInformationObjectRelationships();
+        }
+      }
+    else
     {
     $this->informationObjectRelationships = null;
     }

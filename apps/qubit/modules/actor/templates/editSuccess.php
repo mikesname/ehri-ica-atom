@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('edit').' '.__('person').' / '.__('organization'); ?></div>
+﻿<div class="pageTitle"><?php echo __('edit').' '.__('authority file'); ?></div>
 
 <?php echo form_tag('actor/update') ?>
   <?php echo object_input_hidden_tag($actor, 'getId') ?>
@@ -211,6 +211,6 @@
 </form>
 
 <div class="menu-extra">
-	<?php echo link_to(__('add').' '.__('new').' '.__('person').' / '.__('organization'), 'actor/create'); ?>
-	<?php echo link_to(__('list').' '.__('all').' '.__('people').' / '.__('organizations'), 'actor/list'); ?>
+	<?php echo link_to(__('add').' '.__('new').' '.__('authority file'), 'actor/create'); ?>
+	<?php echo link_to(__('list').' '.__('all').' '.__('authority files'), 'actor/list'); ?>
 </div>

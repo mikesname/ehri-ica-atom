@@ -5,7 +5,7 @@
 <?php endif; ?>
 
 <div class="pageTitle">
-	<?php echo __('edit').' '.__('repository'); ?>
+	<?php echo __('edit').' '.__('archival institution'); ?>
 </div>
 
 <?php echo form_tag('repository/update') ?>
@@ -289,6 +289,6 @@
 </form>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add').' '.__('new').' '.__('repository'), 'repository/create'); ?>
-	<?php echo link_to(__('list').' '.__('all').' '.__('repositories'), 'repository/list'); ?>
+  <?php echo link_to(__('add').' '.__('new').' '.__('archival institution'), 'repository/create'); ?>
+	<?php echo link_to(__('list').' '.__('all').' '.__('archival institutions'), 'repository/list'); ?>
 </div>

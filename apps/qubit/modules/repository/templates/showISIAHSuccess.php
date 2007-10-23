@@ -1,4 +1,4 @@
-﻿<div class="pageTitle">view repository</div>
+﻿<div class="pageTitle">view archival institution</div>
 
 <table class="detail">
 <tbody>
