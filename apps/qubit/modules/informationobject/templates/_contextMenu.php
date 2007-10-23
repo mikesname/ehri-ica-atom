@@ -1,7 +1,7 @@
 <div class="context-column-box">
 <div class="contextMenu">
 <?php if ($repositoryLink): ?>
-<div class="label">Repository</div>
+<div class="label">Archival Institution</div>
 <?php echo link_to($repositoryLink['repositoryName'], 'repository/show?id='.$repositoryLink['repositoryId']) ?>
 <?php endif; ?>
 
@@ -13,7 +13,7 @@
 <?php endif; ?>
 
 <?php if ($informationObject->getTreeId()): ?>
-<div class="label">Collection</div>
+<div class="label">Fonds</div>
 <?php foreach ($collection as $node): ?>
   <?php echo $node ?>
 <?php endforeach; ?>
