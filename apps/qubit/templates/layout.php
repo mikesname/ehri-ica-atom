@@ -35,10 +35,10 @@
 
 <div id="header-middle">
 <div id="website-name">
-<div id="logo"><?php echo link_to(image_tag('/images/qubit-sphere.gif', 'width="80" height="80" alt="Qubit logo"'), '/') ?></div>
-<?php echo link_to('<span style="color: #FC6E3C; letter-spacing: -0.1ex;"><span style="color: #CC3204; font-size: 125%;">Q</span>ubit</span>', '/') ?>
+<div id="logo"><?php echo link_to(image_tag('/images/ica-logo.gif', 'width="65" height="63" alt="ICA logo"'), '/') ?></div>
+<?php echo link_to('<span style="color: #000066; letter-spacing: -0.1ex;">ICA</span><span style="color: #CC3204; font-size: 135%; letter-spacing: -0.1ex;">AtoM</span>', '/') ?>
 </div>
-<div id="website-description"><?php echo __("open information management toolkit"); ?></div>
+<div id="website-description"><?php echo __("open source archival description software"); ?></div>
 
 </div> <!-- close header-middle -->
 
@@ -58,10 +58,6 @@
 <div class="context-column-box">
 <?php include_component_slot('SearchSidebar') ?>
 <?php include_component_slot('BrowseSidebar') ?>
-</div>
-
-<div class="context-column-box">
-<?php include_component_slot('LanguageSidebar') ?>
 </div>
 
 <div id="sidebar">

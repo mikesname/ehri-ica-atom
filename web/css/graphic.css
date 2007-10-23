@@ -14,11 +14,11 @@
 **********************************************************/
 
 #website-name {
-font: bold 64px/68px verdana, georgia, garamond, serif;
+font: bold 56px/60px verdana, georgia, garamond, serif;
 letter-spacing: 3px;
 color: #04025C;
 border: 0;
-margin-bottom: 10px;
+margin-bottom: 2px;
 text-align: left;
 /*background-image: url(../images/background.gif);*/
 }
@@ -31,9 +31,9 @@ background-color: transparent;
 }
 
 #website-description {
-color: #04025C;
-font: bold 15px/16px georgia, garamond, serif;
-margin: 12px 0 0 10px;
+color: #CC3204;
+font: bold 17px/19px georgia, garamond, serif;
+margin: 5px 0 0 2px;
 text-align: left;
 }
 
@@ -46,7 +46,7 @@ padding: 0;
 }
 
 #logo img {
-margin-right: 470px;
+margin-right: 385px;
 float: right;
 }
 

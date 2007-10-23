@@ -3,10 +3,10 @@ default:
     content-type: text/html; charset=UTF-8
 
   metas:
-    title:        Qubit - Open Information Management Toolkit
+    title:        ICA-AtoM -- open source archival description software
     robots:       index, follow
-    description:  Qubit - Open Information Management Toolkit
-    keywords:     qubit
+    description:  ICA-AtoM -- open source archival description software
+    keywords:     ICA-AtoM open source archival description software
     language:     en
 
   stylesheets:    [form, graphic, layout, menu]
