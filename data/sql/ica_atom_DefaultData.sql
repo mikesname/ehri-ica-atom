@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Host: localhost
--- Generation Time: Oct 23, 2007 at 04:27 PM
+-- Generation Time: Oct 23, 2007 at 06:16 PM
 -- Server version: 5.0.22
 -- PHP Version: 5.2.0
 
@@ -156,7 +156,8 @@ INSERT INTO `information_object_term_relationship` (`id`, `information_object_id
 (27, 19, 34, 335, NULL, NULL, NULL, NULL, '2007-10-18 17:15:57', '2007-10-18 17:15:57'),
 (28, 19, 29, 334, NULL, NULL, NULL, NULL, '2007-10-18 17:15:57', '2007-10-18 17:15:57'),
 (29, 19, 351, 336, NULL, NULL, NULL, NULL, '2007-10-18 17:16:47', '2007-10-18 17:16:47'),
-(30, 24, 353, 336, NULL, NULL, NULL, NULL, '2007-10-23 15:56:47', '2007-10-23 15:56:47');
+(30, 24, 353, 336, NULL, NULL, NULL, NULL, '2007-10-23 15:56:47', '2007-10-23 15:56:47'),
+(31, 23, 353, 336, NULL, NULL, NULL, NULL, '2007-10-23 17:04:46', '2007-10-23 17:04:46');
 
 -- 
 -- Dumping data for table `map`
@@ -232,7 +233,7 @@ INSERT INTO `repository_term_relationship` (`id`, `repository_id`, `term_id`, `r
 -- Dumping data for table `static_page`
 -- 
 
-INSERT INTO `static_page` (`id`, `title`, `permalink`, `page_content`, `stylesheet`, `created_at`, `updated_at`) VALUES (1, 'Homepage', 'homepage', '<h1 id="first">Welcome</h1>\r\nThis is the homepage for the default installation of ICA-AtoM v0.4. This is an early beta version that is still under active development and testing.\r\n\r\nICA-AtoM is a fully web-based archival description application that is based on <a href="http://www.ica.org">International Council on Archives</a> (ICA) standards. <i>AtoM</i> is an acronymn for <i>Access to Memory</i>.\r\n\r\nThe ICA and its project collaborators are making this application available as free and open-source software to provide archival institutions with a free and easy-to-use option for putting their archival collections online. \r\n\r\nSee the <a href="/about">about page</a> to learn more about the ICA-AtoM project.\r\n\r\nSee the online <a href="http://ica-atom.org/docs">documentation wiki</a>  to learn more about getting started with the software.', '', '2006-09-11 12:52:39', '2007-10-23 14:38:18'),
+INSERT INTO `static_page` (`id`, `title`, `permalink`, `page_content`, `stylesheet`, `created_at`, `updated_at`) VALUES (1, 'Homepage', 'homepage', '<h1 id="first">Welcome</h1>\r\nThis is the homepage for the default installation of ICA-AtoM v0.4. This is an early beta version that is still under active development and testing.\r\n\r\nICA-AtoM is a fully web-based archival description application that is based on <a href="http://www.ica.org">International Council on Archives</a> (ICA) standards. <i>AtoM</i> is an acronymn for <i>Access to Memory</i>.\r\n\r\nThe ICA and its <a href="http://ica-atom.org/partners.html">project collaborators</a> are making this application available as open-source software to provide archival institutions with a free and easy-to-use option for putting their archival collections online. See the <a href="about">about page</a> to learn more about the ICA-AtoM project.\r\n\r\nSee the online <a href="http://ica-atom.org/docs">documentation wiki</a> to learn more about using the software or press the <i>browse</i> button on the right to view some sample data.', '', '2006-09-11 12:52:39', '2007-10-23 17:10:01'),
 (13, 'about', 'about', '<h1 id="first">About</h1>\r\nThis is the <b>About</b> page for the default installation of ICA-AtoM, open-source archival description software.\r\n\r\nSee the online <a href="http://ica-atom.org/docs">documentation wiki</a> to learn how to get started with ICA-AtoM, including how to customize and edit this page.\r\n\r\n<h1>About the ICA-AtoM Project</h1>\r\nICA-AtoM is a <a href="http://ica-atom.org/partners.html">collaborative project</a> with the aim to provide the international archival community with a free, open-source software application to manage archival descriptions in accord with ICA standards. \r\n\r\nThe goal is to provide an easy-to-use, multi-lingual application that is fully web-based and will allow institutions to make their archival collections available online.', '', '2007-07-10 14:45:50', '2007-10-23 15:00:40');
 
 -- 
