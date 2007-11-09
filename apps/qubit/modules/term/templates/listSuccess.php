@@ -89,10 +89,8 @@
 </tbody>
 </table>
 
-<div class="menu-action">
-<?php if ($editCredentials)
-  {
-  echo link_to (__('add').' '.__('new').' '.__('term'), 'term/create');
-  }
-  ?>
-</div>
+<?php if ($editCredentials): ?>
+  <div class="menu-action"><?php echo link_to(__('add').' '.__('new').' '.$taxonomyName.' '.__('term'), 'term/create?taxonomyId='.$taxonomyId)?>
+  </div>
+<?php endif; ?>
+

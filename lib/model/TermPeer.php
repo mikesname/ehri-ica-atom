@@ -280,6 +280,12 @@ class TermPeer extends BaseTermPeer
   return self::getTaxonomy($taxonomyId = 20);
   }
 
+  public static function getI18nLanguages()
+  {
+
+  return self::getTaxonomy($taxonomyId = 27, $sort='default', $restrict = FALSE);
+  }
+
 
 public static function getRepositoryCountryHitList()
   {

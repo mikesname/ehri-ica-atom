@@ -8,12 +8,11 @@ rendering: ~
 web_debug: ~
 security:  ~
 
+history:
+  class: sfHistoryPluginFilter
+
 # generally, you will want to insert your own filters here
 
 cache:     ~
 common:    ~
 execution: ~
-
-SwitchLanguageFilter:
-  class: SwitchLanguageFilter
-  activate: on

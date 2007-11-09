@@ -64,13 +64,11 @@ class showAction extends sfAction
   //set view template
   switch ($this->getRequestParameter('template'))
     {
-    case 'anotherTemplate' :
-      $this->setTemplate('showAnotherTemplate');
-      break;
-    //default template is ISIAH
     case 'isiah' :
-    default :
       $this->setTemplate('showISIAH');
+      break;
+    default :
+      $this->setTemplate(sfConfig::get('app_default_template_repository_show'));
     }
 
 

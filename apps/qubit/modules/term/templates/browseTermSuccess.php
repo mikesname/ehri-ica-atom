@@ -1,6 +1,6 @@
 ﻿
 
-<div class="pageTitle">list <?php echo $taxonomyName ?> terms</div>
+<div class="pageTitle"><?php echo __('list ').$taxonomyName.__(' terms')?></div>
 <table class="list">
 <thead>
 <tr><th class="header" colspan="3"><?php echo $term ?></th></tr>
@@ -22,10 +22,10 @@
 
   <th>
   <?php if($sort == 'collectionUp'): ?>
-    <?php echo link_to(__('collection'), 'term/browse?termId='.$termId.'&sort=collectionDown') ?>
+    <?php echo link_to(__(sfConfig::get('app_ui_label_collection')), 'term/browse?termId='.$termId.'&sort=collectionDown') ?>
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
   <?php else: ?>
-    <?php echo link_to(__('collection'), 'term/browse?termId='.$termId.'&sort=collectionUp') ?>
+    <?php echo link_to(__(sfConfig::get('app_ui_label_collection')), 'term/browse?termId='.$termId.'&sort=collectionUp') ?>
   <?php endif; ?>
 
   <?php if($sort == 'collectionDown'): ?>
@@ -35,10 +35,10 @@
 
   <th>
   <?php if($sort == 'repositoryUp'): ?>
-    <?php echo link_to(__('repository'), 'term/browse?termId='.$termId.'&sort=repositoryDown') ?>
+    <?php echo link_to(__(sfConfig::get('app_ui_label_repository')), 'term/browse?termId='.$termId.'&sort=repositoryDown') ?>
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
   <?php else: ?>
-    <?php echo link_to(__('repository'), 'term/browse?termId='.$termId.'&sort=repositoryUp') ?>
+    <?php echo link_to(__(sfConfig::get('app_ui_label_repository')), 'term/browse?termId='.$termId.'&sort=repositoryUp') ?>
   <?php endif; ?>
 
   <?php if($sort == 'repositoryDown'): ?>
