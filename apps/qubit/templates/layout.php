@@ -40,10 +40,10 @@
 
 <div id="header-middle">
 <div id="website-name">
-<?php echo link_to('<span style="color: #FC6E3C; letter-spacing: -0.1ex;"><span style="color: #CC3204; font-size: 125%;">Q</span>ubit</span>', '/') ?>
+<?php echo link_to('<span style="color: #AA2222; letter-spacing: -0.1ex;">ICA</span><span style="color: #000066; font-size: 135%; letter-spacing: -0.1ex;">A<i>to</i>M</span>', '/') ?>
 </div>
-<div id="logo"><?php echo link_to(image_tag('/images/qubit-sphere.gif', 'width="80" height="80" alt="Qubit logo"'), '/') ?></div>
-<div id="website-description"><?php echo __("open information management toolkit"); ?></div>
+<div id="logo"><?php echo link_to(image_tag('/images/ica-logo.gif', 'width="65" height="63" alt="ICA logo"'), '/') ?></div>
+<div id="website-description"><?php echo __("open source archival description software"); ?></div>
 
 </div> <!-- close header-middle -->
 

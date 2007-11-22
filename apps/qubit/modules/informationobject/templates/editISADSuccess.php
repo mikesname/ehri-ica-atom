@@ -30,11 +30,6 @@
     </div>
 
     <div class="form-item">
-      <label for="alternate_title"><?php echo __('alternate title'); ?></label>
-      <?php echo object_input_tag($informationObject, 'getAlternateTitle', array('size' => 20)) ?>
-    </div>
-
-    <div class="form-item">
       <label for="new_title_note"><?php echo __('title notes'); ?></label>
       <table class="inline"><tr>
         <td class="headerCell" style="width: 65%;"><?php echo __('note'); ?></td>

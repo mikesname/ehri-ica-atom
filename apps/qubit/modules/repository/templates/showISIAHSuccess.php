@@ -209,5 +209,7 @@
 </table>
 
 <div class="menu-action">
-<?php if ($editCredentials) { echo link_to(__('edit').' '__('repository'), 'repository/edit?id='.$repository->getId()); } ?>
+<?php if ($editCredentials): ?>
+  <?php echo link_to(__('edit').' '.__('archival institution'), 'repository/edit?id='.$repository->getId()) ?>
+<?php endif; ?>
 </div>

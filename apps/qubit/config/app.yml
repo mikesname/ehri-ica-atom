@@ -1,22 +1,22 @@
 # default values
 all:
-  version: Qubit v0.5
+  version: ICA-AtoM v0.5
   default_template:
-    informationobject_edit: edit
-    informationobject_show: show
-    informationobject_list: list
-    actor_edit: edit
-    actor_show: show
-    actor_list: list
-    repository_edit: edit
-    repository_show: show
-    repository_list: list
+    informationobject_edit: editISAD
+    informationobject_show: showISAD
+    informationobject_list: listISAD
+    actor_edit: editISAAR
+    actor_show: showISAAR
+    actor_list: listISAAR
+    repository_edit: editISIAH
+    repository_show: showISIAH
+    repository_list: listISIAH
   ui_label:
-    informationobject: information object
-    actor:  person/organization
+    informationobject: archival description
+    actor:  authority file
     creator: creator
-    repository: repository
+    repository: archival institution
     subject: subject
-    collection: collection
+    collection: fonds
     holdings: holdings
   google_map_key:
