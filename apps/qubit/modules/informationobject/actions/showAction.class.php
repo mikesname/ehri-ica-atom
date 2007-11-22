@@ -28,7 +28,7 @@ class showAction extends sfAction
   public function execute()
   {
 
-  $this->informationObject = informationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+  $this->informationObject = InformationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
   $this->forward404Unless($this->informationObject);
 
   $this->creators = $this->informationObject->getCreators();
@@ -51,26 +51,18 @@ class showAction extends sfAction
     }
 
    //set template
-   if ($this->getRequestParameter('template'))
-    {
-    switch ($this->getRequestParameter('template'))
+  switch ($this->getRequestParameter('template'))
       {
-      case 'dublinCore' :
-        $this->setTemplate('showDublinCore');
+      case 'mods' :
+        $this->setTemplate('showMODS');
         break;
       case 'isad' :
         $this->setTemplate('showISAD');
         break;
       default :
-        $this->setTemplate('show');
+        $this->setTemplate(sfConfig::get('app_default_template_informationobject_show'));
         break;
       }
-    //set default template
-    }
-    else
-    {
-      $this->setTemplate('show');
-    }
 
 
   }

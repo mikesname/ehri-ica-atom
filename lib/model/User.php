@@ -44,10 +44,10 @@ public function getUserCredentials()
   {
 
   $c = new Criteria();
-  $c->add(userTermRelationshipPeer::USER_ID, $this->getId());
-  $c->add(userTermRelationshipPeer::RELATIONSHIP_TYPE_ID, 6);
+  $c->add(UserTermRelationshipPeer::USER_ID, $this->getId());
+  $c->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, 6);
 
-  $relationships = userTermRelationshipPeer::doSelect($c);
+  $relationships = UserTermRelationshipPeer::doSelect($c);
 
   if ($relationships)
     {
@@ -79,7 +79,7 @@ public function getUserCredentials()
 
 public function setCredentials($termId, $repositoryId)
   {
-  $newUserTermRelationship = new userTermRelationship();
+  $newUserTermRelationship = new UserTermRelationship();
   $newUserTermRelationship->setUserId($this->getId());
   $newUserTermRelationship->setTermId($termId);
   //set relationshipType to 'credential'

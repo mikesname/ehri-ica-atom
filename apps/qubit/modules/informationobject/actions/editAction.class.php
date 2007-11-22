@@ -28,7 +28,7 @@ class editAction extends sfAction
   public function execute()
   {
 
-   $this->informationObject = informationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+   $this->informationObject = InformationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
 
    $this->forward404Unless($this->informationObject);
 
@@ -38,10 +38,10 @@ class editAction extends sfAction
    $this->subjectAccessPoints = $this->informationObject->getSubjectAccessPoints();
    $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
 
-   $this->newLanguage = new informationObjectTermRelationship();
-   $this->newScript = new informationObjectTermRelationship();
-   $this->newSubjectAccessPoint = new informationObjectTermRelationship();
-   $this->newPlaceAccessPoint = new informationObjectTermRelationship();
+   $this->newLanguage = new InformationObjectTermRelationship();
+   $this->newScript = new InformationObjectTermRelationship();
+   $this->newSubjectAccessPoint = new InformationObjectTermRelationship();
+   $this->newPlaceAccessPoint = new InformationObjectTermRelationship();
 
    //Notes
    $this->notes = $this->informationObject->getInformationObjectNotes($noteTypeId = null, $exclude = 317);
@@ -56,7 +56,7 @@ class editAction extends sfAction
       {
       //$this->selectedParent = $this->informationObject->getTreeParentId();
       $this->selectedParent = 0;
-      $this->parent = informationObjectPeer::retrieveByPk($this->informationObject->getTreeParentId());
+      $this->parent = InformationObjectPeer::retrieveByPk($this->informationObject->getTreeParentId());
       }
    else
       {
@@ -78,16 +78,17 @@ class editAction extends sfAction
    //set template
    switch ($this->getRequestParameter('template'))
       {
-      case 'anotherTemplate' :
-        $this->setTemplate('editAnotherTemplate');
+      case 'mods' :
+        $this->setTemplate('editMODS');
         break;
       case 'isad' :
         $this->setTemplate('editISAD');
         break;
       default :
-        $this->setTemplate('edit');
+        $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
         break;
       }
+
 
   }
 }

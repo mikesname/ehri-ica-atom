@@ -40,28 +40,28 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 	protected $updated_at;
 
 	
-	protected $ainformationObject;
+	protected $aInformationObject;
 
 	
-	protected $adigitalObject;
+	protected $aDigitalObject;
 
 	
-	protected $aphysicalObject;
+	protected $aPhysicalObject;
 
 	
 	protected $aTerm;
 
 	
-	protected $collrightTermRelationships;
+	protected $collRightTermRelationships;
 
 	
-	protected $lastrightTermRelationshipCriteria = null;
+	protected $lastRightTermRelationshipCriteria = null;
 
 	
-	protected $collrightActorRelationships;
+	protected $collRightActorRelationships;
 
 	
-	protected $lastrightActorRelationshipCriteria = null;
+	protected $lastRightActorRelationshipCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -182,8 +182,8 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = RightPeer::INFORMATION_OBJECT_ID;
 		}
 
-		if ($this->ainformationObject !== null && $this->ainformationObject->getId() !== $v) {
-			$this->ainformationObject = null;
+		if ($this->aInformationObject !== null && $this->aInformationObject->getId() !== $v) {
+			$this->aInformationObject = null;
 		}
 
 	} 
@@ -200,8 +200,8 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = RightPeer::DIGITAL_OBJECT_ID;
 		}
 
-		if ($this->adigitalObject !== null && $this->adigitalObject->getId() !== $v) {
-			$this->adigitalObject = null;
+		if ($this->aDigitalObject !== null && $this->aDigitalObject->getId() !== $v) {
+			$this->aDigitalObject = null;
 		}
 
 	} 
@@ -218,8 +218,8 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = RightPeer::PHYSICAL_OBJECT_ID;
 		}
 
-		if ($this->aphysicalObject !== null && $this->aphysicalObject->getId() !== $v) {
-			$this->aphysicalObject = null;
+		if ($this->aPhysicalObject !== null && $this->aPhysicalObject->getId() !== $v) {
+			$this->aPhysicalObject = null;
 		}
 
 	} 
@@ -415,25 +415,25 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 
 
 												
-			if ($this->ainformationObject !== null) {
-				if ($this->ainformationObject->isModified()) {
-					$affectedRows += $this->ainformationObject->save($con);
+			if ($this->aInformationObject !== null) {
+				if ($this->aInformationObject->isModified()) {
+					$affectedRows += $this->aInformationObject->save($con);
 				}
-				$this->setinformationObject($this->ainformationObject);
+				$this->setInformationObject($this->aInformationObject);
 			}
 
-			if ($this->adigitalObject !== null) {
-				if ($this->adigitalObject->isModified()) {
-					$affectedRows += $this->adigitalObject->save($con);
+			if ($this->aDigitalObject !== null) {
+				if ($this->aDigitalObject->isModified()) {
+					$affectedRows += $this->aDigitalObject->save($con);
 				}
-				$this->setdigitalObject($this->adigitalObject);
+				$this->setDigitalObject($this->aDigitalObject);
 			}
 
-			if ($this->aphysicalObject !== null) {
-				if ($this->aphysicalObject->isModified()) {
-					$affectedRows += $this->aphysicalObject->save($con);
+			if ($this->aPhysicalObject !== null) {
+				if ($this->aPhysicalObject->isModified()) {
+					$affectedRows += $this->aPhysicalObject->save($con);
 				}
-				$this->setphysicalObject($this->aphysicalObject);
+				$this->setPhysicalObject($this->aPhysicalObject);
 			}
 
 			if ($this->aTerm !== null) {
@@ -455,16 +455,16 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
-			if ($this->collrightTermRelationships !== null) {
-				foreach($this->collrightTermRelationships as $referrerFK) {
+			if ($this->collRightTermRelationships !== null) {
+				foreach($this->collRightTermRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collrightActorRelationships !== null) {
-				foreach($this->collrightActorRelationships as $referrerFK) {
+			if ($this->collRightActorRelationships !== null) {
+				foreach($this->collRightActorRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -508,21 +508,21 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 
 
 												
-			if ($this->ainformationObject !== null) {
-				if (!$this->ainformationObject->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->ainformationObject->getValidationFailures());
+			if ($this->aInformationObject !== null) {
+				if (!$this->aInformationObject->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aInformationObject->getValidationFailures());
 				}
 			}
 
-			if ($this->adigitalObject !== null) {
-				if (!$this->adigitalObject->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->adigitalObject->getValidationFailures());
+			if ($this->aDigitalObject !== null) {
+				if (!$this->aDigitalObject->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aDigitalObject->getValidationFailures());
 				}
 			}
 
-			if ($this->aphysicalObject !== null) {
-				if (!$this->aphysicalObject->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aphysicalObject->getValidationFailures());
+			if ($this->aPhysicalObject !== null) {
+				if (!$this->aPhysicalObject->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aPhysicalObject->getValidationFailures());
 				}
 			}
 
@@ -538,16 +538,16 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collrightTermRelationships !== null) {
-					foreach($this->collrightTermRelationships as $referrerFK) {
+				if ($this->collRightTermRelationships !== null) {
+					foreach($this->collRightTermRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collrightActorRelationships !== null) {
-					foreach($this->collrightActorRelationships as $referrerFK) {
+				if ($this->collRightActorRelationships !== null) {
+					foreach($this->collRightActorRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -731,12 +731,12 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
-			foreach($this->getrightTermRelationships() as $relObj) {
-				$copyObj->addrightTermRelationship($relObj->copy($deepCopy));
+			foreach($this->getRightTermRelationships() as $relObj) {
+				$copyObj->addRightTermRelationship($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getrightActorRelationships() as $relObj) {
-				$copyObj->addrightActorRelationship($relObj->copy($deepCopy));
+			foreach($this->getRightActorRelationships() as $relObj) {
+				$copyObj->addRightActorRelationship($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -765,7 +765,7 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 	}
 
 	
-	public function setinformationObject($v)
+	public function setInformationObject($v)
 	{
 
 
@@ -776,26 +776,26 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 		}
 
 
-		$this->ainformationObject = $v;
+		$this->aInformationObject = $v;
 	}
 
 
 	
-	public function getinformationObject($con = null)
+	public function getInformationObject($con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 
-		if ($this->ainformationObject === null && ($this->information_object_id !== null)) {
+		if ($this->aInformationObject === null && ($this->information_object_id !== null)) {
 
-			$this->ainformationObject = informationObjectPeer::retrieveByPK($this->information_object_id, $con);
+			$this->aInformationObject = InformationObjectPeer::retrieveByPK($this->information_object_id, $con);
 
 			
 		}
-		return $this->ainformationObject;
+		return $this->aInformationObject;
 	}
 
 	
-	public function setdigitalObject($v)
+	public function setDigitalObject($v)
 	{
 
 
@@ -806,26 +806,26 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 		}
 
 
-		$this->adigitalObject = $v;
+		$this->aDigitalObject = $v;
 	}
 
 
 	
-	public function getdigitalObject($con = null)
+	public function getDigitalObject($con = null)
 	{
-				include_once 'lib/model/om/BasedigitalObjectPeer.php';
+				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
 
-		if ($this->adigitalObject === null && ($this->digital_object_id !== null)) {
+		if ($this->aDigitalObject === null && ($this->digital_object_id !== null)) {
 
-			$this->adigitalObject = digitalObjectPeer::retrieveByPK($this->digital_object_id, $con);
+			$this->aDigitalObject = DigitalObjectPeer::retrieveByPK($this->digital_object_id, $con);
 
 			
 		}
-		return $this->adigitalObject;
+		return $this->aDigitalObject;
 	}
 
 	
-	public function setphysicalObject($v)
+	public function setPhysicalObject($v)
 	{
 
 
@@ -836,22 +836,22 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 		}
 
 
-		$this->aphysicalObject = $v;
+		$this->aPhysicalObject = $v;
 	}
 
 
 	
-	public function getphysicalObject($con = null)
+	public function getPhysicalObject($con = null)
 	{
-				include_once 'lib/model/om/BasephysicalObjectPeer.php';
+				include_once 'lib/model/om/BasePhysicalObjectPeer.php';
 
-		if ($this->aphysicalObject === null && ($this->physical_object_id !== null)) {
+		if ($this->aPhysicalObject === null && ($this->physical_object_id !== null)) {
 
-			$this->aphysicalObject = physicalObjectPeer::retrieveByPK($this->physical_object_id, $con);
+			$this->aPhysicalObject = PhysicalObjectPeer::retrieveByPK($this->physical_object_id, $con);
 
 			
 		}
-		return $this->aphysicalObject;
+		return $this->aPhysicalObject;
 	}
 
 	
@@ -885,17 +885,17 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initrightTermRelationships()
+	public function initRightTermRelationships()
 	{
-		if ($this->collrightTermRelationships === null) {
-			$this->collrightTermRelationships = array();
+		if ($this->collRightTermRelationships === null) {
+			$this->collRightTermRelationships = array();
 		}
 	}
 
 	
-	public function getrightTermRelationships($criteria = null, $con = null)
+	public function getRightTermRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserightTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -904,36 +904,36 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrightTermRelationships === null) {
+		if ($this->collRightTermRelationships === null) {
 			if ($this->isNew()) {
-			   $this->collrightTermRelationships = array();
+			   $this->collRightTermRelationships = array();
 			} else {
 
-				$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-				rightTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collrightTermRelationships = rightTermRelationshipPeer::doSelect($criteria, $con);
+				RightTermRelationshipPeer::addSelectColumns($criteria);
+				$this->collRightTermRelationships = RightTermRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-				rightTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastrightTermRelationshipCriteria) || !$this->lastrightTermRelationshipCriteria->equals($criteria)) {
-					$this->collrightTermRelationships = rightTermRelationshipPeer::doSelect($criteria, $con);
+				RightTermRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRightTermRelationshipCriteria) || !$this->lastRightTermRelationshipCriteria->equals($criteria)) {
+					$this->collRightTermRelationships = RightTermRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastrightTermRelationshipCriteria = $criteria;
-		return $this->collrightTermRelationships;
+		$this->lastRightTermRelationshipCriteria = $criteria;
+		return $this->collRightTermRelationships;
 	}
 
 	
-	public function countrightTermRelationships($criteria = null, $distinct = false, $con = null)
+	public function countRightTermRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaserightTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -942,23 +942,23 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+		$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-		return rightTermRelationshipPeer::doCount($criteria, $distinct, $con);
+		return RightTermRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addrightTermRelationship(rightTermRelationship $l)
+	public function addRightTermRelationship(RightTermRelationship $l)
 	{
-		$this->collrightTermRelationships[] = $l;
+		$this->collRightTermRelationships[] = $l;
 		$l->setRight($this);
 	}
 
 
 	
-	public function getrightTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
+	public function getRightTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserightTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -967,33 +967,33 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrightTermRelationships === null) {
+		if ($this->collRightTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->collrightTermRelationships = array();
+				$this->collRightTermRelationships = array();
 			} else {
 
-				$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-				$this->collrightTermRelationships = rightTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+				$this->collRightTermRelationships = RightTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+			$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-			if (!isset($this->lastrightTermRelationshipCriteria) || !$this->lastrightTermRelationshipCriteria->equals($criteria)) {
-				$this->collrightTermRelationships = rightTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+			if (!isset($this->lastRightTermRelationshipCriteria) || !$this->lastRightTermRelationshipCriteria->equals($criteria)) {
+				$this->collRightTermRelationships = RightTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		}
-		$this->lastrightTermRelationshipCriteria = $criteria;
+		$this->lastRightTermRelationshipCriteria = $criteria;
 
-		return $this->collrightTermRelationships;
+		return $this->collRightTermRelationships;
 	}
 
 
 	
-	public function getrightTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getRightTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserightTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1002,40 +1002,40 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrightTermRelationships === null) {
+		if ($this->collRightTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->collrightTermRelationships = array();
+				$this->collRightTermRelationships = array();
 			} else {
 
-				$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-				$this->collrightTermRelationships = rightTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collRightTermRelationships = RightTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(rightTermRelationshipPeer::RIGHT_ID, $this->getId());
+			$criteria->add(RightTermRelationshipPeer::RIGHT_ID, $this->getId());
 
-			if (!isset($this->lastrightTermRelationshipCriteria) || !$this->lastrightTermRelationshipCriteria->equals($criteria)) {
-				$this->collrightTermRelationships = rightTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastRightTermRelationshipCriteria) || !$this->lastRightTermRelationshipCriteria->equals($criteria)) {
+				$this->collRightTermRelationships = RightTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		}
-		$this->lastrightTermRelationshipCriteria = $criteria;
+		$this->lastRightTermRelationshipCriteria = $criteria;
 
-		return $this->collrightTermRelationships;
+		return $this->collRightTermRelationships;
 	}
 
 	
-	public function initrightActorRelationships()
+	public function initRightActorRelationships()
 	{
-		if ($this->collrightActorRelationships === null) {
-			$this->collrightActorRelationships = array();
+		if ($this->collRightActorRelationships === null) {
+			$this->collRightActorRelationships = array();
 		}
 	}
 
 	
-	public function getrightActorRelationships($criteria = null, $con = null)
+	public function getRightActorRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserightActorRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1044,36 +1044,36 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrightActorRelationships === null) {
+		if ($this->collRightActorRelationships === null) {
 			if ($this->isNew()) {
-			   $this->collrightActorRelationships = array();
+			   $this->collRightActorRelationships = array();
 			} else {
 
-				$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-				rightActorRelationshipPeer::addSelectColumns($criteria);
-				$this->collrightActorRelationships = rightActorRelationshipPeer::doSelect($criteria, $con);
+				RightActorRelationshipPeer::addSelectColumns($criteria);
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-				rightActorRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastrightActorRelationshipCriteria) || !$this->lastrightActorRelationshipCriteria->equals($criteria)) {
-					$this->collrightActorRelationships = rightActorRelationshipPeer::doSelect($criteria, $con);
+				RightActorRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
+					$this->collRightActorRelationships = RightActorRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastrightActorRelationshipCriteria = $criteria;
-		return $this->collrightActorRelationships;
+		$this->lastRightActorRelationshipCriteria = $criteria;
+		return $this->collRightActorRelationships;
 	}
 
 	
-	public function countrightActorRelationships($criteria = null, $distinct = false, $con = null)
+	public function countRightActorRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaserightActorRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1082,23 +1082,23 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+		$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-		return rightActorRelationshipPeer::doCount($criteria, $distinct, $con);
+		return RightActorRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addrightActorRelationship(rightActorRelationship $l)
+	public function addRightActorRelationship(RightActorRelationship $l)
 	{
-		$this->collrightActorRelationships[] = $l;
+		$this->collRightActorRelationships[] = $l;
 		$l->setRight($this);
 	}
 
 
 	
-	public function getrightActorRelationshipsJoinTermRelatedByActorId($criteria = null, $con = null)
+	public function getRightActorRelationshipsJoinActor($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserightActorRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1107,33 +1107,33 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrightActorRelationships === null) {
+		if ($this->collRightActorRelationships === null) {
 			if ($this->isNew()) {
-				$this->collrightActorRelationships = array();
+				$this->collRightActorRelationships = array();
 			} else {
 
-				$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-				$this->collrightActorRelationships = rightActorRelationshipPeer::doSelectJoinTermRelatedByActorId($criteria, $con);
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinActor($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+			$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-			if (!isset($this->lastrightActorRelationshipCriteria) || !$this->lastrightActorRelationshipCriteria->equals($criteria)) {
-				$this->collrightActorRelationships = rightActorRelationshipPeer::doSelectJoinTermRelatedByActorId($criteria, $con);
+			if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinActor($criteria, $con);
 			}
 		}
-		$this->lastrightActorRelationshipCriteria = $criteria;
+		$this->lastRightActorRelationshipCriteria = $criteria;
 
-		return $this->collrightActorRelationships;
+		return $this->collRightActorRelationships;
 	}
 
 
 	
-	public function getrightActorRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getRightActorRelationshipsJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserightActorRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1142,26 +1142,26 @@ abstract class BaseRight extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrightActorRelationships === null) {
+		if ($this->collRightActorRelationships === null) {
 			if ($this->isNew()) {
-				$this->collrightActorRelationships = array();
+				$this->collRightActorRelationships = array();
 			} else {
 
-				$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+				$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-				$this->collrightActorRelationships = rightActorRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(rightActorRelationshipPeer::RIGHT_ID, $this->getId());
+			$criteria->add(RightActorRelationshipPeer::RIGHT_ID, $this->getId());
 
-			if (!isset($this->lastrightActorRelationshipCriteria) || !$this->lastrightActorRelationshipCriteria->equals($criteria)) {
-				$this->collrightActorRelationships = rightActorRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastrightActorRelationshipCriteria = $criteria;
+		$this->lastRightActorRelationshipCriteria = $criteria;
 
-		return $this->collrightActorRelationships;
+		return $this->collRightActorRelationships;
 	}
 
 

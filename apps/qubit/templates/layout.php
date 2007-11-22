@@ -12,13 +12,18 @@
 </head>
 <body>
 
-<div id="body-banner-top"></div>
+<div id="body-banner-top">
+</div>
 
 <div id="body-page">
 
 <div id="header">
-
+  <?php include_component_slot('header') ?>
 <div id="header-top">
+
+<?php include_component_slot('ChangeLanguageList') ?>
+
+
 <div class="menu-top">
 <?php if ($sf_user->isAuthenticated()): ?>
 <?php echo link_to(__('log out'), 'user/logout') ?>
@@ -27,7 +32,7 @@
 <?php echo link_to(__('log in'), 'login') ?>
 <?php endif; ?>
 <?php echo link_to(__('about'), '/about') ?>
-<?php echo link_to(__('home'), '/', 'id="first"') ?>
+<?php echo link_to(__('home'), '/') ?>
 
 </div>
 </div> <!--close header-top -->
@@ -35,10 +40,10 @@
 
 <div id="header-middle">
 <div id="website-name">
-<div id="logo"><?php echo link_to(image_tag('/images/ica-logo.gif', 'width="65" height="63" alt="ICA logo"'), '/') ?></div>
-<?php echo link_to('<span style="color: #AA2222; letter-spacing: -0.1ex;">ICA</span><span style="color: #000066; font-size: 135%; letter-spacing: -0.1ex;">AtoM</span>', '/') ?>
+<?php echo link_to('<span style="color: #FC6E3C; letter-spacing: -0.1ex;"><span style="color: #CC3204; font-size: 125%;">Q</span>ubit</span>', '/') ?>
 </div>
-<div id="website-description"><?php echo __("open source archival description software"); ?></div>
+<div id="logo"><?php echo link_to(image_tag('/images/qubit-sphere.gif', 'width="80" height="80" alt="Qubit logo"'), '/') ?></div>
+<div id="website-description"><?php echo __("open information management toolkit"); ?></div>
 
 </div> <!-- close header-middle -->
 

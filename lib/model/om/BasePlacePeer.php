@@ -110,6 +110,10 @@ abstract class BasePlacePeer {
 		return self::$fieldNames[$type];
 	}
 
+  public static function getColumnNames()
+  {
+    return self::$fieldNames[BasePeer::TYPE_COLNAME];
+  }
 	
 	public static function alias($alias, $column)
 	{
@@ -189,7 +193,7 @@ abstract class BasePlacePeer {
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BasePlacePeer:addDoSelectRS:addDoSelectRS') as $callable)
+    foreach (sfMixer::getCallables('BasePlacePeer:doSelectRS:doSelectRS') as $callable)
     {
       call_user_func($callable, 'BasePlacePeer', $criteria, $con);
     }
@@ -312,6 +316,13 @@ abstract class BasePlacePeer {
 	
 	public static function doSelectJoinTermRelatedByTermId(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BasePlacePeer:doSelectJoin:doSelectJoin') as $callable)
+    {
+      call_user_func($callable, 'BasePlacePeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -485,6 +496,13 @@ abstract class BasePlacePeer {
 	
 	public static function doSelectJoinAll(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BasePlacePeer:doSelectJoinAll:doSelectJoinAll') as $callable)
+    {
+      call_user_func($callable, 'BasePlacePeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -677,6 +695,13 @@ abstract class BasePlacePeer {
 	
 	public static function doSelectJoinAllExceptTermRelatedByTermId(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BasePlacePeer:doSelectJoinAllExcept:doSelectJoinAllExcept') as $callable)
+    {
+      call_user_func($callable, 'BasePlacePeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 								if ($c->getDbName() == Propel::getDefaultDB()) {

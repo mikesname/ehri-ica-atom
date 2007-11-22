@@ -63,8 +63,8 @@ public static function getActors($sort='nameUp', $role='all')
 /*public static function getCreators($sort = 'idDown')
   {
   $c = new Criteria();
-  $c->addJoin(ActorPeer::ID, informationObjectActorRelationshipPeer::ACTOR_ID);
-  $c->add(informationObjectActorRelationshipPeer::ACTOR_ROLE_ID, 379);
+  $c->addJoin(ActorPeer::ID, InformationObjectActorRelationshipPeer::ACTOR_ID);
+  $c->add(InformationObjectActorRelationshipPeer::ACTOR_ROLE_ID, 379);
 
   //Establish sort order
   switch($sort)
@@ -137,8 +137,8 @@ public static function getSubjects()
   $actors = self::doSelect($c);
 
   $c = new Criteria();
-  $c->add(informationObjectActorRelationshipPeer::ACTOR_ROLE_ID, 406);
-  $actorSubjectRelationships = informationObjectActorRelationshipPeer::doSelect($c);
+  $c->add(InformationObjectActorRelationshipPeer::ACTOR_ROLE_ID, 406);
+  $actorSubjectRelationships = InformationObjectActorRelationshipPeer::doSelect($c);
 
   $actorSubjectList = array();
 

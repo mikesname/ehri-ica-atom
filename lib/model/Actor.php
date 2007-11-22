@@ -35,10 +35,10 @@ public function __toString()
 public function getOtherNames()
   {
   $c = new Criteria();
-  $c->addJoin(actorNamePeer::NAME_TYPE_ID, TermPeer::ID);
-  $c->add(actorNamePeer::ACTOR_ID, $this->getId());
+  $c->addJoin(ActorNamePeer::NAME_TYPE_ID, TermPeer::ID);
+  $c->add(ActorNamePeer::ACTOR_ID, $this->getId());
 
-  $names = actorNamePeer::doSelect($c);
+  $names = ActorNamePeer::doSelect($c);
   $otherNames = array();
 
   foreach ($names as $name)
@@ -51,7 +51,7 @@ public function getOtherNames()
 
 public function setOtherNames($otherName, $nameTypeId, $nameNote)
   {
-  $newName = new actorName();
+  $newName = new ActorName();
   $newName->setActorId($this->getId());
   $newName->setName($otherName);
   $newName->setNameTypeId($nameTypeId);
@@ -89,9 +89,9 @@ public function getActorNotes()
 public function getContactInformation()
   {
   $c = new Criteria();
-  $c->add(contactInformationPeer::ACTOR_ID, $this->getId());
-  $c->addDescendingOrderByColumn(contactInformationPeer::PRIMARY_CONTACT);
-  $contactInformation = contactInformationPeer::doSelect($c);
+  $c->add(ContactInformationPeer::ACTOR_ID, $this->getId());
+  $c->addDescendingOrderByColumn(ContactInformationPeer::PRIMARY_CONTACT);
+  $contactInformation = ContactInformationPeer::doSelect($c);
 
   return $contactInformation;
   }
@@ -99,9 +99,9 @@ public function getContactInformation()
 public function getPrimaryContact()
   {
   $c = new Criteria();
-  $c->add(contactInformationPeer::ACTOR_ID, $this->getId());
-  $c->add(contactInformationPeer::PRIMARY_CONTACT, true);
-  $primaryContact = contactInformationPeer::doSelectOne($c);
+  $c->add(ContactInformationPeer::ACTOR_ID, $this->getId());
+  $c->add(ContactInformationPeer::PRIMARY_CONTACT, true);
+  $primaryContact = ContactInformationPeer::doSelectOne($c);
 
   if ($primaryContact)
     {
@@ -110,9 +110,9 @@ public function getPrimaryContact()
   else
     {
     $c = new Criteria();
-    $c->add(contactInformationPeer::ACTOR_ID, $this->getId());
+    $c->add(ContactInformationPeer::ACTOR_ID, $this->getId());
 
-    return contactInformationPeer::doSelectOne($c);
+    return ContactInformationPeer::doSelectOne($c);
     }
 
   }
@@ -161,7 +161,7 @@ public function getLevelOfDetail()
 
 public function setTermRelationship($termId, $relationshipTypeId = NULL, $relationshipNote = NULL)
   {
-  $newTermRelationship = new actorTermRelationship();
+  $newTermRelationship = new ActorTermRelationship();
   $newTermRelationship->setTermId($termId);
   $newTermRelationship->setRelationshipTypeId($relationshipTypeId);
   $newTermRelationship->setRelationshipNote($relationshipNote);
@@ -173,14 +173,14 @@ public function setTermRelationship($termId, $relationshipTypeId = NULL, $relati
 public function getTermRelationships($relationshipTypeId = 'all')
   {
   $c = new Criteria();
-  $c->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+  $c->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
   if ($relationshipTypeId != 'all')
     {
-    $c->add(actorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $relationshipTypeId);
+    $c->add(ActorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $relationshipTypeId);
     }
 
-  $relationships = actorTermRelationshipPeer::doSelect($c);
+  $relationships = ActorTermRelationshipPeer::doSelect($c);
   $termRelationships = array();
 
   foreach ($relationships as $relationship)
@@ -244,7 +244,7 @@ public function getInformationObjectRelationships($roleType = 'all')
       $c->add(EventPeer::ACTOR_ROLE_ID, 344);
       break;
     }
-  $c->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+  $c->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
   $c->addGroupByColumn(EventPeer::INFORMATION_OBJECT_ID);
   //$c->addAscendingOrderByColumn(InformationObjectPeer:: );
   $events = EventPeer::doSelect($c);

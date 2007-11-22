@@ -29,8 +29,8 @@ class staticpageActions extends sfActions
   {
 
   $c = new Criteria();
-  $c->add(staticPagePeer::PERMALINK, $this->getRequestParameter('permalink'));
-  $this->staticpage = staticPagePeer::doSelectOne($c);
+  $c->add(StaticPagePeer::PERMALINK, $this->getRequestParameter('permalink'));
+  $this->staticpage = StaticPagePeer::doSelectOne($c);
 
   $this->forward404Unless($this->staticpage);
 
@@ -45,12 +45,12 @@ class staticpageActions extends sfActions
 
   public function executeList ()
   {
-    $this->staticpages = staticPagePeer::doSelect(new Criteria());
+    $this->staticpages = StaticPagePeer::doSelect(new Criteria());
   }
 
   public function executeShow ()
   {
-    $this->staticpage = staticPagePeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->staticpage = StaticPagePeer::retrieveByPk($this->getRequestParameter('id'));
     $this->forward404Unless($this->staticpage);
 
 
@@ -59,14 +59,14 @@ class staticpageActions extends sfActions
 
   public function executeCreate ()
   {
-    $this->staticpage = new staticPage();
+    $this->staticpage = new StaticPage();
 
     $this->setTemplate('edit');
   }
 
   public function executeEdit ()
   {
-    $this->staticpage = staticPagePeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->staticpage = StaticPagePeer::retrieveByPk($this->getRequestParameter('id'));
     $this->forward404Unless($this->staticpage);
   }
 
@@ -74,11 +74,11 @@ class staticpageActions extends sfActions
   {
     if (!$this->getRequestParameter('id', 0))
     {
-      $staticpage = new staticPage();
+      $staticpage = new StaticPage();
     }
     else
     {
-      $staticpage = staticPagePeer::retrieveByPk($this->getRequestParameter('id'));
+      $staticpage = StaticPagePeer::retrieveByPk($this->getRequestParameter('id'));
       $this->forward404Unless($staticpage);
     }
 
@@ -96,7 +96,7 @@ class staticpageActions extends sfActions
 
   public function executeDelete ()
   {
-    $staticpage = staticPagePeer::retrieveByPk($this->getRequestParameter('id'));
+    $staticpage = StaticPagePeer::retrieveByPk($this->getRequestParameter('id'));
 
     $this->forward404Unless($staticpage);
 

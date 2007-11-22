@@ -48,7 +48,7 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 	protected $updated_at;
 
 	
-	protected $ainformationObject;
+	protected $aInformationObject;
 
 	
 	protected $aActor;
@@ -57,7 +57,7 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 	protected $aRepository;
 
 	
-	protected $afunctionDescription;
+	protected $aFunctionDescription;
 
 	
 	protected $aTerm;
@@ -198,8 +198,8 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = NotePeer::INFORMATION_OBJECT_ID;
 		}
 
-		if ($this->ainformationObject !== null && $this->ainformationObject->getId() !== $v) {
-			$this->ainformationObject = null;
+		if ($this->aInformationObject !== null && $this->aInformationObject->getId() !== $v) {
+			$this->aInformationObject = null;
 		}
 
 	} 
@@ -252,8 +252,8 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = NotePeer::FUNCTION_DESCRIPTION_ID;
 		}
 
-		if ($this->afunctionDescription !== null && $this->afunctionDescription->getId() !== $v) {
-			$this->afunctionDescription = null;
+		if ($this->aFunctionDescription !== null && $this->aFunctionDescription->getId() !== $v) {
+			$this->aFunctionDescription = null;
 		}
 
 	} 
@@ -471,11 +471,11 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 
 
 												
-			if ($this->ainformationObject !== null) {
-				if ($this->ainformationObject->isModified()) {
-					$affectedRows += $this->ainformationObject->save($con);
+			if ($this->aInformationObject !== null) {
+				if ($this->aInformationObject->isModified()) {
+					$affectedRows += $this->aInformationObject->save($con);
 				}
-				$this->setinformationObject($this->ainformationObject);
+				$this->setInformationObject($this->aInformationObject);
 			}
 
 			if ($this->aActor !== null) {
@@ -492,11 +492,11 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 				$this->setRepository($this->aRepository);
 			}
 
-			if ($this->afunctionDescription !== null) {
-				if ($this->afunctionDescription->isModified()) {
-					$affectedRows += $this->afunctionDescription->save($con);
+			if ($this->aFunctionDescription !== null) {
+				if ($this->aFunctionDescription->isModified()) {
+					$affectedRows += $this->aFunctionDescription->save($con);
 				}
-				$this->setfunctionDescription($this->afunctionDescription);
+				$this->setFunctionDescription($this->aFunctionDescription);
 			}
 
 			if ($this->aTerm !== null) {
@@ -562,9 +562,9 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 
 
 												
-			if ($this->ainformationObject !== null) {
-				if (!$this->ainformationObject->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->ainformationObject->getValidationFailures());
+			if ($this->aInformationObject !== null) {
+				if (!$this->aInformationObject->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aInformationObject->getValidationFailures());
 				}
 			}
 
@@ -580,9 +580,9 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->afunctionDescription !== null) {
-				if (!$this->afunctionDescription->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->afunctionDescription->getValidationFailures());
+			if ($this->aFunctionDescription !== null) {
+				if (!$this->aFunctionDescription->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aFunctionDescription->getValidationFailures());
 				}
 			}
 
@@ -824,7 +824,7 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 	}
 
 	
-	public function setinformationObject($v)
+	public function setInformationObject($v)
 	{
 
 
@@ -835,22 +835,22 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 		}
 
 
-		$this->ainformationObject = $v;
+		$this->aInformationObject = $v;
 	}
 
 
 	
-	public function getinformationObject($con = null)
+	public function getInformationObject($con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 
-		if ($this->ainformationObject === null && ($this->information_object_id !== null)) {
+		if ($this->aInformationObject === null && ($this->information_object_id !== null)) {
 
-			$this->ainformationObject = informationObjectPeer::retrieveByPK($this->information_object_id, $con);
+			$this->aInformationObject = InformationObjectPeer::retrieveByPK($this->information_object_id, $con);
 
 			
 		}
-		return $this->ainformationObject;
+		return $this->aInformationObject;
 	}
 
 	
@@ -914,7 +914,7 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 	}
 
 	
-	public function setfunctionDescription($v)
+	public function setFunctionDescription($v)
 	{
 
 
@@ -925,22 +925,22 @@ abstract class BaseNote extends BaseObject  implements Persistent {
 		}
 
 
-		$this->afunctionDescription = $v;
+		$this->aFunctionDescription = $v;
 	}
 
 
 	
-	public function getfunctionDescription($con = null)
+	public function getFunctionDescription($con = null)
 	{
-				include_once 'lib/model/om/BasefunctionDescriptionPeer.php';
+				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
 
-		if ($this->afunctionDescription === null && ($this->function_description_id !== null)) {
+		if ($this->aFunctionDescription === null && ($this->function_description_id !== null)) {
 
-			$this->afunctionDescription = functionDescriptionPeer::retrieveByPK($this->function_description_id, $con);
+			$this->aFunctionDescription = FunctionDescriptionPeer::retrieveByPK($this->function_description_id, $con);
 
 			
 		}
-		return $this->afunctionDescription;
+		return $this->aFunctionDescription;
 	}
 
 	

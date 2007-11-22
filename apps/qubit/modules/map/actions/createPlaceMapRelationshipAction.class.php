@@ -27,7 +27,7 @@ class createPlaceMapRelationshipAction extends sfAction
 {
   public function execute()
   {
-  $this->placeMapRelationship = new placeMapRelationship();
+  $this->placeMapRelationship = new PlaceMapRelationship();
 
   if ($this->getRequestParameter('mapId'))
     {

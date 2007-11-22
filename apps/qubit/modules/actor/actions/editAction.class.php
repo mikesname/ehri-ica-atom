@@ -34,14 +34,14 @@ class editAction extends sfAction
 
   //Other Forms of Name
   $this->otherNames = $this->actor->getOtherNames();
-  $this->newName = new actorName();
+  $this->newName = new ActorName();
 
   //TermManyToManyRelationships
   $this->languages = $this->actor->getLanguages();
   $this->scripts = $this->actor->getScripts();
 
-  $this->newLanguage = new actorTermRelationship();
-  $this->newScript = new actorTermRelationship();
+  $this->newLanguage = new ActorTermRelationship();
+  $this->newScript = new ActorTermRelationship();
 
   //Notes
   $this->notes = $this->actor->getActorNotes();
@@ -82,7 +82,7 @@ class editAction extends sfAction
       $this->setTemplate('editISAAR');
       break;
     default :
-      $this->setTemplate('edit');
+      $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
       break;
     }
 

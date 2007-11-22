@@ -28,7 +28,7 @@ class deleteContactInformationAction extends sfAction
   public function execute()
   {
 
-  $this->deleteContactInformation = contactInformationPeer::retrieveByPk($this->getRequestParameter('contactInformationId'));
+  $this->deleteContactInformation = ContactInformationPeer::retrieveByPk($this->getRequestParameter('contactInformationId'));
 
   $this->forward404Unless($this->deleteContactInformation);
 

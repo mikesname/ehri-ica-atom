@@ -27,7 +27,7 @@ class editPlaceMapRelationshipAction extends sfAction
 {
   public function execute()
   {
-  $this->placeMapRelationship = placeMapRelationshipPeer::retrieveByPk($this->getRequestParameter('id'));
+  $this->placeMapRelationship = PlaceMapRelationshipPeer::retrieveByPk($this->getRequestParameter('id'));
   $this->forward404Unless($this->placeMapRelationship);
   }
 }

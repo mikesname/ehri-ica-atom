@@ -33,10 +33,10 @@
   </th>
 
   <th><?php if ($sort == 'repositoryUp'): ?>
-    <?php echo link_to(__('repository'), 'informationobject/list?repository='.$repository.'&sort=repositoryDown') ?>
+    <?php echo link_to(__(sfConfig::get('app_ui_label_repository')), 'informationobject/list?repository='.$repository.'&sort=repositoryDown') ?>
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
   <?php else: ?>
-    <?php echo link_to(__('repository'), 'informationobject/list?repository='.$repository.'&sort=repositoryUp') ?>
+    <?php echo link_to(__(sfConfig::get('app_ui_label_repository')), 'informationobject/list?repository='.$repository.'&sort=repositoryUp') ?>
   <?php endif; ?>
 
   <?php if ($sort == 'repositoryDown'): ?>

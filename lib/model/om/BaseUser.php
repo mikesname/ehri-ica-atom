@@ -49,16 +49,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	protected $lastNoteCriteria = null;
 
 	
-	protected $collsystemEvents;
+	protected $collSystemEvents;
 
 	
-	protected $lastsystemEventCriteria = null;
+	protected $lastSystemEventCriteria = null;
 
 	
-	protected $colluserTermRelationships;
+	protected $collUserTermRelationships;
 
 	
-	protected $lastuserTermRelationshipCriteria = null;
+	protected $lastUserTermRelationshipCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -427,16 +427,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collsystemEvents !== null) {
-				foreach($this->collsystemEvents as $referrerFK) {
+			if ($this->collSystemEvents !== null) {
+				foreach($this->collSystemEvents as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->colluserTermRelationships !== null) {
-				foreach($this->colluserTermRelationships as $referrerFK) {
+			if ($this->collUserTermRelationships !== null) {
+				foreach($this->collUserTermRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -500,16 +500,16 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collsystemEvents !== null) {
-					foreach($this->collsystemEvents as $referrerFK) {
+				if ($this->collSystemEvents !== null) {
+					foreach($this->collSystemEvents as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->colluserTermRelationships !== null) {
-					foreach($this->colluserTermRelationships as $referrerFK) {
+				if ($this->collUserTermRelationships !== null) {
+					foreach($this->collUserTermRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -697,12 +697,12 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 				$copyObj->addNote($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getsystemEvents() as $relObj) {
-				$copyObj->addsystemEvent($relObj->copy($deepCopy));
+			foreach($this->getSystemEvents() as $relObj) {
+				$copyObj->addSystemEvent($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getuserTermRelationships() as $relObj) {
-				$copyObj->adduserTermRelationship($relObj->copy($deepCopy));
+			foreach($this->getUserTermRelationships() as $relObj) {
+				$copyObj->addUserTermRelationship($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -832,7 +832,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 
 	
-	public function getNotesJoininformationObject($criteria = null, $con = null)
+	public function getNotesJoinInformationObject($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseNotePeer.php';
 		if ($criteria === null) {
@@ -850,14 +850,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				$criteria->add(NotePeer::USER_ID, $this->getId());
 
-				$this->collNotes = NotePeer::doSelectJoininformationObject($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(NotePeer::USER_ID, $this->getId());
 
 			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoininformationObject($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		}
 		$this->lastNoteCriteria = $criteria;
@@ -937,7 +937,7 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 
 	
-	public function getNotesJoinfunctionDescription($criteria = null, $con = null)
+	public function getNotesJoinFunctionDescription($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseNotePeer.php';
 		if ($criteria === null) {
@@ -955,14 +955,14 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 
 				$criteria->add(NotePeer::USER_ID, $this->getId());
 
-				$this->collNotes = NotePeer::doSelectJoinfunctionDescription($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(NotePeer::USER_ID, $this->getId());
 
 			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinfunctionDescription($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
 			}
 		}
 		$this->lastNoteCriteria = $criteria;
@@ -1006,17 +1006,17 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initsystemEvents()
+	public function initSystemEvents()
 	{
-		if ($this->collsystemEvents === null) {
-			$this->collsystemEvents = array();
+		if ($this->collSystemEvents === null) {
+			$this->collSystemEvents = array();
 		}
 	}
 
 	
-	public function getsystemEvents($criteria = null, $con = null)
+	public function getSystemEvents($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BasesystemEventPeer.php';
+				include_once 'lib/model/om/BaseSystemEventPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1025,36 +1025,36 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collsystemEvents === null) {
+		if ($this->collSystemEvents === null) {
 			if ($this->isNew()) {
-			   $this->collsystemEvents = array();
+			   $this->collSystemEvents = array();
 			} else {
 
-				$criteria->add(systemEventPeer::USER_ID, $this->getId());
+				$criteria->add(SystemEventPeer::USER_ID, $this->getId());
 
-				systemEventPeer::addSelectColumns($criteria);
-				$this->collsystemEvents = systemEventPeer::doSelect($criteria, $con);
+				SystemEventPeer::addSelectColumns($criteria);
+				$this->collSystemEvents = SystemEventPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(systemEventPeer::USER_ID, $this->getId());
+				$criteria->add(SystemEventPeer::USER_ID, $this->getId());
 
-				systemEventPeer::addSelectColumns($criteria);
-				if (!isset($this->lastsystemEventCriteria) || !$this->lastsystemEventCriteria->equals($criteria)) {
-					$this->collsystemEvents = systemEventPeer::doSelect($criteria, $con);
+				SystemEventPeer::addSelectColumns($criteria);
+				if (!isset($this->lastSystemEventCriteria) || !$this->lastSystemEventCriteria->equals($criteria)) {
+					$this->collSystemEvents = SystemEventPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastsystemEventCriteria = $criteria;
-		return $this->collsystemEvents;
+		$this->lastSystemEventCriteria = $criteria;
+		return $this->collSystemEvents;
 	}
 
 	
-	public function countsystemEvents($criteria = null, $distinct = false, $con = null)
+	public function countSystemEvents($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BasesystemEventPeer.php';
+				include_once 'lib/model/om/BaseSystemEventPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1063,23 +1063,23 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(systemEventPeer::USER_ID, $this->getId());
+		$criteria->add(SystemEventPeer::USER_ID, $this->getId());
 
-		return systemEventPeer::doCount($criteria, $distinct, $con);
+		return SystemEventPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addsystemEvent(systemEvent $l)
+	public function addSystemEvent(SystemEvent $l)
 	{
-		$this->collsystemEvents[] = $l;
+		$this->collSystemEvents[] = $l;
 		$l->setUser($this);
 	}
 
 
 	
-	public function getsystemEventsJoinTerm($criteria = null, $con = null)
+	public function getSystemEventsJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BasesystemEventPeer.php';
+				include_once 'lib/model/om/BaseSystemEventPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1088,40 +1088,40 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collsystemEvents === null) {
+		if ($this->collSystemEvents === null) {
 			if ($this->isNew()) {
-				$this->collsystemEvents = array();
+				$this->collSystemEvents = array();
 			} else {
 
-				$criteria->add(systemEventPeer::USER_ID, $this->getId());
+				$criteria->add(SystemEventPeer::USER_ID, $this->getId());
 
-				$this->collsystemEvents = systemEventPeer::doSelectJoinTerm($criteria, $con);
+				$this->collSystemEvents = SystemEventPeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(systemEventPeer::USER_ID, $this->getId());
+			$criteria->add(SystemEventPeer::USER_ID, $this->getId());
 
-			if (!isset($this->lastsystemEventCriteria) || !$this->lastsystemEventCriteria->equals($criteria)) {
-				$this->collsystemEvents = systemEventPeer::doSelectJoinTerm($criteria, $con);
+			if (!isset($this->lastSystemEventCriteria) || !$this->lastSystemEventCriteria->equals($criteria)) {
+				$this->collSystemEvents = SystemEventPeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastsystemEventCriteria = $criteria;
+		$this->lastSystemEventCriteria = $criteria;
 
-		return $this->collsystemEvents;
+		return $this->collSystemEvents;
 	}
 
 	
-	public function inituserTermRelationships()
+	public function initUserTermRelationships()
 	{
-		if ($this->colluserTermRelationships === null) {
-			$this->colluserTermRelationships = array();
+		if ($this->collUserTermRelationships === null) {
+			$this->collUserTermRelationships = array();
 		}
 	}
 
 	
-	public function getuserTermRelationships($criteria = null, $con = null)
+	public function getUserTermRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1130,36 +1130,36 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-			   $this->colluserTermRelationships = array();
+			   $this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-				userTermRelationshipPeer::addSelectColumns($criteria);
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelect($criteria, $con);
+				UserTermRelationshipPeer::addSelectColumns($criteria);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-				userTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-					$this->colluserTermRelationships = userTermRelationshipPeer::doSelect($criteria, $con);
+				UserTermRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+					$this->collUserTermRelationships = UserTermRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
-		return $this->colluserTermRelationships;
+		$this->lastUserTermRelationshipCriteria = $criteria;
+		return $this->collUserTermRelationships;
 	}
 
 	
-	public function countuserTermRelationships($criteria = null, $distinct = false, $con = null)
+	public function countUserTermRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1168,23 +1168,23 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+		$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-		return userTermRelationshipPeer::doCount($criteria, $distinct, $con);
+		return UserTermRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function adduserTermRelationship(userTermRelationship $l)
+	public function addUserTermRelationship(UserTermRelationship $l)
 	{
-		$this->colluserTermRelationships[] = $l;
+		$this->collUserTermRelationships[] = $l;
 		$l->setUser($this);
 	}
 
 
 	
-	public function getuserTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
+	public function getUserTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1193,33 +1193,33 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colluserTermRelationships = array();
+				$this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+			$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-			if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+			if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
+		$this->lastUserTermRelationshipCriteria = $criteria;
 
-		return $this->colluserTermRelationships;
+		return $this->collUserTermRelationships;
 	}
 
 
 	
-	public function getuserTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getUserTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1228,33 +1228,33 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colluserTermRelationships = array();
+				$this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+			$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-			if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
+		$this->lastUserTermRelationshipCriteria = $criteria;
 
-		return $this->colluserTermRelationships;
+		return $this->collUserTermRelationships;
 	}
 
 
 	
-	public function getuserTermRelationshipsJoinRepository($criteria = null, $con = null)
+	public function getUserTermRelationshipsJoinRepository($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1263,26 +1263,26 @@ abstract class BaseUser extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colluserTermRelationships = array();
+				$this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(userTermRelationshipPeer::USER_ID, $this->getId());
+			$criteria->add(UserTermRelationshipPeer::USER_ID, $this->getId());
 
-			if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
+			if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
+		$this->lastUserTermRelationshipCriteria = $criteria;
 
-		return $this->colluserTermRelationships;
+		return $this->collUserTermRelationships;
 	}
 
 

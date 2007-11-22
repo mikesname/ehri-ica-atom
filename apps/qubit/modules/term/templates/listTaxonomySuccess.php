@@ -69,6 +69,8 @@
   }
 ?>
 
-<div class="menu-extra">
-<?php echo link_to(__('list').' '.__('all').' '.__('terms'), 'term/list?taxonomyId=0') ?>
-</div>
+<?php if ($sf_context->getUser()->hasCredential('administrator')): ?>
+  <div class="menu-extra">
+  <?php echo link_to(__('list').' '.__('all').' '.__('terms'), 'term/list?taxonomyId=0') ?>
+  </div>
+<?php endif; ?>

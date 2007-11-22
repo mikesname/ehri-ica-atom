@@ -70,16 +70,16 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 	protected $aTermRelatedByActorRoleId;
 
 	
-	protected $ainformationObject;
+	protected $aInformationObject;
 
 	
 	protected $aActor;
 
 	
-	protected $colleventTermRelationships;
+	protected $collEventTermRelationships;
 
 	
-	protected $lasteventTermRelationshipCriteria = null;
+	protected $lastEventTermRelationshipCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -412,8 +412,8 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 			$this->modifiedColumns[] = EventPeer::INFORMATION_OBJECT_ID;
 		}
 
-		if ($this->ainformationObject !== null && $this->ainformationObject->getId() !== $v) {
-			$this->ainformationObject = null;
+		if ($this->aInformationObject !== null && $this->aInformationObject->getId() !== $v) {
+			$this->aInformationObject = null;
 		}
 
 	} 
@@ -621,11 +621,11 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 				$this->setTermRelatedByActorRoleId($this->aTermRelatedByActorRoleId);
 			}
 
-			if ($this->ainformationObject !== null) {
-				if ($this->ainformationObject->isModified()) {
-					$affectedRows += $this->ainformationObject->save($con);
+			if ($this->aInformationObject !== null) {
+				if ($this->aInformationObject->isModified()) {
+					$affectedRows += $this->aInformationObject->save($con);
 				}
-				$this->setinformationObject($this->ainformationObject);
+				$this->setInformationObject($this->aInformationObject);
 			}
 
 			if ($this->aActor !== null) {
@@ -647,8 +647,8 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
-			if ($this->colleventTermRelationships !== null) {
-				foreach($this->colleventTermRelationships as $referrerFK) {
+			if ($this->collEventTermRelationships !== null) {
+				foreach($this->collEventTermRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -704,9 +704,9 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->ainformationObject !== null) {
-				if (!$this->ainformationObject->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->ainformationObject->getValidationFailures());
+			if ($this->aInformationObject !== null) {
+				if (!$this->aInformationObject->validate($columns)) {
+					$failureMap = array_merge($failureMap, $this->aInformationObject->getValidationFailures());
 				}
 			}
 
@@ -722,8 +722,8 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->colleventTermRelationships !== null) {
-					foreach($this->colleventTermRelationships as $referrerFK) {
+				if ($this->collEventTermRelationships !== null) {
+					foreach($this->collEventTermRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -973,8 +973,8 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
-			foreach($this->geteventTermRelationships() as $relObj) {
-				$copyObj->addeventTermRelationship($relObj->copy($deepCopy));
+			foreach($this->getEventTermRelationships() as $relObj) {
+				$copyObj->addEventTermRelationship($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1063,7 +1063,7 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 	}
 
 	
-	public function setinformationObject($v)
+	public function setInformationObject($v)
 	{
 
 
@@ -1074,22 +1074,22 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 		}
 
 
-		$this->ainformationObject = $v;
+		$this->aInformationObject = $v;
 	}
 
 
 	
-	public function getinformationObject($con = null)
+	public function getInformationObject($con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 
-		if ($this->ainformationObject === null && ($this->information_object_id !== null)) {
+		if ($this->aInformationObject === null && ($this->information_object_id !== null)) {
 
-			$this->ainformationObject = informationObjectPeer::retrieveByPK($this->information_object_id, $con);
+			$this->aInformationObject = InformationObjectPeer::retrieveByPK($this->information_object_id, $con);
 
 			
 		}
-		return $this->ainformationObject;
+		return $this->aInformationObject;
 	}
 
 	
@@ -1123,17 +1123,17 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initeventTermRelationships()
+	public function initEventTermRelationships()
 	{
-		if ($this->colleventTermRelationships === null) {
-			$this->colleventTermRelationships = array();
+		if ($this->collEventTermRelationships === null) {
+			$this->collEventTermRelationships = array();
 		}
 	}
 
 	
-	public function geteventTermRelationships($criteria = null, $con = null)
+	public function getEventTermRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseeventTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1142,36 +1142,36 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colleventTermRelationships === null) {
+		if ($this->collEventTermRelationships === null) {
 			if ($this->isNew()) {
-			   $this->colleventTermRelationships = array();
+			   $this->collEventTermRelationships = array();
 			} else {
 
-				$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+				$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-				eventTermRelationshipPeer::addSelectColumns($criteria);
-				$this->colleventTermRelationships = eventTermRelationshipPeer::doSelect($criteria, $con);
+				EventTermRelationshipPeer::addSelectColumns($criteria);
+				$this->collEventTermRelationships = EventTermRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+				$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-				eventTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lasteventTermRelationshipCriteria) || !$this->lasteventTermRelationshipCriteria->equals($criteria)) {
-					$this->colleventTermRelationships = eventTermRelationshipPeer::doSelect($criteria, $con);
+				EventTermRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastEventTermRelationshipCriteria) || !$this->lastEventTermRelationshipCriteria->equals($criteria)) {
+					$this->collEventTermRelationships = EventTermRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lasteventTermRelationshipCriteria = $criteria;
-		return $this->colleventTermRelationships;
+		$this->lastEventTermRelationshipCriteria = $criteria;
+		return $this->collEventTermRelationships;
 	}
 
 	
-	public function counteventTermRelationships($criteria = null, $distinct = false, $con = null)
+	public function countEventTermRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseeventTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1180,23 +1180,23 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+		$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-		return eventTermRelationshipPeer::doCount($criteria, $distinct, $con);
+		return EventTermRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addeventTermRelationship(eventTermRelationship $l)
+	public function addEventTermRelationship(EventTermRelationship $l)
 	{
-		$this->colleventTermRelationships[] = $l;
+		$this->collEventTermRelationships[] = $l;
 		$l->setEvent($this);
 	}
 
 
 	
-	public function geteventTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
+	public function getEventTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseeventTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1205,33 +1205,33 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colleventTermRelationships === null) {
+		if ($this->collEventTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colleventTermRelationships = array();
+				$this->collEventTermRelationships = array();
 			} else {
 
-				$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+				$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-				$this->colleventTermRelationships = eventTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+				$this->collEventTermRelationships = EventTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+			$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-			if (!isset($this->lasteventTermRelationshipCriteria) || !$this->lasteventTermRelationshipCriteria->equals($criteria)) {
-				$this->colleventTermRelationships = eventTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+			if (!isset($this->lastEventTermRelationshipCriteria) || !$this->lastEventTermRelationshipCriteria->equals($criteria)) {
+				$this->collEventTermRelationships = EventTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		}
-		$this->lasteventTermRelationshipCriteria = $criteria;
+		$this->lastEventTermRelationshipCriteria = $criteria;
 
-		return $this->colleventTermRelationships;
+		return $this->collEventTermRelationships;
 	}
 
 
 	
-	public function geteventTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getEventTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseeventTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1240,26 +1240,26 @@ abstract class BaseEvent extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colleventTermRelationships === null) {
+		if ($this->collEventTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colleventTermRelationships = array();
+				$this->collEventTermRelationships = array();
 			} else {
 
-				$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+				$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-				$this->colleventTermRelationships = eventTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collEventTermRelationships = EventTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(eventTermRelationshipPeer::EVENT_ID, $this->getId());
+			$criteria->add(EventTermRelationshipPeer::EVENT_ID, $this->getId());
 
-			if (!isset($this->lasteventTermRelationshipCriteria) || !$this->lasteventTermRelationshipCriteria->equals($criteria)) {
-				$this->colleventTermRelationships = eventTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastEventTermRelationshipCriteria) || !$this->lastEventTermRelationshipCriteria->equals($criteria)) {
+				$this->collEventTermRelationships = EventTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		}
-		$this->lasteventTermRelationshipCriteria = $criteria;
+		$this->lastEventTermRelationshipCriteria = $criteria;
 
-		return $this->colleventTermRelationships;
+		return $this->collEventTermRelationships;
 	}
 
 

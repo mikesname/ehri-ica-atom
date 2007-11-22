@@ -28,7 +28,7 @@ class deleteTermRelationshipAction extends sfAction
   public function execute()
   {
 
-  $this->deleteTermRelationship = informationObjectTermRelationshipPeer::retrieveByPk($this->getRequestParameter('TermRelationshipId'));
+  $this->deleteTermRelationship = InformationObjectTermRelationshipPeer::retrieveByPk($this->getRequestParameter('TermRelationshipId'));
 
   $this->forward404Unless($this->deleteTermRelationship);
 

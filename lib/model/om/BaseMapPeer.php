@@ -95,6 +95,10 @@ abstract class BaseMapPeer {
 		return self::$fieldNames[$type];
 	}
 
+  public static function getColumnNames()
+  {
+    return self::$fieldNames[BasePeer::TYPE_COLNAME];
+  }
 	
 	public static function alias($alias, $column)
 	{
@@ -164,7 +168,7 @@ abstract class BaseMapPeer {
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseMapPeer:addDoSelectRS:addDoSelectRS') as $callable)
+    foreach (sfMixer::getCallables('BaseMapPeer:doSelectRS:doSelectRS') as $callable)
     {
       call_user_func($callable, 'BaseMapPeer', $criteria, $con);
     }

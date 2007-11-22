@@ -29,11 +29,11 @@ class updatePlaceMapRelationshipAction extends sfAction
   {
     if (!$this->getRequestParameter('id'))
     {
-      $placeMapRelationship = new placeMapRelationship();
+      $placeMapRelationship = new PlaceMapRelationship();
     }
     else
     {
-      $placeMapRelationship = placeMapRelationshipPeer::retrieveByPk($this->getRequestParameter('id'));
+      $placeMapRelationship = PlaceMapRelationshipPeer::retrieveByPk($this->getRequestParameter('id'));
       $this->forward404Unless($placeMapRelationship);
     }
 

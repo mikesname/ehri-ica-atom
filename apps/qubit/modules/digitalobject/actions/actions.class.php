@@ -32,25 +32,25 @@ class digitalobjectActions extends sfActions
 
   public function executeList()
   {
-    $this->digital_objects = digitalObjectPeer::doSelect(new Criteria());
+    $this->digital_objects = DigitalObjectPeer::doSelect(new Criteria());
   }
 
   public function executeShow()
   {
-    $this->digital_object = digitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->digital_object = DigitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
     $this->forward404Unless($this->digital_object);
   }
 
   public function executeCreate()
   {
-    $this->digital_object = new digitalObject();
+    $this->digital_object = new DigitalObject();
 
     $this->setTemplate('edit');
   }
 
   public function executeEdit()
   {
-    $this->digital_object = digitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->digital_object = DigitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
     $this->forward404Unless($this->digital_object);
   }
 
@@ -58,11 +58,11 @@ class digitalobjectActions extends sfActions
   {
     if (!$this->getRequestParameter('id'))
     {
-      $digital_object = new digitalObject();
+      $digital_object = new DigitalObject();
     }
     else
     {
-      $digital_object = digitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+      $digital_object = DigitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
       $this->forward404Unless($digital_object);
     }
 
@@ -78,7 +78,7 @@ class digitalobjectActions extends sfActions
 
   public function executeDelete()
   {
-    $digital_object = digitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+    $digital_object = DigitalObjectPeer::retrieveByPk($this->getRequestParameter('id'));
 
     $this->forward404Unless($digital_object);
 

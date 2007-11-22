@@ -40,7 +40,7 @@ class editAction extends sfAction
 
   $this->credentials = $this->user->getUserCredentials();
 
-  $this->newTermRelationship = new userTermRelationship();
+  $this->newTermRelationship = new UserTermRelationship();
 
   }
 

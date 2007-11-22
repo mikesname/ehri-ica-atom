@@ -104,6 +104,10 @@ abstract class BaseRightPeer {
 		return self::$fieldNames[$type];
 	}
 
+  public static function getColumnNames()
+  {
+    return self::$fieldNames[BasePeer::TYPE_COLNAME];
+  }
 	
 	public static function alias($alias, $column)
 	{
@@ -179,7 +183,7 @@ abstract class BaseRightPeer {
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseRightPeer:addDoSelectRS:addDoSelectRS') as $callable)
+    foreach (sfMixer::getCallables('BaseRightPeer:doSelectRS:doSelectRS') as $callable)
     {
       call_user_func($callable, 'BaseRightPeer', $criteria, $con);
     }
@@ -216,7 +220,7 @@ abstract class BaseRightPeer {
 	}
 
 	
-	public static function doCountJoininformationObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinInformationObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -232,7 +236,7 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$rs = RightPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -244,7 +248,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doCountJoindigitalObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinDigitalObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -260,7 +264,7 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
 		$rs = RightPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -272,7 +276,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doCountJoinphysicalObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinPhysicalObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -288,7 +292,7 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$rs = RightPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -328,8 +332,15 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doSelectJoininformationObject(Criteria $c, $con = null)
+	public static function doSelectJoinInformationObject(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRightPeer:doSelectJoin:doSelectJoin') as $callable)
+    {
+      call_user_func($callable, 'BaseRightPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -338,9 +349,9 @@ abstract class BaseRightPeer {
 
 		RightPeer::addSelectColumns($c);
 		$startcol = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		informationObjectPeer::addSelectColumns($c);
+		InformationObjectPeer::addSelectColumns($c);
 
-		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -352,7 +363,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -360,7 +371,7 @@ abstract class BaseRightPeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addRight($obj1); 					break;
 				}
@@ -375,7 +386,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doSelectJoindigitalObject(Criteria $c, $con = null)
+	public static function doSelectJoinDigitalObject(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -385,9 +396,9 @@ abstract class BaseRightPeer {
 
 		RightPeer::addSelectColumns($c);
 		$startcol = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		digitalObjectPeer::addSelectColumns($c);
+		DigitalObjectPeer::addSelectColumns($c);
 
-		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -399,7 +410,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = digitalObjectPeer::getOMClass();
+			$omClass = DigitalObjectPeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -407,7 +418,7 @@ abstract class BaseRightPeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getdigitalObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getDigitalObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addRight($obj1); 					break;
 				}
@@ -422,7 +433,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doSelectJoinphysicalObject(Criteria $c, $con = null)
+	public static function doSelectJoinPhysicalObject(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -432,9 +443,9 @@ abstract class BaseRightPeer {
 
 		RightPeer::addSelectColumns($c);
 		$startcol = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		physicalObjectPeer::addSelectColumns($c);
+		PhysicalObjectPeer::addSelectColumns($c);
 
-		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -446,7 +457,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = physicalObjectPeer::getOMClass();
+			$omClass = PhysicalObjectPeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -454,7 +465,7 @@ abstract class BaseRightPeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getphysicalObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getPhysicalObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addRight($obj1); 					break;
 				}
@@ -532,11 +543,11 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$criteria->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -552,6 +563,13 @@ abstract class BaseRightPeer {
 	
 	public static function doSelectJoinAll(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRightPeer:doSelectJoinAll:doSelectJoinAll') as $callable)
+    {
+      call_user_func($callable, 'BaseRightPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -561,23 +579,23 @@ abstract class BaseRightPeer {
 		RightPeer::addSelectColumns($c);
 		$startcol2 = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
-		digitalObjectPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + digitalObjectPeer::NUM_COLUMNS;
+		DigitalObjectPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + DigitalObjectPeer::NUM_COLUMNS;
 
-		physicalObjectPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + physicalObjectPeer::NUM_COLUMNS;
+		PhysicalObjectPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + PhysicalObjectPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + TermPeer::NUM_COLUMNS;
 
-		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
-		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$c->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -595,7 +613,7 @@ abstract class BaseRightPeer {
 
 
 					
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -605,7 +623,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addRight($obj1); 					break;
 				}
@@ -618,7 +636,7 @@ abstract class BaseRightPeer {
 
 
 					
-			$omClass = digitalObjectPeer::getOMClass();
+			$omClass = DigitalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -628,7 +646,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getdigitalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+				$temp_obj3 = $temp_obj1->getDigitalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj3->addRight($obj1); 					break;
 				}
@@ -641,7 +659,7 @@ abstract class BaseRightPeer {
 
 
 					
-			$omClass = physicalObjectPeer::getOMClass();
+			$omClass = PhysicalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -651,7 +669,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getphysicalObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getPhysicalObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addRight($obj1); 					break;
 				}
@@ -692,7 +710,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doCountJoinAllExceptinformationObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptInformationObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -708,9 +726,9 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$criteria->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -724,7 +742,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doCountJoinAllExceptdigitalObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptDigitalObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -740,9 +758,9 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$criteria->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -756,7 +774,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doCountJoinAllExceptphysicalObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptPhysicalObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -772,9 +790,9 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
 		$criteria->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -804,11 +822,11 @@ abstract class BaseRightPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
-		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$criteria->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$rs = RightPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -820,8 +838,15 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doSelectJoinAllExceptinformationObject(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptInformationObject(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseRightPeer:doSelectJoinAllExcept:doSelectJoinAllExcept') as $callable)
+    {
+      call_user_func($callable, 'BaseRightPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 								if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -831,18 +856,18 @@ abstract class BaseRightPeer {
 		RightPeer::addSelectColumns($c);
 		$startcol2 = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		digitalObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + digitalObjectPeer::NUM_COLUMNS;
+		DigitalObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + DigitalObjectPeer::NUM_COLUMNS;
 
-		physicalObjectPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + physicalObjectPeer::NUM_COLUMNS;
+		PhysicalObjectPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PhysicalObjectPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + TermPeer::NUM_COLUMNS;
 
-		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
-		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$c->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -858,7 +883,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = digitalObjectPeer::getOMClass();
+			$omClass = DigitalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -868,7 +893,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getdigitalObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getDigitalObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addRight($obj1);
 					break;
@@ -880,7 +905,7 @@ abstract class BaseRightPeer {
 				$obj2->addRight($obj1);
 			}
 
-			$omClass = physicalObjectPeer::getOMClass();
+			$omClass = PhysicalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -890,7 +915,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getphysicalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+				$temp_obj3 = $temp_obj1->getPhysicalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj3->addRight($obj1);
 					break;
@@ -931,7 +956,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doSelectJoinAllExceptdigitalObject(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptDigitalObject(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -942,18 +967,18 @@ abstract class BaseRightPeer {
 		RightPeer::addSelectColumns($c);
 		$startcol2 = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
-		physicalObjectPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + physicalObjectPeer::NUM_COLUMNS;
+		PhysicalObjectPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + PhysicalObjectPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + TermPeer::NUM_COLUMNS;
 
-		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 		$c->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -969,7 +994,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -979,7 +1004,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addRight($obj1);
 					break;
@@ -991,7 +1016,7 @@ abstract class BaseRightPeer {
 				$obj2->addRight($obj1);
 			}
 
-			$omClass = physicalObjectPeer::getOMClass();
+			$omClass = PhysicalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1001,7 +1026,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getphysicalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+				$temp_obj3 = $temp_obj1->getPhysicalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj3->addRight($obj1);
 					break;
@@ -1042,7 +1067,7 @@ abstract class BaseRightPeer {
 
 
 	
-	public static function doSelectJoinAllExceptphysicalObject(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptPhysicalObject(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -1053,18 +1078,18 @@ abstract class BaseRightPeer {
 		RightPeer::addSelectColumns($c);
 		$startcol2 = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
-		digitalObjectPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + digitalObjectPeer::NUM_COLUMNS;
+		DigitalObjectPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + DigitalObjectPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + TermPeer::NUM_COLUMNS;
 
-		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
 		$c->addJoin(RightPeer::PERMISSION_ID, TermPeer::ID);
 
@@ -1080,7 +1105,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1090,7 +1115,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addRight($obj1);
 					break;
@@ -1102,7 +1127,7 @@ abstract class BaseRightPeer {
 				$obj2->addRight($obj1);
 			}
 
-			$omClass = digitalObjectPeer::getOMClass();
+			$omClass = DigitalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1112,7 +1137,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getdigitalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+				$temp_obj3 = $temp_obj1->getDigitalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj3->addRight($obj1);
 					break;
@@ -1164,20 +1189,20 @@ abstract class BaseRightPeer {
 		RightPeer::addSelectColumns($c);
 		$startcol2 = (RightPeer::NUM_COLUMNS - RightPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
-		digitalObjectPeer::addSelectColumns($c);
-		$startcol4 = $startcol3 + digitalObjectPeer::NUM_COLUMNS;
+		DigitalObjectPeer::addSelectColumns($c);
+		$startcol4 = $startcol3 + DigitalObjectPeer::NUM_COLUMNS;
 
-		physicalObjectPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + physicalObjectPeer::NUM_COLUMNS;
+		PhysicalObjectPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + PhysicalObjectPeer::NUM_COLUMNS;
 
-		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(RightPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
-		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, digitalObjectPeer::ID);
+		$c->addJoin(RightPeer::DIGITAL_OBJECT_ID, DigitalObjectPeer::ID);
 
-		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, physicalObjectPeer::ID);
+		$c->addJoin(RightPeer::PHYSICAL_OBJECT_ID, PhysicalObjectPeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -1191,7 +1216,7 @@ abstract class BaseRightPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1201,7 +1226,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addRight($obj1);
 					break;
@@ -1213,7 +1238,7 @@ abstract class BaseRightPeer {
 				$obj2->addRight($obj1);
 			}
 
-			$omClass = digitalObjectPeer::getOMClass();
+			$omClass = DigitalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1223,7 +1248,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj3 = $temp_obj1->getdigitalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
+				$temp_obj3 = $temp_obj1->getDigitalObject(); 				if ($temp_obj3->getPrimaryKey() === $obj3->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj3->addRight($obj1);
 					break;
@@ -1235,7 +1260,7 @@ abstract class BaseRightPeer {
 				$obj3->addRight($obj1);
 			}
 
-			$omClass = physicalObjectPeer::getOMClass();
+			$omClass = PhysicalObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1245,7 +1270,7 @@ abstract class BaseRightPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getphysicalObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getPhysicalObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addRight($obj1);
 					break;

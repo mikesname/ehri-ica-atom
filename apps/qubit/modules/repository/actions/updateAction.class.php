@@ -188,7 +188,7 @@ class updateAction extends sfAction
         ($this->getRequestParameter('email')) or
         ($this->getRequestParameter('website')))
         {
-        $contactInformation = new contactInformation();
+        $contactInformation = new ContactInformation();
         $contactInformation->setActorId($actor->getId());
         $contactInformation->setContactType($this->getRequestParameter('contact_type'));
         $contactInformation->setPrimaryContact($this->getRequestParameter('primary_contact'));

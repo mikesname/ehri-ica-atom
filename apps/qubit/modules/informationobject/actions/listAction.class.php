@@ -69,7 +69,7 @@ class listAction extends sfAction
       $this->sort = 'idDown';
       }
 
-    $this->informationObjects = informationObjectPeer::informationObjectList($this->sort, $this->repository, $this->collection);
+    $this->informationObjects = InformationObjectPeer::informationObjectList($this->sort, $this->repository, $this->collection);
 
     //determine if user has edit priviliges
     $this->editCredentials = false;
@@ -85,7 +85,7 @@ class listAction extends sfAction
         $this->setTemplate('listISAD');
         break;
       default :
-        $this->setTemplate('list');
+        $this->setTemplate(sfConfig::get('app_default_template_informationobject_list'));
     }
 
     }

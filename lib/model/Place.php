@@ -41,8 +41,8 @@ public function getMapRelationships()
    $mapRelationships = array();
 
    $c = new Criteria();
-   $c->add(placeMapRelationshipPeer::PLACE_ID, $this->getId());
-   $mapRelationships = placeMapRelationshipPeer::doSelect($c);
+   $c->add(PlaceMapRelationshipPeer::PLACE_ID, $this->getId());
+   $mapRelationships = PlaceMapRelationshipPeer::doSelect($c);
 
    return $mapRelationships;
   }

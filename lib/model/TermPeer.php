@@ -109,16 +109,16 @@ class TermPeer extends BaseTermPeer
     {
     case 'actor' :
       {
-      $c->addJoin(TermPeer:: ID, actorTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
+      $c->addJoin(TermPeer:: ID, ActorTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
       }
     case 'repository' :
       {
-      $c->addJoin(TermPeer:: ID, repositoryTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
+      $c->addJoin(TermPeer:: ID, RepositoryTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
       }
     case 'informationObject' :
     default :
       {
-      $c->addJoin(TermPeer:: ID, informationObjectTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
+      $c->addJoin(TermPeer:: ID, InformationObjectTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
       }
     }
 
@@ -154,8 +154,8 @@ class TermPeer extends BaseTermPeer
       default :
         {
         $c = new Criteria();
-        $c->add(informationObjectTermRelationshipPeer::TERM_ID, $term->getId());
-        $hits = informationObjectTermRelationshipPeer::doCount($c);
+        $c->add(InformationObjectTermRelationshipPeer::TERM_ID, $term->getId());
+        $hits = InformationObjectTermRelationshipPeer::doCount($c);
         }
       }
 
@@ -280,6 +280,12 @@ class TermPeer extends BaseTermPeer
   return self::getTaxonomy($taxonomyId = 20);
   }
 
+  public static function getI18nLanguages()
+  {
+
+  return self::getTaxonomy($taxonomyId = 27, $sort='default', $restrict = FALSE);
+  }
+
 
 public static function getRepositoryCountryHitList()
   {
@@ -315,7 +321,7 @@ public static function getRepositoryCountryHitList()
     $languages = self::getLanguages();
 
     $c = new Criteria();
-    $languageRelationships = informationObjectTermRelationshipPeer::doSelect($c);
+    $languageRelationships = InformationObjectTermRelationshipPeer::doSelect($c);
 
     $languageList = array();
 
@@ -346,7 +352,7 @@ public static function getSubjectHitList()
   $subjects = self::getSubjects();
 
   $c = new Criteria();
-  $subjectRelationships = informationObjectTermRelationshipPeer::doSelect($c);
+  $subjectRelationships = InformationObjectTermRelationshipPeer::doSelect($c);
 
   $subjectList = array();
 

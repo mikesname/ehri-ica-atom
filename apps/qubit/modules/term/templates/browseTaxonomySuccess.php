@@ -1,5 +1,5 @@
 ﻿
-<div class="pageTitle">list <?php echo $taxonomyName ?> terms</div>
+<div class="pageTitle"><?php echo __('list ').$taxonomyName.__(' terms')?></div>
 
 <table class="list">
 <thead>

@@ -28,8 +28,8 @@ class createAction extends sfAction
   public function execute()
   {
 
-   //initialize a new informationObject
-   $this->informationObject = new informationObject();
+   //initialize a new information object
+   $this->informationObject = new InformationObject();
 
 
    //TermManyToManyRelationships
@@ -38,10 +38,10 @@ class createAction extends sfAction
    $this->subjectAccessPoints = null;
    $this->placeAccessPoints = null;
 
-   $this->newLanguage = new informationObjectTermRelationship();
-   $this->newScript = new informationObjectTermRelationship();
-   $this->newSubjectAccessPoint = new informationObjectTermRelationship();
-   $this->newPlaceAccessPoint = new informationObjectTermRelationship();
+   $this->newLanguage = new InformationObjectTermRelationship();
+   $this->newScript = new InformationObjectTermRelationship();
+   $this->newSubjectAccessPoint = new InformationObjectTermRelationship();
+   $this->newPlaceAccessPoint = new InformationObjectTermRelationship();
 
    //Notes
    $this->notes = null;
@@ -69,14 +69,14 @@ class createAction extends sfAction
    //set template
    switch ($this->getRequestParameter('template'))
       {
-      case 'anotherTemplate' :
-        $this->setTemplate('editAnotherTemplate');
+      case 'mods' :
+        $this->setTemplate('editMODS');
         break;
       case 'isad' :
         $this->setTemplate('editISAD');
         break;
       default :
-        $this->setTemplate('edit');
+        $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
       }
 
 

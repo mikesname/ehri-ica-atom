@@ -36,8 +36,8 @@ public function getPlaceRelationships()
    $placeRelationships = array();
 
    $c = new Criteria();
-   $c->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
-   $placeRelationships = placeMapRelationshipPeer::doSelect($c);
+   $c->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
+   $placeRelationships = PlaceMapRelationshipPeer::doSelect($c);
 
    return $placeRelationships;
   }

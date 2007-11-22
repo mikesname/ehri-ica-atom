@@ -28,7 +28,7 @@ class deleteOtherNameAction extends sfAction
   public function execute()
   {
 
-  $this->deleteOtherName = actorNamePeer::retrieveByPk($this->getRequestParameter('otherNameId'));
+  $this->deleteOtherName = ActorNamePeer::retrieveByPk($this->getRequestParameter('otherNameId'));
 
   $this->forward404Unless($this->deleteOtherName);
 

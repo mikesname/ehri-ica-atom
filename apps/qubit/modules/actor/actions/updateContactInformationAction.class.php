@@ -30,11 +30,11 @@ class updateContactInformationAction extends sfAction
 
   if (!$this->getRequestParameter('id', 0))
     {
-    $contactInformation = new contactInformation();
+    $contactInformation = new ContactInformation();
     }
    else
     {
-    $contactInformation = contactInformationPeer::retrieveByPk($this->getRequestParameter('id'));
+    $contactInformation = ContactInformationPeer::retrieveByPk($this->getRequestParameter('id'));
     $this->forward404Unless($contactInformation);
     }
 

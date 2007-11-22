@@ -3,9 +3,9 @@
 <table class="sidebar">
 <tr>
 <td><?php echo select_tag('browseList', options_for_select(
-		array(	'subject' => __('subject'),
-					'actor' => __('authority file'),
-					'repository' => __('archival institution'),
+		array(	'subject' => __(sfConfig::get('app_ui_label_subject')),
+					'actor' => __(sfConfig::get('app_ui_label_actor')),
+					'repository' => __(sfConfig::get('app_ui_label_repository')),
 					'language' => __('language')),
 					$browseBy), 'class="selectbox"'); ?>
 </td>

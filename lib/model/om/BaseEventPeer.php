@@ -122,6 +122,10 @@ abstract class BaseEventPeer {
 		return self::$fieldNames[$type];
 	}
 
+  public static function getColumnNames()
+  {
+    return self::$fieldNames[BasePeer::TYPE_COLNAME];
+  }
 	
 	public static function alias($alias, $column)
 	{
@@ -209,7 +213,7 @@ abstract class BaseEventPeer {
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseEventPeer:addDoSelectRS:addDoSelectRS') as $callable)
+    foreach (sfMixer::getCallables('BaseEventPeer:doSelectRS:doSelectRS') as $callable)
     {
       call_user_func($callable, 'BaseEventPeer', $criteria, $con);
     }
@@ -302,7 +306,7 @@ abstract class BaseEventPeer {
 
 
 	
-	public static function doCountJoininformationObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinInformationObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -318,7 +322,7 @@ abstract class BaseEventPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$rs = EventPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -360,6 +364,13 @@ abstract class BaseEventPeer {
 	
 	public static function doSelectJoinTermRelatedByEventTypeId(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseEventPeer:doSelectJoin:doSelectJoin') as $callable)
+    {
+      call_user_func($callable, 'BaseEventPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -452,7 +463,7 @@ abstract class BaseEventPeer {
 
 
 	
-	public static function doSelectJoininformationObject(Criteria $c, $con = null)
+	public static function doSelectJoinInformationObject(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -462,9 +473,9 @@ abstract class BaseEventPeer {
 
 		EventPeer::addSelectColumns($c);
 		$startcol = (EventPeer::NUM_COLUMNS - EventPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		informationObjectPeer::addSelectColumns($c);
+		InformationObjectPeer::addSelectColumns($c);
 
-		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -476,7 +487,7 @@ abstract class BaseEventPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -484,7 +495,7 @@ abstract class BaseEventPeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addEvent($obj1); 					break;
 				}
@@ -566,7 +577,7 @@ abstract class BaseEventPeer {
 
 		$criteria->addJoin(EventPeer::ACTOR_ROLE_ID, TermPeer::ID);
 
-		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(EventPeer::ACTOR_ID, ActorPeer::ID);
 
@@ -582,6 +593,13 @@ abstract class BaseEventPeer {
 	
 	public static function doSelectJoinAll(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseEventPeer:doSelectJoinAll:doSelectJoinAll') as $callable)
+    {
+      call_user_func($callable, 'BaseEventPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -597,8 +615,8 @@ abstract class BaseEventPeer {
 		TermPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + TermPeer::NUM_COLUMNS;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + ActorPeer::NUM_COLUMNS;
@@ -607,7 +625,7 @@ abstract class BaseEventPeer {
 
 		$c->addJoin(EventPeer::ACTOR_ROLE_ID, TermPeer::ID);
 
-		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(EventPeer::ACTOR_ID, ActorPeer::ID);
 
@@ -671,7 +689,7 @@ abstract class BaseEventPeer {
 
 
 					
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -681,7 +699,7 @@ abstract class BaseEventPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getinformationObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getInformationObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addEvent($obj1); 					break;
 				}
@@ -738,7 +756,7 @@ abstract class BaseEventPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(EventPeer::ACTOR_ID, ActorPeer::ID);
 
@@ -768,7 +786,7 @@ abstract class BaseEventPeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(EventPeer::ACTOR_ID, ActorPeer::ID);
 
@@ -782,7 +800,7 @@ abstract class BaseEventPeer {
 
 
 	
-	public static function doCountJoinAllExceptinformationObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptInformationObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -834,7 +852,7 @@ abstract class BaseEventPeer {
 
 		$criteria->addJoin(EventPeer::ACTOR_ROLE_ID, TermPeer::ID);
 
-		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$rs = EventPeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -848,6 +866,13 @@ abstract class BaseEventPeer {
 	
 	public static function doSelectJoinAllExceptTermRelatedByEventTypeId(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseEventPeer:doSelectJoinAllExcept:doSelectJoinAllExcept') as $callable)
+    {
+      call_user_func($callable, 'BaseEventPeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 								if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -857,13 +882,13 @@ abstract class BaseEventPeer {
 		EventPeer::addSelectColumns($c);
 		$startcol2 = (EventPeer::NUM_COLUMNS - EventPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
 
-		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(EventPeer::ACTOR_ID, ActorPeer::ID);
 
@@ -879,7 +904,7 @@ abstract class BaseEventPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -889,7 +914,7 @@ abstract class BaseEventPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addEvent($obj1);
 					break;
@@ -941,13 +966,13 @@ abstract class BaseEventPeer {
 		EventPeer::addSelectColumns($c);
 		$startcol2 = (EventPeer::NUM_COLUMNS - EventPeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
 
-		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(EventPeer::ACTOR_ID, ActorPeer::ID);
 
@@ -963,7 +988,7 @@ abstract class BaseEventPeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -973,7 +998,7 @@ abstract class BaseEventPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addEvent($obj1);
 					break;
@@ -1014,7 +1039,7 @@ abstract class BaseEventPeer {
 
 
 	
-	public static function doSelectJoinAllExceptinformationObject(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptInformationObject(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -1142,14 +1167,14 @@ abstract class BaseEventPeer {
 		TermPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + TermPeer::NUM_COLUMNS;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + InformationObjectPeer::NUM_COLUMNS;
 
 		$c->addJoin(EventPeer::EVENT_TYPE_ID, TermPeer::ID);
 
 		$c->addJoin(EventPeer::ACTOR_ROLE_ID, TermPeer::ID);
 
-		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(EventPeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 
 		$rs = BasePeer::doSelect($c, $con);
@@ -1207,7 +1232,7 @@ abstract class BaseEventPeer {
 				$obj3->addEventRelatedByActorRoleId($obj1);
 			}
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1217,7 +1242,7 @@ abstract class BaseEventPeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getinformationObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getInformationObject(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addEvent($obj1);
 					break;

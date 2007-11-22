@@ -120,10 +120,10 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 	protected $aTermRelatedByLevelOfDetailId;
 
 	
-	protected $collinformationObjects;
+	protected $collInformationObjects;
 
 	
-	protected $lastinformationObjectCriteria = null;
+	protected $lastInformationObjectCriteria = null;
 
 	
 	protected $collNotes;
@@ -132,16 +132,16 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 	protected $lastNoteCriteria = null;
 
 	
-	protected $collrepositoryTermRelationships;
+	protected $collRepositoryTermRelationships;
 
 	
-	protected $lastrepositoryTermRelationshipCriteria = null;
+	protected $lastRepositoryTermRelationshipCriteria = null;
 
 	
-	protected $colluserTermRelationships;
+	protected $collUserTermRelationships;
 
 	
-	protected $lastuserTermRelationshipCriteria = null;
+	protected $lastUserTermRelationshipCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -926,8 +926,8 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
-			if ($this->collinformationObjects !== null) {
-				foreach($this->collinformationObjects as $referrerFK) {
+			if ($this->collInformationObjects !== null) {
+				foreach($this->collInformationObjects as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -942,16 +942,16 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collrepositoryTermRelationships !== null) {
-				foreach($this->collrepositoryTermRelationships as $referrerFK) {
+			if ($this->collRepositoryTermRelationships !== null) {
+				foreach($this->collRepositoryTermRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->colluserTermRelationships !== null) {
-				foreach($this->colluserTermRelationships as $referrerFK) {
+			if ($this->collUserTermRelationships !== null) {
+				foreach($this->collUserTermRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1025,8 +1025,8 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collinformationObjects !== null) {
-					foreach($this->collinformationObjects as $referrerFK) {
+				if ($this->collInformationObjects !== null) {
+					foreach($this->collInformationObjects as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1041,16 +1041,16 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collrepositoryTermRelationships !== null) {
-					foreach($this->collrepositoryTermRelationships as $referrerFK) {
+				if ($this->collRepositoryTermRelationships !== null) {
+					foreach($this->collRepositoryTermRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->colluserTermRelationships !== null) {
-					foreach($this->colluserTermRelationships as $referrerFK) {
+				if ($this->collUserTermRelationships !== null) {
+					foreach($this->collUserTermRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1421,20 +1421,20 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
-			foreach($this->getinformationObjects() as $relObj) {
-				$copyObj->addinformationObject($relObj->copy($deepCopy));
+			foreach($this->getInformationObjects() as $relObj) {
+				$copyObj->addInformationObject($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getNotes() as $relObj) {
 				$copyObj->addNote($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getrepositoryTermRelationships() as $relObj) {
-				$copyObj->addrepositoryTermRelationship($relObj->copy($deepCopy));
+			foreach($this->getRepositoryTermRelationships() as $relObj) {
+				$copyObj->addRepositoryTermRelationship($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getuserTermRelationships() as $relObj) {
-				$copyObj->adduserTermRelationship($relObj->copy($deepCopy));
+			foreach($this->getUserTermRelationships() as $relObj) {
+				$copyObj->addUserTermRelationship($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -1583,17 +1583,17 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initinformationObjects()
+	public function initInformationObjects()
 	{
-		if ($this->collinformationObjects === null) {
-			$this->collinformationObjects = array();
+		if ($this->collInformationObjects === null) {
+			$this->collInformationObjects = array();
 		}
 	}
 
 	
-	public function getinformationObjects($criteria = null, $con = null)
+	public function getInformationObjects($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1602,36 +1602,36 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collinformationObjects === null) {
+		if ($this->collInformationObjects === null) {
 			if ($this->isNew()) {
-			   $this->collinformationObjects = array();
+			   $this->collInformationObjects = array();
 			} else {
 
-				$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-				informationObjectPeer::addSelectColumns($criteria);
-				$this->collinformationObjects = informationObjectPeer::doSelect($criteria, $con);
+				InformationObjectPeer::addSelectColumns($criteria);
+				$this->collInformationObjects = InformationObjectPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-				informationObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastinformationObjectCriteria) || !$this->lastinformationObjectCriteria->equals($criteria)) {
-					$this->collinformationObjects = informationObjectPeer::doSelect($criteria, $con);
+				InformationObjectPeer::addSelectColumns($criteria);
+				if (!isset($this->lastInformationObjectCriteria) || !$this->lastInformationObjectCriteria->equals($criteria)) {
+					$this->collInformationObjects = InformationObjectPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastinformationObjectCriteria = $criteria;
-		return $this->collinformationObjects;
+		$this->lastInformationObjectCriteria = $criteria;
+		return $this->collInformationObjects;
 	}
 
 	
-	public function countinformationObjects($criteria = null, $distinct = false, $con = null)
+	public function countInformationObjects($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1640,23 +1640,23 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+		$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-		return informationObjectPeer::doCount($criteria, $distinct, $con);
+		return InformationObjectPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addinformationObject(informationObject $l)
+	public function addInformationObject(InformationObject $l)
 	{
-		$this->collinformationObjects[] = $l;
+		$this->collInformationObjects[] = $l;
 		$l->setRepository($this);
 	}
 
 
 	
-	public function getinformationObjectsJoinTermRelatedByLevelOfDescriptionId($criteria = null, $con = null)
+	public function getInformationObjectsJoinTermRelatedByLevelOfDescriptionId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1665,33 +1665,33 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collinformationObjects === null) {
+		if ($this->collInformationObjects === null) {
 			if ($this->isNew()) {
-				$this->collinformationObjects = array();
+				$this->collInformationObjects = array();
 			} else {
 
-				$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-				$this->collinformationObjects = informationObjectPeer::doSelectJoinTermRelatedByLevelOfDescriptionId($criteria, $con);
+				$this->collInformationObjects = InformationObjectPeer::doSelectJoinTermRelatedByLevelOfDescriptionId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastinformationObjectCriteria) || !$this->lastinformationObjectCriteria->equals($criteria)) {
-				$this->collinformationObjects = informationObjectPeer::doSelectJoinTermRelatedByLevelOfDescriptionId($criteria, $con);
+			if (!isset($this->lastInformationObjectCriteria) || !$this->lastInformationObjectCriteria->equals($criteria)) {
+				$this->collInformationObjects = InformationObjectPeer::doSelectJoinTermRelatedByLevelOfDescriptionId($criteria, $con);
 			}
 		}
-		$this->lastinformationObjectCriteria = $criteria;
+		$this->lastInformationObjectCriteria = $criteria;
 
-		return $this->collinformationObjects;
+		return $this->collInformationObjects;
 	}
 
 
 	
-	public function getinformationObjectsJoinTermRelatedByCollectionTypeId($criteria = null, $con = null)
+	public function getInformationObjectsJoinTermRelatedByCollectionTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseinformationObjectPeer.php';
+				include_once 'lib/model/om/BaseInformationObjectPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1700,26 +1700,26 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collinformationObjects === null) {
+		if ($this->collInformationObjects === null) {
 			if ($this->isNew()) {
-				$this->collinformationObjects = array();
+				$this->collInformationObjects = array();
 			} else {
 
-				$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-				$this->collinformationObjects = informationObjectPeer::doSelectJoinTermRelatedByCollectionTypeId($criteria, $con);
+				$this->collInformationObjects = InformationObjectPeer::doSelectJoinTermRelatedByCollectionTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastinformationObjectCriteria) || !$this->lastinformationObjectCriteria->equals($criteria)) {
-				$this->collinformationObjects = informationObjectPeer::doSelectJoinTermRelatedByCollectionTypeId($criteria, $con);
+			if (!isset($this->lastInformationObjectCriteria) || !$this->lastInformationObjectCriteria->equals($criteria)) {
+				$this->collInformationObjects = InformationObjectPeer::doSelectJoinTermRelatedByCollectionTypeId($criteria, $con);
 			}
 		}
-		$this->lastinformationObjectCriteria = $criteria;
+		$this->lastInformationObjectCriteria = $criteria;
 
-		return $this->collinformationObjects;
+		return $this->collInformationObjects;
 	}
 
 	
@@ -1794,7 +1794,7 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 
 
 	
-	public function getNotesJoininformationObject($criteria = null, $con = null)
+	public function getNotesJoinInformationObject($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseNotePeer.php';
 		if ($criteria === null) {
@@ -1812,14 +1812,14 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 
 				$criteria->add(NotePeer::REPOSITORY_ID, $this->getId());
 
-				$this->collNotes = NotePeer::doSelectJoininformationObject($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(NotePeer::REPOSITORY_ID, $this->getId());
 
 			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoininformationObject($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		}
 		$this->lastNoteCriteria = $criteria;
@@ -1864,7 +1864,7 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 
 
 	
-	public function getNotesJoinfunctionDescription($criteria = null, $con = null)
+	public function getNotesJoinFunctionDescription($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseNotePeer.php';
 		if ($criteria === null) {
@@ -1882,14 +1882,14 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 
 				$criteria->add(NotePeer::REPOSITORY_ID, $this->getId());
 
-				$this->collNotes = NotePeer::doSelectJoinfunctionDescription($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(NotePeer::REPOSITORY_ID, $this->getId());
 
 			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinfunctionDescription($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
 			}
 		}
 		$this->lastNoteCriteria = $criteria;
@@ -1968,17 +1968,17 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initrepositoryTermRelationships()
+	public function initRepositoryTermRelationships()
 	{
-		if ($this->collrepositoryTermRelationships === null) {
-			$this->collrepositoryTermRelationships = array();
+		if ($this->collRepositoryTermRelationships === null) {
+			$this->collRepositoryTermRelationships = array();
 		}
 	}
 
 	
-	public function getrepositoryTermRelationships($criteria = null, $con = null)
+	public function getRepositoryTermRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserepositoryTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1987,36 +1987,36 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrepositoryTermRelationships === null) {
+		if ($this->collRepositoryTermRelationships === null) {
 			if ($this->isNew()) {
-			   $this->collrepositoryTermRelationships = array();
+			   $this->collRepositoryTermRelationships = array();
 			} else {
 
-				$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				repositoryTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collrepositoryTermRelationships = repositoryTermRelationshipPeer::doSelect($criteria, $con);
+				RepositoryTermRelationshipPeer::addSelectColumns($criteria);
+				$this->collRepositoryTermRelationships = RepositoryTermRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				repositoryTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastrepositoryTermRelationshipCriteria) || !$this->lastrepositoryTermRelationshipCriteria->equals($criteria)) {
-					$this->collrepositoryTermRelationships = repositoryTermRelationshipPeer::doSelect($criteria, $con);
+				RepositoryTermRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRepositoryTermRelationshipCriteria) || !$this->lastRepositoryTermRelationshipCriteria->equals($criteria)) {
+					$this->collRepositoryTermRelationships = RepositoryTermRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastrepositoryTermRelationshipCriteria = $criteria;
-		return $this->collrepositoryTermRelationships;
+		$this->lastRepositoryTermRelationshipCriteria = $criteria;
+		return $this->collRepositoryTermRelationships;
 	}
 
 	
-	public function countrepositoryTermRelationships($criteria = null, $distinct = false, $con = null)
+	public function countRepositoryTermRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaserepositoryTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2025,23 +2025,23 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+		$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-		return repositoryTermRelationshipPeer::doCount($criteria, $distinct, $con);
+		return RepositoryTermRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addrepositoryTermRelationship(repositoryTermRelationship $l)
+	public function addRepositoryTermRelationship(RepositoryTermRelationship $l)
 	{
-		$this->collrepositoryTermRelationships[] = $l;
+		$this->collRepositoryTermRelationships[] = $l;
 		$l->setRepository($this);
 	}
 
 
 	
-	public function getrepositoryTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
+	public function getRepositoryTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserepositoryTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2050,33 +2050,33 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrepositoryTermRelationships === null) {
+		if ($this->collRepositoryTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->collrepositoryTermRelationships = array();
+				$this->collRepositoryTermRelationships = array();
 			} else {
 
-				$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				$this->collrepositoryTermRelationships = repositoryTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+				$this->collRepositoryTermRelationships = RepositoryTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastrepositoryTermRelationshipCriteria) || !$this->lastrepositoryTermRelationshipCriteria->equals($criteria)) {
-				$this->collrepositoryTermRelationships = repositoryTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+			if (!isset($this->lastRepositoryTermRelationshipCriteria) || !$this->lastRepositoryTermRelationshipCriteria->equals($criteria)) {
+				$this->collRepositoryTermRelationships = RepositoryTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		}
-		$this->lastrepositoryTermRelationshipCriteria = $criteria;
+		$this->lastRepositoryTermRelationshipCriteria = $criteria;
 
-		return $this->collrepositoryTermRelationships;
+		return $this->collRepositoryTermRelationships;
 	}
 
 
 	
-	public function getrepositoryTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getRepositoryTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaserepositoryTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2085,40 +2085,40 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collrepositoryTermRelationships === null) {
+		if ($this->collRepositoryTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->collrepositoryTermRelationships = array();
+				$this->collRepositoryTermRelationships = array();
 			} else {
 
-				$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				$this->collrepositoryTermRelationships = repositoryTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collRepositoryTermRelationships = RepositoryTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastrepositoryTermRelationshipCriteria) || !$this->lastrepositoryTermRelationshipCriteria->equals($criteria)) {
-				$this->collrepositoryTermRelationships = repositoryTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastRepositoryTermRelationshipCriteria) || !$this->lastRepositoryTermRelationshipCriteria->equals($criteria)) {
+				$this->collRepositoryTermRelationships = RepositoryTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		}
-		$this->lastrepositoryTermRelationshipCriteria = $criteria;
+		$this->lastRepositoryTermRelationshipCriteria = $criteria;
 
-		return $this->collrepositoryTermRelationships;
+		return $this->collRepositoryTermRelationships;
 	}
 
 	
-	public function inituserTermRelationships()
+	public function initUserTermRelationships()
 	{
-		if ($this->colluserTermRelationships === null) {
-			$this->colluserTermRelationships = array();
+		if ($this->collUserTermRelationships === null) {
+			$this->collUserTermRelationships = array();
 		}
 	}
 
 	
-	public function getuserTermRelationships($criteria = null, $con = null)
+	public function getUserTermRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2127,36 +2127,36 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-			   $this->colluserTermRelationships = array();
+			   $this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				userTermRelationshipPeer::addSelectColumns($criteria);
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelect($criteria, $con);
+				UserTermRelationshipPeer::addSelectColumns($criteria);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				userTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-					$this->colluserTermRelationships = userTermRelationshipPeer::doSelect($criteria, $con);
+				UserTermRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+					$this->collUserTermRelationships = UserTermRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
-		return $this->colluserTermRelationships;
+		$this->lastUserTermRelationshipCriteria = $criteria;
+		return $this->collUserTermRelationships;
 	}
 
 	
-	public function countuserTermRelationships($criteria = null, $distinct = false, $con = null)
+	public function countUserTermRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2165,23 +2165,23 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+		$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-		return userTermRelationshipPeer::doCount($criteria, $distinct, $con);
+		return UserTermRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function adduserTermRelationship(userTermRelationship $l)
+	public function addUserTermRelationship(UserTermRelationship $l)
 	{
-		$this->colluserTermRelationships[] = $l;
+		$this->collUserTermRelationships[] = $l;
 		$l->setRepository($this);
 	}
 
 
 	
-	public function getuserTermRelationshipsJoinUser($criteria = null, $con = null)
+	public function getUserTermRelationshipsJoinUser($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2190,33 +2190,33 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colluserTermRelationships = array();
+				$this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinUser($criteria, $con);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinUser($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinUser($criteria, $con);
+			if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinUser($criteria, $con);
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
+		$this->lastUserTermRelationshipCriteria = $criteria;
 
-		return $this->colluserTermRelationships;
+		return $this->collUserTermRelationships;
 	}
 
 
 	
-	public function getuserTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
+	public function getUserTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2225,33 +2225,33 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colluserTermRelationships = array();
+				$this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+			if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
+		$this->lastUserTermRelationshipCriteria = $criteria;
 
-		return $this->colluserTermRelationships;
+		return $this->collUserTermRelationships;
 	}
 
 
 	
-	public function getuserTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getUserTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseuserTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2260,26 +2260,26 @@ abstract class BaseRepository extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->colluserTermRelationships === null) {
+		if ($this->collUserTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->colluserTermRelationships = array();
+				$this->collUserTermRelationships = array();
 			} else {
 
-				$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+				$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(userTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+			$criteria->add(UserTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
-			if (!isset($this->lastuserTermRelationshipCriteria) || !$this->lastuserTermRelationshipCriteria->equals($criteria)) {
-				$this->colluserTermRelationships = userTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastUserTermRelationshipCriteria) || !$this->lastUserTermRelationshipCriteria->equals($criteria)) {
+				$this->collUserTermRelationships = UserTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		}
-		$this->lastuserTermRelationshipCriteria = $criteria;
+		$this->lastUserTermRelationshipCriteria = $criteria;
 
-		return $this->colluserTermRelationships;
+		return $this->collUserTermRelationships;
 	}
 
 

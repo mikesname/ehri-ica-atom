@@ -28,7 +28,7 @@ class contextMenuComponent extends sfComponent
 
   public function execute()
   {
-    $this->informationObject = informationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->informationObject = InformationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
     if (!isset($this->informationObject))
     {
       return sfView::NONE;
@@ -66,9 +66,9 @@ class contextMenuComponent extends sfComponent
     //create collection tree
 
     $c = new Criteria();
-    $c->add(informationObjectPeer::TREE_ID, $this->informationObject->getTreeId());
-    $c->addAscendingOrderByColumn(informationObjectPeer::TREE_LEFT_ID);
-    $tree = informationObjectPeer::doSelect($c);
+    $c->add(InformationObjectPeer::TREE_ID, $this->informationObject->getTreeId());
+    $c->addAscendingOrderByColumn(InformationObjectPeer::TREE_LEFT_ID);
+    $tree = InformationObjectPeer::doSelect($c);
 
     $collection = array();
     $collection[null] = '';

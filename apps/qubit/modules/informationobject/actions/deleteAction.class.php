@@ -28,14 +28,14 @@ class deleteAction extends sfAction
   public function execute()
   {
 
-    $informationObject = informationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+    $informationObject = InformationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
 
     $this->forward404Unless($informationObject);
 
-    //delete existing entries for this informationObject from the search index
+    //delete existing entries for this information object from the search index
     SearchIndex::deleteIndexDocument($informationObject->getId());
 
-    //delete the informationObject record from the database
+    //delete the information object record from the database
     $informationObject->delete();
 
     return $this->redirect('informationobject/list');

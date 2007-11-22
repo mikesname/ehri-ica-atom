@@ -36,7 +36,7 @@ public function __toString()
 
 public function setTermRelationship($termId, $relationshipTypeId = NULL, $relationshipNote = NULL)
   {
-  $newTermRelationship = new repositoryTermRelationship();
+  $newTermRelationship = new RepositoryTermRelationship();
   $newTermRelationship->setTermId($termId);
   $newTermRelationship->setRelationshipTypeId($relationshipTypeId);
   $newTermRelationship->setRelationshipNote($relationshipNote);
@@ -47,14 +47,14 @@ public function setTermRelationship($termId, $relationshipTypeId = NULL, $relati
 public function getTermRelationships($relationshipTypeId = 'all')
   {
   $c = new Criteria();
-  $c->add(repositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
+  $c->add(RepositoryTermRelationshipPeer::REPOSITORY_ID, $this->getId());
 
   if ($relationshipTypeId != 'all')
     {
-    $c->add(repositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $relationshipTypeId);
+    $c->add(RepositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $relationshipTypeId);
     }
 
-  $relationships = repositoryTermRelationshipPeer::doSelect($c);
+  $relationships = RepositoryTermRelationshipPeer::doSelect($c);
   $termRelationships = array();
 
   foreach ($relationships as $relationship)
@@ -121,10 +121,10 @@ public function getCountry()
 public function getRepositoryHoldings()
 {
   $c = new Criteria();
-  $c->add(informationObjectPeer::REPOSITORY_ID, $this->getId());
-  $c->add(informationObjectPeer::TREE_PARENT_ID, null, Criteria::ISNULL);
-  $c->addAscendingOrderByColumn(informationObjectPeer::TITLE);
-  $holdings = informationObjectPeer::doSelect($c);
+  $c->add(InformationObjectPeer::REPOSITORY_ID, $this->getId());
+  $c->add(InformationObjectPeer::TREE_PARENT_ID, null, Criteria::ISNULL);
+  $c->addAscendingOrderByColumn(InformationObjectPeer::TITLE);
+  $holdings = InformationObjectPeer::doSelect($c);
 
   return $holdings;
 }

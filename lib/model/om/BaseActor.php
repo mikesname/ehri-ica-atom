@@ -111,34 +111,34 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 	protected $lastNoteCriteria = null;
 
 	
-	protected $collactorNames;
+	protected $collActorNames;
 
 	
-	protected $lastactorNameCriteria = null;
+	protected $lastActorNameCriteria = null;
 
 	
-	protected $collactorRecursiveRelationshipsRelatedByActorId;
+	protected $collActorRecursiveRelationshipsRelatedByActorId;
 
 	
-	protected $lastactorRecursiveRelationshipRelatedByActorIdCriteria = null;
+	protected $lastActorRecursiveRelationshipRelatedByActorIdCriteria = null;
 
 	
-	protected $collactorRecursiveRelationshipsRelatedByRelatedActorId;
+	protected $collActorRecursiveRelationshipsRelatedByRelatedActorId;
 
 	
-	protected $lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria = null;
+	protected $lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria = null;
 
 	
-	protected $collactorTermRelationships;
+	protected $collActorTermRelationships;
 
 	
-	protected $lastactorTermRelationshipCriteria = null;
+	protected $lastActorTermRelationshipCriteria = null;
 
 	
-	protected $collcontactInformations;
+	protected $collContactInformations;
 
 	
-	protected $lastcontactInformationCriteria = null;
+	protected $lastContactInformationCriteria = null;
 
 	
 	protected $collRepositorys;
@@ -151,6 +151,12 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 	
 	protected $lastEventCriteria = null;
+
+	
+	protected $collRightActorRelationships;
+
+	
+	protected $lastRightActorRelationshipCriteria = null;
 
 	
 	protected $collUsers;
@@ -869,40 +875,40 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 				}
 			}
 
-			if ($this->collactorNames !== null) {
-				foreach($this->collactorNames as $referrerFK) {
+			if ($this->collActorNames !== null) {
+				foreach($this->collActorNames as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collactorRecursiveRelationshipsRelatedByActorId !== null) {
-				foreach($this->collactorRecursiveRelationshipsRelatedByActorId as $referrerFK) {
+			if ($this->collActorRecursiveRelationshipsRelatedByActorId !== null) {
+				foreach($this->collActorRecursiveRelationshipsRelatedByActorId as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collactorRecursiveRelationshipsRelatedByRelatedActorId !== null) {
-				foreach($this->collactorRecursiveRelationshipsRelatedByRelatedActorId as $referrerFK) {
+			if ($this->collActorRecursiveRelationshipsRelatedByRelatedActorId !== null) {
+				foreach($this->collActorRecursiveRelationshipsRelatedByRelatedActorId as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collactorTermRelationships !== null) {
-				foreach($this->collactorTermRelationships as $referrerFK) {
+			if ($this->collActorTermRelationships !== null) {
+				foreach($this->collActorTermRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
 				}
 			}
 
-			if ($this->collcontactInformations !== null) {
-				foreach($this->collcontactInformations as $referrerFK) {
+			if ($this->collContactInformations !== null) {
+				foreach($this->collContactInformations as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -919,6 +925,14 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 			if ($this->collEvents !== null) {
 				foreach($this->collEvents as $referrerFK) {
+					if (!$referrerFK->isDeleted()) {
+						$affectedRows += $referrerFK->save($con);
+					}
+				}
+			}
+
+			if ($this->collRightActorRelationships !== null) {
+				foreach($this->collRightActorRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -1002,40 +1016,40 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 					}
 				}
 
-				if ($this->collactorNames !== null) {
-					foreach($this->collactorNames as $referrerFK) {
+				if ($this->collActorNames !== null) {
+					foreach($this->collActorNames as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collactorRecursiveRelationshipsRelatedByActorId !== null) {
-					foreach($this->collactorRecursiveRelationshipsRelatedByActorId as $referrerFK) {
+				if ($this->collActorRecursiveRelationshipsRelatedByActorId !== null) {
+					foreach($this->collActorRecursiveRelationshipsRelatedByActorId as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collactorRecursiveRelationshipsRelatedByRelatedActorId !== null) {
-					foreach($this->collactorRecursiveRelationshipsRelatedByRelatedActorId as $referrerFK) {
+				if ($this->collActorRecursiveRelationshipsRelatedByRelatedActorId !== null) {
+					foreach($this->collActorRecursiveRelationshipsRelatedByRelatedActorId as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collactorTermRelationships !== null) {
-					foreach($this->collactorTermRelationships as $referrerFK) {
+				if ($this->collActorTermRelationships !== null) {
+					foreach($this->collActorTermRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
 					}
 				}
 
-				if ($this->collcontactInformations !== null) {
-					foreach($this->collcontactInformations as $referrerFK) {
+				if ($this->collContactInformations !== null) {
+					foreach($this->collContactInformations as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1052,6 +1066,14 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 				if ($this->collEvents !== null) {
 					foreach($this->collEvents as $referrerFK) {
+						if (!$referrerFK->validate($columns)) {
+							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
+						}
+					}
+				}
+
+				if ($this->collRightActorRelationships !== null) {
+					foreach($this->collRightActorRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -1401,24 +1423,24 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 				$copyObj->addNote($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getactorNames() as $relObj) {
-				$copyObj->addactorName($relObj->copy($deepCopy));
+			foreach($this->getActorNames() as $relObj) {
+				$copyObj->addActorName($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getactorRecursiveRelationshipsRelatedByActorId() as $relObj) {
-				$copyObj->addactorRecursiveRelationshipRelatedByActorId($relObj->copy($deepCopy));
+			foreach($this->getActorRecursiveRelationshipsRelatedByActorId() as $relObj) {
+				$copyObj->addActorRecursiveRelationshipRelatedByActorId($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getactorRecursiveRelationshipsRelatedByRelatedActorId() as $relObj) {
-				$copyObj->addactorRecursiveRelationshipRelatedByRelatedActorId($relObj->copy($deepCopy));
+			foreach($this->getActorRecursiveRelationshipsRelatedByRelatedActorId() as $relObj) {
+				$copyObj->addActorRecursiveRelationshipRelatedByRelatedActorId($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getactorTermRelationships() as $relObj) {
-				$copyObj->addactorTermRelationship($relObj->copy($deepCopy));
+			foreach($this->getActorTermRelationships() as $relObj) {
+				$copyObj->addActorTermRelationship($relObj->copy($deepCopy));
 			}
 
-			foreach($this->getcontactInformations() as $relObj) {
-				$copyObj->addcontactInformation($relObj->copy($deepCopy));
+			foreach($this->getContactInformations() as $relObj) {
+				$copyObj->addContactInformation($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getRepositorys() as $relObj) {
@@ -1427,6 +1449,10 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 			foreach($this->getEvents() as $relObj) {
 				$copyObj->addEvent($relObj->copy($deepCopy));
+			}
+
+			foreach($this->getRightActorRelationships() as $relObj) {
+				$copyObj->addRightActorRelationship($relObj->copy($deepCopy));
 			}
 
 			foreach($this->getUsers() as $relObj) {
@@ -1620,7 +1646,7 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 
 	
-	public function getNotesJoininformationObject($criteria = null, $con = null)
+	public function getNotesJoinInformationObject($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseNotePeer.php';
 		if ($criteria === null) {
@@ -1638,14 +1664,14 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 				$criteria->add(NotePeer::ACTOR_ID, $this->getId());
 
-				$this->collNotes = NotePeer::doSelectJoininformationObject($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(NotePeer::ACTOR_ID, $this->getId());
 
 			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoininformationObject($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		}
 		$this->lastNoteCriteria = $criteria;
@@ -1690,7 +1716,7 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 
 	
-	public function getNotesJoinfunctionDescription($criteria = null, $con = null)
+	public function getNotesJoinFunctionDescription($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseNotePeer.php';
 		if ($criteria === null) {
@@ -1708,14 +1734,14 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 				$criteria->add(NotePeer::ACTOR_ID, $this->getId());
 
-				$this->collNotes = NotePeer::doSelectJoinfunctionDescription($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(NotePeer::ACTOR_ID, $this->getId());
 
 			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinfunctionDescription($criteria, $con);
+				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
 			}
 		}
 		$this->lastNoteCriteria = $criteria;
@@ -1794,17 +1820,17 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initactorNames()
+	public function initActorNames()
 	{
-		if ($this->collactorNames === null) {
-			$this->collactorNames = array();
+		if ($this->collActorNames === null) {
+			$this->collActorNames = array();
 		}
 	}
 
 	
-	public function getactorNames($criteria = null, $con = null)
+	public function getActorNames($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorNamePeer.php';
+				include_once 'lib/model/om/BaseActorNamePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1813,36 +1839,36 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorNames === null) {
+		if ($this->collActorNames === null) {
 			if ($this->isNew()) {
-			   $this->collactorNames = array();
+			   $this->collActorNames = array();
 			} else {
 
-				$criteria->add(actorNamePeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorNamePeer::ACTOR_ID, $this->getId());
 
-				actorNamePeer::addSelectColumns($criteria);
-				$this->collactorNames = actorNamePeer::doSelect($criteria, $con);
+				ActorNamePeer::addSelectColumns($criteria);
+				$this->collActorNames = ActorNamePeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(actorNamePeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorNamePeer::ACTOR_ID, $this->getId());
 
-				actorNamePeer::addSelectColumns($criteria);
-				if (!isset($this->lastactorNameCriteria) || !$this->lastactorNameCriteria->equals($criteria)) {
-					$this->collactorNames = actorNamePeer::doSelect($criteria, $con);
+				ActorNamePeer::addSelectColumns($criteria);
+				if (!isset($this->lastActorNameCriteria) || !$this->lastActorNameCriteria->equals($criteria)) {
+					$this->collActorNames = ActorNamePeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastactorNameCriteria = $criteria;
-		return $this->collactorNames;
+		$this->lastActorNameCriteria = $criteria;
+		return $this->collActorNames;
 	}
 
 	
-	public function countactorNames($criteria = null, $distinct = false, $con = null)
+	public function countActorNames($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorNamePeer.php';
+				include_once 'lib/model/om/BaseActorNamePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1851,23 +1877,23 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(actorNamePeer::ACTOR_ID, $this->getId());
+		$criteria->add(ActorNamePeer::ACTOR_ID, $this->getId());
 
-		return actorNamePeer::doCount($criteria, $distinct, $con);
+		return ActorNamePeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addactorName(actorName $l)
+	public function addActorName(ActorName $l)
 	{
-		$this->collactorNames[] = $l;
+		$this->collActorNames[] = $l;
 		$l->setActor($this);
 	}
 
 
 	
-	public function getactorNamesJoinTerm($criteria = null, $con = null)
+	public function getActorNamesJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorNamePeer.php';
+				include_once 'lib/model/om/BaseActorNamePeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1876,40 +1902,40 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorNames === null) {
+		if ($this->collActorNames === null) {
 			if ($this->isNew()) {
-				$this->collactorNames = array();
+				$this->collActorNames = array();
 			} else {
 
-				$criteria->add(actorNamePeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorNamePeer::ACTOR_ID, $this->getId());
 
-				$this->collactorNames = actorNamePeer::doSelectJoinTerm($criteria, $con);
+				$this->collActorNames = ActorNamePeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(actorNamePeer::ACTOR_ID, $this->getId());
+			$criteria->add(ActorNamePeer::ACTOR_ID, $this->getId());
 
-			if (!isset($this->lastactorNameCriteria) || !$this->lastactorNameCriteria->equals($criteria)) {
-				$this->collactorNames = actorNamePeer::doSelectJoinTerm($criteria, $con);
+			if (!isset($this->lastActorNameCriteria) || !$this->lastActorNameCriteria->equals($criteria)) {
+				$this->collActorNames = ActorNamePeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastactorNameCriteria = $criteria;
+		$this->lastActorNameCriteria = $criteria;
 
-		return $this->collactorNames;
+		return $this->collActorNames;
 	}
 
 	
-	public function initactorRecursiveRelationshipsRelatedByActorId()
+	public function initActorRecursiveRelationshipsRelatedByActorId()
 	{
-		if ($this->collactorRecursiveRelationshipsRelatedByActorId === null) {
-			$this->collactorRecursiveRelationshipsRelatedByActorId = array();
+		if ($this->collActorRecursiveRelationshipsRelatedByActorId === null) {
+			$this->collActorRecursiveRelationshipsRelatedByActorId = array();
 		}
 	}
 
 	
-	public function getactorRecursiveRelationshipsRelatedByActorId($criteria = null, $con = null)
+	public function getActorRecursiveRelationshipsRelatedByActorId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorRecursiveRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1918,36 +1944,36 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorRecursiveRelationshipsRelatedByActorId === null) {
+		if ($this->collActorRecursiveRelationshipsRelatedByActorId === null) {
 			if ($this->isNew()) {
-			   $this->collactorRecursiveRelationshipsRelatedByActorId = array();
+			   $this->collActorRecursiveRelationshipsRelatedByActorId = array();
 			} else {
 
-				$criteria->add(actorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
 
-				actorRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collactorRecursiveRelationshipsRelatedByActorId = actorRecursiveRelationshipPeer::doSelect($criteria, $con);
+				ActorRecursiveRelationshipPeer::addSelectColumns($criteria);
+				$this->collActorRecursiveRelationshipsRelatedByActorId = ActorRecursiveRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(actorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
 
-				actorRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastactorRecursiveRelationshipRelatedByActorIdCriteria) || !$this->lastactorRecursiveRelationshipRelatedByActorIdCriteria->equals($criteria)) {
-					$this->collactorRecursiveRelationshipsRelatedByActorId = actorRecursiveRelationshipPeer::doSelect($criteria, $con);
+				ActorRecursiveRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastActorRecursiveRelationshipRelatedByActorIdCriteria) || !$this->lastActorRecursiveRelationshipRelatedByActorIdCriteria->equals($criteria)) {
+					$this->collActorRecursiveRelationshipsRelatedByActorId = ActorRecursiveRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastactorRecursiveRelationshipRelatedByActorIdCriteria = $criteria;
-		return $this->collactorRecursiveRelationshipsRelatedByActorId;
+		$this->lastActorRecursiveRelationshipRelatedByActorIdCriteria = $criteria;
+		return $this->collActorRecursiveRelationshipsRelatedByActorId;
 	}
 
 	
-	public function countactorRecursiveRelationshipsRelatedByActorId($criteria = null, $distinct = false, $con = null)
+	public function countActorRecursiveRelationshipsRelatedByActorId($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorRecursiveRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1956,23 +1982,23 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(actorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
+		$criteria->add(ActorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
 
-		return actorRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
+		return ActorRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addactorRecursiveRelationshipRelatedByActorId(actorRecursiveRelationship $l)
+	public function addActorRecursiveRelationshipRelatedByActorId(ActorRecursiveRelationship $l)
 	{
-		$this->collactorRecursiveRelationshipsRelatedByActorId[] = $l;
+		$this->collActorRecursiveRelationshipsRelatedByActorId[] = $l;
 		$l->setActorRelatedByActorId($this);
 	}
 
 
 	
-	public function getactorRecursiveRelationshipsRelatedByActorIdJoinTerm($criteria = null, $con = null)
+	public function getActorRecursiveRelationshipsRelatedByActorIdJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorRecursiveRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -1981,40 +2007,40 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorRecursiveRelationshipsRelatedByActorId === null) {
+		if ($this->collActorRecursiveRelationshipsRelatedByActorId === null) {
 			if ($this->isNew()) {
-				$this->collactorRecursiveRelationshipsRelatedByActorId = array();
+				$this->collActorRecursiveRelationshipsRelatedByActorId = array();
 			} else {
 
-				$criteria->add(actorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
 
-				$this->collactorRecursiveRelationshipsRelatedByActorId = actorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
+				$this->collActorRecursiveRelationshipsRelatedByActorId = ActorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(actorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
+			$criteria->add(ActorRecursiveRelationshipPeer::ACTOR_ID, $this->getId());
 
-			if (!isset($this->lastactorRecursiveRelationshipRelatedByActorIdCriteria) || !$this->lastactorRecursiveRelationshipRelatedByActorIdCriteria->equals($criteria)) {
-				$this->collactorRecursiveRelationshipsRelatedByActorId = actorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
+			if (!isset($this->lastActorRecursiveRelationshipRelatedByActorIdCriteria) || !$this->lastActorRecursiveRelationshipRelatedByActorIdCriteria->equals($criteria)) {
+				$this->collActorRecursiveRelationshipsRelatedByActorId = ActorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastactorRecursiveRelationshipRelatedByActorIdCriteria = $criteria;
+		$this->lastActorRecursiveRelationshipRelatedByActorIdCriteria = $criteria;
 
-		return $this->collactorRecursiveRelationshipsRelatedByActorId;
+		return $this->collActorRecursiveRelationshipsRelatedByActorId;
 	}
 
 	
-	public function initactorRecursiveRelationshipsRelatedByRelatedActorId()
+	public function initActorRecursiveRelationshipsRelatedByRelatedActorId()
 	{
-		if ($this->collactorRecursiveRelationshipsRelatedByRelatedActorId === null) {
-			$this->collactorRecursiveRelationshipsRelatedByRelatedActorId = array();
+		if ($this->collActorRecursiveRelationshipsRelatedByRelatedActorId === null) {
+			$this->collActorRecursiveRelationshipsRelatedByRelatedActorId = array();
 		}
 	}
 
 	
-	public function getactorRecursiveRelationshipsRelatedByRelatedActorId($criteria = null, $con = null)
+	public function getActorRecursiveRelationshipsRelatedByRelatedActorId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorRecursiveRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2023,36 +2049,36 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorRecursiveRelationshipsRelatedByRelatedActorId === null) {
+		if ($this->collActorRecursiveRelationshipsRelatedByRelatedActorId === null) {
 			if ($this->isNew()) {
-			   $this->collactorRecursiveRelationshipsRelatedByRelatedActorId = array();
+			   $this->collActorRecursiveRelationshipsRelatedByRelatedActorId = array();
 			} else {
 
-				$criteria->add(actorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
+				$criteria->add(ActorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
 
-				actorRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collactorRecursiveRelationshipsRelatedByRelatedActorId = actorRecursiveRelationshipPeer::doSelect($criteria, $con);
+				ActorRecursiveRelationshipPeer::addSelectColumns($criteria);
+				$this->collActorRecursiveRelationshipsRelatedByRelatedActorId = ActorRecursiveRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(actorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
+				$criteria->add(ActorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
 
-				actorRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria) || !$this->lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria->equals($criteria)) {
-					$this->collactorRecursiveRelationshipsRelatedByRelatedActorId = actorRecursiveRelationshipPeer::doSelect($criteria, $con);
+				ActorRecursiveRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria) || !$this->lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria->equals($criteria)) {
+					$this->collActorRecursiveRelationshipsRelatedByRelatedActorId = ActorRecursiveRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria = $criteria;
-		return $this->collactorRecursiveRelationshipsRelatedByRelatedActorId;
+		$this->lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria = $criteria;
+		return $this->collActorRecursiveRelationshipsRelatedByRelatedActorId;
 	}
 
 	
-	public function countactorRecursiveRelationshipsRelatedByRelatedActorId($criteria = null, $distinct = false, $con = null)
+	public function countActorRecursiveRelationshipsRelatedByRelatedActorId($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorRecursiveRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2061,23 +2087,23 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(actorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
+		$criteria->add(ActorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
 
-		return actorRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
+		return ActorRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addactorRecursiveRelationshipRelatedByRelatedActorId(actorRecursiveRelationship $l)
+	public function addActorRecursiveRelationshipRelatedByRelatedActorId(ActorRecursiveRelationship $l)
 	{
-		$this->collactorRecursiveRelationshipsRelatedByRelatedActorId[] = $l;
+		$this->collActorRecursiveRelationshipsRelatedByRelatedActorId[] = $l;
 		$l->setActorRelatedByRelatedActorId($this);
 	}
 
 
 	
-	public function getactorRecursiveRelationshipsRelatedByRelatedActorIdJoinTerm($criteria = null, $con = null)
+	public function getActorRecursiveRelationshipsRelatedByRelatedActorIdJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorRecursiveRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2086,40 +2112,40 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorRecursiveRelationshipsRelatedByRelatedActorId === null) {
+		if ($this->collActorRecursiveRelationshipsRelatedByRelatedActorId === null) {
 			if ($this->isNew()) {
-				$this->collactorRecursiveRelationshipsRelatedByRelatedActorId = array();
+				$this->collActorRecursiveRelationshipsRelatedByRelatedActorId = array();
 			} else {
 
-				$criteria->add(actorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
+				$criteria->add(ActorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
 
-				$this->collactorRecursiveRelationshipsRelatedByRelatedActorId = actorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
+				$this->collActorRecursiveRelationshipsRelatedByRelatedActorId = ActorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(actorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
+			$criteria->add(ActorRecursiveRelationshipPeer::RELATED_ACTOR_ID, $this->getId());
 
-			if (!isset($this->lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria) || !$this->lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria->equals($criteria)) {
-				$this->collactorRecursiveRelationshipsRelatedByRelatedActorId = actorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
+			if (!isset($this->lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria) || !$this->lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria->equals($criteria)) {
+				$this->collActorRecursiveRelationshipsRelatedByRelatedActorId = ActorRecursiveRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastactorRecursiveRelationshipRelatedByRelatedActorIdCriteria = $criteria;
+		$this->lastActorRecursiveRelationshipRelatedByRelatedActorIdCriteria = $criteria;
 
-		return $this->collactorRecursiveRelationshipsRelatedByRelatedActorId;
+		return $this->collActorRecursiveRelationshipsRelatedByRelatedActorId;
 	}
 
 	
-	public function initactorTermRelationships()
+	public function initActorTermRelationships()
 	{
-		if ($this->collactorTermRelationships === null) {
-			$this->collactorTermRelationships = array();
+		if ($this->collActorTermRelationships === null) {
+			$this->collActorTermRelationships = array();
 		}
 	}
 
 	
-	public function getactorTermRelationships($criteria = null, $con = null)
+	public function getActorTermRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2128,36 +2154,36 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorTermRelationships === null) {
+		if ($this->collActorTermRelationships === null) {
 			if ($this->isNew()) {
-			   $this->collactorTermRelationships = array();
+			   $this->collActorTermRelationships = array();
 			} else {
 
-				$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-				actorTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collactorTermRelationships = actorTermRelationshipPeer::doSelect($criteria, $con);
+				ActorTermRelationshipPeer::addSelectColumns($criteria);
+				$this->collActorTermRelationships = ActorTermRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-				actorTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastactorTermRelationshipCriteria) || !$this->lastactorTermRelationshipCriteria->equals($criteria)) {
-					$this->collactorTermRelationships = actorTermRelationshipPeer::doSelect($criteria, $con);
+				ActorTermRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastActorTermRelationshipCriteria) || !$this->lastActorTermRelationshipCriteria->equals($criteria)) {
+					$this->collActorTermRelationships = ActorTermRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastactorTermRelationshipCriteria = $criteria;
-		return $this->collactorTermRelationships;
+		$this->lastActorTermRelationshipCriteria = $criteria;
+		return $this->collActorTermRelationships;
 	}
 
 	
-	public function countactorTermRelationships($criteria = null, $distinct = false, $con = null)
+	public function countActorTermRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2166,23 +2192,23 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+		$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-		return actorTermRelationshipPeer::doCount($criteria, $distinct, $con);
+		return ActorTermRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addactorTermRelationship(actorTermRelationship $l)
+	public function addActorTermRelationship(ActorTermRelationship $l)
 	{
-		$this->collactorTermRelationships[] = $l;
+		$this->collActorTermRelationships[] = $l;
 		$l->setActor($this);
 	}
 
 
 	
-	public function getactorTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
+	public function getActorTermRelationshipsJoinTermRelatedByTermId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2191,33 +2217,33 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorTermRelationships === null) {
+		if ($this->collActorTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->collactorTermRelationships = array();
+				$this->collActorTermRelationships = array();
 			} else {
 
-				$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-				$this->collactorTermRelationships = actorTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+				$this->collActorTermRelationships = ActorTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+			$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-			if (!isset($this->lastactorTermRelationshipCriteria) || !$this->lastactorTermRelationshipCriteria->equals($criteria)) {
-				$this->collactorTermRelationships = actorTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
+			if (!isset($this->lastActorTermRelationshipCriteria) || !$this->lastActorTermRelationshipCriteria->equals($criteria)) {
+				$this->collActorTermRelationships = ActorTermRelationshipPeer::doSelectJoinTermRelatedByTermId($criteria, $con);
 			}
 		}
-		$this->lastactorTermRelationshipCriteria = $criteria;
+		$this->lastActorTermRelationshipCriteria = $criteria;
 
-		return $this->collactorTermRelationships;
+		return $this->collActorTermRelationships;
 	}
 
 
 	
-	public function getactorTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
+	public function getActorTermRelationshipsJoinTermRelatedByRelationshipTypeId($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseactorTermRelationshipPeer.php';
+				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2226,40 +2252,40 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collactorTermRelationships === null) {
+		if ($this->collActorTermRelationships === null) {
 			if ($this->isNew()) {
-				$this->collactorTermRelationships = array();
+				$this->collActorTermRelationships = array();
 			} else {
 
-				$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-				$this->collactorTermRelationships = actorTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+				$this->collActorTermRelationships = ActorTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(actorTermRelationshipPeer::ACTOR_ID, $this->getId());
+			$criteria->add(ActorTermRelationshipPeer::ACTOR_ID, $this->getId());
 
-			if (!isset($this->lastactorTermRelationshipCriteria) || !$this->lastactorTermRelationshipCriteria->equals($criteria)) {
-				$this->collactorTermRelationships = actorTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
+			if (!isset($this->lastActorTermRelationshipCriteria) || !$this->lastActorTermRelationshipCriteria->equals($criteria)) {
+				$this->collActorTermRelationships = ActorTermRelationshipPeer::doSelectJoinTermRelatedByRelationshipTypeId($criteria, $con);
 			}
 		}
-		$this->lastactorTermRelationshipCriteria = $criteria;
+		$this->lastActorTermRelationshipCriteria = $criteria;
 
-		return $this->collactorTermRelationships;
+		return $this->collActorTermRelationships;
 	}
 
 	
-	public function initcontactInformations()
+	public function initContactInformations()
 	{
-		if ($this->collcontactInformations === null) {
-			$this->collcontactInformations = array();
+		if ($this->collContactInformations === null) {
+			$this->collContactInformations = array();
 		}
 	}
 
 	
-	public function getcontactInformations($criteria = null, $con = null)
+	public function getContactInformations($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BasecontactInformationPeer.php';
+				include_once 'lib/model/om/BaseContactInformationPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2268,36 +2294,36 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collcontactInformations === null) {
+		if ($this->collContactInformations === null) {
 			if ($this->isNew()) {
-			   $this->collcontactInformations = array();
+			   $this->collContactInformations = array();
 			} else {
 
-				$criteria->add(contactInformationPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ContactInformationPeer::ACTOR_ID, $this->getId());
 
-				contactInformationPeer::addSelectColumns($criteria);
-				$this->collcontactInformations = contactInformationPeer::doSelect($criteria, $con);
+				ContactInformationPeer::addSelectColumns($criteria);
+				$this->collContactInformations = ContactInformationPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(contactInformationPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ContactInformationPeer::ACTOR_ID, $this->getId());
 
-				contactInformationPeer::addSelectColumns($criteria);
-				if (!isset($this->lastcontactInformationCriteria) || !$this->lastcontactInformationCriteria->equals($criteria)) {
-					$this->collcontactInformations = contactInformationPeer::doSelect($criteria, $con);
+				ContactInformationPeer::addSelectColumns($criteria);
+				if (!isset($this->lastContactInformationCriteria) || !$this->lastContactInformationCriteria->equals($criteria)) {
+					$this->collContactInformations = ContactInformationPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastcontactInformationCriteria = $criteria;
-		return $this->collcontactInformations;
+		$this->lastContactInformationCriteria = $criteria;
+		return $this->collContactInformations;
 	}
 
 	
-	public function countcontactInformations($criteria = null, $distinct = false, $con = null)
+	public function countContactInformations($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BasecontactInformationPeer.php';
+				include_once 'lib/model/om/BaseContactInformationPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2306,23 +2332,23 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(contactInformationPeer::ACTOR_ID, $this->getId());
+		$criteria->add(ContactInformationPeer::ACTOR_ID, $this->getId());
 
-		return contactInformationPeer::doCount($criteria, $distinct, $con);
+		return ContactInformationPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addcontactInformation(contactInformation $l)
+	public function addContactInformation(ContactInformation $l)
 	{
-		$this->collcontactInformations[] = $l;
+		$this->collContactInformations[] = $l;
 		$l->setActor($this);
 	}
 
 
 	
-	public function getcontactInformationsJoinTerm($criteria = null, $con = null)
+	public function getContactInformationsJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BasecontactInformationPeer.php';
+				include_once 'lib/model/om/BaseContactInformationPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -2331,26 +2357,26 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collcontactInformations === null) {
+		if ($this->collContactInformations === null) {
 			if ($this->isNew()) {
-				$this->collcontactInformations = array();
+				$this->collContactInformations = array();
 			} else {
 
-				$criteria->add(contactInformationPeer::ACTOR_ID, $this->getId());
+				$criteria->add(ContactInformationPeer::ACTOR_ID, $this->getId());
 
-				$this->collcontactInformations = contactInformationPeer::doSelectJoinTerm($criteria, $con);
+				$this->collContactInformations = ContactInformationPeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(contactInformationPeer::ACTOR_ID, $this->getId());
+			$criteria->add(ContactInformationPeer::ACTOR_ID, $this->getId());
 
-			if (!isset($this->lastcontactInformationCriteria) || !$this->lastcontactInformationCriteria->equals($criteria)) {
-				$this->collcontactInformations = contactInformationPeer::doSelectJoinTerm($criteria, $con);
+			if (!isset($this->lastContactInformationCriteria) || !$this->lastContactInformationCriteria->equals($criteria)) {
+				$this->collContactInformations = ContactInformationPeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastcontactInformationCriteria = $criteria;
+		$this->lastContactInformationCriteria = $criteria;
 
-		return $this->collcontactInformations;
+		return $this->collContactInformations;
 	}
 
 	
@@ -2670,7 +2696,7 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 
 	
-	public function getEventsJoininformationObject($criteria = null, $con = null)
+	public function getEventsJoinInformationObject($criteria = null, $con = null)
 	{
 				include_once 'lib/model/om/BaseEventPeer.php';
 		if ($criteria === null) {
@@ -2688,19 +2714,159 @@ abstract class BaseActor extends BaseObject  implements Persistent {
 
 				$criteria->add(EventPeer::ACTOR_ID, $this->getId());
 
-				$this->collEvents = EventPeer::doSelectJoininformationObject($criteria, $con);
+				$this->collEvents = EventPeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		} else {
 									
 			$criteria->add(EventPeer::ACTOR_ID, $this->getId());
 
 			if (!isset($this->lastEventCriteria) || !$this->lastEventCriteria->equals($criteria)) {
-				$this->collEvents = EventPeer::doSelectJoininformationObject($criteria, $con);
+				$this->collEvents = EventPeer::doSelectJoinInformationObject($criteria, $con);
 			}
 		}
 		$this->lastEventCriteria = $criteria;
 
 		return $this->collEvents;
+	}
+
+	
+	public function initRightActorRelationships()
+	{
+		if ($this->collRightActorRelationships === null) {
+			$this->collRightActorRelationships = array();
+		}
+	}
+
+	
+	public function getRightActorRelationships($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRightActorRelationships === null) {
+			if ($this->isNew()) {
+			   $this->collRightActorRelationships = array();
+			} else {
+
+				$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+				RightActorRelationshipPeer::addSelectColumns($criteria);
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelect($criteria, $con);
+			}
+		} else {
+						if (!$this->isNew()) {
+												
+
+				$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+				RightActorRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
+					$this->collRightActorRelationships = RightActorRelationshipPeer::doSelect($criteria, $con);
+				}
+			}
+		}
+		$this->lastRightActorRelationshipCriteria = $criteria;
+		return $this->collRightActorRelationships;
+	}
+
+	
+	public function countRightActorRelationships($criteria = null, $distinct = false, $con = null)
+	{
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+		return RightActorRelationshipPeer::doCount($criteria, $distinct, $con);
+	}
+
+	
+	public function addRightActorRelationship(RightActorRelationship $l)
+	{
+		$this->collRightActorRelationships[] = $l;
+		$l->setActor($this);
+	}
+
+
+	
+	public function getRightActorRelationshipsJoinRight($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRightActorRelationships === null) {
+			if ($this->isNew()) {
+				$this->collRightActorRelationships = array();
+			} else {
+
+				$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinRight($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+			if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinRight($criteria, $con);
+			}
+		}
+		$this->lastRightActorRelationshipCriteria = $criteria;
+
+		return $this->collRightActorRelationships;
+	}
+
+
+	
+	public function getRightActorRelationshipsJoinTerm($criteria = null, $con = null)
+	{
+				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
+		if ($criteria === null) {
+			$criteria = new Criteria();
+		}
+		elseif ($criteria instanceof Criteria)
+		{
+			$criteria = clone $criteria;
+		}
+
+		if ($this->collRightActorRelationships === null) {
+			if ($this->isNew()) {
+				$this->collRightActorRelationships = array();
+			} else {
+
+				$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinTerm($criteria, $con);
+			}
+		} else {
+									
+			$criteria->add(RightActorRelationshipPeer::ACTOR_ID, $this->getId());
+
+			if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
+				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinTerm($criteria, $con);
+			}
+		}
+		$this->lastRightActorRelationshipCriteria = $criteria;
+
+		return $this->collRightActorRelationships;
 	}
 
 	

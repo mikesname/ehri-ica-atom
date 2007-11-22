@@ -70,7 +70,7 @@ class browseAction extends sfAction
       $this->term = TermPeer::retrieveByPk($this->termId);
       $this->taxonomyName = $this->term->getTaxonomy();
       $this->taxonomyId = $this->term->getTaxonomyId();
-      $this->informationObjects = informationObjectTermRelationshipPeer::getTermBrowseList($this->termId, $this->sort);
+      $this->informationObjects = InformationObjectTermRelationshipPeer::getTermBrowseList($this->termId, $this->sort);
 
       $this->setTemplate('browseTerm');
       }

@@ -31,13 +31,13 @@ class createAction extends sfAction
 
   //Other Forms of Name
   $this->otherNames = null;
-  $this->newName = new actorName();
+  $this->newName = new ActorName();
 
   //TermManyToManyRelationships
   $this->languages = null;
   $this->scripts = null;
-  $this->newLanguage = new actorTermRelationship();
-  $this->newScript = new actorTermRelationship();
+  $this->newLanguage = new ActorTermRelationship();
+  $this->newScript = new ActorTermRelationship();
 
   //Notes
   $this->notes = null;
@@ -56,7 +56,7 @@ class createAction extends sfAction
       $this->setTemplate('editISAAR');
       break;
     default :
-      $this->setTemplate('edit');
+      $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
       break;
     }
 

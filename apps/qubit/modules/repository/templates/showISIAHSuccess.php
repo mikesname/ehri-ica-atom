@@ -1,231 +1,213 @@
-﻿<div class="pageTitle">view archival institution</div>
+﻿<div class="pageTitle"><?php echo __('view').' '.__('archival institution')?></div>
 
 <table class="detail">
 <tbody>
 
-<?php if ($editCredentials)
-    {
-    echo '<tr><td colspan="2" class="headerCell">'.link_to($repository, 'repository/edit/?id='.$repository->getId()).'</b></td></tr>' ;
-    }
-  else
-    {
-    echo '<tr><td colspan="2" class="headerCell">'.$repository.'</b></td></tr>' ;
-    }
-?>
+<?php if ($editCredentials): ?>
+  <tr><td colspan="2" class="headerCell">
+  <?php echo link_to($repository, 'repository/edit/?id='.$repository->getId())?>
+  </td></tr>
+<?php else: ?>
+  <tr><td colspan="2" class="headerCell">
+  <?php echo $repository ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getIdentifier()) { echo
-'<tr><th>Identifier: </th>
-<td>'.$repository->getIdentifier().'</td></tr>' ;} ?>
+<?php if ($repository->getIdentifier()): ?>
+  <tr><th><?php echo __('identifier')?>: </th>
+  <td><?php echo $repository->getIdentifier()?>
+  </td></tr>
+<?php endif; ?>
 
-<tr><th>Authorized Form of Name:</th><td><?php echo $repository ?></td></th>
+<tr><th><?php echo __('authorized form of name')?>:</th><td><?php echo $repository ?></td></th>
 
-<?php if ($otherNames)
-  {
-  echo '<tr><th>Other Names:</th><td>';
-  foreach ($otherNames as $otherName)
-    {
-    echo $otherName['name'].' ('.$otherName['nameType'].')';
-    if ($otherName['note'])
-      {
-      echo '<span class="note">--'.$otherName['note'].'</span>';
-      }
-    echo '<br />';
-    }
-  echo '</td></tr>';
-  }
-  ?>
+<?php if ($otherNames): ?>
+  <tr><th><?php echo ('other names')?>:</th><td>
+  <?php foreach ($otherNames as $otherName): ?>
+    <?php echo $otherName['name'].' ('.$otherName['nameType'].')' ?>
+    <?php if ($otherName['note']): ?>
+      <span class="note">-- <?php echo $otherName['note']?> </span>
+    <?php endif; ?>
+    <br />
+  <?php endforeach; ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getRepositoryTypeId())
-    {
-    echo '<tr><th>Type:</th><td>'.$repository->getTermRelatedByRepositoryTypeId().'</td></tr>';
-    }
- ?>
+<?php if ($repository->getRepositoryTypeId()): ?>
+  <tr><th><?php echo __('type')?>: </th>
+  <td><?php echo $repository->getTermRelatedByRepositoryTypeId()?>
+  </td></tr>
+<?php endif; ?>
 
+<?php if ($contactInformation): ?>
+  <tr><th>Contact Info:</th><td>
+  <?php foreach ($contactInformation as $contact): ?>
+      <table class="inline" style="margin-bottom: 15px;"><tr><td style="border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;"><?php echo $contact->getContactType() ?>
+      <?php if ($contact->getPrimaryContact()): ?> (primary contact)<?php endif; ?>
+      </td></tr></table>
+      <div style="padding-left: 10px; margin-bottom: 10px;">
+      <?php echo $contact->getContactInformationString()?>
+      <?php echo $contact->getNote() ? '<p><span class="note">--'.$contact->getNote().'</span>' : '' ?></div>
+  <?php endforeach; ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($contactInformation)
-    {
-    echo '<tr><th>Contact Info:</th><td>';
-      foreach ($contactInformation as $contact)
-      {
-      echo '<table class="inline" style="margin-bottom: 15px;"><tr><td style="border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;">'.$contact->getContactType() ;
-      echo ($contact->getPrimaryContact()) ? ' (primary contact)' : '';
-      echo '</td></tr></table>';
-      echo '<div style="padding-left: 10px; margin-bottom: 10px;">';
-      echo $contact->getContactInformationString();
-      echo ($contact->getNote()) ? '<p><span class="note">--'.$contact->getNote().'</span>' : '';
-      echo '</div>';
-      }
-    echo '</td></tr>';
-    }
-?>
+<?php if ($repository->getOfficersInCharge()): ?>
+  <tr><th><?php echo __('officers in charge')?>: </th>
+  <td><?php echo $repository->getOfficersInCharge()?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getOfficersInCharge())
-  {
-  echo '<tr><th>Officers in charge:</th><td>'.nl2br($repository->getOfficersInCharge()).'</td></tr>' ;
-  }
-?>
+<?php if ($repository->getGeoculturalContext()): ?>
+  <tr><th><?php echo __('geographical and cultural context')?>: </th>
+  <td><?php echo nl2br($repository->getGeoculturalContext()) ?>
+  </td></tr>
+<?php endif; ?>
 
+<?php if ($history): ?>
+  <tr><th><?php echo __('history')?>:</th><td>
+  <?php echo nl2br($history)?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getGeoculturalContext())
-  {
-  echo '<th>Geographical and cultural context:</th><td>'.nl2br($repository->getGeoculturalContext()).'</td></tr>';
-  }
-?>
+<?php if ($structure): ?>
+  <tr><th><?php echo __('structure')?>:</th><td>
+  <?php echo nl2br($structure)?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($history)
-  {
-  echo '<tr><th>History:</th><td>'.$history.'</td></tr>';
-  }
-?>
+<?php if ($repository->getCollectingPolicies()): ?>
+  <tr><th><?php echo __('collecting policies')?>:</th><td>
+  <?php echo nl2br($repository->getCollectingPolicies())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($structure)
-  {
-  echo '<tr><th>Structure:</th><td>'.$structure.'</td></tr>';
-  }
-?>
+<?php if ($repository->getBuildings()): ?>
+  <tr><th><?php echo __('buildings')?>:</th><td>
+  <?php echo nl2br($repository->getBuildings())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getCollectingPolicies())
-  {
-  echo '<tr><th>Collecting policies:</th><td>'.nl2br($repository->getCollectingPolicies()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getHoldings()): ?>
+  <tr><th><?php echo __('holdings')?>:</th><td>
+  <?php echo nl2br($repository->getHoldings())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getBuildings())
-  {
-  echo '<tr><th>Building(s):</th><td>'.nl2br($repository->getBuildings()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getFindingAids()): ?>
+  <tr><th><?php echo __('finding aids and publications')?>:</th><td>
+  <?php echo nl2br($repository->getFindingAids())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getHoldings())
-  {
-  echo '<tr><th>Archival and other holdings:</th><td>'.nl2br($repository->getHoldings()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getOpeningTimes()): ?>
+  <tr><th><?php echo __('opening times')?>:</th><td>
+  <?php echo nl2br($repository->getOpeningTimes())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getFindingAids())
-  {
-  echo '<tr><th>Finding aids and publications:</th><td>'.nl2br($repository->getFindingAids()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getAccessConditions()): ?>
+  <tr><th><?php echo __('access conditions and requirements')?>:</th><td>
+  <?php echo nl2br($repository->getAccessConditions())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getOpeningTimes())
-  {
-  echo '<tr><th>Opening times:</th><td>'.nl2br($repository->getOpeningTimes()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getDisabledAccess()): ?>
+  <tr><th><?php echo __('disabled access')?>:</th><td>
+  <?php echo nl2br($repository->getDisabledAccess())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getAccessConditions())
-  {
-  echo '<tr><th>Conditions and requirements:</th><td>'.nl2br($repository->getAccessConditions()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getTransport()): ?>
+  <tr><th><?php echo __('transport')?>:</th><td>
+  <?php echo nl2br($repository->getTransport())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getDisabledAccess())
-  {
-  echo '<tr><th>Disabled access:</th><td>'.nl2br($repository->getDisabledAccess()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getResearchServices()): ?>
+  <tr><th><?php echo __('research services')?>:</th><td>
+  <?php echo nl2br($repository->getResearchServices())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getTransport())
-  {
-  echo '<tr><th>Transport:</th><td>'.nl2br($repository->getTransport()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getReproductionServices()): ?>
+  <tr><th><?php echo __('reproduction services')?>:</th><td>
+  <?php echo nl2br($repository->getReproductionServices())?>
+  </td></tr>
+<?php endif; ?>
 
+<?php if ($repository->getPublicFacilities()): ?>
+  <tr><th><?php echo __('public facilities')?>:</th><td>
+  <?php echo nl2br($repository->getPublicFacilities())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getResearchServices())
-  {
-  echo '<tr><th>Research services:</th><td>'.nl2br($repository->getResearchServices()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getDescriptionIdentifier()): ?>
+  <tr><th><?php echo __('description identifier')?>:</th><td>
+  <?php echo nl2br($repository->getDescriptionIdentifier())?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getReproductionServices())
-  {
-  echo '<tr><th>Reproduction services:</th><td>'.nl2br($repository->getReproductionServices()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getInstitutionIdentifier()): ?>
+  <tr><th><?php echo __('institution identifier')?>:</th><td>
+  <?php echo nl2br($repository->getInstitutionIdentifier()) ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getPublicFacilities())
-  {
-  echo '<tr><th>Public facilities:</th><td>'.nl2br($repository->getPublicFacilities()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getRules()): ?>
+  <tr><th><?php echo __('rules or conventions')?>:</th><td>
+  <?php echo nl2br($repository->getRules()) ?>
+  </td></tr>
+<?php endif; ?>
 
+<?php if ($repository->getStatusId()): ?>
+  <tr><th><?php echo __('status')?>:</th><td>
+  <?php echo $repository->getTermRelatedByStatusId() ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getDescriptionIdentifier())
-  {
-  echo '<tr><th>Description identifier:</th><td>'.nl2br($repository->getDescriptionIdentifier()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getLevelOfDetailId()): ?>
+  <tr><th><?php echo __('status')?>:</th><td>
+  <?php echo $repository->getTermRelatedByLevelOfDetailId() ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getInstitutionIdentifier())
-  {
-  echo '<tr><th>Institution identifier:</th><td>'.nl2br($repository->getInstitutionIdentifier()).'</td></tr>';
-  }
-?>
+<?php if ($languages): ?>
+  <tr><th><?php echo __('language(s) of institution description') ?>:</th><td>
+  <?php foreach ($languages as $language): ?>
+    <?php echo $language['termName']?>
+    <br />
+  <?php endforeach; ?>
+  <td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getRules())
-  {
-  echo '<tr><th>Rules or conventions:</th><td>'.nl2br($repository->getRules()).'</td></tr>';
-  }
-?>
+<?php if ($scripts): ?>
+  <tr><th><?php echo __('script(s) of institution description') ?>:</th><td>
+  <?php foreach ($scripts as $script): ?>
+    <?php echo $script['termName']?>
+    <br />
+  <?php endforeach; ?>
+  <td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getStatusId())
-  {
-  echo '<tr><th>Status:</th><td>'.nl2br($repository->getTermRelatedByStatusId()).'</td></tr>';
-  }
-?>
+<?php if ($repository->getSources()): ?>
+  <tr><th><?php echo __('sources')?>:</th><td>
+  <?php echo nl2br($repository->getSources()) ?>
+  </td></tr>
+<?php endif; ?>
 
-<?php if ($repository->getLevelOfDetailId())
-  {
-  echo '<tr><th>Level of detail:</th><td>'.nl2br($repository->getTermRelatedByLevelOfDetailId()).'</td></tr>';
-  }
-?>
-
-<?php if ($languages)
-  {
-  echo '<tr><th>Language(s) of Institution Description:</th><td>';
-  foreach ($languages as $language)
-    {
-    echo $language['termName'].'<br />';
-    }
-  echo '<td></tr>';
-  }
-?>
-
-<?php if ($scripts)
-  {
-  echo '<tr><th>Script(s) of Institution Description:</th><td>';
-  foreach ($scripts as $script)
-    {
-    echo $script['termName'].'<br />';
-    }
-  echo '<td></tr>';
-  }
-?>
-
-<?php if ($repository->getSources())
-  {
-  echo '<tr><th>Sources:</th><td>'.nl2br($repository->getSources()).'</td></tr>';
-  }
-?>
-
-<?php if ($notes)
-  {
-  echo '<tr><th>Notes:</th><td>';
-  foreach ($notes as $note)
-    {
-    echo $note['noteType'].': '.$note['note'].'<br /><span class="note">-- '.$note['noteAuthor'].', '.$note['updated'].'</span><p>';
-    }
-  echo '</td></tr>';
-  }
-?>
+<?php if ($notes): ?>
+  <tr><th><?php echo __('notes')?>:</th><td>
+  <?php foreach ($notes as $note): ?>
+    <?php echo $note['noteType'].': '.$note['note'] ?>
+    <br /><span class="note">-- <?php echo $note['noteAuthor'].', '.$note['updated'] ?></span><p>
+  <?php endforeach; ?>
+  </td></tr>
+<?php endif; ?>
 
 </tbody>
 </table>
 
-
-
 <div class="menu-action">
-<?php if ($editCredentials) { echo link_to(__('edit'), 'repository/edit?id='.$repository->getId()); } ?>
+<?php if ($editCredentials) { echo link_to(__('edit').' '__('repository'), 'repository/edit?id='.$repository->getId()); } ?>
 </div>

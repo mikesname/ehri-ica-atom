@@ -30,7 +30,7 @@ public function isRoot($informationObject)
   {
   $isRoot = false;
   $c = new Criteria();
-  $nodes = informationObjectSelfRelationshipPeer::doSelect($c);
+  $nodes = InformationObjectSelfRelationshipPeer::doSelect($c);
   foreach ($nodes as $node)
     {
     if ($node->getTreeRootId() == $informationObject->getId())

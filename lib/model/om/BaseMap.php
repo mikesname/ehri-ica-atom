@@ -28,10 +28,10 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 	protected $updated_at;
 
 	
-	protected $collplaceMapRelationships;
+	protected $collPlaceMapRelationships;
 
 	
-	protected $lastplaceMapRelationshipCriteria = null;
+	protected $lastPlaceMapRelationshipCriteria = null;
 
 	
 	protected $alreadyInSave = false;
@@ -310,8 +310,8 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 				}
 				$this->resetModified(); 			}
 
-			if ($this->collplaceMapRelationships !== null) {
-				foreach($this->collplaceMapRelationships as $referrerFK) {
+			if ($this->collPlaceMapRelationships !== null) {
+				foreach($this->collPlaceMapRelationships as $referrerFK) {
 					if (!$referrerFK->isDeleted()) {
 						$affectedRows += $referrerFK->save($con);
 					}
@@ -359,8 +359,8 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 			}
 
 
-				if ($this->collplaceMapRelationships !== null) {
-					foreach($this->collplaceMapRelationships as $referrerFK) {
+				if ($this->collPlaceMapRelationships !== null) {
+					foreach($this->collPlaceMapRelationships as $referrerFK) {
 						if (!$referrerFK->validate($columns)) {
 							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
 						}
@@ -511,8 +511,8 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 		if ($deepCopy) {
 									$copyObj->setNew(false);
 
-			foreach($this->getplaceMapRelationships() as $relObj) {
-				$copyObj->addplaceMapRelationship($relObj->copy($deepCopy));
+			foreach($this->getPlaceMapRelationships() as $relObj) {
+				$copyObj->addPlaceMapRelationship($relObj->copy($deepCopy));
 			}
 
 		} 
@@ -541,17 +541,17 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 	}
 
 	
-	public function initplaceMapRelationships()
+	public function initPlaceMapRelationships()
 	{
-		if ($this->collplaceMapRelationships === null) {
-			$this->collplaceMapRelationships = array();
+		if ($this->collPlaceMapRelationships === null) {
+			$this->collPlaceMapRelationships = array();
 		}
 	}
 
 	
-	public function getplaceMapRelationships($criteria = null, $con = null)
+	public function getPlaceMapRelationships($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseplaceMapRelationshipPeer.php';
+				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -560,36 +560,36 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collplaceMapRelationships === null) {
+		if ($this->collPlaceMapRelationships === null) {
 			if ($this->isNew()) {
-			   $this->collplaceMapRelationships = array();
+			   $this->collPlaceMapRelationships = array();
 			} else {
 
-				$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-				placeMapRelationshipPeer::addSelectColumns($criteria);
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelect($criteria, $con);
+				PlaceMapRelationshipPeer::addSelectColumns($criteria);
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelect($criteria, $con);
 			}
 		} else {
 						if (!$this->isNew()) {
 												
 
-				$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-				placeMapRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastplaceMapRelationshipCriteria) || !$this->lastplaceMapRelationshipCriteria->equals($criteria)) {
-					$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelect($criteria, $con);
+				PlaceMapRelationshipPeer::addSelectColumns($criteria);
+				if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
+					$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelect($criteria, $con);
 				}
 			}
 		}
-		$this->lastplaceMapRelationshipCriteria = $criteria;
-		return $this->collplaceMapRelationships;
+		$this->lastPlaceMapRelationshipCriteria = $criteria;
+		return $this->collPlaceMapRelationships;
 	}
 
 	
-	public function countplaceMapRelationships($criteria = null, $distinct = false, $con = null)
+	public function countPlaceMapRelationships($criteria = null, $distinct = false, $con = null)
 	{
-				include_once 'lib/model/om/BaseplaceMapRelationshipPeer.php';
+				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -598,23 +598,23 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+		$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-		return placeMapRelationshipPeer::doCount($criteria, $distinct, $con);
+		return PlaceMapRelationshipPeer::doCount($criteria, $distinct, $con);
 	}
 
 	
-	public function addplaceMapRelationship(placeMapRelationship $l)
+	public function addPlaceMapRelationship(PlaceMapRelationship $l)
 	{
-		$this->collplaceMapRelationships[] = $l;
+		$this->collPlaceMapRelationships[] = $l;
 		$l->setMap($this);
 	}
 
 
 	
-	public function getplaceMapRelationshipsJoinPlace($criteria = null, $con = null)
+	public function getPlaceMapRelationshipsJoinPlace($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseplaceMapRelationshipPeer.php';
+				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -623,33 +623,33 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collplaceMapRelationships === null) {
+		if ($this->collPlaceMapRelationships === null) {
 			if ($this->isNew()) {
-				$this->collplaceMapRelationships = array();
+				$this->collPlaceMapRelationships = array();
 			} else {
 
-				$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+			$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-			if (!isset($this->lastplaceMapRelationshipCriteria) || !$this->lastplaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
+			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
 			}
 		}
-		$this->lastplaceMapRelationshipCriteria = $criteria;
+		$this->lastPlaceMapRelationshipCriteria = $criteria;
 
-		return $this->collplaceMapRelationships;
+		return $this->collPlaceMapRelationships;
 	}
 
 
 	
-	public function getplaceMapRelationshipsJoindigitalObject($criteria = null, $con = null)
+	public function getPlaceMapRelationshipsJoinDigitalObject($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseplaceMapRelationshipPeer.php';
+				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -658,33 +658,33 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collplaceMapRelationships === null) {
+		if ($this->collPlaceMapRelationships === null) {
 			if ($this->isNew()) {
-				$this->collplaceMapRelationships = array();
+				$this->collPlaceMapRelationships = array();
 			} else {
 
-				$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelectJoindigitalObject($criteria, $con);
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinDigitalObject($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+			$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-			if (!isset($this->lastplaceMapRelationshipCriteria) || !$this->lastplaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelectJoindigitalObject($criteria, $con);
+			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinDigitalObject($criteria, $con);
 			}
 		}
-		$this->lastplaceMapRelationshipCriteria = $criteria;
+		$this->lastPlaceMapRelationshipCriteria = $criteria;
 
-		return $this->collplaceMapRelationships;
+		return $this->collPlaceMapRelationships;
 	}
 
 
 	
-	public function getplaceMapRelationshipsJoinTerm($criteria = null, $con = null)
+	public function getPlaceMapRelationshipsJoinTerm($criteria = null, $con = null)
 	{
-				include_once 'lib/model/om/BaseplaceMapRelationshipPeer.php';
+				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
 		if ($criteria === null) {
 			$criteria = new Criteria();
 		}
@@ -693,26 +693,26 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 			$criteria = clone $criteria;
 		}
 
-		if ($this->collplaceMapRelationships === null) {
+		if ($this->collPlaceMapRelationships === null) {
 			if ($this->isNew()) {
-				$this->collplaceMapRelationships = array();
+				$this->collPlaceMapRelationships = array();
 			} else {
 
-				$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelectJoinTerm($criteria, $con);
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		} else {
 									
-			$criteria->add(placeMapRelationshipPeer::MAP_ID, $this->getId());
+			$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
 
-			if (!isset($this->lastplaceMapRelationshipCriteria) || !$this->lastplaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collplaceMapRelationships = placeMapRelationshipPeer::doSelectJoinTerm($criteria, $con);
+			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
+				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinTerm($criteria, $con);
 			}
 		}
-		$this->lastplaceMapRelationshipCriteria = $criteria;
+		$this->lastPlaceMapRelationshipCriteria = $criteria;
 
-		return $this->collplaceMapRelationships;
+		return $this->collPlaceMapRelationships;
 	}
 
 

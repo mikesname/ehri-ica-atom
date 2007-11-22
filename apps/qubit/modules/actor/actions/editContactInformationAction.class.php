@@ -28,7 +28,7 @@ class editContactInformationAction extends sfAction
   public function execute()
   {
 
-  $this->contactInformation = contactInformationPeer::retrieveByPk($this->getRequestParameter('id'));
+  $this->contactInformation = ContactInformationPeer::retrieveByPk($this->getRequestParameter('id'));
   $this->forward404Unless($this->contactInformation);
 
 

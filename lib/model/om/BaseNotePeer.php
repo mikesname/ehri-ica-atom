@@ -110,6 +110,10 @@ abstract class BaseNotePeer {
 		return self::$fieldNames[$type];
 	}
 
+  public static function getColumnNames()
+  {
+    return self::$fieldNames[BasePeer::TYPE_COLNAME];
+  }
 	
 	public static function alias($alias, $column)
 	{
@@ -189,7 +193,7 @@ abstract class BaseNotePeer {
 	public static function doSelectRS(Criteria $criteria, $con = null)
 	{
 
-    foreach (sfMixer::getCallables('BaseNotePeer:addDoSelectRS:addDoSelectRS') as $callable)
+    foreach (sfMixer::getCallables('BaseNotePeer:doSelectRS:doSelectRS') as $callable)
     {
       call_user_func($callable, 'BaseNotePeer', $criteria, $con);
     }
@@ -226,7 +230,7 @@ abstract class BaseNotePeer {
 	}
 
 	
-	public static function doCountJoininformationObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinInformationObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -242,7 +246,7 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$rs = NotePeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -310,7 +314,7 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doCountJoinfunctionDescription(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinFunctionDescription(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -326,7 +330,7 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$rs = NotePeer::doSelectRS($criteria, $con);
 		if ($rs->next()) {
@@ -394,8 +398,15 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doSelectJoininformationObject(Criteria $c, $con = null)
+	public static function doSelectJoinInformationObject(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseNotePeer:doSelectJoin:doSelectJoin') as $callable)
+    {
+      call_user_func($callable, 'BaseNotePeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -404,9 +415,9 @@ abstract class BaseNotePeer {
 
 		NotePeer::addSelectColumns($c);
 		$startcol = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		informationObjectPeer::addSelectColumns($c);
+		InformationObjectPeer::addSelectColumns($c);
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -418,7 +429,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -426,7 +437,7 @@ abstract class BaseNotePeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addNote($obj1); 					break;
 				}
@@ -535,7 +546,7 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doSelectJoinfunctionDescription(Criteria $c, $con = null)
+	public static function doSelectJoinFunctionDescription(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -545,9 +556,9 @@ abstract class BaseNotePeer {
 
 		NotePeer::addSelectColumns($c);
 		$startcol = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
-		functionDescriptionPeer::addSelectColumns($c);
+		FunctionDescriptionPeer::addSelectColumns($c);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 		$rs = BasePeer::doSelect($c, $con);
 		$results = array();
 
@@ -559,7 +570,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 			$cls = Propel::import($omClass);
 			$obj2 = new $cls();
@@ -567,7 +578,7 @@ abstract class BaseNotePeer {
 
 			$newObject = true;
 			foreach($results as $temp_obj1) {
-				$temp_obj2 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 										$temp_obj2->addNote($obj1); 					break;
 				}
@@ -692,13 +703,13 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
 		$criteria->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$criteria->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -716,6 +727,13 @@ abstract class BaseNotePeer {
 	
 	public static function doSelectJoinAll(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseNotePeer:doSelectJoinAll:doSelectJoinAll') as $callable)
+    {
+      call_user_func($callable, 'BaseNotePeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 				if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -725,8 +743,8 @@ abstract class BaseNotePeer {
 		NotePeer::addSelectColumns($c);
 		$startcol2 = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
@@ -734,8 +752,8 @@ abstract class BaseNotePeer {
 		RepositoryPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + RepositoryPeer::NUM_COLUMNS;
 
-		functionDescriptionPeer::addSelectColumns($c);
-		$startcol6 = $startcol5 + functionDescriptionPeer::NUM_COLUMNS;
+		FunctionDescriptionPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + FunctionDescriptionPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol7 = $startcol6 + TermPeer::NUM_COLUMNS;
@@ -743,13 +761,13 @@ abstract class BaseNotePeer {
 		UserPeer::addSelectColumns($c);
 		$startcol8 = $startcol7 + UserPeer::NUM_COLUMNS;
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
 		$c->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$c->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -769,7 +787,7 @@ abstract class BaseNotePeer {
 
 
 					
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -779,7 +797,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addNote($obj1); 					break;
 				}
@@ -838,7 +856,7 @@ abstract class BaseNotePeer {
 
 
 					
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -848,7 +866,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj5 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+				$temp_obj5 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj5->addNote($obj1); 					break;
 				}
@@ -912,7 +930,7 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doCountJoinAllExceptinformationObject(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptInformationObject(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -932,7 +950,7 @@ abstract class BaseNotePeer {
 
 		$criteria->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$criteria->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -964,11 +982,11 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$criteria->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -1000,11 +1018,11 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$criteria->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -1020,7 +1038,7 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doCountJoinAllExceptfunctionDescription(Criteria $criteria, $distinct = false, $con = null)
+	public static function doCountJoinAllExceptFunctionDescription(Criteria $criteria, $distinct = false, $con = null)
 	{
 				$criteria = clone $criteria;
 
@@ -1036,7 +1054,7 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
@@ -1072,13 +1090,13 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
 		$criteria->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$criteria->addJoin(NotePeer::USER_ID, UserPeer::ID);
 
@@ -1108,13 +1126,13 @@ abstract class BaseNotePeer {
 			$criteria->addSelectColumn($column);
 		}
 
-		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$criteria->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$criteria->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
 		$criteria->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$criteria->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$criteria->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -1128,8 +1146,15 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doSelectJoinAllExceptinformationObject(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptInformationObject(Criteria $c, $con = null)
 	{
+
+    foreach (sfMixer::getCallables('BaseNotePeer:doSelectJoinAllExcept:doSelectJoinAllExcept') as $callable)
+    {
+      call_user_func($callable, 'BaseNotePeer', $c, $con);
+    }
+
+
 		$c = clone $c;
 
 								if ($c->getDbName() == Propel::getDefaultDB()) {
@@ -1145,8 +1170,8 @@ abstract class BaseNotePeer {
 		RepositoryPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + RepositoryPeer::NUM_COLUMNS;
 
-		functionDescriptionPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + functionDescriptionPeer::NUM_COLUMNS;
+		FunctionDescriptionPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + FunctionDescriptionPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + TermPeer::NUM_COLUMNS;
@@ -1158,7 +1183,7 @@ abstract class BaseNotePeer {
 
 		$c->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$c->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -1220,7 +1245,7 @@ abstract class BaseNotePeer {
 				$obj3->addNote($obj1);
 			}
 
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1230,7 +1255,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addNote($obj1);
 					break;
@@ -1304,14 +1329,14 @@ abstract class BaseNotePeer {
 		NotePeer::addSelectColumns($c);
 		$startcol2 = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		RepositoryPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + RepositoryPeer::NUM_COLUMNS;
 
-		functionDescriptionPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + functionDescriptionPeer::NUM_COLUMNS;
+		FunctionDescriptionPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + FunctionDescriptionPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + TermPeer::NUM_COLUMNS;
@@ -1319,11 +1344,11 @@ abstract class BaseNotePeer {
 		UserPeer::addSelectColumns($c);
 		$startcol7 = $startcol6 + UserPeer::NUM_COLUMNS;
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$c->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -1341,7 +1366,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1351,7 +1376,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addNote($obj1);
 					break;
@@ -1385,7 +1410,7 @@ abstract class BaseNotePeer {
 				$obj3->addNote($obj1);
 			}
 
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1395,7 +1420,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addNote($obj1);
 					break;
@@ -1469,14 +1494,14 @@ abstract class BaseNotePeer {
 		NotePeer::addSelectColumns($c);
 		$startcol2 = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
 
-		functionDescriptionPeer::addSelectColumns($c);
-		$startcol5 = $startcol4 + functionDescriptionPeer::NUM_COLUMNS;
+		FunctionDescriptionPeer::addSelectColumns($c);
+		$startcol5 = $startcol4 + FunctionDescriptionPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol6 = $startcol5 + TermPeer::NUM_COLUMNS;
@@ -1484,11 +1509,11 @@ abstract class BaseNotePeer {
 		UserPeer::addSelectColumns($c);
 		$startcol7 = $startcol6 + UserPeer::NUM_COLUMNS;
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$c->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -1506,7 +1531,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1516,7 +1541,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addNote($obj1);
 					break;
@@ -1550,7 +1575,7 @@ abstract class BaseNotePeer {
 				$obj3->addNote($obj1);
 			}
 
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1560,7 +1585,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj4 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
+				$temp_obj4 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj4->getPrimaryKey() === $obj4->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj4->addNote($obj1);
 					break;
@@ -1623,7 +1648,7 @@ abstract class BaseNotePeer {
 
 
 	
-	public static function doSelectJoinAllExceptfunctionDescription(Criteria $c, $con = null)
+	public static function doSelectJoinAllExceptFunctionDescription(Criteria $c, $con = null)
 	{
 		$c = clone $c;
 
@@ -1634,8 +1659,8 @@ abstract class BaseNotePeer {
 		NotePeer::addSelectColumns($c);
 		$startcol2 = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
@@ -1649,7 +1674,7 @@ abstract class BaseNotePeer {
 		UserPeer::addSelectColumns($c);
 		$startcol7 = $startcol6 + UserPeer::NUM_COLUMNS;
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
@@ -1671,7 +1696,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1681,7 +1706,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addNote($obj1);
 					break;
@@ -1799,8 +1824,8 @@ abstract class BaseNotePeer {
 		NotePeer::addSelectColumns($c);
 		$startcol2 = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
@@ -1808,19 +1833,19 @@ abstract class BaseNotePeer {
 		RepositoryPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + RepositoryPeer::NUM_COLUMNS;
 
-		functionDescriptionPeer::addSelectColumns($c);
-		$startcol6 = $startcol5 + functionDescriptionPeer::NUM_COLUMNS;
+		FunctionDescriptionPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + FunctionDescriptionPeer::NUM_COLUMNS;
 
 		UserPeer::addSelectColumns($c);
 		$startcol7 = $startcol6 + UserPeer::NUM_COLUMNS;
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
 		$c->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$c->addJoin(NotePeer::USER_ID, UserPeer::ID);
 
@@ -1836,7 +1861,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1846,7 +1871,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addNote($obj1);
 					break;
@@ -1902,7 +1927,7 @@ abstract class BaseNotePeer {
 				$obj4->addNote($obj1);
 			}
 
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -1912,7 +1937,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj5 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+				$temp_obj5 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj5->addNote($obj1);
 					break;
@@ -1964,8 +1989,8 @@ abstract class BaseNotePeer {
 		NotePeer::addSelectColumns($c);
 		$startcol2 = (NotePeer::NUM_COLUMNS - NotePeer::NUM_LAZY_LOAD_COLUMNS) + 1;
 
-		informationObjectPeer::addSelectColumns($c);
-		$startcol3 = $startcol2 + informationObjectPeer::NUM_COLUMNS;
+		InformationObjectPeer::addSelectColumns($c);
+		$startcol3 = $startcol2 + InformationObjectPeer::NUM_COLUMNS;
 
 		ActorPeer::addSelectColumns($c);
 		$startcol4 = $startcol3 + ActorPeer::NUM_COLUMNS;
@@ -1973,19 +1998,19 @@ abstract class BaseNotePeer {
 		RepositoryPeer::addSelectColumns($c);
 		$startcol5 = $startcol4 + RepositoryPeer::NUM_COLUMNS;
 
-		functionDescriptionPeer::addSelectColumns($c);
-		$startcol6 = $startcol5 + functionDescriptionPeer::NUM_COLUMNS;
+		FunctionDescriptionPeer::addSelectColumns($c);
+		$startcol6 = $startcol5 + FunctionDescriptionPeer::NUM_COLUMNS;
 
 		TermPeer::addSelectColumns($c);
 		$startcol7 = $startcol6 + TermPeer::NUM_COLUMNS;
 
-		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, informationObjectPeer::ID);
+		$c->addJoin(NotePeer::INFORMATION_OBJECT_ID, InformationObjectPeer::ID);
 
 		$c->addJoin(NotePeer::ACTOR_ID, ActorPeer::ID);
 
 		$c->addJoin(NotePeer::REPOSITORY_ID, RepositoryPeer::ID);
 
-		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, functionDescriptionPeer::ID);
+		$c->addJoin(NotePeer::FUNCTION_DESCRIPTION_ID, FunctionDescriptionPeer::ID);
 
 		$c->addJoin(NotePeer::NOTE_TYPE_ID, TermPeer::ID);
 
@@ -2001,7 +2026,7 @@ abstract class BaseNotePeer {
 			$obj1 = new $cls();
 			$obj1->hydrate($rs);
 
-			$omClass = informationObjectPeer::getOMClass();
+			$omClass = InformationObjectPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -2011,7 +2036,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj2 = $temp_obj1->getinformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
+				$temp_obj2 = $temp_obj1->getInformationObject(); 				if ($temp_obj2->getPrimaryKey() === $obj2->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj2->addNote($obj1);
 					break;
@@ -2067,7 +2092,7 @@ abstract class BaseNotePeer {
 				$obj4->addNote($obj1);
 			}
 
-			$omClass = functionDescriptionPeer::getOMClass();
+			$omClass = FunctionDescriptionPeer::getOMClass();
 
 
 			$cls = Propel::import($omClass);
@@ -2077,7 +2102,7 @@ abstract class BaseNotePeer {
 			$newObject = true;
 			for ($j=0, $resCount=count($results); $j < $resCount; $j++) {
 				$temp_obj1 = $results[$j];
-				$temp_obj5 = $temp_obj1->getfunctionDescription(); 				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
+				$temp_obj5 = $temp_obj1->getFunctionDescription(); 				if ($temp_obj5->getPrimaryKey() === $obj5->getPrimaryKey()) {
 					$newObject = false;
 					$temp_obj5->addNote($obj1);
 					break;

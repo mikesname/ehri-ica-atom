@@ -47,7 +47,7 @@ class SearchIndex
   $index = Zend_Search_Lucene::create(self::getIndexLocation());
   Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
 
-  $informationObjects = informationObjectPeer::doSelect(new Criteria());
+  $informationObjects = InformationObjectPeer::doSelect(new Criteria());
   foreach ($informationObjects as $informationObject)
       {
       $doc = self::createIndexDocument($informationObject);
@@ -64,9 +64,9 @@ class SearchIndex
   $index = Zend_Search_Lucene::open(self::getIndexLocation());
   Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
 
-  $informationObject = informationObjectPeer::retrieveByPk($id);
+  $informationObject = InformationObjectPeer::retrieveByPk($id);
 
-  //first delete existing index entries for this informationObject
+  //first delete existing index entries for this information object
   $term =  new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
   $query = new Zend_Search_Lucene_Search_Query_Term($term);
   $hits = array();

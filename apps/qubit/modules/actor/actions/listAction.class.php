@@ -64,7 +64,7 @@ class listAction extends sfAction
       $this->setTemplate('listISAAR');
       break;
     default :
-      $this->setTemplate('list');
+      $this->setTemplate(sfConfig::get('app_default_template_actor_list'));
     }
   }
 }

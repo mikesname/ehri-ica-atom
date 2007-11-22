@@ -30,13 +30,13 @@ class updateAction extends sfAction
 
     if (!$this->getRequestParameter('id', 0))
     {
-      $informationObject = new informationObject();
+      $informationObject = new InformationObject();
 
       $this->getUser()->setAttribute('nav_context_module', 'add');
     }
     else
     {
-      $informationObject = informationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+      $informationObject = InformationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
       $this->forward404Unless($informationObject);
     }
 
@@ -179,7 +179,7 @@ class updateAction extends sfAction
     if ($this->getRequestParameter('parent_id'))
       {
       $parentId = $this->getRequestParameter('parent_id');
-      $parent = informationObjectPeer::retrieveByPk($parentId);
+      $parent = InformationObjectPeer::retrieveByPk($parentId);
 
       //is parent already in a hierarchical relationship? If false, make it a root node first
       if (!$parent->getTreeId())

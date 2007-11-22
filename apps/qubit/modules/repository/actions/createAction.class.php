@@ -33,14 +33,14 @@ class createAction extends sfAction
   $this->history = null;
   $this->structure = null;
   $this->contactInformation = null;
-  $this->newContactInformation = new contactInformation();
+  $this->newContactInformation = new ContactInformation();
 
 
  //TermManyToManyRelationships
   $this->languages = null;
   $this->scripts = null;
-  $this->newLanguage = new repositoryTermRelationship();
-  $this->newScript = new repositoryTermRelationship();
+  $this->newLanguage = new RepositoryTermRelationship();
+  $this->newScript = new RepositoryTermRelationship();
 
   //Notes
   $this->notes = null;
@@ -49,13 +49,11 @@ class createAction extends sfAction
   //set view template
   switch ($this->getRequestParameter('template'))
     {
-    case 'anotherTemplate' :
-      $this->setTemplate('editAnotherTemplate');
-      break;
-    //default template is ISIAH
     case 'isiah' :
+      $this->setTemplate('editISIAH');
+      break;
     default :
-      $this->setTemplate('edit');
+      $this->setTemplate(sfConfig::get('app_default_template_repository_edit'));
     }
 
   }

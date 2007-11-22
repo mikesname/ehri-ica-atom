@@ -28,7 +28,7 @@ class deleteInformationObjectRelationshipAction extends sfAction
   public function execute()
   {
 
-  $this->deleteInformationObjectRelationship = informationObjectActorRelationshipPeer::retrieveByPk($this->getRequestParameter('InformationObjectRelationshipId'));
+  $this->deleteInformationObjectRelationship = InformationObjectActorRelationshipPeer::retrieveByPk($this->getRequestParameter('InformationObjectRelationshipId'));
 
   $this->forward404Unless($this->deleteInformationObjectRelationship);
 
