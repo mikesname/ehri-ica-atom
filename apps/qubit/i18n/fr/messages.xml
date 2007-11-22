@@ -1,13 +1,16 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
- <file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2007-11-06T14:58:26Z" product-name="messages">
+ <file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2007-10-17T18:19:48Z" product-name="messages">
   <body>
   
-
+<trans-unit id="1">
+<source>Qubit -- Open Information Management Toolkit</source>
+<target>Qubit -- Ouvert Trousse à Outils Pour la Gestion de l'information</target>
+</trans-unit>
 
 <trans-unit id="2">
 <source>log out</source>
-<target>d&#xE9;connectez-vous</target>
+<target>déconnectez-vous</target>
 </trans-unit>
 
 <trans-unit id="3">
@@ -22,7 +25,7 @@
 
 <trans-unit id="5">
 <source>about</source>
-<target>&#xE0; propos</target>
+<target>à propos</target>
 </trans-unit>
 
 <trans-unit id="6">
@@ -32,7 +35,7 @@
 
 <trans-unit id="7">
 <source>open information management toolkit</source>
-<target>ouvert trousse &#xE0; outils pour la gestion de l'information</target>
+<target>ouvert trousse à outils pour la gestion de l'information</target>
 </trans-unit>
 
 <trans-unit id="8">
@@ -42,7 +45,7 @@
 
 <trans-unit id="9">
 <source>repositories</source>
-<target>r&#xE9;f&#xE9;rentiels</target>
+<target>référentiels</target>
 </trans-unit>
 
 <trans-unit id="10">
@@ -72,7 +75,7 @@
 
 <trans-unit id="15">
 <source>repository</source>
-<target>r&#xE9;f&#xE9;rentiel</target>
+<target>référentiel</target>
 </trans-unit>
 
 <trans-unit id="16">
@@ -82,7 +85,7 @@
 
 <trans-unit id="17">
 <source>identity area</source>
-<target>zone d'identit&#xE9;</target>
+<target>zone d'identité</target>
 </trans-unit>
 
 <trans-unit id="18">
@@ -92,7 +95,7 @@
 
 <trans-unit id="19">
 <source>authorized form of name</source>
-<target>autoris&#xE9; sous forme de nom</target>
+<target>autorisé sous forme de nom</target>
 </trans-unit>
 
 <trans-unit id="20">
@@ -117,7 +120,7 @@
 
 <trans-unit id="24">
 <source>contact information</source>
-<target>coordonn&#xE9;es</target>
+<target>coordonnées</target>
 </trans-unit>
 
 <trans-unit id="25">
@@ -142,7 +145,7 @@
 
 <trans-unit id="29">
 <source>region / province</source>
-<target>r&#xE9;gion / province</target>
+<target>région / province</target>
 </trans-unit>
 
 <trans-unit id="30">
@@ -152,12 +155,12 @@
 
 <trans-unit id="31">
 <source>telephone</source>
-<target>t&#xE9;l&#xE9;phone</target>
+<target>téléphone</target>
 </trans-unit>
 
 <trans-unit id="32">
 <source>fax</source>
-<target>t&#xE9;l&#xE9;copie</target>
+<target>télécopie</target>
 </trans-unit>
 
 <trans-unit id="33">
@@ -187,7 +190,7 @@
 
 <trans-unit id="38">
 <source>geographical and cultural context</source>
-<target>contexte g&#xE9;ographique et culturel</target>
+<target>contexte géographique et culturel</target>
 </trans-unit>
 
 <trans-unit id="39">
@@ -207,7 +210,7 @@
 
 <trans-unit id="42">
 <source>buildings</source>
-<target>b&#xE2;timents</target>
+<target>bâtiments</target>
 </trans-unit>
 
 <trans-unit id="43">
@@ -217,12 +220,12 @@
 
 <trans-unit id="44">
 <source>finding aids and publications</source>
-<target>aides &#xE0; la recherche et les publications</target>
+<target>aides à la recherche et les publications</target>
 </trans-unit>
 
 <trans-unit id="45">
 <source>access area</source>
-<target>zone d'acc&#xE8;s</target>
+<target>zone d'accès</target>
 </trans-unit>
 
 <trans-unit id="46">
@@ -237,7 +240,7 @@
 
 <trans-unit id="48">
 <source>disabled access</source>
-<target>acc&#xE8;s pour handicap&#xE9;s</target>
+<target>accès pour handicapés</target>
 </trans-unit>
 
 <trans-unit id="49">
@@ -262,12 +265,12 @@
 
 <trans-unit id="53">
 <source>public facilities</source>
-<target>&#xE9;quipements publics</target>
+<target>équipements publics</target>
 </trans-unit>
 
 <trans-unit id="54">
 <source>control area</source>
-<target>zone de contr&#xF4;le</target>
+<target>zone de contrôle</target>
 </trans-unit>
 
 <trans-unit id="55">
@@ -277,12 +280,12 @@
 
 <trans-unit id="56">
 <source>institution identifier</source>
-<target>&#xE9;tablissement identificateur</target>
+<target>établissement identificateur</target>
 </trans-unit>
 
 <trans-unit id="57">
 <source>rules or conventions</source>
-<target>r&#xE8;gles ou de conventions</target>
+<target>règles ou de conventions</target>
 </trans-unit>
 
 <trans-unit id="58">
@@ -292,12 +295,12 @@
 
 <trans-unit id="59">
 <source>level of detail</source>
-<target>niveau de d&#xE9;tail</target>
+<target>niveau de détail</target>
 </trans-unit>
 
 <trans-unit id="60">
 <source>dates of creation, revision and deletion</source>
-<target>dates de cr&#xE9;ation, la r&#xE9;vision et la suppression</target>
+<target>dates de création, la révision et la suppression</target>
 </trans-unit>
 
 <trans-unit id="61">
@@ -307,7 +310,7 @@
 
 <trans-unit id="62">
 <source>scripts of institution description</source>
-<target>scripts de la description de l'&#xE9;tablissement</target>
+<target>scripts de la description de l'établissement</target>
 </trans-unit>
 
 <trans-unit id="63">
@@ -327,12 +330,12 @@
 
 <trans-unit id="66">
 <source>created</source>
-<target>cr&#xE9;&#xE9;</target>
+<target>créé</target>
 </trans-unit>
 
 <trans-unit id="67">
 <source>updated</source>
-<target>mise &#xE0; jour</target>
+<target>mise à jour</target>
 </trans-unit>
 
 <trans-unit id="68">
@@ -342,7 +345,7 @@
 
 <trans-unit id="69">
 <source>are you sure?</source>
-<target>vous &#xEA;tes s&#xFB;r?</target>
+<target>vous êtes sûr?</target>
 </trans-unit>
 
 <trans-unit id="70">
@@ -357,7 +360,7 @@
 
 <trans-unit id="72">
 <source>list</source>
-<target>&#xE9;num&#xE9;rer</target>
+<target>énumérer</target>
 </trans-unit>
 
 <trans-unit id="73">
@@ -382,22 +385,22 @@
 
 <trans-unit id="77">
 <source>search for '%1%' resulted in %2% results</source>
-<target>recherche pour '%1%' a abouti &#xE0; %2% r&#xE9;sultats</target>
+<target>recherche pour '%1%' a abouti à %2% résultats</target>
 </trans-unit>
 
 <trans-unit id="78">
 <source>index build completed</source>
-<target>index construire termin&#xE9;</target>
+<target>index construire terminé</target>
 </trans-unit>
 
 <trans-unit id="79">
 <source>advanced search</source>
-<target>recherche avanc&#xE9;e</target>
+<target>recherche avancée</target>
 </trans-unit>
 
 <trans-unit id="80">
 <source>digital object</source>
-<target>objet num&#xE9;rique</target>
+<target>objet numérique</target>
 </trans-unit>
 
 <trans-unit id="81">
@@ -412,7 +415,7 @@
 
 <trans-unit id="83">
 <source>network path</source>
-<target>chemin r&#xE9;seau</target>
+<target>chemin réseau</target>
 </trans-unit>
 
 <trans-unit id="84">
@@ -422,12 +425,12 @@
 
 <trans-unit id="85">
 <source>digital objects</source>
-<target>objets num&#xE9;riques</target>
+<target>objets numériques</target>
 </trans-unit>
 
 <trans-unit id="86">
 <source>create</source>
-<target>cr&#xE9;er</target>
+<target>créer</target>
 </trans-unit>
 
 <trans-unit id="87">
@@ -467,7 +470,7 @@
 
 <trans-unit id="94">
 <source>map marker</source>
-<target>marqueur g&#xE9;ographique</target>
+<target>marqueur géographique</target>
 </trans-unit>
 
 <trans-unit id="95">
@@ -477,12 +480,12 @@
 
 <trans-unit id="96">
 <source>icon image</source>
-<target>image de l'ic&#xF4;ne</target>
+<target>image de l'icône</target>
 </trans-unit>
 
 <trans-unit id="97">
 <source>icon description</source>
-<target>description de l'ic&#xF4;ne</target>
+<target>description de l'icône</target>
 </trans-unit>
 
 <trans-unit id="98">
@@ -497,7 +500,7 @@
 
 <trans-unit id="100">
 <source>authority files</source>
-<target>fichiers d'autorit&#xE9;</target>
+<target>fichiers d'autorité</target>
 </trans-unit>
 
 <trans-unit id="101">
@@ -512,7 +515,7 @@
 
 <trans-unit id="103">
 <source>type of entity</source>
-<target>type d'entit&#xE9;</target>
+<target>type d'entité</target>
 </trans-unit>
 
 <trans-unit id="104">
@@ -532,22 +535,22 @@
 
 <trans-unit id="107">
 <source>functions, occupations and activities</source>
-<target>fonctions, les professions et activit&#xE9;s</target>
+<target>fonctions, les professions et activités</target>
 </trans-unit>
 
 <trans-unit id="108">
 <source>mandates or sources of authority</source>
-<target>mandats ou les sources d'autorit&#xE9;</target>
+<target>mandats ou les sources d'autorité</target>
 </trans-unit>
 
 <trans-unit id="109">
 <source>internal structures or genealogy</source>
-<target>structures internes ou de la g&#xE9;n&#xE9;alogie</target>
+<target>structures internes ou de la généalogie</target>
 </trans-unit>
 
 <trans-unit id="110">
 <source>general context</source>
-<target>contexte g&#xE9;n&#xE9;ral</target>
+<target>contexte général</target>
 </trans-unit>
 
 <trans-unit id="111">
@@ -562,7 +565,7 @@
 
 <trans-unit id="113">
 <source>authority record identifier</source>
-<target>autorit&#xE9; identifiant</target>
+<target>autorité identifiant</target>
 </trans-unit>
 
 <trans-unit id="114">
@@ -587,12 +590,12 @@
 
 <trans-unit id="118">
 <source>sorry</source>
-<target>d&#xE9;sol&#xE9;</target>
+<target>désolé</target>
 </trans-unit>
 
 <trans-unit id="119">
 <source>this term is locked and cannot be edited</source>
-<target>ce terme est verrouill&#xE9; et ne peut &#xEA;tre modifi&#xE9;</target>
+<target>ce terme est verrouillé et ne peut être modifié</target>
 </trans-unit>
 
 <trans-unit id="120">
@@ -602,22 +605,22 @@
 
 <trans-unit id="121">
 <source>back to previous page</source>
-<target>retour &#xE0; la page pr&#xE9;c&#xE9;dente</target>
+<target>retour à la page précédente</target>
 </trans-unit>
 
 <trans-unit id="122">
 <source>go to homepage</source>
-<target>aller &#xE0; la page d'accueil</target>
+<target>aller à la page d'accueil</target>
 </trans-unit>
 
 <trans-unit id="123">
 <source>page not found</source>
-<target>page non trouv&#xE9;e</target>
+<target>page non trouvée</target>
 </trans-unit>
 
 <trans-unit id="124">
 <source>the server returned a 404 response</source>
-<target>le serveur a renvoy&#xE9; une r&#xE9;ponse 404</target>
+<target>le serveur a renvoyé une réponse 404</target>
 </trans-unit>
 
 <trans-unit id="125">
@@ -632,7 +635,7 @@
 
 <trans-unit id="127">
 <source>you do not have permission to access that page</source>
-<target>vous n'avez pas l'autorisation d'acc&#xE9;der &#xE0; la page</target>
+<target>vous n'avez pas l'autorisation d'accéder à la page</target>
 </trans-unit>
 
 <trans-unit id="128">
@@ -642,7 +645,7 @@
 
 <trans-unit id="129">
 <source>this module has been disabled by a site administrator</source>
-<target>ce module a &#xE9;t&#xE9; d&#xE9;sactiv&#xE9; par un administrateur du site</target>
+<target>ce module a été désactivé par un administrateur du site</target>
 </trans-unit>
 
 <trans-unit id="130">
@@ -652,12 +655,12 @@
 
 <trans-unit id="131">
 <source>this website has been temporarily disabled</source>
-<target>ce site web a &#xE9;t&#xE9; temporairement d&#xE9;sactiv&#xE9;</target>
+<target>ce site web a été temporairement désactivé</target>
 </trans-unit>
 
 <trans-unit id="132">
 <source>please try again later</source>
-<target>s.v.p. r&#xE9;essayer plus tard</target>
+<target>s.v.p. réessayer plus tard</target>
 </trans-unit>
 
 <trans-unit id="133">
@@ -697,7 +700,7 @@
 
 <trans-unit id="140">
 <source>reference code</source>
-<target>code de r&#xE9;f&#xE9;rence</target>
+<target>code de référence</target>
 </trans-unit>
 
 <trans-unit id="141">
@@ -732,7 +735,7 @@
 
 <trans-unit id="147">
 <source>creator</source>
-<target>cr&#xE9;ateur</target>
+<target>créateur</target>
 </trans-unit>
 
 <trans-unit id="148">
@@ -742,37 +745,37 @@
 
 <trans-unit id="149">
 <source>immediate source of acquisition</source>
-<target>source imm&#xE9;diate d'acquisition</target>
+<target>source immédiate d'acquisition</target>
 </trans-unit>
 
 <trans-unit id="150">
 <source>scope and content</source>
-<target>port&#xE9;e et le contenu</target>
+<target>portée et le contenu</target>
 </trans-unit>
 
 <trans-unit id="151">
 <source>appraisal, destruction and scheduling</source>
-<target>&#xE9;valuation, de la destruction et de la programmation</target>
+<target>évaluation, de la destruction et de la programmation</target>
 </trans-unit>
 
 <trans-unit id="152">
 <source>accruals</source>
-<target>r&#xE9;gularisation</target>
+<target>régularisation</target>
 </trans-unit>
 
 <trans-unit id="153">
 <source>system of arrangement</source>
-<target>syst&#xE8;me d'arrangement</target>
+<target>système d'arrangement</target>
 </trans-unit>
 
 <trans-unit id="154">
 <source>conditions governing access</source>
-<target>conditions d'acc&#xE8;s</target>
+<target>conditions d'accès</target>
 </trans-unit>
 
 <trans-unit id="155">
 <source>conditions governing reproduction</source>
-<target>conditions r&#xE9;gissant la reproduction</target>
+<target>conditions régissant la reproduction</target>
 </trans-unit>
 
 <trans-unit id="156">
@@ -782,12 +785,12 @@
 
 <trans-unit id="157">
 <source>physical characteristics</source>
-<target>caract&#xE9;ristiques physiques</target>
+<target>caractéristiques physiques</target>
 </trans-unit>
 
 <trans-unit id="158">
 <source>finding aids</source>
-<target>aides &#xE0; la recherche</target>
+<target>aides à la recherche</target>
 </trans-unit>
 
 <trans-unit id="159">
@@ -802,7 +805,7 @@
 
 <trans-unit id="161">
 <source>related units of description</source>
-<target>unit&#xE9;s de description</target>
+<target>unités de description</target>
 </trans-unit>
 
 <trans-unit id="162">
@@ -812,7 +815,7 @@
 
 <trans-unit id="163">
 <source>access points</source>
-<target>points d'acc&#xE8;s</target>
+<target>points d'accès</target>
 </trans-unit>
 
 <trans-unit id="164">
@@ -832,25 +835,43 @@
 
 <trans-unit id="167">
 <source>creation context</source>
-<target>cr&#xE9;ation contexte</target>
+<target>création contexte</target>
 </trans-unit>
 
 <trans-unit id="168">
 <source>creator name</source>
-<target>nom de r&#xE9;ateur</target>
+<target>nom de réateur</target>
 </trans-unit>
 
+<trans-unit id="169">
+<source>date</source>
+<target>date</target>
+</trans-unit>
 
+<trans-unit id="170">
+<source>end date (if range)</source>
+<target>date de fin (si la gamme)</target>
+</trans-unit>
 
+<trans-unit id="171">
+<source>year</source>
+<target>année</target>
+</trans-unit>
 
+<trans-unit id="172">
+<source>month</source>
+<target>mois</target>
+</trans-unit>
 
+<trans-unit id="173">
+<source>day</source>
+<target>jour</target>
+</trans-unit>
 
-
-
-
-
-
-
+<trans-unit id="174">
+<source>date note (defaults to date range)</source>
+<target>date de la note (par défaut à la date de portée)</target>
+</trans-unit>
 
 <trans-unit id="175">
 <source>administrative / biographical history</source>
@@ -864,37 +885,37 @@
 
 <trans-unit id="177">
 <source>conditions of access and use area</source>
-<target>zone des conditions d'acc&#xE8;s et d'utilisation</target>
+<target>zone des conditions d'accès et d'utilisation</target>
 </trans-unit>
 
 <trans-unit id="178">
 <source>subject access points</source>
-<target>points d'acc&#xE8;s du sujet</target>
+<target>points d'accès du sujet</target>
 </trans-unit>
 
 <trans-unit id="179">
 <source>place access points</source>
-<target>placer des points d'acc&#xE8;s</target>
+<target>placer des points d'accès</target>
 </trans-unit>
 
 <trans-unit id="180">
 <source>description control area</source>
-<target>zone de la description contr&#xF4;l&#xE9;</target>
+<target>zone de la description contrôlé</target>
 </trans-unit>
 
 <trans-unit id="181">
 <source>title is a required field</source>
-<target>titre est un &#xE9;l&#xE9;ment n&#xE9;cessaire</target>
+<target>titre est un élément nécessaire</target>
 </trans-unit>
 
 <trans-unit id="182">
 <source>creator is a required field. if the required creator record does not exist yet, please create it first, then return to this form.</source>
-<target>cr&#xE9;ateur est un &#xE9;l&#xE9;ment n&#xE9;cessaire. si le dossier requis cr&#xE9;ateur n'existe pas encore, vous pouvez en cr&#xE9;er d'abord, puis revenez &#xE0; ce formulaire.</target>
+<target>créateur est un élément nécessaire. si le dossier requis créateur n'existe pas encore, vous pouvez en créer d'abord, puis revenez à ce formulaire.</target>
 </trans-unit>
 
 <trans-unit id="183">
 <source>repository is a required field. if the required repository record does not exist yet, please create it first, then return to this form.</source>
-<target>r&#xE9;f&#xE9;rentiel est un &#xE9;l&#xE9;ment n&#xE9;cessaire. si le dossier requis r&#xE9;f&#xE9;rentiel n'existe pas encore, vous pouvez en cr&#xE9;er d'abord, puis revenez &#xE0; ce formulaire.</target>
+<target>référentiel est un élément nécessaire. si le dossier requis référentiel n'existe pas encore, vous pouvez en créer d'abord, puis revenez à ce formulaire.</target>
 </trans-unit>
 
 <trans-unit id="184">
@@ -927,7 +948,10 @@
 <target>changer</target>
 </trans-unit>
 
-
+<trans-unit id="190">
+<source>collection</source>
+<target>collection</target>
+</trans-unit>
 
 <trans-unit id="191">
 <source>term</source>
@@ -971,7 +995,7 @@
 
 <trans-unit id="199">
 <source>code numeric</source>
-<target>code num&#xE9;rique</target>
+<target>code numérique</target>
 </trans-unit>
 
 <trans-unit id="200">
@@ -986,7 +1010,7 @@
 
 <trans-unit id="202">
 <source>please log-in to access that page</source>
-<target>s.v.p. connectez-vous pour acc&#xE9;der &#xE0; cette page</target>
+<target>s.v.p. connectez-vous pour accéder à cette page</target>
 </trans-unit>
 
 <trans-unit id="203">
@@ -1011,7 +1035,7 @@
 
 <trans-unit id="207">
 <source>role</source>
-<target>r&#xF4;le</target>
+<target>rôle</target>
 </trans-unit>
 
 <trans-unit id="208">
@@ -1021,7 +1045,7 @@
 
 <trans-unit id="209">
 <source>reset password</source>
-<target>r&#xE9;initialisation de mot de passe</target>
+<target>réinitialisation de mot de passe</target>
 </trans-unit>
 
 <trans-unit id="210">
@@ -1041,7 +1065,7 @@
 
 <trans-unit id="213">
 <source>this account does not exist or you entered a wrong password</source>
-<target>ce compte n'existe pas ou vous avez entr&#xE9; un mot de passe erron&#xE9;</target>
+<target>ce compte n'existe pas ou vous avez entré un mot de passe erroné</target>
 </trans-unit>
 
 <trans-unit id="214">
@@ -1072,241 +1096,6 @@
 <trans-unit id="219">
 <source>map relationships</source>
 <target>relations de cartes</target>
-</trans-unit>
-
-<trans-unit id="220">
-<source>authority file</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="221">
-<source>start year</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="222">
-<source>end year (if range)</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="223">
-<source>date display (defaults to date range)</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="224">
-<source>active</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="225">
-<source>languages</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="226">
-<source>ISO 639 code</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="227">
-<source>archival description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="228">
-<source>creation year</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="229">
-<source>creation date(s)</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="230">
-<source>archival descriptions</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="231">
-<source>title info</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="232">
-<source>subtitle</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="233">
-<source>origin info</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="234">
-<source>edition</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="235">
-<source>creation date</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="236">
-<source>frequency</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="237">
-<source>physical description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="238">
-<source>extent</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="239">
-<source>name part</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="240">
-<source>abstract</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="241">
-<source>access condition</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="242">
-<source>restriction on access</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="243">
-<source>use and reproduction</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="244">
-<source>related items</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="245">
-<source>originals</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="246">
-<source>topics</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="247">
-<source>archival institution</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="248">
-<source>date created</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="249">
-<source>add / edit</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="250">
-<source>archival institutions</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="251">
-<source>other</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="252">
-<source>names</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="253">
-<source>functions occupations activities</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="254">
-<source>rules</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="255">
-<source>dates of creation revision deletion</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="256">
-<source>language of authority record</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="257">
-<source>script of authority record</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="258">
-<source>Inherited from %ancestor%</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="259">
-<source>access conditions and requirements</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="260">
-<source>language(s) of institution description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="261">
-<source>script(s) of institution description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="262">
-<source>list </source>
-<target/>
-</trans-unit>
-
-<trans-unit id="263">
-<source> terms</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="264">
-<source>view term</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="265">
-<source>term type</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="266">
-<source>code alpha2</source>
-<target/>
 </trans-unit>
 </body>
  </file>

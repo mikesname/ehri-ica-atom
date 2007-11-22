@@ -267,22 +267,22 @@ width: 70px;
 
 
 /*********************************************************
-                LANGUAGE - SELECTBOX
+                LANGUAGE - SELECTBOX - SIDEBAR
 **********************************************************/
 
-#language-selector table {
+#language-sidebar table {
 border: 0;
 border-collapse: collapse;
 margin: 0;
 padding: 0;
 }
 
-#language-selector td {
+#language-sidebar td {
  border: 0;
  vertical-align: center;
 }
 
-#language-selector .selectbox {
+#language-sidebar .selectbox {
 	background-color: #FFFFFF;
 	border: 1px solid #a3a3a3;
 	width: 153px;
@@ -292,18 +292,18 @@ padding: 0;
   float: left;
 }
 
-#language-selector .selectbox:focus {
+#language-sidebar .selectbox:focus {
 background: #cccccc;
 }
 
-#language-selector .submit {
+#language-sidebar .submit {
 
 font: 12px Verdana, Arial, Sans-Serif;
 margin: 5px 0 0 5px;
 width: 70px;
 }
 
-#language-selector .submithover {
+#language-sidebar .submithover {
 
 font: 12px Verdana, Arial, Sans-Serif;
 margin: 5px 0 0 5px;

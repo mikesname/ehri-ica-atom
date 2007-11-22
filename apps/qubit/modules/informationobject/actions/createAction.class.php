@@ -76,7 +76,7 @@ class createAction extends sfAction
         $this->setTemplate('editISAD');
         break;
       default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
+        $this->setTemplate('edit');
       }
 
 

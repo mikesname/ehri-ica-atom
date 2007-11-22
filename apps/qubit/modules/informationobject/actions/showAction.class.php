@@ -51,7 +51,9 @@ class showAction extends sfAction
     }
 
    //set template
-  switch ($this->getRequestParameter('template'))
+   if ($this->getRequestParameter('template'))
+    {
+    switch ($this->getRequestParameter('template'))
       {
       case 'dublinCore' :
         $this->setTemplate('showDublinCore');
@@ -60,9 +62,15 @@ class showAction extends sfAction
         $this->setTemplate('showISAD');
         break;
       default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_show'));
+        $this->setTemplate('show');
         break;
       }
+    //set default template
+    }
+    else
+    {
+      $this->setTemplate('show');
+    }
 
 
   }

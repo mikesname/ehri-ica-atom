@@ -1,22 +1,6 @@
 # default values
 all:
-  version: Qubit v0.5
-  default_template:
-    informationobject_edit: edit
-    informationobject_show: show
-    informationobject_list: list
-    actor_edit: edit
-    actor_show: show
-    actor_list: list
-    repository_edit: edit
-    repository_show: show
-    repository_list: list
-  ui_label:
-    informationobject: information object
-    actor:  person/organization
-    creator: creator
-    repository: repository
-    subject: subject
-    collection: collection
-    holdings: holdings
-  google_map_key:
+  pager:
+    browse_list_max: 5
+  accepted:
+    languages: [en, fr]

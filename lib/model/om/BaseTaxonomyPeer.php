@@ -98,10 +98,6 @@ abstract class BaseTaxonomyPeer {
 		return self::$fieldNames[$type];
 	}
 
-  public static function getColumnNames()
-  {
-    return self::$fieldNames[BasePeer::TYPE_COLNAME];
-  }
 	
 	public static function alias($alias, $column)
 	{

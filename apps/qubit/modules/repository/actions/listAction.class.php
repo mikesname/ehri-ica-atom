@@ -59,12 +59,13 @@ class listAction extends sfAction
 
    //set view template
     switch ($this->getRequestParameter('template'))
-    {
+      {
       case 'isiah' :
         $this->setTemplate('listISIAH');
         break;
+      //default template is ISAAR
       default :
-        $this->setTemplate(sfConfig::get('app_default_template_repository_list'));
+        $this->setTemplate('list');
     }
 
 

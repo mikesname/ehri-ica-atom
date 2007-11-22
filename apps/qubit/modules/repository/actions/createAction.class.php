@@ -49,11 +49,13 @@ class createAction extends sfAction
   //set view template
   switch ($this->getRequestParameter('template'))
     {
-    case 'isiah' :
-      $this->setTemplate('editISIAH');
+    case 'anotherTemplate' :
+      $this->setTemplate('editAnotherTemplate');
       break;
+    //default template is ISIAH
+    case 'isiah' :
     default :
-      $this->setTemplate(sfConfig::get('app_default_template_repository_edit'));
+      $this->setTemplate('edit');
     }
 
   }

@@ -82,7 +82,7 @@ class editAction extends sfAction
       $this->setTemplate('editISAAR');
       break;
     default :
-      $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
+      $this->setTemplate('edit');
       break;
     }
 

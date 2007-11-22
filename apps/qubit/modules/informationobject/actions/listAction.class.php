@@ -85,7 +85,7 @@ class listAction extends sfAction
         $this->setTemplate('listISAD');
         break;
       default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_list'));
+        $this->setTemplate('list');
     }
 
     }

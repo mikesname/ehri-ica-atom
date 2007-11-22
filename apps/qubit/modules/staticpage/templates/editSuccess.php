@@ -21,6 +21,10 @@
   <th><?php echo __('page content'); ?>:</th>
   <td><?php echo object_textarea_tag($staticpage, 'getPageContent', array ('size' => '30x10',)) ?></td>
 </tr>
+<tr>
+  <th><?php echo __('stylesheet'); ?>:</th>
+  <td><?php echo object_input_tag($staticpage, 'getStylesheet', array ('size' => 20,)) ?></td>
+</tr>
 </tbody>
 </table>
 <div class="menu-action">

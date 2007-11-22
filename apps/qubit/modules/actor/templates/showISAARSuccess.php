@@ -4,157 +4,153 @@
 <tbody>
 
 
-<?php if ($actor->getAuthorizedFormOfName()): ?>
-  <?php if ($editCredentials): ?>
-    <tr><td colspan="2" class="headerCell">
-    <?php echo link_to($actor->getAuthorizedFormOfName(), 'actor/edit?id='.$actor->getId()) ?>
-    </td></tr>
-  <?php else: ?>
-    <tr><td colspan="2" class="headerCell">
-    <?php echo $actor->getAuthorizedFormOfName() ?>
-    </td></tr>
-  <?php endif; ?>
-<?php endif; ?>
+<?php if($actor->getAuthorizedFormOfName())
+  {
+    if($editCredentials)
+      {
+      echo '<tr><td colspan="2" class="headerCell">'.link_to($actor->getAuthorizedFormOfName(), 'actor/edit?id='.$actor->getId()).'</td></tr>' ;
+      }
+    else
+      {
+      echo '<tr><td colspan="2" class="headerCell">'.$actor->getAuthorizedFormOfName().'</b></td></tr>' ;
+      }
+   } ?>
 
-<?php if ($actor->getTypeOfEntityId()): ?>
-  <tr><th><?php echo __('type of entity') ?>: </th><td>
-  <?php echo $actor->getTypeOfEntity() ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($actor->getTypeOfEntityId())
+  {
+  echo '<tr><th>Type of entity: </th><td>';
+  echo $actor->getTypeOfEntity();
+  echo '</td></tr>';
+  }
+?>
 
-<?php if ($otherNames): ?>
-  <tr><th><?php echo __('other').' '.__('names') ?>:</th><td>
-  <?php foreach ($otherNames as $otherName): ?>
-    <?php echo $otherName['name'].' ('.$otherName['nameType'].')' ?>
-    <?php if($otherName['note']): ?>
-      <span class="note">--<?php echo $otherName['note'] ?></span>
-    <?php endif; ?>
-    <br />
-  <?php endforeach; ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($otherNames)
+  {
+  echo '<tr><th>Other Names:</th><td>';
+  foreach($otherNames as $otherName)
+    {
+    echo $otherName['name'].' ('.$otherName['nameType'].')';
+    if($otherName['note'])
+      {
+      echo '<span class="note">--'.$otherName['note'].'</span>';
+      }
+    echo '<br />';
+    }
+  echo '</td></tr>';
+  }
+  ?>
 
-<?php if ($actor->getIdentifiers()): ?>
-  <tr><th><?php echo __('identifiers for corporate bodies') ?>: </th><td>
-  <?php echo $actor->getIdentifiers() ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($actor->getIdentifiers())
+  { echo '<tr><th>Identifiers for corporate bodies: </th><td>'.$actor->getIdentifiers().'</td></tr>' ;
+  }
+?>
 
-<?php if ($datesOfExistence): ?>
-  <tr><th>
-  <?php echo __('dates of existence')?>: </th>
-  <td><?php echo $datesOfExistence ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($datesOfExistence)
+  {
+  echo '<tr><th>Dates of existence: </th><td>'.$datesOfExistence.'</td></tr>';
+  }
+?>
 
-<?php if ($actor->getHistory()): ?>
-  <tr><th><?php echo __('history')?>: </th>
-  <td><?php echo nl2br($actor->getHistory())?>
-  </td></tr>
-<?php endif; ?>
+<?php if($actor->getHistory()) { echo
+'<tr><th>History: </th>
+<td>'.nl2br($actor->getHistory()).'</td></tr>' ;} ?>
 
-<?php if ($places): ?>
-  <tr><th><?php echo __('places')?>: </th>
-  <td><?php echo $places ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($places)
+  {
+  echo '<tr><th>Places: </th><td>'.$places.'</td></tr>';
+  }
+?>
 
-<?php if ($actor->getLegalStatus()): ?>
-  <tr><th><?php echo __('legal status')?>: </th>
-  <td><?php echo nl2br($actor->getLegalStatus()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getLegalStatus()) { echo
+'<tr><th>Legal status: </th>
+<td>'.$actor->getLegalStatus().'</td></tr>' ;} ?>
 
-<?php if ($actor->getFunctions()): ?>
-  <tr><th><?php echo __('functions occupations activities')?>: </th>
-  <td><?php echo nl2br($actor->getFunctions()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getFunctions()) { echo
+'<tr><th>Functions occupations activities: </th>
+<td>'.$actor->getFunctions().'</td></tr>' ;} ?>
 
-<?php if ($actor->getMandates()): ?>
-  <tr><th><?php echo __('mandates or sources of authority')?>: </th>
-  <td><?php echo nl2br($actor->getMandates()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getMandates()) { echo
+'<tr><th>Mandates or sources of authority: </th>
+<td>'.$actor->getMandates().'</td></tr>' ;} ?>
 
-<?php if ($actor->getInternalStructures()): ?>
-  <tr><th><?php echo __('internal structures or genealogy')?>: </th>
-  <td><?php echo nl2br($actor->getInternalStructures()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getInternalStructures()) { echo
+'<tr><th>Internal structures or genealogy: </th>
+<td>'.$actor->getInternalStructures().'</td></tr>' ;} ?>
 
-<?php if ($actor->getGeneralContext()): ?>
-  <tr><th><?php echo __('general context')?>: </th>
-  <td><?php echo nl2br($actor->getGeneralContext()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getGeneralContext()) { echo
+'<tr><th>General context: </th>
+<td>'.$actor->getGeneralContext().'</td></tr>' ;} ?>
 
-<?php if($relatedActors): ?>
-  <tr><th><?php echo _('related corporate bodies persons families') ?>: </th><td>
-  <?php echo $relatedActors ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($relatedActors)
+  {
+  echo '<tr><th>Related corporate bodies persons families: </th><td>'.$relatedActors.'</td></tr>';
+  }
+?>
 
-<?php if ($actor->getAuthorityRecordIdentifier()): ?>
-  <tr><th><?php echo __('authority record identifier')?>: </th>
-  <td><?php echo $actor->getAuthorityRecordIdentifier() ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getAuthorityRecordIdentifier()) { echo
+'<tr><th>Authority record identifier: </th>
+<td>'.$actor->getAuthorityRecordIdentifier().'</td></tr>' ;} ?>
 
-<?php if ($actor->getInstitutionIdentifier()): ?>
-  <tr><th><?php echo __('institution identifier')?>: </th>
-  <td><?php echo $actor->getInstitutionIdentifier() ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getInstitutionIdentifier()) { echo
+'<tr><th>Institution identifier: </th>
+<td>'.$actor->getInstitutionIdentifier().'</td></tr>' ;} ?>
 
-<?php if ($actor->getRules()): ?>
-  <tr><th><?php echo __('rules')?>: </th>
-  <td><?php echo nl2br($actor->getRules()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getRules()) { echo
+'<tr><th>Rules or conventions: </th>
+<td>'.$actor->getRules().'</td></tr>' ;} ?>
 
-<?php if ($actor->getStatusId()): ?>
-  <tr><th><?php echo __('status')?>:</th><td>
-  <?php echo $actor->getTermRelatedByStatusId() ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($actor->getStatus()) { echo
+'<tr><th>Status: </th>
+<td>'.$actor->getStatus().'</td></tr>' ;} ?>
 
-<?php if ($actor->getLevelOfDetailId()): ?>
-  <tr><th><?php echo __('status')?>:</th><td>
-  <?php echo $actor->getTermRelatedByLevelOfDetailId() ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($actor->getLevelOfDetail()) { echo
+'<tr><th>Level of detail: </th>
+<td>'.$actor->getLevelOfDetail().'</td></tr>' ;} ?>
 
-<?php if ($datesOfChanges): ?>
-  <tr><th><?php echo __('dates of creation revision deletion')?>: </th><td>
-  <?php echo $datesOfChanges ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($datesOfChanges)
+  {
+  echo '<tr><th>Dates of creation revision deletion: </th><td>'.$datesOfChanges.'</td></tr>';
+  }
+?>
 
-<?php if ($languages): ?>
-  <tr><th><?php echo __('language of authority record')?>:
-  </th><td>
-  <?php foreach ($languages as $language): ?>
-    <?php echo $language['termName'] ?><br />
-  <?php endforeach; ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($languages)
+  {
+  echo '<tr><th>Language of authority record: </th><td>';
+  foreach($languages as $language)
+    {
+    echo $language['termName'];
+    echo '<br />';
+    }
+  echo '</td></tr>' ;
+  }
+?>
 
-<?php if ($scripts): ?>
-  <tr><th><?php echo __('script of authority record')?>:
-  </th><td>
-  <?php foreach ($scripts as $script): ?>
-    <?php echo $script['termName'] ?><br />
-  <?php endforeach; ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($scripts)
+  {
+  echo '<tr><th>Script of authority record: </th><td>';
+  foreach($scripts as $script)
+    {
+    echo $script['termName'];
+    echo '<br />';
+    }
+  echo '</td></tr>' ;
+  }
+?>
 
-<?php if ($actor->getSources()): ?>
-  <tr><th><?php echo __('sources')?>: </th>
-  <td><?php echo nl2br($actor->getSources()) ?></td></tr>
-<?php endif; ?>
+<?php if($actor->getSources()) { echo
+'<tr><th>Sources: </th>
+<td>'.$actor->getSources().'</td></tr>' ;} ?>
 
-<?php if ($notes): ?>
-  <tr><th><?php echo __('notes')?>:
-  </th><td>
-  <?php foreach ($notes as $note): ?>
-    <?php echo $note['noteType'].': '.$note['note'] ?>
-    <br />
-  <?php endforeach; ?>
-  </td></tr>
-<?php endif; ?>
+<?php if($notes)
+  {
+  echo '<tr><th>Notes: </th><td>';
+  foreach($notes as $note)
+    {
+    echo $note['noteType'].': '.$note['note'].'<br />';
+    }
+  echo '</td></tr>';
+  }
+?>
 
 </tbody>
 </table>
@@ -162,6 +158,6 @@
 
 <?php if($editCredentials): ?>
   <div class="menu-action">
-  <?php echo link_to(__('edit').' '.__('authority file'), 'actor/edit?id='.$actor->getId()) ?>
+  <?php echo link_to(__('edit'), 'actor/edit?id='.$actor->getId()) ?>
   </div>
 <?php endif; ?>

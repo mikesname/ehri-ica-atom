@@ -14,13 +14,12 @@
 **********************************************************/
 
 #website-name {
-font: bold 64px/97px verdana, georgia, garamond, serif;
+font: bold 56px/60px verdana, georgia, garamond, serif;
 letter-spacing: 3px;
 color: #04025C;
 border: 0;
-margin-bottom: 3px;
+margin-bottom: 2px;
 text-align: left;
-float:left;
 /*background-image: url(../images/background.gif);*/
 }
 
@@ -33,10 +32,9 @@ background-color: transparent;
 
 #website-description {
 color: #004080;
-font: bold 15px/16px georgia, garamond, serif;
-margin: 0 0 0 10px;
+font: bold 17px/19px georgia, garamond, serif;
+margin: 5px 0 0 2px;
 text-align: left;
-clear: both;
 }
 
 #logo a:hover, #logo a:link, #logo a:visited, #logo a:active {
@@ -48,19 +46,8 @@ padding: 0;
 }
 
 #logo img {
-margin: 10px 0 0 20px;
-}
-
-/*********************************************************
-                APP VERSION NUMBER
-**********************************************************/
-
-.versionNumber {
+margin-right: 370px;
 float: right;
-color: #999999;
-margin: 10px 5px 0 0;
-background: transparent;
-z-index: 1;
 }
 
 /*********************************************************

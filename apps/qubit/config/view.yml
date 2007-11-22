@@ -17,10 +17,9 @@ default:
   layout:         layout
 
   components:
-    footer:       [sfTranslatePlugin, translate]
-    header:       []
+    footer:       []
     sidebar:      []
-    MainMenu:                     [menu, mainMenu]
+    MainMenu:                     [menu, MainMenu]
     SearchSidebar:                [search, Sidebar]
     BrowseSidebar:                [browse, Sidebar]
-    ChangeLanguageList:           [i18n, changeLanguageList]
+    LanguageSidebar:              [staticpage, Sidebar]
