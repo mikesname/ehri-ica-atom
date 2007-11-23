@@ -1,6 +1,15 @@
 editSuccess:
   javascripts: [jquery, drupal, collapse]
 
+editISADSuccess:
+  javascripts: [jquery, drupal, collapse]
+
+editMODSSuccess:
+  javascripts: [jquery, drupal, collapse]
+
+editDCSuccess:
+  javascripts: [jquery, drupal, collapse]
+
 listSuccess:
   components:
     sidebar: []
