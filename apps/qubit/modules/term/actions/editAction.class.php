@@ -2,49 +2,41 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class editAction extends sfAction
+class TermEditAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-  $term = TermPeer::retrieveByPk($this->getRequestParameter('id'));
+  $term = QubitTerm::getById($this->getRequestParameter('id'));
 
   $this->forward404Unless($term);
 
-  //make sure a locked term value is not edited
-  $termRestriction = $term->getTaxonomy()->getTermUse();
-  if ($termRestriction == 'admin')
+  //make sure a protected term value is not edited
+  if ($term->isProtected())
     {
-    $this->forward('admin','TermPermission');
+    $this->forward('admin','termPermission');
     }
 
   $this->term = $term;
+  $this->taxonomy = QubitTaxonomy::getById($term->getTaxonomyId());
 
-  $taxonomy = TaxonomyPeer::retrieveByPk($term->getTaxonomyId());
-  $this->taxonomyName = $taxonomy->getName();
-  $this->taxonomyId = $term->getTaxonomyId();
-
-  if ($this->taxonomyId != 0)
+  if ($term->getTaxonomyId() != 0)
     {
     $this->setTemplate('editTaxonomy');
     }
@@ -52,7 +44,5 @@ class editAction extends sfAction
     {
     $this->setTemplate('edit');
     }
-
   }
-
 }

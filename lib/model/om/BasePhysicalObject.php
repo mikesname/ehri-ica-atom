@@ -1,1064 +1,539 @@
 <?php
 
-
-abstract class BasePhysicalObject extends BaseObject  implements Persistent {
-
-
-	
-	protected static $peer;
-
-
-	
-	protected $id;
-
-
-	
-	protected $name;
-
-
-	
-	protected $description;
-
-
-	
-	protected $information_object_id;
-
-
-	
-	protected $location_id;
-
-
-	
-	protected $tree_id;
-
-
-	
-	protected $tree_left_id;
-
-
-	
-	protected $tree_right_id;
-
-
-	
-	protected $tree_parent_id;
-
-
-	
-	protected $created_at;
-
-
-	
-	protected $updated_at;
-
-	
-	protected $aInformationObject;
-
-	
-	protected $aTerm;
-
-	
-	protected $collRights;
-
-	
-	protected $lastRightCriteria = null;
-
-	
-	protected $alreadyInSave = false;
-
-	
-	protected $alreadyInValidation = false;
-
-	
-	public function getId()
-	{
-
-		return $this->id;
-	}
-
-	
-	public function getName()
-	{
-
-		return $this->name;
-	}
-
-	
-	public function getDescription()
-	{
-
-		return $this->description;
-	}
-
-	
-	public function getInformationObjectId()
-	{
-
-		return $this->information_object_id;
-	}
-
-	
-	public function getLocationId()
-	{
-
-		return $this->location_id;
-	}
-
-	
-	public function getTreeId()
-	{
-
-		return $this->tree_id;
-	}
-
-	
-	public function getTreeLeftId()
-	{
-
-		return $this->tree_left_id;
-	}
-
-	
-	public function getTreeRightId()
-	{
-
-		return $this->tree_right_id;
-	}
-
-	
-	public function getTreeParentId()
-	{
-
-		return $this->tree_parent_id;
-	}
-
-	
-	public function getCreatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->created_at === null || $this->created_at === '') {
-			return null;
-		} elseif (!is_int($this->created_at)) {
-						$ts = strtotime($this->created_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [created_at] as date/time value: " . var_export($this->created_at, true));
-			}
-		} else {
-			$ts = $this->created_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function getUpdatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->updated_at === null || $this->updated_at === '') {
-			return null;
-		} elseif (!is_int($this->updated_at)) {
-						$ts = strtotime($this->updated_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [updated_at] as date/time value: " . var_export($this->updated_at, true));
-			}
-		} else {
-			$ts = $this->updated_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function setId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::ID;
-		}
-
-	} 
-	
-	public function setName($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->name !== $v) {
-			$this->name = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::NAME;
-		}
-
-	} 
-	
-	public function setDescription($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->description !== $v) {
-			$this->description = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::DESCRIPTION;
-		}
-
-	} 
-	
-	public function setInformationObjectId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->information_object_id !== $v) {
-			$this->information_object_id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::INFORMATION_OBJECT_ID;
-		}
-
-		if ($this->aInformationObject !== null && $this->aInformationObject->getId() !== $v) {
-			$this->aInformationObject = null;
-		}
-
-	} 
-	
-	public function setLocationId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->location_id !== $v) {
-			$this->location_id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::LOCATION_ID;
-		}
-
-		if ($this->aTerm !== null && $this->aTerm->getId() !== $v) {
-			$this->aTerm = null;
-		}
-
-	} 
-	
-	public function setTreeId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_id !== $v) {
-			$this->tree_id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::TREE_ID;
-		}
-
-	} 
-	
-	public function setTreeLeftId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_left_id !== $v) {
-			$this->tree_left_id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::TREE_LEFT_ID;
-		}
-
-	} 
-	
-	public function setTreeRightId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_right_id !== $v) {
-			$this->tree_right_id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::TREE_RIGHT_ID;
-		}
-
-	} 
-	
-	public function setTreeParentId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_parent_id !== $v) {
-			$this->tree_parent_id = $v;
-			$this->modifiedColumns[] = PhysicalObjectPeer::TREE_PARENT_ID;
-		}
-
-	} 
-	
-	public function setCreatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [created_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->created_at !== $ts) {
-			$this->created_at = $ts;
-			$this->modifiedColumns[] = PhysicalObjectPeer::CREATED_AT;
-		}
-
-	} 
-	
-	public function setUpdatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [updated_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->updated_at !== $ts) {
-			$this->updated_at = $ts;
-			$this->modifiedColumns[] = PhysicalObjectPeer::UPDATED_AT;
-		}
-
-	} 
-	
-	public function hydrate(ResultSet $rs, $startcol = 1)
-	{
-		try {
-
-			$this->id = $rs->getInt($startcol + 0);
-
-			$this->name = $rs->getString($startcol + 1);
-
-			$this->description = $rs->getString($startcol + 2);
-
-			$this->information_object_id = $rs->getInt($startcol + 3);
-
-			$this->location_id = $rs->getInt($startcol + 4);
-
-			$this->tree_id = $rs->getInt($startcol + 5);
-
-			$this->tree_left_id = $rs->getInt($startcol + 6);
-
-			$this->tree_right_id = $rs->getInt($startcol + 7);
-
-			$this->tree_parent_id = $rs->getInt($startcol + 8);
-
-			$this->created_at = $rs->getTimestamp($startcol + 9, null);
-
-			$this->updated_at = $rs->getTimestamp($startcol + 10, null);
-
-			$this->resetModified();
-
-			$this->setNew(false);
-
-						return $startcol + 11; 
-		} catch (Exception $e) {
-			throw new PropelException("Error populating PhysicalObject object", $e);
-		}
-	}
-
-	
-	public function delete($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BasePhysicalObject:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(PhysicalObjectPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			PhysicalObjectPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	
-
-    foreach (sfMixer::getCallables('BasePhysicalObject:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
-  }
-	
-	public function save($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BasePhysicalObject:save:pre') as $callable)
-    {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
-      {
-        return $affectedRows;
-      }
-    }
-
-
-    if ($this->isNew() && !$this->isColumnModified(PhysicalObjectPeer::CREATED_AT))
-    {
-      $this->setCreatedAt(time());
-    }
-
-    if ($this->isModified() && !$this->isColumnModified(PhysicalObjectPeer::UPDATED_AT))
-    {
-      $this->setUpdatedAt(time());
-    }
-
-		if ($this->isDeleted()) {
-			throw new PropelException("You cannot save an object that has been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(PhysicalObjectPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			$affectedRows = $this->doSave($con);
-			$con->commit();
-    foreach (sfMixer::getCallables('BasePhysicalObject:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
-
-			return $affectedRows;
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	}
-
-	
-	protected function doSave($con)
-	{
-		$affectedRows = 0; 		if (!$this->alreadyInSave) {
-			$this->alreadyInSave = true;
-
-
-												
-			if ($this->aInformationObject !== null) {
-				if ($this->aInformationObject->isModified()) {
-					$affectedRows += $this->aInformationObject->save($con);
-				}
-				$this->setInformationObject($this->aInformationObject);
-			}
-
-			if ($this->aTerm !== null) {
-				if ($this->aTerm->isModified()) {
-					$affectedRows += $this->aTerm->save($con);
-				}
-				$this->setTerm($this->aTerm);
-			}
-
-
-						if ($this->isModified()) {
-				if ($this->isNew()) {
-					$pk = PhysicalObjectPeer::doInsert($this, $con);
-					$affectedRows += 1; 										 										 
-					$this->setId($pk);  
-					$this->setNew(false);
-				} else {
-					$affectedRows += PhysicalObjectPeer::doUpdate($this, $con);
-				}
-				$this->resetModified(); 			}
-
-			if ($this->collRights !== null) {
-				foreach($this->collRights as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			$this->alreadyInSave = false;
-		}
-		return $affectedRows;
-	} 
-	
-	protected $validationFailures = array();
-
-	
-	public function getValidationFailures()
-	{
-		return $this->validationFailures;
-	}
-
-	
-	public function validate($columns = null)
-	{
-		$res = $this->doValidate($columns);
-		if ($res === true) {
-			$this->validationFailures = array();
-			return true;
-		} else {
-			$this->validationFailures = $res;
-			return false;
-		}
-	}
-
-	
-	protected function doValidate($columns = null)
-	{
-		if (!$this->alreadyInValidation) {
-			$this->alreadyInValidation = true;
-			$retval = null;
-
-			$failureMap = array();
-
-
-												
-			if ($this->aInformationObject !== null) {
-				if (!$this->aInformationObject->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aInformationObject->getValidationFailures());
-				}
-			}
-
-			if ($this->aTerm !== null) {
-				if (!$this->aTerm->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aTerm->getValidationFailures());
-				}
-			}
-
-
-			if (($retval = PhysicalObjectPeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
-			}
-
-
-				if ($this->collRights !== null) {
-					foreach($this->collRights as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-
-			$this->alreadyInValidation = false;
-		}
-
-		return (!empty($failureMap) ? $failureMap : true);
-	}
-
-	
-	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = PhysicalObjectPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->getByPosition($pos);
-	}
-
-	
-	public function getByPosition($pos)
-	{
-		switch($pos) {
-			case 0:
-				return $this->getId();
-				break;
-			case 1:
-				return $this->getName();
-				break;
-			case 2:
-				return $this->getDescription();
-				break;
-			case 3:
-				return $this->getInformationObjectId();
-				break;
-			case 4:
-				return $this->getLocationId();
-				break;
-			case 5:
-				return $this->getTreeId();
-				break;
-			case 6:
-				return $this->getTreeLeftId();
-				break;
-			case 7:
-				return $this->getTreeRightId();
-				break;
-			case 8:
-				return $this->getTreeParentId();
-				break;
-			case 9:
-				return $this->getCreatedAt();
-				break;
-			case 10:
-				return $this->getUpdatedAt();
-				break;
-			default:
-				return null;
-				break;
-		} 	}
-
-	
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = PhysicalObjectPeer::getFieldNames($keyType);
-		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getName(),
-			$keys[2] => $this->getDescription(),
-			$keys[3] => $this->getInformationObjectId(),
-			$keys[4] => $this->getLocationId(),
-			$keys[5] => $this->getTreeId(),
-			$keys[6] => $this->getTreeLeftId(),
-			$keys[7] => $this->getTreeRightId(),
-			$keys[8] => $this->getTreeParentId(),
-			$keys[9] => $this->getCreatedAt(),
-			$keys[10] => $this->getUpdatedAt(),
-		);
-		return $result;
-	}
-
-	
-	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = PhysicalObjectPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->setByPosition($pos, $value);
-	}
-
-	
-	public function setByPosition($pos, $value)
-	{
-		switch($pos) {
-			case 0:
-				$this->setId($value);
-				break;
-			case 1:
-				$this->setName($value);
-				break;
-			case 2:
-				$this->setDescription($value);
-				break;
-			case 3:
-				$this->setInformationObjectId($value);
-				break;
-			case 4:
-				$this->setLocationId($value);
-				break;
-			case 5:
-				$this->setTreeId($value);
-				break;
-			case 6:
-				$this->setTreeLeftId($value);
-				break;
-			case 7:
-				$this->setTreeRightId($value);
-				break;
-			case 8:
-				$this->setTreeParentId($value);
-				break;
-			case 9:
-				$this->setCreatedAt($value);
-				break;
-			case 10:
-				$this->setUpdatedAt($value);
-				break;
-		} 	}
-
-	
-	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = PhysicalObjectPeer::getFieldNames($keyType);
-
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setInformationObjectId($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setLocationId($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setTreeId($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setTreeLeftId($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setTreeRightId($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setTreeParentId($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setCreatedAt($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setUpdatedAt($arr[$keys[10]]);
-	}
-
-	
-	public function buildCriteria()
-	{
-		$criteria = new Criteria(PhysicalObjectPeer::DATABASE_NAME);
-
-		if ($this->isColumnModified(PhysicalObjectPeer::ID)) $criteria->add(PhysicalObjectPeer::ID, $this->id);
-		if ($this->isColumnModified(PhysicalObjectPeer::NAME)) $criteria->add(PhysicalObjectPeer::NAME, $this->name);
-		if ($this->isColumnModified(PhysicalObjectPeer::DESCRIPTION)) $criteria->add(PhysicalObjectPeer::DESCRIPTION, $this->description);
-		if ($this->isColumnModified(PhysicalObjectPeer::INFORMATION_OBJECT_ID)) $criteria->add(PhysicalObjectPeer::INFORMATION_OBJECT_ID, $this->information_object_id);
-		if ($this->isColumnModified(PhysicalObjectPeer::LOCATION_ID)) $criteria->add(PhysicalObjectPeer::LOCATION_ID, $this->location_id);
-		if ($this->isColumnModified(PhysicalObjectPeer::TREE_ID)) $criteria->add(PhysicalObjectPeer::TREE_ID, $this->tree_id);
-		if ($this->isColumnModified(PhysicalObjectPeer::TREE_LEFT_ID)) $criteria->add(PhysicalObjectPeer::TREE_LEFT_ID, $this->tree_left_id);
-		if ($this->isColumnModified(PhysicalObjectPeer::TREE_RIGHT_ID)) $criteria->add(PhysicalObjectPeer::TREE_RIGHT_ID, $this->tree_right_id);
-		if ($this->isColumnModified(PhysicalObjectPeer::TREE_PARENT_ID)) $criteria->add(PhysicalObjectPeer::TREE_PARENT_ID, $this->tree_parent_id);
-		if ($this->isColumnModified(PhysicalObjectPeer::CREATED_AT)) $criteria->add(PhysicalObjectPeer::CREATED_AT, $this->created_at);
-		if ($this->isColumnModified(PhysicalObjectPeer::UPDATED_AT)) $criteria->add(PhysicalObjectPeer::UPDATED_AT, $this->updated_at);
-
-		return $criteria;
-	}
-
-	
-	public function buildPkeyCriteria()
-	{
-		$criteria = new Criteria(PhysicalObjectPeer::DATABASE_NAME);
-
-		$criteria->add(PhysicalObjectPeer::ID, $this->id);
-
-		return $criteria;
-	}
-
-	
-	public function getPrimaryKey()
-	{
-		return $this->getId();
-	}
-
-	
-	public function setPrimaryKey($key)
-	{
-		$this->setId($key);
-	}
-
-	
-	public function copyInto($copyObj, $deepCopy = false)
-	{
-
-		$copyObj->setName($this->name);
-
-		$copyObj->setDescription($this->description);
-
-		$copyObj->setInformationObjectId($this->information_object_id);
-
-		$copyObj->setLocationId($this->location_id);
-
-		$copyObj->setTreeId($this->tree_id);
-
-		$copyObj->setTreeLeftId($this->tree_left_id);
-
-		$copyObj->setTreeRightId($this->tree_right_id);
-
-		$copyObj->setTreeParentId($this->tree_parent_id);
-
-		$copyObj->setCreatedAt($this->created_at);
-
-		$copyObj->setUpdatedAt($this->updated_at);
-
-
-		if ($deepCopy) {
-									$copyObj->setNew(false);
-
-			foreach($this->getRights() as $relObj) {
-				$copyObj->addRight($relObj->copy($deepCopy));
-			}
-
-		} 
-
-		$copyObj->setNew(true);
-
-		$copyObj->setId(NULL); 
-	}
-
-	
-	public function copy($deepCopy = false)
-	{
-				$clazz = get_class($this);
-		$copyObj = new $clazz();
-		$this->copyInto($copyObj, $deepCopy);
-		return $copyObj;
-	}
-
-	
-	public function getPeer()
-	{
-		if (self::$peer === null) {
-			self::$peer = new PhysicalObjectPeer();
-		}
-		return self::$peer;
-	}
-
-	
-	public function setInformationObject($v)
-	{
-
-
-		if ($v === null) {
-			$this->setInformationObjectId(NULL);
-		} else {
-			$this->setInformationObjectId($v->getId());
-		}
-
-
-		$this->aInformationObject = $v;
-	}
-
-
-	
-	public function getInformationObject($con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-
-		if ($this->aInformationObject === null && ($this->information_object_id !== null)) {
-
-			$this->aInformationObject = InformationObjectPeer::retrieveByPK($this->information_object_id, $con);
-
-			
-		}
-		return $this->aInformationObject;
-	}
-
-	
-	public function setTerm($v)
-	{
-
-
-		if ($v === null) {
-			$this->setLocationId(NULL);
-		} else {
-			$this->setLocationId($v->getId());
-		}
-
-
-		$this->aTerm = $v;
-	}
-
-
-	
-	public function getTerm($con = null)
-	{
-				include_once 'lib/model/om/BaseTermPeer.php';
-
-		if ($this->aTerm === null && ($this->location_id !== null)) {
-
-			$this->aTerm = TermPeer::retrieveByPK($this->location_id, $con);
-
-			
-		}
-		return $this->aTerm;
-	}
-
-	
-	public function initRights()
-	{
-		if ($this->collRights === null) {
-			$this->collRights = array();
-		}
-	}
-
-	
-	public function getRights($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-			   $this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-				RightPeer::addSelectColumns($criteria);
-				$this->collRights = RightPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-				RightPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-					$this->collRights = RightPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-		return $this->collRights;
-	}
-
-	
-	public function countRights($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-		return RightPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRight(Right $l)
-	{
-		$this->collRights[] = $l;
-		$l->setPhysicalObject($this);
-	}
-
-
-	
-	public function getRightsJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-				$this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-				$this->collRights = RightPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-			if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-				$this->collRights = RightPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-
-		return $this->collRights;
-	}
-
-
-	
-	public function getRightsJoinDigitalObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-				$this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-				$this->collRights = RightPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-			if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-				$this->collRights = RightPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-
-		return $this->collRights;
-	}
-
-
-	
-	public function getRightsJoinTerm($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-				$this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-				$this->collRights = RightPeer::doSelectJoinTerm($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightPeer::PHYSICAL_OBJECT_ID, $this->getId());
-
-			if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-				$this->collRights = RightPeer::doSelectJoinTerm($criteria, $con);
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-
-		return $this->collRights;
-	}
-
-
-  public function __call($method, $arguments)
+abstract class BasePhysicalObject extends QubitObject
+{
+  const DATABASE_NAME = 'propel';
+
+  const TABLE_NAME = 'q_physical_object';
+
+  const ID = 'q_physical_object.ID';
+  const INFORMATION_OBJECT_ID = 'q_physical_object.INFORMATION_OBJECT_ID';
+  const LOCATION_ID = 'q_physical_object.LOCATION_ID';
+  const PARENT_ID = 'q_physical_object.PARENT_ID';
+  const LFT = 'q_physical_object.LFT';
+  const RGT = 'q_physical_object.RGT';
+  const CREATED_AT = 'q_physical_object.CREATED_AT';
+  const UPDATED_AT = 'q_physical_object.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_physical_object.SOURCE_CULTURE';
+
+  public static function addSelectColumns(Criteria $criteria)
   {
-    if (!$callable = sfMixer::getCallable('BasePhysicalObject:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BasePhysicalObject::%s', $method));
-    }
+    parent::addSelectColumns($criteria);
 
-    array_unshift($arguments, $this);
+    $criteria->addJoin(QubitPhysicalObject::ID, QubitObject::ID);
 
-    return call_user_func_array($callable, $arguments);
+    $criteria->addSelectColumn(QubitPhysicalObject::ID);
+    $criteria->addSelectColumn(QubitPhysicalObject::INFORMATION_OBJECT_ID);
+    $criteria->addSelectColumn(QubitPhysicalObject::LOCATION_ID);
+    $criteria->addSelectColumn(QubitPhysicalObject::PARENT_ID);
+    $criteria->addSelectColumn(QubitPhysicalObject::LFT);
+    $criteria->addSelectColumn(QubitPhysicalObject::RGT);
+    $criteria->addSelectColumn(QubitPhysicalObject::CREATED_AT);
+    $criteria->addSelectColumn(QubitPhysicalObject::UPDATED_AT);
+    $criteria->addSelectColumn(QubitPhysicalObject::SOURCE_CULTURE);
+
+    return $criteria;
   }
 
+  public static function get(Criteria $criteria, array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitPhysicalObject::DATABASE_NAME);
+    }
 
-} 
+    self::addSelectColumns($criteria);
+
+    return QubitQuery::createFromCriteria($criteria, 'QubitPhysicalObject', $options);
+  }
+
+  public static function getAll(array $options = array())
+  {
+    return self::get(new Criteria, $options);
+  }
+
+  public static function getOne(Criteria $criteria, array $options = array())
+  {
+    $criteria->setLimit(1);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function getById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitPhysicalObject::ID, $id);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  protected $informationObjectId = null;
+
+  public function getInformationObjectId()
+  {
+    return $this->informationObjectId;
+  }
+
+  public function setInformationObjectId($informationObjectId)
+  {
+    $this->informationObjectId = $informationObjectId;
+
+    return $this;
+  }
+
+  protected $locationId = null;
+
+  public function getLocationId()
+  {
+    return $this->locationId;
+  }
+
+  public function setLocationId($locationId)
+  {
+    $this->locationId = $locationId;
+
+    return $this;
+  }
+
+  protected $parentId = null;
+
+  public function getParentId()
+  {
+    return $this->parentId;
+  }
+
+  public function setParentId($parentId)
+  {
+    $this->parentId = $parentId;
+
+    return $this;
+  }
+
+  protected $lft = null;
+
+  public function getLft()
+  {
+    return $this->lft;
+  }
+
+  public function setLft($lft)
+  {
+    $this->lft = $lft;
+
+    return $this;
+  }
+
+  protected $rgt = null;
+
+  public function getRgt()
+  {
+    return $this->rgt;
+  }
+
+  public function setRgt($rgt)
+  {
+    $this->rgt = $rgt;
+
+    return $this;
+  }
+
+  protected $createdAt = null;
+
+  public function getCreatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->createdAt);
+    }
+
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt($createdAt)
+  {
+    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+    }
+
+    $this->createdAt = $createdAt;
+
+    return $this;
+  }
+
+  protected $updatedAt = null;
+
+  public function getUpdatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->updatedAt);
+    }
+
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt($updatedAt)
+  {
+    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+    }
+
+    $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
+  protected function resetModified()
+  {
+    parent::resetModified();
+
+    $this->columnValues['id'] = $this->id;
+    $this->columnValues['informationObjectId'] = $this->informationObjectId;
+    $this->columnValues['locationId'] = $this->locationId;
+    $this->columnValues['parentId'] = $this->parentId;
+    $this->columnValues['lft'] = $this->lft;
+    $this->columnValues['rgt'] = $this->rgt;
+    $this->columnValues['createdAt'] = $this->createdAt;
+    $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
+
+    return $this;
+  }
+
+  public function hydrate(ResultSet $results, $columnOffset = 1)
+  {
+    $columnOffset = parent::hydrate($results, $columnOffset);
+
+    $this->id = $results->getInt($columnOffset++);
+    $this->informationObjectId = $results->getInt($columnOffset++);
+    $this->locationId = $results->getInt($columnOffset++);
+    $this->parentId = $results->getInt($columnOffset++);
+    $this->lft = $results->getInt($columnOffset++);
+    $this->rgt = $results->getInt($columnOffset++);
+    $this->createdAt = $results->getTimestamp($columnOffset++, null);
+    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
+
+    $this->new = false;
+    $this->resetModified();
+
+    return $columnOffset;
+  }
+
+  public function refresh(array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitPhysicalObject::DATABASE_NAME);
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitPhysicalObject::ID, $this->id);
+
+    self::addSelectColumns($criteria);
+
+    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
+    $resultSet->next();
+
+    return $this->hydrate($resultSet);
+  }
+
+  public function save($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::save($connection);
+
+    foreach ($this->physicalObjectI18ns as $physicalObjectI18n)
+    {
+      $physicalObjectI18n->setId($this->id);
+
+      $affectedRows += $physicalObjectI18n->save($connection);
+    }
+
+    return $affectedRows;
+  }
+
+  protected function insert($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::insert($connection);
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitPhysicalObject::ID, $this->id);
+    }
+
+    if ($this->isColumnModified('informationObjectId'))
+    {
+      $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
+    }
+
+    if ($this->isColumnModified('locationId'))
+    {
+      $criteria->add(QubitPhysicalObject::LOCATION_ID, $this->locationId);
+    }
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $criteria->add(QubitPhysicalObject::PARENT_ID, $this->parentId);
+    }
+
+    if ($this->isColumnModified('lft'))
+    {
+      $criteria->add(QubitPhysicalObject::LFT, $this->lft);
+    }
+
+    if ($this->isColumnModified('rgt'))
+    {
+      $criteria->add(QubitPhysicalObject::RGT, $this->rgt);
+    }
+
+    if (!$this->isColumnModified('createdAt'))
+    {
+      $this->createdAt = time();
+    }
+    $criteria->add(QubitPhysicalObject::CREATED_AT, $this->createdAt);
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitPhysicalObject::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitPhysicalObject::SOURCE_CULTURE, $this->sourceCulture);
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitPhysicalObject::DATABASE_NAME);
+    }
+
+    BasePeer::doInsert($criteria, $connection);
+    $affectedRows += 1;
+
+    return $affectedRows;
+  }
+
+  protected function update($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::update($connection);
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitPhysicalObject::ID, $this->id);
+    }
+
+    if ($this->isColumnModified('informationObjectId'))
+    {
+      $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
+    }
+
+    if ($this->isColumnModified('locationId'))
+    {
+      $criteria->add(QubitPhysicalObject::LOCATION_ID, $this->locationId);
+    }
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $criteria->add(QubitPhysicalObject::PARENT_ID, $this->parentId);
+    }
+
+    if ($this->isColumnModified('lft'))
+    {
+      $criteria->add(QubitPhysicalObject::LFT, $this->lft);
+    }
+
+    if ($this->isColumnModified('rgt'))
+    {
+      $criteria->add(QubitPhysicalObject::RGT, $this->rgt);
+    }
+
+    if ($this->isColumnModified('createdAt'))
+    {
+      $criteria->add(QubitPhysicalObject::CREATED_AT, $this->createdAt);
+    }
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitPhysicalObject::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitPhysicalObject::SOURCE_CULTURE, $this->sourceCulture);
+    }
+
+    if ($criteria->size() > 0)
+    {
+      $selectCriteria = new Criteria;
+      $selectCriteria->add(QubitPhysicalObject::ID, $this->id);
+
+      if (!isset($connection))
+      {
+        $connection = QubitTransactionFilter::getConnection(QubitPhysicalObject::DATABASE_NAME);
+      }
+
+      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+    }
+
+    return $affectedRows;
+  }
+
+  public static function addJoinInformationObjectCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitPhysicalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
+
+    return $criteria;
+  }
+
+  public function getInformationObject(array $options = array())
+  {
+    return $this->informationObject = QubitInformationObject::getById($this->informationObjectId, $options);
+  }
+
+  public function setInformationObject(QubitInformationObject $informationObject)
+  {
+    $this->informationObjectId = $informationObject->getId();
+
+    return $this;
+  }
+
+  public static function addJoinLocationCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitPhysicalObject::LOCATION_ID, QubitTerm::ID);
+
+    return $criteria;
+  }
+
+  public function getLocation(array $options = array())
+  {
+    return $this->location = QubitTerm::getById($this->locationId, $options);
+  }
+
+  public function setLocation(QubitTerm $term)
+  {
+    $this->locationId = $term->getId();
+
+    return $this;
+  }
+
+  public static function addPhysicalObjectI18nsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPhysicalObjectI18n::ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPhysicalObjectI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPhysicalObjectI18nsCriteriaById($criteria, $id);
+
+    return QubitPhysicalObjectI18n::get($criteria, $options);
+  }
+
+  public function addPhysicalObjectI18nsCriteria(Criteria $criteria)
+  {
+    return self::addPhysicalObjectI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $physicalObjectI18ns = null;
+
+  public function getPhysicalObjectI18ns(array $options = array())
+  {
+    if (!isset($this->physicalObjectI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->physicalObjectI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->physicalObjectI18ns = self::getPhysicalObjectI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->physicalObjectI18ns;
+  }
+
+  public function getName(array $options = array())
+  {
+    return $this->getCurrentPhysicalObjectI18n($options)->getName();
+  }
+
+  public function setName($value, array $options = array())
+  {
+    $this->getCurrentPhysicalObjectI18n($options)->setName($value);
+
+    return $this;
+  }
+
+  public function getDescription(array $options = array())
+  {
+    return $this->getCurrentPhysicalObjectI18n($options)->getDescription();
+  }
+
+  public function setDescription($value, array $options = array())
+  {
+    $this->getCurrentPhysicalObjectI18n($options)->setDescription($value);
+
+    return $this;
+  }
+
+  public function getCurrentPhysicalObjectI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->physicalObjectI18ns[$options['culture']]))
+    {
+      if (null === $physicalObjectI18n = QubitPhysicalObjectI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $physicalObjectI18n = new QubitPhysicalObjectI18n;
+        $physicalObjectI18n->setCulture($options['culture']);
+      }
+      $this->physicalObjectI18ns[$options['culture']] = $physicalObjectI18n;
+    }
+
+    return $this->physicalObjectI18ns[$options['culture']];
+  }
+}
+
+BasePeer::getMapBuilder('lib.model.map.PhysicalObjectMapBuilder');

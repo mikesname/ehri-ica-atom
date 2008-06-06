@@ -8,10 +8,10 @@
 <tbody>
 
 <tr><td colspan="2" class="headerCell">
-    <?php echo $user->getUserName().': '.__('reset password'); ?>
+    <?php echo __('reset password: %1%', array('%1%' =>$user->getUserName())) ?>
 </td></tr>
 
-<th><?php echo __('new').' '.__('password'); ?>:</th>
+<th><?php echo __('new password'); ?></th>
   <td><?php echo input_tag('sha1_password', '','maxlength=20')  ?></td>
 </tr>
 

@@ -1,0 +1,5 @@
+generator:
+  class:              QubitGenerator
+  param:
+    model_class:      Note
+    theme:            default

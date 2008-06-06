@@ -1,22 +1,2 @@
-# default values
-all:
-  version: ICA-AtoM v0.5
-  default_template:
-    informationobject_edit: editISAD
-    informationobject_show: showISAD
-    informationobject_list: listISAD
-    actor_edit: editISAAR
-    actor_show: showISAAR
-    actor_list: listISAAR
-    repository_edit: editISIAH
-    repository_show: showISIAH
-    repository_list: listISIAH
-  ui_label:
-    informationobject: archival description
-    actor:  authority file
-    creator: creator
-    repository: archival institution
-    subject: subject
-    collection: fonds
-    holdings: holdings
-  google_map_key:
+#default config
+#all:

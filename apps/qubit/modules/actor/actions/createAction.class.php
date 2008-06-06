@@ -2,52 +2,46 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class createAction extends sfAction
+class ActorCreateAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-  $this->actor = new Actor();
+  $this->actor = new QubitActor;
 
   //Other Forms of Name
   $this->otherNames = null;
-  $this->newName = new ActorName();
+  $this->newName = new QubitActorName;
 
-  //TermManyToManyRelationships
-  $this->languages = null;
-  $this->scripts = null;
-  $this->newLanguage = new ActorTermRelationship();
-  $this->newScript = new ActorTermRelationship();
+  //Properties
+  $this->languageCodes = null;
+  $this->scriptCodes = null;
 
   //Notes
   $this->notes = null;
-  $this->newNote = new Note();
+  $this->newNote = new QubitNote;
 
  //Events
- $this->date = new Event();
+ $this->date = new QubitEvent;
 
-  $this->repositoryReroute = NULL;
-  $this->informationObjectReroute = NULL;
+  $this->repositoryReroute = null;
+  $this->informationObjectReroute = null;
 
   //set view template
   switch ($this->getRequestParameter('template'))
@@ -59,6 +53,5 @@ class createAction extends sfAction
       $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
       break;
     }
-
   }
 }

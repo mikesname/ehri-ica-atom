@@ -1,609 +1,462 @@
 <?php
 
-
-abstract class BaseMenu extends BaseObject  implements Persistent {
-
-
-	
-	protected static $peer;
-
-
-	
-	protected $id;
-
-
-	
-	protected $name;
-
-
-	
-	protected $url;
-
-
-	
-	protected $tree_id;
-
-
-	
-	protected $tree_left_id;
-
-
-	
-	protected $tree_right_id;
-
-
-	
-	protected $tree_parent_id;
-
-
-	
-	protected $created_at;
-
-
-	
-	protected $updated_at;
-
-	
-	protected $alreadyInSave = false;
-
-	
-	protected $alreadyInValidation = false;
-
-	
-	public function getId()
-	{
-
-		return $this->id;
-	}
-
-	
-	public function getName()
-	{
-
-		return $this->name;
-	}
-
-	
-	public function getUrl()
-	{
-
-		return $this->url;
-	}
-
-	
-	public function getTreeId()
-	{
-
-		return $this->tree_id;
-	}
-
-	
-	public function getTreeLeftId()
-	{
-
-		return $this->tree_left_id;
-	}
-
-	
-	public function getTreeRightId()
-	{
-
-		return $this->tree_right_id;
-	}
-
-	
-	public function getTreeParentId()
-	{
-
-		return $this->tree_parent_id;
-	}
-
-	
-	public function getCreatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->created_at === null || $this->created_at === '') {
-			return null;
-		} elseif (!is_int($this->created_at)) {
-						$ts = strtotime($this->created_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [created_at] as date/time value: " . var_export($this->created_at, true));
-			}
-		} else {
-			$ts = $this->created_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function getUpdatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->updated_at === null || $this->updated_at === '') {
-			return null;
-		} elseif (!is_int($this->updated_at)) {
-						$ts = strtotime($this->updated_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [updated_at] as date/time value: " . var_export($this->updated_at, true));
-			}
-		} else {
-			$ts = $this->updated_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function setId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = MenuPeer::ID;
-		}
-
-	} 
-	
-	public function setName($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->name !== $v) {
-			$this->name = $v;
-			$this->modifiedColumns[] = MenuPeer::NAME;
-		}
-
-	} 
-	
-	public function setUrl($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->url !== $v) {
-			$this->url = $v;
-			$this->modifiedColumns[] = MenuPeer::URL;
-		}
-
-	} 
-	
-	public function setTreeId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_id !== $v) {
-			$this->tree_id = $v;
-			$this->modifiedColumns[] = MenuPeer::TREE_ID;
-		}
-
-	} 
-	
-	public function setTreeLeftId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_left_id !== $v) {
-			$this->tree_left_id = $v;
-			$this->modifiedColumns[] = MenuPeer::TREE_LEFT_ID;
-		}
-
-	} 
-	
-	public function setTreeRightId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_right_id !== $v) {
-			$this->tree_right_id = $v;
-			$this->modifiedColumns[] = MenuPeer::TREE_RIGHT_ID;
-		}
-
-	} 
-	
-	public function setTreeParentId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_parent_id !== $v) {
-			$this->tree_parent_id = $v;
-			$this->modifiedColumns[] = MenuPeer::TREE_PARENT_ID;
-		}
-
-	} 
-	
-	public function setCreatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [created_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->created_at !== $ts) {
-			$this->created_at = $ts;
-			$this->modifiedColumns[] = MenuPeer::CREATED_AT;
-		}
-
-	} 
-	
-	public function setUpdatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [updated_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->updated_at !== $ts) {
-			$this->updated_at = $ts;
-			$this->modifiedColumns[] = MenuPeer::UPDATED_AT;
-		}
-
-	} 
-	
-	public function hydrate(ResultSet $rs, $startcol = 1)
-	{
-		try {
-
-			$this->id = $rs->getInt($startcol + 0);
-
-			$this->name = $rs->getString($startcol + 1);
-
-			$this->url = $rs->getString($startcol + 2);
-
-			$this->tree_id = $rs->getInt($startcol + 3);
-
-			$this->tree_left_id = $rs->getInt($startcol + 4);
-
-			$this->tree_right_id = $rs->getInt($startcol + 5);
-
-			$this->tree_parent_id = $rs->getInt($startcol + 6);
-
-			$this->created_at = $rs->getTimestamp($startcol + 7, null);
-
-			$this->updated_at = $rs->getTimestamp($startcol + 8, null);
-
-			$this->resetModified();
-
-			$this->setNew(false);
-
-						return $startcol + 9; 
-		} catch (Exception $e) {
-			throw new PropelException("Error populating Menu object", $e);
-		}
-	}
-
-	
-	public function delete($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseMenu:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(MenuPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			MenuPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	
-
-    foreach (sfMixer::getCallables('BaseMenu:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
+abstract class BaseMenu
+{
+  const DATABASE_NAME = 'propel';
+
+  const TABLE_NAME = 'q_menu';
+
+  const URL = 'q_menu.URL';
+  const PARENT_ID = 'q_menu.PARENT_ID';
+  const LFT = 'q_menu.LFT';
+  const RGT = 'q_menu.RGT';
+  const CREATED_AT = 'q_menu.CREATED_AT';
+  const UPDATED_AT = 'q_menu.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_menu.SOURCE_CULTURE';
+  const ID = 'q_menu.ID';
+
+  public static function addSelectColumns(Criteria $criteria)
+  {
+    $criteria->addSelectColumn(QubitMenu::URL);
+    $criteria->addSelectColumn(QubitMenu::PARENT_ID);
+    $criteria->addSelectColumn(QubitMenu::LFT);
+    $criteria->addSelectColumn(QubitMenu::RGT);
+    $criteria->addSelectColumn(QubitMenu::CREATED_AT);
+    $criteria->addSelectColumn(QubitMenu::UPDATED_AT);
+    $criteria->addSelectColumn(QubitMenu::SOURCE_CULTURE);
+    $criteria->addSelectColumn(QubitMenu::ID);
+
+    return $criteria;
   }
-	
-	public function save($con = null)
-	{
 
-    foreach (sfMixer::getCallables('BaseMenu:save:pre') as $callable)
+  protected static $menus = array();
+
+  public static function getFromResultSet(ResultSet $resultSet)
+  {
+    if (!isset(self::$menus[$id = $resultSet->getInt(8)]))
     {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
+      $menu = new QubitMenu;
+      $menu->hydrate($resultSet);
+
+      self::$menus[$id] = $menu;
+    }
+
+    return self::$menus[$id];
+  }
+
+  public static function get(Criteria $criteria, array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    self::addSelectColumns($criteria);
+
+    return QubitQuery::createFromCriteria($criteria, 'QubitMenu', $options);
+  }
+
+  public static function getAll(array $options = array())
+  {
+    return self::get(new Criteria, $options);
+  }
+
+  public static function getOne(Criteria $criteria, array $options = array())
+  {
+    $criteria->setLimit(1);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function getById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitMenu::ID, $id);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function doDelete(Criteria $criteria, $connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    $affectedRows = 0;
+
+    $affectedRows += BasePeer::doDelete($criteria, $connection);
+
+    return $affectedRows;
+  }
+
+  protected $url = null;
+
+  public function getUrl()
+  {
+    return $this->url;
+  }
+
+  public function setUrl($url)
+  {
+    $this->url = $url;
+
+    return $this;
+  }
+
+  protected $parentId = null;
+
+  public function getParentId()
+  {
+    return $this->parentId;
+  }
+
+  public function setParentId($parentId)
+  {
+    $this->parentId = $parentId;
+
+    return $this;
+  }
+
+  protected $lft = null;
+
+  public function getLft()
+  {
+    return $this->lft;
+  }
+
+  public function setLft($lft)
+  {
+    $this->lft = $lft;
+
+    return $this;
+  }
+
+  protected $rgt = null;
+
+  public function getRgt()
+  {
+    return $this->rgt;
+  }
+
+  public function setRgt($rgt)
+  {
+    $this->rgt = $rgt;
+
+    return $this;
+  }
+
+  protected $createdAt = null;
+
+  public function getCreatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->createdAt);
+    }
+
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt($createdAt)
+  {
+    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+    }
+
+    $this->createdAt = $createdAt;
+
+    return $this;
+  }
+
+  protected $updatedAt = null;
+
+  public function getUpdatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->updatedAt);
+    }
+
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt($updatedAt)
+  {
+    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+    }
+
+    $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
+  protected $id = null;
+
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function setId($id)
+  {
+    $this->id = $id;
+
+    return $this;
+  }
+
+  protected $new = true;
+
+  protected $deleted = false;
+
+  protected $columnValues = null;
+
+  protected function isColumnModified($name)
+  {
+    return $this->$name != $this->columnValues[$name];
+  }
+
+  protected function resetModified()
+  {
+    $this->columnValues['url'] = $this->url;
+    $this->columnValues['parentId'] = $this->parentId;
+    $this->columnValues['lft'] = $this->lft;
+    $this->columnValues['rgt'] = $this->rgt;
+    $this->columnValues['createdAt'] = $this->createdAt;
+    $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
+    $this->columnValues['id'] = $this->id;
+
+    return $this;
+  }
+
+  public function hydrate(ResultSet $results, $columnOffset = 1)
+  {
+    $this->url = $results->getString($columnOffset++);
+    $this->parentId = $results->getInt($columnOffset++);
+    $this->lft = $results->getInt($columnOffset++);
+    $this->rgt = $results->getInt($columnOffset++);
+    $this->createdAt = $results->getTimestamp($columnOffset++, null);
+    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
+    $this->id = $results->getInt($columnOffset++);
+
+    $this->new = false;
+    $this->resetModified();
+
+    return $columnOffset;
+  }
+
+  public function refresh(array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitMenu::ID, $this->id);
+
+    self::addSelectColumns($criteria);
+
+    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
+    $resultSet->next();
+
+    return $this->hydrate($resultSet);
+  }
+
+  public function save($connection = null)
+  {
+    if ($this->deleted)
+    {
+      throw new PropelException('You cannot save an object that has been deleted.');
+    }
+
+    $affectedRows = 0;
+
+    if ($this->new)
+    {
+      $affectedRows += $this->insert($connection);
+    }
+    else
+    {
+      $affectedRows += $this->update($connection);
+    }
+
+    $this->new = false;
+    $this->resetModified();
+
+    foreach ($this->menuI18ns as $menuI18n)
+    {
+      $menuI18n->setId($this->id);
+
+      $affectedRows += $menuI18n->save($connection);
+    }
+
+    return $affectedRows;
+  }
+
+  protected function insert($connection = null)
+  {
+    $affectedRows = 0;
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('url'))
+    {
+      $criteria->add(QubitMenu::URL, $this->url);
+    }
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $criteria->add(QubitMenu::PARENT_ID, $this->parentId);
+    }
+
+    if ($this->isColumnModified('lft'))
+    {
+      $criteria->add(QubitMenu::LFT, $this->lft);
+    }
+
+    if ($this->isColumnModified('rgt'))
+    {
+      $criteria->add(QubitMenu::RGT, $this->rgt);
+    }
+
+    if (!$this->isColumnModified('createdAt'))
+    {
+      $this->createdAt = time();
+    }
+    $criteria->add(QubitMenu::CREATED_AT, $this->createdAt);
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitMenu::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitMenu::SOURCE_CULTURE, $this->sourceCulture);
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitMenu::ID, $this->id);
+    }
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    $id = BasePeer::doInsert($criteria, $connection);
+    $this->id = $id;
+    $affectedRows += 1;
+
+    return $affectedRows;
+  }
+
+  protected function update($connection = null)
+  {
+    $affectedRows = 0;
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('url'))
+    {
+      $criteria->add(QubitMenu::URL, $this->url);
+    }
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $criteria->add(QubitMenu::PARENT_ID, $this->parentId);
+    }
+
+    if ($this->isColumnModified('lft'))
+    {
+      $criteria->add(QubitMenu::LFT, $this->lft);
+    }
+
+    if ($this->isColumnModified('rgt'))
+    {
+      $criteria->add(QubitMenu::RGT, $this->rgt);
+    }
+
+    if ($this->isColumnModified('createdAt'))
+    {
+      $criteria->add(QubitMenu::CREATED_AT, $this->createdAt);
+    }
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitMenu::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitMenu::SOURCE_CULTURE, $this->sourceCulture);
+    }
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitMenu::ID, $this->id);
+    }
+
+    if ($criteria->size() > 0)
+    {
+      $selectCriteria = new Criteria;
+      $selectCriteria->add(QubitMenu::ID, $this->id);
+
+      if (!isset($connection))
       {
-        return $affectedRows;
+        $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
       }
+
+      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
     }
 
+    return $affectedRows;
+  }
 
-    if ($this->isNew() && !$this->isColumnModified(MenuPeer::CREATED_AT))
+  public function delete($connection = null)
+  {
+    if ($this->deleted)
     {
-      $this->setCreatedAt(time());
+      throw new PropelException('This object has already been deleted.');
     }
 
-    if ($this->isModified() && !$this->isColumnModified(MenuPeer::UPDATED_AT))
-    {
-      $this->setUpdatedAt(time());
-    }
+    $affectedRows = 0;
 
-		if ($this->isDeleted()) {
-			throw new PropelException("You cannot save an object that has been deleted.");
-		}
+    $criteria = new Criteria;
+    $criteria->add(QubitMenu::ID, $this->id);
 
-		if ($con === null) {
-			$con = Propel::getConnection(MenuPeer::DATABASE_NAME);
-		}
+    $affectedRows += self::doDelete($criteria, $connection);
 
-		try {
-			$con->begin();
-			$affectedRows = $this->doSave($con);
-			$con->commit();
-    foreach (sfMixer::getCallables('BaseMenu:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
+    $this->deleted = true;
 
-			return $affectedRows;
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	}
-
-	
-	protected function doSave($con)
-	{
-		$affectedRows = 0; 		if (!$this->alreadyInSave) {
-			$this->alreadyInSave = true;
-
-
-						if ($this->isModified()) {
-				if ($this->isNew()) {
-					$pk = MenuPeer::doInsert($this, $con);
-					$affectedRows += 1; 										 										 
-					$this->setId($pk);  
-					$this->setNew(false);
-				} else {
-					$affectedRows += MenuPeer::doUpdate($this, $con);
-				}
-				$this->resetModified(); 			}
-
-			$this->alreadyInSave = false;
-		}
-		return $affectedRows;
-	} 
-	
-	protected $validationFailures = array();
-
-	
-	public function getValidationFailures()
-	{
-		return $this->validationFailures;
-	}
-
-	
-	public function validate($columns = null)
-	{
-		$res = $this->doValidate($columns);
-		if ($res === true) {
-			$this->validationFailures = array();
-			return true;
-		} else {
-			$this->validationFailures = $res;
-			return false;
-		}
-	}
-
-	
-	protected function doValidate($columns = null)
-	{
-		if (!$this->alreadyInValidation) {
-			$this->alreadyInValidation = true;
-			$retval = null;
-
-			$failureMap = array();
-
-
-			if (($retval = MenuPeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
-			}
-
-
-
-			$this->alreadyInValidation = false;
-		}
-
-		return (!empty($failureMap) ? $failureMap : true);
-	}
-
-	
-	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = MenuPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->getByPosition($pos);
-	}
-
-	
-	public function getByPosition($pos)
-	{
-		switch($pos) {
-			case 0:
-				return $this->getId();
-				break;
-			case 1:
-				return $this->getName();
-				break;
-			case 2:
-				return $this->getUrl();
-				break;
-			case 3:
-				return $this->getTreeId();
-				break;
-			case 4:
-				return $this->getTreeLeftId();
-				break;
-			case 5:
-				return $this->getTreeRightId();
-				break;
-			case 6:
-				return $this->getTreeParentId();
-				break;
-			case 7:
-				return $this->getCreatedAt();
-				break;
-			case 8:
-				return $this->getUpdatedAt();
-				break;
-			default:
-				return null;
-				break;
-		} 	}
-
-	
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = MenuPeer::getFieldNames($keyType);
-		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getName(),
-			$keys[2] => $this->getUrl(),
-			$keys[3] => $this->getTreeId(),
-			$keys[4] => $this->getTreeLeftId(),
-			$keys[5] => $this->getTreeRightId(),
-			$keys[6] => $this->getTreeParentId(),
-			$keys[7] => $this->getCreatedAt(),
-			$keys[8] => $this->getUpdatedAt(),
-		);
-		return $result;
-	}
-
-	
-	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = MenuPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->setByPosition($pos, $value);
-	}
-
-	
-	public function setByPosition($pos, $value)
-	{
-		switch($pos) {
-			case 0:
-				$this->setId($value);
-				break;
-			case 1:
-				$this->setName($value);
-				break;
-			case 2:
-				$this->setUrl($value);
-				break;
-			case 3:
-				$this->setTreeId($value);
-				break;
-			case 4:
-				$this->setTreeLeftId($value);
-				break;
-			case 5:
-				$this->setTreeRightId($value);
-				break;
-			case 6:
-				$this->setTreeParentId($value);
-				break;
-			case 7:
-				$this->setCreatedAt($value);
-				break;
-			case 8:
-				$this->setUpdatedAt($value);
-				break;
-		} 	}
-
-	
-	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = MenuPeer::getFieldNames($keyType);
-
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setName($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setUrl($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setTreeId($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setTreeLeftId($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setTreeRightId($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setTreeParentId($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setCreatedAt($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setUpdatedAt($arr[$keys[8]]);
-	}
-
-	
-	public function buildCriteria()
-	{
-		$criteria = new Criteria(MenuPeer::DATABASE_NAME);
-
-		if ($this->isColumnModified(MenuPeer::ID)) $criteria->add(MenuPeer::ID, $this->id);
-		if ($this->isColumnModified(MenuPeer::NAME)) $criteria->add(MenuPeer::NAME, $this->name);
-		if ($this->isColumnModified(MenuPeer::URL)) $criteria->add(MenuPeer::URL, $this->url);
-		if ($this->isColumnModified(MenuPeer::TREE_ID)) $criteria->add(MenuPeer::TREE_ID, $this->tree_id);
-		if ($this->isColumnModified(MenuPeer::TREE_LEFT_ID)) $criteria->add(MenuPeer::TREE_LEFT_ID, $this->tree_left_id);
-		if ($this->isColumnModified(MenuPeer::TREE_RIGHT_ID)) $criteria->add(MenuPeer::TREE_RIGHT_ID, $this->tree_right_id);
-		if ($this->isColumnModified(MenuPeer::TREE_PARENT_ID)) $criteria->add(MenuPeer::TREE_PARENT_ID, $this->tree_parent_id);
-		if ($this->isColumnModified(MenuPeer::CREATED_AT)) $criteria->add(MenuPeer::CREATED_AT, $this->created_at);
-		if ($this->isColumnModified(MenuPeer::UPDATED_AT)) $criteria->add(MenuPeer::UPDATED_AT, $this->updated_at);
-
-		return $criteria;
-	}
-
-	
-	public function buildPkeyCriteria()
-	{
-		$criteria = new Criteria(MenuPeer::DATABASE_NAME);
-
-		$criteria->add(MenuPeer::ID, $this->id);
-
-		return $criteria;
-	}
+    return $affectedRows;
+  }
 
 	
 	public function getPrimaryKey()
@@ -617,62 +470,81 @@ abstract class BaseMenu extends BaseObject  implements Persistent {
 		$this->setId($key);
 	}
 
-	
-	public function copyInto($copyObj, $deepCopy = false)
-	{
-
-		$copyObj->setName($this->name);
-
-		$copyObj->setUrl($this->url);
-
-		$copyObj->setTreeId($this->tree_id);
-
-		$copyObj->setTreeLeftId($this->tree_left_id);
-
-		$copyObj->setTreeRightId($this->tree_right_id);
-
-		$copyObj->setTreeParentId($this->tree_parent_id);
-
-		$copyObj->setCreatedAt($this->created_at);
-
-		$copyObj->setUpdatedAt($this->updated_at);
-
-
-		$copyObj->setNew(true);
-
-		$copyObj->setId(NULL); 
-	}
-
-	
-	public function copy($deepCopy = false)
-	{
-				$clazz = get_class($this);
-		$copyObj = new $clazz();
-		$this->copyInto($copyObj, $deepCopy);
-		return $copyObj;
-	}
-
-	
-	public function getPeer()
-	{
-		if (self::$peer === null) {
-			self::$peer = new MenuPeer();
-		}
-		return self::$peer;
-	}
-
-
-  public function __call($method, $arguments)
+  public static function addMenuI18nsCriteriaById(Criteria $criteria, $id)
   {
-    if (!$callable = sfMixer::getCallable('BaseMenu:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BaseMenu::%s', $method));
-    }
+    $criteria->add(QubitMenuI18n::ID, $id);
 
-    array_unshift($arguments, $this);
-
-    return call_user_func_array($callable, $arguments);
+    return $criteria;
   }
 
+  public static function getMenuI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addMenuI18nsCriteriaById($criteria, $id);
 
-} 
+    return QubitMenuI18n::get($criteria, $options);
+  }
+
+  public function addMenuI18nsCriteria(Criteria $criteria)
+  {
+    return self::addMenuI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $menuI18ns = null;
+
+  public function getMenuI18ns(array $options = array())
+  {
+    if (!isset($this->menuI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->menuI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->menuI18ns = self::getMenuI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->menuI18ns;
+  }
+
+  public function getName(array $options = array())
+  {
+    return $this->getCurrentMenuI18n($options)->getName();
+  }
+
+  public function setName($value, array $options = array())
+  {
+    $this->getCurrentMenuI18n($options)->setName($value);
+
+    return $this;
+  }
+
+  public function getCurrentMenuI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->menuI18ns[$options['culture']]))
+    {
+      if (null === $menuI18n = QubitMenuI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $menuI18n = new QubitMenuI18n;
+        $menuI18n->setCulture($options['culture']);
+      }
+      $this->menuI18ns[$options['culture']] = $menuI18n;
+    }
+
+    return $this->menuI18ns[$options['culture']];
+  }
+}
+
+BasePeer::getMapBuilder('lib.model.map.MenuMapBuilder');

@@ -1,33 +1,90 @@
-<div class="pageTitle"><?php echo __('digital object'); ?></div>
+<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_digitalobject'))); ?></div>
 
-<table>
+<table class="detail">
 <tbody>
+
+<?php if ($informationObject->getTitle(array('sourceCulture' => true))): ?>
+<tr><td colspan="2" class="headerCell">
+<?php if ($editCredentials): ?>
+  <?php echo link_to($informationObject->getLabel(), 'digitalobject/edit/?id='.$digitalObject->getId()); ?>
+<?php else: ?>
+  <?php echo $informationObject->getLabel(); ?>
+<?php endif; ?>
+</td></tr>
+<?php endif; ?>
+
+<tr><td style="text-align: center" colspan="2">
+  <?php include_component('digitalobject', 'show', array(
+    'digitalObject'=>$digitalObject,
+    'usageType'=>QubitTerm::REFERENCE_ID,
+    'link'=>$link)); ?>
+</td></tr>
+
+<?php if ($digitalObject->getUsage()): ?>
 <tr>
-<th><?php echo __('id'); ?>: </th>
-<td><?php echo $digital_object->getId() ?></td>
+<th><?php echo __('usage'); ?></th>
+<td><?php echo $digitalObject->getUsage(); ?></td>
 </tr>
+<?php endif; ?>
+
+<?php if ($digitalObject->getMimeType()): ?>
 <tr>
-<th><?php echo __('filename'); ?>: </th>
-<td><?php echo $digital_object->getFilename() ?></td>
+<th><?php echo __('mime-type'); ?></th>
+<td><?php echo $digitalObject->getMimeType(); ?></td>
 </tr>
+<?php endif; ?>
+
+<?php if ($digitalObject->getMediaType()): ?>
 <tr>
-<th><?php echo __('network path'); ?>: </th>
-<td><?php echo $digital_object->getNetworkPath() ?></td>
+<th><?php echo __('media type'); ?></th>
+<td><?php echo $digitalObject->getMediaType(); ?></td>
 </tr>
+<?php endif; ?>
+
+<?php if ($digitalObject->getHRfileSize()): ?>
 <tr>
-<th><?php echo __('URL'); ?>: </th>
-<td><?php echo $digital_object->getUrl() ?></td>
+<th><?php echo __('filesize'); ?></th>
+<td><?php echo $digitalObject->getHRfileSize(); ?></td>
 </tr>
+<?php endif; ?>
+
+<?php if ($digitalObject->getCreatedAt()): ?>
 <tr>
-<th><?php echo __('created'); ?>: </th>
-<td><?php echo $digital_object->getCreatedAt() ?></td>
+<th><?php echo __('uploaded'); ?></th>
+<td><?php echo $digitalObject->getCreatedAt(); ?></td>
 </tr>
+<?php endif; ?>
+
+<?php if (count($derivatives) && $editCredentials): ?>
 <tr>
-<th><?php echo __('updated'); ?>: </th>
-<td><?php echo $digital_object->getUpdatedAt() ?></td>
+<th><?php echo __('derivatives'); ?></th>
+<td>
+<?php foreach ($derivatives as $derivative): ?>
+<div style="float:left; margin: 5px">
+  <?php include_component('digitalobject', 'show', array(
+    'digitalObject'=>$digitalObject,
+    'usageType'=>QubitTerm::THUMBNAIL_ID,
+    'link'=>'digitalobject/showFullScreen?id='.$derivative->getId(),
+    'iconOnly'=>true
+  )); ?><br />
+  <?php echo '<b>'.__('usage').'</b>: '.$derivative->getUsage(); ?><br />
+  <?php echo '<b>'.__('filesize').'</b>: '.$derivative->getHRfileSize(); ?><br />
+  <?php // echo '<b>'.__('dimensions').'</b>:100x200px'; ?>
+</div>
+<?php endforeach; ?>
+
+</td>
 </tr>
+<?php endif; ?>
 </tbody>
 </table>
-<hr />
-<?php echo link_to(__('edit'), 'digitalobject/edit?id='.$digital_object->getId()) ?>
-&nbsp;<?php echo link_to(__('list'), 'digitalobject/list') ?>
+
+<?php if ($editCredentials): ?>
+<div class="menu-action">
+     <?php echo link_to (__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_digitalobject'))), 'informationobject/edit?id='.$informationObject->getId()) ?>
+</div>
+<?php endif; ?>
+
+<div class="menu-extra">
+  <?php echo link_to (__('view %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))), 'informationobject/show?id='.$informationObject->getId()) ?>
+</div>

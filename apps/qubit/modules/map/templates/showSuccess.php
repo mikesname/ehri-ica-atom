@@ -3,18 +3,21 @@
 <table class="detail">
 <tbody>
 
-<?php if ($mapMetadata->getTitle())
-  {
-  if ($editCredentials)
-    {
-    echo '<tr><td colspan="2" class="headerCell">'.link_to($mapMetadata->getTitle(), 'map/edit/?id='.$mapMetadata->getId()).'</td></tr>' ;
-    }
-  else
-    {
-    echo '<tr><td colspan="2" class="headerCell">'.$mapMetadata->getTitle().'</td></tr>' ;
-    }
-  }
-?>
+<?php if ($mapMetadata->getTitle()): ?>
+	<tr><td colspan="2" class="headerCell">
+
+	<?php if ($editCredentials)
+    	{
+    	echo link_to($mapMetadata->getTitle(), 'map/edit/?id='.$mapMetadata->getId());
+    	}
+		else
+    	{
+    	echo $mapMetadata->getTitle();
+    	}
+    ?>
+
+	</td></tr>
+<?php endif; ?>
 
 <tr><td colspan="2">
 <?php $map->printMap(); ?>
@@ -26,10 +29,11 @@
   }
 ?>
 
-
 </tbody>
 </table>
 
 <div class="menu-action">
-<?php if ($editCredentials) { echo link_to(__('edit'), 'map/edit?id='.$mapMetadata->getId()); } ?>
+<?php if ($editCredentials): ?>
+  <?php echo link_to(__('edit'), 'map/edit?id='.$mapMetadata->getId()) ?>
+<?php endif; ?>
 </div>

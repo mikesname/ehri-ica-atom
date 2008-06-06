@@ -27,42 +27,28 @@ class TermMapBuilder {
 	{
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
-		$tMap = $this->dbMap->addTable('term');
+		$tMap = $this->dbMap->addTable('q_term');
 		$tMap->setPhpName('Term');
 
-		$tMap->setUseIdGenerator(true);
+		$tMap->setUseIdGenerator(false);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('TAXONOMY_ID', 'TaxonomyId', 'int', CreoleTypes::INTEGER, 'taxonomy', 'ID', false, null);
-
-		$tMap->addColumn('TERM_NAME', 'TermName', 'string', CreoleTypes::VARCHAR, false, 255);
-
-		$tMap->addColumn('SCOPE_NOTE', 'ScopeNote', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addColumn('CODE_ALPHA', 'CodeAlpha', 'string', CreoleTypes::VARCHAR, false, 5);
-
-		$tMap->addColumn('CODE_ALPHA2', 'CodeAlpha2', 'string', CreoleTypes::VARCHAR, false, 5);
+		$tMap->addForeignKey('TAXONOMY_ID', 'TaxonomyId', 'int', CreoleTypes::INTEGER, 'q_taxonomy', 'ID', true, null);
 
 		$tMap->addColumn('CODE_NUMERIC', 'CodeNumeric', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('SORT_ORDER', 'SortOrder', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addForeignKey('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('SOURCE', 'Source', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('LOCKED', 'Locked', 'boolean', CreoleTypes::BOOLEAN, false, null);
+		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('TREE_ID', 'TreeId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
 
-		$tMap->addColumn('TREE_LEFT_ID', 'TreeLeftId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
 
-		$tMap->addColumn('TREE_RIGHT_ID', 'TreeRightId', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('TREE_PARENT_ID', 'TreeParentId', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
-
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
+		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
 
 	} 
 } 

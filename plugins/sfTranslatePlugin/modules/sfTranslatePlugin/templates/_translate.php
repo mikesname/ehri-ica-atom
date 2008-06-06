@@ -4,7 +4,7 @@
 <div id="l10n-client">
   <div class="labels">
     <span id="l10n-client-hide"><?php echo __('X') ?></span>
-    <span id="l10n-client-show"><?php echo __('Translate') ?></span>
+    <span id="l10n-client-show"><?php echo __('Translate User Interface') ?></span>
     <div class="label strings">
       <h2><?php echo __('Page Text') ?></h2>
     </div>
@@ -28,10 +28,15 @@
       </div>
       <div class="translation">
       </div>
-      <?php echo my_submit_tag('save translation', array('style' => 'margin: 5px 20px 0 0; float: right; width: 150px;')) ?>
+      <?php echo my_submit_tag(__('save translation'), array('style' => 'margin: 5px 20px 0 0; float: right; width: 150px;')) ?>
     </form>
   </div>
 </div>
-<?php echo javascript_tag('jQuery.extend(Drupal, {
-  l10nSourceMessages: '.json_encode(array_keys($messages)).',
-  l10nTargetMessages: '.json_encode(array_values($messages)).'});') ?>
+<?php $l10nSourceMessages = json_encode(array_keys($sf_data->getRaw('messages'))) ?>
+<?php $l10nTargetMessages = json_encode(array_values($sf_data->getRaw('messages'))) ?>
+<?php echo javascript_tag(<<<EOF
+jQuery.extend(Drupal, {
+  l10nSourceMessages: $l10nSourceMessages,
+  l10nTargetMessages: $l10nTargetMessages});
+EOF
+) ?>

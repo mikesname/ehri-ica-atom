@@ -1,10 +1,11 @@
-editSuccess:
-  javascripts: [jquery, drupal, collapse]
-
 editISAARSuccess:
-  javascripts: [jquery, drupal, collapse]
+  javascripts: [collapse]
 
 listSuccess:
+  components:
+    sidebar: []
+
+editISIAHContactInformationSuccess:
   components:
     sidebar: []
 

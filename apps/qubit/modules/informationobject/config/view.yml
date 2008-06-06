@@ -1,19 +1,19 @@
 editSuccess:
-  javascripts: [jquery, drupal, collapse]
+  javascripts: [collapse]
 
 editISADSuccess:
-  javascripts: [jquery, drupal, collapse]
+  javascripts: [collapse]
 
 editMODSSuccess:
-  javascripts: [jquery, drupal, collapse]
+  javascripts: [collapse]
 
-editDCSuccess:
-  javascripts: [jquery, drupal, collapse]
-
-listSuccess:
-  components:
-    sidebar: []
+editDublinCoreSuccess:
+  javascripts: [collapse]
 
 all:
   components:
     sidebar: [informationobject, contextMenu]
+
+listSuccess:
+  components:
+    sidebar: []

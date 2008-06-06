@@ -1,0 +1,28 @@
+Index: lib/vendor/symfony/lib/plugins/sfPropelPlugin/lib/propel/database/sfPropelDatabase.class.php
+===================================================================
+--- lib/vendor/symfony/lib/plugins/sfPropelPlugin/lib/propel/database/sfPropelDatabase.class.php	(revision 6599)
++++ lib/vendor/symfony/lib/plugins/sfPropelPlugin/lib/propel/database/sfPropelDatabase.class.php	(working copy)
+@@ -49,6 +49,10 @@
+     {
+       $this->setDefaultConfig();
+     }
++
++    // propel initialization
++    Propel::setConfiguration(sfPropelDatabase::getConfiguration());
++    Propel::initialize();
+   }
+ 
+   public function setDefaultConfig()
+Index: lib/vendor/symfony/lib/plugins/sfPropelPlugin/lib/propel/sfPropelAutoload.php
+===================================================================
+--- lib/vendor/symfony/lib/plugins/sfPropelPlugin/lib/propel/sfPropelAutoload.php	(revision 6599)
++++ lib/vendor/symfony/lib/plugins/sfPropelPlugin/lib/propel/sfPropelAutoload.php	(working copy)
+@@ -29,8 +29,4 @@
+   sfDebugConnection::setDispatcher($dispatcher);
+ }
+ 
+-// propel initialization
+-Propel::setConfiguration(sfPropelDatabase::getConfiguration());
+-Propel::initialize();
+-
+ sfPropel::initialize($dispatcher);

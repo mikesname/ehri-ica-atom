@@ -3,22 +3,19 @@
 <table class="list">
 <thead>
 <tr>
-  <th style="width:15px;"><?php echo __('id'); ?></th>
   <th><?php echo __('title'); ?></th>
-  <th><?php echo __('updated'); ?></th>
 </tr>
 </thead>
 <tbody>
-<?php foreach ($staticpages as $staticpage): ?>
-<tr>
-      <td align="center"><?php echo $staticpage->getId() ?></td>
-      <td><?php echo link_to($staticpage->getTitle(), 'staticpage/edit?id='.$staticpage->getId()) ?></td>
-      <td><?php echo $staticpage->getUpdatedAt() ?></td>
+<?php foreach ($staticPages as $staticPage): ?>
+  <tr>
+  <td><?php if (is_null($title = $staticPage->getTitle())) $title = $staticPage->getTitle(array('sourceCulture' => true)); echo link_to($title, 'staticpage/edit?id='.$staticPage->getId()) ?>
+  </td>
   </tr>
 <?php endforeach; ?>
 </tbody>
 </table>
 
 <div class="menu-action" style="padding-top: 10px;">
-<?php echo link_to(__('create').' '.__('new').' '.__('static page'), 'staticpage/create') ?>
+<?php echo link_to(__('create new static page'), 'staticpage/create') ?>
 </div>

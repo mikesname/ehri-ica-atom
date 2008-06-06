@@ -1,1300 +1,1375 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
- <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2007-11-06T16:10:48Z" product-name="messages">
-  <body>
-  
-<trans-unit id="1">
-<source>log out</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="2">
-<source>profile</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="3">
-<source>log in</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="4">
-<source>about</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="5">
-<source>home</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="6">
-<source>open information management toolkit</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="7">
-<source>edit</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="8">
-<source>authority file</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="9">
-<source>identity area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="10">
-<source>authorized form of name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="11">
-<source>type of entity</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="12">
-<source>other names</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="13">
-<source>name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="14">
-<source>type</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="15">
-<source>note</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="16">
-<source>identifiers for corporate bodies</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="17">
-<source>description area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="18">
-<source>dates of existence</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="19">
-<source>start year</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="20">
-<source>end year (if range)</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="21">
-<source>date display (defaults to date range)</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="22">
-<source>history</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="23">
-<source>places</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="24">
-<source>legal status</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="25">
-<source>functions, occupations and activities</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="26">
-<source>mandates or sources of authority</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="27">
-<source>internal structures or genealogy</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="28">
-<source>general context</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="29">
-<source>relationship area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="30">
-<source>relationships</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="31">
-<source>control area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="32">
-<source>authority record identifier</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="33">
-<source>institution identifier</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="34">
-<source>rules or conventions</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="35">
-<source>status</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="36">
-<source>level of detail</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="37">
-<source>dates of creation, revision and deletion</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="38">
-<source>languages of authority record</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="39">
-<source>scripts of authority record</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="40">
-<source>sources</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="41">
-<source>notes</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="42">
-<source>note type</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="43">
-<source>delete</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="44">
-<source>are you sure?</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="45">
-<source>cancel</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="46">
-<source>save</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="47">
-<source>add</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="48">
-<source>new</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="49">
-<source>list</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="50">
-<source>all</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="51">
-<source>authority files</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="52">
-<source>person</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="53">
-<source>organization</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="54">
-<source>people</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="55">
-<source>organizations</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="56">
-<source>view</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="57">
-<source>other</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="58">
-<source>names</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="59">
-<source>functions occupations activities</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="60">
-<source>rules</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="61">
-<source>dates of creation revision deletion</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="62">
-<source>language of authority record</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="63">
-<source>script of authority record</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="64">
-<source>this module is unavailable</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="65">
-<source>this module has been disabled by a site administrator</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="66">
-<source>back to previous page</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="67">
-<source>go to homepage</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="68">
-<source>sorry</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="69">
-<source>page not found</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="70">
-<source>the server returned a 404 response</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="71">
-<source>did you type the URL correctly?</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="72">
-<source>did you follow a broken link?</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="73">
-<source>you do not have permission to access that page</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="74">
-<source>this term is locked and cannot be edited</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="75">
-<source>the existing term value is required by the application to operate correctly</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="76">
-<source>website currently unavailable</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="77">
-<source>this website has been temporarily disabled</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="78">
-<source>please try again later</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="79">
-<source>language</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="80">
-<source>browse</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="81">
-<source>digital objects</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="82">
-<source>filename</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="83">
-<source>network path</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="84">
-<source>URL</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="85">
-<source>id</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="86">
-<source>created</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="87">
-<source>updated</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="88">
-<source>create</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="89">
-<source>digital object</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="90">
-<source>active</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="91">
-<source>languages</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="92">
-<source>ISO 639 code</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="93">
-<source>change</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="94">
-<source>archival description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="95">
-<source>reference code</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="96">
-<source>title</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="97">
-<source>alternate title</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="98">
-<source>title notes</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="99">
-<source>title note</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="100">
-<source>version</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="101">
-<source>level of description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="102">
-<source>next upper level of description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="103">
-<source>extent and medium</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="104">
-<source>context area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="105">
-<source>creation context</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="106">
-<source>creator</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="107">
-<source>or</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="108">
-<source>creator name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="109">
-<source>creation year</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="110">
-<source>creation date(s)</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="111">
-<source>administrative / biographical history</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="112">
-<source>archival history</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="113">
-<source>repository</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="114">
-<source>immediate source of acquisition</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="115">
-<source>content and structure area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="116">
-<source>scope and content</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="117">
-<source>appraisal, destruction and scheduling</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="118">
-<source>accruals</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="119">
-<source>system of arrangement</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="120">
-<source>conditions of access and use area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="121">
-<source>conditions governing access</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="122">
-<source>conditions governing reproduction</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="123">
-<source>script</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="124">
-<source>physical characteristics</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="125">
-<source>finding aids</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="126">
-<source>location of originals</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="127">
-<source>location of copies</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="128">
-<source>related units of description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="129">
-<source>access points</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="130">
-<source>subject access points</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="131">
-<source>place access points</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="132">
-<source>description control area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="133">
-<source>dates of description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="134">
-<source>archival descriptions</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="135">
-<source>information object</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="136">
-<source>title info</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="137">
-<source>subtitle</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="138">
-<source>origin info</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="139">
-<source>edition</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="140">
-<source>creation date</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="141">
-<source>frequency</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="142">
-<source>physical description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="143">
-<source>extent</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="144">
-<source>name part</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="145">
-<source>abstract</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="146">
-<source>access condition</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="147">
-<source>restriction on access</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="148">
-<source>use and reproduction</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="149">
-<source>related items</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="150">
-<source>originals</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="151">
-<source>subjects</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="152">
-<source>topics</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="153">
-<source>information objects</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="154">
-<source>archival institution</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="155">
-<source>dates</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="156">
-<source>subject</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="157">
-<source>place</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="158">
-<source>identifier</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="159">
-<source>date created</source>
-<target/>
-</trans-unit>
-
-
-
-<trans-unit id="161">
-<source>title is a required field</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="162">
-<source>creator is a required field. if the required creator record does not exist yet, please create it first, then return to this form.</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="163">
-<source>repository is a required field. if the required repository record does not exist yet, please create it first, then return to this form.</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="164">
-<source>place -&gt; map relationship</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="165">
-<source>map marker</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="166">
-<source>map</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="167">
-<source>icon image</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="168">
-<source>icon description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="169">
-<source>description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="170">
-<source>maps</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="171">
-<source>users</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="172">
-<source>static pages</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="173">
-<source>terms</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="174">
-<source>add / edit</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="175">
-<source>admin</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="176">
-<source>address</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="177">
-<source>country</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="178">
-<source>longitude</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="179">
-<source>latitude</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="180">
-<source>map relationships</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="181">
-<source>place name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="182">
-<source>back</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="183">
-<source>existing name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="184">
-<source>contact area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="185">
-<source>contact information</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="186">
-<source>contact type</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="187">
-<source>primary contact</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="188">
-<source>street address</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="189">
-<source>city</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="190">
-<source>region / province</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="191">
-<source>postal code</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="192">
-<source>telephone</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="193">
-<source>fax</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="194">
-<source>email</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="195">
-<source>website</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="196">
-<source>officers in charge</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="197">
-<source>geographical and cultural context</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="198">
-<source>structure</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="199">
-<source>collecting policies</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="200">
-<source>buildings</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="201">
-<source>archival and other holdings</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="202">
-<source>finding aids and publications</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="203">
-<source>access area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="204">
-<source>opening times</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="205">
-<source>conditions and requirements</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="206">
-<source>disabled access</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="207">
-<source>transport</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="208">
-<source>services area</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="209">
-<source>research services</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="210">
-<source>reproduction services</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="211">
-<source>public facilities</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="212">
-<source>description identifier</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="213">
-<source>languages of institution description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="214">
-<source>scripts of institution description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="215">
-<source>archival institutions</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="216">
-<source>repositories</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="217">
-<source>holdings</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="218">
-<source>access conditions and requirements</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="219">
-<source>language(s) of institution description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="220">
-<source>script(s) of institution description</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="221">
-<source>you must provide a name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="222">
-<source>advanced search</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="223">
-<source>search for '%1%' resulted in %2% results</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="224">
-<source>index build completed</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="225">
-<source>search</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="226">
-<source>static page</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="227">
-<source>permalink</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="228">
-<source>page content</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="229">
-<source>stylesheet</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="230">
-<source>this page</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="231">
-<source>list </source>
-<target/>
-</trans-unit>
-
-<trans-unit id="232">
-<source> terms</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="233">
-<source>hits</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="234">
-<source>term</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="235">
-<source>term name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="236">
-<source>taxonomy</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="237">
-<source>scope note</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="238">
-<source>code alpha</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="239">
-<source>code numeric</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="240">
-<source>sort order</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="241">
-<source>source</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="242">
-<source>only</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="243">
-<source>sort</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="244">
-<source>view term</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="245">
-<source>term type</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="246">
-<source>code alpha2</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="247">
-<source>please log-in to access that page</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="248">
-<source>user</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="249">
-<source>user name</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="250">
-<source>password</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="251">
-<source>credentials</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="252">
-<source>role</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="253">
-<source>leave blank for</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="254">
-<source>reset password</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="255">
-<source>you must provide an email address</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="256">
-<source>your password is required</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="257">
-<source>you must provide a valid email address</source>
-<target/>
-</trans-unit>
-
-<trans-unit id="258">
-<source>this account does not exist or you entered a wrong password</source>
-<target/>
-</trans-unit>
-
-
-
-
-
-
-</body>
- </file>
+  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2008-05-12T05:40:22Z" product-name="messages">
+    <body>
+      <trans-unit id="1">
+        <source>log out</source>
+        <target>uitloggen</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>%1% profile</source>
+        <target>profiel %1%</target>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>log in</source>
+        <target>inloggen</target>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>about</source>
+        <target>over</target>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>home</source>
+        <target>home</target>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>open information management toolkit</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>list %1% terms</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>title</source>
+        <target>titel</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>browse all %1% terms</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>add/edit %1% term</source>
+        <target>toevoegen/bewerken term %1%</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>term name</source>
+        <target>term naam</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>taxonomy</source>
+        <target>taxonomie</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>scope note</source>
+        <target>notitie toepassingsgebied</target>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>code alpha</source>
+        <target>alfabetische code</target>
+      </trans-unit>
+      <trans-unit id="15">
+        <source>code numeric</source>
+        <target>numerieke code</target>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>sort order</source>
+        <target>sorteervolgorde</target>
+      </trans-unit>
+      <trans-unit id="17">
+        <source>source</source>
+        <target>bron</target>
+      </trans-unit>
+      <trans-unit id="18">
+        <source>delete</source>
+        <target>verwijderen</target>
+      </trans-unit>
+      <trans-unit id="19">
+        <source>are you sure?</source>
+        <target>weet u het zeker?</target>
+      </trans-unit>
+      <trans-unit id="20">
+        <source>cancel</source>
+        <target>annuleren</target>
+      </trans-unit>
+      <trans-unit id="21">
+        <source>save</source>
+        <target>bewaren</target>
+      </trans-unit>
+      <trans-unit id="22">
+        <source>add new %1% term</source>
+        <target>toevoegen nieuwe term %1%</target>
+      </trans-unit>
+      <trans-unit id="23">
+        <source>list all terms</source>
+        <target>lijst van alle termen</target>
+      </trans-unit>
+      <trans-unit id="24">
+        <source>list only %1% terms</source>
+        <target>lijst van alleen termen %1%</target>
+      </trans-unit>
+      <trans-unit id="25">
+        <source>view term</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="26">
+        <source>term type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="27">
+        <source>code alpha2</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="28">
+        <source>edit</source>
+        <target>bewerken</target>
+      </trans-unit>
+      <trans-unit id="29">
+        <source>list all</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="30">
+        <source>list taxonomy terms</source>
+        <target>lijst taxonomie termen</target>
+      </trans-unit>
+      <trans-unit id="31">
+        <source>term</source>
+        <target>term</target>
+      </trans-unit>
+      <trans-unit id="32">
+        <source>list %taxonomy%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="33">
+        <source>add/edit</source>
+        <target>toevoegen/wijzigen</target>
+      </trans-unit>
+      <trans-unit id="34">
+        <source>hits</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="35">
+        <source>%1% term</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="36">
+        <source>add new</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="37">
+        <source>add/edit term</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="38">
+        <source>add new term</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="39">
+        <source>edit %1%</source>
+        <target>bewerken %1%</target>
+      </trans-unit>
+      <trans-unit id="40">
+        <source>identity area</source>
+        <target>identiteit</target>
+      </trans-unit>
+      <trans-unit id="41">
+        <source>reference code</source>
+        <target>referentie code</target>
+      </trans-unit>
+      <trans-unit id="42">
+        <source>title notes</source>
+        <target>titel notities</target>
+      </trans-unit>
+      <trans-unit id="43">
+        <source>note</source>
+        <target>notitie</target>
+      </trans-unit>
+      <trans-unit id="44">
+        <source>note type</source>
+        <target>soort notitie</target>
+      </trans-unit>
+      <trans-unit id="45">
+        <source>title note</source>
+        <target>titel notitie</target>
+      </trans-unit>
+      <trans-unit id="46">
+        <source>rules or conventions</source>
+        <target>regels en/of afspraken</target>
+      </trans-unit>
+      <trans-unit id="47">
+        <source>version</source>
+        <target>versie</target>
+      </trans-unit>
+      <trans-unit id="48">
+        <source>level of description</source>
+        <target>beschrijvingsniveau</target>
+      </trans-unit>
+      <trans-unit id="49">
+        <source>next upper level of description</source>
+        <target>eerstvolgend hoger beschrijvingsniveau</target>
+      </trans-unit>
+      <trans-unit id="50">
+        <source>extent and medium</source>
+        <target>Omvang en medium van de beschrijvingseenheid</target>
+      </trans-unit>
+      <trans-unit id="51">
+        <source>context area</source>
+        <target>context</target>
+      </trans-unit>
+      <trans-unit id="52">
+        <source>creation context</source>
+        <target>context van het opstellen</target>
+      </trans-unit>
+      <trans-unit id="53">
+        <source>creator</source>
+        <target>archiefvormer</target>
+      </trans-unit>
+      <trans-unit id="54">
+        <source>or</source>
+        <target>of</target>
+      </trans-unit>
+      <trans-unit id="55">
+        <source>add new creator name</source>
+        <target>toevoegen nieuwe archiefvormer</target>
+      </trans-unit>
+      <trans-unit id="56">
+        <source>creation year</source>
+        <target>beginjaar</target>
+      </trans-unit>
+      <trans-unit id="57">
+        <source>end year (if range)</source>
+        <target>eindjaar (als die er is)</target>
+      </trans-unit>
+      <trans-unit id="58">
+        <source>date display (defaults to date range)</source>
+        <target>datering (standaard is datumbereik)</target>
+      </trans-unit>
+      <trans-unit id="59">
+        <source>creation date(s)</source>
+        <target>datering</target>
+      </trans-unit>
+      <trans-unit id="60">
+        <source>administrative/biographical history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="61">
+        <source>archival history</source>
+        <target>geschiedenis van het archief</target>
+      </trans-unit>
+      <trans-unit id="62">
+        <source>repository</source>
+        <target>archiefbewaarplaats</target>
+      </trans-unit>
+      <trans-unit id="63">
+        <source>immediate source of acquisition</source>
+        <target>verwerving</target>
+      </trans-unit>
+      <trans-unit id="64">
+        <source>content and structure area</source>
+        <target>inhoud en structuur</target>
+      </trans-unit>
+      <trans-unit id="65">
+        <source>scope and content</source>
+        <target>bereik en inhoud</target>
+      </trans-unit>
+      <trans-unit id="66">
+        <source>appraisal, destruction and scheduling</source>
+        <target>selectie</target>
+      </trans-unit>
+      <trans-unit id="67">
+        <source>accruals</source>
+        <target>aanvullingen</target>
+      </trans-unit>
+      <trans-unit id="68">
+        <source>system of arrangement</source>
+        <target>ordening</target>
+      </trans-unit>
+      <trans-unit id="69">
+        <source>conditions of access and use area</source>
+        <target>voorwaarden voor raadpleging en gebruik</target>
+      </trans-unit>
+      <trans-unit id="70">
+        <source>conditions governing access</source>
+        <target>voorwaarden voor raadpleging</target>
+      </trans-unit>
+      <trans-unit id="71">
+        <source>conditions governing reproduction</source>
+        <target>voorwaarden voor reproductie</target>
+      </trans-unit>
+      <trans-unit id="72">
+        <source>languages of material</source>
+        <target>taal en schift</target>
+      </trans-unit>
+      <trans-unit id="73">
+        <source>scripts of material</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="74">
+        <source>physical characteristics</source>
+        <target>technische vereisten</target>
+      </trans-unit>
+      <trans-unit id="75">
+        <source>finding aids</source>
+        <target>toegangen</target>
+      </trans-unit>
+      <trans-unit id="76">
+        <source>location of originals</source>
+        <target>bestaan en bewaarplaats van originelen</target>
+      </trans-unit>
+      <trans-unit id="77">
+        <source>location of copies</source>
+        <target>bestaan en bewaarplaats van kopie&#xEB;n</target>
+      </trans-unit>
+      <trans-unit id="78">
+        <source>related units of description</source>
+        <target>verwante beschrijvingseenheden</target>
+      </trans-unit>
+      <trans-unit id="79">
+        <source>access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="80">
+        <source>subject access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="81">
+        <source>place access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="82">
+        <source>person/organization access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="83">
+        <source>description control area</source>
+        <target>beschrijvingsbeheer</target>
+      </trans-unit>
+      <trans-unit id="84">
+        <source>description record identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="85">
+        <source>institution identifier</source>
+        <target>Identificatiecode van de instelling</target>
+      </trans-unit>
+      <trans-unit id="86">
+        <source>status</source>
+        <target>status</target>
+      </trans-unit>
+      <trans-unit id="87">
+        <source>level of detail</source>
+        <target>niveau van detaillering</target>
+      </trans-unit>
+      <trans-unit id="88">
+        <source>dates of creation, revision and deletion</source>
+        <target>datering van aanmaak, herziening of verwijdering</target>
+      </trans-unit>
+      <trans-unit id="89">
+        <source>languages of archival description</source>
+        <target>taal van de archiefbeschrijving</target>
+      </trans-unit>
+      <trans-unit id="90">
+        <source>scripts of archival description</source>
+        <target>geschrift van de archiefbeschrijving</target>
+      </trans-unit>
+      <trans-unit id="91">
+        <source>sources</source>
+        <target>bronnen</target>
+      </trans-unit>
+      <trans-unit id="92">
+        <source>notes</source>
+        <target>notities</target>
+      </trans-unit>
+      <trans-unit id="93">
+        <source>add new %1%</source>
+        <target>nieuwe %1% toevoegen </target>
+      </trans-unit>
+      <trans-unit id="94">
+        <source>list all %1%</source>
+        <target>lijst alle %1%en</target>
+      </trans-unit>
+      <trans-unit id="95">
+        <source>list %1%</source>
+        <target>lijst %1%</target>
+      </trans-unit>
+      <trans-unit id="96">
+        <source>edit information object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="97">
+        <source>title info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="98">
+        <source>subtitle</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="99">
+        <source>origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="100">
+        <source>edition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="101">
+        <source>creation date</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="102">
+        <source>frequency</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="103">
+        <source>physical description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="104">
+        <source>extent</source>
+        <target>bereik</target>
+      </trans-unit>
+      <trans-unit id="105">
+        <source>name</source>
+        <target>naam</target>
+      </trans-unit>
+      <trans-unit id="106">
+        <source>name part</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="107">
+        <source>abstract</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="108">
+        <source>access condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="109">
+        <source>restriction on access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="110">
+        <source>use and reproduction</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="111">
+        <source>language</source>
+        <target>taal</target>
+      </trans-unit>
+      <trans-unit id="112">
+        <source>related items</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="113">
+        <source>originals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="114">
+        <source>subjects</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="115">
+        <source>topics</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="116">
+        <source>add new information object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="117">
+        <source>list all information objects</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="118">
+        <source>Inherited from %ancestor%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="119">
+        <source>view information object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="120">
+        <source>identifier</source>
+        <target>bestandsidentificatie </target>
+      </trans-unit>
+      <trans-unit id="121">
+        <source>date created</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="122">
+        <source>script</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="123">
+        <source>dates of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="124">
+        <source>alternate title</source>
+        <target>alternatieve titel</target>
+      </trans-unit>
+      <trans-unit id="125">
+        <source>view %1%</source>
+        <target>bekijk %1%</target>
+      </trans-unit>
+      <trans-unit id="126">
+        <source>dates</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="127">
+        <source>language of material</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="128">
+        <source>import an XML file</source>
+        <target>importeer een XML bestand</target>
+      </trans-unit>
+      <trans-unit id="129">
+        <source>select a file to import</source>
+        <target>selecteer een bestand om te importeren</target>
+      </trans-unit>
+      <trans-unit id="130">
+        <source>file</source>
+        <target>bestand</target>
+      </trans-unit>
+      <trans-unit id="131">
+        <source>upload</source>
+        <target>ophalen</target>
+      </trans-unit>
+      <trans-unit id="133">
+        <source>id</source>
+        <target>ID</target>
+      </trans-unit>
+      <trans-unit id="137">
+        <source>created</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="138">
+        <source>updated</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="139">
+        <source>list</source>
+        <target>lijst</target>
+      </trans-unit>
+      <trans-unit id="143">
+        <source>place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="144">
+        <source>description</source>
+        <target>beschrijving</target>
+      </trans-unit>
+      <trans-unit id="145">
+        <source>address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="146">
+        <source>country</source>
+        <target>land</target>
+      </trans-unit>
+      <trans-unit id="147">
+        <source>latitude</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="148">
+        <source>longitude</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="149">
+        <source>maps</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="150">
+        <source>back</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="151">
+        <source>list places</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="152">
+        <source>place name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="153">
+        <source>add new place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="154">
+        <source>add/edit place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="155">
+        <source>map relations</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="156">
+        <source>list all places</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="157">
+        <source>new content translation</source>
+        <target>vertaling nieuwe inhoud</target>
+      </trans-unit>
+      <trans-unit id="158">
+        <source>In an upcoming version of the software this page will list all newly added or revised content that requires translation.</source>
+        <target>In een nieuw te verschijnen versie van deze software zal op deze pagina een lijst verschijnen van alle nieuw toegevoegde herziene inhoud die vertaling behoeft.</target>
+      </trans-unit>
+      <trans-unit id="159">
+        <source>change</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="160">
+        <source>user interface translation</source>
+        <target>vertaling gebruikersinterface</target>
+      </trans-unit>
+      <trans-unit id="161">
+        <source>%1% module</source>
+        <target>%1% module</target>
+      </trans-unit>
+      <trans-unit id="162">
+        <source>edit (ISAD)</source>
+        <target>bewerken (ISAD)</target>
+      </trans-unit>
+      <trans-unit id="163">
+        <source>view (ISAD)</source>
+        <target>bekijken (ISAD)</target>
+      </trans-unit>
+      <trans-unit id="164">
+        <source>edit (ISAAR)</source>
+        <target>bewerken (ISAAR)</target>
+      </trans-unit>
+      <trans-unit id="165">
+        <source>edit contact information</source>
+        <target>bewerken contact informatie</target>
+      </trans-unit>
+      <trans-unit id="166">
+        <source>view (ISAAR)</source>
+        <target>bekijken (ISAAR)</target>
+      </trans-unit>
+      <trans-unit id="167">
+        <source>edit (ISIAH)</source>
+        <target>bewerken (ISIAH)</target>
+      </trans-unit>
+      <trans-unit id="168">
+        <source>view (ISIAH)</source>
+        <target>bekijken (ISIAH)</target>
+      </trans-unit>
+      <trans-unit id="169">
+        <source>term module</source>
+        <target>termen module</target>
+      </trans-unit>
+      <trans-unit id="170">
+        <source>admin module</source>
+        <target>admin module</target>
+      </trans-unit>
+      <trans-unit id="171">
+        <source>users</source>
+        <target>gebruikers</target>
+      </trans-unit>
+      <trans-unit id="172">
+        <source>login</source>
+        <target>inloggen</target>
+      </trans-unit>
+      <trans-unit id="173">
+        <source>view user profile</source>
+        <target>bekijk gebruikersprofiel</target>
+      </trans-unit>
+      <trans-unit id="174">
+        <source>edit user profile</source>
+        <target>bewerken gebruikersprofiel</target>
+      </trans-unit>
+      <trans-unit id="175">
+        <source>reset password</source>
+        <target>reset wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="176">
+        <source> (warning: this form is active, click 'cancel' after translating)</source>
+        <target>(waarschuwing: dit formulier is actief, klik 'annuleer' na vertaling)</target>
+      </trans-unit>
+      <trans-unit id="177">
+        <source>static pages</source>
+        <target>statische pagina's</target>
+      </trans-unit>
+      <trans-unit id="178">
+        <source>list staticpage</source>
+        <target>lijst statische pagina's</target>
+      </trans-unit>
+      <trans-unit id="179">
+        <source>edit staticpage</source>
+        <target>bewerken statische pagina</target>
+      </trans-unit>
+      <trans-unit id="180">
+        <source>view staticpage</source>
+        <target>bekijken statische pagina</target>
+      </trans-unit>
+      <trans-unit id="181">
+        <source>settings</source>
+        <target>instellingen</target>
+      </trans-unit>
+      <trans-unit id="182">
+        <source>site settings</source>
+        <target>instellingen site</target>
+      </trans-unit>
+      <trans-unit id="183">
+        <source>import/export</source>
+        <target>import/export</target>
+      </trans-unit>
+      <trans-unit id="184">
+        <source>import</source>
+        <target>import</target>
+      </trans-unit>
+      <trans-unit id="185">
+        <source>error messages</source>
+        <target>foutmeldingen</target>
+      </trans-unit>
+      <trans-unit id="186">
+        <source>not found message</source>
+        <target>niet-gevonden melding</target>
+      </trans-unit>
+      <trans-unit id="187">
+        <source>permission message</source>
+        <target>toestemmingsmelding</target>
+      </trans-unit>
+      <trans-unit id="188">
+        <source>locked term message</source>
+        <target>geblokkeerde term melding</target>
+      </trans-unit>
+      <trans-unit id="189">
+        <source>internationalization module</source>
+        <target>internationaliserings module</target>
+      </trans-unit>
+      <trans-unit id="190">
+        <source>user interface translation list</source>
+        <target>lijst vertaling gebruikersinterface</target>
+      </trans-unit>
+      <trans-unit id="191">
+        <source>default content translation list</source>
+        <target>lijst vertaling standaard inhoud </target>
+      </trans-unit>
+      <trans-unit id="192">
+        <source>default content translation</source>
+        <target>vertaling standaard inhoud </target>
+      </trans-unit>
+      <trans-unit id="193">
+        <source>source content</source>
+        <target>inhoud bron</target>
+      </trans-unit>
+      <trans-unit id="194">
+        <source>translated content</source>
+        <target>inhoud vertaling</target>
+      </trans-unit>
+      <trans-unit id="195">
+        <source>taxonomies</source>
+        <target>taxonomie&#xEB;n</target>
+      </trans-unit>
+      <trans-unit id="196">
+        <source>terms</source>
+        <target>termen</target>
+      </trans-unit>
+      <trans-unit id="197">
+        <source>index build completed</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="198">
+        <source>advanced search</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="199">
+        <source>search for '%1%' resulted in %2% results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="200">
+        <source>search</source>
+        <target>zoeken</target>
+      </trans-unit>
+      <trans-unit id="201">
+        <source>browse</source>
+        <target>bladeren</target>
+      </trans-unit>
+      <trans-unit id="202">
+        <source>user interface</source>
+        <target>gebruikersinterface</target>
+      </trans-unit>
+      <trans-unit id="203">
+        <source>default content</source>
+        <target>standaard inhoud</target>
+      </trans-unit>
+      <trans-unit id="204">
+        <source>new content</source>
+        <target>nieuwe inhoud</target>
+      </trans-unit>
+      <trans-unit id="205">
+        <source>translate</source>
+        <target>vertalen</target>
+      </trans-unit>
+      <trans-unit id="206">
+        <source>admin</source>
+        <target>admin</target>
+      </trans-unit>
+      <trans-unit id="207">
+        <source>type</source>
+        <target>soort</target>
+      </trans-unit>
+      <trans-unit id="208">
+        <source>type of entity</source>
+        <target>soort entiteit</target>
+      </trans-unit>
+      <trans-unit id="209">
+        <source>other names</source>
+        <target>andere namen</target>
+      </trans-unit>
+      <trans-unit id="210">
+        <source>identifiers</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="211">
+        <source>dates of existence</source>
+        <target>bestaansperiode</target>
+      </trans-unit>
+      <trans-unit id="212">
+        <source>history</source>
+        <target>geschiedenis</target>
+      </trans-unit>
+      <trans-unit id="213">
+        <source>places</source>
+        <target>plaatsen</target>
+      </trans-unit>
+      <trans-unit id="214">
+        <source>legal status</source>
+        <target>rechtsvorm</target>
+      </trans-unit>
+      <trans-unit id="215">
+        <source>functions occupations activities</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="216">
+        <source>mandates or sources of authority</source>
+        <target>mandaten/Gezagsbronnen</target>
+      </trans-unit>
+      <trans-unit id="217">
+        <source>internal structures or genealogy</source>
+        <target>structuur/Genealogie</target>
+      </trans-unit>
+      <trans-unit id="218">
+        <source>general context</source>
+        <target>algemene context</target>
+      </trans-unit>
+      <trans-unit id="219">
+        <source>authority record identifier</source>
+        <target>identificatiecode van de geautoriseerde beschrijving</target>
+      </trans-unit>
+      <trans-unit id="220">
+        <source>rules</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="221">
+        <source>detail</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="222">
+        <source>dates of creation revision deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="223">
+        <source>language of authority record</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="224">
+        <source>script of authority record</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="225">
+        <source>Contact type</source>
+        <target>type contact</target>
+      </trans-unit>
+      <trans-unit id="226">
+        <source>Primary contact?</source>
+        <target>primair contact?</target>
+      </trans-unit>
+      <trans-unit id="227">
+        <source>Street address</source>
+        <target>Adres</target>
+      </trans-unit>
+      <trans-unit id="228">
+        <source>City</source>
+        <target>Plaats</target>
+      </trans-unit>
+      <trans-unit id="229">
+        <source>Region/Province</source>
+        <target>Regio/Provincie</target>
+      </trans-unit>
+      <trans-unit id="230">
+        <source>Country</source>
+        <target>Land</target>
+      </trans-unit>
+      <trans-unit id="231">
+        <source>Postal Code</source>
+        <target>Postcode</target>
+      </trans-unit>
+      <trans-unit id="232">
+        <source>Longtitude</source>
+        <target>Lengtegraad</target>
+      </trans-unit>
+      <trans-unit id="233">
+        <source>Latitude</source>
+        <target>Breedtegraad</target>
+      </trans-unit>
+      <trans-unit id="234">
+        <source>Telephone</source>
+        <target>telefoon</target>
+      </trans-unit>
+      <trans-unit id="235">
+        <source>Fax</source>
+        <target>Fax</target>
+      </trans-unit>
+      <trans-unit id="236">
+        <source>Email</source>
+        <target>E-mail</target>
+      </trans-unit>
+      <trans-unit id="237">
+        <source>Website</source>
+        <target>website</target>
+      </trans-unit>
+      <trans-unit id="238">
+        <source>Note</source>
+        <target>Notitie</target>
+      </trans-unit>
+      <trans-unit id="239">
+        <source>authorized form of name</source>
+        <target>geautoriseerde naam</target>
+      </trans-unit>
+      <trans-unit id="240">
+        <source>identifiers for corporate bodies</source>
+        <target>identificatiecode voor organisaties</target>
+      </trans-unit>
+      <trans-unit id="241">
+        <source>description area</source>
+        <target>beschrijving</target>
+      </trans-unit>
+      <trans-unit id="242">
+        <source>year</source>
+        <target>jaar</target>
+      </trans-unit>
+      <trans-unit id="243">
+        <source>end year &lt;br /&gt;(if range)</source>
+        <target>einde jaar (indien periode)</target>
+      </trans-unit>
+      <trans-unit id="244">
+        <source>date display &lt;br /&gt;(defaults to date range)</source>
+        <target>datumweergave (standaard is periode)</target>
+      </trans-unit>
+      <trans-unit id="245">
+        <source>functions, occupations and activities</source>
+        <target>functies, beroepen en activiteiten</target>
+      </trans-unit>
+      <trans-unit id="246">
+        <source>relation area</source>
+        <target>relaties</target>
+      </trans-unit>
+      <trans-unit id="247">
+        <source>control area</source>
+        <target>beheer</target>
+      </trans-unit>
+      <trans-unit id="248">
+        <source>languages of authority record</source>
+        <target>taal van het autoriteitrecord</target>
+      </trans-unit>
+      <trans-unit id="249">
+        <source>scripts of authority record</source>
+        <target>schrift van het autoriteitrecord</target>
+      </trans-unit>
+      <trans-unit id="250">
+        <source>permalink</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="251">
+        <source>content</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="252">
+        <source>create new static page</source>
+        <target>maak een nieuwe statische pagina</target>
+      </trans-unit>
+      <trans-unit id="253">
+        <source>edit this page</source>
+        <target>bewerk deze pagina</target>
+      </trans-unit>
+      <trans-unit id="254">
+        <source>add/edit static page</source>
+        <target>bewerken/toevoegen statische pagina</target>
+      </trans-unit>
+      <trans-unit id="255">
+        <source>value</source>
+        <target>waarde</target>
+      </trans-unit>
+      <trans-unit id="256">
+        <source>please log-in to access that page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="257">
+        <source>user name</source>
+        <target>gebruikersnaam</target>
+      </trans-unit>
+      <trans-unit id="258">
+        <source>email</source>
+        <target>e-mail</target>
+      </trans-unit>
+      <trans-unit id="259">
+        <source>password</source>
+        <target>wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="260">
+        <source>user roles</source>
+        <target>Gebruikersrollen</target>
+      </trans-unit>
+      <trans-unit id="261">
+        <source>list all users</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="262">
+        <source>list users</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="263">
+        <source>add new user</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="264">
+        <source>role</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="265">
+        <source>permissions scope</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="266">
+        <source>reset password: %1%</source>
+        <target>reset wachtwoord %1%</target>
+      </trans-unit>
+      <trans-unit id="267">
+        <source>new password</source>
+        <target>nieuw wachtwoord</target>
+      </trans-unit>
+      <trans-unit id="268">
+        <source>edit user</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="269">
+        <source>you must provide an email address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="270">
+        <source>your password is required</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="271">
+        <source>you must provide a valid email address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="272">
+        <source>this account does not exist or you entered a wrong password</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="273">
+        <source>map</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="274">
+        <source>list maps</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="275">
+        <source>add new map</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="276">
+        <source>edit place -&gt; map relation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="277">
+        <source>map marker</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="278">
+        <source>icon image</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="279">
+        <source>icon description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="280">
+        <source>add/edit map</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="281">
+        <source>list all maps</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="282">
+        <source>view map</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="283">
+        <source>list repositories</source>
+        <target>lijst archiefinstellingen</target>
+      </trans-unit>
+      <trans-unit id="284">
+        <source>add new repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="285">
+        <source>view archival institution</source>
+        <target>bekijk archiefinstelling</target>
+      </trans-unit>
+      <trans-unit id="286">
+        <source>officers in charge</source>
+        <target>leidinggevenden</target>
+      </trans-unit>
+      <trans-unit id="287">
+        <source>geographical and cultural context</source>
+        <target>geografische en culturele context</target>
+      </trans-unit>
+      <trans-unit id="288">
+        <source>structure</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="289">
+        <source>collecting policies</source>
+        <target>collectiebeleid</target>
+      </trans-unit>
+      <trans-unit id="290">
+        <source>buildings</source>
+        <target>gebouwen</target>
+      </trans-unit>
+      <trans-unit id="291">
+        <source>holdings</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="292">
+        <source>finding aids and publications</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="293">
+        <source>opening times</source>
+        <target>openingstijden</target>
+      </trans-unit>
+      <trans-unit id="294">
+        <source>access conditions and requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="295">
+        <source>disabled access</source>
+        <target>toegang voor andersvaliden</target>
+      </trans-unit>
+      <trans-unit id="296">
+        <source>transport</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="297">
+        <source>research services</source>
+        <target>onderzoeksdienstverlening</target>
+      </trans-unit>
+      <trans-unit id="298">
+        <source>reproduction services</source>
+        <target>reproduktiedienstverlening</target>
+      </trans-unit>
+      <trans-unit id="299">
+        <source>public facilities</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="300">
+        <source>description identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="301">
+        <source>language(s) of institution description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="302">
+        <source>script(s) of institution description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="303">
+        <source>edit archival institution</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="304">
+        <source>contact area</source>
+        <target>contactgegevens</target>
+      </trans-unit>
+      <trans-unit id="305">
+        <source>contact information</source>
+        <target>contact informatie</target>
+      </trans-unit>
+      <trans-unit id="306">
+        <source>contact type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="307">
+        <source>primary contact</source>
+        <target>primair contact</target>
+      </trans-unit>
+      <trans-unit id="308">
+        <source>street address</source>
+        <target>straat</target>
+      </trans-unit>
+      <trans-unit id="309">
+        <source>city</source>
+        <target>plaats</target>
+      </trans-unit>
+      <trans-unit id="310">
+        <source>region/province</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="311">
+        <source>postal code</source>
+        <target>postcode</target>
+      </trans-unit>
+      <trans-unit id="312">
+        <source>telephone</source>
+        <target>telefoon</target>
+      </trans-unit>
+      <trans-unit id="313">
+        <source>fax</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="314">
+        <source>website</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="315">
+        <source>administrative structure</source>
+        <target>administratieve structuur</target>
+      </trans-unit>
+      <trans-unit id="316">
+        <source>archival and other holdings</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="317">
+        <source>access area</source>
+        <target>toegang</target>
+      </trans-unit>
+      <trans-unit id="318">
+        <source>conditions and requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="319">
+        <source>services area</source>
+        <target>dienstverlening</target>
+      </trans-unit>
+      <trans-unit id="320">
+        <source>repository description identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="321">
+        <source>languages of repository description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="322">
+        <source>scripts of repository description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="323">
+        <source>sorry, you do not have permission to access that page</source>
+        <target>excusses, je hebt geen recht tot toegang voor deze pagina </target>
+      </trans-unit>
+      <trans-unit id="324">
+        <source>back to previous page</source>
+        <target>terug naar vorige pagina</target>
+      </trans-unit>
+      <trans-unit id="325">
+        <source>go to homepage</source>
+        <target>ga naar homepage</target>
+      </trans-unit>
+      <trans-unit id="326">
+        <source>sorry, page not found</source>
+        <target>Excusses, pagina niet gevonden</target>
+      </trans-unit>
+      <trans-unit id="327">
+        <source>the server returned a 404 response</source>
+        <target>De server antwoordde met een 404 melding</target>
+      </trans-unit>
+      <trans-unit id="328">
+        <source>did you type the URL correctly?</source>
+        <target>Heeft u de juiste URL ingetikt?</target>
+      </trans-unit>
+      <trans-unit id="329">
+        <source>did you follow a broken link?</source>
+        <target>Heeft u een gebroken link gevolgd?</target>
+      </trans-unit>
+      <trans-unit id="330">
+        <source>sorry, this Term is locked and cannot be edited</source>
+        <target>Excusses, deze term is geblokkeerd en kan niet worden bewerkt</target>
+      </trans-unit>
+      <trans-unit id="331">
+        <source>the existing term values are required by the application to operate correctly</source>
+        <target>De waarde van deze bestaande term is noodzakelijk voor de applicatie om correct te werken</target>
+      </trans-unit>
+      <trans-unit id="332">
+        <source>bibliographic citation</source>
+        <target>bibliografisch citaat</target>
+      </trans-unit>
+      <trans-unit id="333">
+        <source>date</source>
+        <target>datum</target>
+      </trans-unit>
+      <trans-unit id="334">
+        <source>coverage</source>
+        <target>dekking</target>
+      </trans-unit>
+      <trans-unit id="335">
+        <source>medium</source>
+        <target>medium</target>
+      </trans-unit>
+      <trans-unit id="336">
+        <source>format</source>
+        <target>formaat</target>
+      </trans-unit>
+      <trans-unit id="337">
+        <source>contributor</source>
+        <target>andere medewerkers </target>
+      </trans-unit>
+      <trans-unit id="338">
+        <source>publisher</source>
+        <target>uitgever</target>
+      </trans-unit>
+      <trans-unit id="339">
+        <source>provenance</source>
+        <target>herkomst</target>
+      </trans-unit>
+      <trans-unit id="340">
+        <source>accrual method</source>
+        <target>methode periodetoerekening</target>
+      </trans-unit>
+      <trans-unit id="341">
+        <source>accrual periodicity</source>
+        <target>periodiciteit periodetoerekening</target>
+      </trans-unit>
+      <trans-unit id="342">
+        <source>accrual policy</source>
+        <target>beleid periodetoerekening</target>
+      </trans-unit>
+      <trans-unit id="343">
+        <source>rights</source>
+        <target>rechten</target>
+      </trans-unit>
+      <trans-unit id="344">
+        <source>subject</source>
+        <target>onderwerp</target>
+      </trans-unit>
+      <trans-unit id="345">
+        <source>subject - spatial</source>
+        <target>ruimtelijk onderwerp</target>
+      </trans-unit>
+      <trans-unit id="346">
+        <source>edit (Dublin Core)</source>
+        <target>bewerken (Dublin Core)</target>
+      </trans-unit>
+      <trans-unit id="347">
+        <source>translation permission</source>
+        <target>toestemming tot vertaling</target>
+      </trans-unit>
+      <trans-unit id="348">
+        <source>Sorry, you do not have permission to make %1% language translations</source>
+        <target>Excusses, je hebt geen recht tot het maken een vertaling in het Nederlands</target>
+      </trans-unit>
+      <trans-unit id="349">
+        <source>open-source archival description software</source>
+        <target>open-source archivistische beschrijvingssoftware</target>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>

@@ -1,4 +1,2 @@
 # Sqlfile -> Database map
-schema.sql=propel
-backup_schema.sql=propel
 lib.model.schema.sql=propel

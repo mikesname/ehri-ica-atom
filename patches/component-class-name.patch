@@ -1,0 +1,13 @@
+Index: lib/vendor/symfony/lib/controller/sfController.class.php
+===================================================================
+--- lib/vendor/symfony/lib/controller/sfController.class.php	(revision 6139)
++++ lib/vendor/symfony/lib/controller/sfController.class.php	(working copy)
+@@ -116,7 +116,7 @@
+         // action class exists
+         require_once($file);
+ 
+-        $this->controllerClasses[$moduleName.'_'.$controllerName.'_'.$classSuffix] = $controllerName.$classSuffix;
++        $this->controllerClasses[$moduleName.'_'.$controllerName.'_'.$classSuffix] = $moduleName.$controllerName.$classSuffix;
+ 
+         return true;
+       }

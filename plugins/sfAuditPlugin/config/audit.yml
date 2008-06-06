@@ -1,0 +1,47 @@
+//*:
+  code:
+    standard: Symfony
+
+//*.gif:
+  props:
+    'svn:mime-type': image/gif
+
+//*.php:
+  preamble:
+  props:
+    'svn:keywords': Author Id Revision
+    'svn:eol-style': native
+
+apps/*/i18n/*/messages.xml:
+  code:
+
+apps/*/modules/*/templates//*:
+  code:
+
+apps/*/templates//*:
+  code:
+
+lib/drupal//*:
+  code:
+
+lib/GoogleMapAPI//*:
+  code:
+
+lib/model/map//*:
+  code:
+
+lib/model/om//*:
+  code:
+
+plugins/*/modules/*/templates//*:
+  code:
+
+plugins/sfAuditPlugin/lib/vendor/PHP//*:
+  code:
+
+plugins/sfAuditPlugin/lib/vendor/PHP//*.php:
+  props:
+    'svn:keywords':
+
+web/js/yui//*:
+  code:

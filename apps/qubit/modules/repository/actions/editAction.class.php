@@ -2,65 +2,50 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class editAction extends sfAction
+class RepositoryEditAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-  $this->repository = RepositoryPeer::retrieveByPk($this->getRequestParameter('id'));
+  $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
 
   $this->forward404Unless($this->repository);
 
+  $this->contactInformation = $this->repository->getContactInformation();
+  $this->newContactInformation = new QubitContactInformation;
 
-  //Inherited from Actor
-  if ($this->repository->getActorId())
+  //Other Forms of Name
+  $this->otherNames = $this->repository->getOtherNames();
+  $otherNameTypes = array();
+  foreach (QubitTerm::getActorNameTypes() as $type)
     {
-    $actor = ActorPeer::retrieveByPk($this->repository->getActorId());
-    $this->otherNames = $actor->getOtherNames();
-    $this->history = $actor->getHistory();
-    $this->structure = $actor->getInternalStructures();
-    $this->contactInformation = $actor->getContactInformation();
+      $otherNameTypes[$type->getId()] = $type->getName();
     }
-  else
-    {
-    $this->otherNames = null;
-    $this->history = null;
-    $this->structures = null;
-    $this->contactInformation = null;
-    }
+  $this->otherNameTypes = $otherNameTypes;
 
-  $this->newContactInformation = new ContactInformation();
-
-  //TermManyToManyRelationships
-  $this->languages = $this->repository->getLanguages();
-  $this->scripts = $this->repository->getScripts();
-
-  $this->newLanguage = new RepositoryTermRelationship();
-  $this->newScript = new RepositoryTermRelationship();
+  //Properties
+  $this->languageCodes = $this->repository->getProperties($name = 'language_of_repository_description');
+  $this->scriptCodes = $this->repository->getProperties($name = 'script_of_repository_description');
 
   //Notes
   $this->notes = $this->repository->getRepositoryNotes();
-  $this->newNote = new Note();
+  $this->newNote = new QubitNote;
 
   //set view template
   switch ($this->getRequestParameter('template'))
@@ -72,7 +57,4 @@ class editAction extends sfAction
       $this->setTemplate(sfConfig::get('app_default_template_repository_edit'));
     }
   }
-
-
-
 }

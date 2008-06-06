@@ -27,30 +27,32 @@ class NoteMapBuilder {
 	{
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
-		$tMap = $this->dbMap->addTable('note');
+		$tMap = $this->dbMap->addTable('q_note');
 		$tMap->setPhpName('Note');
 
 		$tMap->setUseIdGenerator(true);
 
+		$tMap->addForeignKey('OBJECT_ID', 'ObjectId', 'int', CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+
+		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+
+		$tMap->addColumn('SCOPE', 'Scope', 'string', CreoleTypes::VARCHAR, false, 255);
+
+		$tMap->addForeignKey('USER_ID', 'UserId', 'int', CreoleTypes::INTEGER, 'q_user', 'ID', false, null);
+
+		$tMap->addForeignKey('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, 'q_note', 'ID', false, null);
+
+		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, true, null);
+
+		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, true, null);
+
+		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+
+		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+
+		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
-
-		$tMap->addForeignKey('INFORMATION_OBJECT_ID', 'InformationObjectId', 'int', CreoleTypes::INTEGER, 'information_object', 'ID', false, null);
-
-		$tMap->addForeignKey('ACTOR_ID', 'ActorId', 'int', CreoleTypes::INTEGER, 'actor', 'ID', false, null);
-
-		$tMap->addForeignKey('REPOSITORY_ID', 'RepositoryId', 'int', CreoleTypes::INTEGER, 'repository', 'ID', false, null);
-
-		$tMap->addForeignKey('FUNCTION_DESCRIPTION_ID', 'FunctionDescriptionId', 'int', CreoleTypes::INTEGER, 'function_description', 'ID', false, null);
-
-		$tMap->addColumn('NOTE', 'Note', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addForeignKey('NOTE_TYPE_ID', 'NoteTypeId', 'int', CreoleTypes::INTEGER, 'term', 'ID', false, null);
-
-		$tMap->addForeignKey('USER_ID', 'UserId', 'int', CreoleTypes::INTEGER, 'user', 'ID', false, null);
-
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
-
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
 
 	} 
 } 

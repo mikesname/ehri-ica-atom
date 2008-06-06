@@ -1,96 +1,61 @@
-﻿<?php
+<?php
 
-/* This file is part of the Qubit Toolkit
+/*
+ * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- *  For the full copyright and license information, please view the COPYRIGHT
- *  and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- *	Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
  *
- *	This library is free software; you can redistribute it and/or
- *	modify it under the terms of the GNU Lesser General Public
- *	License as published by the Free Software Foundation; either
- *	version 2.1 of the License, or (at your option) any later version.
- *
- *	This library is distributed in the hope that it will be useful,
- *	but WITHOUT ANY WARRANTY; without even the implied warranty of
- *	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- *	Lesser General Public License for more details.
- *
- *	You should have received a copy of the GNU Lesser General Public
- *	License along with this library; if not, write to the Free Software
- *	Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class browseAction extends sfAction
+class TermBrowseAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
+    //determine if user has edit priviliges
+    $this->editCredentials = SecurityPriviliges::editCredentials($this->getUser(), 'term');
 
-  //determine if user has edit priviliges
-  $this->editCredentials = false;
-  if (SecurityPriviliges::editCredentials($this->getUser(), 'term') == TRUE)
-   {
-   $this->editCredentials = true;
-   }
+    if (null !== $termId = $this->getRequestParameter('termId'))
+    {
+      $this->term = QubitTerm::getById($termId);
 
-  if ($this->getRequestParameter('taxonomyId'))
-      {
-      $this->taxonomyId = $this->getRequestParameter('taxonomyId');
-      }
-    else
-      {
-      //default taxonomy for browse view
-      $this->taxonomyId = 0;
-      }
+      $this->forward404Unless(isset($this->term));
 
-    if ($this->getRequestParameter('sort'))
-      {
-      $this->sort = $this->getRequestParameter('sort');
-      }
-    else
-      {
-      //default sort column for list view
-      $this->sort = 'default';
-      }
+      $this->sortColumn = $this->getRequestParameter('sortColumn');
+      $this->sortDirection = $this->getRequestParameter('sortDirection');
 
-    if ($this->getRequestParameter('termId'))
-      {
-      $this->termId = $this->getRequestParameter('termId');
-      }
-    else
-      {
-      $this->termId = null;
-      }
-
-
-    if($this->termId)
-      //term Browse
-      {
-      $this->term = TermPeer::retrieveByPk($this->termId);
-      $this->taxonomyName = $this->term->getTaxonomy();
-      $this->taxonomyId = $this->term->getTaxonomyId();
-      $this->informationObjects = InformationObjectTermRelationshipPeer::getTermBrowseList($this->termId, $this->sort);
+      $this->informationObjects = QubitObjectTermRelation::getTermBrowseList($termId, $className = 'QubitInformationObject', $this->sortColumn, $this->sortDirection);
 
       $this->setTemplate('browseTerm');
-      }
+    }
     else
-      //taxonomy Browse
-      {
-      $this->terms = TermPeer::getTaxonomyBrowseList($this->taxonomyId, $this->sort);
-
-      //set view template
-      if ($this->taxonomyId != 0)
+    {
+      $this->sort = $this->getRequestParameter('sort', 'termNameUp');
+      if ($this->getRequestParameter('taxonomyId'))
         {
-        $taxonomy = TaxonomyPeer::retrieveByPk($this->taxonomyId);
-        $this->taxonomyName = $taxonomy->getName();
-        $this->setTemplate('browseTaxonomy');
+          $taxonomyId = $this->getRequestParameter('taxonomyId');
         }
       else
         {
-        $this->forward404();
+          $taxonomyId = QubitTaxonomy::SUBJECT_ID;
         }
-      }
-  }
 
+      $this->taxonomy = QubitTaxonomy::getById($taxonomyId);
+      $language = $this->getUser()->getCulture();
+      $this->terms = TermPeer::getTaxonomyBrowseList($taxonomyId, $this->sort, $language);
+
+      $this->setTemplate('browseTaxonomy');
+    }
+  }
 }

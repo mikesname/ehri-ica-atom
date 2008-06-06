@@ -1,0 +1,29 @@
+Index: lib/vendor/symfony/lib/helper/I18NHelper.php
+===================================================================
+--- lib/vendor/symfony/lib/helper/I18NHelper.php	(revision 7768)
++++ lib/vendor/symfony/lib/helper/I18NHelper.php	(working copy)
+@@ -71,6 +71,12 @@
+   $c = new sfCultureInfo($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+   $countries = $c->getCountries();
+ 
++  if (!isset($countries[$country_iso]))
++  {
++    $c = new sfCultureInfo(sfConfig::get('sf_default_culture'));
++    $countries = $c->getCountries();
++  }
++
+   return isset($countries[$country_iso]) ? $countries[$country_iso] : '';
+ }
+ 
+@@ -79,5 +85,11 @@
+   $c = new sfCultureInfo($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+   $languages = $c->getLanguages();
+ 
++  if (!isset($languages[$language_iso]))
++  {
++    $c = new sfCultureInfo(sfConfig::get('sf_default_culture'));
++    $languages = $c->getLanguages();
++  }
++
+   return isset($languages[$language_iso]) ? $languages[$language_iso] : '';
+ }

@@ -41,12 +41,10 @@
 </div>
 </div> <!--close header-top -->
 
-
 <div id="header-middle">
 <div id="logo"><?php echo image_tag('/uploads/images/logo-small.jpg') ?></div>
 <div id="website-name"><?php echo link_to('Human Rights Violations:<br />A Guide to Archival Sources', '/') ?></a></div>
 </div> <!-- close header-middle -->
-
 
 </div> <!-- close header-middle -->
 
@@ -58,7 +56,6 @@
 </div> <!-- close header-bottom -->
 
 </div> <!-- close header -->
-
 
 <div id="main">
 
@@ -110,10 +107,7 @@
 <?php endif; ?>
 <?php endif; ?>
 
-
 </div> <!-- close context-column" -->
-
-
 
 <div id="content-two-column">
 
@@ -121,13 +115,9 @@
 <?php echo $sf_data->getRaw('sf_content') ?>
 </div>
 
-
 </div> <!-- close content-two-column -->
 
-
 </div> <!-- close main -->
-
-
 
 <div id="footer">
 <div id="footer-top"></div>

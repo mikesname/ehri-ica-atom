@@ -1,0 +1,20 @@
+editSuccess:
+  javascripts: [collapse]
+
+all:
+  components:
+    sidebar: [informationobject, contextMenu]
+    
+listSuccess:
+  components:
+    sidebar: []
+
+browseSuccess:    
+  components:
+    sidebar: []
+    
+showFullScreenSuccess:
+  layout: layout_fullscreen
+  components:
+    all: []
+    bottomBanner: [sfTranslatePlugin, translate]

@@ -27,22 +27,20 @@ class TaxonomyMapBuilder {
 	{
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
-		$tMap = $this->dbMap->addTable('taxonomy');
+		$tMap = $this->dbMap->addTable('q_taxonomy');
 		$tMap->setPhpName('Taxonomy');
 
 		$tMap->setUseIdGenerator(true);
 
+		$tMap->addColumn('USAGE', 'Usage', 'string', CreoleTypes::VARCHAR, false, 255);
+
+		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+
+		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+
+		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
-
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 50);
-
-		$tMap->addColumn('TERM_USE', 'TermUse', 'string', CreoleTypes::VARCHAR, false, 5);
-
-		$tMap->addColumn('NOTE', 'Note', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
-
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
 
 	} 
 } 

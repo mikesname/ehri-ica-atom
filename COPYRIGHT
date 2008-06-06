@@ -3,53 +3,107 @@
 
 Qubit Toolkit
 -------------
-
 Url:       http://www.qubit-toolkit.org/
-Copyright: Peter Van Garderen
-License:   LGPL v2.1 - see LICENSE file
+Copyright: Peter Van Garderen <peter@artefactual.com>
+Authors:   Peter Van Garderen, Jack Bates, MJ Suhonos, David Juhasz
+License:   GPL version 2 - see LICENSE file
+
+Qubit Logo
+----------
+The blue circle in the Qubit logo is derived from a Blochsphere representation of a Qubit (quantum bit) that was made available as a vector graphic under a GNU Free Documentation License. As such, the derived circle used in the Qubit logo is also made available under the GFDL.
+
+URL:       http://commons.wikimedia.org/wiki/Image:Blochsphere.svg
+Copyright: MuncherOfSpleens at en.wikipedia.org (http://en.wikipedia.org/wiki/User:MuncherOfSpleens)
+License:   GNU Free Documentation License
+
+Qubit Installer
+---------------
+Url: http://www.carl-abrc.ca/
+Copyright: Canadian Association of Research Libraries
+Author: Mark Jordan
+License: GPL version 2
 
 symfony
 -------
-
 Qubit Toolkit is based on the symfony framework.
 
 Url:       http://www.symfony-project.com/
-Copyright: Fabien Potencier
+Copyright: Fabien Potencier <fabien.potencier@symfony-project.com>
 License:   MIT - see lib/vendor/symfony/LICENSE
 
 symfony contains additional software.  See lib/vendor/symfony/COPYRIGHT and
 lib/vendor/symfony/licenses/
 
-In addition to symfony and the software it contains, Qubit Toolkit also uses
-the following:
+In addtion to the core symfony framework, Qubit also uses the following symfony plugins:
+
+sfAuditPlugin
+-------------
+Copyright: Jack Bates
+License: MIT
+
+sfHistoryPlugin
+---------------
+Copyright: Jack Bates
+License: MIT
+
+sfThumbnailPlugin
+-----------------
+Copyright: Fabien Potencer
+License: MIT
+
+sfTranslatePlugin
+-----------------
+Copyright: Jack Bates
+License: MIT
+
+sfUJSPlugin
+-----------
+Copyright: Francois Zaninotto
+License: MIT
+
+In addition to symfony and its external libraries and plugins, Qubit Toolkit also uses:
+
+Drupal
+------
+Url:       http://drupal.org/
+Copyright: Original authors - see http://association.drupal.org/about/copyright
+License:   GPL version 2 - see LICENSE.txt
+
+GoogleMapAPI
+------------
+Url:       http://www.phpinsider.com/php/code/GoogleMapAPI/
+Author:    Monte Ohrt <monte@ohrt.com>
+Copyright: New Digital Group, Inc.
+License:   LGPL - see LICENSE file
+
+jQuery
+------
+Url:       http://jquery.com/
+Copyright: John Resig <jeresig@gmail.com>
+License:   Dual licensed under the MIT and GPL version 2 - see MIT-LICENSE.txt and GPL-LICENSE.txt
+
+sfUJSPlugin
+-----------
+Url:       http://trac.symfony-project.com/wiki/sfUJSPlugin
+Copyright: François Zaninotto <francois.zaninotto@symfony-project.com>
+License:   LGPL - see LICENSE file
+
+Silk Icons
+----------
+Url:       http://www.famfamfam.com/lab/icons/silk/
+Copyright: Mark James <mjames@gmail.com>
+License:   Creative Commons Attribution 2.5 - see http://creativecommons.org/licenses/by/2.5/
+
+Yahoo! User Interface Library
+-----------------------------
+Url:       http://developer.yahoo.com/yui/
+Copyright: Yahoo! Inc.
+License:   BSD - see http://developer.yahoo.com/yui/license.html
 
 Zend Framework
 --------------
-
 Qubit Toolkit uses the Zend Search component.
 
 Url:       http://zend.framework.com
 Copyright: Zend Technologies USA Inc.
-License:   new BSD - see http://framework.zend.com/license/new-bsd
-
-GoogleMapAPI
-------------
-
-Url:       http://www.phpinsider.com/php/code/GoogleMapAPI/
-Author:    Monte Ohrt
-Copyright: New Digital Group, Inc.
-License:   LGPL v2.1 - see LICENSE file
-
-sfPropelActAsNestedSetBehaviorPlugin
-------------------------------------
-
-Url:       http://trac.symfony-project.com/wiki/sfPropelActAsNestedSetBehaviorPlugin
-Copyright: Tristan Rivoallan <tristan@rivoallan.net>
-License:   LGPL v2.1 - see LICENSE file
-
-sfUJSPlugin
------------
-
-Url:       http://trac.symfony-project.com/wiki/sfUJSPlugin
-Copyright: François Zaninotto <francois.zaninotto@symfony-project.com>
-License:   LGPL v2.1 - see LICENSE file
+License:   New BSD - see http://framework.zend.com/license

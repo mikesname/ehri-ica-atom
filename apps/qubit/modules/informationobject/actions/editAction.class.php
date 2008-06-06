@@ -2,93 +2,98 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class editAction extends sfAction
+class InformationObjectEditAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
+    $this->informationObject = QubitInformationObject::getById($this->getRequestParameter('id'));
 
-   $this->informationObject = InformationObjectPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->forward404Unless($this->informationObject);
 
-   $this->forward404Unless($this->informationObject);
+    $request->setAttribute('informationObject', $this->informationObject);
 
-   //TermManyToManyRelationships
-   $this->languages = $this->informationObject->getLanguages();
-   $this->scripts = $this->informationObject->getScripts();
-   $this->subjectAccessPoints = $this->informationObject->getSubjectAccessPoints();
-   $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
+    //Actor (Event) Relations
+    $this->creationEvents = $this->informationObject->getCreationEvents();
+    $this->newCreationEvent = new QubitEvent;
+    $this->creators = $this->informationObject->getCreators();
 
-   $this->newLanguage = new InformationObjectTermRelationship();
-   $this->newScript = new InformationObjectTermRelationship();
-   $this->newSubjectAccessPoint = new InformationObjectTermRelationship();
-   $this->newPlaceAccessPoint = new InformationObjectTermRelationship();
+    //Properties
+    $this->languageCodes = $this->informationObject->getProperties($name = 'information_object_language');
+    $this->scriptCodes = $this->informationObject->getProperties($name = 'information_object_script');
+    $this->descriptionLanguageCodes = $this->informationObject->getProperties($name = 'language_of_information_object_description');
+    $this->descriptionScriptCodes = $this->informationObject->getProperties($name = 'script_of_information_object_description');
 
-   //Notes
-   $this->notes = $this->informationObject->getInformationObjectNotes($noteTypeId = null, $exclude = 317);
-   $this->newNote = new Note();
-   $this->titleNotes = $this->informationObject->getInformationObjectNotes($noteTypeId = 317, $exclude = null);
-   $this->newTitleNote = new Note();
+    //Notes
+    $this->notes = $this->informationObject->getNotes();
+    $this->newNote = new QubitNote;
+    $this->titleNotes = $this->informationObject->getNotesByType($noteTypeId = QubitTerm::TITLE_NOTE_ID, $exclude = null);
+    $this->newTitleNote = new QubitNote;
+    $this->publicationNotes = $this->informationObject->getNotesByType($noteTypeId = QubitTerm::PUBLICATION_NOTE_ID, $exclude = null);
+    $this->newPublicationNote = new QubitNote;
 
-
-   //Multilevel
-   $this->informationObjectPicklist = $this->informationObject->getInformationObjectPicklist();
-   if ($this->informationObject->getTreeParentId())
+    //Access Points
+    $this->newSubjectAccessPoint = new QubitObjectTermRelation;
+    $this->newPlaceAccessPoint = new QubitObjectTermRelation;
+    $this->subjectAccessPoints = $this->informationObject->getSubjectAccessPoints();
+    $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
+    $this->nameSelectList = QubitActor::getAccessPointSelectList();
+    $this->nameAccessPoints = array();
+    $actorEvents =  $this->informationObject->getActorEvents();
+    foreach ($actorEvents as $event)
+    {
+      if ($event->getActorId())
       {
-      //$this->selectedParent = $this->informationObject->getTreeParentId();
-      $this->selectedParent = 0;
-      $this->parent = InformationObjectPeer::retrieveByPk($this->informationObject->getTreeParentId());
+        $this->nameAccessPoints[] = $event;
       }
-   else
+    }
+
+    // Get related digital object with all representations
+    $this->digitalObjectCount = 0;
+    $this->digitalObject = $this->informationObject->getDigitalObject();
+    if (count($this->digitalObject))
+    {
+      $representations[QubitTerm::MASTER_ID] = $this->digitalObject;
+      $representations[QubitTerm::REFERENCE_ID] = $this->digitalObject->getChildByUsageId(QubitTerm::REFERENCE_ID);
+      $representations[QubitTerm::THUMBNAIL_ID] = $this->digitalObject->getChildByUsageId(QubitTerm::THUMBNAIL_ID);
+      $this->representations = $representations;
+
+      $this->digitalObjectCount = count($this->digitalObject->getDescendants()->andSelf());
+    }
+
+    //set template
+    switch ($this->getRequestParameter('template'))
       {
-      $this->selectedParent = 0;
-      $this->parent = null;
-      }
-
-   //Actor (Event) Relationships
-   $this->creationEvents = $this->informationObject->getCreationEvents();
-   $this->newCreationEvent = new Event();
-   $this->creators = $this->informationObject->getCreators();
-
-   /*
-   $this->actorAccessPoints = $this->informationObject->getActorAccessPoints();
-   $this->newActorAccessPoint = new Event();
-   */
-
-
-   //set template
-   switch ($this->getRequestParameter('template'))
-      {
-      case 'mods' :
-        $this->setTemplate('editMODS');
+      case 'dublincore' :
+        $this->setTemplate('editDublinCore');
         break;
       case 'isad' :
         $this->setTemplate('editISAD');
         break;
+      case 'mods' :
+        $this->setTemplate('editMODS');
+        break;
+      case 'edit' :
+        $this->setTemplate('edit');
+        break;
       default :
         $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
-        break;
       }
-
-
   }
 }

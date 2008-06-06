@@ -2,83 +2,81 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class createAction extends sfAction
+class InformationObjectCreateAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-
    //initialize a new information object
-   $this->informationObject = new InformationObject();
+   $this->informationObject = new QubitInformationObject;
 
+   $request->setAttribute('informationObject', $this->informationObject);
 
-   //TermManyToManyRelationships
-   $this->languages = null;
-   $this->scripts = null;
+   //TermManyToManyRelations
    $this->subjectAccessPoints = null;
    $this->placeAccessPoints = null;
+   $this->nameAccessPoints = null;
 
-   $this->newLanguage = new InformationObjectTermRelationship();
-   $this->newScript = new InformationObjectTermRelationship();
-   $this->newSubjectAccessPoint = new InformationObjectTermRelationship();
-   $this->newPlaceAccessPoint = new InformationObjectTermRelationship();
+   //Properties
+   $this->languageCodes = null;
+   $this->scriptCodes = null;
+   $this->descriptionLanguageCodes = null;
+   $this->descriptionScriptCodes = null;
+
+   //Access Points
+   $this->newSubjectAccessPoint = new QubitObjectTermRelation;
+   $this->newPlaceAccessPoint = new QubitObjectTermRelation;
+   $this->nameSelectList = QubitActor::getAccessPointSelectList();
 
    //Notes
    $this->notes = null;
-   $this->newNote = new Note();
+   $this->newNote = new QubitNote;
    $this->titleNotes = null;
-   $this->newTitleNote = new Note();
+   $this->newTitleNote = new QubitNote;
+   $this->publicationNotes = null;
+   $this->newPublicationNote = new QubitNote;
 
-
-   //Multilevel
-   $this->informationObjectPicklist = $this->informationObject->getInformationObjectPicklist();
-   $this->parent = null;
-   $this->selectedParent = 0;
-
-   //Actor (Event) Relationships
+   //Actor (Event) Relations
    $this->creationEvents = null;
    $this->creators = null;
-   $this->newCreationEvent = new Event();
+   $this->newCreationEvent = new QubitEvent;
 
-
-   /*
-   $this->actorAccessPoints = $this->informationObject->getActorAccessPoints();
-   $this->newActorAccessPoint = new Event();
-   */
+   // Digital Objects
+   $this->digitalObject = null;
 
    //set template
    switch ($this->getRequestParameter('template'))
       {
-      case 'mods' :
-        $this->setTemplate('editMODS');
+      case 'dublincore' :
+        $this->setTemplate('editDublinCore');
         break;
       case 'isad' :
         $this->setTemplate('editISAD');
         break;
+      case 'mods' :
+        $this->setTemplate('editMODS');
+        break;
+      case 'edit' :
+        $this->setTemplate('edit');
+        break;
       default :
         $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
       }
-
-
   }
 }

@@ -27,54 +27,34 @@ class ActorMapBuilder {
 	{
 		$this->dbMap = Propel::getDatabaseMap('propel');
 
-		$tMap = $this->dbMap->addTable('actor');
+		$tMap = $this->dbMap->addTable('q_actor');
 		$tMap->setPhpName('Actor');
 
-		$tMap->setUseIdGenerator(true);
+		$tMap->setUseIdGenerator(false);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
 
-		$tMap->addColumn('AUTHORIZED_FORM_OF_NAME', 'AuthorizedFormOfName', 'string', CreoleTypes::VARCHAR, true, 255);
+		$tMap->addColumn('CORPORATE_BODY_IDENTIFIERS', 'CorporateBodyIdentifiers', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addForeignKey('TYPE_OF_ENTITY_ID', 'TypeOfEntityId', 'int', CreoleTypes::INTEGER, 'term', 'ID', false, null);
+		$tMap->addForeignKey('ENTITY_TYPE_ID', 'EntityTypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('IDENTIFIERS', 'Identifiers', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addForeignKey('DESCRIPTION_STATUS_ID', 'DescriptionStatusId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('HISTORY', 'History', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addForeignKey('DESCRIPTION_DETAIL_ID', 'DescriptionDetailId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('LEGAL_STATUS', 'LegalStatus', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('DESCRIPTION_IDENTIFIER', 'DescriptionIdentifier', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('FUNCTIONS', 'Functions', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addForeignKey('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, 'q_actor', 'ID', false, null);
 
-		$tMap->addColumn('MANDATES', 'Mandates', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('INTERNAL_STRUCTURES', 'InternalStructures', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, false, null);
 
-		$tMap->addColumn('GENERAL_CONTEXT', 'GeneralContext', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
 
-		$tMap->addColumn('AUTHORITY_RECORD_IDENTIFIER', 'AuthorityRecordIdentifier', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
 
-		$tMap->addColumn('INSTITUTION_IDENTIFIER', 'InstitutionIdentifier', 'string', CreoleTypes::VARCHAR, false, 255);
-
-		$tMap->addColumn('RULES', 'Rules', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addForeignKey('STATUS_ID', 'StatusId', 'int', CreoleTypes::INTEGER, 'term', 'ID', false, null);
-
-		$tMap->addForeignKey('LEVEL_OF_DETAIL_ID', 'LevelOfDetailId', 'int', CreoleTypes::INTEGER, 'term', 'ID', false, null);
-
-		$tMap->addColumn('SOURCES', 'Sources', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addColumn('TREE_ID', 'TreeId', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('TREE_LEFT_ID', 'TreeLeftId', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('TREE_RIGHT_ID', 'TreeRightId', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('TREE_PARENT_ID', 'TreeParentId', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
-
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, false, null);
+		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
 
 	} 
 } 

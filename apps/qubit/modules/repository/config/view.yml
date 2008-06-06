@@ -1,8 +1,8 @@
 editSuccess:
-  javascripts: [jquery, drupal, collapse]
+  javascripts: [collapse]
 
 editISIAHSuccess:
-  javascripts: [jquery, drupal, collapse]
+  javascripts: [collapse]
 
 listSuccess:
   components:

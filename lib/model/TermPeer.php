@@ -2,164 +2,62 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class TermPeer extends BaseTermPeer
+class TermPeer extends BaseTerm
 {
-
-  public static function getTaxonomy($taxonomyId = 0, $sort = 'default', $restrict = TRUE)
-    {
-
-    $c = new Criteria();
-
-    //select a specific taxonomy
-    if ($taxonomyId !== 0)
-      {
-      $c->add(TermPeer::TAXONOMY_ID, $taxonomyId);
-      }
-
-    //only include taxonomies that are approved for end-user viewing/editing
-    if ($restrict == TRUE)
-      {
-      $c->add(TaxonomyPeer::TERM_USE, 'user');
-      }
-
-    switch($sort)
-      {
-      case 'idDown' :
-        $c->addDescendingOrderByColumn(TermPeer::ID);
-        break;
-      case 'idUp' :
-        $c->addAscendingOrderByColumn(TermPeer::ID);
-        break;
-      case 'termNameDown' :
-        $c->addDescendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'termNameUp' :
-        $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'sourceDown' :
-        $c->addDescendingOrderByColumn(TermPeer::SOURCE);
-        $c->addDescendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addDescendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addDescendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'sourceUp' :
-        $c->addAscendingOrderByColumn(TermPeer::SOURCE);
-        $c->addAscendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addAscendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'sortOrderDown' :
-        $c->addDescendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addDescendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addDescendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'sortOrderUp' :
-        $c->addAscendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addAscendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'taxonomyDown' :
-        $c->addDescendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addAscendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'taxonomyUp' :
-        $c->addAscendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addAscendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      case 'default' :
-      default:
-        $c->addAscendingOrderByColumn(TaxonomyPeer::NAME);
-        $c->addAscendingOrderByColumn(TermPeer::SORT_ORDER);
-        $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
-        break;
-      }
-
-  return TermPeer::doSelectJoinTaxonomy($c);
-  }
-
-  public static function getTaxonomyBrowseList($taxonomyId = null, $sort = null, $objectType = null)
+  public static function getTaxonomyBrowseList($taxonomyId = null, $sort = null, $language = null)
   {
-  $c = new Criteria();
-  $c->add(TermPeer::TAXONOMY_ID, $taxonomyId);
-
-  switch($objectType)
-    {
-    case 'actor' :
-      {
-      $c->addJoin(TermPeer:: ID, ActorTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
-      }
-    case 'repository' :
-      {
-      $c->addJoin(TermPeer:: ID, RepositoryTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
-      }
-    case 'informationObject' :
-    default :
-      {
-      $c->addJoin(TermPeer:: ID, InformationObjectTermRelationshipPeer::TERM_ID, Criteria::RIGHT_JOIN);
-      }
-    }
+  $criteria = new Criteria;
+  $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+  $criteria->add(QubitTermI18n::CULTURE, $language);
+  $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
+  $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::RIGHT_JOIN);
 
   switch($sort)
     {
     case 'termNameUp' :
       {
-      $c->addAscendingOrderByColumn(TermPeer::TERM_NAME);
+      $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME);
       }
     case 'termNameDown' :
       {
-      $c->addDescendingOrderByColumn(TermPeer::TERM_NAME);
+      $criteria->addDescendingOrderByColumn(QubitTermI18n::NAME);
       }
     }
 
-  $c->setDistinct(true);
+  $criteria->setDistinct(true);
 
-  $terms = self::doSelect($c);
+  $terms = QubitTerm::get($criteria);
   $taxonomyBrowseList = array();
 
-  foreach($terms as $term)
+  foreach ($terms as $term)
     {
+        $criteria = new Criteria;
+        $criteria->add(QubitObjectTermRelation::TERM_ID, $term->getId());
+        $hits = count(QubitObjectTermRelation::get($criteria));
 
-    switch($objectType)
+    if (is_null($termName = $term->getName()))
       {
-      case 'actor' :
-        {
-        }
-      case 'repository' :
-        {
-        }
-      case 'informationObject' :
-      default :
-        {
-        $c = new Criteria();
-        $c->add(InformationObjectTermRelationshipPeer::TERM_ID, $term->getId());
-        $hits = InformationObjectTermRelationshipPeer::doCount($c);
-        }
+        $termName = $term->getName(array('sourceCulture' => true));
       }
 
-    $taxonomyBrowseList[] = array('termName' => $term->getTermName(), 'termId' => $term->getId(), 'hits' => $hits);
+    $taxonomyBrowseList[] = array('termName' => $termName, 'termId' => $term->getId(), 'hits' => $hits);
     }
 
   //use ArraySort helper
@@ -172,68 +70,26 @@ class TermPeer extends BaseTermPeer
     default :
       return $taxonomyBrowseList;
     }
-
   }
 
-
-  public static function getActorRelationshipTypes()
+  public static function getActorRelationTypes()
     {
-
-    return self::getTaxonomy($taxonomyId = 1, $sort, $restrict = FALSE);
+    return self::getTaxonomy($taxonomyId = 1, $sort, $restrict = false);
     }
 
   public static function getActorRoles()
     {
-
-    return self::getTaxonomy($taxonomyId = 2, $sort, $restrict = FALSE);
+    return self::getTaxonomy($taxonomyId = 2, $sort, $restrict = false);
     }
-
-  public static function getAuthorityFileDetail()
-    {
-
-    return self::getTaxonomy($taxonomyId = 3);
-    }
-
-  public static function getAuthorityFileEntityTypes()
-    {
-
-    return self::getTaxonomy($taxonomyId = 4);
-    }
-
-  public static function getAuthorityFileStatus()
-    {
-
-    return self::getTaxonomy($taxonomyId = 5);
-    }
-
-  public static function getCountries()
-    {
-
-    return self::getTaxonomy($taxonomyId = 6, $sort, $restrict = FALSE);
-    }
-
-   public static function getLevelsOfDescription()
-    {
-
-    //change $taxonomyId to use other LevelsOfDescription taxonomies
-    return self::getTaxonomy($taxonomyId = 7);
-    }
-
 
   public static function getGeographicRegions()
     {
-
     return self::getTaxonomy($taxonomyId = 8);
     }
 
   public static function getInstitutionCategories()
     {
     return self::getTaxonomy($taxonomyId = 9);
-    }
-
-  public static function getLanguages()
-    {
-    return self::getTaxonomy($taxonomyId = 10);
     }
 
   public static function getMediaTypes()
@@ -243,56 +99,20 @@ class TermPeer extends BaseTermPeer
 
   public static function getMaterialTypes()
     {
-    return self::getTaxonomy($taxonomyId = 11, $sort, $restrict = FALSE);
-    }
-
-  public static function getScripts()
-    {
-    return self::getTaxonomy($taxonomyId = 13);
-    }
-
-  public static function getSubjects()
-    {
-    return self::getTaxonomy($taxonomyId = 14);
+    return self::getTaxonomy($taxonomyId = 11, $sort, $restrict = false);
     }
 
   public static function getCredentials()
   {
-
-  return self::getTaxonomy($taxonomyId = 15, $sort, $restrict = FALSE);
+  return self::getTaxonomy($taxonomyId = 15, $sort, $restrict = false);
   }
-
-  public static function getActorNameTypes()
-  {
-
-  return self::getTaxonomy($taxonomyId = 18);
-  }
-
-  public static function getNoteTypes()
-  {
-
-  return self::getTaxonomy($taxonomyId = 19);
-  }
-
-  public static function getRepositoryTypes()
-  {
-
-  return self::getTaxonomy($taxonomyId = 20);
-  }
-
-  public static function getI18nLanguages()
-  {
-
-  return self::getTaxonomy($taxonomyId = 27, $sort='default', $restrict = FALSE);
-  }
-
 
 public static function getRepositoryCountryHitList()
   {
   $countries = self::getCountries();
 
-  $c = new Criteria();
-  $repositories = RepositoryPeer::doSelect($c);
+  $criteria = new Criteria;
+  $repositories = QubitRepository::get($criteria);
 
   $countryList = array();
 
@@ -315,22 +135,21 @@ public static function getRepositoryCountryHitList()
     return $countryList;
   }
 
-
   public static function getLanguageHitList()
   {
     $languages = self::getLanguages();
 
-    $c = new Criteria();
-    $languageRelationships = InformationObjectTermRelationshipPeer::doSelect($c);
+    $criteria = new Criteria;
+    $languageRelations = QubitObjectTermRelation::get($criteria);
 
     $languageList = array();
 
     foreach ($languages as $language)
     {
     $hitCount = null;
-    foreach ($languageRelationships as $languageRelationship)
+    foreach ($languageRelations as $languageRelation)
       {
-      if ($language->getId() == $languageRelationship->getTermId())
+      if ($language->getId() == $languageRelation->getTermId())
           {
           $hitCount += 1;
           }
@@ -345,23 +164,21 @@ public static function getRepositoryCountryHitList()
     return $languageList;
  }
 
-
-
 public static function getSubjectHitList()
   {
   $subjects = self::getSubjects();
 
-  $c = new Criteria();
-  $subjectRelationships = InformationObjectTermRelationshipPeer::doSelect($c);
+  $criteria = new Criteria;
+  $subjectRelations = QubitObjectTermRelation::get($criteria);
 
   $subjectList = array();
 
   foreach ($subjects as $subject)
     {
     $hitCount = null;
-    foreach ($subjectRelationships as $subjectRelationship)
+    foreach ($subjectRelations as $subjectRelation)
       {
-      if ($subject->getId() == $subjectRelationship->getTermId())
+      if ($subject->getId() == $subjectRelation->getTermId())
           {
           $hitCount += 1;
           }
@@ -375,8 +192,4 @@ public static function getSubjectHitList()
 
     return $subjectList;
   }
-
-
-
-
 }

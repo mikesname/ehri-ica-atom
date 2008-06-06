@@ -1,0 +1,98 @@
+/**
+ * installer.css, part of the Qubit Information Toolkit web-based installer.
+ * Last modified 2008-03-15 Mark Jordan (mjordan@sfu.ca).
+ */
+ 
+ /*
+ * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2008 Canadian Association of Research Libraries (http://www.carl-abrc.ca/).
+ *
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+ * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ */
+
+/* Feel free to modify the CSS statements below this statement. However, you probably 
+ * shouldn't modify the statements that apply to the "progress" table at the end 
+ * of this file. 
+*/
+body {
+  margin: 4%;
+  font-family: Helvetica, Geneva, Arial, sans-serif;
+}
+
+label {
+  display: block;
+  padding-top: .5em;
+  padding-bottom: .5em;
+}
+
+input.submit_button {
+  display: block;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+span.example_values, span.example_values_advanced {
+  /* display: block; */
+  font-size: 80%;
+  padding-left: .5em;
+  color: #A9A9A9;
+}
+
+span.example_values:before {
+  content: "Sample value: ";
+}
+
+span.not_applicable {
+  /* display: block; */
+  font-size: 80%;
+  padding-left: .5em;
+  color: #FF0000;
+}
+
+span.not_applicable:before {
+  content: "Note: ";
+}
+
+/* CSS statements below this comment apply to the "progress" table and are supposed to 
+ * convey some meaning (red = bad, green = good, etc.).
+ */
+th {
+  text-align: left;
+  padding: 5px;
+} 
+table#status {
+  border: 1px solid #666666;
+} 
+th.status {
+  border: 1px solid #666666;
+} 
+td {
+  padding: 5px;
+}
+td.status {
+  border: 1px solid #666666;
+}
+td.ok {
+  background: #00CD00;
+} 
+td.warning {
+  background: #FFD700;
+}
+td.problem {
+  background: #FF4500;
+} 
+span.problem { background: #FF4500; } 
+
+/* End of file */

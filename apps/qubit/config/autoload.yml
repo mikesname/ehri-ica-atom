@@ -1,0 +1,8 @@
+autoload:
+  plugins_actions:
+    name: plugins actions
+    path: %SF_PLUGINS_DIR%/*/modules/*/actions
+
+  actions:
+    name: actions
+    path: %SF_APP_DIR%/modules/*/actions

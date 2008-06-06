@@ -1,487 +1,350 @@
 <?php
 
+abstract class BaseMap
+{
+  const DATABASE_NAME = 'propel';
 
-abstract class BaseMap extends BaseObject  implements Persistent {
+  const TABLE_NAME = 'q_map';
 
+  const CREATED_AT = 'q_map.CREATED_AT';
+  const UPDATED_AT = 'q_map.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_map.SOURCE_CULTURE';
+  const ID = 'q_map.ID';
 
-	
-	protected static $peer;
+  public static function addSelectColumns(Criteria $criteria)
+  {
+    $criteria->addSelectColumn(QubitMap::CREATED_AT);
+    $criteria->addSelectColumn(QubitMap::UPDATED_AT);
+    $criteria->addSelectColumn(QubitMap::SOURCE_CULTURE);
+    $criteria->addSelectColumn(QubitMap::ID);
 
-
-	
-	protected $id;
-
-
-	
-	protected $title;
-
-
-	
-	protected $description;
-
-
-	
-	protected $created_at;
-
-
-	
-	protected $updated_at;
-
-	
-	protected $collPlaceMapRelationships;
-
-	
-	protected $lastPlaceMapRelationshipCriteria = null;
-
-	
-	protected $alreadyInSave = false;
-
-	
-	protected $alreadyInValidation = false;
-
-	
-	public function getId()
-	{
-
-		return $this->id;
-	}
-
-	
-	public function getTitle()
-	{
-
-		return $this->title;
-	}
-
-	
-	public function getDescription()
-	{
-
-		return $this->description;
-	}
-
-	
-	public function getCreatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->created_at === null || $this->created_at === '') {
-			return null;
-		} elseif (!is_int($this->created_at)) {
-						$ts = strtotime($this->created_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [created_at] as date/time value: " . var_export($this->created_at, true));
-			}
-		} else {
-			$ts = $this->created_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function getUpdatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->updated_at === null || $this->updated_at === '') {
-			return null;
-		} elseif (!is_int($this->updated_at)) {
-						$ts = strtotime($this->updated_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [updated_at] as date/time value: " . var_export($this->updated_at, true));
-			}
-		} else {
-			$ts = $this->updated_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function setId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = MapPeer::ID;
-		}
-
-	} 
-	
-	public function setTitle($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->title !== $v) {
-			$this->title = $v;
-			$this->modifiedColumns[] = MapPeer::TITLE;
-		}
-
-	} 
-	
-	public function setDescription($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->description !== $v) {
-			$this->description = $v;
-			$this->modifiedColumns[] = MapPeer::DESCRIPTION;
-		}
-
-	} 
-	
-	public function setCreatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [created_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->created_at !== $ts) {
-			$this->created_at = $ts;
-			$this->modifiedColumns[] = MapPeer::CREATED_AT;
-		}
-
-	} 
-	
-	public function setUpdatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [updated_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->updated_at !== $ts) {
-			$this->updated_at = $ts;
-			$this->modifiedColumns[] = MapPeer::UPDATED_AT;
-		}
-
-	} 
-	
-	public function hydrate(ResultSet $rs, $startcol = 1)
-	{
-		try {
-
-			$this->id = $rs->getInt($startcol + 0);
-
-			$this->title = $rs->getString($startcol + 1);
-
-			$this->description = $rs->getString($startcol + 2);
-
-			$this->created_at = $rs->getTimestamp($startcol + 3, null);
-
-			$this->updated_at = $rs->getTimestamp($startcol + 4, null);
-
-			$this->resetModified();
-
-			$this->setNew(false);
-
-						return $startcol + 5; 
-		} catch (Exception $e) {
-			throw new PropelException("Error populating Map object", $e);
-		}
-	}
-
-	
-	public function delete($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseMap:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(MapPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			MapPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	
-
-    foreach (sfMixer::getCallables('BaseMap:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
+    return $criteria;
   }
-	
-	public function save($con = null)
-	{
 
-    foreach (sfMixer::getCallables('BaseMap:save:pre') as $callable)
+  protected static $maps = array();
+
+  public static function getFromResultSet(ResultSet $resultSet)
+  {
+    if (!isset(self::$maps[$id = $resultSet->getInt(4)]))
     {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
+      $map = new QubitMap;
+      $map->hydrate($resultSet);
+
+      self::$maps[$id] = $map;
+    }
+
+    return self::$maps[$id];
+  }
+
+  public static function get(Criteria $criteria, array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitMap::DATABASE_NAME);
+    }
+
+    self::addSelectColumns($criteria);
+
+    return QubitQuery::createFromCriteria($criteria, 'QubitMap', $options);
+  }
+
+  public static function getAll(array $options = array())
+  {
+    return self::get(new Criteria, $options);
+  }
+
+  public static function getOne(Criteria $criteria, array $options = array())
+  {
+    $criteria->setLimit(1);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function getById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitMap::ID, $id);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function doDelete(Criteria $criteria, $connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMap::DATABASE_NAME);
+    }
+
+    $affectedRows = 0;
+
+    $affectedRows += BasePeer::doDelete($criteria, $connection);
+
+    return $affectedRows;
+  }
+
+  protected $createdAt = null;
+
+  public function getCreatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->createdAt);
+    }
+
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt($createdAt)
+  {
+    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+    }
+
+    $this->createdAt = $createdAt;
+
+    return $this;
+  }
+
+  protected $updatedAt = null;
+
+  public function getUpdatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->updatedAt);
+    }
+
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt($updatedAt)
+  {
+    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+    }
+
+    $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
+  protected $id = null;
+
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function setId($id)
+  {
+    $this->id = $id;
+
+    return $this;
+  }
+
+  protected $new = true;
+
+  protected $deleted = false;
+
+  protected $columnValues = null;
+
+  protected function isColumnModified($name)
+  {
+    return $this->$name != $this->columnValues[$name];
+  }
+
+  protected function resetModified()
+  {
+    $this->columnValues['createdAt'] = $this->createdAt;
+    $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
+    $this->columnValues['id'] = $this->id;
+
+    return $this;
+  }
+
+  public function hydrate(ResultSet $results, $columnOffset = 1)
+  {
+    $this->createdAt = $results->getTimestamp($columnOffset++, null);
+    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
+    $this->id = $results->getInt($columnOffset++);
+
+    $this->new = false;
+    $this->resetModified();
+
+    return $columnOffset;
+  }
+
+  public function refresh(array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitMap::DATABASE_NAME);
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitMap::ID, $this->id);
+
+    self::addSelectColumns($criteria);
+
+    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
+    $resultSet->next();
+
+    return $this->hydrate($resultSet);
+  }
+
+  public function save($connection = null)
+  {
+    if ($this->deleted)
+    {
+      throw new PropelException('You cannot save an object that has been deleted.');
+    }
+
+    $affectedRows = 0;
+
+    if ($this->new)
+    {
+      $affectedRows += $this->insert($connection);
+    }
+    else
+    {
+      $affectedRows += $this->update($connection);
+    }
+
+    $this->new = false;
+    $this->resetModified();
+
+    foreach ($this->mapI18ns as $mapI18n)
+    {
+      $mapI18n->setId($this->id);
+
+      $affectedRows += $mapI18n->save($connection);
+    }
+
+    return $affectedRows;
+  }
+
+  protected function insert($connection = null)
+  {
+    $affectedRows = 0;
+
+    $criteria = new Criteria;
+
+    if (!$this->isColumnModified('createdAt'))
+    {
+      $this->createdAt = time();
+    }
+    $criteria->add(QubitMap::CREATED_AT, $this->createdAt);
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitMap::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitMap::SOURCE_CULTURE, $this->sourceCulture);
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitMap::ID, $this->id);
+    }
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMap::DATABASE_NAME);
+    }
+
+    $id = BasePeer::doInsert($criteria, $connection);
+    $this->id = $id;
+    $affectedRows += 1;
+
+    return $affectedRows;
+  }
+
+  protected function update($connection = null)
+  {
+    $affectedRows = 0;
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('createdAt'))
+    {
+      $criteria->add(QubitMap::CREATED_AT, $this->createdAt);
+    }
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitMap::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitMap::SOURCE_CULTURE, $this->sourceCulture);
+    }
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitMap::ID, $this->id);
+    }
+
+    if ($criteria->size() > 0)
+    {
+      $selectCriteria = new Criteria;
+      $selectCriteria->add(QubitMap::ID, $this->id);
+
+      if (!isset($connection))
       {
-        return $affectedRows;
+        $connection = QubitTransactionFilter::getConnection(QubitMap::DATABASE_NAME);
       }
+
+      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
     }
 
+    return $affectedRows;
+  }
 
-    if ($this->isNew() && !$this->isColumnModified(MapPeer::CREATED_AT))
+  public function delete($connection = null)
+  {
+    if ($this->deleted)
     {
-      $this->setCreatedAt(time());
+      throw new PropelException('This object has already been deleted.');
     }
 
-    if ($this->isModified() && !$this->isColumnModified(MapPeer::UPDATED_AT))
-    {
-      $this->setUpdatedAt(time());
-    }
+    $affectedRows = 0;
 
-		if ($this->isDeleted()) {
-			throw new PropelException("You cannot save an object that has been deleted.");
-		}
+    $criteria = new Criteria;
+    $criteria->add(QubitMap::ID, $this->id);
 
-		if ($con === null) {
-			$con = Propel::getConnection(MapPeer::DATABASE_NAME);
-		}
+    $affectedRows += self::doDelete($criteria, $connection);
 
-		try {
-			$con->begin();
-			$affectedRows = $this->doSave($con);
-			$con->commit();
-    foreach (sfMixer::getCallables('BaseMap:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
+    $this->deleted = true;
 
-			return $affectedRows;
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	}
-
-	
-	protected function doSave($con)
-	{
-		$affectedRows = 0; 		if (!$this->alreadyInSave) {
-			$this->alreadyInSave = true;
-
-
-						if ($this->isModified()) {
-				if ($this->isNew()) {
-					$pk = MapPeer::doInsert($this, $con);
-					$affectedRows += 1; 										 										 
-					$this->setId($pk);  
-					$this->setNew(false);
-				} else {
-					$affectedRows += MapPeer::doUpdate($this, $con);
-				}
-				$this->resetModified(); 			}
-
-			if ($this->collPlaceMapRelationships !== null) {
-				foreach($this->collPlaceMapRelationships as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			$this->alreadyInSave = false;
-		}
-		return $affectedRows;
-	} 
-	
-	protected $validationFailures = array();
-
-	
-	public function getValidationFailures()
-	{
-		return $this->validationFailures;
-	}
-
-	
-	public function validate($columns = null)
-	{
-		$res = $this->doValidate($columns);
-		if ($res === true) {
-			$this->validationFailures = array();
-			return true;
-		} else {
-			$this->validationFailures = $res;
-			return false;
-		}
-	}
-
-	
-	protected function doValidate($columns = null)
-	{
-		if (!$this->alreadyInValidation) {
-			$this->alreadyInValidation = true;
-			$retval = null;
-
-			$failureMap = array();
-
-
-			if (($retval = MapPeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
-			}
-
-
-				if ($this->collPlaceMapRelationships !== null) {
-					foreach($this->collPlaceMapRelationships as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-
-			$this->alreadyInValidation = false;
-		}
-
-		return (!empty($failureMap) ? $failureMap : true);
-	}
-
-	
-	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = MapPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->getByPosition($pos);
-	}
-
-	
-	public function getByPosition($pos)
-	{
-		switch($pos) {
-			case 0:
-				return $this->getId();
-				break;
-			case 1:
-				return $this->getTitle();
-				break;
-			case 2:
-				return $this->getDescription();
-				break;
-			case 3:
-				return $this->getCreatedAt();
-				break;
-			case 4:
-				return $this->getUpdatedAt();
-				break;
-			default:
-				return null;
-				break;
-		} 	}
-
-	
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = MapPeer::getFieldNames($keyType);
-		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getTitle(),
-			$keys[2] => $this->getDescription(),
-			$keys[3] => $this->getCreatedAt(),
-			$keys[4] => $this->getUpdatedAt(),
-		);
-		return $result;
-	}
-
-	
-	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = MapPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->setByPosition($pos, $value);
-	}
-
-	
-	public function setByPosition($pos, $value)
-	{
-		switch($pos) {
-			case 0:
-				$this->setId($value);
-				break;
-			case 1:
-				$this->setTitle($value);
-				break;
-			case 2:
-				$this->setDescription($value);
-				break;
-			case 3:
-				$this->setCreatedAt($value);
-				break;
-			case 4:
-				$this->setUpdatedAt($value);
-				break;
-		} 	}
-
-	
-	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = MapPeer::getFieldNames($keyType);
-
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setDescription($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setCreatedAt($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setUpdatedAt($arr[$keys[4]]);
-	}
-
-	
-	public function buildCriteria()
-	{
-		$criteria = new Criteria(MapPeer::DATABASE_NAME);
-
-		if ($this->isColumnModified(MapPeer::ID)) $criteria->add(MapPeer::ID, $this->id);
-		if ($this->isColumnModified(MapPeer::TITLE)) $criteria->add(MapPeer::TITLE, $this->title);
-		if ($this->isColumnModified(MapPeer::DESCRIPTION)) $criteria->add(MapPeer::DESCRIPTION, $this->description);
-		if ($this->isColumnModified(MapPeer::CREATED_AT)) $criteria->add(MapPeer::CREATED_AT, $this->created_at);
-		if ($this->isColumnModified(MapPeer::UPDATED_AT)) $criteria->add(MapPeer::UPDATED_AT, $this->updated_at);
-
-		return $criteria;
-	}
-
-	
-	public function buildPkeyCriteria()
-	{
-		$criteria = new Criteria(MapPeer::DATABASE_NAME);
-
-		$criteria->add(MapPeer::ID, $this->id);
-
-		return $criteria;
-	}
+    return $affectedRows;
+  }
 
 	
 	public function getPrimaryKey()
@@ -495,238 +358,132 @@ abstract class BaseMap extends BaseObject  implements Persistent {
 		$this->setId($key);
 	}
 
-	
-	public function copyInto($copyObj, $deepCopy = false)
-	{
-
-		$copyObj->setTitle($this->title);
-
-		$copyObj->setDescription($this->description);
-
-		$copyObj->setCreatedAt($this->created_at);
-
-		$copyObj->setUpdatedAt($this->updated_at);
-
-
-		if ($deepCopy) {
-									$copyObj->setNew(false);
-
-			foreach($this->getPlaceMapRelationships() as $relObj) {
-				$copyObj->addPlaceMapRelationship($relObj->copy($deepCopy));
-			}
-
-		} 
-
-		$copyObj->setNew(true);
-
-		$copyObj->setId(NULL); 
-	}
-
-	
-	public function copy($deepCopy = false)
-	{
-				$clazz = get_class($this);
-		$copyObj = new $clazz();
-		$this->copyInto($copyObj, $deepCopy);
-		return $copyObj;
-	}
-
-	
-	public function getPeer()
-	{
-		if (self::$peer === null) {
-			self::$peer = new MapPeer();
-		}
-		return self::$peer;
-	}
-
-	
-	public function initPlaceMapRelationships()
-	{
-		if ($this->collPlaceMapRelationships === null) {
-			$this->collPlaceMapRelationships = array();
-		}
-	}
-
-	
-	public function getPlaceMapRelationships($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-			   $this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-				PlaceMapRelationshipPeer::addSelectColumns($criteria);
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-				PlaceMapRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-					$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-		return $this->collPlaceMapRelationships;
-	}
-
-	
-	public function countPlaceMapRelationships($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-		return PlaceMapRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addPlaceMapRelationship(PlaceMapRelationship $l)
-	{
-		$this->collPlaceMapRelationships[] = $l;
-		$l->setMap($this);
-	}
-
-
-	
-	public function getPlaceMapRelationshipsJoinPlace($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-				$this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-
-		return $this->collPlaceMapRelationships;
-	}
-
-
-	
-	public function getPlaceMapRelationshipsJoinDigitalObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-				$this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-
-		return $this->collPlaceMapRelationships;
-	}
-
-
-	
-	public function getPlaceMapRelationshipsJoinTerm($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-				$this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinTerm($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PlaceMapRelationshipPeer::MAP_ID, $this->getId());
-
-			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinTerm($criteria, $con);
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-
-		return $this->collPlaceMapRelationships;
-	}
-
-
-  public function __call($method, $arguments)
+  public static function addMapI18nsCriteriaById(Criteria $criteria, $id)
   {
-    if (!$callable = sfMixer::getCallable('BaseMap:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BaseMap::%s', $method));
-    }
+    $criteria->add(QubitMapI18n::ID, $id);
 
-    array_unshift($arguments, $this);
-
-    return call_user_func_array($callable, $arguments);
+    return $criteria;
   }
 
+  public static function getMapI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addMapI18nsCriteriaById($criteria, $id);
 
-} 
+    return QubitMapI18n::get($criteria, $options);
+  }
+
+  public function addMapI18nsCriteria(Criteria $criteria)
+  {
+    return self::addMapI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $mapI18ns = null;
+
+  public function getMapI18ns(array $options = array())
+  {
+    if (!isset($this->mapI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->mapI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->mapI18ns = self::getMapI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->mapI18ns;
+  }
+
+  public static function addPlaceMapRelationsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPlaceMapRelation::MAP_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPlaceMapRelationsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPlaceMapRelationsCriteriaById($criteria, $id);
+
+    return QubitPlaceMapRelation::get($criteria, $options);
+  }
+
+  public function addPlaceMapRelationsCriteria(Criteria $criteria)
+  {
+    return self::addPlaceMapRelationsCriteriaById($criteria, $this->id);
+  }
+
+  protected $placeMapRelations = null;
+
+  public function getPlaceMapRelations(array $options = array())
+  {
+    if (!isset($this->placeMapRelations))
+    {
+      if (!isset($this->id))
+      {
+        $this->placeMapRelations = QubitQuery::create();
+      }
+      else
+      {
+        $this->placeMapRelations = self::getPlaceMapRelationsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->placeMapRelations;
+  }
+
+  public function getTitle(array $options = array())
+  {
+    return $this->getCurrentMapI18n($options)->getTitle();
+  }
+
+  public function setTitle($value, array $options = array())
+  {
+    $this->getCurrentMapI18n($options)->setTitle($value);
+
+    return $this;
+  }
+
+  public function getDescription(array $options = array())
+  {
+    return $this->getCurrentMapI18n($options)->getDescription();
+  }
+
+  public function setDescription($value, array $options = array())
+  {
+    $this->getCurrentMapI18n($options)->setDescription($value);
+
+    return $this;
+  }
+
+  public function getCurrentMapI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->mapI18ns[$options['culture']]))
+    {
+      if (null === $mapI18n = QubitMapI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $mapI18n = new QubitMapI18n;
+        $mapI18n->setCulture($options['culture']);
+      }
+      $this->mapI18ns[$options['culture']] = $mapI18n;
+    }
+
+    return $this->mapI18ns[$options['culture']];
+  }
+}
+
+BasePeer::getMapBuilder('lib.model.map.MapMapBuilder');

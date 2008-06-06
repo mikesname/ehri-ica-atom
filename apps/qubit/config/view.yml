@@ -1,26 +1,27 @@
 default:
   http_metas:
-    content-type: text/html; charset=UTF-8
+    content-type: text/html
 
   metas:
-    title:        ICA-AtoM -- open source archival description software
+    title:        Qubit - open information management toolkit
+    #description:  Qubit
+    #keywords:     Qubit
+    #language:     en
     robots:       index, follow
-    description:  ICA-AtoM -- open source archival description software
-    keywords:     ICA-AtoM open source archival description software
-    language:     en
 
-  stylesheets:    [form, graphic, layout, menu]
+  stylesheets:    [yui/button/assets/skins/qubit/button-skin, yui/menu/assets/skins/qubit/menu-skin, form, graphic, layout, menu]
 
-  javascripts:    []
+  javascripts:    [jquery, drupal, yui/yahoo-dom-event/yahoo-dom-event, yui/element/element-beta-min, yui/button/button-min, yui/container/container_core-min, yui/menu/menu-min]
 
   has_layout:     on
   layout:         layout
 
   components:
-    footer:       [sfTranslatePlugin, translate]
+    bottomBanner: [sfTranslatePlugin, translate]
     header:       []
     sidebar:      []
-    MainMenu:                     [menu, mainMenu]
-    SearchSidebar:                [search, Sidebar]
-    BrowseSidebar:                [browse, Sidebar]
-    ChangeLanguageList:           [i18n, changeLanguageList]
+    MainMenu:     [menu, mainMenu]
+    SearchSidebar: [search, Sidebar]
+    BrowseSidebar: [browse, Sidebar]
+    ChangeLanguageList: [i18n, changeLanguageList]
+    ChangeLanguageSelectbox: [i18n, changeLanguageSelectbox]

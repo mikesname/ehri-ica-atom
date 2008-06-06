@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('view').' '.__('archival institution')?></div>
+﻿<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_repository')))?></div>
 
 <table class="detail">
 <tbody>
@@ -14,193 +14,231 @@
 <?php endif; ?>
 
 <?php if ($repository->getIdentifier()): ?>
-  <tr><th><?php echo __('identifier')?>: </th>
+  <tr><th><?php echo __('identifier')?></th>
   <td><?php echo $repository->getIdentifier()?>
   </td></tr>
 <?php endif; ?>
 
-<tr><th><?php echo __('authorized form of name')?>:</th><td><?php echo $repository ?></td></th>
+<tr><th><?php echo __('authorized form of name')?></th><td><?php echo $repository ?></td></th>
 
-<?php if ($otherNames): ?>
-  <tr><th><?php echo ('other names')?>:</th><td>
+<?php if (count($otherNames) > 0): ?>
+  <tr><th><?php echo __('other names') ?></th><td>
   <?php foreach ($otherNames as $otherName): ?>
-    <?php echo $otherName['name'].' ('.$otherName['nameType'].')' ?>
-    <?php if ($otherName['note']): ?>
-      <span class="note">-- <?php echo $otherName['note']?> </span>
+    <?php echo $otherName->getName(array('sourceCulture' => true)).' ('.$otherName->getType()->getName(array('sourceCulture' => true)).')' ?>
+    <?php if ($otherName->getNote(array('sourceCulture' => true))): ?>
+      <span class="note">--<?php echo $otherName->getNote(array('sourceCulture' => true)) ?></span>
     <?php endif; ?>
     <br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getRepositoryTypeId()): ?>
-  <tr><th><?php echo __('type')?>: </th>
-  <td><?php echo $repository->getTermRelatedByRepositoryTypeId()?>
+<?php if ($repository->getTypeId()): ?>
+  <tr><th><?php echo __('type')?></th>
+  <td><?php echo $repository->getType()?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($contactInformation): ?>
   <tr><th>Contact Info:</th><td>
   <?php foreach ($contactInformation as $contact): ?>
-      <table class="inline" style="margin-bottom: 15px;"><tr><td style="border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;"><?php echo $contact->getContactType() ?>
+      <table class="inline" style="margin-bottom: 5px;"><tr>
+      <td class="headerCell" style="margin-top: 5px; border-top: 2px solid #999999;">
+      <?php echo $contact->getContactType() ?>
       <?php if ($contact->getPrimaryContact()): ?> (primary contact)<?php endif; ?>
       </td></tr></table>
-      <div style="padding-left: 10px; margin-bottom: 10px;">
-      <?php echo $contact->getContactInformationString()?>
-      <?php echo $contact->getNote() ? '<p><span class="note">--'.$contact->getNote().'</span>' : '' ?></div>
+          <div style="padding-left: 10px; margin-bottom: 0px;">
+            <?php if ($contact->getStreetAddress()): ?>
+              <?php echo nl2br($contact->getStreetAddress()) ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getCity()): ?>
+              <?php echo $contact->getCity() ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getRegion()): ?>
+              <?php echo $contact->getRegion() ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getCountryCode()): ?>
+              <?php echo format_country($contact->getCountryCode()) ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getPostalCode()): ?>
+              <?php echo $contact->getPostalCode() ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getTelephone()): ?>
+              <?php echo 'phone: '.$contact->getTelephone() ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getFax()): ?>
+              <?php echo 'fax: '.$contact->getFax() ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getEmail()): ?>
+              <?php echo $contact->getEmail() ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getWebsite()): ?>
+              <?php echo link_to($contact->getWebsite(), $contact->getWebsite()) ?><br />
+            <?php endif; ?>
+            <?php if ($contact->getNote()): ?>
+              <span class="note"><?php echo $contact->getNote() ?></span>
+            <?php endif; ?>
+          </div>
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getOfficersInCharge()): ?>
-  <tr><th><?php echo __('officers in charge')?>: </th>
+  <tr><th><?php echo __('officers in charge')?></th>
   <td><?php echo $repository->getOfficersInCharge()?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getGeoculturalContext()): ?>
-  <tr><th><?php echo __('geographical and cultural context')?>: </th>
+  <tr><th><?php echo __('geographical and cultural context')?></th>
   <td><?php echo nl2br($repository->getGeoculturalContext()) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($history): ?>
-  <tr><th><?php echo __('history')?>:</th><td>
-  <?php echo nl2br($history)?>
+<?php if ($repository->getHistory()): ?>
+  <tr><th><?php echo __('history')?></th><td>
+  <?php echo nl2br($repository->getHistory())?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($structure): ?>
-  <tr><th><?php echo __('structure')?>:</th><td>
-  <?php echo nl2br($structure)?>
+<?php if ($repository->getInternalStructures()): ?>
+  <tr><th><?php echo __('structure')?></th><td>
+  <?php echo nl2br($repository->getInternalStructures())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getCollectingPolicies()): ?>
-  <tr><th><?php echo __('collecting policies')?>:</th><td>
+  <tr><th><?php echo __('collecting policies')?></th><td>
   <?php echo nl2br($repository->getCollectingPolicies())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getBuildings()): ?>
-  <tr><th><?php echo __('buildings')?>:</th><td>
+  <tr><th><?php echo __('buildings')?></th><td>
   <?php echo nl2br($repository->getBuildings())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getHoldings()): ?>
-  <tr><th><?php echo __('holdings')?>:</th><td>
+  <tr><th><?php echo __('holdings')?></th><td>
   <?php echo nl2br($repository->getHoldings())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getFindingAids()): ?>
-  <tr><th><?php echo __('finding aids and publications')?>:</th><td>
+  <tr><th><?php echo __('finding aids and publications')?></th><td>
   <?php echo nl2br($repository->getFindingAids())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getOpeningTimes()): ?>
-  <tr><th><?php echo __('opening times')?>:</th><td>
+  <tr><th><?php echo __('opening times')?></th><td>
   <?php echo nl2br($repository->getOpeningTimes())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getAccessConditions()): ?>
-  <tr><th><?php echo __('access conditions and requirements')?>:</th><td>
+  <tr><th><?php echo __('access conditions and requirements')?></th><td>
   <?php echo nl2br($repository->getAccessConditions())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getDisabledAccess()): ?>
-  <tr><th><?php echo __('disabled access')?>:</th><td>
+  <tr><th><?php echo __('disabled access')?></th><td>
   <?php echo nl2br($repository->getDisabledAccess())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getTransport()): ?>
-  <tr><th><?php echo __('transport')?>:</th><td>
+  <tr><th><?php echo __('transport')?></th><td>
   <?php echo nl2br($repository->getTransport())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getResearchServices()): ?>
-  <tr><th><?php echo __('research services')?>:</th><td>
+  <tr><th><?php echo __('research services')?></th><td>
   <?php echo nl2br($repository->getResearchServices())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getReproductionServices()): ?>
-  <tr><th><?php echo __('reproduction services')?>:</th><td>
+  <tr><th><?php echo __('reproduction services')?></th><td>
   <?php echo nl2br($repository->getReproductionServices())?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getPublicFacilities()): ?>
-  <tr><th><?php echo __('public facilities')?>:</th><td>
+  <tr><th><?php echo __('public facilities')?></th><td>
   <?php echo nl2br($repository->getPublicFacilities())?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getDescriptionIdentifier()): ?>
-  <tr><th><?php echo __('description identifier')?>:</th><td>
-  <?php echo nl2br($repository->getDescriptionIdentifier())?>
+<?php if ($repository->getDescIdentifier()): ?>
+  <tr><th><?php echo __('description identifier')?></th><td>
+  <?php echo nl2br($repository->getDescIdentifier())?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getInstitutionIdentifier()): ?>
-  <tr><th><?php echo __('institution identifier')?>:</th><td>
-  <?php echo nl2br($repository->getInstitutionIdentifier()) ?>
+<?php if ($repository->getDescInstitutionIdentifier()): ?>
+  <tr><th><?php echo __('institution identifier')?></th><td>
+  <?php echo nl2br($repository->getDescInstitutionIdentifier()) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getRules()): ?>
-  <tr><th><?php echo __('rules or conventions')?>:</th><td>
-  <?php echo nl2br($repository->getRules()) ?>
+<?php if ($repository->getDescRules()): ?>
+  <tr><th><?php echo __('rules or conventions')?></th><td>
+  <?php echo nl2br($repository->getDescRules()) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getStatusId()): ?>
-  <tr><th><?php echo __('status')?>:</th><td>
-  <?php echo $repository->getTermRelatedByStatusId() ?>
+<?php if ($repository->getDescStatusId()): ?>
+  <tr><th><?php echo __('description status')?></th><td>
+  <?php echo $repository->getDescStatus() ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getLevelOfDetailId()): ?>
-  <tr><th><?php echo __('status')?>:</th><td>
-  <?php echo $repository->getTermRelatedByLevelOfDetailId() ?>
+<?php if ($repository->getDescDetailId()): ?>
+  <tr><th><?php echo __('description detail')?></th><td>
+  <?php echo $repository->getDescDetail() ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($languages): ?>
-  <tr><th><?php echo __('language(s) of institution description') ?>:</th><td>
-  <?php foreach ($languages as $language): ?>
-    <?php echo $language['termName']?>
-    <br />
+<?php if ($repository->getDescRevisionHistory()): ?>
+  <tr><th><?php echo __('dates of creation, revision and deletion')?></th><td>
+  <?php echo nl2br($repository->getDescRevisionHistory()) ?>
+  </td></tr>
+<?php endif; ?>
+
+<?php if (count($languageCodes) > 0): ?>
+  <tr><th><?php echo __('language of description')?>:
+  </th><td>
+  <?php foreach ($languageCodes as $languageCode): ?>
+    <?php echo format_language($languageCode->getValue()) ?><br />
   <?php endforeach; ?>
-  <td></tr>
-<?php endif; ?>
-
-<?php if ($scripts): ?>
-  <tr><th><?php echo __('script(s) of institution description') ?>:</th><td>
-  <?php foreach ($scripts as $script): ?>
-    <?php echo $script['termName']?>
-    <br />
-  <?php endforeach; ?>
-  <td></tr>
-<?php endif; ?>
-
-<?php if ($repository->getSources()): ?>
-  <tr><th><?php echo __('sources')?>:</th><td>
-  <?php echo nl2br($repository->getSources()) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($notes): ?>
-  <tr><th><?php echo __('notes')?>:</th><td>
+<?php if (count($scriptCodes) > 0): ?>
+  <tr><th><?php echo __('script of description')?>:
+  </th><td>
+  <?php foreach ($scriptCodes as $scriptCode): ?>
+    <?php echo format_script($scriptCode->getValue()) ?><br />
+  <?php endforeach; ?>
+  </td></tr>
+<?php endif; ?>
+
+<?php if ($repository->getDescSources()): ?>
+  <tr><th><?php echo __('sources')?></th><td>
+  <?php echo nl2br($repository->getDescSources()) ?>
+  </td></tr>
+<?php endif; ?>
+
+<?php if (count($notes) > 0): ?>
+  <tr><th><?php echo __('notes')?>:
+  </th><td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note['noteType'].': '.$note['note'] ?>
-    <br /><span class="note">-- <?php echo $note['noteAuthor'].', '.$note['updated'] ?></span><p>
+    <?php echo $note->getType()->getName(array('sourceCulture' => true)).': '.$note->getContent(array('sourceCulture' => true)) ?>
+    <br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
@@ -210,6 +248,6 @@
 
 <div class="menu-action">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('edit').' '.__('archival institution'), 'repository/edit?id='.$repository->getId()) ?>
+<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), 'repository/edit?id='.$repository->getId()) ?>
 <?php endif; ?>
 </div>

@@ -1,0 +1,13 @@
+Index: lib/vendor/symfony/lib/routing/sfPatternRouting.class.php
+===================================================================
+--- lib/vendor/symfony/lib/routing/sfPatternRouting.class.php	(revision 7755)
++++ lib/vendor/symfony/lib/routing/sfPatternRouting.class.php	(working copy)
+@@ -600,7 +600,7 @@
+       $cacheKey = 'parse_'.$url;
+       if (isset($this->cacheData[$cacheKey]))
+       {
+-        return $this->cacheData[$cacheKey];
++        //return $this->cacheData[$cacheKey];
+       }
+     }
+ 

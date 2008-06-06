@@ -1,0 +1,355 @@
+<!--
+	MODS v3.2 XML SCHEMA
+
+	This file is part of the Qubit Toolkit.
+	Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+-->
+
+<mods xmlns="http://www.loc.gov/mods/v3"
+	  xmlns:xlink="http://www.w3.org/1999/xlink"
+	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	  xsi:schemaLocation="http://www.loc.gov/mods/v3 http://www.loc.gov/standards/mods/mods.xsd"
+	  ID="ID001" version="3.3">
+    <titleInfo type="abbreviated" displayLabel="displayLabel1" ID="ID003" authority="authority1" xlink:type="simple"
+         xlink:href="http://www.oxygenxml.com/" xlink:role="role1" xlink:arcrole="arcrole1" xlink:title="title1"
+         xlink:show="new" xlink:actuate="onLoad" lang="lang1" xml:lang="en-US" script="script1" transliteration="transliteration1">
+        <title>title0</title>
+        <subTitle>subTitle0</subTitle>
+        <partNumber>partNumber0</partNumber>
+        <partName>partName0</partName>
+        <nonSort>nonSort0</nonSort>
+    </titleInfo>
+    <name type="personal" ID="ID005" authority="authority3" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+         xlink:role="role3" xlink:arcrole="arcrole3" xlink:title="title3" xlink:show="new" xlink:actuate="onLoad"
+         lang="lang3" xml:lang="" script="script3" transliteration="transliteration3">
+        <namePart type="date">namePart0</namePart>
+        <displayForm>displayForm0</displayForm>
+        <affiliation>affiliation0</affiliation>
+        <role>
+            <roleTerm type="code" authority="authority5">roleTerm0</roleTerm>
+        </role>
+        <description>description0</description>
+    </name>
+    <typeOfResource collection="yes" manuscript="yes">text</typeOfResource>
+    <genre type="type1" lang="lang5" xml:lang="" script="script5" transliteration="transliteration5" authority="authority7">genre0</genre>
+    <originInfo lang="lang7" xml:lang="" script="script7" transliteration="transliteration7">
+        <place>
+            <placeTerm authority="marcgac" type="code">placeTerm0</placeTerm>
+        </place>
+        <publisher>publisher0</publisher>
+        <dateIssued keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateIssued0</dateIssued>
+        <dateCreated keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateCreated0</dateCreated>
+        <dateCaptured keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateCaptured0</dateCaptured>
+        <dateValid keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateValid0</dateValid>
+        <dateModified keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateModified0</dateModified>
+        <copyrightDate keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">copyrightDate0</copyrightDate>
+        <dateOther type="type3" keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateOther0</dateOther>
+        <edition>edition0</edition>
+        <issuance>continuing</issuance>
+        <frequency authority="authority9">frequency0</frequency>
+    </originInfo>
+    <language objectPart="objectPart1">
+        <languageTerm authority="rfc3066" type="code">languageTerm0</languageTerm>
+    </language>
+    <physicalDescription lang="lang9" xml:lang="" script="script9" transliteration="transliteration9">
+        <form type="type5" authority="authority11">form0</form>
+        <reformattingQuality>access</reformattingQuality>
+        <internetMediaType>internetMediaType0</internetMediaType>
+        <extent>extent0</extent>
+        <digitalOrigin>born digital</digitalOrigin>
+        <note ID="ID007" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role5" xlink:arcrole="arcrole5"
+             xlink:title="title5" xlink:show="new" xlink:actuate="onLoad" lang="lang11" xml:lang="" script="script11"
+             transliteration="transliteration11" type="type7" displayLabel="displayLabel3">note0</note>
+    </physicalDescription>
+    <abstract xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role7" xlink:arcrole="arcrole7"
+         xlink:title="title7" xlink:show="new" xlink:actuate="onLoad" lang="lang13" xml:lang="en-US"
+         script="script13" transliteration="transliteration13" type="type9" displayLabel="displayLabel5">abstract0</abstract>
+    <tableOfContents xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role9" xlink:arcrole="arcrole9"
+         xlink:title="title9" xlink:show="new" xlink:actuate="onLoad" lang="lang15" xml:lang="en-US"
+         script="script15" transliteration="transliteration15" type="type11" displayLabel="displayLabel7">tableOfContents0</tableOfContents>
+    <targetAudience lang="lang17" xml:lang="en-US" script="script17" transliteration="transliteration17" authority="authority13">targetAudience0</targetAudience>
+    <note ID="ID009" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role11" xlink:arcrole="arcrole11"
+         xlink:title="title11" xlink:show="new" xlink:actuate="onLoad" lang="lang19" xml:lang="en-US"
+         script="script19" transliteration="transliteration19" type="type13" displayLabel="displayLabel9">note1</note>
+    <subject ID="ID011" authority="authority15" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role13"
+         xlink:arcrole="arcrole13" xlink:title="title13" xlink:show="new" xlink:actuate="onLoad" lang="lang21"
+         xml:lang="en-US" script="script21" transliteration="transliteration21">
+        <topic>topic0</topic>
+        <geographic>geographic0</geographic>
+        <temporal keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">temporal0</temporal>
+        <titleInfo type="abbreviated" displayLabel="displayLabel11" ID="ID013" authority="authority17" xlink:type="simple"
+             xlink:href="http://www.oxygenxml.com/" xlink:role="role15" xlink:arcrole="arcrole15" xlink:title="title15"
+             xlink:show="new" xlink:actuate="onLoad" lang="lang23" xml:lang="" script="script23" transliteration="transliteration23">
+            <title>title1</title>
+            <subTitle>subTitle1</subTitle>
+            <partNumber>partNumber1</partNumber>
+            <partName>partName1</partName>
+            <nonSort>nonSort1</nonSort>
+        </titleInfo>
+        <name type="personal" ID="ID015" authority="authority19" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+             xlink:role="role17" xlink:arcrole="arcrole17" xlink:title="title17" xlink:show="new" xlink:actuate="onLoad"
+             lang="lang25" xml:lang="" script="script25" transliteration="transliteration25">
+            <namePart type="date">namePart1</namePart>
+            <displayForm>displayForm1</displayForm>
+            <affiliation>affiliation1</affiliation>
+            <role>
+                <roleTerm type="code" authority="authority21">roleTerm1</roleTerm>
+            </role>
+            <description>description1</description>
+        </name>
+        <geographicCode authority="marcgac">geographicCode0</geographicCode>
+        <hierarchicalGeographic>
+            <extraterrestrialArea>extraterrestrialArea0</extraterrestrialArea>
+            <continent>continent0</continent>
+            <country>country0</country>
+            <province>province0</province>
+            <region>region0</region>
+            <state>state0</state>
+            <territory>territory0</territory>
+            <county>county0</county>
+            <city>city0</city>
+            <citySection>citySection0</citySection>
+            <island>island0</island>
+            <area>area0</area>
+        </hierarchicalGeographic>
+        <cartographics>
+            <scale>scale0</scale>
+            <projection>projection0</projection>
+            <coordinates>coordinates0</coordinates>
+        </cartographics>
+        <occupation>occupation0</occupation>
+        <genre>genre1</genre>
+    </subject>
+    <classification lang="lang27" xml:lang="en-US" script="script27" transliteration="transliteration27" displayLabel="displayLabel13"
+         edition="edition1" authority="authority23">classification0</classification>
+    <relatedItem type="preceding" displayLabel="displayLabel15" ID="ID017" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+         xlink:role="role19" xlink:arcrole="arcrole19" xlink:title="title19" xlink:show="new" xlink:actuate="onLoad">
+        <titleInfo type="abbreviated" displayLabel="displayLabel17" ID="ID019" authority="authority25" xlink:type="simple"
+             xlink:href="http://www.oxygenxml.com/" xlink:role="role21" xlink:arcrole="arcrole21" xlink:title="title21"
+             xlink:show="new" xlink:actuate="onLoad" lang="lang29" xml:lang="" script="script29" transliteration="transliteration29">
+            <title>title2</title>
+            <subTitle>subTitle2</subTitle>
+            <partNumber>partNumber2</partNumber>
+            <partName>partName2</partName>
+            <nonSort>nonSort2</nonSort>
+        </titleInfo>
+        <name type="personal" ID="ID021" authority="authority27" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+             xlink:role="role23" xlink:arcrole="arcrole23" xlink:title="title23" xlink:show="new" xlink:actuate="onLoad"
+             lang="lang31" xml:lang="en-US" script="script31" transliteration="transliteration31">
+            <namePart type="date">namePart2</namePart>
+            <displayForm>displayForm2</displayForm>
+            <affiliation>affiliation2</affiliation>
+            <role>
+                <roleTerm type="code" authority="authority29">roleTerm2</roleTerm>
+            </role>
+            <description>description2</description>
+        </name>
+        <typeOfResource collection="yes" manuscript="yes">text</typeOfResource>
+        <genre type="type15" lang="lang33" xml:lang="en-US" script="script33" transliteration="transliteration33" authority="authority31">genre2</genre>
+        <originInfo lang="lang35" xml:lang="en-US" script="script35" transliteration="transliteration35">
+            <place>
+                <placeTerm authority="marcgac" type="code">placeTerm1</placeTerm>
+            </place>
+            <publisher>publisher1</publisher>
+            <dateIssued keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateIssued1</dateIssued>
+            <dateCreated keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateCreated1</dateCreated>
+            <dateCaptured keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateCaptured1</dateCaptured>
+            <dateValid keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateValid1</dateValid>
+            <dateModified keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateModified1</dateModified>
+            <copyrightDate keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">copyrightDate1</copyrightDate>
+            <dateOther type="type17" keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">dateOther1</dateOther>
+            <edition>edition1</edition>
+            <issuance>continuing</issuance>
+            <frequency authority="authority33">frequency1</frequency>
+        </originInfo>
+        <language objectPart="objectPart3">
+            <languageTerm authority="rfc3066" type="code">languageTerm1</languageTerm>
+        </language>
+        <physicalDescription lang="lang37" xml:lang="" script="script37" transliteration="transliteration37">
+            <form type="type19" authority="authority35">form1</form>
+            <reformattingQuality>access</reformattingQuality>
+            <internetMediaType>internetMediaType1</internetMediaType>
+            <extent>extent1</extent>
+            <digitalOrigin>born digital</digitalOrigin>
+            <note ID="ID023" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role25" xlink:arcrole="arcrole25"
+                 xlink:title="title25" xlink:show="new" xlink:actuate="onLoad" lang="lang39" xml:lang="en-US"
+                 script="script39" transliteration="transliteration39" type="type21" displayLabel="displayLabel19">note2</note>
+        </physicalDescription>
+        <abstract xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role27" xlink:arcrole="arcrole27"
+             xlink:title="title27" xlink:show="new" xlink:actuate="onLoad" lang="lang41" xml:lang=""
+             script="script41" transliteration="transliteration41" type="type23" displayLabel="displayLabel21">abstract1</abstract>
+        <tableOfContents xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role29" xlink:arcrole="arcrole29"
+             xlink:title="title29" xlink:show="new" xlink:actuate="onLoad" lang="lang43" xml:lang="en-US"
+             script="script43" transliteration="transliteration43" type="type25" displayLabel="displayLabel23">tableOfContents1</tableOfContents>
+        <targetAudience lang="lang45" xml:lang="" script="script45" transliteration="transliteration45" authority="authority37">targetAudience1</targetAudience>
+        <note ID="ID025" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role31" xlink:arcrole="arcrole31"
+             xlink:title="title31" xlink:show="new" xlink:actuate="onLoad" lang="lang47" xml:lang=""
+             script="script47" transliteration="transliteration47" type="type27" displayLabel="displayLabel25">note3</note>
+        <subject ID="ID027" authority="authority39" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role33"
+             xlink:arcrole="arcrole33" xlink:title="title33" xlink:show="new" xlink:actuate="onLoad"
+             lang="lang49" xml:lang="" script="script49" transliteration="transliteration49">
+            <topic>topic1</topic>
+            <geographic>geographic1</geographic>
+            <temporal keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">temporal1</temporal>
+            <titleInfo type="abbreviated" displayLabel="displayLabel27" ID="ID029" authority="authority41" xlink:type="simple"
+                 xlink:href="http://www.oxygenxml.com/" xlink:role="role35" xlink:arcrole="arcrole35"
+                 xlink:title="title35" xlink:show="new" xlink:actuate="onLoad" lang="lang51" xml:lang="en-US"
+                 script="script51" transliteration="transliteration51">
+                <title>title3</title>
+                <subTitle>subTitle3</subTitle>
+                <partNumber>partNumber3</partNumber>
+                <partName>partName3</partName>
+                <nonSort>nonSort3</nonSort>
+            </titleInfo>
+            <name type="personal" ID="ID031" authority="authority43" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+                 xlink:role="role37" xlink:arcrole="arcrole37" xlink:title="title37" xlink:show="new"
+                 xlink:actuate="onLoad" lang="lang53" xml:lang="en-US" script="script53" transliteration="transliteration53">
+                <namePart type="date">namePart3</namePart>
+                <displayForm>displayForm3</displayForm>
+                <affiliation>affiliation3</affiliation>
+                <role>
+                    <roleTerm type="code" authority="authority45">roleTerm3</roleTerm>
+                </role>
+                <description>description3</description>
+            </name>
+            <geographicCode authority="marcgac">geographicCode1</geographicCode>
+            <hierarchicalGeographic>
+                <extraterrestrialArea>extraterrestrialArea1</extraterrestrialArea>
+                <continent>continent1</continent>
+                <country>country1</country>
+                <province>province1</province>
+                <region>region1</region>
+                <state>state1</state>
+                <territory>territory1</territory>
+                <county>county1</county>
+                <city>city1</city>
+                <citySection>citySection1</citySection>
+                <island>island1</island>
+                <area>area1</area>
+            </hierarchicalGeographic>
+            <cartographics>
+                <scale>scale1</scale>
+                <projection>projection1</projection>
+                <coordinates>coordinates1</coordinates>
+            </cartographics>
+            <occupation>occupation1</occupation>
+            <genre>genre3</genre>
+        </subject>
+        <classification lang="lang55" xml:lang="en-US" script="script55" transliteration="transliteration55" displayLabel="displayLabel29"
+             edition="edition3" authority="authority47">classification1</classification>
+        <relatedItem type="preceding" displayLabel="displayLabel31" ID="ID033" xlink:type="simple" xlink:href="http://www.oxygenxml.com/"
+             xlink:role="role39" xlink:arcrole="arcrole39" xlink:title="title39" xlink:show="new" xlink:actuate="onLoad"/>
+        <identifier type="type29" displayLabel="displayLabel33" invalid="yes" lang="lang57" xml:lang="" script="script57"
+             transliteration="transliteration57">identifier0</identifier>
+        <location>
+            <physicalLocation displayLabel="displayLabel35" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role41"
+                 xlink:arcrole="arcrole41" xlink:title="title41" xlink:show="new" xlink:actuate="onLoad"
+                 type="type31" lang="lang59" xml:lang="" script="script59" transliteration="transliteration59"
+                 authority="authority49">physicalLocation0</physicalLocation>
+            <shelfLocator>shelfLocator0</shelfLocator>
+            <url dateLastAccessed="dateLastAccessed1" displayLabel="displayLabel37" note="note1" access="preview" usage="primary display">http://www.oxygenxml.com/</url>
+            <holdingSimple>
+                <copyInformation>
+                    <form authority="authority51">form2</form>
+                    <subLocation>subLocation0</subLocation>
+                    <shelfLocator>shelfLocator1</shelfLocator>
+                    <electronicLocator>electronicLocator0</electronicLocator>
+                    <note type="type33" displayLabel="displayLabel39">note4</note>
+                    <enumerationAndChronology unitType="1">enumerationAndChronology0</enumerationAndChronology>
+                </copyInformation>
+            </holdingSimple>
+            <holdingExternal>
+            </holdingExternal>
+        </location>
+        <accessCondition xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role43" xlink:arcrole="arcrole43"
+             xlink:title="title43" xlink:show="new" xlink:actuate="onLoad" lang="lang61" xml:lang=""
+             script="script61" transliteration="transliteration61" displayLabel="displayLabel41" type="type35">
+        </accessCondition>
+        <part ID="ID035" type="type37" order="0">
+            <detail type="type39" level="2">
+                <number>number0</number>
+                <caption>caption0</caption>
+                <title>title4</title>
+            </detail>
+            <extent unit="unit1">
+                <start>start0</start>
+                <end>end0</end>
+                <total>2</total>
+                <list>list0</list>
+            </extent>
+            <date encoding="w3cdtf" qualifier="approximate" point="start">date0</date>
+            <text xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role45" xlink:arcrole="arcrole45"
+                 xlink:title="title45" xlink:show="new" xlink:actuate="onLoad" lang="lang63" xml:lang="en-US"
+                 script="script63" transliteration="transliteration63" type="type41" displayLabel="displayLabel43">text0</text>
+        </part>
+        <extension>
+        </extension>
+        <recordInfo lang="lang65" xml:lang="" script="script65" transliteration="transliteration65">
+            <recordContentSource lang="lang67" xml:lang="en-US" script="script67" transliteration="transliteration67" authority="authority53">recordContentSource0</recordContentSource>
+            <recordCreationDate keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">recordCreationDate0</recordCreationDate>
+            <recordChangeDate keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">recordChangeDate0</recordChangeDate>
+            <recordIdentifier source="source1">recordIdentifier0</recordIdentifier>
+            <languageOfCataloging objectPart="objectPart5">
+                <languageTerm authority="rfc3066" type="code">languageTerm2</languageTerm>
+            </languageOfCataloging>
+            <recordOrigin>recordOrigin0</recordOrigin>
+            <descriptionStandard authority="authority55">descriptionStandard0</descriptionStandard>
+        </recordInfo>
+    </relatedItem>
+    <identifier type="type43" displayLabel="displayLabel45" invalid="yes" lang="lang69" xml:lang="en-US" script="script69"
+         transliteration="transliteration69">identifier1</identifier>
+    <location>
+        <physicalLocation displayLabel="displayLabel47" xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role47"
+             xlink:arcrole="arcrole47" xlink:title="title47" xlink:show="new" xlink:actuate="onLoad"
+             type="type45" lang="lang71" xml:lang="" script="script71" transliteration="transliteration71"
+             authority="authority57">physicalLocation1</physicalLocation>
+        <shelfLocator>shelfLocator2</shelfLocator>
+        <url dateLastAccessed="dateLastAccessed3" displayLabel="displayLabel49" note="note3" access="preview" usage="primary display">http://www.oxygenxml.com/</url>
+        <holdingSimple>
+            <copyInformation>
+                <form authority="authority59">form3</form>
+                <subLocation>subLocation1</subLocation>
+                <shelfLocator>shelfLocator3</shelfLocator>
+                <electronicLocator>electronicLocator1</electronicLocator>
+                <note type="type47" displayLabel="displayLabel51">note5</note>
+                <enumerationAndChronology unitType="1">enumerationAndChronology1</enumerationAndChronology>
+            </copyInformation>
+        </holdingSimple>
+        <holdingExternal>
+        </holdingExternal>
+    </location>
+    <accessCondition xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role49" xlink:arcrole="arcrole49"
+         xlink:title="title49" xlink:show="new" xlink:actuate="onLoad" lang="lang73" xml:lang="" script="script73"
+         transliteration="transliteration73" displayLabel="displayLabel53" type="type49">
+    </accessCondition>
+    <part ID="ID037" type="type51" order="0">
+        <detail type="type53" level="2">
+            <number>number1</number>
+            <caption>caption1</caption>
+            <title>title5</title>
+        </detail>
+        <extent unit="unit3">
+            <start>start1</start>
+            <end>end1</end>
+            <total>2</total>
+            <list>list1</list>
+        </extent>
+        <date encoding="w3cdtf" qualifier="approximate" point="start">date1</date>
+        <text xlink:type="simple" xlink:href="http://www.oxygenxml.com/" xlink:role="role51" xlink:arcrole="arcrole51"
+             xlink:title="title51" xlink:show="new" xlink:actuate="onLoad" lang="lang75" xml:lang="en-US"
+             script="script75" transliteration="transliteration75" type="type55" displayLabel="displayLabel55">text1</text>
+    </part>
+    <extension>
+    </extension>
+    <recordInfo lang="lang77" xml:lang="" script="script77" transliteration="transliteration77">
+        <recordContentSource lang="lang79" xml:lang="en-US" script="script79" transliteration="transliteration79" authority="authority61">recordContentSource1</recordContentSource>
+        <recordCreationDate keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">recordCreationDate1</recordCreationDate>
+        <recordChangeDate keyDate="yes" encoding="w3cdtf" qualifier="approximate" point="start">recordChangeDate1</recordChangeDate>
+        <recordIdentifier source="source3">recordIdentifier1</recordIdentifier>
+        <languageOfCataloging objectPart="objectPart7">
+            <languageTerm authority="rfc3066" type="code">languageTerm3</languageTerm>
+        </languageOfCataloging>
+        <recordOrigin>recordOrigin1</recordOrigin>
+        <descriptionStandard authority="authority63">descriptionStandard1</descriptionStandard>
+    </recordInfo>
+</mods>

@@ -1,156 +1,155 @@
-﻿<div class="pageTitle"><?php echo __('view').' '.__('authority file') ?></div>
+﻿﻿<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
 
 <table class="detail">
 <tbody>
 
-
-<?php if ($actor->getAuthorizedFormOfName()): ?>
-  <?php if ($editCredentials): ?>
+<?php if ($actor->getAuthorizedFormOfName(array('sourceCulture' => true))): ?>
+    <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'actor', 'action' => 'update'))): ?>
     <tr><td colspan="2" class="headerCell">
-    <?php echo link_to($actor->getAuthorizedFormOfName(), 'actor/edit?id='.$actor->getId()) ?>
+    <?php echo link_to($actor, 'actor/edit?id='.$actor->getId()) ?>
     </td></tr>
   <?php else: ?>
     <tr><td colspan="2" class="headerCell">
-    <?php echo $actor->getAuthorizedFormOfName() ?>
+    <?php echo $actor->getAuthorizedFormOfName(array('sourceCulture' => true)) ?>
     </td></tr>
   <?php endif; ?>
 <?php endif; ?>
 
-<?php if ($actor->getTypeOfEntityId()): ?>
-  <tr><th><?php echo __('type of entity') ?>: </th><td>
-  <?php echo $actor->getTypeOfEntity() ?>
+<?php if ($actor->getEntityTypeId()): ?>
+  <tr><th><?php echo __('type of entity') ?></th><td>
+  <?php echo $actor->getEntityType()->getName(array('sourceCulture' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($otherNames): ?>
-  <tr><th><?php echo __('other').' '.__('names') ?>:</th><td>
+<?php if (count($otherNames) > 0): ?>
+  <tr><th><?php echo __('other names') ?></th><td>
   <?php foreach ($otherNames as $otherName): ?>
-    <?php echo $otherName['name'].' ('.$otherName['nameType'].')' ?>
-    <?php if($otherName['note']): ?>
-      <span class="note">--<?php echo $otherName['note'] ?></span>
+    <?php echo $otherName->getName(array('sourceCulture' => true)).' ('.$otherName->getType()->getName(array('sourceCulture' => true)).')' ?>
+    <?php if ($otherName->getNote(array('sourceCulture' => true))): ?>
+      <span class="note">--<?php echo $otherName->getNote(array('sourceCulture' => true)) ?></span>
     <?php endif; ?>
     <br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getIdentifiers()): ?>
-  <tr><th><?php echo __('identifiers for corporate bodies') ?>: </th><td>
-  <?php echo $actor->getIdentifiers() ?>
+<?php if ($actor->getCorporateBodyIdentifiers(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('identifiers') ?></th><td>
+  <?php echo $actor->getCorporateBodyIdentifiers(array('sourceCulture' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($datesOfExistence): ?>
   <tr><th>
-  <?php echo __('dates of existence')?>: </th>
+  <?php echo __('dates of existence')?></th>
   <td><?php echo $datesOfExistence ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getHistory()): ?>
-  <tr><th><?php echo __('history')?>: </th>
-  <td><?php echo nl2br($actor->getHistory())?>
+<?php if ($actor->getHistory(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('history')?></th>
+  <td><?php echo nl2br($actor->getHistory(array('sourceCulture' => true)))?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($places): ?>
-  <tr><th><?php echo __('places')?>: </th>
-  <td><?php echo $places ?>
+<?php if ($actor->getPlaces(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('places')?></th>
+  <td><?php echo nl2br($actor->getPlaces(array('sourceCulture' => true))) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getLegalStatus()): ?>
-  <tr><th><?php echo __('legal status')?>: </th>
-  <td><?php echo nl2br($actor->getLegalStatus()) ?></td></tr>
+<?php if ($actor->getLegalStatus(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('legal status')?></th>
+  <td><?php echo nl2br($actor->getLegalStatus(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getFunctions()): ?>
-  <tr><th><?php echo __('functions occupations activities')?>: </th>
-  <td><?php echo nl2br($actor->getFunctions()) ?></td></tr>
+<?php if ($actor->getFunctions(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('functions occupations activities')?></th>
+  <td><?php echo nl2br($actor->getFunctions(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getMandates()): ?>
-  <tr><th><?php echo __('mandates or sources of authority')?>: </th>
-  <td><?php echo nl2br($actor->getMandates()) ?></td></tr>
+<?php if ($actor->getMandates(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('mandates or sources of authority')?></th>
+  <td><?php echo nl2br($actor->getMandates(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getInternalStructures()): ?>
-  <tr><th><?php echo __('internal structures or genealogy')?>: </th>
-  <td><?php echo nl2br($actor->getInternalStructures()) ?></td></tr>
+<?php if ($actor->getInternalStructures(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('internal structures or genealogy')?></th>
+  <td><?php echo nl2br($actor->getInternalStructures(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getGeneralContext()): ?>
-  <tr><th><?php echo __('general context')?>: </th>
-  <td><?php echo nl2br($actor->getGeneralContext()) ?></td></tr>
+<?php if ($actor->getGeneralContext(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('general context')?></th>
+  <td><?php echo nl2br($actor->getGeneralContext(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if($relatedActors): ?>
-  <tr><th><?php echo _('related corporate bodies persons families') ?>: </th><td>
+<?php if ($relatedActors): ?>
+  <tr><th><?php echo _('related corporate bodies persons families') ?></th><td>
   <?php echo $relatedActors ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getAuthorityRecordIdentifier()): ?>
-  <tr><th><?php echo __('authority record identifier')?>: </th>
-  <td><?php echo $actor->getAuthorityRecordIdentifier() ?></td></tr>
+<?php if ($actor->getDescriptionIdentifier()): ?>
+  <tr><th><?php echo __('authority record identifier')?></th>
+  <td><?php echo $actor->getDescriptionIdentifier() ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getInstitutionIdentifier()): ?>
-  <tr><th><?php echo __('institution identifier')?>: </th>
-  <td><?php echo $actor->getInstitutionIdentifier() ?></td></tr>
+<?php if ($actor->getInstitutionResponsibleIdentifier(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('institution identifier')?></th>
+  <td><?php echo $actor->getInstitutionResponsibleIdentifier(array('sourceCulture' => true)) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getRules()): ?>
-  <tr><th><?php echo __('rules')?>: </th>
-  <td><?php echo nl2br($actor->getRules()) ?></td></tr>
+<?php if ($actor->getRules(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('rules')?></th>
+  <td><?php echo nl2br($actor->getRules(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getStatusId()): ?>
-  <tr><th><?php echo __('status')?>:</th><td>
-  <?php echo $actor->getTermRelatedByStatusId() ?>
+<?php if ($actor->getDescriptionStatusId()): ?>
+  <tr><th><?php echo __('status')?></th><td>
+  <?php echo $actor->getDescriptionStatus()->getName(array('sourceCulture' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getLevelOfDetailId()): ?>
-  <tr><th><?php echo __('status')?>:</th><td>
-  <?php echo $actor->getTermRelatedByLevelOfDetailId() ?>
+<?php if ($actor->getDescriptionDetailId()): ?>
+  <tr><th><?php echo __('detail')?></th><td>
+  <?php echo $actor->getDescriptionDetail()->getName(array('sourceCulture' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($datesOfChanges): ?>
-  <tr><th><?php echo __('dates of creation revision deletion')?>: </th><td>
-  <?php echo $datesOfChanges ?>
+<?php if ($actor->getRevisionHistory(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('dates of creation revision deletion')?></th><td>
+  <?php echo $actor->getRevisionHistory(array('sourceCulture' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($languages): ?>
+<?php if (count($languageCodes) > 0): ?>
   <tr><th><?php echo __('language of authority record')?>:
   </th><td>
-  <?php foreach ($languages as $language): ?>
-    <?php echo $language['termName'] ?><br />
+  <?php foreach ($languageCodes as $languageCode): ?>
+    <?php echo format_language($languageCode->getValue()) ?><br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($scripts): ?>
+<?php if (count($scriptCodes) > 0): ?>
   <tr><th><?php echo __('script of authority record')?>:
   </th><td>
-  <?php foreach ($scripts as $script): ?>
-    <?php echo $script['termName'] ?><br />
+  <?php foreach ($scriptCodes as $scriptCode): ?>
+    <?php echo format_script($scriptCode->getValue()) ?><br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getSources()): ?>
-  <tr><th><?php echo __('sources')?>: </th>
-  <td><?php echo nl2br($actor->getSources()) ?></td></tr>
+<?php if ($actor->getSources(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('sources')?></th>
+  <td><?php echo nl2br($actor->getSources(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($notes): ?>
+<?php if (count($notes) > 0): ?>
   <tr><th><?php echo __('notes')?>:
   </th><td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note['noteType'].': '.$note['note'] ?>
+    <?php echo $note->getType()->getName(array('sourceCulture' => true)).': '.$note->getContent(array('sourceCulture' => true)) ?>
     <br />
   <?php endforeach; ?>
   </td></tr>
@@ -159,9 +158,9 @@
 </tbody>
 </table>
 
-
-<?php if($editCredentials): ?>
+<?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'actor', 'action' => 'update'))): ?>
   <div class="menu-action">
-  <?php echo link_to(__('edit').' '.__('authority file'), 'actor/edit?id='.$actor->getId()) ?>
+  <?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/edit?id='.$actor->getId()) ?>
   </div>
 <?php endif; ?>
+</table>

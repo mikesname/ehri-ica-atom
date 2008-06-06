@@ -1,4 +1,4 @@
-<div class="pageTitle"><?php echo __('add').' / '.__('edit').' '.__('map'); ?></div>
+<div class="pageTitle"><?php echo __('add/edit map'); ?></div>
 
 <?php echo form_tag('map/update') ?>
 
@@ -13,25 +13,25 @@
 	</td></tr>
 <?php endif; ?>
 
-<tr><th><?php echo __('id'); ?>: </th>
+<tr><th><?php echo __('id'); ?></th>
 <td><?php echo $map->getId() ?></td></tr>
 
 <tr>
-  <th><?php echo __('title'); ?>:</th>
+  <th><?php echo __('title'); ?></th>
   <td><?php echo object_input_tag($map, 'getTitle', array ('size' => 20)) ?></td>
 </tr>
 <tr>
-  <th><?php echo __('description'); ?>:</th>
+  <th><?php echo __('description'); ?></th>
   <td><?php echo object_textarea_tag($map, 'getDescription', array ('size' => '30x3')) ?></td>
 </tr>
 
 <tr>
   <th><?php echo __('places'); ?>: <br />
-  <span class="th-link">(<?php echo link_to(__('add').' '.__('new'), 'map/createPlaceMapRelationship?mapId='.$map->getId()) ?>)</span></th>
+  <span class="th-link"><?php echo link_to(__('add new'), 'map/createPlaceMapRelation?mapId='.$map->getId()) ?></span></th>
   <td>
-  <?php if ($placeRelationships): ?>
-  <?php foreach ($placeRelationships as $relationship): ?>
-  <?php echo link_to($relationship->getPlace(), 'map/editPlaceMapRelationship?id='.$relationship->getId()) ?><br />
+  <?php if ($placeRelations): ?>
+  <?php foreach ($placeRelations as $relation): ?>
+  <?php echo link_to($relation->getPlace(), 'map/editPlaceMapRelation?id='.$relation->getId()) ?><br />
   <?php endforeach; ?>
   <?php endif; ?>
   </td>
@@ -47,11 +47,15 @@
 <?php else: ?>
   &nbsp;<?php echo link_to(__('cancel'), 'map/list') ?>
 <?php endif; ?>
-<?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+    <?php if ($map->getId()): ?>
+      <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+    <?php else: ?>
+      <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
+    <?php endif; ?>
 </div>
 </form>
 
 <div class="menu-extra">
-	<?php echo link_to(__('list').' '.__('all').' '.__('maps'), 'map/list'); ?>
-	<?php echo link_to(__('view').' '.__('map'), 'map/show?id='.$map->getId() ) ?>
+	<?php echo link_to(__('list all maps'), 'map/list'); ?>
+	<?php echo link_to(__('view map'), 'map/show?id='.$map->getId() ) ?>
 </div>

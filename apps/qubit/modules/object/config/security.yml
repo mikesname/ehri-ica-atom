@@ -1,0 +1,14 @@
+import:
+  is_secure:   on
+  credentials: [[ administrator ]]
+  
+export:
+  is_secure:   on
+  credentials: [[ administrator ]]
+  
+importexport:
+  is_secure:  on
+  credentials: [[ administrator, translator ]]
+
+all:
+  is_secure:   on

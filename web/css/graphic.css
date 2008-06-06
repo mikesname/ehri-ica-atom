@@ -14,11 +14,11 @@
 **********************************************************/
 
 #website-name {
-font: bold 60px/72px verdana, georgia, garamond, serif;
+font: bold 64px/78px verdana, georgia, garamond, serif;
 letter-spacing: 3px;
 color: #04025C;
 border: 0;
-margin: 5px 0 3px 0;
+margin-bottom: 3px;
 text-align: left;
 float:left;
 /*background-image: url(../images/background.gif);*/
@@ -33,11 +33,11 @@ background-color: transparent;
 
 #website-description {
 color: #04025C;
-font: bold 18px/20px georgia, garamond, serif;
-margin: 0;
+font: bold 15px/16px georgia, garamond, serif;
+margin: 75px 0 0 0;
 padding: 0;
 text-align: left;
-clear: both;
+float: right;
 }
 
 #logo a:hover, #logo a:link, #logo a:visited, #logo a:active {
@@ -46,10 +46,11 @@ color: #ffffff;
 background-color: transparent;
 text-decoration: none;
 padding: 0;
+margin: 0;
 }
 
 #logo img {
-margin: 12px 0 0 2px;
+margin: 0 0 0 20px;
 }
 
 /*********************************************************
@@ -98,8 +99,9 @@ h1
 {
 font: bold 20px/20px georgia, garamond, serif;
 margin: 15px 0 0 0;
-color: #000033;
-background-color: #ff9933;
+padding: 2px 2px 2px 4px;
+color: #ffffff;
+background-color: #006699;
 border-bottom: 1px solid #000066;
 border-top: 1px solid #000066;
 }
@@ -117,6 +119,16 @@ color: #000066;
 background-color: #ff9933;
 border-bottom: 2px solid #000066;
 }
+
+h1.search {
+margin-top:35px; 
+padding: 3px 0 3px 5px; 
+background-color: #FF9933;
+color: #000000;
+border-top: 2px solid #999999;
+border-bottom: 2px solid #999999;
+}
+
 
 h2
 {
@@ -149,7 +161,7 @@ padding: 0 0 3px 0;
 div.pageTitle {
 font: bold 25px/25px Lucida Sans Unicode, Lucida Grande, sans-serif;
 color: #cccccc;
-letter-spacing: -4px;
+letter-spacing: -2px;
 padding: 3px 10px 2px 0;
 border: 0;
 margin: 0;
@@ -343,13 +355,17 @@ table.detail th {
 	font-weight: bold;
 	vertical-align:top;
 	text-align:right;
-  width: 17%;
+    width: 30%;
 	border-bottom: 1px solid #999999;
 	border-right: 1px solid #999999;
 	border-left: 0;
 	border-top: 0;
 	background-color: #a0a9bc;
 	color: #ffffff;
+}
+
+table.detail th:after {
+content: ":";
 }
 
 table.list th:first-letter,
@@ -519,6 +535,27 @@ table.list th.header {
 	text-align: left;
 }
 
+.tableHeader {
+
+width: 99%; 
+background: #6992AF; 
+font-weight: bold; 
+font-size: 110%; 
+padding: 5px 0 5px 10px; 
+border: 1px solid #999999; 
+margin-top: 10px;
+}
+
+.translationTableHeader {
+
+width: 97%; 
+background: #FFD700;
+font-weight: bold; 
+font-size: 110%; 
+padding: 5px 0 5px 10px; 
+border: 1px solid #999999; 
+margin-top: 10px;
+}
 
 table.list td.headerCell {
 	border: 0;
@@ -575,6 +612,14 @@ table.list td.headerCell-name {
 font-weight: normal;
 }
 
+.th-link a:before {
+content: "(";
+}
+
+.th-link a:after {
+content: ")";
+}
+
 
 }
 
@@ -608,6 +653,14 @@ color: #999999;
 color: #999999;
 }
 
+.editLink a:before {
+content: "[";
+}
+
+.editLink a:after {
+content: "]";
+}
+
 
 /*********************************************************
                 CAPITALIZATION
@@ -619,4 +672,47 @@ color: #999999;
 
 .capitalize {
 	text-transform: capitalize;
+}
+
+
+/*********************************************************
+             DIGITAL OBJECT THUMBS 
+**********************************************************/
+
+div.digitalObjectList {
+  border: 1px solid black;
+  background-color: #eee;
+  height: 100%;
+  float: left;
+  width: 98%;
+}
+
+div.digitalObject {
+  float: left;
+  margin: 5px;
+  padding: 5px;
+  height: auto;
+  width: 102px;
+  text-align: center;
+  color: black;
+  display: table-cell;
+  background-color: #eee;
+}
+
+div.digitalObjectRep {
+	height: 102px;
+  width: 102px;
+  vertical-align: middle;
+  text-align: center;
+  background-color: white;
+  border: 1px black solid;
+  display: table-cell;
+}
+
+.digitalObjectDesc {
+	height: auto;
+}
+
+div.digitalObjectDesc img {
+  float: right;
 }

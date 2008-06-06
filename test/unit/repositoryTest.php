@@ -2,35 +2,43 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
+require_once(dirname(__FILE__).'/../bootstrap/unit.php');
 
-$t = new lime_test(2, new lime_output_color());
+require_once($sf_symfony_lib_dir.'/util/sfSimpleAutoload.class.php');
+require_once($sf_symfony_lib_dir.'/util/sfToolkit.class.php');
+$autoload = sfSimpleAutoload::getInstance(sfToolkit::getTmpDir().'/sf_autoload_unit_'.md5(__FILE__).'.data');
+$autoload->addDirectory($sf_symfony_lib_dir);
+$autoload->addDirectory(SF_ROOT_DIR.'/lib/model');
+$autoload->register();
 
-$repository = new Repository();
+set_include_path(get_include_path().PATH_SEPARATOR.$sf_symfony_lib_dir.'/plugins/sfPropelPlugin/lib/vendor');
+
+$t = new lime_test(2, new lime_output_color);
 
 // ->__toString()
 $t->diag('->__toString()');
-$t->is($repository->__toString(), '', '->__toString returns the authorized form of name');
-$repository->setAuthorizedFormOfName('testName');
-$t->is($repository->__toString(), 'testName', '->__toString returns the authorized form of name');
+
+$repository = new Repository;
+$t->isa_ok($repository->__toString(), 'string',
+  '->__toString returns a string');
+
+$repository->setAuthorizedFormOfName('test name');
+$t->is($repository->__toString(), 'test name',
+  '->__toString returns the authorized form of name');

@@ -2,39 +2,34 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class updateContactInformationAction extends sfAction
+class ActorUpdateContactInformationAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-
   if (!$this->getRequestParameter('id', 0))
     {
-    $contactInformation = new ContactInformation();
+    $contactInformation = new ContactInformation;
     }
    else
     {
-    $contactInformation = ContactInformationPeer::retrieveByPk($this->getRequestParameter('id'));
+    $contactInformation = QubitContactInformation::getById($this->getRequestParameter('id'));
     $this->forward404Unless($contactInformation);
     }
 
@@ -67,9 +62,7 @@ class updateContactInformationAction extends sfAction
       default :
         return $this->redirect('actor/edit?id='.$contactInformation->getActorId());
       }
-
   } //close execute()
-
 
   public function updateContactInformation($contactInformation)
   {
@@ -79,23 +72,19 @@ class updateContactInformationAction extends sfAction
   $contactInformation->setStreetAddress($this->getRequestParameter('street_address'));
   $contactInformation->setCity($this->getRequestParameter('city'));
   $contactInformation->setRegion($this->getRequestParameter('region'));
-  if ($this->getRequestParameter('country_id'))
-    {
-    $contactInformation->setCountryId($this->getRequestParameter('country_id'));
-    }
+  $contactInformation->setCountryCode($this->getRequestParameter('country_code'));
   $contactInformation->setPostalCode($this->getRequestParameter('postal_code'));
   $contactInformation->setTelephone($this->getRequestParameter('telephone'));
   $contactInformation->setFax($this->getRequestParameter('fax'));
   $contactInformation->setEmail($this->getRequestParameter('email'));
   $contactInformation->setWebsite($this->getRequestParameter('website'));
-  $contactInformation->setNote($this->getRequestParameter('contactInformationNote'));
+  $contactInformation->setNote($this->getRequestParameter('note'));
 
   $contactInformation->save();
 
-  if ($contactInformation->getPrimaryContact() == TRUE)
+  if ($contactInformation->getPrimaryContact())
     {
     $contactInformation->makePrimaryContact();
     }
   }
-
 }

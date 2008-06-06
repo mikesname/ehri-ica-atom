@@ -1,965 +1,658 @@
 <?php
 
-
-abstract class BaseContactInformation extends BaseObject  implements Persistent {
-
-
-	
-	protected static $peer;
-
-
-	
-	protected $id;
-
-
-	
-	protected $actor_id;
-
-
-	
-	protected $contact_type;
-
-
-	
-	protected $primary_contact;
-
-
-	
-	protected $street_address;
-
-
-	
-	protected $city;
-
-
-	
-	protected $region;
-
-
-	
-	protected $postal_code;
-
-
-	
-	protected $country_id;
-
-
-	
-	protected $longtitude;
-
-
-	
-	protected $latitude;
-
-
-	
-	protected $telephone;
-
-
-	
-	protected $fax;
-
-
-	
-	protected $website;
-
-
-	
-	protected $email;
-
-
-	
-	protected $note;
-
-
-	
-	protected $created_at;
-
-
-	
-	protected $updated_at;
-
-	
-	protected $aActor;
-
-	
-	protected $aTerm;
-
-	
-	protected $alreadyInSave = false;
-
-	
-	protected $alreadyInValidation = false;
-
-	
-	public function getId()
-	{
-
-		return $this->id;
-	}
-
-	
-	public function getActorId()
-	{
-
-		return $this->actor_id;
-	}
-
-	
-	public function getContactType()
-	{
-
-		return $this->contact_type;
-	}
-
-	
-	public function getPrimaryContact()
-	{
-
-		return $this->primary_contact;
-	}
-
-	
-	public function getStreetAddress()
-	{
-
-		return $this->street_address;
-	}
-
-	
-	public function getCity()
-	{
-
-		return $this->city;
-	}
-
-	
-	public function getRegion()
-	{
-
-		return $this->region;
-	}
-
-	
-	public function getPostalCode()
-	{
-
-		return $this->postal_code;
-	}
-
-	
-	public function getCountryId()
-	{
-
-		return $this->country_id;
-	}
-
-	
-	public function getLongtitude()
-	{
-
-		return $this->longtitude;
-	}
-
-	
-	public function getLatitude()
-	{
-
-		return $this->latitude;
-	}
-
-	
-	public function getTelephone()
-	{
-
-		return $this->telephone;
-	}
-
-	
-	public function getFax()
-	{
-
-		return $this->fax;
-	}
-
-	
-	public function getWebsite()
-	{
-
-		return $this->website;
-	}
-
-	
-	public function getEmail()
-	{
-
-		return $this->email;
-	}
-
-	
-	public function getNote()
-	{
-
-		return $this->note;
-	}
-
-	
-	public function getCreatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->created_at === null || $this->created_at === '') {
-			return null;
-		} elseif (!is_int($this->created_at)) {
-						$ts = strtotime($this->created_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [created_at] as date/time value: " . var_export($this->created_at, true));
-			}
-		} else {
-			$ts = $this->created_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function getUpdatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->updated_at === null || $this->updated_at === '') {
-			return null;
-		} elseif (!is_int($this->updated_at)) {
-						$ts = strtotime($this->updated_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [updated_at] as date/time value: " . var_export($this->updated_at, true));
-			}
-		} else {
-			$ts = $this->updated_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function setId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::ID;
-		}
-
-	} 
-	
-	public function setActorId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->actor_id !== $v) {
-			$this->actor_id = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::ACTOR_ID;
-		}
-
-		if ($this->aActor !== null && $this->aActor->getId() !== $v) {
-			$this->aActor = null;
-		}
-
-	} 
-	
-	public function setContactType($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->contact_type !== $v) {
-			$this->contact_type = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::CONTACT_TYPE;
-		}
-
-	} 
-	
-	public function setPrimaryContact($v)
-	{
-
-		if ($this->primary_contact !== $v) {
-			$this->primary_contact = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::PRIMARY_CONTACT;
-		}
-
-	} 
-	
-	public function setStreetAddress($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->street_address !== $v) {
-			$this->street_address = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::STREET_ADDRESS;
-		}
-
-	} 
-	
-	public function setCity($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->city !== $v) {
-			$this->city = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::CITY;
-		}
-
-	} 
-	
-	public function setRegion($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->region !== $v) {
-			$this->region = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::REGION;
-		}
-
-	} 
-	
-	public function setPostalCode($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->postal_code !== $v) {
-			$this->postal_code = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::POSTAL_CODE;
-		}
-
-	} 
-	
-	public function setCountryId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->country_id !== $v) {
-			$this->country_id = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::COUNTRY_ID;
-		}
-
-		if ($this->aTerm !== null && $this->aTerm->getId() !== $v) {
-			$this->aTerm = null;
-		}
-
-	} 
-	
-	public function setLongtitude($v)
-	{
-
-		if ($this->longtitude !== $v) {
-			$this->longtitude = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::LONGTITUDE;
-		}
-
-	} 
-	
-	public function setLatitude($v)
-	{
-
-		if ($this->latitude !== $v) {
-			$this->latitude = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::LATITUDE;
-		}
-
-	} 
-	
-	public function setTelephone($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->telephone !== $v) {
-			$this->telephone = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::TELEPHONE;
-		}
-
-	} 
-	
-	public function setFax($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->fax !== $v) {
-			$this->fax = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::FAX;
-		}
-
-	} 
-	
-	public function setWebsite($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->website !== $v) {
-			$this->website = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::WEBSITE;
-		}
-
-	} 
-	
-	public function setEmail($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->email !== $v) {
-			$this->email = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::EMAIL;
-		}
-
-	} 
-	
-	public function setNote($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->note !== $v) {
-			$this->note = $v;
-			$this->modifiedColumns[] = ContactInformationPeer::NOTE;
-		}
-
-	} 
-	
-	public function setCreatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [created_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->created_at !== $ts) {
-			$this->created_at = $ts;
-			$this->modifiedColumns[] = ContactInformationPeer::CREATED_AT;
-		}
-
-	} 
-	
-	public function setUpdatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [updated_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->updated_at !== $ts) {
-			$this->updated_at = $ts;
-			$this->modifiedColumns[] = ContactInformationPeer::UPDATED_AT;
-		}
-
-	} 
-	
-	public function hydrate(ResultSet $rs, $startcol = 1)
-	{
-		try {
-
-			$this->id = $rs->getInt($startcol + 0);
-
-			$this->actor_id = $rs->getInt($startcol + 1);
-
-			$this->contact_type = $rs->getString($startcol + 2);
-
-			$this->primary_contact = $rs->getBoolean($startcol + 3);
-
-			$this->street_address = $rs->getString($startcol + 4);
-
-			$this->city = $rs->getString($startcol + 5);
-
-			$this->region = $rs->getString($startcol + 6);
-
-			$this->postal_code = $rs->getString($startcol + 7);
-
-			$this->country_id = $rs->getInt($startcol + 8);
-
-			$this->longtitude = $rs->getFloat($startcol + 9);
-
-			$this->latitude = $rs->getFloat($startcol + 10);
-
-			$this->telephone = $rs->getString($startcol + 11);
-
-			$this->fax = $rs->getString($startcol + 12);
-
-			$this->website = $rs->getString($startcol + 13);
-
-			$this->email = $rs->getString($startcol + 14);
-
-			$this->note = $rs->getString($startcol + 15);
-
-			$this->created_at = $rs->getTimestamp($startcol + 16, null);
-
-			$this->updated_at = $rs->getTimestamp($startcol + 17, null);
-
-			$this->resetModified();
-
-			$this->setNew(false);
-
-						return $startcol + 18; 
-		} catch (Exception $e) {
-			throw new PropelException("Error populating ContactInformation object", $e);
-		}
-	}
-
-	
-	public function delete($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseContactInformation:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(ContactInformationPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			ContactInformationPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	
-
-    foreach (sfMixer::getCallables('BaseContactInformation:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
+abstract class BaseContactInformation
+{
+  const DATABASE_NAME = 'propel';
+
+  const TABLE_NAME = 'q_contact_information';
+
+  const ACTOR_ID = 'q_contact_information.ACTOR_ID';
+  const PRIMARY_CONTACT = 'q_contact_information.PRIMARY_CONTACT';
+  const STREET_ADDRESS = 'q_contact_information.STREET_ADDRESS';
+  const WEBSITE = 'q_contact_information.WEBSITE';
+  const EMAIL = 'q_contact_information.EMAIL';
+  const TELEPHONE = 'q_contact_information.TELEPHONE';
+  const FAX = 'q_contact_information.FAX';
+  const POSTAL_CODE = 'q_contact_information.POSTAL_CODE';
+  const COUNTRY_CODE = 'q_contact_information.COUNTRY_CODE';
+  const LONGTITUDE = 'q_contact_information.LONGTITUDE';
+  const LATITUDE = 'q_contact_information.LATITUDE';
+  const CREATED_AT = 'q_contact_information.CREATED_AT';
+  const UPDATED_AT = 'q_contact_information.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_contact_information.SOURCE_CULTURE';
+  const ID = 'q_contact_information.ID';
+
+  public static function addSelectColumns(Criteria $criteria)
+  {
+    $criteria->addSelectColumn(QubitContactInformation::ACTOR_ID);
+    $criteria->addSelectColumn(QubitContactInformation::PRIMARY_CONTACT);
+    $criteria->addSelectColumn(QubitContactInformation::STREET_ADDRESS);
+    $criteria->addSelectColumn(QubitContactInformation::WEBSITE);
+    $criteria->addSelectColumn(QubitContactInformation::EMAIL);
+    $criteria->addSelectColumn(QubitContactInformation::TELEPHONE);
+    $criteria->addSelectColumn(QubitContactInformation::FAX);
+    $criteria->addSelectColumn(QubitContactInformation::POSTAL_CODE);
+    $criteria->addSelectColumn(QubitContactInformation::COUNTRY_CODE);
+    $criteria->addSelectColumn(QubitContactInformation::LONGTITUDE);
+    $criteria->addSelectColumn(QubitContactInformation::LATITUDE);
+    $criteria->addSelectColumn(QubitContactInformation::CREATED_AT);
+    $criteria->addSelectColumn(QubitContactInformation::UPDATED_AT);
+    $criteria->addSelectColumn(QubitContactInformation::SOURCE_CULTURE);
+    $criteria->addSelectColumn(QubitContactInformation::ID);
+
+    return $criteria;
   }
-	
-	public function save($con = null)
-	{
 
-    foreach (sfMixer::getCallables('BaseContactInformation:save:pre') as $callable)
+  protected static $contactInformations = array();
+
+  public static function getFromResultSet(ResultSet $resultSet)
+  {
+    if (!isset(self::$contactInformations[$id = $resultSet->getInt(15)]))
     {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
+      $contactInformation = new QubitContactInformation;
+      $contactInformation->hydrate($resultSet);
+
+      self::$contactInformations[$id] = $contactInformation;
+    }
+
+    return self::$contactInformations[$id];
+  }
+
+  public static function get(Criteria $criteria, array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitContactInformation::DATABASE_NAME);
+    }
+
+    self::addSelectColumns($criteria);
+
+    return QubitQuery::createFromCriteria($criteria, 'QubitContactInformation', $options);
+  }
+
+  public static function getAll(array $options = array())
+  {
+    return self::get(new Criteria, $options);
+  }
+
+  public static function getOne(Criteria $criteria, array $options = array())
+  {
+    $criteria->setLimit(1);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function getById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitContactInformation::ID, $id);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function doDelete(Criteria $criteria, $connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitContactInformation::DATABASE_NAME);
+    }
+
+    $affectedRows = 0;
+
+    $affectedRows += BasePeer::doDelete($criteria, $connection);
+
+    return $affectedRows;
+  }
+
+  protected $actorId = null;
+
+  public function getActorId()
+  {
+    return $this->actorId;
+  }
+
+  public function setActorId($actorId)
+  {
+    $this->actorId = $actorId;
+
+    return $this;
+  }
+
+  protected $primaryContact = null;
+
+  public function getPrimaryContact()
+  {
+    return $this->primaryContact;
+  }
+
+  public function setPrimaryContact($primaryContact)
+  {
+    $this->primaryContact = $primaryContact;
+
+    return $this;
+  }
+
+  protected $streetAddress = null;
+
+  public function getStreetAddress()
+  {
+    return $this->streetAddress;
+  }
+
+  public function setStreetAddress($streetAddress)
+  {
+    $this->streetAddress = $streetAddress;
+
+    return $this;
+  }
+
+  protected $website = null;
+
+  public function getWebsite()
+  {
+    return $this->website;
+  }
+
+  public function setWebsite($website)
+  {
+    $this->website = $website;
+
+    return $this;
+  }
+
+  protected $email = null;
+
+  public function getEmail()
+  {
+    return $this->email;
+  }
+
+  public function setEmail($email)
+  {
+    $this->email = $email;
+
+    return $this;
+  }
+
+  protected $telephone = null;
+
+  public function getTelephone()
+  {
+    return $this->telephone;
+  }
+
+  public function setTelephone($telephone)
+  {
+    $this->telephone = $telephone;
+
+    return $this;
+  }
+
+  protected $fax = null;
+
+  public function getFax()
+  {
+    return $this->fax;
+  }
+
+  public function setFax($fax)
+  {
+    $this->fax = $fax;
+
+    return $this;
+  }
+
+  protected $postalCode = null;
+
+  public function getPostalCode()
+  {
+    return $this->postalCode;
+  }
+
+  public function setPostalCode($postalCode)
+  {
+    $this->postalCode = $postalCode;
+
+    return $this;
+  }
+
+  protected $countryCode = null;
+
+  public function getCountryCode()
+  {
+    return $this->countryCode;
+  }
+
+  public function setCountryCode($countryCode)
+  {
+    $this->countryCode = $countryCode;
+
+    return $this;
+  }
+
+  protected $longtitude = null;
+
+  public function getLongtitude()
+  {
+    return $this->longtitude;
+  }
+
+  public function setLongtitude($longtitude)
+  {
+    $this->longtitude = $longtitude;
+
+    return $this;
+  }
+
+  protected $latitude = null;
+
+  public function getLatitude()
+  {
+    return $this->latitude;
+  }
+
+  public function setLatitude($latitude)
+  {
+    $this->latitude = $latitude;
+
+    return $this;
+  }
+
+  protected $createdAt = null;
+
+  public function getCreatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->createdAt);
+    }
+
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt($createdAt)
+  {
+    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+    }
+
+    $this->createdAt = $createdAt;
+
+    return $this;
+  }
+
+  protected $updatedAt = null;
+
+  public function getUpdatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->updatedAt);
+    }
+
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt($updatedAt)
+  {
+    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+    }
+
+    $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
+  protected $id = null;
+
+  public function getId()
+  {
+    return $this->id;
+  }
+
+  public function setId($id)
+  {
+    $this->id = $id;
+
+    return $this;
+  }
+
+  protected $new = true;
+
+  protected $deleted = false;
+
+  protected $columnValues = null;
+
+  protected function isColumnModified($name)
+  {
+    return $this->$name != $this->columnValues[$name];
+  }
+
+  protected function resetModified()
+  {
+    $this->columnValues['actorId'] = $this->actorId;
+    $this->columnValues['primaryContact'] = $this->primaryContact;
+    $this->columnValues['streetAddress'] = $this->streetAddress;
+    $this->columnValues['website'] = $this->website;
+    $this->columnValues['email'] = $this->email;
+    $this->columnValues['telephone'] = $this->telephone;
+    $this->columnValues['fax'] = $this->fax;
+    $this->columnValues['postalCode'] = $this->postalCode;
+    $this->columnValues['countryCode'] = $this->countryCode;
+    $this->columnValues['longtitude'] = $this->longtitude;
+    $this->columnValues['latitude'] = $this->latitude;
+    $this->columnValues['createdAt'] = $this->createdAt;
+    $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
+    $this->columnValues['id'] = $this->id;
+
+    return $this;
+  }
+
+  public function hydrate(ResultSet $results, $columnOffset = 1)
+  {
+    $this->actorId = $results->getInt($columnOffset++);
+    $this->primaryContact = $results->getBoolean($columnOffset++);
+    $this->streetAddress = $results->getString($columnOffset++);
+    $this->website = $results->getString($columnOffset++);
+    $this->email = $results->getString($columnOffset++);
+    $this->telephone = $results->getString($columnOffset++);
+    $this->fax = $results->getString($columnOffset++);
+    $this->postalCode = $results->getString($columnOffset++);
+    $this->countryCode = $results->getString($columnOffset++);
+    $this->longtitude = $results->getFloat($columnOffset++);
+    $this->latitude = $results->getFloat($columnOffset++);
+    $this->createdAt = $results->getTimestamp($columnOffset++, null);
+    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
+    $this->id = $results->getInt($columnOffset++);
+
+    $this->new = false;
+    $this->resetModified();
+
+    return $columnOffset;
+  }
+
+  public function refresh(array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitContactInformation::DATABASE_NAME);
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitContactInformation::ID, $this->id);
+
+    self::addSelectColumns($criteria);
+
+    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
+    $resultSet->next();
+
+    return $this->hydrate($resultSet);
+  }
+
+  public function save($connection = null)
+  {
+    if ($this->deleted)
+    {
+      throw new PropelException('You cannot save an object that has been deleted.');
+    }
+
+    $affectedRows = 0;
+
+    if ($this->new)
+    {
+      $affectedRows += $this->insert($connection);
+    }
+    else
+    {
+      $affectedRows += $this->update($connection);
+    }
+
+    $this->new = false;
+    $this->resetModified();
+
+    foreach ($this->contactInformationI18ns as $contactInformationI18n)
+    {
+      $contactInformationI18n->setId($this->id);
+
+      $affectedRows += $contactInformationI18n->save($connection);
+    }
+
+    return $affectedRows;
+  }
+
+  protected function insert($connection = null)
+  {
+    $affectedRows = 0;
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('actorId'))
+    {
+      $criteria->add(QubitContactInformation::ACTOR_ID, $this->actorId);
+    }
+
+    if ($this->isColumnModified('primaryContact'))
+    {
+      $criteria->add(QubitContactInformation::PRIMARY_CONTACT, $this->primaryContact);
+    }
+
+    if ($this->isColumnModified('streetAddress'))
+    {
+      $criteria->add(QubitContactInformation::STREET_ADDRESS, $this->streetAddress);
+    }
+
+    if ($this->isColumnModified('website'))
+    {
+      $criteria->add(QubitContactInformation::WEBSITE, $this->website);
+    }
+
+    if ($this->isColumnModified('email'))
+    {
+      $criteria->add(QubitContactInformation::EMAIL, $this->email);
+    }
+
+    if ($this->isColumnModified('telephone'))
+    {
+      $criteria->add(QubitContactInformation::TELEPHONE, $this->telephone);
+    }
+
+    if ($this->isColumnModified('fax'))
+    {
+      $criteria->add(QubitContactInformation::FAX, $this->fax);
+    }
+
+    if ($this->isColumnModified('postalCode'))
+    {
+      $criteria->add(QubitContactInformation::POSTAL_CODE, $this->postalCode);
+    }
+
+    if ($this->isColumnModified('countryCode'))
+    {
+      $criteria->add(QubitContactInformation::COUNTRY_CODE, $this->countryCode);
+    }
+
+    if ($this->isColumnModified('longtitude'))
+    {
+      $criteria->add(QubitContactInformation::LONGTITUDE, $this->longtitude);
+    }
+
+    if ($this->isColumnModified('latitude'))
+    {
+      $criteria->add(QubitContactInformation::LATITUDE, $this->latitude);
+    }
+
+    if (!$this->isColumnModified('createdAt'))
+    {
+      $this->createdAt = time();
+    }
+    $criteria->add(QubitContactInformation::CREATED_AT, $this->createdAt);
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitContactInformation::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitContactInformation::SOURCE_CULTURE, $this->sourceCulture);
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitContactInformation::ID, $this->id);
+    }
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitContactInformation::DATABASE_NAME);
+    }
+
+    $id = BasePeer::doInsert($criteria, $connection);
+    $this->id = $id;
+    $affectedRows += 1;
+
+    return $affectedRows;
+  }
+
+  protected function update($connection = null)
+  {
+    $affectedRows = 0;
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('actorId'))
+    {
+      $criteria->add(QubitContactInformation::ACTOR_ID, $this->actorId);
+    }
+
+    if ($this->isColumnModified('primaryContact'))
+    {
+      $criteria->add(QubitContactInformation::PRIMARY_CONTACT, $this->primaryContact);
+    }
+
+    if ($this->isColumnModified('streetAddress'))
+    {
+      $criteria->add(QubitContactInformation::STREET_ADDRESS, $this->streetAddress);
+    }
+
+    if ($this->isColumnModified('website'))
+    {
+      $criteria->add(QubitContactInformation::WEBSITE, $this->website);
+    }
+
+    if ($this->isColumnModified('email'))
+    {
+      $criteria->add(QubitContactInformation::EMAIL, $this->email);
+    }
+
+    if ($this->isColumnModified('telephone'))
+    {
+      $criteria->add(QubitContactInformation::TELEPHONE, $this->telephone);
+    }
+
+    if ($this->isColumnModified('fax'))
+    {
+      $criteria->add(QubitContactInformation::FAX, $this->fax);
+    }
+
+    if ($this->isColumnModified('postalCode'))
+    {
+      $criteria->add(QubitContactInformation::POSTAL_CODE, $this->postalCode);
+    }
+
+    if ($this->isColumnModified('countryCode'))
+    {
+      $criteria->add(QubitContactInformation::COUNTRY_CODE, $this->countryCode);
+    }
+
+    if ($this->isColumnModified('longtitude'))
+    {
+      $criteria->add(QubitContactInformation::LONGTITUDE, $this->longtitude);
+    }
+
+    if ($this->isColumnModified('latitude'))
+    {
+      $criteria->add(QubitContactInformation::LATITUDE, $this->latitude);
+    }
+
+    if ($this->isColumnModified('createdAt'))
+    {
+      $criteria->add(QubitContactInformation::CREATED_AT, $this->createdAt);
+    }
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitContactInformation::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitContactInformation::SOURCE_CULTURE, $this->sourceCulture);
+    }
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitContactInformation::ID, $this->id);
+    }
+
+    if ($criteria->size() > 0)
+    {
+      $selectCriteria = new Criteria;
+      $selectCriteria->add(QubitContactInformation::ID, $this->id);
+
+      if (!isset($connection))
       {
-        return $affectedRows;
+        $connection = QubitTransactionFilter::getConnection(QubitContactInformation::DATABASE_NAME);
       }
+
+      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
     }
 
+    return $affectedRows;
+  }
 
-    if ($this->isNew() && !$this->isColumnModified(ContactInformationPeer::CREATED_AT))
+  public function delete($connection = null)
+  {
+    if ($this->deleted)
     {
-      $this->setCreatedAt(time());
+      throw new PropelException('This object has already been deleted.');
     }
 
-    if ($this->isModified() && !$this->isColumnModified(ContactInformationPeer::UPDATED_AT))
-    {
-      $this->setUpdatedAt(time());
-    }
+    $affectedRows = 0;
 
-		if ($this->isDeleted()) {
-			throw new PropelException("You cannot save an object that has been deleted.");
-		}
+    $criteria = new Criteria;
+    $criteria->add(QubitContactInformation::ID, $this->id);
 
-		if ($con === null) {
-			$con = Propel::getConnection(ContactInformationPeer::DATABASE_NAME);
-		}
+    $affectedRows += self::doDelete($criteria, $connection);
 
-		try {
-			$con->begin();
-			$affectedRows = $this->doSave($con);
-			$con->commit();
-    foreach (sfMixer::getCallables('BaseContactInformation:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
+    $this->deleted = true;
 
-			return $affectedRows;
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	}
-
-	
-	protected function doSave($con)
-	{
-		$affectedRows = 0; 		if (!$this->alreadyInSave) {
-			$this->alreadyInSave = true;
-
-
-												
-			if ($this->aActor !== null) {
-				if ($this->aActor->isModified()) {
-					$affectedRows += $this->aActor->save($con);
-				}
-				$this->setActor($this->aActor);
-			}
-
-			if ($this->aTerm !== null) {
-				if ($this->aTerm->isModified()) {
-					$affectedRows += $this->aTerm->save($con);
-				}
-				$this->setTerm($this->aTerm);
-			}
-
-
-						if ($this->isModified()) {
-				if ($this->isNew()) {
-					$pk = ContactInformationPeer::doInsert($this, $con);
-					$affectedRows += 1; 										 										 
-					$this->setId($pk);  
-					$this->setNew(false);
-				} else {
-					$affectedRows += ContactInformationPeer::doUpdate($this, $con);
-				}
-				$this->resetModified(); 			}
-
-			$this->alreadyInSave = false;
-		}
-		return $affectedRows;
-	} 
-	
-	protected $validationFailures = array();
-
-	
-	public function getValidationFailures()
-	{
-		return $this->validationFailures;
-	}
-
-	
-	public function validate($columns = null)
-	{
-		$res = $this->doValidate($columns);
-		if ($res === true) {
-			$this->validationFailures = array();
-			return true;
-		} else {
-			$this->validationFailures = $res;
-			return false;
-		}
-	}
-
-	
-	protected function doValidate($columns = null)
-	{
-		if (!$this->alreadyInValidation) {
-			$this->alreadyInValidation = true;
-			$retval = null;
-
-			$failureMap = array();
-
-
-												
-			if ($this->aActor !== null) {
-				if (!$this->aActor->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aActor->getValidationFailures());
-				}
-			}
-
-			if ($this->aTerm !== null) {
-				if (!$this->aTerm->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aTerm->getValidationFailures());
-				}
-			}
-
-
-			if (($retval = ContactInformationPeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
-			}
-
-
-
-			$this->alreadyInValidation = false;
-		}
-
-		return (!empty($failureMap) ? $failureMap : true);
-	}
-
-	
-	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = ContactInformationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->getByPosition($pos);
-	}
-
-	
-	public function getByPosition($pos)
-	{
-		switch($pos) {
-			case 0:
-				return $this->getId();
-				break;
-			case 1:
-				return $this->getActorId();
-				break;
-			case 2:
-				return $this->getContactType();
-				break;
-			case 3:
-				return $this->getPrimaryContact();
-				break;
-			case 4:
-				return $this->getStreetAddress();
-				break;
-			case 5:
-				return $this->getCity();
-				break;
-			case 6:
-				return $this->getRegion();
-				break;
-			case 7:
-				return $this->getPostalCode();
-				break;
-			case 8:
-				return $this->getCountryId();
-				break;
-			case 9:
-				return $this->getLongtitude();
-				break;
-			case 10:
-				return $this->getLatitude();
-				break;
-			case 11:
-				return $this->getTelephone();
-				break;
-			case 12:
-				return $this->getFax();
-				break;
-			case 13:
-				return $this->getWebsite();
-				break;
-			case 14:
-				return $this->getEmail();
-				break;
-			case 15:
-				return $this->getNote();
-				break;
-			case 16:
-				return $this->getCreatedAt();
-				break;
-			case 17:
-				return $this->getUpdatedAt();
-				break;
-			default:
-				return null;
-				break;
-		} 	}
-
-	
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = ContactInformationPeer::getFieldNames($keyType);
-		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getActorId(),
-			$keys[2] => $this->getContactType(),
-			$keys[3] => $this->getPrimaryContact(),
-			$keys[4] => $this->getStreetAddress(),
-			$keys[5] => $this->getCity(),
-			$keys[6] => $this->getRegion(),
-			$keys[7] => $this->getPostalCode(),
-			$keys[8] => $this->getCountryId(),
-			$keys[9] => $this->getLongtitude(),
-			$keys[10] => $this->getLatitude(),
-			$keys[11] => $this->getTelephone(),
-			$keys[12] => $this->getFax(),
-			$keys[13] => $this->getWebsite(),
-			$keys[14] => $this->getEmail(),
-			$keys[15] => $this->getNote(),
-			$keys[16] => $this->getCreatedAt(),
-			$keys[17] => $this->getUpdatedAt(),
-		);
-		return $result;
-	}
-
-	
-	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = ContactInformationPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->setByPosition($pos, $value);
-	}
-
-	
-	public function setByPosition($pos, $value)
-	{
-		switch($pos) {
-			case 0:
-				$this->setId($value);
-				break;
-			case 1:
-				$this->setActorId($value);
-				break;
-			case 2:
-				$this->setContactType($value);
-				break;
-			case 3:
-				$this->setPrimaryContact($value);
-				break;
-			case 4:
-				$this->setStreetAddress($value);
-				break;
-			case 5:
-				$this->setCity($value);
-				break;
-			case 6:
-				$this->setRegion($value);
-				break;
-			case 7:
-				$this->setPostalCode($value);
-				break;
-			case 8:
-				$this->setCountryId($value);
-				break;
-			case 9:
-				$this->setLongtitude($value);
-				break;
-			case 10:
-				$this->setLatitude($value);
-				break;
-			case 11:
-				$this->setTelephone($value);
-				break;
-			case 12:
-				$this->setFax($value);
-				break;
-			case 13:
-				$this->setWebsite($value);
-				break;
-			case 14:
-				$this->setEmail($value);
-				break;
-			case 15:
-				$this->setNote($value);
-				break;
-			case 16:
-				$this->setCreatedAt($value);
-				break;
-			case 17:
-				$this->setUpdatedAt($value);
-				break;
-		} 	}
-
-	
-	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = ContactInformationPeer::getFieldNames($keyType);
-
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setActorId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setContactType($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setPrimaryContact($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setStreetAddress($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setCity($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setRegion($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setPostalCode($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setCountryId($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setLongtitude($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setLatitude($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setTelephone($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setFax($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setWebsite($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setEmail($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setNote($arr[$keys[15]]);
-		if (array_key_exists($keys[16], $arr)) $this->setCreatedAt($arr[$keys[16]]);
-		if (array_key_exists($keys[17], $arr)) $this->setUpdatedAt($arr[$keys[17]]);
-	}
-
-	
-	public function buildCriteria()
-	{
-		$criteria = new Criteria(ContactInformationPeer::DATABASE_NAME);
-
-		if ($this->isColumnModified(ContactInformationPeer::ID)) $criteria->add(ContactInformationPeer::ID, $this->id);
-		if ($this->isColumnModified(ContactInformationPeer::ACTOR_ID)) $criteria->add(ContactInformationPeer::ACTOR_ID, $this->actor_id);
-		if ($this->isColumnModified(ContactInformationPeer::CONTACT_TYPE)) $criteria->add(ContactInformationPeer::CONTACT_TYPE, $this->contact_type);
-		if ($this->isColumnModified(ContactInformationPeer::PRIMARY_CONTACT)) $criteria->add(ContactInformationPeer::PRIMARY_CONTACT, $this->primary_contact);
-		if ($this->isColumnModified(ContactInformationPeer::STREET_ADDRESS)) $criteria->add(ContactInformationPeer::STREET_ADDRESS, $this->street_address);
-		if ($this->isColumnModified(ContactInformationPeer::CITY)) $criteria->add(ContactInformationPeer::CITY, $this->city);
-		if ($this->isColumnModified(ContactInformationPeer::REGION)) $criteria->add(ContactInformationPeer::REGION, $this->region);
-		if ($this->isColumnModified(ContactInformationPeer::POSTAL_CODE)) $criteria->add(ContactInformationPeer::POSTAL_CODE, $this->postal_code);
-		if ($this->isColumnModified(ContactInformationPeer::COUNTRY_ID)) $criteria->add(ContactInformationPeer::COUNTRY_ID, $this->country_id);
-		if ($this->isColumnModified(ContactInformationPeer::LONGTITUDE)) $criteria->add(ContactInformationPeer::LONGTITUDE, $this->longtitude);
-		if ($this->isColumnModified(ContactInformationPeer::LATITUDE)) $criteria->add(ContactInformationPeer::LATITUDE, $this->latitude);
-		if ($this->isColumnModified(ContactInformationPeer::TELEPHONE)) $criteria->add(ContactInformationPeer::TELEPHONE, $this->telephone);
-		if ($this->isColumnModified(ContactInformationPeer::FAX)) $criteria->add(ContactInformationPeer::FAX, $this->fax);
-		if ($this->isColumnModified(ContactInformationPeer::WEBSITE)) $criteria->add(ContactInformationPeer::WEBSITE, $this->website);
-		if ($this->isColumnModified(ContactInformationPeer::EMAIL)) $criteria->add(ContactInformationPeer::EMAIL, $this->email);
-		if ($this->isColumnModified(ContactInformationPeer::NOTE)) $criteria->add(ContactInformationPeer::NOTE, $this->note);
-		if ($this->isColumnModified(ContactInformationPeer::CREATED_AT)) $criteria->add(ContactInformationPeer::CREATED_AT, $this->created_at);
-		if ($this->isColumnModified(ContactInformationPeer::UPDATED_AT)) $criteria->add(ContactInformationPeer::UPDATED_AT, $this->updated_at);
-
-		return $criteria;
-	}
-
-	
-	public function buildPkeyCriteria()
-	{
-		$criteria = new Criteria(ContactInformationPeer::DATABASE_NAME);
-
-		$criteria->add(ContactInformationPeer::ID, $this->id);
-
-		return $criteria;
-	}
+    return $affectedRows;
+  }
 
 	
 	public function getPrimaryKey()
@@ -973,140 +666,136 @@ abstract class BaseContactInformation extends BaseObject  implements Persistent 
 		$this->setId($key);
 	}
 
-	
-	public function copyInto($copyObj, $deepCopy = false)
-	{
-
-		$copyObj->setActorId($this->actor_id);
-
-		$copyObj->setContactType($this->contact_type);
-
-		$copyObj->setPrimaryContact($this->primary_contact);
-
-		$copyObj->setStreetAddress($this->street_address);
-
-		$copyObj->setCity($this->city);
-
-		$copyObj->setRegion($this->region);
-
-		$copyObj->setPostalCode($this->postal_code);
-
-		$copyObj->setCountryId($this->country_id);
-
-		$copyObj->setLongtitude($this->longtitude);
-
-		$copyObj->setLatitude($this->latitude);
-
-		$copyObj->setTelephone($this->telephone);
-
-		$copyObj->setFax($this->fax);
-
-		$copyObj->setWebsite($this->website);
-
-		$copyObj->setEmail($this->email);
-
-		$copyObj->setNote($this->note);
-
-		$copyObj->setCreatedAt($this->created_at);
-
-		$copyObj->setUpdatedAt($this->updated_at);
-
-
-		$copyObj->setNew(true);
-
-		$copyObj->setId(NULL); 
-	}
-
-	
-	public function copy($deepCopy = false)
-	{
-				$clazz = get_class($this);
-		$copyObj = new $clazz();
-		$this->copyInto($copyObj, $deepCopy);
-		return $copyObj;
-	}
-
-	
-	public function getPeer()
-	{
-		if (self::$peer === null) {
-			self::$peer = new ContactInformationPeer();
-		}
-		return self::$peer;
-	}
-
-	
-	public function setActor($v)
-	{
-
-
-		if ($v === null) {
-			$this->setActorId(NULL);
-		} else {
-			$this->setActorId($v->getId());
-		}
-
-
-		$this->aActor = $v;
-	}
-
-
-	
-	public function getActor($con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-
-		if ($this->aActor === null && ($this->actor_id !== null)) {
-
-			$this->aActor = ActorPeer::retrieveByPK($this->actor_id, $con);
-
-			
-		}
-		return $this->aActor;
-	}
-
-	
-	public function setTerm($v)
-	{
-
-
-		if ($v === null) {
-			$this->setCountryId(NULL);
-		} else {
-			$this->setCountryId($v->getId());
-		}
-
-
-		$this->aTerm = $v;
-	}
-
-
-	
-	public function getTerm($con = null)
-	{
-				include_once 'lib/model/om/BaseTermPeer.php';
-
-		if ($this->aTerm === null && ($this->country_id !== null)) {
-
-			$this->aTerm = TermPeer::retrieveByPK($this->country_id, $con);
-
-			
-		}
-		return $this->aTerm;
-	}
-
-
-  public function __call($method, $arguments)
+  public static function addJoinActorCriteria(Criteria $criteria)
   {
-    if (!$callable = sfMixer::getCallable('BaseContactInformation:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BaseContactInformation::%s', $method));
-    }
+    $criteria->addJoin(QubitContactInformation::ACTOR_ID, QubitActor::ID);
 
-    array_unshift($arguments, $this);
-
-    return call_user_func_array($callable, $arguments);
+    return $criteria;
   }
 
+  public function getActor(array $options = array())
+  {
+    return $this->actor = QubitActor::getById($this->actorId, $options);
+  }
 
-} 
+  public function setActor(QubitActor $actor)
+  {
+    $this->actorId = $actor->getId();
+
+    return $this;
+  }
+
+  public static function addContactInformationI18nsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitContactInformationI18n::ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getContactInformationI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addContactInformationI18nsCriteriaById($criteria, $id);
+
+    return QubitContactInformationI18n::get($criteria, $options);
+  }
+
+  public function addContactInformationI18nsCriteria(Criteria $criteria)
+  {
+    return self::addContactInformationI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $contactInformationI18ns = null;
+
+  public function getContactInformationI18ns(array $options = array())
+  {
+    if (!isset($this->contactInformationI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->contactInformationI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->contactInformationI18ns = self::getContactInformationI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->contactInformationI18ns;
+  }
+
+  public function getContactType(array $options = array())
+  {
+    return $this->getCurrentContactInformationI18n($options)->getContactType();
+  }
+
+  public function setContactType($value, array $options = array())
+  {
+    $this->getCurrentContactInformationI18n($options)->setContactType($value);
+
+    return $this;
+  }
+
+  public function getCity(array $options = array())
+  {
+    return $this->getCurrentContactInformationI18n($options)->getCity();
+  }
+
+  public function setCity($value, array $options = array())
+  {
+    $this->getCurrentContactInformationI18n($options)->setCity($value);
+
+    return $this;
+  }
+
+  public function getRegion(array $options = array())
+  {
+    return $this->getCurrentContactInformationI18n($options)->getRegion();
+  }
+
+  public function setRegion($value, array $options = array())
+  {
+    $this->getCurrentContactInformationI18n($options)->setRegion($value);
+
+    return $this;
+  }
+
+  public function getNote(array $options = array())
+  {
+    return $this->getCurrentContactInformationI18n($options)->getNote();
+  }
+
+  public function setNote($value, array $options = array())
+  {
+    $this->getCurrentContactInformationI18n($options)->setNote($value);
+
+    return $this;
+  }
+
+  public function getCurrentContactInformationI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->contactInformationI18ns[$options['culture']]))
+    {
+      if (null === $contactInformationI18n = QubitContactInformationI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $contactInformationI18n = new QubitContactInformationI18n;
+        $contactInformationI18n->setCulture($options['culture']);
+      }
+      $this->contactInformationI18ns[$options['culture']] = $contactInformationI18n;
+    }
+
+    return $this->contactInformationI18ns[$options['culture']];
+  }
+}
+
+BasePeer::getMapBuilder('lib.model.map.ContactInformationMapBuilder');

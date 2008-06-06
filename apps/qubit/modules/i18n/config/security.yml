@@ -1,14 +1,18 @@
-﻿update:
+update:
   is_secure:   on
-  credentials: [ administrator ]
+  credentials: translator
 
-delete:
-  is_secure:   on
-  credentials: [ administrator ]
+listDefaultContentTranslation:
+  is_secure:  on  
+  credentials: translator
 
-list:
-  is_secure:   on
-  credentials: [ administrator ]
+listNewContentTranslation:
+  is_secure:  on  
+  credentials: translator
+
+listUserInterfaceTranslation:
+  is_secure:  on  
+  credentials: translator
 
 all:
-  is_secure:   on
+  is_secure:   off

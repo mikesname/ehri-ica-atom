@@ -1,7584 +1,2080 @@
 <?php
 
-
-abstract class BaseTerm extends BaseObject  implements Persistent {
-
-
-	
-	protected static $peer;
-
-
-	
-	protected $id;
-
-
-	
-	protected $taxonomy_id;
-
-
-	
-	protected $term_name;
-
-
-	
-	protected $scope_note;
-
-
-	
-	protected $code_alpha;
-
-
-	
-	protected $code_alpha2;
-
-
-	
-	protected $code_numeric;
-
-
-	
-	protected $sort_order;
-
-
-	
-	protected $source;
-
-
-	
-	protected $locked;
-
-
-	
-	protected $tree_id;
-
-
-	
-	protected $tree_left_id;
-
-
-	
-	protected $tree_right_id;
-
-
-	
-	protected $tree_parent_id;
-
-
-	
-	protected $created_at;
-
-
-	
-	protected $updated_at;
-
-	
-	protected $aTaxonomy;
-
-	
-	protected $collInformationObjectsRelatedByLevelOfDescriptionId;
-
-	
-	protected $lastInformationObjectRelatedByLevelOfDescriptionIdCriteria = null;
-
-	
-	protected $collInformationObjectsRelatedByCollectionTypeId;
-
-	
-	protected $lastInformationObjectRelatedByCollectionTypeIdCriteria = null;
-
-	
-	protected $collInformationObjectTermRelationshipsRelatedByTermId;
-
-	
-	protected $lastInformationObjectTermRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collInformationObjectTermRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $collInformationObjectRecursiveRelationships;
-
-	
-	protected $lastInformationObjectRecursiveRelationshipCriteria = null;
-
-	
-	protected $collNotes;
-
-	
-	protected $lastNoteCriteria = null;
-
-	
-	protected $collDigitalObjectsRelatedByUseageId;
-
-	
-	protected $lastDigitalObjectRelatedByUseageIdCriteria = null;
-
-	
-	protected $collDigitalObjectsRelatedByMimeTypeId;
-
-	
-	protected $lastDigitalObjectRelatedByMimeTypeIdCriteria = null;
-
-	
-	protected $collDigitalObjectsRelatedByMediaTypeId;
-
-	
-	protected $lastDigitalObjectRelatedByMediaTypeIdCriteria = null;
-
-	
-	protected $collDigitalObjectsRelatedByChecksumTypeId;
-
-	
-	protected $lastDigitalObjectRelatedByChecksumTypeIdCriteria = null;
-
-	
-	protected $collDigitalObjectsRelatedByLocationId;
-
-	
-	protected $lastDigitalObjectRelatedByLocationIdCriteria = null;
-
-	
-	protected $collDigitalObjectRecursiveRelationships;
-
-	
-	protected $lastDigitalObjectRecursiveRelationshipCriteria = null;
-
-	
-	protected $collPhysicalObjects;
-
-	
-	protected $lastPhysicalObjectCriteria = null;
-
-	
-	protected $collActorsRelatedByTypeOfEntityId;
-
-	
-	protected $lastActorRelatedByTypeOfEntityIdCriteria = null;
-
-	
-	protected $collActorsRelatedByStatusId;
-
-	
-	protected $lastActorRelatedByStatusIdCriteria = null;
-
-	
-	protected $collActorsRelatedByLevelOfDetailId;
-
-	
-	protected $lastActorRelatedByLevelOfDetailIdCriteria = null;
-
-	
-	protected $collActorNames;
-
-	
-	protected $lastActorNameCriteria = null;
-
-	
-	protected $collActorRecursiveRelationships;
-
-	
-	protected $lastActorRecursiveRelationshipCriteria = null;
-
-	
-	protected $collActorTermRelationshipsRelatedByTermId;
-
-	
-	protected $lastActorTermRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collActorTermRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $collContactInformations;
-
-	
-	protected $lastContactInformationCriteria = null;
-
-	
-	protected $collPlacesRelatedByTermId;
-
-	
-	protected $lastPlaceRelatedByTermIdCriteria = null;
-
-	
-	protected $collPlacesRelatedByCountryId;
-
-	
-	protected $lastPlaceRelatedByCountryIdCriteria = null;
-
-	
-	protected $collPlacesRelatedByPlaceTypeId;
-
-	
-	protected $lastPlaceRelatedByPlaceTypeIdCriteria = null;
-
-	
-	protected $collPlaceMapRelationships;
-
-	
-	protected $lastPlaceMapRelationshipCriteria = null;
-
-	
-	protected $collRepositorysRelatedByRepositoryTypeId;
-
-	
-	protected $lastRepositoryRelatedByRepositoryTypeIdCriteria = null;
-
-	
-	protected $collRepositorysRelatedByStatusId;
-
-	
-	protected $lastRepositoryRelatedByStatusIdCriteria = null;
-
-	
-	protected $collRepositorysRelatedByLevelOfDetailId;
-
-	
-	protected $lastRepositoryRelatedByLevelOfDetailIdCriteria = null;
-
-	
-	protected $collRepositoryTermRelationshipsRelatedByTermId;
-
-	
-	protected $lastRepositoryTermRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collRepositoryTermRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $collTermRecursiveRelationshipsRelatedByTermId;
-
-	
-	protected $lastTermRecursiveRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collTermRecursiveRelationshipsRelatedByRelatedTermId;
-
-	
-	protected $lastTermRecursiveRelationshipRelatedByRelatedTermIdCriteria = null;
-
-	
-	protected $collTermRecursiveRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastTermRecursiveRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $collEventsRelatedByEventTypeId;
-
-	
-	protected $lastEventRelatedByEventTypeIdCriteria = null;
-
-	
-	protected $collEventsRelatedByActorRoleId;
-
-	
-	protected $lastEventRelatedByActorRoleIdCriteria = null;
-
-	
-	protected $collEventTermRelationshipsRelatedByTermId;
-
-	
-	protected $lastEventTermRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collEventTermRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $collSystemEvents;
-
-	
-	protected $lastSystemEventCriteria = null;
-
-	
-	protected $collHistoricalEventsRelatedByTermId;
-
-	
-	protected $lastHistoricalEventRelatedByTermIdCriteria = null;
-
-	
-	protected $collHistoricalEventsRelatedByHistoricalEventTypeId;
-
-	
-	protected $lastHistoricalEventRelatedByHistoricalEventTypeIdCriteria = null;
-
-	
-	protected $collFunctionDescriptionsRelatedByTermId;
-
-	
-	protected $lastFunctionDescriptionRelatedByTermIdCriteria = null;
-
-	
-	protected $collFunctionDescriptionsRelatedByFunctionDescriptionTypeId;
-
-	
-	protected $lastFunctionDescriptionRelatedByFunctionDescriptionTypeIdCriteria = null;
-
-	
-	protected $collFunctionDescriptionsRelatedByStatusId;
-
-	
-	protected $lastFunctionDescriptionRelatedByStatusIdCriteria = null;
-
-	
-	protected $collFunctionDescriptionsRelatedByLevelId;
-
-	
-	protected $lastFunctionDescriptionRelatedByLevelIdCriteria = null;
-
-	
-	protected $collRights;
-
-	
-	protected $lastRightCriteria = null;
-
-	
-	protected $collRightTermRelationshipsRelatedByTermId;
-
-	
-	protected $lastRightTermRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collRightTermRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $collRightActorRelationships;
-
-	
-	protected $lastRightActorRelationshipCriteria = null;
-
-	
-	protected $collUserTermRelationshipsRelatedByTermId;
-
-	
-	protected $lastUserTermRelationshipRelatedByTermIdCriteria = null;
-
-	
-	protected $collUserTermRelationshipsRelatedByRelationshipTypeId;
-
-	
-	protected $lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria = null;
-
-	
-	protected $alreadyInSave = false;
-
-	
-	protected $alreadyInValidation = false;
-
-	
-	public function getId()
-	{
-
-		return $this->id;
-	}
-
-	
-	public function getTaxonomyId()
-	{
-
-		return $this->taxonomy_id;
-	}
-
-	
-	public function getTermName()
-	{
-
-		return $this->term_name;
-	}
-
-	
-	public function getScopeNote()
-	{
-
-		return $this->scope_note;
-	}
-
-	
-	public function getCodeAlpha()
-	{
-
-		return $this->code_alpha;
-	}
-
-	
-	public function getCodeAlpha2()
-	{
-
-		return $this->code_alpha2;
-	}
-
-	
-	public function getCodeNumeric()
-	{
-
-		return $this->code_numeric;
-	}
-
-	
-	public function getSortOrder()
-	{
-
-		return $this->sort_order;
-	}
-
-	
-	public function getSource()
-	{
-
-		return $this->source;
-	}
-
-	
-	public function getLocked()
-	{
-
-		return $this->locked;
-	}
-
-	
-	public function getTreeId()
-	{
-
-		return $this->tree_id;
-	}
-
-	
-	public function getTreeLeftId()
-	{
-
-		return $this->tree_left_id;
-	}
-
-	
-	public function getTreeRightId()
-	{
-
-		return $this->tree_right_id;
-	}
-
-	
-	public function getTreeParentId()
-	{
-
-		return $this->tree_parent_id;
-	}
-
-	
-	public function getCreatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->created_at === null || $this->created_at === '') {
-			return null;
-		} elseif (!is_int($this->created_at)) {
-						$ts = strtotime($this->created_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [created_at] as date/time value: " . var_export($this->created_at, true));
-			}
-		} else {
-			$ts = $this->created_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function getUpdatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->updated_at === null || $this->updated_at === '') {
-			return null;
-		} elseif (!is_int($this->updated_at)) {
-						$ts = strtotime($this->updated_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [updated_at] as date/time value: " . var_export($this->updated_at, true));
-			}
-		} else {
-			$ts = $this->updated_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function setId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = TermPeer::ID;
-		}
-
-	} 
-	
-	public function setTaxonomyId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->taxonomy_id !== $v) {
-			$this->taxonomy_id = $v;
-			$this->modifiedColumns[] = TermPeer::TAXONOMY_ID;
-		}
-
-		if ($this->aTaxonomy !== null && $this->aTaxonomy->getId() !== $v) {
-			$this->aTaxonomy = null;
-		}
-
-	} 
-	
-	public function setTermName($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->term_name !== $v) {
-			$this->term_name = $v;
-			$this->modifiedColumns[] = TermPeer::TERM_NAME;
-		}
-
-	} 
-	
-	public function setScopeNote($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->scope_note !== $v) {
-			$this->scope_note = $v;
-			$this->modifiedColumns[] = TermPeer::SCOPE_NOTE;
-		}
-
-	} 
-	
-	public function setCodeAlpha($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->code_alpha !== $v) {
-			$this->code_alpha = $v;
-			$this->modifiedColumns[] = TermPeer::CODE_ALPHA;
-		}
-
-	} 
-	
-	public function setCodeAlpha2($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->code_alpha2 !== $v) {
-			$this->code_alpha2 = $v;
-			$this->modifiedColumns[] = TermPeer::CODE_ALPHA2;
-		}
-
-	} 
-	
-	public function setCodeNumeric($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->code_numeric !== $v) {
-			$this->code_numeric = $v;
-			$this->modifiedColumns[] = TermPeer::CODE_NUMERIC;
-		}
-
-	} 
-	
-	public function setSortOrder($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->sort_order !== $v) {
-			$this->sort_order = $v;
-			$this->modifiedColumns[] = TermPeer::SORT_ORDER;
-		}
-
-	} 
-	
-	public function setSource($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->source !== $v) {
-			$this->source = $v;
-			$this->modifiedColumns[] = TermPeer::SOURCE;
-		}
-
-	} 
-	
-	public function setLocked($v)
-	{
-
-		if ($this->locked !== $v) {
-			$this->locked = $v;
-			$this->modifiedColumns[] = TermPeer::LOCKED;
-		}
-
-	} 
-	
-	public function setTreeId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_id !== $v) {
-			$this->tree_id = $v;
-			$this->modifiedColumns[] = TermPeer::TREE_ID;
-		}
-
-	} 
-	
-	public function setTreeLeftId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_left_id !== $v) {
-			$this->tree_left_id = $v;
-			$this->modifiedColumns[] = TermPeer::TREE_LEFT_ID;
-		}
-
-	} 
-	
-	public function setTreeRightId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_right_id !== $v) {
-			$this->tree_right_id = $v;
-			$this->modifiedColumns[] = TermPeer::TREE_RIGHT_ID;
-		}
-
-	} 
-	
-	public function setTreeParentId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->tree_parent_id !== $v) {
-			$this->tree_parent_id = $v;
-			$this->modifiedColumns[] = TermPeer::TREE_PARENT_ID;
-		}
-
-	} 
-	
-	public function setCreatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [created_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->created_at !== $ts) {
-			$this->created_at = $ts;
-			$this->modifiedColumns[] = TermPeer::CREATED_AT;
-		}
-
-	} 
-	
-	public function setUpdatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [updated_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->updated_at !== $ts) {
-			$this->updated_at = $ts;
-			$this->modifiedColumns[] = TermPeer::UPDATED_AT;
-		}
-
-	} 
-	
-	public function hydrate(ResultSet $rs, $startcol = 1)
-	{
-		try {
-
-			$this->id = $rs->getInt($startcol + 0);
-
-			$this->taxonomy_id = $rs->getInt($startcol + 1);
-
-			$this->term_name = $rs->getString($startcol + 2);
-
-			$this->scope_note = $rs->getString($startcol + 3);
-
-			$this->code_alpha = $rs->getString($startcol + 4);
-
-			$this->code_alpha2 = $rs->getString($startcol + 5);
-
-			$this->code_numeric = $rs->getInt($startcol + 6);
-
-			$this->sort_order = $rs->getInt($startcol + 7);
-
-			$this->source = $rs->getString($startcol + 8);
-
-			$this->locked = $rs->getBoolean($startcol + 9);
-
-			$this->tree_id = $rs->getInt($startcol + 10);
-
-			$this->tree_left_id = $rs->getInt($startcol + 11);
-
-			$this->tree_right_id = $rs->getInt($startcol + 12);
-
-			$this->tree_parent_id = $rs->getInt($startcol + 13);
-
-			$this->created_at = $rs->getTimestamp($startcol + 14, null);
-
-			$this->updated_at = $rs->getTimestamp($startcol + 15, null);
-
-			$this->resetModified();
-
-			$this->setNew(false);
-
-						return $startcol + 16; 
-		} catch (Exception $e) {
-			throw new PropelException("Error populating Term object", $e);
-		}
-	}
-
-	
-	public function delete($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseTerm:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(TermPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			TermPeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	
-
-    foreach (sfMixer::getCallables('BaseTerm:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
-  }
-	
-	public function save($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseTerm:save:pre') as $callable)
-    {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
-      {
-        return $affectedRows;
-      }
-    }
-
-
-    if ($this->isNew() && !$this->isColumnModified(TermPeer::CREATED_AT))
-    {
-      $this->setCreatedAt(time());
-    }
-
-    if ($this->isModified() && !$this->isColumnModified(TermPeer::UPDATED_AT))
-    {
-      $this->setUpdatedAt(time());
-    }
-
-		if ($this->isDeleted()) {
-			throw new PropelException("You cannot save an object that has been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(TermPeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			$affectedRows = $this->doSave($con);
-			$con->commit();
-    foreach (sfMixer::getCallables('BaseTerm:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
-
-			return $affectedRows;
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	}
-
-	
-	protected function doSave($con)
-	{
-		$affectedRows = 0; 		if (!$this->alreadyInSave) {
-			$this->alreadyInSave = true;
-
-
-												
-			if ($this->aTaxonomy !== null) {
-				if ($this->aTaxonomy->isModified()) {
-					$affectedRows += $this->aTaxonomy->save($con);
-				}
-				$this->setTaxonomy($this->aTaxonomy);
-			}
-
-
-						if ($this->isModified()) {
-				if ($this->isNew()) {
-					$pk = TermPeer::doInsert($this, $con);
-					$affectedRows += 1; 										 										 
-					$this->setId($pk);  
-					$this->setNew(false);
-				} else {
-					$affectedRows += TermPeer::doUpdate($this, $con);
-				}
-				$this->resetModified(); 			}
-
-			if ($this->collInformationObjectsRelatedByLevelOfDescriptionId !== null) {
-				foreach($this->collInformationObjectsRelatedByLevelOfDescriptionId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collInformationObjectsRelatedByCollectionTypeId !== null) {
-				foreach($this->collInformationObjectsRelatedByCollectionTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collInformationObjectTermRelationshipsRelatedByTermId !== null) {
-				foreach($this->collInformationObjectTermRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collInformationObjectRecursiveRelationships !== null) {
-				foreach($this->collInformationObjectRecursiveRelationships as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collNotes !== null) {
-				foreach($this->collNotes as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collDigitalObjectsRelatedByUseageId !== null) {
-				foreach($this->collDigitalObjectsRelatedByUseageId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collDigitalObjectsRelatedByMimeTypeId !== null) {
-				foreach($this->collDigitalObjectsRelatedByMimeTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collDigitalObjectsRelatedByMediaTypeId !== null) {
-				foreach($this->collDigitalObjectsRelatedByMediaTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collDigitalObjectsRelatedByChecksumTypeId !== null) {
-				foreach($this->collDigitalObjectsRelatedByChecksumTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collDigitalObjectsRelatedByLocationId !== null) {
-				foreach($this->collDigitalObjectsRelatedByLocationId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collDigitalObjectRecursiveRelationships !== null) {
-				foreach($this->collDigitalObjectRecursiveRelationships as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collPhysicalObjects !== null) {
-				foreach($this->collPhysicalObjects as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorsRelatedByTypeOfEntityId !== null) {
-				foreach($this->collActorsRelatedByTypeOfEntityId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorsRelatedByStatusId !== null) {
-				foreach($this->collActorsRelatedByStatusId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorsRelatedByLevelOfDetailId !== null) {
-				foreach($this->collActorsRelatedByLevelOfDetailId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorNames !== null) {
-				foreach($this->collActorNames as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorRecursiveRelationships !== null) {
-				foreach($this->collActorRecursiveRelationships as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorTermRelationshipsRelatedByTermId !== null) {
-				foreach($this->collActorTermRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collActorTermRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collActorTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collContactInformations !== null) {
-				foreach($this->collContactInformations as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collPlacesRelatedByTermId !== null) {
-				foreach($this->collPlacesRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collPlacesRelatedByCountryId !== null) {
-				foreach($this->collPlacesRelatedByCountryId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collPlacesRelatedByPlaceTypeId !== null) {
-				foreach($this->collPlacesRelatedByPlaceTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collPlaceMapRelationships !== null) {
-				foreach($this->collPlaceMapRelationships as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRepositorysRelatedByRepositoryTypeId !== null) {
-				foreach($this->collRepositorysRelatedByRepositoryTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRepositorysRelatedByStatusId !== null) {
-				foreach($this->collRepositorysRelatedByStatusId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRepositorysRelatedByLevelOfDetailId !== null) {
-				foreach($this->collRepositorysRelatedByLevelOfDetailId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRepositoryTermRelationshipsRelatedByTermId !== null) {
-				foreach($this->collRepositoryTermRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collTermRecursiveRelationshipsRelatedByTermId !== null) {
-				foreach($this->collTermRecursiveRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collTermRecursiveRelationshipsRelatedByRelatedTermId !== null) {
-				foreach($this->collTermRecursiveRelationshipsRelatedByRelatedTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collEventsRelatedByEventTypeId !== null) {
-				foreach($this->collEventsRelatedByEventTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collEventsRelatedByActorRoleId !== null) {
-				foreach($this->collEventsRelatedByActorRoleId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collEventTermRelationshipsRelatedByTermId !== null) {
-				foreach($this->collEventTermRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collEventTermRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collEventTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collSystemEvents !== null) {
-				foreach($this->collSystemEvents as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collHistoricalEventsRelatedByTermId !== null) {
-				foreach($this->collHistoricalEventsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collHistoricalEventsRelatedByHistoricalEventTypeId !== null) {
-				foreach($this->collHistoricalEventsRelatedByHistoricalEventTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collFunctionDescriptionsRelatedByTermId !== null) {
-				foreach($this->collFunctionDescriptionsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId !== null) {
-				foreach($this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collFunctionDescriptionsRelatedByStatusId !== null) {
-				foreach($this->collFunctionDescriptionsRelatedByStatusId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collFunctionDescriptionsRelatedByLevelId !== null) {
-				foreach($this->collFunctionDescriptionsRelatedByLevelId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRights !== null) {
-				foreach($this->collRights as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRightTermRelationshipsRelatedByTermId !== null) {
-				foreach($this->collRightTermRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRightTermRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collRightTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collRightActorRelationships !== null) {
-				foreach($this->collRightActorRelationships as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collUserTermRelationshipsRelatedByTermId !== null) {
-				foreach($this->collUserTermRelationshipsRelatedByTermId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			if ($this->collUserTermRelationshipsRelatedByRelationshipTypeId !== null) {
-				foreach($this->collUserTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-					if (!$referrerFK->isDeleted()) {
-						$affectedRows += $referrerFK->save($con);
-					}
-				}
-			}
-
-			$this->alreadyInSave = false;
-		}
-		return $affectedRows;
-	} 
-	
-	protected $validationFailures = array();
-
-	
-	public function getValidationFailures()
-	{
-		return $this->validationFailures;
-	}
-
-	
-	public function validate($columns = null)
-	{
-		$res = $this->doValidate($columns);
-		if ($res === true) {
-			$this->validationFailures = array();
-			return true;
-		} else {
-			$this->validationFailures = $res;
-			return false;
-		}
-	}
-
-	
-	protected function doValidate($columns = null)
-	{
-		if (!$this->alreadyInValidation) {
-			$this->alreadyInValidation = true;
-			$retval = null;
-
-			$failureMap = array();
-
-
-												
-			if ($this->aTaxonomy !== null) {
-				if (!$this->aTaxonomy->validate($columns)) {
-					$failureMap = array_merge($failureMap, $this->aTaxonomy->getValidationFailures());
-				}
-			}
-
-
-			if (($retval = TermPeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
-			}
-
-
-				if ($this->collInformationObjectsRelatedByLevelOfDescriptionId !== null) {
-					foreach($this->collInformationObjectsRelatedByLevelOfDescriptionId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collInformationObjectsRelatedByCollectionTypeId !== null) {
-					foreach($this->collInformationObjectsRelatedByCollectionTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collInformationObjectTermRelationshipsRelatedByTermId !== null) {
-					foreach($this->collInformationObjectTermRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collInformationObjectRecursiveRelationships !== null) {
-					foreach($this->collInformationObjectRecursiveRelationships as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collNotes !== null) {
-					foreach($this->collNotes as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collDigitalObjectsRelatedByUseageId !== null) {
-					foreach($this->collDigitalObjectsRelatedByUseageId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collDigitalObjectsRelatedByMimeTypeId !== null) {
-					foreach($this->collDigitalObjectsRelatedByMimeTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collDigitalObjectsRelatedByMediaTypeId !== null) {
-					foreach($this->collDigitalObjectsRelatedByMediaTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collDigitalObjectsRelatedByChecksumTypeId !== null) {
-					foreach($this->collDigitalObjectsRelatedByChecksumTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collDigitalObjectsRelatedByLocationId !== null) {
-					foreach($this->collDigitalObjectsRelatedByLocationId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collDigitalObjectRecursiveRelationships !== null) {
-					foreach($this->collDigitalObjectRecursiveRelationships as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collPhysicalObjects !== null) {
-					foreach($this->collPhysicalObjects as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorsRelatedByTypeOfEntityId !== null) {
-					foreach($this->collActorsRelatedByTypeOfEntityId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorsRelatedByStatusId !== null) {
-					foreach($this->collActorsRelatedByStatusId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorsRelatedByLevelOfDetailId !== null) {
-					foreach($this->collActorsRelatedByLevelOfDetailId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorNames !== null) {
-					foreach($this->collActorNames as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorRecursiveRelationships !== null) {
-					foreach($this->collActorRecursiveRelationships as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorTermRelationshipsRelatedByTermId !== null) {
-					foreach($this->collActorTermRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collActorTermRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collActorTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collContactInformations !== null) {
-					foreach($this->collContactInformations as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collPlacesRelatedByTermId !== null) {
-					foreach($this->collPlacesRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collPlacesRelatedByCountryId !== null) {
-					foreach($this->collPlacesRelatedByCountryId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collPlacesRelatedByPlaceTypeId !== null) {
-					foreach($this->collPlacesRelatedByPlaceTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collPlaceMapRelationships !== null) {
-					foreach($this->collPlaceMapRelationships as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRepositorysRelatedByRepositoryTypeId !== null) {
-					foreach($this->collRepositorysRelatedByRepositoryTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRepositorysRelatedByStatusId !== null) {
-					foreach($this->collRepositorysRelatedByStatusId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRepositorysRelatedByLevelOfDetailId !== null) {
-					foreach($this->collRepositorysRelatedByLevelOfDetailId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRepositoryTermRelationshipsRelatedByTermId !== null) {
-					foreach($this->collRepositoryTermRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collTermRecursiveRelationshipsRelatedByTermId !== null) {
-					foreach($this->collTermRecursiveRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collTermRecursiveRelationshipsRelatedByRelatedTermId !== null) {
-					foreach($this->collTermRecursiveRelationshipsRelatedByRelatedTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collEventsRelatedByEventTypeId !== null) {
-					foreach($this->collEventsRelatedByEventTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collEventsRelatedByActorRoleId !== null) {
-					foreach($this->collEventsRelatedByActorRoleId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collEventTermRelationshipsRelatedByTermId !== null) {
-					foreach($this->collEventTermRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collEventTermRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collEventTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collSystemEvents !== null) {
-					foreach($this->collSystemEvents as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collHistoricalEventsRelatedByTermId !== null) {
-					foreach($this->collHistoricalEventsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collHistoricalEventsRelatedByHistoricalEventTypeId !== null) {
-					foreach($this->collHistoricalEventsRelatedByHistoricalEventTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collFunctionDescriptionsRelatedByTermId !== null) {
-					foreach($this->collFunctionDescriptionsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId !== null) {
-					foreach($this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collFunctionDescriptionsRelatedByStatusId !== null) {
-					foreach($this->collFunctionDescriptionsRelatedByStatusId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collFunctionDescriptionsRelatedByLevelId !== null) {
-					foreach($this->collFunctionDescriptionsRelatedByLevelId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRights !== null) {
-					foreach($this->collRights as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRightTermRelationshipsRelatedByTermId !== null) {
-					foreach($this->collRightTermRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRightTermRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collRightTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collRightActorRelationships !== null) {
-					foreach($this->collRightActorRelationships as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collUserTermRelationshipsRelatedByTermId !== null) {
-					foreach($this->collUserTermRelationshipsRelatedByTermId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-				if ($this->collUserTermRelationshipsRelatedByRelationshipTypeId !== null) {
-					foreach($this->collUserTermRelationshipsRelatedByRelationshipTypeId as $referrerFK) {
-						if (!$referrerFK->validate($columns)) {
-							$failureMap = array_merge($failureMap, $referrerFK->getValidationFailures());
-						}
-					}
-				}
-
-
-			$this->alreadyInValidation = false;
-		}
-
-		return (!empty($failureMap) ? $failureMap : true);
-	}
-
-	
-	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = TermPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->getByPosition($pos);
-	}
-
-	
-	public function getByPosition($pos)
-	{
-		switch($pos) {
-			case 0:
-				return $this->getId();
-				break;
-			case 1:
-				return $this->getTaxonomyId();
-				break;
-			case 2:
-				return $this->getTermName();
-				break;
-			case 3:
-				return $this->getScopeNote();
-				break;
-			case 4:
-				return $this->getCodeAlpha();
-				break;
-			case 5:
-				return $this->getCodeAlpha2();
-				break;
-			case 6:
-				return $this->getCodeNumeric();
-				break;
-			case 7:
-				return $this->getSortOrder();
-				break;
-			case 8:
-				return $this->getSource();
-				break;
-			case 9:
-				return $this->getLocked();
-				break;
-			case 10:
-				return $this->getTreeId();
-				break;
-			case 11:
-				return $this->getTreeLeftId();
-				break;
-			case 12:
-				return $this->getTreeRightId();
-				break;
-			case 13:
-				return $this->getTreeParentId();
-				break;
-			case 14:
-				return $this->getCreatedAt();
-				break;
-			case 15:
-				return $this->getUpdatedAt();
-				break;
-			default:
-				return null;
-				break;
-		} 	}
-
-	
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = TermPeer::getFieldNames($keyType);
-		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getTaxonomyId(),
-			$keys[2] => $this->getTermName(),
-			$keys[3] => $this->getScopeNote(),
-			$keys[4] => $this->getCodeAlpha(),
-			$keys[5] => $this->getCodeAlpha2(),
-			$keys[6] => $this->getCodeNumeric(),
-			$keys[7] => $this->getSortOrder(),
-			$keys[8] => $this->getSource(),
-			$keys[9] => $this->getLocked(),
-			$keys[10] => $this->getTreeId(),
-			$keys[11] => $this->getTreeLeftId(),
-			$keys[12] => $this->getTreeRightId(),
-			$keys[13] => $this->getTreeParentId(),
-			$keys[14] => $this->getCreatedAt(),
-			$keys[15] => $this->getUpdatedAt(),
-		);
-		return $result;
-	}
-
-	
-	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = TermPeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->setByPosition($pos, $value);
-	}
-
-	
-	public function setByPosition($pos, $value)
-	{
-		switch($pos) {
-			case 0:
-				$this->setId($value);
-				break;
-			case 1:
-				$this->setTaxonomyId($value);
-				break;
-			case 2:
-				$this->setTermName($value);
-				break;
-			case 3:
-				$this->setScopeNote($value);
-				break;
-			case 4:
-				$this->setCodeAlpha($value);
-				break;
-			case 5:
-				$this->setCodeAlpha2($value);
-				break;
-			case 6:
-				$this->setCodeNumeric($value);
-				break;
-			case 7:
-				$this->setSortOrder($value);
-				break;
-			case 8:
-				$this->setSource($value);
-				break;
-			case 9:
-				$this->setLocked($value);
-				break;
-			case 10:
-				$this->setTreeId($value);
-				break;
-			case 11:
-				$this->setTreeLeftId($value);
-				break;
-			case 12:
-				$this->setTreeRightId($value);
-				break;
-			case 13:
-				$this->setTreeParentId($value);
-				break;
-			case 14:
-				$this->setCreatedAt($value);
-				break;
-			case 15:
-				$this->setUpdatedAt($value);
-				break;
-		} 	}
-
-	
-	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = TermPeer::getFieldNames($keyType);
-
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setTaxonomyId($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setTermName($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setScopeNote($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setCodeAlpha($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setCodeAlpha2($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setCodeNumeric($arr[$keys[6]]);
-		if (array_key_exists($keys[7], $arr)) $this->setSortOrder($arr[$keys[7]]);
-		if (array_key_exists($keys[8], $arr)) $this->setSource($arr[$keys[8]]);
-		if (array_key_exists($keys[9], $arr)) $this->setLocked($arr[$keys[9]]);
-		if (array_key_exists($keys[10], $arr)) $this->setTreeId($arr[$keys[10]]);
-		if (array_key_exists($keys[11], $arr)) $this->setTreeLeftId($arr[$keys[11]]);
-		if (array_key_exists($keys[12], $arr)) $this->setTreeRightId($arr[$keys[12]]);
-		if (array_key_exists($keys[13], $arr)) $this->setTreeParentId($arr[$keys[13]]);
-		if (array_key_exists($keys[14], $arr)) $this->setCreatedAt($arr[$keys[14]]);
-		if (array_key_exists($keys[15], $arr)) $this->setUpdatedAt($arr[$keys[15]]);
-	}
-
-	
-	public function buildCriteria()
-	{
-		$criteria = new Criteria(TermPeer::DATABASE_NAME);
-
-		if ($this->isColumnModified(TermPeer::ID)) $criteria->add(TermPeer::ID, $this->id);
-		if ($this->isColumnModified(TermPeer::TAXONOMY_ID)) $criteria->add(TermPeer::TAXONOMY_ID, $this->taxonomy_id);
-		if ($this->isColumnModified(TermPeer::TERM_NAME)) $criteria->add(TermPeer::TERM_NAME, $this->term_name);
-		if ($this->isColumnModified(TermPeer::SCOPE_NOTE)) $criteria->add(TermPeer::SCOPE_NOTE, $this->scope_note);
-		if ($this->isColumnModified(TermPeer::CODE_ALPHA)) $criteria->add(TermPeer::CODE_ALPHA, $this->code_alpha);
-		if ($this->isColumnModified(TermPeer::CODE_ALPHA2)) $criteria->add(TermPeer::CODE_ALPHA2, $this->code_alpha2);
-		if ($this->isColumnModified(TermPeer::CODE_NUMERIC)) $criteria->add(TermPeer::CODE_NUMERIC, $this->code_numeric);
-		if ($this->isColumnModified(TermPeer::SORT_ORDER)) $criteria->add(TermPeer::SORT_ORDER, $this->sort_order);
-		if ($this->isColumnModified(TermPeer::SOURCE)) $criteria->add(TermPeer::SOURCE, $this->source);
-		if ($this->isColumnModified(TermPeer::LOCKED)) $criteria->add(TermPeer::LOCKED, $this->locked);
-		if ($this->isColumnModified(TermPeer::TREE_ID)) $criteria->add(TermPeer::TREE_ID, $this->tree_id);
-		if ($this->isColumnModified(TermPeer::TREE_LEFT_ID)) $criteria->add(TermPeer::TREE_LEFT_ID, $this->tree_left_id);
-		if ($this->isColumnModified(TermPeer::TREE_RIGHT_ID)) $criteria->add(TermPeer::TREE_RIGHT_ID, $this->tree_right_id);
-		if ($this->isColumnModified(TermPeer::TREE_PARENT_ID)) $criteria->add(TermPeer::TREE_PARENT_ID, $this->tree_parent_id);
-		if ($this->isColumnModified(TermPeer::CREATED_AT)) $criteria->add(TermPeer::CREATED_AT, $this->created_at);
-		if ($this->isColumnModified(TermPeer::UPDATED_AT)) $criteria->add(TermPeer::UPDATED_AT, $this->updated_at);
-
-		return $criteria;
-	}
-
-	
-	public function buildPkeyCriteria()
-	{
-		$criteria = new Criteria(TermPeer::DATABASE_NAME);
-
-		$criteria->add(TermPeer::ID, $this->id);
-
-		return $criteria;
-	}
-
-	
-	public function getPrimaryKey()
-	{
-		return $this->getId();
-	}
-
-	
-	public function setPrimaryKey($key)
-	{
-		$this->setId($key);
-	}
-
-	
-	public function copyInto($copyObj, $deepCopy = false)
-	{
-
-		$copyObj->setTaxonomyId($this->taxonomy_id);
-
-		$copyObj->setTermName($this->term_name);
-
-		$copyObj->setScopeNote($this->scope_note);
-
-		$copyObj->setCodeAlpha($this->code_alpha);
-
-		$copyObj->setCodeAlpha2($this->code_alpha2);
-
-		$copyObj->setCodeNumeric($this->code_numeric);
-
-		$copyObj->setSortOrder($this->sort_order);
-
-		$copyObj->setSource($this->source);
-
-		$copyObj->setLocked($this->locked);
-
-		$copyObj->setTreeId($this->tree_id);
-
-		$copyObj->setTreeLeftId($this->tree_left_id);
-
-		$copyObj->setTreeRightId($this->tree_right_id);
-
-		$copyObj->setTreeParentId($this->tree_parent_id);
-
-		$copyObj->setCreatedAt($this->created_at);
-
-		$copyObj->setUpdatedAt($this->updated_at);
-
-
-		if ($deepCopy) {
-									$copyObj->setNew(false);
-
-			foreach($this->getInformationObjectsRelatedByLevelOfDescriptionId() as $relObj) {
-				$copyObj->addInformationObjectRelatedByLevelOfDescriptionId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getInformationObjectsRelatedByCollectionTypeId() as $relObj) {
-				$copyObj->addInformationObjectRelatedByCollectionTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getInformationObjectTermRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addInformationObjectTermRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getInformationObjectTermRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addInformationObjectTermRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getInformationObjectRecursiveRelationships() as $relObj) {
-				$copyObj->addInformationObjectRecursiveRelationship($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getNotes() as $relObj) {
-				$copyObj->addNote($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getDigitalObjectsRelatedByUseageId() as $relObj) {
-				$copyObj->addDigitalObjectRelatedByUseageId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getDigitalObjectsRelatedByMimeTypeId() as $relObj) {
-				$copyObj->addDigitalObjectRelatedByMimeTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getDigitalObjectsRelatedByMediaTypeId() as $relObj) {
-				$copyObj->addDigitalObjectRelatedByMediaTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getDigitalObjectsRelatedByChecksumTypeId() as $relObj) {
-				$copyObj->addDigitalObjectRelatedByChecksumTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getDigitalObjectsRelatedByLocationId() as $relObj) {
-				$copyObj->addDigitalObjectRelatedByLocationId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getDigitalObjectRecursiveRelationships() as $relObj) {
-				$copyObj->addDigitalObjectRecursiveRelationship($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getPhysicalObjects() as $relObj) {
-				$copyObj->addPhysicalObject($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorsRelatedByTypeOfEntityId() as $relObj) {
-				$copyObj->addActorRelatedByTypeOfEntityId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorsRelatedByStatusId() as $relObj) {
-				$copyObj->addActorRelatedByStatusId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorsRelatedByLevelOfDetailId() as $relObj) {
-				$copyObj->addActorRelatedByLevelOfDetailId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorNames() as $relObj) {
-				$copyObj->addActorName($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorRecursiveRelationships() as $relObj) {
-				$copyObj->addActorRecursiveRelationship($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorTermRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addActorTermRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getActorTermRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addActorTermRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getContactInformations() as $relObj) {
-				$copyObj->addContactInformation($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getPlacesRelatedByTermId() as $relObj) {
-				$copyObj->addPlaceRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getPlacesRelatedByCountryId() as $relObj) {
-				$copyObj->addPlaceRelatedByCountryId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getPlacesRelatedByPlaceTypeId() as $relObj) {
-				$copyObj->addPlaceRelatedByPlaceTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getPlaceMapRelationships() as $relObj) {
-				$copyObj->addPlaceMapRelationship($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRepositorysRelatedByRepositoryTypeId() as $relObj) {
-				$copyObj->addRepositoryRelatedByRepositoryTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRepositorysRelatedByStatusId() as $relObj) {
-				$copyObj->addRepositoryRelatedByStatusId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRepositorysRelatedByLevelOfDetailId() as $relObj) {
-				$copyObj->addRepositoryRelatedByLevelOfDetailId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRepositoryTermRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addRepositoryTermRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRepositoryTermRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addRepositoryTermRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getTermRecursiveRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addTermRecursiveRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getTermRecursiveRelationshipsRelatedByRelatedTermId() as $relObj) {
-				$copyObj->addTermRecursiveRelationshipRelatedByRelatedTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getTermRecursiveRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addTermRecursiveRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getEventsRelatedByEventTypeId() as $relObj) {
-				$copyObj->addEventRelatedByEventTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getEventsRelatedByActorRoleId() as $relObj) {
-				$copyObj->addEventRelatedByActorRoleId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getEventTermRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addEventTermRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getEventTermRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addEventTermRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getSystemEvents() as $relObj) {
-				$copyObj->addSystemEvent($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getHistoricalEventsRelatedByTermId() as $relObj) {
-				$copyObj->addHistoricalEventRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getHistoricalEventsRelatedByHistoricalEventTypeId() as $relObj) {
-				$copyObj->addHistoricalEventRelatedByHistoricalEventTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getFunctionDescriptionsRelatedByTermId() as $relObj) {
-				$copyObj->addFunctionDescriptionRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getFunctionDescriptionsRelatedByFunctionDescriptionTypeId() as $relObj) {
-				$copyObj->addFunctionDescriptionRelatedByFunctionDescriptionTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getFunctionDescriptionsRelatedByStatusId() as $relObj) {
-				$copyObj->addFunctionDescriptionRelatedByStatusId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getFunctionDescriptionsRelatedByLevelId() as $relObj) {
-				$copyObj->addFunctionDescriptionRelatedByLevelId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRights() as $relObj) {
-				$copyObj->addRight($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRightTermRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addRightTermRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRightTermRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addRightTermRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getRightActorRelationships() as $relObj) {
-				$copyObj->addRightActorRelationship($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getUserTermRelationshipsRelatedByTermId() as $relObj) {
-				$copyObj->addUserTermRelationshipRelatedByTermId($relObj->copy($deepCopy));
-			}
-
-			foreach($this->getUserTermRelationshipsRelatedByRelationshipTypeId() as $relObj) {
-				$copyObj->addUserTermRelationshipRelatedByRelationshipTypeId($relObj->copy($deepCopy));
-			}
-
-		} 
-
-		$copyObj->setNew(true);
-
-		$copyObj->setId(NULL); 
-	}
-
-	
-	public function copy($deepCopy = false)
-	{
-				$clazz = get_class($this);
-		$copyObj = new $clazz();
-		$this->copyInto($copyObj, $deepCopy);
-		return $copyObj;
-	}
-
-	
-	public function getPeer()
-	{
-		if (self::$peer === null) {
-			self::$peer = new TermPeer();
-		}
-		return self::$peer;
-	}
-
-	
-	public function setTaxonomy($v)
-	{
-
-
-		if ($v === null) {
-			$this->setTaxonomyId(NULL);
-		} else {
-			$this->setTaxonomyId($v->getId());
-		}
-
-
-		$this->aTaxonomy = $v;
-	}
-
-
-	
-	public function getTaxonomy($con = null)
-	{
-				include_once 'lib/model/om/BaseTaxonomyPeer.php';
-
-		if ($this->aTaxonomy === null && ($this->taxonomy_id !== null)) {
-
-			$this->aTaxonomy = TaxonomyPeer::retrieveByPK($this->taxonomy_id, $con);
-
-			
-		}
-		return $this->aTaxonomy;
-	}
-
-	
-	public function initInformationObjectsRelatedByLevelOfDescriptionId()
-	{
-		if ($this->collInformationObjectsRelatedByLevelOfDescriptionId === null) {
-			$this->collInformationObjectsRelatedByLevelOfDescriptionId = array();
-		}
-	}
-
-	
-	public function getInformationObjectsRelatedByLevelOfDescriptionId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectsRelatedByLevelOfDescriptionId === null) {
-			if ($this->isNew()) {
-			   $this->collInformationObjectsRelatedByLevelOfDescriptionId = array();
-			} else {
-
-				$criteria->add(InformationObjectPeer::LEVEL_OF_DESCRIPTION_ID, $this->getId());
-
-				InformationObjectPeer::addSelectColumns($criteria);
-				$this->collInformationObjectsRelatedByLevelOfDescriptionId = InformationObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(InformationObjectPeer::LEVEL_OF_DESCRIPTION_ID, $this->getId());
-
-				InformationObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastInformationObjectRelatedByLevelOfDescriptionIdCriteria) || !$this->lastInformationObjectRelatedByLevelOfDescriptionIdCriteria->equals($criteria)) {
-					$this->collInformationObjectsRelatedByLevelOfDescriptionId = InformationObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastInformationObjectRelatedByLevelOfDescriptionIdCriteria = $criteria;
-		return $this->collInformationObjectsRelatedByLevelOfDescriptionId;
-	}
-
-	
-	public function countInformationObjectsRelatedByLevelOfDescriptionId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(InformationObjectPeer::LEVEL_OF_DESCRIPTION_ID, $this->getId());
-
-		return InformationObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addInformationObjectRelatedByLevelOfDescriptionId(InformationObject $l)
-	{
-		$this->collInformationObjectsRelatedByLevelOfDescriptionId[] = $l;
-		$l->setTermRelatedByLevelOfDescriptionId($this);
-	}
-
-
-	
-	public function getInformationObjectsRelatedByLevelOfDescriptionIdJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectsRelatedByLevelOfDescriptionId === null) {
-			if ($this->isNew()) {
-				$this->collInformationObjectsRelatedByLevelOfDescriptionId = array();
-			} else {
-
-				$criteria->add(InformationObjectPeer::LEVEL_OF_DESCRIPTION_ID, $this->getId());
-
-				$this->collInformationObjectsRelatedByLevelOfDescriptionId = InformationObjectPeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(InformationObjectPeer::LEVEL_OF_DESCRIPTION_ID, $this->getId());
-
-			if (!isset($this->lastInformationObjectRelatedByLevelOfDescriptionIdCriteria) || !$this->lastInformationObjectRelatedByLevelOfDescriptionIdCriteria->equals($criteria)) {
-				$this->collInformationObjectsRelatedByLevelOfDescriptionId = InformationObjectPeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastInformationObjectRelatedByLevelOfDescriptionIdCriteria = $criteria;
-
-		return $this->collInformationObjectsRelatedByLevelOfDescriptionId;
-	}
-
-	
-	public function initInformationObjectsRelatedByCollectionTypeId()
-	{
-		if ($this->collInformationObjectsRelatedByCollectionTypeId === null) {
-			$this->collInformationObjectsRelatedByCollectionTypeId = array();
-		}
-	}
-
-	
-	public function getInformationObjectsRelatedByCollectionTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectsRelatedByCollectionTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collInformationObjectsRelatedByCollectionTypeId = array();
-			} else {
-
-				$criteria->add(InformationObjectPeer::COLLECTION_TYPE_ID, $this->getId());
-
-				InformationObjectPeer::addSelectColumns($criteria);
-				$this->collInformationObjectsRelatedByCollectionTypeId = InformationObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(InformationObjectPeer::COLLECTION_TYPE_ID, $this->getId());
-
-				InformationObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastInformationObjectRelatedByCollectionTypeIdCriteria) || !$this->lastInformationObjectRelatedByCollectionTypeIdCriteria->equals($criteria)) {
-					$this->collInformationObjectsRelatedByCollectionTypeId = InformationObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastInformationObjectRelatedByCollectionTypeIdCriteria = $criteria;
-		return $this->collInformationObjectsRelatedByCollectionTypeId;
-	}
-
-	
-	public function countInformationObjectsRelatedByCollectionTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(InformationObjectPeer::COLLECTION_TYPE_ID, $this->getId());
-
-		return InformationObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addInformationObjectRelatedByCollectionTypeId(InformationObject $l)
-	{
-		$this->collInformationObjectsRelatedByCollectionTypeId[] = $l;
-		$l->setTermRelatedByCollectionTypeId($this);
-	}
-
-
-	
-	public function getInformationObjectsRelatedByCollectionTypeIdJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectsRelatedByCollectionTypeId === null) {
-			if ($this->isNew()) {
-				$this->collInformationObjectsRelatedByCollectionTypeId = array();
-			} else {
-
-				$criteria->add(InformationObjectPeer::COLLECTION_TYPE_ID, $this->getId());
-
-				$this->collInformationObjectsRelatedByCollectionTypeId = InformationObjectPeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(InformationObjectPeer::COLLECTION_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastInformationObjectRelatedByCollectionTypeIdCriteria) || !$this->lastInformationObjectRelatedByCollectionTypeIdCriteria->equals($criteria)) {
-				$this->collInformationObjectsRelatedByCollectionTypeId = InformationObjectPeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastInformationObjectRelatedByCollectionTypeIdCriteria = $criteria;
-
-		return $this->collInformationObjectsRelatedByCollectionTypeId;
-	}
-
-	
-	public function initInformationObjectTermRelationshipsRelatedByTermId()
-	{
-		if ($this->collInformationObjectTermRelationshipsRelatedByTermId === null) {
-			$this->collInformationObjectTermRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getInformationObjectTermRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collInformationObjectTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(InformationObjectTermRelationshipPeer::TERM_ID, $this->getId());
-
-				InformationObjectTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collInformationObjectTermRelationshipsRelatedByTermId = InformationObjectTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(InformationObjectTermRelationshipPeer::TERM_ID, $this->getId());
-
-				InformationObjectTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastInformationObjectTermRelationshipRelatedByTermIdCriteria) || !$this->lastInformationObjectTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collInformationObjectTermRelationshipsRelatedByTermId = InformationObjectTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastInformationObjectTermRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collInformationObjectTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countInformationObjectTermRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(InformationObjectTermRelationshipPeer::TERM_ID, $this->getId());
-
-		return InformationObjectTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addInformationObjectTermRelationshipRelatedByTermId(InformationObjectTermRelationship $l)
-	{
-		$this->collInformationObjectTermRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-
-	
-	public function getInformationObjectTermRelationshipsRelatedByTermIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collInformationObjectTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(InformationObjectTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collInformationObjectTermRelationshipsRelatedByTermId = InformationObjectTermRelationshipPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(InformationObjectTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastInformationObjectTermRelationshipRelatedByTermIdCriteria) || !$this->lastInformationObjectTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collInformationObjectTermRelationshipsRelatedByTermId = InformationObjectTermRelationshipPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastInformationObjectTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collInformationObjectTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function initInformationObjectTermRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getInformationObjectTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(InformationObjectTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				InformationObjectTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = InformationObjectTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(InformationObjectTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				InformationObjectTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = InformationObjectTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countInformationObjectTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(InformationObjectTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return InformationObjectTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addInformationObjectTermRelationshipRelatedByRelationshipTypeId(InformationObjectTermRelationship $l)
-	{
-		$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-
-	
-	public function getInformationObjectTermRelationshipsRelatedByRelationshipTypeIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(InformationObjectTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = InformationObjectTermRelationshipPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(InformationObjectTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId = InformationObjectTermRelationshipPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastInformationObjectTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collInformationObjectTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function initInformationObjectRecursiveRelationships()
-	{
-		if ($this->collInformationObjectRecursiveRelationships === null) {
-			$this->collInformationObjectRecursiveRelationships = array();
-		}
-	}
-
-	
-	public function getInformationObjectRecursiveRelationships($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectRecursiveRelationships === null) {
-			if ($this->isNew()) {
-			   $this->collInformationObjectRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				InformationObjectRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collInformationObjectRecursiveRelationships = InformationObjectRecursiveRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				InformationObjectRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastInformationObjectRecursiveRelationshipCriteria) || !$this->lastInformationObjectRecursiveRelationshipCriteria->equals($criteria)) {
-					$this->collInformationObjectRecursiveRelationships = InformationObjectRecursiveRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastInformationObjectRecursiveRelationshipCriteria = $criteria;
-		return $this->collInformationObjectRecursiveRelationships;
-	}
-
-	
-	public function countInformationObjectRecursiveRelationships($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return InformationObjectRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addInformationObjectRecursiveRelationship(InformationObjectRecursiveRelationship $l)
-	{
-		$this->collInformationObjectRecursiveRelationships[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getInformationObjectRecursiveRelationshipsJoinInformationObjectRelatedByInformationObjectId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectRecursiveRelationships === null) {
-			if ($this->isNew()) {
-				$this->collInformationObjectRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collInformationObjectRecursiveRelationships = InformationObjectRecursiveRelationshipPeer::doSelectJoinInformationObjectRelatedByInformationObjectId($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastInformationObjectRecursiveRelationshipCriteria) || !$this->lastInformationObjectRecursiveRelationshipCriteria->equals($criteria)) {
-				$this->collInformationObjectRecursiveRelationships = InformationObjectRecursiveRelationshipPeer::doSelectJoinInformationObjectRelatedByInformationObjectId($criteria, $con);
-			}
-		}
-		$this->lastInformationObjectRecursiveRelationshipCriteria = $criteria;
-
-		return $this->collInformationObjectRecursiveRelationships;
-	}
-
-
-	
-	public function getInformationObjectRecursiveRelationshipsJoinInformationObjectRelatedByRelatedInformationObjectId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseInformationObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collInformationObjectRecursiveRelationships === null) {
-			if ($this->isNew()) {
-				$this->collInformationObjectRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collInformationObjectRecursiveRelationships = InformationObjectRecursiveRelationshipPeer::doSelectJoinInformationObjectRelatedByRelatedInformationObjectId($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(InformationObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastInformationObjectRecursiveRelationshipCriteria) || !$this->lastInformationObjectRecursiveRelationshipCriteria->equals($criteria)) {
-				$this->collInformationObjectRecursiveRelationships = InformationObjectRecursiveRelationshipPeer::doSelectJoinInformationObjectRelatedByRelatedInformationObjectId($criteria, $con);
-			}
-		}
-		$this->lastInformationObjectRecursiveRelationshipCriteria = $criteria;
-
-		return $this->collInformationObjectRecursiveRelationships;
-	}
-
-	
-	public function initNotes()
-	{
-		if ($this->collNotes === null) {
-			$this->collNotes = array();
-		}
-	}
-
-	
-	public function getNotes($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotes === null) {
-			if ($this->isNew()) {
-			   $this->collNotes = array();
-			} else {
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				NotePeer::addSelectColumns($criteria);
-				$this->collNotes = NotePeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				NotePeer::addSelectColumns($criteria);
-				if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-					$this->collNotes = NotePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastNoteCriteria = $criteria;
-		return $this->collNotes;
-	}
-
-	
-	public function countNotes($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-		return NotePeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addNote(Note $l)
-	{
-		$this->collNotes[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getNotesJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotes === null) {
-			if ($this->isNew()) {
-				$this->collNotes = array();
-			} else {
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastNoteCriteria = $criteria;
-
-		return $this->collNotes;
-	}
-
-
-	
-	public function getNotesJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotes === null) {
-			if ($this->isNew()) {
-				$this->collNotes = array();
-			} else {
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				$this->collNotes = NotePeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastNoteCriteria = $criteria;
-
-		return $this->collNotes;
-	}
-
-
-	
-	public function getNotesJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotes === null) {
-			if ($this->isNew()) {
-				$this->collNotes = array();
-			} else {
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				$this->collNotes = NotePeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastNoteCriteria = $criteria;
-
-		return $this->collNotes;
-	}
-
-
-	
-	public function getNotesJoinFunctionDescription($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotes === null) {
-			if ($this->isNew()) {
-				$this->collNotes = array();
-			} else {
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinFunctionDescription($criteria, $con);
-			}
-		}
-		$this->lastNoteCriteria = $criteria;
-
-		return $this->collNotes;
-	}
-
-
-	
-	public function getNotesJoinUser($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseNotePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collNotes === null) {
-			if ($this->isNew()) {
-				$this->collNotes = array();
-			} else {
-
-				$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-				$this->collNotes = NotePeer::doSelectJoinUser($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(NotePeer::NOTE_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastNoteCriteria) || !$this->lastNoteCriteria->equals($criteria)) {
-				$this->collNotes = NotePeer::doSelectJoinUser($criteria, $con);
-			}
-		}
-		$this->lastNoteCriteria = $criteria;
-
-		return $this->collNotes;
-	}
-
-	
-	public function initDigitalObjectsRelatedByUseageId()
-	{
-		if ($this->collDigitalObjectsRelatedByUseageId === null) {
-			$this->collDigitalObjectsRelatedByUseageId = array();
-		}
-	}
-
-	
-	public function getDigitalObjectsRelatedByUseageId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByUseageId === null) {
-			if ($this->isNew()) {
-			   $this->collDigitalObjectsRelatedByUseageId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::USEAGE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				$this->collDigitalObjectsRelatedByUseageId = DigitalObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DigitalObjectPeer::USEAGE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDigitalObjectRelatedByUseageIdCriteria) || !$this->lastDigitalObjectRelatedByUseageIdCriteria->equals($criteria)) {
-					$this->collDigitalObjectsRelatedByUseageId = DigitalObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDigitalObjectRelatedByUseageIdCriteria = $criteria;
-		return $this->collDigitalObjectsRelatedByUseageId;
-	}
-
-	
-	public function countDigitalObjectsRelatedByUseageId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DigitalObjectPeer::USEAGE_ID, $this->getId());
-
-		return DigitalObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDigitalObjectRelatedByUseageId(DigitalObject $l)
-	{
-		$this->collDigitalObjectsRelatedByUseageId[] = $l;
-		$l->setTermRelatedByUseageId($this);
-	}
-
-
-	
-	public function getDigitalObjectsRelatedByUseageIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByUseageId === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectsRelatedByUseageId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::USEAGE_ID, $this->getId());
-
-				$this->collDigitalObjectsRelatedByUseageId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectPeer::USEAGE_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRelatedByUseageIdCriteria) || !$this->lastDigitalObjectRelatedByUseageIdCriteria->equals($criteria)) {
-				$this->collDigitalObjectsRelatedByUseageId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRelatedByUseageIdCriteria = $criteria;
-
-		return $this->collDigitalObjectsRelatedByUseageId;
-	}
-
-	
-	public function initDigitalObjectsRelatedByMimeTypeId()
-	{
-		if ($this->collDigitalObjectsRelatedByMimeTypeId === null) {
-			$this->collDigitalObjectsRelatedByMimeTypeId = array();
-		}
-	}
-
-	
-	public function getDigitalObjectsRelatedByMimeTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByMimeTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collDigitalObjectsRelatedByMimeTypeId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::MIME_TYPE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				$this->collDigitalObjectsRelatedByMimeTypeId = DigitalObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DigitalObjectPeer::MIME_TYPE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDigitalObjectRelatedByMimeTypeIdCriteria) || !$this->lastDigitalObjectRelatedByMimeTypeIdCriteria->equals($criteria)) {
-					$this->collDigitalObjectsRelatedByMimeTypeId = DigitalObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDigitalObjectRelatedByMimeTypeIdCriteria = $criteria;
-		return $this->collDigitalObjectsRelatedByMimeTypeId;
-	}
-
-	
-	public function countDigitalObjectsRelatedByMimeTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DigitalObjectPeer::MIME_TYPE_ID, $this->getId());
-
-		return DigitalObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDigitalObjectRelatedByMimeTypeId(DigitalObject $l)
-	{
-		$this->collDigitalObjectsRelatedByMimeTypeId[] = $l;
-		$l->setTermRelatedByMimeTypeId($this);
-	}
-
-
-	
-	public function getDigitalObjectsRelatedByMimeTypeIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByMimeTypeId === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectsRelatedByMimeTypeId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::MIME_TYPE_ID, $this->getId());
-
-				$this->collDigitalObjectsRelatedByMimeTypeId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectPeer::MIME_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRelatedByMimeTypeIdCriteria) || !$this->lastDigitalObjectRelatedByMimeTypeIdCriteria->equals($criteria)) {
-				$this->collDigitalObjectsRelatedByMimeTypeId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRelatedByMimeTypeIdCriteria = $criteria;
-
-		return $this->collDigitalObjectsRelatedByMimeTypeId;
-	}
-
-	
-	public function initDigitalObjectsRelatedByMediaTypeId()
-	{
-		if ($this->collDigitalObjectsRelatedByMediaTypeId === null) {
-			$this->collDigitalObjectsRelatedByMediaTypeId = array();
-		}
-	}
-
-	
-	public function getDigitalObjectsRelatedByMediaTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByMediaTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collDigitalObjectsRelatedByMediaTypeId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::MEDIA_TYPE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				$this->collDigitalObjectsRelatedByMediaTypeId = DigitalObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DigitalObjectPeer::MEDIA_TYPE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDigitalObjectRelatedByMediaTypeIdCriteria) || !$this->lastDigitalObjectRelatedByMediaTypeIdCriteria->equals($criteria)) {
-					$this->collDigitalObjectsRelatedByMediaTypeId = DigitalObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDigitalObjectRelatedByMediaTypeIdCriteria = $criteria;
-		return $this->collDigitalObjectsRelatedByMediaTypeId;
-	}
-
-	
-	public function countDigitalObjectsRelatedByMediaTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DigitalObjectPeer::MEDIA_TYPE_ID, $this->getId());
-
-		return DigitalObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDigitalObjectRelatedByMediaTypeId(DigitalObject $l)
-	{
-		$this->collDigitalObjectsRelatedByMediaTypeId[] = $l;
-		$l->setTermRelatedByMediaTypeId($this);
-	}
-
-
-	
-	public function getDigitalObjectsRelatedByMediaTypeIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByMediaTypeId === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectsRelatedByMediaTypeId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::MEDIA_TYPE_ID, $this->getId());
-
-				$this->collDigitalObjectsRelatedByMediaTypeId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectPeer::MEDIA_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRelatedByMediaTypeIdCriteria) || !$this->lastDigitalObjectRelatedByMediaTypeIdCriteria->equals($criteria)) {
-				$this->collDigitalObjectsRelatedByMediaTypeId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRelatedByMediaTypeIdCriteria = $criteria;
-
-		return $this->collDigitalObjectsRelatedByMediaTypeId;
-	}
-
-	
-	public function initDigitalObjectsRelatedByChecksumTypeId()
-	{
-		if ($this->collDigitalObjectsRelatedByChecksumTypeId === null) {
-			$this->collDigitalObjectsRelatedByChecksumTypeId = array();
-		}
-	}
-
-	
-	public function getDigitalObjectsRelatedByChecksumTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByChecksumTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collDigitalObjectsRelatedByChecksumTypeId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::CHECKSUM_TYPE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				$this->collDigitalObjectsRelatedByChecksumTypeId = DigitalObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DigitalObjectPeer::CHECKSUM_TYPE_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDigitalObjectRelatedByChecksumTypeIdCriteria) || !$this->lastDigitalObjectRelatedByChecksumTypeIdCriteria->equals($criteria)) {
-					$this->collDigitalObjectsRelatedByChecksumTypeId = DigitalObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDigitalObjectRelatedByChecksumTypeIdCriteria = $criteria;
-		return $this->collDigitalObjectsRelatedByChecksumTypeId;
-	}
-
-	
-	public function countDigitalObjectsRelatedByChecksumTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DigitalObjectPeer::CHECKSUM_TYPE_ID, $this->getId());
-
-		return DigitalObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDigitalObjectRelatedByChecksumTypeId(DigitalObject $l)
-	{
-		$this->collDigitalObjectsRelatedByChecksumTypeId[] = $l;
-		$l->setTermRelatedByChecksumTypeId($this);
-	}
-
-
-	
-	public function getDigitalObjectsRelatedByChecksumTypeIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByChecksumTypeId === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectsRelatedByChecksumTypeId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::CHECKSUM_TYPE_ID, $this->getId());
-
-				$this->collDigitalObjectsRelatedByChecksumTypeId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectPeer::CHECKSUM_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRelatedByChecksumTypeIdCriteria) || !$this->lastDigitalObjectRelatedByChecksumTypeIdCriteria->equals($criteria)) {
-				$this->collDigitalObjectsRelatedByChecksumTypeId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRelatedByChecksumTypeIdCriteria = $criteria;
-
-		return $this->collDigitalObjectsRelatedByChecksumTypeId;
-	}
-
-	
-	public function initDigitalObjectsRelatedByLocationId()
-	{
-		if ($this->collDigitalObjectsRelatedByLocationId === null) {
-			$this->collDigitalObjectsRelatedByLocationId = array();
-		}
-	}
-
-	
-	public function getDigitalObjectsRelatedByLocationId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByLocationId === null) {
-			if ($this->isNew()) {
-			   $this->collDigitalObjectsRelatedByLocationId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::LOCATION_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				$this->collDigitalObjectsRelatedByLocationId = DigitalObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DigitalObjectPeer::LOCATION_ID, $this->getId());
-
-				DigitalObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDigitalObjectRelatedByLocationIdCriteria) || !$this->lastDigitalObjectRelatedByLocationIdCriteria->equals($criteria)) {
-					$this->collDigitalObjectsRelatedByLocationId = DigitalObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDigitalObjectRelatedByLocationIdCriteria = $criteria;
-		return $this->collDigitalObjectsRelatedByLocationId;
-	}
-
-	
-	public function countDigitalObjectsRelatedByLocationId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DigitalObjectPeer::LOCATION_ID, $this->getId());
-
-		return DigitalObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDigitalObjectRelatedByLocationId(DigitalObject $l)
-	{
-		$this->collDigitalObjectsRelatedByLocationId[] = $l;
-		$l->setTermRelatedByLocationId($this);
-	}
-
-
-	
-	public function getDigitalObjectsRelatedByLocationIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectsRelatedByLocationId === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectsRelatedByLocationId = array();
-			} else {
-
-				$criteria->add(DigitalObjectPeer::LOCATION_ID, $this->getId());
-
-				$this->collDigitalObjectsRelatedByLocationId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectPeer::LOCATION_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRelatedByLocationIdCriteria) || !$this->lastDigitalObjectRelatedByLocationIdCriteria->equals($criteria)) {
-				$this->collDigitalObjectsRelatedByLocationId = DigitalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRelatedByLocationIdCriteria = $criteria;
-
-		return $this->collDigitalObjectsRelatedByLocationId;
-	}
-
-	
-	public function initDigitalObjectRecursiveRelationships()
-	{
-		if ($this->collDigitalObjectRecursiveRelationships === null) {
-			$this->collDigitalObjectRecursiveRelationships = array();
-		}
-	}
-
-	
-	public function getDigitalObjectRecursiveRelationships($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectRecursiveRelationships === null) {
-			if ($this->isNew()) {
-			   $this->collDigitalObjectRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				DigitalObjectRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collDigitalObjectRecursiveRelationships = DigitalObjectRecursiveRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				DigitalObjectRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastDigitalObjectRecursiveRelationshipCriteria) || !$this->lastDigitalObjectRecursiveRelationshipCriteria->equals($criteria)) {
-					$this->collDigitalObjectRecursiveRelationships = DigitalObjectRecursiveRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastDigitalObjectRecursiveRelationshipCriteria = $criteria;
-		return $this->collDigitalObjectRecursiveRelationships;
-	}
-
-	
-	public function countDigitalObjectRecursiveRelationships($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return DigitalObjectRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addDigitalObjectRecursiveRelationship(DigitalObjectRecursiveRelationship $l)
-	{
-		$this->collDigitalObjectRecursiveRelationships[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getDigitalObjectRecursiveRelationshipsJoinDigitalObjectRelatedByDigitalObjectId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectRecursiveRelationships === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collDigitalObjectRecursiveRelationships = DigitalObjectRecursiveRelationshipPeer::doSelectJoinDigitalObjectRelatedByDigitalObjectId($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRecursiveRelationshipCriteria) || !$this->lastDigitalObjectRecursiveRelationshipCriteria->equals($criteria)) {
-				$this->collDigitalObjectRecursiveRelationships = DigitalObjectRecursiveRelationshipPeer::doSelectJoinDigitalObjectRelatedByDigitalObjectId($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRecursiveRelationshipCriteria = $criteria;
-
-		return $this->collDigitalObjectRecursiveRelationships;
-	}
-
-
-	
-	public function getDigitalObjectRecursiveRelationshipsJoinDigitalObjectRelatedByRelatedDigitalObjectId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseDigitalObjectRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collDigitalObjectRecursiveRelationships === null) {
-			if ($this->isNew()) {
-				$this->collDigitalObjectRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collDigitalObjectRecursiveRelationships = DigitalObjectRecursiveRelationshipPeer::doSelectJoinDigitalObjectRelatedByRelatedDigitalObjectId($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(DigitalObjectRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastDigitalObjectRecursiveRelationshipCriteria) || !$this->lastDigitalObjectRecursiveRelationshipCriteria->equals($criteria)) {
-				$this->collDigitalObjectRecursiveRelationships = DigitalObjectRecursiveRelationshipPeer::doSelectJoinDigitalObjectRelatedByRelatedDigitalObjectId($criteria, $con);
-			}
-		}
-		$this->lastDigitalObjectRecursiveRelationshipCriteria = $criteria;
-
-		return $this->collDigitalObjectRecursiveRelationships;
-	}
-
-	
-	public function initPhysicalObjects()
-	{
-		if ($this->collPhysicalObjects === null) {
-			$this->collPhysicalObjects = array();
-		}
-	}
-
-	
-	public function getPhysicalObjects($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePhysicalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPhysicalObjects === null) {
-			if ($this->isNew()) {
-			   $this->collPhysicalObjects = array();
-			} else {
-
-				$criteria->add(PhysicalObjectPeer::LOCATION_ID, $this->getId());
-
-				PhysicalObjectPeer::addSelectColumns($criteria);
-				$this->collPhysicalObjects = PhysicalObjectPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(PhysicalObjectPeer::LOCATION_ID, $this->getId());
-
-				PhysicalObjectPeer::addSelectColumns($criteria);
-				if (!isset($this->lastPhysicalObjectCriteria) || !$this->lastPhysicalObjectCriteria->equals($criteria)) {
-					$this->collPhysicalObjects = PhysicalObjectPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPhysicalObjectCriteria = $criteria;
-		return $this->collPhysicalObjects;
-	}
-
-	
-	public function countPhysicalObjects($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BasePhysicalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(PhysicalObjectPeer::LOCATION_ID, $this->getId());
-
-		return PhysicalObjectPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addPhysicalObject(PhysicalObject $l)
-	{
-		$this->collPhysicalObjects[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getPhysicalObjectsJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePhysicalObjectPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPhysicalObjects === null) {
-			if ($this->isNew()) {
-				$this->collPhysicalObjects = array();
-			} else {
-
-				$criteria->add(PhysicalObjectPeer::LOCATION_ID, $this->getId());
-
-				$this->collPhysicalObjects = PhysicalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PhysicalObjectPeer::LOCATION_ID, $this->getId());
-
-			if (!isset($this->lastPhysicalObjectCriteria) || !$this->lastPhysicalObjectCriteria->equals($criteria)) {
-				$this->collPhysicalObjects = PhysicalObjectPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastPhysicalObjectCriteria = $criteria;
-
-		return $this->collPhysicalObjects;
-	}
-
-	
-	public function initActorsRelatedByTypeOfEntityId()
-	{
-		if ($this->collActorsRelatedByTypeOfEntityId === null) {
-			$this->collActorsRelatedByTypeOfEntityId = array();
-		}
-	}
-
-	
-	public function getActorsRelatedByTypeOfEntityId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorsRelatedByTypeOfEntityId === null) {
-			if ($this->isNew()) {
-			   $this->collActorsRelatedByTypeOfEntityId = array();
-			} else {
-
-				$criteria->add(ActorPeer::TYPE_OF_ENTITY_ID, $this->getId());
-
-				ActorPeer::addSelectColumns($criteria);
-				$this->collActorsRelatedByTypeOfEntityId = ActorPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorPeer::TYPE_OF_ENTITY_ID, $this->getId());
-
-				ActorPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorRelatedByTypeOfEntityIdCriteria) || !$this->lastActorRelatedByTypeOfEntityIdCriteria->equals($criteria)) {
-					$this->collActorsRelatedByTypeOfEntityId = ActorPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorRelatedByTypeOfEntityIdCriteria = $criteria;
-		return $this->collActorsRelatedByTypeOfEntityId;
-	}
-
-	
-	public function countActorsRelatedByTypeOfEntityId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorPeer::TYPE_OF_ENTITY_ID, $this->getId());
-
-		return ActorPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorRelatedByTypeOfEntityId(Actor $l)
-	{
-		$this->collActorsRelatedByTypeOfEntityId[] = $l;
-		$l->setTermRelatedByTypeOfEntityId($this);
-	}
-
-	
-	public function initActorsRelatedByStatusId()
-	{
-		if ($this->collActorsRelatedByStatusId === null) {
-			$this->collActorsRelatedByStatusId = array();
-		}
-	}
-
-	
-	public function getActorsRelatedByStatusId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorsRelatedByStatusId === null) {
-			if ($this->isNew()) {
-			   $this->collActorsRelatedByStatusId = array();
-			} else {
-
-				$criteria->add(ActorPeer::STATUS_ID, $this->getId());
-
-				ActorPeer::addSelectColumns($criteria);
-				$this->collActorsRelatedByStatusId = ActorPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorPeer::STATUS_ID, $this->getId());
-
-				ActorPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorRelatedByStatusIdCriteria) || !$this->lastActorRelatedByStatusIdCriteria->equals($criteria)) {
-					$this->collActorsRelatedByStatusId = ActorPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorRelatedByStatusIdCriteria = $criteria;
-		return $this->collActorsRelatedByStatusId;
-	}
-
-	
-	public function countActorsRelatedByStatusId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorPeer::STATUS_ID, $this->getId());
-
-		return ActorPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorRelatedByStatusId(Actor $l)
-	{
-		$this->collActorsRelatedByStatusId[] = $l;
-		$l->setTermRelatedByStatusId($this);
-	}
-
-	
-	public function initActorsRelatedByLevelOfDetailId()
-	{
-		if ($this->collActorsRelatedByLevelOfDetailId === null) {
-			$this->collActorsRelatedByLevelOfDetailId = array();
-		}
-	}
-
-	
-	public function getActorsRelatedByLevelOfDetailId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorsRelatedByLevelOfDetailId === null) {
-			if ($this->isNew()) {
-			   $this->collActorsRelatedByLevelOfDetailId = array();
-			} else {
-
-				$criteria->add(ActorPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-				ActorPeer::addSelectColumns($criteria);
-				$this->collActorsRelatedByLevelOfDetailId = ActorPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-				ActorPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorRelatedByLevelOfDetailIdCriteria) || !$this->lastActorRelatedByLevelOfDetailIdCriteria->equals($criteria)) {
-					$this->collActorsRelatedByLevelOfDetailId = ActorPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorRelatedByLevelOfDetailIdCriteria = $criteria;
-		return $this->collActorsRelatedByLevelOfDetailId;
-	}
-
-	
-	public function countActorsRelatedByLevelOfDetailId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-		return ActorPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorRelatedByLevelOfDetailId(Actor $l)
-	{
-		$this->collActorsRelatedByLevelOfDetailId[] = $l;
-		$l->setTermRelatedByLevelOfDetailId($this);
-	}
-
-	
-	public function initActorNames()
-	{
-		if ($this->collActorNames === null) {
-			$this->collActorNames = array();
-		}
-	}
-
-	
-	public function getActorNames($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorNamePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorNames === null) {
-			if ($this->isNew()) {
-			   $this->collActorNames = array();
-			} else {
-
-				$criteria->add(ActorNamePeer::NAME_TYPE_ID, $this->getId());
-
-				ActorNamePeer::addSelectColumns($criteria);
-				$this->collActorNames = ActorNamePeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorNamePeer::NAME_TYPE_ID, $this->getId());
-
-				ActorNamePeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorNameCriteria) || !$this->lastActorNameCriteria->equals($criteria)) {
-					$this->collActorNames = ActorNamePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorNameCriteria = $criteria;
-		return $this->collActorNames;
-	}
-
-	
-	public function countActorNames($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorNamePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorNamePeer::NAME_TYPE_ID, $this->getId());
-
-		return ActorNamePeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorName(ActorName $l)
-	{
-		$this->collActorNames[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getActorNamesJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorNamePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorNames === null) {
-			if ($this->isNew()) {
-				$this->collActorNames = array();
-			} else {
-
-				$criteria->add(ActorNamePeer::NAME_TYPE_ID, $this->getId());
-
-				$this->collActorNames = ActorNamePeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ActorNamePeer::NAME_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastActorNameCriteria) || !$this->lastActorNameCriteria->equals($criteria)) {
-				$this->collActorNames = ActorNamePeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastActorNameCriteria = $criteria;
-
-		return $this->collActorNames;
-	}
-
-	
-	public function initActorRecursiveRelationships()
-	{
-		if ($this->collActorRecursiveRelationships === null) {
-			$this->collActorRecursiveRelationships = array();
-		}
-	}
-
-	
-	public function getActorRecursiveRelationships($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorRecursiveRelationships === null) {
-			if ($this->isNew()) {
-			   $this->collActorRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				ActorRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collActorRecursiveRelationships = ActorRecursiveRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				ActorRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorRecursiveRelationshipCriteria) || !$this->lastActorRecursiveRelationshipCriteria->equals($criteria)) {
-					$this->collActorRecursiveRelationships = ActorRecursiveRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorRecursiveRelationshipCriteria = $criteria;
-		return $this->collActorRecursiveRelationships;
-	}
-
-	
-	public function countActorRecursiveRelationships($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return ActorRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorRecursiveRelationship(ActorRecursiveRelationship $l)
-	{
-		$this->collActorRecursiveRelationships[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getActorRecursiveRelationshipsJoinActorRelatedByActorId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorRecursiveRelationships === null) {
-			if ($this->isNew()) {
-				$this->collActorRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collActorRecursiveRelationships = ActorRecursiveRelationshipPeer::doSelectJoinActorRelatedByActorId($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastActorRecursiveRelationshipCriteria) || !$this->lastActorRecursiveRelationshipCriteria->equals($criteria)) {
-				$this->collActorRecursiveRelationships = ActorRecursiveRelationshipPeer::doSelectJoinActorRelatedByActorId($criteria, $con);
-			}
-		}
-		$this->lastActorRecursiveRelationshipCriteria = $criteria;
-
-		return $this->collActorRecursiveRelationships;
-	}
-
-
-	
-	public function getActorRecursiveRelationshipsJoinActorRelatedByRelatedActorId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorRecursiveRelationships === null) {
-			if ($this->isNew()) {
-				$this->collActorRecursiveRelationships = array();
-			} else {
-
-				$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collActorRecursiveRelationships = ActorRecursiveRelationshipPeer::doSelectJoinActorRelatedByRelatedActorId($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ActorRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastActorRecursiveRelationshipCriteria) || !$this->lastActorRecursiveRelationshipCriteria->equals($criteria)) {
-				$this->collActorRecursiveRelationships = ActorRecursiveRelationshipPeer::doSelectJoinActorRelatedByRelatedActorId($criteria, $con);
-			}
-		}
-		$this->lastActorRecursiveRelationshipCriteria = $criteria;
-
-		return $this->collActorRecursiveRelationships;
-	}
-
-	
-	public function initActorTermRelationshipsRelatedByTermId()
-	{
-		if ($this->collActorTermRelationshipsRelatedByTermId === null) {
-			$this->collActorTermRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getActorTermRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collActorTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(ActorTermRelationshipPeer::TERM_ID, $this->getId());
-
-				ActorTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collActorTermRelationshipsRelatedByTermId = ActorTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorTermRelationshipPeer::TERM_ID, $this->getId());
-
-				ActorTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorTermRelationshipRelatedByTermIdCriteria) || !$this->lastActorTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collActorTermRelationshipsRelatedByTermId = ActorTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorTermRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collActorTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countActorTermRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorTermRelationshipPeer::TERM_ID, $this->getId());
-
-		return ActorTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorTermRelationshipRelatedByTermId(ActorTermRelationship $l)
-	{
-		$this->collActorTermRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-
-	
-	public function getActorTermRelationshipsRelatedByTermIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collActorTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(ActorTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collActorTermRelationshipsRelatedByTermId = ActorTermRelationshipPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ActorTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastActorTermRelationshipRelatedByTermIdCriteria) || !$this->lastActorTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collActorTermRelationshipsRelatedByTermId = ActorTermRelationshipPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastActorTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collActorTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function initActorTermRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collActorTermRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collActorTermRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getActorTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collActorTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(ActorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				ActorTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collActorTermRelationshipsRelatedByRelationshipTypeId = ActorTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ActorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				ActorTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collActorTermRelationshipsRelatedByRelationshipTypeId = ActorTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collActorTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countActorTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ActorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return ActorTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addActorTermRelationshipRelatedByRelationshipTypeId(ActorTermRelationship $l)
-	{
-		$this->collActorTermRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-
-	
-	public function getActorTermRelationshipsRelatedByRelationshipTypeIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseActorTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collActorTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collActorTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(ActorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collActorTermRelationshipsRelatedByRelationshipTypeId = ActorTermRelationshipPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ActorTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collActorTermRelationshipsRelatedByRelationshipTypeId = ActorTermRelationshipPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastActorTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collActorTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function initContactInformations()
-	{
-		if ($this->collContactInformations === null) {
-			$this->collContactInformations = array();
-		}
-	}
-
-	
-	public function getContactInformations($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseContactInformationPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collContactInformations === null) {
-			if ($this->isNew()) {
-			   $this->collContactInformations = array();
-			} else {
-
-				$criteria->add(ContactInformationPeer::COUNTRY_ID, $this->getId());
-
-				ContactInformationPeer::addSelectColumns($criteria);
-				$this->collContactInformations = ContactInformationPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(ContactInformationPeer::COUNTRY_ID, $this->getId());
-
-				ContactInformationPeer::addSelectColumns($criteria);
-				if (!isset($this->lastContactInformationCriteria) || !$this->lastContactInformationCriteria->equals($criteria)) {
-					$this->collContactInformations = ContactInformationPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastContactInformationCriteria = $criteria;
-		return $this->collContactInformations;
-	}
-
-	
-	public function countContactInformations($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseContactInformationPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(ContactInformationPeer::COUNTRY_ID, $this->getId());
-
-		return ContactInformationPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addContactInformation(ContactInformation $l)
-	{
-		$this->collContactInformations[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getContactInformationsJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseContactInformationPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collContactInformations === null) {
-			if ($this->isNew()) {
-				$this->collContactInformations = array();
-			} else {
-
-				$criteria->add(ContactInformationPeer::COUNTRY_ID, $this->getId());
-
-				$this->collContactInformations = ContactInformationPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(ContactInformationPeer::COUNTRY_ID, $this->getId());
-
-			if (!isset($this->lastContactInformationCriteria) || !$this->lastContactInformationCriteria->equals($criteria)) {
-				$this->collContactInformations = ContactInformationPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastContactInformationCriteria = $criteria;
-
-		return $this->collContactInformations;
-	}
-
-	
-	public function initPlacesRelatedByTermId()
-	{
-		if ($this->collPlacesRelatedByTermId === null) {
-			$this->collPlacesRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getPlacesRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlacePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlacesRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collPlacesRelatedByTermId = array();
-			} else {
-
-				$criteria->add(PlacePeer::TERM_ID, $this->getId());
-
-				PlacePeer::addSelectColumns($criteria);
-				$this->collPlacesRelatedByTermId = PlacePeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(PlacePeer::TERM_ID, $this->getId());
-
-				PlacePeer::addSelectColumns($criteria);
-				if (!isset($this->lastPlaceRelatedByTermIdCriteria) || !$this->lastPlaceRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collPlacesRelatedByTermId = PlacePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPlaceRelatedByTermIdCriteria = $criteria;
-		return $this->collPlacesRelatedByTermId;
-	}
-
-	
-	public function countPlacesRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BasePlacePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(PlacePeer::TERM_ID, $this->getId());
-
-		return PlacePeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addPlaceRelatedByTermId(Place $l)
-	{
-		$this->collPlacesRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-	
-	public function initPlacesRelatedByCountryId()
-	{
-		if ($this->collPlacesRelatedByCountryId === null) {
-			$this->collPlacesRelatedByCountryId = array();
-		}
-	}
-
-	
-	public function getPlacesRelatedByCountryId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlacePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlacesRelatedByCountryId === null) {
-			if ($this->isNew()) {
-			   $this->collPlacesRelatedByCountryId = array();
-			} else {
-
-				$criteria->add(PlacePeer::COUNTRY_ID, $this->getId());
-
-				PlacePeer::addSelectColumns($criteria);
-				$this->collPlacesRelatedByCountryId = PlacePeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(PlacePeer::COUNTRY_ID, $this->getId());
-
-				PlacePeer::addSelectColumns($criteria);
-				if (!isset($this->lastPlaceRelatedByCountryIdCriteria) || !$this->lastPlaceRelatedByCountryIdCriteria->equals($criteria)) {
-					$this->collPlacesRelatedByCountryId = PlacePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPlaceRelatedByCountryIdCriteria = $criteria;
-		return $this->collPlacesRelatedByCountryId;
-	}
-
-	
-	public function countPlacesRelatedByCountryId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BasePlacePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(PlacePeer::COUNTRY_ID, $this->getId());
-
-		return PlacePeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addPlaceRelatedByCountryId(Place $l)
-	{
-		$this->collPlacesRelatedByCountryId[] = $l;
-		$l->setTermRelatedByCountryId($this);
-	}
-
-	
-	public function initPlacesRelatedByPlaceTypeId()
-	{
-		if ($this->collPlacesRelatedByPlaceTypeId === null) {
-			$this->collPlacesRelatedByPlaceTypeId = array();
-		}
-	}
-
-	
-	public function getPlacesRelatedByPlaceTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlacePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlacesRelatedByPlaceTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collPlacesRelatedByPlaceTypeId = array();
-			} else {
-
-				$criteria->add(PlacePeer::PLACE_TYPE_ID, $this->getId());
-
-				PlacePeer::addSelectColumns($criteria);
-				$this->collPlacesRelatedByPlaceTypeId = PlacePeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(PlacePeer::PLACE_TYPE_ID, $this->getId());
-
-				PlacePeer::addSelectColumns($criteria);
-				if (!isset($this->lastPlaceRelatedByPlaceTypeIdCriteria) || !$this->lastPlaceRelatedByPlaceTypeIdCriteria->equals($criteria)) {
-					$this->collPlacesRelatedByPlaceTypeId = PlacePeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPlaceRelatedByPlaceTypeIdCriteria = $criteria;
-		return $this->collPlacesRelatedByPlaceTypeId;
-	}
-
-	
-	public function countPlacesRelatedByPlaceTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BasePlacePeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(PlacePeer::PLACE_TYPE_ID, $this->getId());
-
-		return PlacePeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addPlaceRelatedByPlaceTypeId(Place $l)
-	{
-		$this->collPlacesRelatedByPlaceTypeId[] = $l;
-		$l->setTermRelatedByPlaceTypeId($this);
-	}
-
-	
-	public function initPlaceMapRelationships()
-	{
-		if ($this->collPlaceMapRelationships === null) {
-			$this->collPlaceMapRelationships = array();
-		}
-	}
-
-	
-	public function getPlaceMapRelationships($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-			   $this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				PlaceMapRelationshipPeer::addSelectColumns($criteria);
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				PlaceMapRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-					$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-		return $this->collPlaceMapRelationships;
-	}
-
-	
-	public function countPlaceMapRelationships($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return PlaceMapRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addPlaceMapRelationship(PlaceMapRelationship $l)
-	{
-		$this->collPlaceMapRelationships[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getPlaceMapRelationshipsJoinPlace($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-				$this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinPlace($criteria, $con);
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-
-		return $this->collPlaceMapRelationships;
-	}
-
-
-	
-	public function getPlaceMapRelationshipsJoinMap($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-				$this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinMap($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinMap($criteria, $con);
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-
-		return $this->collPlaceMapRelationships;
-	}
-
-
-	
-	public function getPlaceMapRelationshipsJoinDigitalObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BasePlaceMapRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collPlaceMapRelationships === null) {
-			if ($this->isNew()) {
-				$this->collPlaceMapRelationships = array();
-			} else {
-
-				$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(PlaceMapRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastPlaceMapRelationshipCriteria) || !$this->lastPlaceMapRelationshipCriteria->equals($criteria)) {
-				$this->collPlaceMapRelationships = PlaceMapRelationshipPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		}
-		$this->lastPlaceMapRelationshipCriteria = $criteria;
-
-		return $this->collPlaceMapRelationships;
-	}
-
-	
-	public function initRepositorysRelatedByRepositoryTypeId()
-	{
-		if ($this->collRepositorysRelatedByRepositoryTypeId === null) {
-			$this->collRepositorysRelatedByRepositoryTypeId = array();
-		}
-	}
-
-	
-	public function getRepositorysRelatedByRepositoryTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositorysRelatedByRepositoryTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collRepositorysRelatedByRepositoryTypeId = array();
-			} else {
-
-				$criteria->add(RepositoryPeer::REPOSITORY_TYPE_ID, $this->getId());
-
-				RepositoryPeer::addSelectColumns($criteria);
-				$this->collRepositorysRelatedByRepositoryTypeId = RepositoryPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RepositoryPeer::REPOSITORY_TYPE_ID, $this->getId());
-
-				RepositoryPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRepositoryRelatedByRepositoryTypeIdCriteria) || !$this->lastRepositoryRelatedByRepositoryTypeIdCriteria->equals($criteria)) {
-					$this->collRepositorysRelatedByRepositoryTypeId = RepositoryPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRepositoryRelatedByRepositoryTypeIdCriteria = $criteria;
-		return $this->collRepositorysRelatedByRepositoryTypeId;
-	}
-
-	
-	public function countRepositorysRelatedByRepositoryTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RepositoryPeer::REPOSITORY_TYPE_ID, $this->getId());
-
-		return RepositoryPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRepositoryRelatedByRepositoryTypeId(Repository $l)
-	{
-		$this->collRepositorysRelatedByRepositoryTypeId[] = $l;
-		$l->setTermRelatedByRepositoryTypeId($this);
-	}
-
-
-	
-	public function getRepositorysRelatedByRepositoryTypeIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositorysRelatedByRepositoryTypeId === null) {
-			if ($this->isNew()) {
-				$this->collRepositorysRelatedByRepositoryTypeId = array();
-			} else {
-
-				$criteria->add(RepositoryPeer::REPOSITORY_TYPE_ID, $this->getId());
-
-				$this->collRepositorysRelatedByRepositoryTypeId = RepositoryPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RepositoryPeer::REPOSITORY_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastRepositoryRelatedByRepositoryTypeIdCriteria) || !$this->lastRepositoryRelatedByRepositoryTypeIdCriteria->equals($criteria)) {
-				$this->collRepositorysRelatedByRepositoryTypeId = RepositoryPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastRepositoryRelatedByRepositoryTypeIdCriteria = $criteria;
-
-		return $this->collRepositorysRelatedByRepositoryTypeId;
-	}
-
-	
-	public function initRepositorysRelatedByStatusId()
-	{
-		if ($this->collRepositorysRelatedByStatusId === null) {
-			$this->collRepositorysRelatedByStatusId = array();
-		}
-	}
-
-	
-	public function getRepositorysRelatedByStatusId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositorysRelatedByStatusId === null) {
-			if ($this->isNew()) {
-			   $this->collRepositorysRelatedByStatusId = array();
-			} else {
-
-				$criteria->add(RepositoryPeer::STATUS_ID, $this->getId());
-
-				RepositoryPeer::addSelectColumns($criteria);
-				$this->collRepositorysRelatedByStatusId = RepositoryPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RepositoryPeer::STATUS_ID, $this->getId());
-
-				RepositoryPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRepositoryRelatedByStatusIdCriteria) || !$this->lastRepositoryRelatedByStatusIdCriteria->equals($criteria)) {
-					$this->collRepositorysRelatedByStatusId = RepositoryPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRepositoryRelatedByStatusIdCriteria = $criteria;
-		return $this->collRepositorysRelatedByStatusId;
-	}
-
-	
-	public function countRepositorysRelatedByStatusId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RepositoryPeer::STATUS_ID, $this->getId());
-
-		return RepositoryPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRepositoryRelatedByStatusId(Repository $l)
-	{
-		$this->collRepositorysRelatedByStatusId[] = $l;
-		$l->setTermRelatedByStatusId($this);
-	}
-
-
-	
-	public function getRepositorysRelatedByStatusIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositorysRelatedByStatusId === null) {
-			if ($this->isNew()) {
-				$this->collRepositorysRelatedByStatusId = array();
-			} else {
-
-				$criteria->add(RepositoryPeer::STATUS_ID, $this->getId());
-
-				$this->collRepositorysRelatedByStatusId = RepositoryPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RepositoryPeer::STATUS_ID, $this->getId());
-
-			if (!isset($this->lastRepositoryRelatedByStatusIdCriteria) || !$this->lastRepositoryRelatedByStatusIdCriteria->equals($criteria)) {
-				$this->collRepositorysRelatedByStatusId = RepositoryPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastRepositoryRelatedByStatusIdCriteria = $criteria;
-
-		return $this->collRepositorysRelatedByStatusId;
-	}
-
-	
-	public function initRepositorysRelatedByLevelOfDetailId()
-	{
-		if ($this->collRepositorysRelatedByLevelOfDetailId === null) {
-			$this->collRepositorysRelatedByLevelOfDetailId = array();
-		}
-	}
-
-	
-	public function getRepositorysRelatedByLevelOfDetailId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositorysRelatedByLevelOfDetailId === null) {
-			if ($this->isNew()) {
-			   $this->collRepositorysRelatedByLevelOfDetailId = array();
-			} else {
-
-				$criteria->add(RepositoryPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-				RepositoryPeer::addSelectColumns($criteria);
-				$this->collRepositorysRelatedByLevelOfDetailId = RepositoryPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RepositoryPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-				RepositoryPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRepositoryRelatedByLevelOfDetailIdCriteria) || !$this->lastRepositoryRelatedByLevelOfDetailIdCriteria->equals($criteria)) {
-					$this->collRepositorysRelatedByLevelOfDetailId = RepositoryPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRepositoryRelatedByLevelOfDetailIdCriteria = $criteria;
-		return $this->collRepositorysRelatedByLevelOfDetailId;
-	}
-
-	
-	public function countRepositorysRelatedByLevelOfDetailId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RepositoryPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-		return RepositoryPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRepositoryRelatedByLevelOfDetailId(Repository $l)
-	{
-		$this->collRepositorysRelatedByLevelOfDetailId[] = $l;
-		$l->setTermRelatedByLevelOfDetailId($this);
-	}
-
-
-	
-	public function getRepositorysRelatedByLevelOfDetailIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositorysRelatedByLevelOfDetailId === null) {
-			if ($this->isNew()) {
-				$this->collRepositorysRelatedByLevelOfDetailId = array();
-			} else {
-
-				$criteria->add(RepositoryPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-				$this->collRepositorysRelatedByLevelOfDetailId = RepositoryPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RepositoryPeer::LEVEL_OF_DETAIL_ID, $this->getId());
-
-			if (!isset($this->lastRepositoryRelatedByLevelOfDetailIdCriteria) || !$this->lastRepositoryRelatedByLevelOfDetailIdCriteria->equals($criteria)) {
-				$this->collRepositorysRelatedByLevelOfDetailId = RepositoryPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastRepositoryRelatedByLevelOfDetailIdCriteria = $criteria;
-
-		return $this->collRepositorysRelatedByLevelOfDetailId;
-	}
-
-	
-	public function initRepositoryTermRelationshipsRelatedByTermId()
-	{
-		if ($this->collRepositoryTermRelationshipsRelatedByTermId === null) {
-			$this->collRepositoryTermRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getRepositoryTermRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositoryTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collRepositoryTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(RepositoryTermRelationshipPeer::TERM_ID, $this->getId());
-
-				RepositoryTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collRepositoryTermRelationshipsRelatedByTermId = RepositoryTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RepositoryTermRelationshipPeer::TERM_ID, $this->getId());
-
-				RepositoryTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRepositoryTermRelationshipRelatedByTermIdCriteria) || !$this->lastRepositoryTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collRepositoryTermRelationshipsRelatedByTermId = RepositoryTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRepositoryTermRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collRepositoryTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countRepositoryTermRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RepositoryTermRelationshipPeer::TERM_ID, $this->getId());
-
-		return RepositoryTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRepositoryTermRelationshipRelatedByTermId(RepositoryTermRelationship $l)
-	{
-		$this->collRepositoryTermRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-
-	
-	public function getRepositoryTermRelationshipsRelatedByTermIdJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositoryTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collRepositoryTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(RepositoryTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collRepositoryTermRelationshipsRelatedByTermId = RepositoryTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RepositoryTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastRepositoryTermRelationshipRelatedByTermIdCriteria) || !$this->lastRepositoryTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collRepositoryTermRelationshipsRelatedByTermId = RepositoryTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastRepositoryTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collRepositoryTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function initRepositoryTermRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getRepositoryTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(RepositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				RepositoryTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = RepositoryTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RepositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				RepositoryTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = RepositoryTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countRepositoryTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RepositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return RepositoryTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRepositoryTermRelationshipRelatedByRelationshipTypeId(RepositoryTermRelationship $l)
-	{
-		$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-
-	
-	public function getRepositoryTermRelationshipsRelatedByRelationshipTypeIdJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRepositoryTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(RepositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = RepositoryTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RepositoryTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId = RepositoryTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastRepositoryTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collRepositoryTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function initTermRecursiveRelationshipsRelatedByTermId()
-	{
-		if ($this->collTermRecursiveRelationshipsRelatedByTermId === null) {
-			$this->collTermRecursiveRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getTermRecursiveRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseTermRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collTermRecursiveRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collTermRecursiveRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(TermRecursiveRelationshipPeer::TERM_ID, $this->getId());
-
-				TermRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collTermRecursiveRelationshipsRelatedByTermId = TermRecursiveRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(TermRecursiveRelationshipPeer::TERM_ID, $this->getId());
-
-				TermRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastTermRecursiveRelationshipRelatedByTermIdCriteria) || !$this->lastTermRecursiveRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collTermRecursiveRelationshipsRelatedByTermId = TermRecursiveRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastTermRecursiveRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collTermRecursiveRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countTermRecursiveRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseTermRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(TermRecursiveRelationshipPeer::TERM_ID, $this->getId());
-
-		return TermRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addTermRecursiveRelationshipRelatedByTermId(TermRecursiveRelationship $l)
-	{
-		$this->collTermRecursiveRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-	
-	public function initTermRecursiveRelationshipsRelatedByRelatedTermId()
-	{
-		if ($this->collTermRecursiveRelationshipsRelatedByRelatedTermId === null) {
-			$this->collTermRecursiveRelationshipsRelatedByRelatedTermId = array();
-		}
-	}
-
-	
-	public function getTermRecursiveRelationshipsRelatedByRelatedTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseTermRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collTermRecursiveRelationshipsRelatedByRelatedTermId === null) {
-			if ($this->isNew()) {
-			   $this->collTermRecursiveRelationshipsRelatedByRelatedTermId = array();
-			} else {
-
-				$criteria->add(TermRecursiveRelationshipPeer::RELATED_TERM_ID, $this->getId());
-
-				TermRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collTermRecursiveRelationshipsRelatedByRelatedTermId = TermRecursiveRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(TermRecursiveRelationshipPeer::RELATED_TERM_ID, $this->getId());
-
-				TermRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastTermRecursiveRelationshipRelatedByRelatedTermIdCriteria) || !$this->lastTermRecursiveRelationshipRelatedByRelatedTermIdCriteria->equals($criteria)) {
-					$this->collTermRecursiveRelationshipsRelatedByRelatedTermId = TermRecursiveRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastTermRecursiveRelationshipRelatedByRelatedTermIdCriteria = $criteria;
-		return $this->collTermRecursiveRelationshipsRelatedByRelatedTermId;
-	}
-
-	
-	public function countTermRecursiveRelationshipsRelatedByRelatedTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseTermRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(TermRecursiveRelationshipPeer::RELATED_TERM_ID, $this->getId());
-
-		return TermRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addTermRecursiveRelationshipRelatedByRelatedTermId(TermRecursiveRelationship $l)
-	{
-		$this->collTermRecursiveRelationshipsRelatedByRelatedTermId[] = $l;
-		$l->setTermRelatedByRelatedTermId($this);
-	}
-
-	
-	public function initTermRecursiveRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getTermRecursiveRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseTermRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(TermRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				TermRecursiveRelationshipPeer::addSelectColumns($criteria);
-				$this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId = TermRecursiveRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(TermRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				TermRecursiveRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastTermRecursiveRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastTermRecursiveRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId = TermRecursiveRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastTermRecursiveRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countTermRecursiveRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseTermRecursiveRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(TermRecursiveRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return TermRecursiveRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addTermRecursiveRelationshipRelatedByRelationshipTypeId(TermRecursiveRelationship $l)
-	{
-		$this->collTermRecursiveRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-	
-	public function initEventsRelatedByEventTypeId()
-	{
-		if ($this->collEventsRelatedByEventTypeId === null) {
-			$this->collEventsRelatedByEventTypeId = array();
-		}
-	}
-
-	
-	public function getEventsRelatedByEventTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventsRelatedByEventTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collEventsRelatedByEventTypeId = array();
-			} else {
-
-				$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-				EventPeer::addSelectColumns($criteria);
-				$this->collEventsRelatedByEventTypeId = EventPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-				EventPeer::addSelectColumns($criteria);
-				if (!isset($this->lastEventRelatedByEventTypeIdCriteria) || !$this->lastEventRelatedByEventTypeIdCriteria->equals($criteria)) {
-					$this->collEventsRelatedByEventTypeId = EventPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastEventRelatedByEventTypeIdCriteria = $criteria;
-		return $this->collEventsRelatedByEventTypeId;
-	}
-
-	
-	public function countEventsRelatedByEventTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-		return EventPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addEventRelatedByEventTypeId(Event $l)
-	{
-		$this->collEventsRelatedByEventTypeId[] = $l;
-		$l->setTermRelatedByEventTypeId($this);
-	}
-
-
-	
-	public function getEventsRelatedByEventTypeIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventsRelatedByEventTypeId === null) {
-			if ($this->isNew()) {
-				$this->collEventsRelatedByEventTypeId = array();
-			} else {
-
-				$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-				$this->collEventsRelatedByEventTypeId = EventPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastEventRelatedByEventTypeIdCriteria) || !$this->lastEventRelatedByEventTypeIdCriteria->equals($criteria)) {
-				$this->collEventsRelatedByEventTypeId = EventPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastEventRelatedByEventTypeIdCriteria = $criteria;
-
-		return $this->collEventsRelatedByEventTypeId;
-	}
-
-
-	
-	public function getEventsRelatedByEventTypeIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventsRelatedByEventTypeId === null) {
-			if ($this->isNew()) {
-				$this->collEventsRelatedByEventTypeId = array();
-			} else {
-
-				$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-				$this->collEventsRelatedByEventTypeId = EventPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(EventPeer::EVENT_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastEventRelatedByEventTypeIdCriteria) || !$this->lastEventRelatedByEventTypeIdCriteria->equals($criteria)) {
-				$this->collEventsRelatedByEventTypeId = EventPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastEventRelatedByEventTypeIdCriteria = $criteria;
-
-		return $this->collEventsRelatedByEventTypeId;
-	}
-
-	
-	public function initEventsRelatedByActorRoleId()
-	{
-		if ($this->collEventsRelatedByActorRoleId === null) {
-			$this->collEventsRelatedByActorRoleId = array();
-		}
-	}
-
-	
-	public function getEventsRelatedByActorRoleId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventsRelatedByActorRoleId === null) {
-			if ($this->isNew()) {
-			   $this->collEventsRelatedByActorRoleId = array();
-			} else {
-
-				$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-				EventPeer::addSelectColumns($criteria);
-				$this->collEventsRelatedByActorRoleId = EventPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-				EventPeer::addSelectColumns($criteria);
-				if (!isset($this->lastEventRelatedByActorRoleIdCriteria) || !$this->lastEventRelatedByActorRoleIdCriteria->equals($criteria)) {
-					$this->collEventsRelatedByActorRoleId = EventPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastEventRelatedByActorRoleIdCriteria = $criteria;
-		return $this->collEventsRelatedByActorRoleId;
-	}
-
-	
-	public function countEventsRelatedByActorRoleId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-		return EventPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addEventRelatedByActorRoleId(Event $l)
-	{
-		$this->collEventsRelatedByActorRoleId[] = $l;
-		$l->setTermRelatedByActorRoleId($this);
-	}
-
-
-	
-	public function getEventsRelatedByActorRoleIdJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventsRelatedByActorRoleId === null) {
-			if ($this->isNew()) {
-				$this->collEventsRelatedByActorRoleId = array();
-			} else {
-
-				$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-				$this->collEventsRelatedByActorRoleId = EventPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-			if (!isset($this->lastEventRelatedByActorRoleIdCriteria) || !$this->lastEventRelatedByActorRoleIdCriteria->equals($criteria)) {
-				$this->collEventsRelatedByActorRoleId = EventPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastEventRelatedByActorRoleIdCriteria = $criteria;
-
-		return $this->collEventsRelatedByActorRoleId;
-	}
-
-
-	
-	public function getEventsRelatedByActorRoleIdJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventsRelatedByActorRoleId === null) {
-			if ($this->isNew()) {
-				$this->collEventsRelatedByActorRoleId = array();
-			} else {
-
-				$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-				$this->collEventsRelatedByActorRoleId = EventPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(EventPeer::ACTOR_ROLE_ID, $this->getId());
-
-			if (!isset($this->lastEventRelatedByActorRoleIdCriteria) || !$this->lastEventRelatedByActorRoleIdCriteria->equals($criteria)) {
-				$this->collEventsRelatedByActorRoleId = EventPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastEventRelatedByActorRoleIdCriteria = $criteria;
-
-		return $this->collEventsRelatedByActorRoleId;
-	}
-
-	
-	public function initEventTermRelationshipsRelatedByTermId()
-	{
-		if ($this->collEventTermRelationshipsRelatedByTermId === null) {
-			$this->collEventTermRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getEventTermRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collEventTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(EventTermRelationshipPeer::TERM_ID, $this->getId());
-
-				EventTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collEventTermRelationshipsRelatedByTermId = EventTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(EventTermRelationshipPeer::TERM_ID, $this->getId());
-
-				EventTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastEventTermRelationshipRelatedByTermIdCriteria) || !$this->lastEventTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collEventTermRelationshipsRelatedByTermId = EventTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastEventTermRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collEventTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countEventTermRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(EventTermRelationshipPeer::TERM_ID, $this->getId());
-
-		return EventTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addEventTermRelationshipRelatedByTermId(EventTermRelationship $l)
-	{
-		$this->collEventTermRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-
-	
-	public function getEventTermRelationshipsRelatedByTermIdJoinEvent($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collEventTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(EventTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collEventTermRelationshipsRelatedByTermId = EventTermRelationshipPeer::doSelectJoinEvent($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(EventTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastEventTermRelationshipRelatedByTermIdCriteria) || !$this->lastEventTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collEventTermRelationshipsRelatedByTermId = EventTermRelationshipPeer::doSelectJoinEvent($criteria, $con);
-			}
-		}
-		$this->lastEventTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collEventTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function initEventTermRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collEventTermRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collEventTermRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getEventTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collEventTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(EventTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				EventTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collEventTermRelationshipsRelatedByRelationshipTypeId = EventTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(EventTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				EventTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collEventTermRelationshipsRelatedByRelationshipTypeId = EventTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collEventTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countEventTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(EventTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return EventTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addEventTermRelationshipRelatedByRelationshipTypeId(EventTermRelationship $l)
-	{
-		$this->collEventTermRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-
-	
-	public function getEventTermRelationshipsRelatedByRelationshipTypeIdJoinEvent($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseEventTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collEventTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collEventTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(EventTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collEventTermRelationshipsRelatedByRelationshipTypeId = EventTermRelationshipPeer::doSelectJoinEvent($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(EventTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collEventTermRelationshipsRelatedByRelationshipTypeId = EventTermRelationshipPeer::doSelectJoinEvent($criteria, $con);
-			}
-		}
-		$this->lastEventTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collEventTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function initSystemEvents()
-	{
-		if ($this->collSystemEvents === null) {
-			$this->collSystemEvents = array();
-		}
-	}
-
-	
-	public function getSystemEvents($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseSystemEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSystemEvents === null) {
-			if ($this->isNew()) {
-			   $this->collSystemEvents = array();
-			} else {
-
-				$criteria->add(SystemEventPeer::SYSTEM_EVENT_TYPE_ID, $this->getId());
-
-				SystemEventPeer::addSelectColumns($criteria);
-				$this->collSystemEvents = SystemEventPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(SystemEventPeer::SYSTEM_EVENT_TYPE_ID, $this->getId());
-
-				SystemEventPeer::addSelectColumns($criteria);
-				if (!isset($this->lastSystemEventCriteria) || !$this->lastSystemEventCriteria->equals($criteria)) {
-					$this->collSystemEvents = SystemEventPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastSystemEventCriteria = $criteria;
-		return $this->collSystemEvents;
-	}
-
-	
-	public function countSystemEvents($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseSystemEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(SystemEventPeer::SYSTEM_EVENT_TYPE_ID, $this->getId());
-
-		return SystemEventPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addSystemEvent(SystemEvent $l)
-	{
-		$this->collSystemEvents[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getSystemEventsJoinUser($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseSystemEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collSystemEvents === null) {
-			if ($this->isNew()) {
-				$this->collSystemEvents = array();
-			} else {
-
-				$criteria->add(SystemEventPeer::SYSTEM_EVENT_TYPE_ID, $this->getId());
-
-				$this->collSystemEvents = SystemEventPeer::doSelectJoinUser($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(SystemEventPeer::SYSTEM_EVENT_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastSystemEventCriteria) || !$this->lastSystemEventCriteria->equals($criteria)) {
-				$this->collSystemEvents = SystemEventPeer::doSelectJoinUser($criteria, $con);
-			}
-		}
-		$this->lastSystemEventCriteria = $criteria;
-
-		return $this->collSystemEvents;
-	}
-
-	
-	public function initHistoricalEventsRelatedByTermId()
-	{
-		if ($this->collHistoricalEventsRelatedByTermId === null) {
-			$this->collHistoricalEventsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getHistoricalEventsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseHistoricalEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collHistoricalEventsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collHistoricalEventsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(HistoricalEventPeer::TERM_ID, $this->getId());
-
-				HistoricalEventPeer::addSelectColumns($criteria);
-				$this->collHistoricalEventsRelatedByTermId = HistoricalEventPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(HistoricalEventPeer::TERM_ID, $this->getId());
-
-				HistoricalEventPeer::addSelectColumns($criteria);
-				if (!isset($this->lastHistoricalEventRelatedByTermIdCriteria) || !$this->lastHistoricalEventRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collHistoricalEventsRelatedByTermId = HistoricalEventPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastHistoricalEventRelatedByTermIdCriteria = $criteria;
-		return $this->collHistoricalEventsRelatedByTermId;
-	}
-
-	
-	public function countHistoricalEventsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseHistoricalEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(HistoricalEventPeer::TERM_ID, $this->getId());
-
-		return HistoricalEventPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addHistoricalEventRelatedByTermId(HistoricalEvent $l)
-	{
-		$this->collHistoricalEventsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-	
-	public function initHistoricalEventsRelatedByHistoricalEventTypeId()
-	{
-		if ($this->collHistoricalEventsRelatedByHistoricalEventTypeId === null) {
-			$this->collHistoricalEventsRelatedByHistoricalEventTypeId = array();
-		}
-	}
-
-	
-	public function getHistoricalEventsRelatedByHistoricalEventTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseHistoricalEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collHistoricalEventsRelatedByHistoricalEventTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collHistoricalEventsRelatedByHistoricalEventTypeId = array();
-			} else {
-
-				$criteria->add(HistoricalEventPeer::HISTORICAL_EVENT_TYPE_ID, $this->getId());
-
-				HistoricalEventPeer::addSelectColumns($criteria);
-				$this->collHistoricalEventsRelatedByHistoricalEventTypeId = HistoricalEventPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(HistoricalEventPeer::HISTORICAL_EVENT_TYPE_ID, $this->getId());
-
-				HistoricalEventPeer::addSelectColumns($criteria);
-				if (!isset($this->lastHistoricalEventRelatedByHistoricalEventTypeIdCriteria) || !$this->lastHistoricalEventRelatedByHistoricalEventTypeIdCriteria->equals($criteria)) {
-					$this->collHistoricalEventsRelatedByHistoricalEventTypeId = HistoricalEventPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastHistoricalEventRelatedByHistoricalEventTypeIdCriteria = $criteria;
-		return $this->collHistoricalEventsRelatedByHistoricalEventTypeId;
-	}
-
-	
-	public function countHistoricalEventsRelatedByHistoricalEventTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseHistoricalEventPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(HistoricalEventPeer::HISTORICAL_EVENT_TYPE_ID, $this->getId());
-
-		return HistoricalEventPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addHistoricalEventRelatedByHistoricalEventTypeId(HistoricalEvent $l)
-	{
-		$this->collHistoricalEventsRelatedByHistoricalEventTypeId[] = $l;
-		$l->setTermRelatedByHistoricalEventTypeId($this);
-	}
-
-	
-	public function initFunctionDescriptionsRelatedByTermId()
-	{
-		if ($this->collFunctionDescriptionsRelatedByTermId === null) {
-			$this->collFunctionDescriptionsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getFunctionDescriptionsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collFunctionDescriptionsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collFunctionDescriptionsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(FunctionDescriptionPeer::TERM_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				$this->collFunctionDescriptionsRelatedByTermId = FunctionDescriptionPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(FunctionDescriptionPeer::TERM_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				if (!isset($this->lastFunctionDescriptionRelatedByTermIdCriteria) || !$this->lastFunctionDescriptionRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collFunctionDescriptionsRelatedByTermId = FunctionDescriptionPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastFunctionDescriptionRelatedByTermIdCriteria = $criteria;
-		return $this->collFunctionDescriptionsRelatedByTermId;
-	}
-
-	
-	public function countFunctionDescriptionsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(FunctionDescriptionPeer::TERM_ID, $this->getId());
-
-		return FunctionDescriptionPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addFunctionDescriptionRelatedByTermId(FunctionDescription $l)
-	{
-		$this->collFunctionDescriptionsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-	
-	public function initFunctionDescriptionsRelatedByFunctionDescriptionTypeId()
-	{
-		if ($this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId === null) {
-			$this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId = array();
-		}
-	}
-
-	
-	public function getFunctionDescriptionsRelatedByFunctionDescriptionTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId = array();
-			} else {
-
-				$criteria->add(FunctionDescriptionPeer::FUNCTION_DESCRIPTION_TYPE_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				$this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId = FunctionDescriptionPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(FunctionDescriptionPeer::FUNCTION_DESCRIPTION_TYPE_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				if (!isset($this->lastFunctionDescriptionRelatedByFunctionDescriptionTypeIdCriteria) || !$this->lastFunctionDescriptionRelatedByFunctionDescriptionTypeIdCriteria->equals($criteria)) {
-					$this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId = FunctionDescriptionPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastFunctionDescriptionRelatedByFunctionDescriptionTypeIdCriteria = $criteria;
-		return $this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId;
-	}
-
-	
-	public function countFunctionDescriptionsRelatedByFunctionDescriptionTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(FunctionDescriptionPeer::FUNCTION_DESCRIPTION_TYPE_ID, $this->getId());
-
-		return FunctionDescriptionPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addFunctionDescriptionRelatedByFunctionDescriptionTypeId(FunctionDescription $l)
-	{
-		$this->collFunctionDescriptionsRelatedByFunctionDescriptionTypeId[] = $l;
-		$l->setTermRelatedByFunctionDescriptionTypeId($this);
-	}
-
-	
-	public function initFunctionDescriptionsRelatedByStatusId()
-	{
-		if ($this->collFunctionDescriptionsRelatedByStatusId === null) {
-			$this->collFunctionDescriptionsRelatedByStatusId = array();
-		}
-	}
-
-	
-	public function getFunctionDescriptionsRelatedByStatusId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collFunctionDescriptionsRelatedByStatusId === null) {
-			if ($this->isNew()) {
-			   $this->collFunctionDescriptionsRelatedByStatusId = array();
-			} else {
-
-				$criteria->add(FunctionDescriptionPeer::STATUS_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				$this->collFunctionDescriptionsRelatedByStatusId = FunctionDescriptionPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(FunctionDescriptionPeer::STATUS_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				if (!isset($this->lastFunctionDescriptionRelatedByStatusIdCriteria) || !$this->lastFunctionDescriptionRelatedByStatusIdCriteria->equals($criteria)) {
-					$this->collFunctionDescriptionsRelatedByStatusId = FunctionDescriptionPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastFunctionDescriptionRelatedByStatusIdCriteria = $criteria;
-		return $this->collFunctionDescriptionsRelatedByStatusId;
-	}
-
-	
-	public function countFunctionDescriptionsRelatedByStatusId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(FunctionDescriptionPeer::STATUS_ID, $this->getId());
-
-		return FunctionDescriptionPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addFunctionDescriptionRelatedByStatusId(FunctionDescription $l)
-	{
-		$this->collFunctionDescriptionsRelatedByStatusId[] = $l;
-		$l->setTermRelatedByStatusId($this);
-	}
-
-	
-	public function initFunctionDescriptionsRelatedByLevelId()
-	{
-		if ($this->collFunctionDescriptionsRelatedByLevelId === null) {
-			$this->collFunctionDescriptionsRelatedByLevelId = array();
-		}
-	}
-
-	
-	public function getFunctionDescriptionsRelatedByLevelId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collFunctionDescriptionsRelatedByLevelId === null) {
-			if ($this->isNew()) {
-			   $this->collFunctionDescriptionsRelatedByLevelId = array();
-			} else {
-
-				$criteria->add(FunctionDescriptionPeer::LEVEL_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				$this->collFunctionDescriptionsRelatedByLevelId = FunctionDescriptionPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(FunctionDescriptionPeer::LEVEL_ID, $this->getId());
-
-				FunctionDescriptionPeer::addSelectColumns($criteria);
-				if (!isset($this->lastFunctionDescriptionRelatedByLevelIdCriteria) || !$this->lastFunctionDescriptionRelatedByLevelIdCriteria->equals($criteria)) {
-					$this->collFunctionDescriptionsRelatedByLevelId = FunctionDescriptionPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastFunctionDescriptionRelatedByLevelIdCriteria = $criteria;
-		return $this->collFunctionDescriptionsRelatedByLevelId;
-	}
-
-	
-	public function countFunctionDescriptionsRelatedByLevelId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseFunctionDescriptionPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(FunctionDescriptionPeer::LEVEL_ID, $this->getId());
-
-		return FunctionDescriptionPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addFunctionDescriptionRelatedByLevelId(FunctionDescription $l)
-	{
-		$this->collFunctionDescriptionsRelatedByLevelId[] = $l;
-		$l->setTermRelatedByLevelId($this);
-	}
-
-	
-	public function initRights()
-	{
-		if ($this->collRights === null) {
-			$this->collRights = array();
-		}
-	}
-
-	
-	public function getRights($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-			   $this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-				RightPeer::addSelectColumns($criteria);
-				$this->collRights = RightPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-				RightPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-					$this->collRights = RightPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-		return $this->collRights;
-	}
-
-	
-	public function countRights($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-		return RightPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRight(Right $l)
-	{
-		$this->collRights[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getRightsJoinInformationObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-				$this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-				$this->collRights = RightPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-			if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-				$this->collRights = RightPeer::doSelectJoinInformationObject($criteria, $con);
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-
-		return $this->collRights;
-	}
-
-
-	
-	public function getRightsJoinDigitalObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-				$this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-				$this->collRights = RightPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-			if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-				$this->collRights = RightPeer::doSelectJoinDigitalObject($criteria, $con);
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-
-		return $this->collRights;
-	}
-
-
-	
-	public function getRightsJoinPhysicalObject($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRights === null) {
-			if ($this->isNew()) {
-				$this->collRights = array();
-			} else {
-
-				$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-				$this->collRights = RightPeer::doSelectJoinPhysicalObject($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightPeer::PERMISSION_ID, $this->getId());
-
-			if (!isset($this->lastRightCriteria) || !$this->lastRightCriteria->equals($criteria)) {
-				$this->collRights = RightPeer::doSelectJoinPhysicalObject($criteria, $con);
-			}
-		}
-		$this->lastRightCriteria = $criteria;
-
-		return $this->collRights;
-	}
-
-	
-	public function initRightTermRelationshipsRelatedByTermId()
-	{
-		if ($this->collRightTermRelationshipsRelatedByTermId === null) {
-			$this->collRightTermRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getRightTermRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collRightTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(RightTermRelationshipPeer::TERM_ID, $this->getId());
-
-				RightTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collRightTermRelationshipsRelatedByTermId = RightTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RightTermRelationshipPeer::TERM_ID, $this->getId());
-
-				RightTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRightTermRelationshipRelatedByTermIdCriteria) || !$this->lastRightTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collRightTermRelationshipsRelatedByTermId = RightTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRightTermRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collRightTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countRightTermRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RightTermRelationshipPeer::TERM_ID, $this->getId());
-
-		return RightTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRightTermRelationshipRelatedByTermId(RightTermRelationship $l)
-	{
-		$this->collRightTermRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-
-	
-	public function getRightTermRelationshipsRelatedByTermIdJoinRight($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collRightTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(RightTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collRightTermRelationshipsRelatedByTermId = RightTermRelationshipPeer::doSelectJoinRight($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastRightTermRelationshipRelatedByTermIdCriteria) || !$this->lastRightTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collRightTermRelationshipsRelatedByTermId = RightTermRelationshipPeer::doSelectJoinRight($criteria, $con);
-			}
-		}
-		$this->lastRightTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collRightTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function initRightTermRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collRightTermRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collRightTermRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getRightTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collRightTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(RightTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				RightTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collRightTermRelationshipsRelatedByRelationshipTypeId = RightTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RightTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				RightTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collRightTermRelationshipsRelatedByRelationshipTypeId = RightTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collRightTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countRightTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RightTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return RightTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRightTermRelationshipRelatedByRelationshipTypeId(RightTermRelationship $l)
-	{
-		$this->collRightTermRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-
-	
-	public function getRightTermRelationshipsRelatedByRelationshipTypeIdJoinRight($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collRightTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(RightTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collRightTermRelationshipsRelatedByRelationshipTypeId = RightTermRelationshipPeer::doSelectJoinRight($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collRightTermRelationshipsRelatedByRelationshipTypeId = RightTermRelationshipPeer::doSelectJoinRight($criteria, $con);
-			}
-		}
-		$this->lastRightTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collRightTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function initRightActorRelationships()
-	{
-		if ($this->collRightActorRelationships === null) {
-			$this->collRightActorRelationships = array();
-		}
-	}
-
-	
-	public function getRightActorRelationships($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightActorRelationships === null) {
-			if ($this->isNew()) {
-			   $this->collRightActorRelationships = array();
-			} else {
-
-				$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				RightActorRelationshipPeer::addSelectColumns($criteria);
-				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				RightActorRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
-					$this->collRightActorRelationships = RightActorRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastRightActorRelationshipCriteria = $criteria;
-		return $this->collRightActorRelationships;
-	}
-
-	
-	public function countRightActorRelationships($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return RightActorRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addRightActorRelationship(RightActorRelationship $l)
-	{
-		$this->collRightActorRelationships[] = $l;
-		$l->setTerm($this);
-	}
-
-
-	
-	public function getRightActorRelationshipsJoinRight($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightActorRelationships === null) {
-			if ($this->isNew()) {
-				$this->collRightActorRelationships = array();
-			} else {
-
-				$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinRight($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
-				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinRight($criteria, $con);
-			}
-		}
-		$this->lastRightActorRelationshipCriteria = $criteria;
-
-		return $this->collRightActorRelationships;
-	}
-
-
-	
-	public function getRightActorRelationshipsJoinActor($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseRightActorRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collRightActorRelationships === null) {
-			if ($this->isNew()) {
-				$this->collRightActorRelationships = array();
-			} else {
-
-				$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinActor($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(RightActorRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastRightActorRelationshipCriteria) || !$this->lastRightActorRelationshipCriteria->equals($criteria)) {
-				$this->collRightActorRelationships = RightActorRelationshipPeer::doSelectJoinActor($criteria, $con);
-			}
-		}
-		$this->lastRightActorRelationshipCriteria = $criteria;
-
-		return $this->collRightActorRelationships;
-	}
-
-	
-	public function initUserTermRelationshipsRelatedByTermId()
-	{
-		if ($this->collUserTermRelationshipsRelatedByTermId === null) {
-			$this->collUserTermRelationshipsRelatedByTermId = array();
-		}
-	}
-
-	
-	public function getUserTermRelationshipsRelatedByTermId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-			   $this->collUserTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-				UserTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collUserTermRelationshipsRelatedByTermId = UserTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-				UserTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserTermRelationshipRelatedByTermIdCriteria) || !$this->lastUserTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-					$this->collUserTermRelationshipsRelatedByTermId = UserTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastUserTermRelationshipRelatedByTermIdCriteria = $criteria;
-		return $this->collUserTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function countUserTermRelationshipsRelatedByTermId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-		return UserTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addUserTermRelationshipRelatedByTermId(UserTermRelationship $l)
-	{
-		$this->collUserTermRelationshipsRelatedByTermId[] = $l;
-		$l->setTermRelatedByTermId($this);
-	}
-
-
-	
-	public function getUserTermRelationshipsRelatedByTermIdJoinUser($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collUserTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collUserTermRelationshipsRelatedByTermId = UserTermRelationshipPeer::doSelectJoinUser($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastUserTermRelationshipRelatedByTermIdCriteria) || !$this->lastUserTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collUserTermRelationshipsRelatedByTermId = UserTermRelationshipPeer::doSelectJoinUser($criteria, $con);
-			}
-		}
-		$this->lastUserTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collUserTermRelationshipsRelatedByTermId;
-	}
-
-
-	
-	public function getUserTermRelationshipsRelatedByTermIdJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserTermRelationshipsRelatedByTermId === null) {
-			if ($this->isNew()) {
-				$this->collUserTermRelationshipsRelatedByTermId = array();
-			} else {
-
-				$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-				$this->collUserTermRelationshipsRelatedByTermId = UserTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(UserTermRelationshipPeer::TERM_ID, $this->getId());
-
-			if (!isset($this->lastUserTermRelationshipRelatedByTermIdCriteria) || !$this->lastUserTermRelationshipRelatedByTermIdCriteria->equals($criteria)) {
-				$this->collUserTermRelationshipsRelatedByTermId = UserTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastUserTermRelationshipRelatedByTermIdCriteria = $criteria;
-
-		return $this->collUserTermRelationshipsRelatedByTermId;
-	}
-
-	
-	public function initUserTermRelationshipsRelatedByRelationshipTypeId()
-	{
-		if ($this->collUserTermRelationshipsRelatedByRelationshipTypeId === null) {
-			$this->collUserTermRelationshipsRelatedByRelationshipTypeId = array();
-		}
-	}
-
-	
-	public function getUserTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-			   $this->collUserTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				UserTermRelationshipPeer::addSelectColumns($criteria);
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = UserTermRelationshipPeer::doSelect($criteria, $con);
-			}
-		} else {
-						if (!$this->isNew()) {
-												
-
-				$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				UserTermRelationshipPeer::addSelectColumns($criteria);
-				if (!isset($this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-					$this->collUserTermRelationshipsRelatedByRelationshipTypeId = UserTermRelationshipPeer::doSelect($criteria, $con);
-				}
-			}
-		}
-		$this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-		return $this->collUserTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-	
-	public function countUserTermRelationshipsRelatedByRelationshipTypeId($criteria = null, $distinct = false, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-		return UserTermRelationshipPeer::doCount($criteria, $distinct, $con);
-	}
-
-	
-	public function addUserTermRelationshipRelatedByRelationshipTypeId(UserTermRelationship $l)
-	{
-		$this->collUserTermRelationshipsRelatedByRelationshipTypeId[] = $l;
-		$l->setTermRelatedByRelationshipTypeId($this);
-	}
-
-
-	
-	public function getUserTermRelationshipsRelatedByRelationshipTypeIdJoinUser($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = UserTermRelationshipPeer::doSelectJoinUser($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = UserTermRelationshipPeer::doSelectJoinUser($criteria, $con);
-			}
-		}
-		$this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collUserTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-
-	
-	public function getUserTermRelationshipsRelatedByRelationshipTypeIdJoinRepository($criteria = null, $con = null)
-	{
-				include_once 'lib/model/om/BaseUserTermRelationshipPeer.php';
-		if ($criteria === null) {
-			$criteria = new Criteria();
-		}
-		elseif ($criteria instanceof Criteria)
-		{
-			$criteria = clone $criteria;
-		}
-
-		if ($this->collUserTermRelationshipsRelatedByRelationshipTypeId === null) {
-			if ($this->isNew()) {
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = array();
-			} else {
-
-				$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = UserTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		} else {
-									
-			$criteria->add(UserTermRelationshipPeer::RELATIONSHIP_TYPE_ID, $this->getId());
-
-			if (!isset($this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria) || !$this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria->equals($criteria)) {
-				$this->collUserTermRelationshipsRelatedByRelationshipTypeId = UserTermRelationshipPeer::doSelectJoinRepository($criteria, $con);
-			}
-		}
-		$this->lastUserTermRelationshipRelatedByRelationshipTypeIdCriteria = $criteria;
-
-		return $this->collUserTermRelationshipsRelatedByRelationshipTypeId;
-	}
-
-
-  public function __call($method, $arguments)
+abstract class BaseTerm extends QubitObject
+{
+  const DATABASE_NAME = 'propel';
+
+  const TABLE_NAME = 'q_term';
+
+  const ID = 'q_term.ID';
+  const TAXONOMY_ID = 'q_term.TAXONOMY_ID';
+  const CODE_NUMERIC = 'q_term.CODE_NUMERIC';
+  const PARENT_ID = 'q_term.PARENT_ID';
+  const LFT = 'q_term.LFT';
+  const RGT = 'q_term.RGT';
+  const CREATED_AT = 'q_term.CREATED_AT';
+  const UPDATED_AT = 'q_term.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_term.SOURCE_CULTURE';
+
+  public static function addSelectColumns(Criteria $criteria)
   {
-    if (!$callable = sfMixer::getCallable('BaseTerm:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BaseTerm::%s', $method));
-    }
+    parent::addSelectColumns($criteria);
 
-    array_unshift($arguments, $this);
+    $criteria->addJoin(QubitTerm::ID, QubitObject::ID);
 
-    return call_user_func_array($callable, $arguments);
+    $criteria->addSelectColumn(QubitTerm::ID);
+    $criteria->addSelectColumn(QubitTerm::TAXONOMY_ID);
+    $criteria->addSelectColumn(QubitTerm::CODE_NUMERIC);
+    $criteria->addSelectColumn(QubitTerm::PARENT_ID);
+    $criteria->addSelectColumn(QubitTerm::LFT);
+    $criteria->addSelectColumn(QubitTerm::RGT);
+    $criteria->addSelectColumn(QubitTerm::CREATED_AT);
+    $criteria->addSelectColumn(QubitTerm::UPDATED_AT);
+    $criteria->addSelectColumn(QubitTerm::SOURCE_CULTURE);
+
+    return $criteria;
   }
 
+  public static function get(Criteria $criteria, array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitTerm::DATABASE_NAME);
+    }
 
-} 
+    self::addSelectColumns($criteria);
+
+    return QubitQuery::createFromCriteria($criteria, 'QubitTerm', $options);
+  }
+
+  public static function getAll(array $options = array())
+  {
+    return self::get(new Criteria, $options);
+  }
+
+  public static function getOne(Criteria $criteria, array $options = array())
+  {
+    $criteria->setLimit(1);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function getById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::ID, $id);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
+  {
+    if ($order == Criteria::DESC)
+    {
+      return $criteria->addDescendingOrderByColumn(QubitTerm::LFT);
+    }
+
+    return $criteria->addAscendingOrderByColumn(QubitTerm::LFT);
+  }
+
+  public static function addRootsCriteria(Criteria $criteria)
+  {
+    $criteria->add(QubitTerm::PARENT_ID);
+
+    return $criteria;
+  }
+
+  protected $taxonomyId = null;
+
+  public function getTaxonomyId()
+  {
+    return $this->taxonomyId;
+  }
+
+  public function setTaxonomyId($taxonomyId)
+  {
+    $this->taxonomyId = $taxonomyId;
+
+    return $this;
+  }
+
+  protected $codeNumeric = null;
+
+  public function getCodeNumeric()
+  {
+    return $this->codeNumeric;
+  }
+
+  public function setCodeNumeric($codeNumeric)
+  {
+    $this->codeNumeric = $codeNumeric;
+
+    return $this;
+  }
+
+  protected $parentId = null;
+
+  public function getParentId()
+  {
+    return $this->parentId;
+  }
+
+  public function setParentId($parentId)
+  {
+    $this->parentId = $parentId;
+
+    return $this;
+  }
+
+  protected $lft = null;
+
+  public function getLft()
+  {
+    return $this->lft;
+  }
+
+  protected function setLft($lft)
+  {
+    $this->lft = $lft;
+
+    return $this;
+  }
+
+  protected $rgt = null;
+
+  public function getRgt()
+  {
+    return $this->rgt;
+  }
+
+  protected function setRgt($rgt)
+  {
+    $this->rgt = $rgt;
+
+    return $this;
+  }
+
+  protected $createdAt = null;
+
+  public function getCreatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->createdAt);
+    }
+
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt($createdAt)
+  {
+    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+    }
+
+    $this->createdAt = $createdAt;
+
+    return $this;
+  }
+
+  protected $updatedAt = null;
+
+  public function getUpdatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->updatedAt);
+    }
+
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt($updatedAt)
+  {
+    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+    }
+
+    $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
+  protected function resetModified()
+  {
+    parent::resetModified();
+
+    $this->columnValues['id'] = $this->id;
+    $this->columnValues['taxonomyId'] = $this->taxonomyId;
+    $this->columnValues['codeNumeric'] = $this->codeNumeric;
+    $this->columnValues['parentId'] = $this->parentId;
+    $this->columnValues['lft'] = $this->lft;
+    $this->columnValues['rgt'] = $this->rgt;
+    $this->columnValues['createdAt'] = $this->createdAt;
+    $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
+
+    return $this;
+  }
+
+  public function hydrate(ResultSet $results, $columnOffset = 1)
+  {
+    $columnOffset = parent::hydrate($results, $columnOffset);
+
+    $this->id = $results->getInt($columnOffset++);
+    $this->taxonomyId = $results->getInt($columnOffset++);
+    $this->codeNumeric = $results->getInt($columnOffset++);
+    $this->parentId = $results->getInt($columnOffset++);
+    $this->lft = $results->getInt($columnOffset++);
+    $this->rgt = $results->getInt($columnOffset++);
+    $this->createdAt = $results->getTimestamp($columnOffset++, null);
+    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
+
+    $this->new = false;
+    $this->resetModified();
+
+    return $columnOffset;
+  }
+
+  public function refresh(array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitTerm::DATABASE_NAME);
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::ID, $this->id);
+
+    self::addSelectColumns($criteria);
+
+    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
+    $resultSet->next();
+
+    return $this->hydrate($resultSet);
+  }
+
+  public function save($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::save($connection);
+
+    foreach ($this->termI18ns as $termI18n)
+    {
+      $termI18n->setId($this->id);
+
+      $affectedRows += $termI18n->save($connection);
+    }
+
+    return $affectedRows;
+  }
+
+  protected function insert($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::insert($connection);
+
+    $this->updateNestedSet($connection);
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitTerm::ID, $this->id);
+    }
+
+    if ($this->isColumnModified('taxonomyId'))
+    {
+      $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
+    }
+
+    if ($this->isColumnModified('codeNumeric'))
+    {
+      $criteria->add(QubitTerm::CODE_NUMERIC, $this->codeNumeric);
+    }
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $criteria->add(QubitTerm::PARENT_ID, $this->parentId);
+    }
+
+    if ($this->isColumnModified('lft'))
+    {
+      $criteria->add(QubitTerm::LFT, $this->lft);
+    }
+
+    if ($this->isColumnModified('rgt'))
+    {
+      $criteria->add(QubitTerm::RGT, $this->rgt);
+    }
+
+    if (!$this->isColumnModified('createdAt'))
+    {
+      $this->createdAt = time();
+    }
+    $criteria->add(QubitTerm::CREATED_AT, $this->createdAt);
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitTerm::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitTerm::SOURCE_CULTURE, $this->sourceCulture);
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitTerm::DATABASE_NAME);
+    }
+
+    BasePeer::doInsert($criteria, $connection);
+    $affectedRows += 1;
+
+    return $affectedRows;
+  }
+
+  protected function update($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::update($connection);
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $this->updateNestedSet($connection);
+    }
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitTerm::ID, $this->id);
+    }
+
+    if ($this->isColumnModified('taxonomyId'))
+    {
+      $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
+    }
+
+    if ($this->isColumnModified('codeNumeric'))
+    {
+      $criteria->add(QubitTerm::CODE_NUMERIC, $this->codeNumeric);
+    }
+
+    if ($this->isColumnModified('parentId'))
+    {
+      $criteria->add(QubitTerm::PARENT_ID, $this->parentId);
+    }
+
+    if ($this->isColumnModified('lft'))
+    {
+      $criteria->add(QubitTerm::LFT, $this->lft);
+    }
+
+    if ($this->isColumnModified('rgt'))
+    {
+      $criteria->add(QubitTerm::RGT, $this->rgt);
+    }
+
+    if ($this->isColumnModified('createdAt'))
+    {
+      $criteria->add(QubitTerm::CREATED_AT, $this->createdAt);
+    }
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitTerm::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitTerm::SOURCE_CULTURE, $this->sourceCulture);
+    }
+
+    if ($criteria->size() > 0)
+    {
+      $selectCriteria = new Criteria;
+      $selectCriteria->add(QubitTerm::ID, $this->id);
+
+      if (!isset($connection))
+      {
+        $connection = QubitTransactionFilter::getConnection(QubitTerm::DATABASE_NAME);
+      }
+
+      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+    }
+
+    return $affectedRows;
+  }
+
+  public function delete($connection = null)
+  {
+    if ($this->deleted)
+    {
+      throw new PropelException('This object has already been deleted.');
+    }
+
+    $affectedRows = 0;
+
+    $this->deleteFromNestedSet($connection);
+
+    $affectedRows += parent::delete($connection);
+
+    return $affectedRows;
+  }
+
+  public static function addJoinTaxonomyCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitTerm::TAXONOMY_ID, QubitTaxonomy::ID);
+
+    return $criteria;
+  }
+
+  public function getTaxonomy(array $options = array())
+  {
+    return $this->taxonomy = QubitTaxonomy::getById($this->taxonomyId, $options);
+  }
+
+  public function setTaxonomy(QubitTaxonomy $taxonomy)
+  {
+    $this->taxonomyId = $taxonomy->getId();
+
+    return $this;
+  }
+
+  public static function addJoinParentCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitTerm::PARENT_ID, QubitTerm::ID);
+
+    return $criteria;
+  }
+
+  public function getParent(array $options = array())
+  {
+    return $this->parent = QubitTerm::getById($this->parentId, $options);
+  }
+
+  public function setParent(QubitTerm $term)
+  {
+    $this->parentId = $term->getId();
+
+    return $this;
+  }
+
+  public static function addInformationObjectsRelatedByLevelOfDescriptionIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitInformationObject::LEVEL_OF_DESCRIPTION_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getInformationObjectsRelatedByLevelOfDescriptionIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addInformationObjectsRelatedByLevelOfDescriptionIdCriteriaById($criteria, $id);
+
+    return QubitInformationObject::get($criteria, $options);
+  }
+
+  public function addInformationObjectsRelatedByLevelOfDescriptionIdCriteria(Criteria $criteria)
+  {
+    return self::addInformationObjectsRelatedByLevelOfDescriptionIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $informationObjectsRelatedByLevelOfDescriptionId = null;
+
+  public function getInformationObjectsRelatedByLevelOfDescriptionId(array $options = array())
+  {
+    if (!isset($this->informationObjectsRelatedByLevelOfDescriptionId))
+    {
+      if (!isset($this->id))
+      {
+        $this->informationObjectsRelatedByLevelOfDescriptionId = QubitQuery::create();
+      }
+      else
+      {
+        $this->informationObjectsRelatedByLevelOfDescriptionId = self::getInformationObjectsRelatedByLevelOfDescriptionIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->informationObjectsRelatedByLevelOfDescriptionId;
+  }
+
+  public static function addInformationObjectsRelatedByCollectionTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitInformationObject::COLLECTION_TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getInformationObjectsRelatedByCollectionTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addInformationObjectsRelatedByCollectionTypeIdCriteriaById($criteria, $id);
+
+    return QubitInformationObject::get($criteria, $options);
+  }
+
+  public function addInformationObjectsRelatedByCollectionTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addInformationObjectsRelatedByCollectionTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $informationObjectsRelatedByCollectionTypeId = null;
+
+  public function getInformationObjectsRelatedByCollectionTypeId(array $options = array())
+  {
+    if (!isset($this->informationObjectsRelatedByCollectionTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->informationObjectsRelatedByCollectionTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->informationObjectsRelatedByCollectionTypeId = self::getInformationObjectsRelatedByCollectionTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->informationObjectsRelatedByCollectionTypeId;
+  }
+
+  public static function addInformationObjectsRelatedByDescriptionStatusIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitInformationObject::DESCRIPTION_STATUS_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getInformationObjectsRelatedByDescriptionStatusIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addInformationObjectsRelatedByDescriptionStatusIdCriteriaById($criteria, $id);
+
+    return QubitInformationObject::get($criteria, $options);
+  }
+
+  public function addInformationObjectsRelatedByDescriptionStatusIdCriteria(Criteria $criteria)
+  {
+    return self::addInformationObjectsRelatedByDescriptionStatusIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $informationObjectsRelatedByDescriptionStatusId = null;
+
+  public function getInformationObjectsRelatedByDescriptionStatusId(array $options = array())
+  {
+    if (!isset($this->informationObjectsRelatedByDescriptionStatusId))
+    {
+      if (!isset($this->id))
+      {
+        $this->informationObjectsRelatedByDescriptionStatusId = QubitQuery::create();
+      }
+      else
+      {
+        $this->informationObjectsRelatedByDescriptionStatusId = self::getInformationObjectsRelatedByDescriptionStatusIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->informationObjectsRelatedByDescriptionStatusId;
+  }
+
+  public static function addInformationObjectsRelatedByDescriptionDetailIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitInformationObject::DESCRIPTION_DETAIL_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getInformationObjectsRelatedByDescriptionDetailIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addInformationObjectsRelatedByDescriptionDetailIdCriteriaById($criteria, $id);
+
+    return QubitInformationObject::get($criteria, $options);
+  }
+
+  public function addInformationObjectsRelatedByDescriptionDetailIdCriteria(Criteria $criteria)
+  {
+    return self::addInformationObjectsRelatedByDescriptionDetailIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $informationObjectsRelatedByDescriptionDetailId = null;
+
+  public function getInformationObjectsRelatedByDescriptionDetailId(array $options = array())
+  {
+    if (!isset($this->informationObjectsRelatedByDescriptionDetailId))
+    {
+      if (!isset($this->id))
+      {
+        $this->informationObjectsRelatedByDescriptionDetailId = QubitQuery::create();
+      }
+      else
+      {
+        $this->informationObjectsRelatedByDescriptionDetailId = self::getInformationObjectsRelatedByDescriptionDetailIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->informationObjectsRelatedByDescriptionDetailId;
+  }
+
+  public static function addObjectTermRelationsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitObjectTermRelation::TERM_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getObjectTermRelationsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addObjectTermRelationsCriteriaById($criteria, $id);
+
+    return QubitObjectTermRelation::get($criteria, $options);
+  }
+
+  public function addObjectTermRelationsCriteria(Criteria $criteria)
+  {
+    return self::addObjectTermRelationsCriteriaById($criteria, $this->id);
+  }
+
+  protected $objectTermRelations = null;
+
+  public function getObjectTermRelations(array $options = array())
+  {
+    if (!isset($this->objectTermRelations))
+    {
+      if (!isset($this->id))
+      {
+        $this->objectTermRelations = QubitQuery::create();
+      }
+      else
+      {
+        $this->objectTermRelations = self::getObjectTermRelationsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->objectTermRelations;
+  }
+
+  public static function addRelationsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRelation::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRelationsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRelationsCriteriaById($criteria, $id);
+
+    return QubitRelation::get($criteria, $options);
+  }
+
+  public function addRelationsCriteria(Criteria $criteria)
+  {
+    return self::addRelationsCriteriaById($criteria, $this->id);
+  }
+
+  protected $relations = null;
+
+  public function getRelations(array $options = array())
+  {
+    if (!isset($this->relations))
+    {
+      if (!isset($this->id))
+      {
+        $this->relations = QubitQuery::create();
+      }
+      else
+      {
+        $this->relations = self::getRelationsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->relations;
+  }
+
+  public static function addNotesCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitNote::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getNotesById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addNotesCriteriaById($criteria, $id);
+
+    return QubitNote::get($criteria, $options);
+  }
+
+  public function addNotesCriteria(Criteria $criteria)
+  {
+    return self::addNotesCriteriaById($criteria, $this->id);
+  }
+
+  protected $notes = null;
+
+  public function getNotes(array $options = array())
+  {
+    if (!isset($this->notes))
+    {
+      if (!isset($this->id))
+      {
+        $this->notes = QubitQuery::create();
+      }
+      else
+      {
+        $this->notes = self::getNotesById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->notes;
+  }
+
+  public static function addDigitalObjectsRelatedByUsageIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitDigitalObject::USAGE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getDigitalObjectsRelatedByUsageIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addDigitalObjectsRelatedByUsageIdCriteriaById($criteria, $id);
+
+    return QubitDigitalObject::get($criteria, $options);
+  }
+
+  public function addDigitalObjectsRelatedByUsageIdCriteria(Criteria $criteria)
+  {
+    return self::addDigitalObjectsRelatedByUsageIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $digitalObjectsRelatedByUsageId = null;
+
+  public function getDigitalObjectsRelatedByUsageId(array $options = array())
+  {
+    if (!isset($this->digitalObjectsRelatedByUsageId))
+    {
+      if (!isset($this->id))
+      {
+        $this->digitalObjectsRelatedByUsageId = QubitQuery::create();
+      }
+      else
+      {
+        $this->digitalObjectsRelatedByUsageId = self::getDigitalObjectsRelatedByUsageIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->digitalObjectsRelatedByUsageId;
+  }
+
+  public static function addDigitalObjectsRelatedByMediaTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getDigitalObjectsRelatedByMediaTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addDigitalObjectsRelatedByMediaTypeIdCriteriaById($criteria, $id);
+
+    return QubitDigitalObject::get($criteria, $options);
+  }
+
+  public function addDigitalObjectsRelatedByMediaTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addDigitalObjectsRelatedByMediaTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $digitalObjectsRelatedByMediaTypeId = null;
+
+  public function getDigitalObjectsRelatedByMediaTypeId(array $options = array())
+  {
+    if (!isset($this->digitalObjectsRelatedByMediaTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->digitalObjectsRelatedByMediaTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->digitalObjectsRelatedByMediaTypeId = self::getDigitalObjectsRelatedByMediaTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->digitalObjectsRelatedByMediaTypeId;
+  }
+
+  public static function addDigitalObjectsRelatedByChecksumTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitDigitalObject::CHECKSUM_TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getDigitalObjectsRelatedByChecksumTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addDigitalObjectsRelatedByChecksumTypeIdCriteriaById($criteria, $id);
+
+    return QubitDigitalObject::get($criteria, $options);
+  }
+
+  public function addDigitalObjectsRelatedByChecksumTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addDigitalObjectsRelatedByChecksumTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $digitalObjectsRelatedByChecksumTypeId = null;
+
+  public function getDigitalObjectsRelatedByChecksumTypeId(array $options = array())
+  {
+    if (!isset($this->digitalObjectsRelatedByChecksumTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->digitalObjectsRelatedByChecksumTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->digitalObjectsRelatedByChecksumTypeId = self::getDigitalObjectsRelatedByChecksumTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->digitalObjectsRelatedByChecksumTypeId;
+  }
+
+  public static function addPhysicalObjectsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPhysicalObject::LOCATION_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPhysicalObjectsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPhysicalObjectsCriteriaById($criteria, $id);
+
+    return QubitPhysicalObject::get($criteria, $options);
+  }
+
+  public function addPhysicalObjectsCriteria(Criteria $criteria)
+  {
+    return self::addPhysicalObjectsCriteriaById($criteria, $this->id);
+  }
+
+  protected $physicalObjects = null;
+
+  public function getPhysicalObjects(array $options = array())
+  {
+    if (!isset($this->physicalObjects))
+    {
+      if (!isset($this->id))
+      {
+        $this->physicalObjects = QubitQuery::create();
+      }
+      else
+      {
+        $this->physicalObjects = self::getPhysicalObjectsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->physicalObjects;
+  }
+
+  public static function addActorsRelatedByEntityTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitActor::ENTITY_TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getActorsRelatedByEntityTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addActorsRelatedByEntityTypeIdCriteriaById($criteria, $id);
+
+    return QubitActor::get($criteria, $options);
+  }
+
+  public function addActorsRelatedByEntityTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addActorsRelatedByEntityTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $actorsRelatedByEntityTypeId = null;
+
+  public function getActorsRelatedByEntityTypeId(array $options = array())
+  {
+    if (!isset($this->actorsRelatedByEntityTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->actorsRelatedByEntityTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->actorsRelatedByEntityTypeId = self::getActorsRelatedByEntityTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->actorsRelatedByEntityTypeId;
+  }
+
+  public static function addActorsRelatedByDescriptionStatusIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitActor::DESCRIPTION_STATUS_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getActorsRelatedByDescriptionStatusIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addActorsRelatedByDescriptionStatusIdCriteriaById($criteria, $id);
+
+    return QubitActor::get($criteria, $options);
+  }
+
+  public function addActorsRelatedByDescriptionStatusIdCriteria(Criteria $criteria)
+  {
+    return self::addActorsRelatedByDescriptionStatusIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $actorsRelatedByDescriptionStatusId = null;
+
+  public function getActorsRelatedByDescriptionStatusId(array $options = array())
+  {
+    if (!isset($this->actorsRelatedByDescriptionStatusId))
+    {
+      if (!isset($this->id))
+      {
+        $this->actorsRelatedByDescriptionStatusId = QubitQuery::create();
+      }
+      else
+      {
+        $this->actorsRelatedByDescriptionStatusId = self::getActorsRelatedByDescriptionStatusIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->actorsRelatedByDescriptionStatusId;
+  }
+
+  public static function addActorsRelatedByDescriptionDetailIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitActor::DESCRIPTION_DETAIL_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getActorsRelatedByDescriptionDetailIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addActorsRelatedByDescriptionDetailIdCriteriaById($criteria, $id);
+
+    return QubitActor::get($criteria, $options);
+  }
+
+  public function addActorsRelatedByDescriptionDetailIdCriteria(Criteria $criteria)
+  {
+    return self::addActorsRelatedByDescriptionDetailIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $actorsRelatedByDescriptionDetailId = null;
+
+  public function getActorsRelatedByDescriptionDetailId(array $options = array())
+  {
+    if (!isset($this->actorsRelatedByDescriptionDetailId))
+    {
+      if (!isset($this->id))
+      {
+        $this->actorsRelatedByDescriptionDetailId = QubitQuery::create();
+      }
+      else
+      {
+        $this->actorsRelatedByDescriptionDetailId = self::getActorsRelatedByDescriptionDetailIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->actorsRelatedByDescriptionDetailId;
+  }
+
+  public static function addRepositorysRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRepository::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRepositorysRelatedByTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRepositorysRelatedByTypeIdCriteriaById($criteria, $id);
+
+    return QubitRepository::get($criteria, $options);
+  }
+
+  public function addRepositorysRelatedByTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addRepositorysRelatedByTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $repositorysRelatedByTypeId = null;
+
+  public function getRepositorysRelatedByTypeId(array $options = array())
+  {
+    if (!isset($this->repositorysRelatedByTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->repositorysRelatedByTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->repositorysRelatedByTypeId = self::getRepositorysRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->repositorysRelatedByTypeId;
+  }
+
+  public static function addRepositorysRelatedByDescStatusIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRepository::DESC_STATUS_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRepositorysRelatedByDescStatusIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRepositorysRelatedByDescStatusIdCriteriaById($criteria, $id);
+
+    return QubitRepository::get($criteria, $options);
+  }
+
+  public function addRepositorysRelatedByDescStatusIdCriteria(Criteria $criteria)
+  {
+    return self::addRepositorysRelatedByDescStatusIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $repositorysRelatedByDescStatusId = null;
+
+  public function getRepositorysRelatedByDescStatusId(array $options = array())
+  {
+    if (!isset($this->repositorysRelatedByDescStatusId))
+    {
+      if (!isset($this->id))
+      {
+        $this->repositorysRelatedByDescStatusId = QubitQuery::create();
+      }
+      else
+      {
+        $this->repositorysRelatedByDescStatusId = self::getRepositorysRelatedByDescStatusIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->repositorysRelatedByDescStatusId;
+  }
+
+  public static function addRepositorysRelatedByDescDetailIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRepository::DESC_DETAIL_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRepositorysRelatedByDescDetailIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRepositorysRelatedByDescDetailIdCriteriaById($criteria, $id);
+
+    return QubitRepository::get($criteria, $options);
+  }
+
+  public function addRepositorysRelatedByDescDetailIdCriteria(Criteria $criteria)
+  {
+    return self::addRepositorysRelatedByDescDetailIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $repositorysRelatedByDescDetailId = null;
+
+  public function getRepositorysRelatedByDescDetailId(array $options = array())
+  {
+    if (!isset($this->repositorysRelatedByDescDetailId))
+    {
+      if (!isset($this->id))
+      {
+        $this->repositorysRelatedByDescDetailId = QubitQuery::create();
+      }
+      else
+      {
+        $this->repositorysRelatedByDescDetailId = self::getRepositorysRelatedByDescDetailIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->repositorysRelatedByDescDetailId;
+  }
+
+  public static function addActorNamesCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitActorName::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getActorNamesById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addActorNamesCriteriaById($criteria, $id);
+
+    return QubitActorName::get($criteria, $options);
+  }
+
+  public function addActorNamesCriteria(Criteria $criteria)
+  {
+    return self::addActorNamesCriteriaById($criteria, $this->id);
+  }
+
+  protected $actorNames = null;
+
+  public function getActorNames(array $options = array())
+  {
+    if (!isset($this->actorNames))
+    {
+      if (!isset($this->id))
+      {
+        $this->actorNames = QubitQuery::create();
+      }
+      else
+      {
+        $this->actorNames = self::getActorNamesById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->actorNames;
+  }
+
+  public static function addPlacesRelatedByCountryIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPlace::COUNTRY_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPlacesRelatedByCountryIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPlacesRelatedByCountryIdCriteriaById($criteria, $id);
+
+    return QubitPlace::get($criteria, $options);
+  }
+
+  public function addPlacesRelatedByCountryIdCriteria(Criteria $criteria)
+  {
+    return self::addPlacesRelatedByCountryIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $placesRelatedByCountryId = null;
+
+  public function getPlacesRelatedByCountryId(array $options = array())
+  {
+    if (!isset($this->placesRelatedByCountryId))
+    {
+      if (!isset($this->id))
+      {
+        $this->placesRelatedByCountryId = QubitQuery::create();
+      }
+      else
+      {
+        $this->placesRelatedByCountryId = self::getPlacesRelatedByCountryIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->placesRelatedByCountryId;
+  }
+
+  public static function addPlacesRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPlace::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPlacesRelatedByTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPlacesRelatedByTypeIdCriteriaById($criteria, $id);
+
+    return QubitPlace::get($criteria, $options);
+  }
+
+  public function addPlacesRelatedByTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addPlacesRelatedByTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $placesRelatedByTypeId = null;
+
+  public function getPlacesRelatedByTypeId(array $options = array())
+  {
+    if (!isset($this->placesRelatedByTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->placesRelatedByTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->placesRelatedByTypeId = self::getPlacesRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->placesRelatedByTypeId;
+  }
+
+  public static function addPlaceMapRelationsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPlaceMapRelation::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPlaceMapRelationsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPlaceMapRelationsCriteriaById($criteria, $id);
+
+    return QubitPlaceMapRelation::get($criteria, $options);
+  }
+
+  public function addPlaceMapRelationsCriteria(Criteria $criteria)
+  {
+    return self::addPlaceMapRelationsCriteriaById($criteria, $this->id);
+  }
+
+  protected $placeMapRelations = null;
+
+  public function getPlaceMapRelations(array $options = array())
+  {
+    if (!isset($this->placeMapRelations))
+    {
+      if (!isset($this->id))
+      {
+        $this->placeMapRelations = QubitQuery::create();
+      }
+      else
+      {
+        $this->placeMapRelations = self::getPlaceMapRelationsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->placeMapRelations;
+  }
+
+  public static function addTermsRelatedByParentIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitTerm::PARENT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getTermsRelatedByParentIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addTermsRelatedByParentIdCriteriaById($criteria, $id);
+
+    return QubitTerm::get($criteria, $options);
+  }
+
+  public function addTermsRelatedByParentIdCriteria(Criteria $criteria)
+  {
+    return self::addTermsRelatedByParentIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $termsRelatedByParentId = null;
+
+  public function getTermsRelatedByParentId(array $options = array())
+  {
+    if (!isset($this->termsRelatedByParentId))
+    {
+      if (!isset($this->id))
+      {
+        $this->termsRelatedByParentId = QubitQuery::create();
+      }
+      else
+      {
+        $this->termsRelatedByParentId = self::getTermsRelatedByParentIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->termsRelatedByParentId;
+  }
+
+  public static function addTermI18nsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitTermI18n::ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getTermI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addTermI18nsCriteriaById($criteria, $id);
+
+    return QubitTermI18n::get($criteria, $options);
+  }
+
+  public function addTermI18nsCriteria(Criteria $criteria)
+  {
+    return self::addTermI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $termI18ns = null;
+
+  public function getTermI18ns(array $options = array())
+  {
+    if (!isset($this->termI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->termI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->termI18ns = self::getTermI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->termI18ns;
+  }
+
+  public static function addEventsRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitEvent::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getEventsRelatedByTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addEventsRelatedByTypeIdCriteriaById($criteria, $id);
+
+    return QubitEvent::get($criteria, $options);
+  }
+
+  public function addEventsRelatedByTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addEventsRelatedByTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $eventsRelatedByTypeId = null;
+
+  public function getEventsRelatedByTypeId(array $options = array())
+  {
+    if (!isset($this->eventsRelatedByTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->eventsRelatedByTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->eventsRelatedByTypeId = self::getEventsRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->eventsRelatedByTypeId;
+  }
+
+  public static function addEventsRelatedByActorRoleIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitEvent::ACTOR_ROLE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getEventsRelatedByActorRoleIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addEventsRelatedByActorRoleIdCriteriaById($criteria, $id);
+
+    return QubitEvent::get($criteria, $options);
+  }
+
+  public function addEventsRelatedByActorRoleIdCriteria(Criteria $criteria)
+  {
+    return self::addEventsRelatedByActorRoleIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $eventsRelatedByActorRoleId = null;
+
+  public function getEventsRelatedByActorRoleId(array $options = array())
+  {
+    if (!isset($this->eventsRelatedByActorRoleId))
+    {
+      if (!isset($this->id))
+      {
+        $this->eventsRelatedByActorRoleId = QubitQuery::create();
+      }
+      else
+      {
+        $this->eventsRelatedByActorRoleId = self::getEventsRelatedByActorRoleIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->eventsRelatedByActorRoleId;
+  }
+
+  public static function addSystemEventsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitSystemEvent::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getSystemEventsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addSystemEventsCriteriaById($criteria, $id);
+
+    return QubitSystemEvent::get($criteria, $options);
+  }
+
+  public function addSystemEventsCriteria(Criteria $criteria)
+  {
+    return self::addSystemEventsCriteriaById($criteria, $this->id);
+  }
+
+  protected $systemEvents = null;
+
+  public function getSystemEvents(array $options = array())
+  {
+    if (!isset($this->systemEvents))
+    {
+      if (!isset($this->id))
+      {
+        $this->systemEvents = QubitQuery::create();
+      }
+      else
+      {
+        $this->systemEvents = self::getSystemEventsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->systemEvents;
+  }
+
+  public static function addHistoricalEventsRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitHistoricalEvent::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getHistoricalEventsRelatedByTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addHistoricalEventsRelatedByTypeIdCriteriaById($criteria, $id);
+
+    return QubitHistoricalEvent::get($criteria, $options);
+  }
+
+  public function addHistoricalEventsRelatedByTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addHistoricalEventsRelatedByTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $historicalEventsRelatedByTypeId = null;
+
+  public function getHistoricalEventsRelatedByTypeId(array $options = array())
+  {
+    if (!isset($this->historicalEventsRelatedByTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->historicalEventsRelatedByTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->historicalEventsRelatedByTypeId = self::getHistoricalEventsRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->historicalEventsRelatedByTypeId;
+  }
+
+  public static function addFunctionsRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitFunction::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getFunctionsRelatedByTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addFunctionsRelatedByTypeIdCriteriaById($criteria, $id);
+
+    return QubitFunction::get($criteria, $options);
+  }
+
+  public function addFunctionsRelatedByTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addFunctionsRelatedByTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $functionsRelatedByTypeId = null;
+
+  public function getFunctionsRelatedByTypeId(array $options = array())
+  {
+    if (!isset($this->functionsRelatedByTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->functionsRelatedByTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->functionsRelatedByTypeId = self::getFunctionsRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->functionsRelatedByTypeId;
+  }
+
+  public static function addFunctionsRelatedByDescriptionStatusIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitFunction::DESCRIPTION_STATUS_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getFunctionsRelatedByDescriptionStatusIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addFunctionsRelatedByDescriptionStatusIdCriteriaById($criteria, $id);
+
+    return QubitFunction::get($criteria, $options);
+  }
+
+  public function addFunctionsRelatedByDescriptionStatusIdCriteria(Criteria $criteria)
+  {
+    return self::addFunctionsRelatedByDescriptionStatusIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $functionsRelatedByDescriptionStatusId = null;
+
+  public function getFunctionsRelatedByDescriptionStatusId(array $options = array())
+  {
+    if (!isset($this->functionsRelatedByDescriptionStatusId))
+    {
+      if (!isset($this->id))
+      {
+        $this->functionsRelatedByDescriptionStatusId = QubitQuery::create();
+      }
+      else
+      {
+        $this->functionsRelatedByDescriptionStatusId = self::getFunctionsRelatedByDescriptionStatusIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->functionsRelatedByDescriptionStatusId;
+  }
+
+  public static function addFunctionsRelatedByDescriptionLevelIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitFunction::DESCRIPTION_LEVEL_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getFunctionsRelatedByDescriptionLevelIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addFunctionsRelatedByDescriptionLevelIdCriteriaById($criteria, $id);
+
+    return QubitFunction::get($criteria, $options);
+  }
+
+  public function addFunctionsRelatedByDescriptionLevelIdCriteria(Criteria $criteria)
+  {
+    return self::addFunctionsRelatedByDescriptionLevelIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $functionsRelatedByDescriptionLevelId = null;
+
+  public function getFunctionsRelatedByDescriptionLevelId(array $options = array())
+  {
+    if (!isset($this->functionsRelatedByDescriptionLevelId))
+    {
+      if (!isset($this->id))
+      {
+        $this->functionsRelatedByDescriptionLevelId = QubitQuery::create();
+      }
+      else
+      {
+        $this->functionsRelatedByDescriptionLevelId = self::getFunctionsRelatedByDescriptionLevelIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->functionsRelatedByDescriptionLevelId;
+  }
+
+  public static function addRightssCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRights::PERMISSION_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRightssById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRightssCriteriaById($criteria, $id);
+
+    return QubitRights::get($criteria, $options);
+  }
+
+  public function addRightssCriteria(Criteria $criteria)
+  {
+    return self::addRightssCriteriaById($criteria, $this->id);
+  }
+
+  protected $rightss = null;
+
+  public function getRightss(array $options = array())
+  {
+    if (!isset($this->rightss))
+    {
+      if (!isset($this->id))
+      {
+        $this->rightss = QubitQuery::create();
+      }
+      else
+      {
+        $this->rightss = self::getRightssById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->rightss;
+  }
+
+  public static function addRightsTermRelationsRelatedByTermIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRightsTermRelation::TERM_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRightsTermRelationsRelatedByTermIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRightsTermRelationsRelatedByTermIdCriteriaById($criteria, $id);
+
+    return QubitRightsTermRelation::get($criteria, $options);
+  }
+
+  public function addRightsTermRelationsRelatedByTermIdCriteria(Criteria $criteria)
+  {
+    return self::addRightsTermRelationsRelatedByTermIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $rightsTermRelationsRelatedByTermId = null;
+
+  public function getRightsTermRelationsRelatedByTermId(array $options = array())
+  {
+    if (!isset($this->rightsTermRelationsRelatedByTermId))
+    {
+      if (!isset($this->id))
+      {
+        $this->rightsTermRelationsRelatedByTermId = QubitQuery::create();
+      }
+      else
+      {
+        $this->rightsTermRelationsRelatedByTermId = self::getRightsTermRelationsRelatedByTermIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->rightsTermRelationsRelatedByTermId;
+  }
+
+  public static function addRightsTermRelationsRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRightsTermRelation::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRightsTermRelationsRelatedByTypeIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRightsTermRelationsRelatedByTypeIdCriteriaById($criteria, $id);
+
+    return QubitRightsTermRelation::get($criteria, $options);
+  }
+
+  public function addRightsTermRelationsRelatedByTypeIdCriteria(Criteria $criteria)
+  {
+    return self::addRightsTermRelationsRelatedByTypeIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $rightsTermRelationsRelatedByTypeId = null;
+
+  public function getRightsTermRelationsRelatedByTypeId(array $options = array())
+  {
+    if (!isset($this->rightsTermRelationsRelatedByTypeId))
+    {
+      if (!isset($this->id))
+      {
+        $this->rightsTermRelationsRelatedByTypeId = QubitQuery::create();
+      }
+      else
+      {
+        $this->rightsTermRelationsRelatedByTypeId = self::getRightsTermRelationsRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->rightsTermRelationsRelatedByTypeId;
+  }
+
+  public static function addRightsActorRelationsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRightsActorRelation::TYPE_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getRightsActorRelationsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addRightsActorRelationsCriteriaById($criteria, $id);
+
+    return QubitRightsActorRelation::get($criteria, $options);
+  }
+
+  public function addRightsActorRelationsCriteria(Criteria $criteria)
+  {
+    return self::addRightsActorRelationsCriteriaById($criteria, $this->id);
+  }
+
+  protected $rightsActorRelations = null;
+
+  public function getRightsActorRelations(array $options = array())
+  {
+    if (!isset($this->rightsActorRelations))
+    {
+      if (!isset($this->id))
+      {
+        $this->rightsActorRelations = QubitQuery::create();
+      }
+      else
+      {
+        $this->rightsActorRelations = self::getRightsActorRelationsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->rightsActorRelations;
+  }
+
+  public function getName(array $options = array())
+  {
+    return $this->getCurrentTermI18n($options)->getName();
+  }
+
+  public function setName($value, array $options = array())
+  {
+    $this->getCurrentTermI18n($options)->setName($value);
+
+    return $this;
+  }
+
+  public function getScopeNote(array $options = array())
+  {
+    return $this->getCurrentTermI18n($options)->getScopeNote();
+  }
+
+  public function setScopeNote($value, array $options = array())
+  {
+    $this->getCurrentTermI18n($options)->setScopeNote($value);
+
+    return $this;
+  }
+
+  public function getCodeAlpha(array $options = array())
+  {
+    return $this->getCurrentTermI18n($options)->getCodeAlpha();
+  }
+
+  public function setCodeAlpha($value, array $options = array())
+  {
+    $this->getCurrentTermI18n($options)->setCodeAlpha($value);
+
+    return $this;
+  }
+
+  public function getCodeAlpha2(array $options = array())
+  {
+    return $this->getCurrentTermI18n($options)->getCodeAlpha2();
+  }
+
+  public function setCodeAlpha2($value, array $options = array())
+  {
+    $this->getCurrentTermI18n($options)->setCodeAlpha2($value);
+
+    return $this;
+  }
+
+  public function getSource(array $options = array())
+  {
+    return $this->getCurrentTermI18n($options)->getSource();
+  }
+
+  public function setSource($value, array $options = array())
+  {
+    $this->getCurrentTermI18n($options)->setSource($value);
+
+    return $this;
+  }
+
+  public function getCurrentTermI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->termI18ns[$options['culture']]))
+    {
+      if (null === $termI18n = QubitTermI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $termI18n = new QubitTermI18n;
+        $termI18n->setCulture($options['culture']);
+      }
+      $this->termI18ns[$options['culture']] = $termI18n;
+    }
+
+    return $this->termI18ns[$options['culture']];
+  }
+
+  public function addAncestorsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitTerm::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitTerm::RGT, $this->rgt, Criteria::GREATER_THAN);
+  }
+
+  protected $ancestors = null;
+
+  public function getAncestors(array $options = array())
+  {
+    if (!isset($this->ancestors))
+    {
+      if ($this->new)
+      {
+        $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
+      }
+      else
+      {
+        $criteria = new Criteria;
+        $this->addAncestorsCriteria($criteria);
+        $this->addOrderByPreorder($criteria);
+        $this->ancestors = self::get($criteria, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->ancestors;
+  }
+
+  public function addDescendantsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitTerm::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitTerm::RGT, $this->rgt, Criteria::LESS_THAN);
+  }
+
+  protected $descendants = null;
+
+  public function getDescendants(array $options = array())
+  {
+    if (!isset($this->descendants))
+    {
+      if ($this->new)
+      {
+        $this->descendants = QubitQuery::create(array('self' => $this) + $options);
+      }
+      else
+      {
+        $criteria = new Criteria;
+        $this->addDescendantsCriteria($criteria);
+        $this->addOrderByPreorder($criteria);
+        $this->descendants = self::get($criteria, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->descendants;
+  }
+
+  protected function updateNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitTerm::DATABASE_NAME);
+    }
+
+    if (null === $parent = $this->getParent(array('connection' => $connection)))
+    {
+      $stmt = $connection->prepareStatement('
+        SELECT MAX('.QubitTerm::RGT.')
+        FROM '.QubitTerm::TABLE_NAME);
+      $results = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
+      $results->next();
+      $max = $results->getInt(1);
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $max + 1;
+        $this->rgt = $max + 2;
+
+        return $this;
+      }
+
+      $shift = $max + 1 - $this->lft;
+    }
+    else
+    {
+      $parent->refresh(array('connection' => $connection));
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $delta = 2;
+      }
+      else
+      {
+        if ($this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
+        {
+          throw new PropelException('An object cannot be a descendant of itself.');
+        }
+
+        $delta = $this->rgt - $this->lft + 1;
+      }
+
+      $stmt = $connection->prepareStatement('
+        UPDATE '.QubitTerm::TABLE_NAME.'
+        SET '.QubitTerm::LFT.' = '.QubitTerm::LFT.' + ?
+        WHERE '.QubitTerm::LFT.' >= ?');
+      $stmt->setInt(1, $delta);
+      $stmt->setInt(2, $parent->rgt);
+      $stmt->executeUpdate();
+
+      $stmt = $connection->prepareStatement('
+        UPDATE '.QubitTerm::TABLE_NAME.'
+        SET '.QubitTerm::RGT.' = '.QubitTerm::RGT.' + ?
+        WHERE '.QubitTerm::RGT.' >= ?');
+      $stmt->setInt(1, $delta);
+      $stmt->setInt(2, $parent->rgt);
+      $stmt->executeUpdate();
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $parent->rgt;
+        $this->rgt = $parent->rgt + 1;
+
+        return $this;
+      }
+
+      if ($this->lft > $parent->rgt)
+      {
+        $this->lft += $delta;
+        $this->rgt += $delta;
+      }
+
+      $shift = $parent->rgt - $this->lft;
+    }
+
+    $stmt = $connection->prepareStatement('
+      UPDATE '.QubitTerm::TABLE_NAME.'
+      SET '.QubitTerm::LFT.' = '.QubitTerm::LFT.' + ?, '.QubitTerm::RGT.' = '.QubitTerm::RGT.' + ?
+      WHERE '.QubitTerm::LFT.' >= ?
+      AND '.QubitTerm::RGT.' <= ?');
+    $stmt->setInt(1, $shift);
+    $stmt->setInt(2, $shift);
+    $stmt->setInt(3, $this->lft);
+    $stmt->setInt(4, $this->rgt);
+    $stmt->executeUpdate();
+
+    $this->deleteFromNestedSet($connection);
+
+    $this->columnValues['lft'] = $this->lft += $shift;
+    $this->columnValues['rgt'] = $this->rgt += $shift;
+
+    return $this;
+  }
+
+  protected function deleteFromNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitTerm::DATABASE_NAME);
+    }
+
+    $delta = $this->rgt - $this->lft + 1;
+
+    $stmt = $connection->prepareStatement('
+      UPDATE '.QubitTerm::TABLE_NAME.'
+      SET '.QubitTerm::LFT.' = '.QubitTerm::LFT.' - ?
+      WHERE '.QubitTerm::LFT.' >= ?');
+    $stmt->setInt(1, $delta);
+    $stmt->setInt(2, $this->rgt);
+    $stmt->executeUpdate();
+
+    $stmt = $connection->prepareStatement('
+      UPDATE '.QubitTerm::TABLE_NAME.'
+      SET '.QubitTerm::RGT.' = '.QubitTerm::RGT.' - ?
+      WHERE '.QubitTerm::RGT.' >= ?');
+    $stmt->setInt(1, $delta);
+    $stmt->setInt(2, $this->rgt);
+    $stmt->executeUpdate();
+
+    return $this;
+  }
+}
+
+BasePeer::getMapBuilder('lib.model.map.TermMapBuilder');

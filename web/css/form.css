@@ -209,15 +209,17 @@ background: #cccccc;
 
 #search-sidebar .submit {
 
-font: 12px Verdana, Arial, Sans-Serif;
-margin: 5px 0 0 5px;
+font: 11px Verdana, Arial, Sans-Serif;
+margin: 0 0 0 2px;
+padding: 0;
 width: 70px;
 }
 
 #search-sidebar .submithover {
 
-font: 12px Verdana, Arial, Sans-Serif;
-margin: 5px 0 0 5px;
+font: 11px Verdana, Arial, Sans-Serif;
+margin: 0 0 0 2px;
+padding: 0;
 width: 70px;
 }
 
@@ -253,15 +255,17 @@ background: #cccccc;
 
 #browse-sidebar .submit {
 
-font: 12px Verdana, Arial, Sans-Serif;
-margin: 5px 0 0 5px;
+font: 11px Verdana, Arial, Sans-Serif;
+margin: 0 0 0 2px;
+padding: 0;
 width: 70px;
 }
 
 #browse-sidebar .submithover {
 
-font: 12px Verdana, Arial, Sans-Serif;
-margin: 5px 0 0 5px;
+font: 11px Verdana, Arial, Sans-Serif;
+margin: 0 0 0 2px;
+padding: 0;
 width: 70px;
 }
 
@@ -399,3 +403,17 @@ margin-top: 20px;
      validation_error_prefix:    '! '
      validation_error_suffix:    ' !'
 */
+
+/*********************************************************
+               EDIT FORM TRANSLATION BOXES
+**********************************************************/
+
+.default-translation
+{
+  padding: 0.2em;
+  margin-bottom: 1em;
+  margin-right: 1em; 
+  color: #000000;
+  background: #FFFFE0;
+  border: 1px dashed #FFD700;
+}

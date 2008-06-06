@@ -6,17 +6,17 @@ delete:
   is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
 
-deleteInformationObjectRelationship:
+deleteInformationObjectRelation:
   is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
 
-deleteTermRelationship:
+deleteTermRelation:
   is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
 
 edit:
   is_secure:   on
-  credentials: [[ contributor, editor, administrator ]]
+  credentials: [[ contributor, editor, administrator, translator ]]
 
 list:
   is_secure:   off
@@ -26,7 +26,7 @@ show:
 
 update:
   is_secure:   on
-  credentials: [[ contributor, editor, administrator ]]
+  credentials: [[ contributor, editor, administrator, translator ]]
 
 all:
   is_secure:   off

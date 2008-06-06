@@ -16,21 +16,23 @@
  * @author     Your name here
  * @version    SVN: $Id$
  */
-class translateAction extends sfAction
+class sfTranslatePluginTranslateAction extends sfAction
 {
   /**
    * Executes index action
    *
    */
-  public function execute()
+  public function execute($request)
   {
+    $user = $this->getUser();
+
     $error = array();
     $status = array();
 
     $messageSource = $this->getContext()->getI18N()->getMessageSource();
 
-    $sourceMessages = $this->getRequestParameter('source', array());
-    $targetMessages = $this->getRequestParameter('target', array());
+    $sourceMessages = $request->getParameter('source', array());
+    $targetMessages = $request->getParameter('target', array());
     foreach ($sourceMessages as $key => $sourceMessage)
     {
       if (!$messageSource->update($sourceMessage, $targetMessages[$key]))
@@ -45,9 +47,9 @@ class translateAction extends sfAction
 
     if (!empty($error))
     {
-      $this->forward($this->getUser()->getAttribute('moduleName', 'default', 'sfHistoryPlugin'), $this->getUser()->getAttribute('actionName', 'index', 'sfHistoryPlugin'));
+      $this->forward($user->getAttribute('moduleName', 'default', 'sfHistoryPlugin'), $user->getAttribute('actionName', 'index', 'sfHistoryPlugin'));
     }
 
-    $this->redirect($this->getUser()->getAttribute('currentInternalUri', null, 'sfHistoryPlugin'));
+    $this->redirect($user->getAttribute('currentInternalUri', null, 'sfHistoryPlugin'));
   }
 }

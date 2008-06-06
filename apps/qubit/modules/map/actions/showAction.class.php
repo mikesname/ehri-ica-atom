@@ -2,35 +2,31 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class showAction extends sfAction
+class MapShowAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-    $this->mapMetadata = MapPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->mapMetadata = Map::getById($this->getRequestParameter('id'));
     $this->forward404Unless($this->mapMetadata);
 
-    $placeRelationships = $this->mapMetadata->getPlaceRelationships();
+    $placeRelations = $this->mapMetadata->getPlaceRelations();
 
     //create map using GoogleMapAPI
     $this->map = new GoogleMapAPI('map');
@@ -41,21 +37,20 @@ class showAction extends sfAction
     $rootURL = $this->getRequest()->getRelativeUrlRoot();
 
     //add locations to map
-    foreach ($placeRelationships as $relationship)
+    foreach ($placeRelations as $relation)
     {
-    $c = new Criteria();
-    $place = PlacePeer::retrievebyPk($relationship->getPlaceId());
+    $c = new Criteria;
+    $place = Place::getById($relation->getPlaceId());
 
     $mapIcon = '<b><a href="'.$rootURL.'/place/show/id/'.$place->getId().'">'.$place->getName().'</a></b>';
-    if ($relationship->getMapIconImageId())
+    if ($relation->getMapIconImageId())
       {
-      $mapIcon .= '<p><a href="'.$rootURL.'/place/show/id/'.$place->getId().'"><img src="'.$rootURL.'/digitalobject/retrieve/id/'.$relationship->getMapIconImageId().' /></a></p>';
+      $mapIcon .= '<p><a href="'.$rootURL.'/place/show/id/'.$place->getId().'"><img src="'.$rootURL.'/digitalobject/retrieve/id/'.$relation->getMapIconImageId().' /></a></p>';
       }
-    if ($relationship->getMapIconDescription())
+    if ($relation->getMapIconDescription())
       {
-      $mapIcon .= '<p>'.$relationship->getMapIconDescription().'</p>';
+      $mapIcon .= '<p>'.$relation->getMapIconDescription().'</p>';
       }
-
 
     //use cached geoCodes if they exist
     if (($place->getLongtitude() !== null) & ($place->getLatitude() !== null))
@@ -69,7 +64,6 @@ class showAction extends sfAction
       }
     }
 
-
    //determine if user has edit priviliges
     $this->editCredentials = false;
     if ($this->getUser()->hasCredential(array('contributor', 'editor', 'administrator'), false))
@@ -82,9 +76,5 @@ class showAction extends sfAction
 
     //use layout that has necessary GoogleMapAPI hooks in doctype, head and body attributes/elements
     $this->setLayout('layout_map_two_column');
-
-
-
-
   }
 }

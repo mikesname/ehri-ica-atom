@@ -2,42 +2,37 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class updateAction extends sfAction
+class ActorUpdateAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
-
   if (!$this->getRequestParameter('id', 0))
     {
-    $actor = new Actor();
+    $actor = new QubitActor;
 
     //set the user navigation context to 'add'
     $this->getUser()->setAttribute('nav_context_module', 'add');
     }
    else
     {
-    $actor = ActorPeer::retrieveByPk($this->getRequestParameter('id'));
+    $actor = QubitActor::getById($this->getRequestParameter('id'));
     $this->forward404Unless($actor);
     }
 
@@ -45,11 +40,11 @@ class updateAction extends sfAction
 
     if ($this->getRequestParameter('dateId'))
       {
-      $date = EventPeer::retrieveByPK($this->getRequestParameter('dateId'));
+      $date = QubitEvent::getById($this->getRequestParameter('dateId'));
       }
     else
       {
-      $date = new Event();
+      $date = new QubitEvent;
       }
 
     //save fields by template
@@ -63,13 +58,14 @@ class updateAction extends sfAction
         default :
           $this->updateActorAttributes($actor);
           $this->updateOtherNames($actor);
-          $this->updateTermOneToManyRelationships($actor);
-          $this->updateTermManyToManyRelationships($actor);
-          //$this->updateContactInformation($actor);
+          $this->updateTermOneToManyRelations($actor);
+          $this->updateProperties($actor);
+//          $this->updateObjectTermRelations($actor);
           $this->updateDates($actor, $date);
-          //$this->updateInformationObjectRelationships($actor);
           $this->updateActorNotes($actor);
-          //$this->updateRecursiveRelationships($actor);
+          //$this->updateInformationObjectRelations($actor);
+          //$this->updateRecursiveRelations($actor);
+          //$this->updateContactInformation($actor);
 
           break;
         }
@@ -85,8 +81,6 @@ class updateAction extends sfAction
       return $this->redirect('informationobject/edit?id='.$this->getRequestParameter('informationObjectReroute'));
       }
 
-
-
     //set view template
     switch ($this->getRequestParameter('template'))
       {
@@ -97,26 +91,25 @@ class updateAction extends sfAction
         return $this->redirect('actor/edit?id='.$actor->getId().'&template=isaar');
       default :
         return $this->redirect('actor/edit?id='.$actor->getId());
-
       }
-
   } //close execute()
-
 
   public function updateActorAttributes($actor)
   {
   $actor->setAuthorizedFormOfName($this->getRequestParameter('authorized_form_of_name'));
-  $actor->setIdentifiers($this->getRequestParameter('identifiers'));
+  $actor->setCorporateBodyIdentifiers($this->getRequestParameter('corporate_body_identifiers'));
   $actor->setHistory($this->getRequestParameter('history'));
+  $actor->setPlaces($this->getRequestParameter('places'));
   $actor->setLegalStatus($this->getRequestParameter('legal_status'));
   $actor->setFunctions($this->getRequestParameter('functions'));
   $actor->setMandates($this->getRequestParameter('mandates'));
   $actor->setInternalStructures($this->getRequestParameter('internal_structures'));
   $actor->setGeneralContext($this->getRequestParameter('general_context'));
-  $actor->setAuthorityRecordIdentifier($this->getRequestParameter('authority_record_identifier'));
-  $actor->setInstitutionIdentifier($this->getRequestParameter('institution_identifier'));
+  $actor->setDescriptionIdentifier($this->getRequestParameter('description_identifier'));
+  $actor->setInstitutionResponsibleIdentifier($this->getRequestParameter('institution_responsible_identifier'));
   $actor->setRules($this->getRequestParameter('rules'));
   $actor->setSources($this->getRequestParameter('sources'));
+  $actor->setRevisionHistory($this->getRequestParameter('revision_history'));
 
   $actor->save();
   }
@@ -125,68 +118,70 @@ class updateAction extends sfAction
     {
     if ($this->getRequestParameter('name'))
       {
-      $actor->setOtherNames($this->getRequestParameter('name'), $this->getRequestParameter('name_type_id'), $this->getRequestParameter('name_note'));
+      $actor->setOtherNames($this->getRequestParameter('name'), $this->getRequestParameter('type_id'), $this->getRequestParameter('note'));
       }
     }
 
   public function updateActorNotes($actor)
     {
-    if ($this->getRequestParameter('note'))
+    if ($this->getRequestParameter('content'))
       {
-      $actor->setActorNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('note'), $this->getRequestParameter('note_type_id'));
+      $actor->setActorNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('content'), $this->getRequestParameter('note_type_id'));
       }
     }
 
-  public function updateTermOneToManyRelationships($actor)
+  public function updateTermOneToManyRelations($actor)
     {
-    if ($this->getRequestParameter('type_of_entity_id'))
+    if ($this->getRequestParameter('entity_type_id'))
       {
-      $actor->setTypeOfEntityId($this->getRequestParameter('type_of_entity_id'));
+      $actor->setEntityTypeId($this->getRequestParameter('entity_type_id'));
       }
     else
       {
-      $actor->setTypeofEntityId(null);
+      $actor->setEntityTypeId(null);
       }
 
-    if ($this->getRequestParameter('status_id'))
+    if ($this->getRequestParameter('description_status_id'))
       {
-      $actor->setStatusId($this->getRequestParameter('status_id'));
+      $actor->setDescriptionStatusId($this->getRequestParameter('description_status_id'));
       }
       else
       {
-      $actor->setStatusId(null);
+      $actor->setDescriptionStatusId(null);
       }
 
-    if ($this->getRequestParameter('level_of_detail_id'))
+    if ($this->getRequestParameter('description_detail_id'))
       {
-      $actor->setLevelOfDetailId($this->getRequestParameter('level_of_detail_id'));
+      $actor->setDescriptionDetailId($this->getRequestParameter('description_detail_id'));
       }
     else
       {
-      $actor->setLevelOfDetailId(null);
+      $actor->setDescriptionDetailId(null);
       }
 
     $actor->save();
     }
 
-  public function updateTermManyToManyRelationships($actor)
+  public function updateProperties($actor)
     {
-    if ($this->getRequestParameter('language_id'))
-      {
-      $actor->setTermRelationship($termId = $this->getRequestParameter('language_id'), $relationshipTypeId = 19);
-      }
+      if ($this->getRequestParameter('language_code'))
+        {
+          $actor->setProperty($this->getRequestParameter('language_code'), $name = 'language_of_actor_description', $scope = 'languages');
+        }
 
-    if ($this->getRequestParameter('script_id'))
-      {
-      $actor->setTermRelationship($termId = $this->getRequestParameter('script_id'), $relationshipTypeId = 20);
-      }
-
+      if ($this->getRequestParameter('script_code'))
+        {
+           $actor->setProperty($this->getRequestParameter('script_code'), $name = 'script_of_actor_description', $scope = 'scripts');
+        }
     }
 
-  public function updateEventRelationships($actor)
+  public function updateObjectTermRelations($actor)
     {
-    //used to be updateInformationObjectRelationships - TO DO: update to handle relationships via Event object
+    }
 
+  public function updateEventRelations($actor)
+    {
+    //used to be updateInformationObjectRelations - TO DO: update to handle relations via Event object
 
     if ($this->getRequestParameter('informationObjectId'))
       {
@@ -197,10 +192,10 @@ class updateAction extends sfAction
       else
         {
         //default role is Creator
-        $actorRoleId = 379;
+        $actorRoleId = QubitTerm::EXISTENCE_ID;
         }
 
-      $actor->addInformationObjectRelationship($this->getRequestParameter('informationObjectId'), $actorRoleId,$this->getRequestParameter('relationship_dates'));
+      $actor->addInformationObjectRelation($this->getRequestParameter('informationObjectId'), $actorRoleId,$this->getRequestParameter('relation_dates'));
 
       SearchIndex::updateIndexDocument($this->getRequestParameter('informationObjectId'));
       }
@@ -210,11 +205,17 @@ class updateAction extends sfAction
     {
      if (($this->getRequestParameter('start_date')) or ($this->getRequestParameter('description')))
       {
-      $date->setEventTypeId(352);
+      $date->setTypeId(QubitTerm::EXISTENCE_ID);
       $date->setActorId($actor->getId());
       $date->setStartDate($this->getRequestParameter('start_date').'-01-01');
-      $date->setEndDate($this->getRequestParameter('end_date').'-01-01');
-
+      if ($this->getRequestParameter('end_date') == '')
+        {
+          $date->setEndDate(null);
+        }
+      else
+        {
+          $date->setEndDate($this->getRequestParameter('end_date').'-01-01');
+        }
       if ($this->getRequestParameter('description'))
         {
         $date->setDescription($this->getRequestParameter('description'));
@@ -222,13 +223,14 @@ class updateAction extends sfAction
       else
         {
         $dateString = $this->getRequestParameter('start_date');
-        $dateString .= ' - '.$this->getRequestParameter('end_date');
+        if ($this->getRequestParameter('end_date'))
+          {
+            $dateString .= ' - '.$this->getRequestParameter('end_date');
+          }
         $date->setDescription($dateString);
         }
 
       $date->save();
       }
     }
-
-
 }

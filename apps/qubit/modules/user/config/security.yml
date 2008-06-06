@@ -8,7 +8,7 @@ delete:
 
 edit:
   is_secure:   on
-  credentials: administrator
+  credentials: [[ administrator, translator ]]
 
 list:
   is_secure:   on
@@ -16,15 +16,15 @@ list:
 
 passwordEdit:
   is_secure:   on
-  credentials: [[ researcher, contributor, editor, administrator ]]
+  credentials: [[ researcher, contributor, editor, administrator, translator ]]
 
 passwordUpdate:
   is_secure:   on
-  credentials: [[ researcher, contributor, editor, administrator ]]
+  credentials: [[ researcher, contributor, editor, administrator, translator ]]
 
 show:
   is_secure:   on
-  credentials: [[ researcher, contributor, editor, administrator ]]
+  credentials: [[ researcher, contributor, editor, administrator, translator ]]
 
 update:
   is_secure:   on

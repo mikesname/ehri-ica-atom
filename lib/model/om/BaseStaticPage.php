@@ -1,602 +1,389 @@
 <?php
 
-
-abstract class BaseStaticPage extends BaseObject  implements Persistent {
-
-
-	
-	protected static $peer;
-
-
-	
-	protected $id;
-
-
-	
-	protected $title;
-
-
-	
-	protected $permalink;
-
-
-	
-	protected $page_content;
-
-
-	
-	protected $stylesheet;
-
-
-	
-	protected $created_at;
-
-
-	
-	protected $updated_at;
-
-	
-	protected $alreadyInSave = false;
-
-	
-	protected $alreadyInValidation = false;
-
-	
-	public function getId()
-	{
-
-		return $this->id;
-	}
-
-	
-	public function getTitle()
-	{
-
-		return $this->title;
-	}
-
-	
-	public function getPermalink()
-	{
-
-		return $this->permalink;
-	}
-
-	
-	public function getPageContent()
-	{
-
-		return $this->page_content;
-	}
-
-	
-	public function getStylesheet()
-	{
-
-		return $this->stylesheet;
-	}
-
-	
-	public function getCreatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->created_at === null || $this->created_at === '') {
-			return null;
-		} elseif (!is_int($this->created_at)) {
-						$ts = strtotime($this->created_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [created_at] as date/time value: " . var_export($this->created_at, true));
-			}
-		} else {
-			$ts = $this->created_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function getUpdatedAt($format = 'Y-m-d H:i:s')
-	{
-
-		if ($this->updated_at === null || $this->updated_at === '') {
-			return null;
-		} elseif (!is_int($this->updated_at)) {
-						$ts = strtotime($this->updated_at);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse value of [updated_at] as date/time value: " . var_export($this->updated_at, true));
-			}
-		} else {
-			$ts = $this->updated_at;
-		}
-		if ($format === null) {
-			return $ts;
-		} elseif (strpos($format, '%') !== false) {
-			return strftime($format, $ts);
-		} else {
-			return date($format, $ts);
-		}
-	}
-
-	
-	public function setId($v)
-	{
-
-						if ($v !== null && !is_int($v) && is_numeric($v)) {
-			$v = (int) $v;
-		}
-
-		if ($this->id !== $v) {
-			$this->id = $v;
-			$this->modifiedColumns[] = StaticPagePeer::ID;
-		}
-
-	} 
-	
-	public function setTitle($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->title !== $v) {
-			$this->title = $v;
-			$this->modifiedColumns[] = StaticPagePeer::TITLE;
-		}
-
-	} 
-	
-	public function setPermalink($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->permalink !== $v) {
-			$this->permalink = $v;
-			$this->modifiedColumns[] = StaticPagePeer::PERMALINK;
-		}
-
-	} 
-	
-	public function setPageContent($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->page_content !== $v) {
-			$this->page_content = $v;
-			$this->modifiedColumns[] = StaticPagePeer::PAGE_CONTENT;
-		}
-
-	} 
-	
-	public function setStylesheet($v)
-	{
-
-						if ($v !== null && !is_string($v)) {
-			$v = (string) $v; 
-		}
-
-		if ($this->stylesheet !== $v) {
-			$this->stylesheet = $v;
-			$this->modifiedColumns[] = StaticPagePeer::STYLESHEET;
-		}
-
-	} 
-	
-	public function setCreatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [created_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->created_at !== $ts) {
-			$this->created_at = $ts;
-			$this->modifiedColumns[] = StaticPagePeer::CREATED_AT;
-		}
-
-	} 
-	
-	public function setUpdatedAt($v)
-	{
-
-		if ($v !== null && !is_int($v)) {
-			$ts = strtotime($v);
-			if ($ts === -1 || $ts === false) { 				throw new PropelException("Unable to parse date/time value for [updated_at] from input: " . var_export($v, true));
-			}
-		} else {
-			$ts = $v;
-		}
-		if ($this->updated_at !== $ts) {
-			$this->updated_at = $ts;
-			$this->modifiedColumns[] = StaticPagePeer::UPDATED_AT;
-		}
-
-	} 
-	
-	public function hydrate(ResultSet $rs, $startcol = 1)
-	{
-		try {
-
-			$this->id = $rs->getInt($startcol + 0);
-
-			$this->title = $rs->getString($startcol + 1);
-
-			$this->permalink = $rs->getString($startcol + 2);
-
-			$this->page_content = $rs->getString($startcol + 3);
-
-			$this->stylesheet = $rs->getString($startcol + 4);
-
-			$this->created_at = $rs->getTimestamp($startcol + 5, null);
-
-			$this->updated_at = $rs->getTimestamp($startcol + 6, null);
-
-			$this->resetModified();
-
-			$this->setNew(false);
-
-						return $startcol + 7; 
-		} catch (Exception $e) {
-			throw new PropelException("Error populating StaticPage object", $e);
-		}
-	}
-
-	
-	public function delete($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseStaticPage:delete:pre') as $callable)
-    {
-      $ret = call_user_func($callable, $this, $con);
-      if ($ret)
-      {
-        return;
-      }
-    }
-
-
-		if ($this->isDeleted()) {
-			throw new PropelException("This object has already been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(StaticPagePeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			StaticPagePeer::doDelete($this, $con);
-			$this->setDeleted(true);
-			$con->commit();
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	
-
-    foreach (sfMixer::getCallables('BaseStaticPage:delete:post') as $callable)
-    {
-      call_user_func($callable, $this, $con);
-    }
-
-  }
-	
-	public function save($con = null)
-	{
-
-    foreach (sfMixer::getCallables('BaseStaticPage:save:pre') as $callable)
-    {
-      $affectedRows = call_user_func($callable, $this, $con);
-      if (is_int($affectedRows))
-      {
-        return $affectedRows;
-      }
-    }
-
-
-    if ($this->isNew() && !$this->isColumnModified(StaticPagePeer::CREATED_AT))
-    {
-      $this->setCreatedAt(time());
-    }
-
-    if ($this->isModified() && !$this->isColumnModified(StaticPagePeer::UPDATED_AT))
-    {
-      $this->setUpdatedAt(time());
-    }
-
-		if ($this->isDeleted()) {
-			throw new PropelException("You cannot save an object that has been deleted.");
-		}
-
-		if ($con === null) {
-			$con = Propel::getConnection(StaticPagePeer::DATABASE_NAME);
-		}
-
-		try {
-			$con->begin();
-			$affectedRows = $this->doSave($con);
-			$con->commit();
-    foreach (sfMixer::getCallables('BaseStaticPage:save:post') as $callable)
-    {
-      call_user_func($callable, $this, $con, $affectedRows);
-    }
-
-			return $affectedRows;
-		} catch (PropelException $e) {
-			$con->rollback();
-			throw $e;
-		}
-	}
-
-	
-	protected function doSave($con)
-	{
-		$affectedRows = 0; 		if (!$this->alreadyInSave) {
-			$this->alreadyInSave = true;
-
-
-						if ($this->isModified()) {
-				if ($this->isNew()) {
-					$pk = StaticPagePeer::doInsert($this, $con);
-					$affectedRows += 1; 										 										 
-					$this->setId($pk);  
-					$this->setNew(false);
-				} else {
-					$affectedRows += StaticPagePeer::doUpdate($this, $con);
-				}
-				$this->resetModified(); 			}
-
-			$this->alreadyInSave = false;
-		}
-		return $affectedRows;
-	} 
-	
-	protected $validationFailures = array();
-
-	
-	public function getValidationFailures()
-	{
-		return $this->validationFailures;
-	}
-
-	
-	public function validate($columns = null)
-	{
-		$res = $this->doValidate($columns);
-		if ($res === true) {
-			$this->validationFailures = array();
-			return true;
-		} else {
-			$this->validationFailures = $res;
-			return false;
-		}
-	}
-
-	
-	protected function doValidate($columns = null)
-	{
-		if (!$this->alreadyInValidation) {
-			$this->alreadyInValidation = true;
-			$retval = null;
-
-			$failureMap = array();
-
-
-			if (($retval = StaticPagePeer::doValidate($this, $columns)) !== true) {
-				$failureMap = array_merge($failureMap, $retval);
-			}
-
-
-
-			$this->alreadyInValidation = false;
-		}
-
-		return (!empty($failureMap) ? $failureMap : true);
-	}
-
-	
-	public function getByName($name, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = StaticPagePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->getByPosition($pos);
-	}
-
-	
-	public function getByPosition($pos)
-	{
-		switch($pos) {
-			case 0:
-				return $this->getId();
-				break;
-			case 1:
-				return $this->getTitle();
-				break;
-			case 2:
-				return $this->getPermalink();
-				break;
-			case 3:
-				return $this->getPageContent();
-				break;
-			case 4:
-				return $this->getStylesheet();
-				break;
-			case 5:
-				return $this->getCreatedAt();
-				break;
-			case 6:
-				return $this->getUpdatedAt();
-				break;
-			default:
-				return null;
-				break;
-		} 	}
-
-	
-	public function toArray($keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = StaticPagePeer::getFieldNames($keyType);
-		$result = array(
-			$keys[0] => $this->getId(),
-			$keys[1] => $this->getTitle(),
-			$keys[2] => $this->getPermalink(),
-			$keys[3] => $this->getPageContent(),
-			$keys[4] => $this->getStylesheet(),
-			$keys[5] => $this->getCreatedAt(),
-			$keys[6] => $this->getUpdatedAt(),
-		);
-		return $result;
-	}
-
-	
-	public function setByName($name, $value, $type = BasePeer::TYPE_PHPNAME)
-	{
-		$pos = StaticPagePeer::translateFieldName($name, $type, BasePeer::TYPE_NUM);
-		return $this->setByPosition($pos, $value);
-	}
-
-	
-	public function setByPosition($pos, $value)
-	{
-		switch($pos) {
-			case 0:
-				$this->setId($value);
-				break;
-			case 1:
-				$this->setTitle($value);
-				break;
-			case 2:
-				$this->setPermalink($value);
-				break;
-			case 3:
-				$this->setPageContent($value);
-				break;
-			case 4:
-				$this->setStylesheet($value);
-				break;
-			case 5:
-				$this->setCreatedAt($value);
-				break;
-			case 6:
-				$this->setUpdatedAt($value);
-				break;
-		} 	}
-
-	
-	public function fromArray($arr, $keyType = BasePeer::TYPE_PHPNAME)
-	{
-		$keys = StaticPagePeer::getFieldNames($keyType);
-
-		if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-		if (array_key_exists($keys[1], $arr)) $this->setTitle($arr[$keys[1]]);
-		if (array_key_exists($keys[2], $arr)) $this->setPermalink($arr[$keys[2]]);
-		if (array_key_exists($keys[3], $arr)) $this->setPageContent($arr[$keys[3]]);
-		if (array_key_exists($keys[4], $arr)) $this->setStylesheet($arr[$keys[4]]);
-		if (array_key_exists($keys[5], $arr)) $this->setCreatedAt($arr[$keys[5]]);
-		if (array_key_exists($keys[6], $arr)) $this->setUpdatedAt($arr[$keys[6]]);
-	}
-
-	
-	public function buildCriteria()
-	{
-		$criteria = new Criteria(StaticPagePeer::DATABASE_NAME);
-
-		if ($this->isColumnModified(StaticPagePeer::ID)) $criteria->add(StaticPagePeer::ID, $this->id);
-		if ($this->isColumnModified(StaticPagePeer::TITLE)) $criteria->add(StaticPagePeer::TITLE, $this->title);
-		if ($this->isColumnModified(StaticPagePeer::PERMALINK)) $criteria->add(StaticPagePeer::PERMALINK, $this->permalink);
-		if ($this->isColumnModified(StaticPagePeer::PAGE_CONTENT)) $criteria->add(StaticPagePeer::PAGE_CONTENT, $this->page_content);
-		if ($this->isColumnModified(StaticPagePeer::STYLESHEET)) $criteria->add(StaticPagePeer::STYLESHEET, $this->stylesheet);
-		if ($this->isColumnModified(StaticPagePeer::CREATED_AT)) $criteria->add(StaticPagePeer::CREATED_AT, $this->created_at);
-		if ($this->isColumnModified(StaticPagePeer::UPDATED_AT)) $criteria->add(StaticPagePeer::UPDATED_AT, $this->updated_at);
-
-		return $criteria;
-	}
-
-	
-	public function buildPkeyCriteria()
-	{
-		$criteria = new Criteria(StaticPagePeer::DATABASE_NAME);
-
-		$criteria->add(StaticPagePeer::ID, $this->id);
-
-		return $criteria;
-	}
-
-	
-	public function getPrimaryKey()
-	{
-		return $this->getId();
-	}
-
-	
-	public function setPrimaryKey($key)
-	{
-		$this->setId($key);
-	}
-
-	
-	public function copyInto($copyObj, $deepCopy = false)
-	{
-
-		$copyObj->setTitle($this->title);
-
-		$copyObj->setPermalink($this->permalink);
-
-		$copyObj->setPageContent($this->page_content);
-
-		$copyObj->setStylesheet($this->stylesheet);
-
-		$copyObj->setCreatedAt($this->created_at);
-
-		$copyObj->setUpdatedAt($this->updated_at);
-
-
-		$copyObj->setNew(true);
-
-		$copyObj->setId(NULL); 
-	}
-
-	
-	public function copy($deepCopy = false)
-	{
-				$clazz = get_class($this);
-		$copyObj = new $clazz();
-		$this->copyInto($copyObj, $deepCopy);
-		return $copyObj;
-	}
-
-	
-	public function getPeer()
-	{
-		if (self::$peer === null) {
-			self::$peer = new StaticPagePeer();
-		}
-		return self::$peer;
-	}
-
-
-  public function __call($method, $arguments)
+abstract class BaseStaticPage extends QubitObject
+{
+  const DATABASE_NAME = 'propel';
+
+  const TABLE_NAME = 'q_static_page';
+
+  const ID = 'q_static_page.ID';
+  const PERMALINK = 'q_static_page.PERMALINK';
+  const CREATED_AT = 'q_static_page.CREATED_AT';
+  const UPDATED_AT = 'q_static_page.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_static_page.SOURCE_CULTURE';
+
+  public static function addSelectColumns(Criteria $criteria)
   {
-    if (!$callable = sfMixer::getCallable('BaseStaticPage:'.$method))
-    {
-      throw new sfException(sprintf('Call to undefined method BaseStaticPage::%s', $method));
-    }
+    parent::addSelectColumns($criteria);
 
-    array_unshift($arguments, $this);
+    $criteria->addJoin(QubitStaticPage::ID, QubitObject::ID);
 
-    return call_user_func_array($callable, $arguments);
+    $criteria->addSelectColumn(QubitStaticPage::ID);
+    $criteria->addSelectColumn(QubitStaticPage::PERMALINK);
+    $criteria->addSelectColumn(QubitStaticPage::CREATED_AT);
+    $criteria->addSelectColumn(QubitStaticPage::UPDATED_AT);
+    $criteria->addSelectColumn(QubitStaticPage::SOURCE_CULTURE);
+
+    return $criteria;
   }
 
+  public static function get(Criteria $criteria, array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitStaticPage::DATABASE_NAME);
+    }
 
-} 
+    self::addSelectColumns($criteria);
+
+    return QubitQuery::createFromCriteria($criteria, 'QubitStaticPage', $options);
+  }
+
+  public static function getAll(array $options = array())
+  {
+    return self::get(new Criteria, $options);
+  }
+
+  public static function getOne(Criteria $criteria, array $options = array())
+  {
+    $criteria->setLimit(1);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  public static function getById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitStaticPage::ID, $id);
+
+    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+  }
+
+  protected $permalink = null;
+
+  public function getPermalink()
+  {
+    return $this->permalink;
+  }
+
+  public function setPermalink($permalink)
+  {
+    $this->permalink = $permalink;
+
+    return $this;
+  }
+
+  protected $createdAt = null;
+
+  public function getCreatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->createdAt);
+    }
+
+    return $this->createdAt;
+  }
+
+  public function setCreatedAt($createdAt)
+  {
+    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+    }
+
+    $this->createdAt = $createdAt;
+
+    return $this;
+  }
+
+  protected $updatedAt = null;
+
+  public function getUpdatedAt(array $options = array())
+  {
+    $options += array('format' => 'Y-m-d H:i:s');
+    if (isset($options['format']))
+    {
+      return date($options['format'], $this->updatedAt);
+    }
+
+    return $this->updatedAt;
+  }
+
+  public function setUpdatedAt($updatedAt)
+  {
+    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    {
+      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+    }
+
+    $this->updatedAt = $updatedAt;
+
+    return $this;
+  }
+
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
+  protected function resetModified()
+  {
+    parent::resetModified();
+
+    $this->columnValues['id'] = $this->id;
+    $this->columnValues['permalink'] = $this->permalink;
+    $this->columnValues['createdAt'] = $this->createdAt;
+    $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
+
+    return $this;
+  }
+
+  public function hydrate(ResultSet $results, $columnOffset = 1)
+  {
+    $columnOffset = parent::hydrate($results, $columnOffset);
+
+    $this->id = $results->getInt($columnOffset++);
+    $this->permalink = $results->getString($columnOffset++);
+    $this->createdAt = $results->getTimestamp($columnOffset++, null);
+    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
+
+    $this->new = false;
+    $this->resetModified();
+
+    return $columnOffset;
+  }
+
+  public function refresh(array $options = array())
+  {
+    if (!isset($options['connection']))
+    {
+      $options['connection'] = Propel::getConnection(QubitStaticPage::DATABASE_NAME);
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitStaticPage::ID, $this->id);
+
+    self::addSelectColumns($criteria);
+
+    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
+    $resultSet->next();
+
+    return $this->hydrate($resultSet);
+  }
+
+  public function save($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::save($connection);
+
+    foreach ($this->staticPageI18ns as $staticPageI18n)
+    {
+      $staticPageI18n->setId($this->id);
+
+      $affectedRows += $staticPageI18n->save($connection);
+    }
+
+    return $affectedRows;
+  }
+
+  protected function insert($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::insert($connection);
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitStaticPage::ID, $this->id);
+    }
+
+    if ($this->isColumnModified('permalink'))
+    {
+      $criteria->add(QubitStaticPage::PERMALINK, $this->permalink);
+    }
+
+    if (!$this->isColumnModified('createdAt'))
+    {
+      $this->createdAt = time();
+    }
+    $criteria->add(QubitStaticPage::CREATED_AT, $this->createdAt);
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitStaticPage::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitStaticPage::SOURCE_CULTURE, $this->sourceCulture);
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitStaticPage::DATABASE_NAME);
+    }
+
+    BasePeer::doInsert($criteria, $connection);
+    $affectedRows += 1;
+
+    return $affectedRows;
+  }
+
+  protected function update($connection = null)
+  {
+    $affectedRows = 0;
+
+    $affectedRows += parent::update($connection);
+
+    $criteria = new Criteria;
+
+    if ($this->isColumnModified('id'))
+    {
+      $criteria->add(QubitStaticPage::ID, $this->id);
+    }
+
+    if ($this->isColumnModified('permalink'))
+    {
+      $criteria->add(QubitStaticPage::PERMALINK, $this->permalink);
+    }
+
+    if ($this->isColumnModified('createdAt'))
+    {
+      $criteria->add(QubitStaticPage::CREATED_AT, $this->createdAt);
+    }
+
+    if (!$this->isColumnModified('updatedAt'))
+    {
+      $this->updatedAt = time();
+    }
+    $criteria->add(QubitStaticPage::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitStaticPage::SOURCE_CULTURE, $this->sourceCulture);
+    }
+
+    if ($criteria->size() > 0)
+    {
+      $selectCriteria = new Criteria;
+      $selectCriteria->add(QubitStaticPage::ID, $this->id);
+
+      if (!isset($connection))
+      {
+        $connection = QubitTransactionFilter::getConnection(QubitStaticPage::DATABASE_NAME);
+      }
+
+      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+    }
+
+    return $affectedRows;
+  }
+
+  public static function addStaticPageI18nsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitStaticPageI18n::ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getStaticPageI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addStaticPageI18nsCriteriaById($criteria, $id);
+
+    return QubitStaticPageI18n::get($criteria, $options);
+  }
+
+  public function addStaticPageI18nsCriteria(Criteria $criteria)
+  {
+    return self::addStaticPageI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $staticPageI18ns = null;
+
+  public function getStaticPageI18ns(array $options = array())
+  {
+    if (!isset($this->staticPageI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->staticPageI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->staticPageI18ns = self::getStaticPageI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->staticPageI18ns;
+  }
+
+  public function getTitle(array $options = array())
+  {
+    return $this->getCurrentStaticPageI18n($options)->getTitle();
+  }
+
+  public function setTitle($value, array $options = array())
+  {
+    $this->getCurrentStaticPageI18n($options)->setTitle($value);
+
+    return $this;
+  }
+
+  public function getContent(array $options = array())
+  {
+    return $this->getCurrentStaticPageI18n($options)->getContent();
+  }
+
+  public function setContent($value, array $options = array())
+  {
+    $this->getCurrentStaticPageI18n($options)->setContent($value);
+
+    return $this;
+  }
+
+  public function getCurrentStaticPageI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->staticPageI18ns[$options['culture']]))
+    {
+      if (null === $staticPageI18n = QubitStaticPageI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $staticPageI18n = new QubitStaticPageI18n;
+        $staticPageI18n->setCulture($options['culture']);
+      }
+      $this->staticPageI18ns[$options['culture']] = $staticPageI18n;
+    }
+
+    return $this->staticPageI18ns[$options['culture']];
+  }
+}
+
+BasePeer::getMapBuilder('lib.model.map.StaticPageMapBuilder');

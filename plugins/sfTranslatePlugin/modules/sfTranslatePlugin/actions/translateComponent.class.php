@@ -8,9 +8,9 @@
  * file that was distributed with this source code.
  */
 
-class translateComponent extends sfComponent
+class sfTranslatePluginTranslateComponent extends sfComponent
 {
-  function execute()
+  function execute($request)
   {
     $actionInstance = $this->getController()->getAction($this->getModuleName(), $this->getActionName());
     if ($actionInstance->isSecure())

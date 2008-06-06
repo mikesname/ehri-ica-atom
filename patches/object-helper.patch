@@ -1,0 +1,33 @@
+Index: lib/vendor/symfony/lib/helper/ObjectHelper.php
+===================================================================
+--- lib/vendor/symfony/lib/helper/ObjectHelper.php	(revision 7939)
++++ lib/vendor/symfony/lib/helper/ObjectHelper.php	(working copy)
+@@ -110,7 +110,7 @@
+   $related_class = _get_option($options, 'related_class', false);
+   if (false === $related_class && preg_match('/^get(.+?)Id$/', $method, $match))
+   {
+-    $related_class = $match[1];
++    $related_class = 'Qubit'.$match[1];
+   }
+ 
+   $peer_method = _get_option($options, 'peer_method');
+@@ -119,18 +119,10 @@
+ 
+   $select_options = _get_options_from_objects(sfContext::getInstance()->retrieveObjects($related_class, $peer_method), $text_method);
+ 
+-  if ($value = _get_option($options, 'include_custom'))
++  if (_get_option($options, 'include_title'))
+   {
+-    $select_options = array('' => $value) + $select_options;
+-  }
+-  else if (_get_option($options, 'include_title'))
+-  {
+     $select_options = array('' => '-- '._convert_method_to_name($method, $options).' --') + $select_options;
+   }
+-  else if (_get_option($options, 'include_blank'))
+-  {
+-    $select_options = array('' => '') + $select_options;
+-  }
+ 
+   if (is_object($object))
+   {

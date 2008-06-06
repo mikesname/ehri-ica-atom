@@ -82,7 +82,7 @@ float: left;
 {
 float: left;
 height: 12px;
-padding: 0px 5px 0px 5px;
+padding: 0 4px 0 4px;
 margin: 0;
 text-decoration: none;
 display: block;
@@ -109,7 +109,7 @@ color: #ffffff;
 
 .language-list a.active
 {
-border-bottom: 3px solid #999999;
+text-decoration: underline;
 }
 
 .language-list a:first-child
@@ -422,7 +422,7 @@ margin: 4px 0 0 0;
 padding: 1px 0 4px 3px;
 background-color: #006699;
 font: normal 14px/16px georgia, serif;
-
+text-transform: lowercase;
 }
 
 /****************************************************/

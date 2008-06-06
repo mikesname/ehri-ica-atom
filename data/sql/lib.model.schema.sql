@@ -4,20 +4,85 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 #-----------------------------------------------------------------------------
-#-- information_object
+#-- q_object
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `information_object`;
+DROP TABLE IF EXISTS `q_object`;
 
 
-CREATE TABLE `information_object`
+CREATE TABLE `q_object`
 (
+	`class_name` VARCHAR(255),
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_information_object
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_information_object`;
+
+
+CREATE TABLE `q_information_object`
+(
+	`id` INTEGER  NOT NULL,
 	`identifier` VARCHAR(255),
+	`level_of_description_id` INTEGER,
+	`collection_type_id` INTEGER,
+	`repository_id` INTEGER,
+	`parent_id` INTEGER,
+	`description_status_id` INTEGER,
+	`description_detail_id` INTEGER,
+	`description_identifier` VARCHAR(255),
+	`lft` INTEGER  NOT NULL,
+	`rgt` INTEGER  NOT NULL,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_information_object_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_information_object_FI_2` (`level_of_description_id`),
+	CONSTRAINT `q_information_object_FK_2`
+		FOREIGN KEY (`level_of_description_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_information_object_FI_3` (`collection_type_id`),
+	CONSTRAINT `q_information_object_FK_3`
+		FOREIGN KEY (`collection_type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_information_object_FI_4` (`repository_id`),
+	CONSTRAINT `q_information_object_FK_4`
+		FOREIGN KEY (`repository_id`)
+		REFERENCES `q_repository` (`id`),
+	INDEX `q_information_object_FI_5` (`parent_id`),
+	CONSTRAINT `q_information_object_FK_5`
+		FOREIGN KEY (`parent_id`)
+		REFERENCES `q_information_object` (`id`),
+	INDEX `q_information_object_FI_6` (`description_status_id`),
+	CONSTRAINT `q_information_object_FK_6`
+		FOREIGN KEY (`description_status_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_information_object_FI_7` (`description_detail_id`),
+	CONSTRAINT `q_information_object_FK_7`
+		FOREIGN KEY (`description_detail_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_information_object_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_information_object_i18n`;
+
+
+CREATE TABLE `q_information_object_i18n`
+(
 	`title` VARCHAR(255),
 	`alternate_title` VARCHAR(255),
 	`version` VARCHAR(255),
-	`level_of_description_id` INTEGER,
 	`extent_and_medium` TEXT,
 	`archival_history` TEXT,
 	`acquisition` TEXT,
@@ -32,562 +97,394 @@ CREATE TABLE `information_object`
 	`location_of_originals` TEXT,
 	`location_of_copies` TEXT,
 	`related_units_of_description` TEXT,
+	`institution_responsible_identifier` VARCHAR(255),
 	`rules` TEXT,
-	`collection_type_id` INTEGER,
-	`repository_id` INTEGER  NOT NULL,
-	`tree_id` INTEGER,
-	`tree_left_id` INTEGER,
-	`tree_right_id` INTEGER,
-	`tree_parent_id` INTEGER,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `information_object_FI_1` (`level_of_description_id`),
-	CONSTRAINT `information_object_FK_1`
-		FOREIGN KEY (`level_of_description_id`)
-		REFERENCES `term` (`id`),
-	INDEX `information_object_FI_2` (`collection_type_id`),
-	CONSTRAINT `information_object_FK_2`
-		FOREIGN KEY (`collection_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `information_object_FI_3` (`repository_id`),
-	CONSTRAINT `information_object_FK_3`
-		FOREIGN KEY (`repository_id`)
-		REFERENCES `repository` (`id`)
-)Type=MyISAM;
+	`sources` TEXT,
+	`revision_history` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_information_object_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_information_object` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- information_object_term_relationship
+#-- q_object_term_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `information_object_term_relationship`;
+DROP TABLE IF EXISTS `q_object_term_relation`;
 
 
-CREATE TABLE `information_object_term_relationship`
+CREATE TABLE `q_object_term_relation`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`information_object_id` INTEGER  NOT NULL,
+	`id` INTEGER  NOT NULL,
+	`object_id` INTEGER  NOT NULL,
 	`term_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
-	`relationship_note` TEXT,
-	`relationship_start_date` DATE,
-	`relationship_end_date` DATE,
-	`date_display` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`start_date` DATE,
+	`end_date` DATE,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `information_object_term_relationship_FI_1` (`information_object_id`),
-	CONSTRAINT `information_object_term_relationship_FK_1`
-		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `information_object_term_relationship_FI_2` (`term_id`),
-	CONSTRAINT `information_object_term_relationship_FK_2`
+	CONSTRAINT `q_object_term_relation_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_object_term_relation_FI_2` (`object_id`),
+	CONSTRAINT `q_object_term_relation_FK_2`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_object_term_relation_FI_3` (`term_id`),
+	CONSTRAINT `q_object_term_relation_FK_3`
 		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `information_object_term_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `information_object_term_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- information_object_recursive_relationship
+#-- q_property
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `information_object_recursive_relationship`;
+DROP TABLE IF EXISTS `q_property`;
 
 
-CREATE TABLE `information_object_recursive_relationship`
+CREATE TABLE `q_property`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`information_object_id` INTEGER  NOT NULL,
-	`related_information_object_id` INTEGER,
-	`relationship_type_id` INTEGER,
-	`relationship_description` TEXT,
-	`relationship_start_date` DATE,
-	`relationship_end_date` DATE,
-	`date_display` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `information_object_recursive_relationship_FI_1` (`information_object_id`),
-	CONSTRAINT `information_object_recursive_relationship_FK_1`
-		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `information_object_recursive_relationship_FI_2` (`related_information_object_id`),
-	CONSTRAINT `information_object_recursive_relationship_FK_2`
-		FOREIGN KEY (`related_information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `information_object_recursive_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `information_object_recursive_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- note
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `note`;
-
-
-CREATE TABLE `note`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`information_object_id` INTEGER  NOT NULL,
-	`actor_id` INTEGER  NOT NULL,
-	`repository_id` INTEGER  NOT NULL,
-	`function_description_id` INTEGER  NOT NULL,
-	`note` TEXT,
-	`note_type_id` INTEGER,
-	`user_id` INTEGER  NOT NULL,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `note_FI_1` (`information_object_id`),
-	CONSTRAINT `note_FK_1`
-		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `note_FI_2` (`actor_id`),
-	CONSTRAINT `note_FK_2`
-		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `note_FI_3` (`repository_id`),
-	CONSTRAINT `note_FK_3`
-		FOREIGN KEY (`repository_id`)
-		REFERENCES `repository` (`id`),
-	INDEX `note_FI_4` (`function_description_id`),
-	CONSTRAINT `note_FK_4`
-		FOREIGN KEY (`function_description_id`)
-		REFERENCES `function_description` (`id`),
-	INDEX `note_FI_5` (`note_type_id`),
-	CONSTRAINT `note_FK_5`
-		FOREIGN KEY (`note_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `note_FI_6` (`user_id`),
-	CONSTRAINT `note_FK_6`
-		FOREIGN KEY (`user_id`)
-		REFERENCES `user` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- digital_object
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `digital_object`;
-
-
-CREATE TABLE `digital_object`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`information_object_id` INTEGER  NOT NULL,
-	`useage_id` INTEGER,
+	`object_id` INTEGER  NOT NULL,
+	`scope` VARCHAR(255),
 	`name` VARCHAR(255),
-	`description` TEXT,
-	`mime_type_id` INTEGER,
+	`value` VARCHAR(255),
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`),
+	INDEX `q_property_FI_1` (`object_id`),
+	CONSTRAINT `q_property_FK_1`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_relation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_relation`;
+
+
+CREATE TABLE `q_relation`
+(
+	`id` INTEGER  NOT NULL,
+	`subject_id` INTEGER  NOT NULL,
+	`object_id` INTEGER  NOT NULL,
+	`type_id` INTEGER,
+	`start_date` DATE,
+	`end_date` DATE,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_relation_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_relation_FI_2` (`subject_id`),
+	CONSTRAINT `q_relation_FK_2`
+		FOREIGN KEY (`subject_id`)
+		REFERENCES `q_object` (`id`),
+	INDEX `q_relation_FI_3` (`object_id`),
+	CONSTRAINT `q_relation_FK_3`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `q_object` (`id`),
+	INDEX `q_relation_FI_4` (`type_id`),
+	CONSTRAINT `q_relation_FK_4`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_note
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_note`;
+
+
+CREATE TABLE `q_note`
+(
+	`object_id` INTEGER  NOT NULL,
+	`type_id` INTEGER,
+	`scope` VARCHAR(255),
+	`user_id` INTEGER,
+	`parent_id` INTEGER,
+	`lft` INTEGER  NOT NULL,
+	`rgt` INTEGER  NOT NULL,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`),
+	INDEX `q_note_FI_1` (`object_id`),
+	CONSTRAINT `q_note_FK_1`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_note_FI_2` (`type_id`),
+	CONSTRAINT `q_note_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_note_FI_3` (`user_id`),
+	CONSTRAINT `q_note_FK_3`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `q_user` (`id`),
+	INDEX `q_note_FI_4` (`parent_id`),
+	CONSTRAINT `q_note_FK_4`
+		FOREIGN KEY (`parent_id`)
+		REFERENCES `q_note` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_note_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_note_i18n`;
+
+
+CREATE TABLE `q_note_i18n`
+(
+	`content` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_note_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_note` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_digital_object
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_digital_object`;
+
+
+CREATE TABLE `q_digital_object`
+(
+	`id` INTEGER  NOT NULL,
+	`information_object_id` INTEGER,
+	`usage_id` INTEGER,
+	`mime_type` VARCHAR(50),
 	`media_type_id` INTEGER,
+	`name` VARCHAR(255),
+	`path` VARCHAR(1000),
 	`sequence` INTEGER,
 	`byte_size` INTEGER,
-	`checksum` VARCHAR(100),
+	`checksum` VARCHAR(255),
 	`checksum_type_id` INTEGER,
-	`location_id` INTEGER,
-	`tree_id` INTEGER,
-	`tree_left_id` INTEGER,
-	`tree_right_id` INTEGER,
-	`tree_parent_id` INTEGER,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`parent_id` INTEGER,
+	`lft` INTEGER  NOT NULL,
+	`rgt` INTEGER  NOT NULL,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `digital_object_FI_1` (`information_object_id`),
-	CONSTRAINT `digital_object_FK_1`
+	CONSTRAINT `q_digital_object_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_digital_object_FI_2` (`information_object_id`),
+	CONSTRAINT `q_digital_object_FK_2`
 		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `digital_object_FI_2` (`useage_id`),
-	CONSTRAINT `digital_object_FK_2`
-		FOREIGN KEY (`useage_id`)
-		REFERENCES `term` (`id`),
-	INDEX `digital_object_FI_3` (`mime_type_id`),
-	CONSTRAINT `digital_object_FK_3`
-		FOREIGN KEY (`mime_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `digital_object_FI_4` (`media_type_id`),
-	CONSTRAINT `digital_object_FK_4`
+		REFERENCES `q_information_object` (`id`),
+	INDEX `q_digital_object_FI_3` (`usage_id`),
+	CONSTRAINT `q_digital_object_FK_3`
+		FOREIGN KEY (`usage_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_digital_object_FI_4` (`media_type_id`),
+	CONSTRAINT `q_digital_object_FK_4`
 		FOREIGN KEY (`media_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `digital_object_FI_5` (`checksum_type_id`),
-	CONSTRAINT `digital_object_FK_5`
+		REFERENCES `q_term` (`id`),
+	INDEX `q_digital_object_FI_5` (`checksum_type_id`),
+	CONSTRAINT `q_digital_object_FK_5`
 		FOREIGN KEY (`checksum_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `digital_object_FI_6` (`location_id`),
-	CONSTRAINT `digital_object_FK_6`
+		REFERENCES `q_term` (`id`),
+	INDEX `q_digital_object_FI_6` (`parent_id`),
+	CONSTRAINT `q_digital_object_FK_6`
+		FOREIGN KEY (`parent_id`)
+		REFERENCES `q_digital_object` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_physical_object
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_physical_object`;
+
+
+CREATE TABLE `q_physical_object`
+(
+	`id` INTEGER  NOT NULL,
+	`information_object_id` INTEGER,
+	`location_id` INTEGER,
+	`parent_id` INTEGER,
+	`lft` INTEGER,
+	`rgt` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_physical_object_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_physical_object_FI_2` (`information_object_id`),
+	CONSTRAINT `q_physical_object_FK_2`
+		FOREIGN KEY (`information_object_id`)
+		REFERENCES `q_information_object` (`id`),
+	INDEX `q_physical_object_FI_3` (`location_id`),
+	CONSTRAINT `q_physical_object_FK_3`
 		FOREIGN KEY (`location_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- digital_object_metadata
+#-- q_physical_object_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `digital_object_metadata`;
+DROP TABLE IF EXISTS `q_physical_object_i18n`;
 
 
-CREATE TABLE `digital_object_metadata`
+CREATE TABLE `q_physical_object_i18n`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`digital_object_id` INTEGER  NOT NULL,
-	`element` VARCHAR(255),
-	`value` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `digital_object_metadata_FI_1` (`digital_object_id`),
-	CONSTRAINT `digital_object_metadata_FK_1`
-		FOREIGN KEY (`digital_object_id`)
-		REFERENCES `digital_object` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- digital_object_recursive_relationship
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `digital_object_recursive_relationship`;
-
-
-CREATE TABLE `digital_object_recursive_relationship`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`digital_object_id` INTEGER  NOT NULL,
-	`related_digital_object_id` INTEGER,
-	`relationship_type_id` INTEGER,
-	`relationship_description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `digital_object_recursive_relationship_FI_1` (`digital_object_id`),
-	CONSTRAINT `digital_object_recursive_relationship_FK_1`
-		FOREIGN KEY (`digital_object_id`)
-		REFERENCES `digital_object` (`id`),
-	INDEX `digital_object_recursive_relationship_FI_2` (`related_digital_object_id`),
-	CONSTRAINT `digital_object_recursive_relationship_FK_2`
-		FOREIGN KEY (`related_digital_object_id`)
-		REFERENCES `digital_object` (`id`),
-	INDEX `digital_object_recursive_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `digital_object_recursive_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- physical_object
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `physical_object`;
-
-
-CREATE TABLE `physical_object`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255),
 	`description` TEXT,
-	`information_object_id` INTEGER  NOT NULL,
-	`location_id` INTEGER,
-	`tree_id` INTEGER,
-	`tree_left_id` INTEGER,
-	`tree_right_id` INTEGER,
-	`tree_parent_id` INTEGER,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `physical_object_FI_1` (`information_object_id`),
-	CONSTRAINT `physical_object_FK_1`
-		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `physical_object_FI_2` (`location_id`),
-	CONSTRAINT `physical_object_FK_2`
-		FOREIGN KEY (`location_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_physical_object_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_physical_object` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- actor
+#-- q_actor
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `actor`;
+DROP TABLE IF EXISTS `q_actor`;
 
 
-CREATE TABLE `actor`
+CREATE TABLE `q_actor`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`id` INTEGER  NOT NULL,
+	`corporate_body_identifiers` VARCHAR(255),
+	`entity_type_id` INTEGER,
+	`description_status_id` INTEGER,
+	`description_detail_id` INTEGER,
+	`description_identifier` VARCHAR(255),
+	`parent_id` INTEGER,
+	`lft` INTEGER,
+	`rgt` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_actor_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_actor_FI_2` (`entity_type_id`),
+	CONSTRAINT `q_actor_FK_2`
+		FOREIGN KEY (`entity_type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_actor_FI_3` (`description_status_id`),
+	CONSTRAINT `q_actor_FK_3`
+		FOREIGN KEY (`description_status_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_actor_FI_4` (`description_detail_id`),
+	CONSTRAINT `q_actor_FK_4`
+		FOREIGN KEY (`description_detail_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_actor_FI_5` (`parent_id`),
+	CONSTRAINT `q_actor_FK_5`
+		FOREIGN KEY (`parent_id`)
+		REFERENCES `q_actor` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_actor_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_actor_i18n`;
+
+
+CREATE TABLE `q_actor_i18n`
+(
 	`authorized_form_of_name` VARCHAR(255)  NOT NULL,
-	`type_of_entity_id` INTEGER,
-	`identifiers` VARCHAR(255),
 	`history` TEXT,
+	`places` TEXT,
 	`legal_status` TEXT,
 	`functions` TEXT,
 	`mandates` TEXT,
 	`internal_structures` TEXT,
 	`general_context` TEXT,
-	`authority_record_identifier` VARCHAR(255),
-	`institution_identifier` VARCHAR(255),
+	`institution_responsible_identifier` VARCHAR(255),
 	`rules` TEXT,
-	`status_id` INTEGER,
-	`level_of_detail_id` INTEGER,
 	`sources` TEXT,
-	`tree_id` INTEGER,
-	`tree_left_id` INTEGER,
-	`tree_right_id` INTEGER,
-	`tree_parent_id` INTEGER,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `actor_FI_1` (`type_of_entity_id`),
-	CONSTRAINT `actor_FK_1`
-		FOREIGN KEY (`type_of_entity_id`)
-		REFERENCES `term` (`id`),
-	INDEX `actor_FI_2` (`status_id`),
-	CONSTRAINT `actor_FK_2`
-		FOREIGN KEY (`status_id`)
-		REFERENCES `term` (`id`),
-	INDEX `actor_FI_3` (`level_of_detail_id`),
-	CONSTRAINT `actor_FK_3`
-		FOREIGN KEY (`level_of_detail_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+	`revision_history` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_actor_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_actor` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- actor_name
+#-- q_repository
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `actor_name`;
+DROP TABLE IF EXISTS `q_repository`;
 
 
-CREATE TABLE `actor_name`
+CREATE TABLE `q_repository`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`actor_id` INTEGER  NOT NULL,
-	`name` VARCHAR(255),
-	`name_type_id` INTEGER,
-	`name_note` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `actor_name_FI_1` (`actor_id`),
-	CONSTRAINT `actor_name_FK_1`
-		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `actor_name_FI_2` (`name_type_id`),
-	CONSTRAINT `actor_name_FK_2`
-		FOREIGN KEY (`name_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- actor_recursive_relationship
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `actor_recursive_relationship`;
-
-
-CREATE TABLE `actor_recursive_relationship`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`actor_id` INTEGER  NOT NULL,
-	`related_actor_id` INTEGER,
-	`relationship_type_id` INTEGER,
-	`relationship_description` TEXT,
-	`relationship_start_date` DATE,
-	`relationship_end_date` DATE,
-	`date_display` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `actor_recursive_relationship_FI_1` (`actor_id`),
-	CONSTRAINT `actor_recursive_relationship_FK_1`
-		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `actor_recursive_relationship_FI_2` (`related_actor_id`),
-	CONSTRAINT `actor_recursive_relationship_FK_2`
-		FOREIGN KEY (`related_actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `actor_recursive_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `actor_recursive_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- actor_term_relationship
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `actor_term_relationship`;
-
-
-CREATE TABLE `actor_term_relationship`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`actor_id` INTEGER  NOT NULL,
-	`term_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
-	`relationship_note` TEXT,
-	`relationship_start_date` DATE,
-	`relationship_end_date` DATE,
-	`date_display` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `actor_term_relationship_FI_1` (`actor_id`),
-	CONSTRAINT `actor_term_relationship_FK_1`
-		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `actor_term_relationship_FI_2` (`term_id`),
-	CONSTRAINT `actor_term_relationship_FK_2`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `actor_term_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `actor_term_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- contact_information
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `contact_information`;
-
-
-CREATE TABLE `contact_information`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`actor_id` INTEGER  NOT NULL,
-	`contact_type` VARCHAR(255),
-	`primary_contact` INTEGER,
-	`street_address` TEXT,
-	`city` VARCHAR(255),
-	`region` VARCHAR(255),
-	`postal_code` VARCHAR(20),
-	`country_id` INTEGER,
-	`longtitude` FLOAT,
-	`latitude` FLOAT,
-	`telephone` VARCHAR(255),
-	`fax` VARCHAR(255),
-	`website` VARCHAR(255),
-	`email` VARCHAR(255),
-	`note` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `contact_information_FI_1` (`actor_id`),
-	CONSTRAINT `contact_information_FK_1`
-		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `contact_information_FI_2` (`country_id`),
-	CONSTRAINT `contact_information_FK_2`
-		FOREIGN KEY (`country_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- place
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `place`;
-
-
-CREATE TABLE `place`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`term_id` INTEGER  NOT NULL,
-	`address` TEXT,
-	`country_id` INTEGER,
-	`place_type_id` INTEGER,
-	`longtitude` FLOAT,
-	`latitude` FLOAT,
-	`altitude` FLOAT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `place_FI_1` (`term_id`),
-	CONSTRAINT `place_FK_1`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `place_FI_2` (`country_id`),
-	CONSTRAINT `place_FK_2`
-		FOREIGN KEY (`country_id`)
-		REFERENCES `term` (`id`),
-	INDEX `place_FI_3` (`place_type_id`),
-	CONSTRAINT `place_FK_3`
-		FOREIGN KEY (`place_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- map
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `map`;
-
-
-CREATE TABLE `map`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`title` VARCHAR(255),
-	`description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- place_map_relationship
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `place_map_relationship`;
-
-
-CREATE TABLE `place_map_relationship`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`place_id` INTEGER  NOT NULL,
-	`map_id` INTEGER  NOT NULL,
-	`map_icon_image_id` INTEGER,
-	`map_icon_description` TEXT,
-	`relationship_type_id` INTEGER,
-	`relationship_note` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `place_map_relationship_FI_1` (`place_id`),
-	CONSTRAINT `place_map_relationship_FK_1`
-		FOREIGN KEY (`place_id`)
-		REFERENCES `place` (`id`),
-	INDEX `place_map_relationship_FI_2` (`map_id`),
-	CONSTRAINT `place_map_relationship_FK_2`
-		FOREIGN KEY (`map_id`)
-		REFERENCES `map` (`id`),
-	INDEX `place_map_relationship_FI_3` (`map_icon_image_id`),
-	CONSTRAINT `place_map_relationship_FK_3`
-		FOREIGN KEY (`map_icon_image_id`)
-		REFERENCES `digital_object` (`id`),
-	INDEX `place_map_relationship_FI_4` (`relationship_type_id`),
-	CONSTRAINT `place_map_relationship_FK_4`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- repository
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `repository`;
-
-
-CREATE TABLE `repository`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`actor_id` INTEGER  NOT NULL,
+	`id` INTEGER  NOT NULL,
 	`identifier` VARCHAR(255),
-	`repository_type_id` INTEGER,
+	`type_id` INTEGER,
+	`desc_status_id` INTEGER,
+	`desc_detail_id` INTEGER,
+	`desc_identifier` VARCHAR(255),
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_repository_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_actor` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_repository_FI_2` (`type_id`),
+	CONSTRAINT `q_repository_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_repository_FI_3` (`desc_status_id`),
+	CONSTRAINT `q_repository_FK_3`
+		FOREIGN KEY (`desc_status_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_repository_FI_4` (`desc_detail_id`),
+	CONSTRAINT `q_repository_FK_4`
+		FOREIGN KEY (`desc_detail_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_repository_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_repository_i18n`;
+
+
+CREATE TABLE `q_repository_i18n`
+(
 	`officers_in_charge` TEXT,
 	`geocultural_context` TEXT,
 	`collecting_policies` TEXT,
@@ -601,524 +498,892 @@ CREATE TABLE `repository`
 	`research_services` TEXT,
 	`reproduction_services` TEXT,
 	`public_facilities` TEXT,
-	`description_identifier` VARCHAR(255),
-	`institution_identifier` VARCHAR(255),
-	`rules` TEXT,
-	`status_id` INTEGER,
-	`level_of_detail_id` INTEGER,
-	`sources` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`desc_institution_identifier` VARCHAR(255),
+	`desc_rules` TEXT,
+	`desc_sources` TEXT,
+	`desc_revision_history` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_repository_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_repository` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_actor_name
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_actor_name`;
+
+
+CREATE TABLE `q_actor_name`
+(
+	`actor_id` INTEGER  NOT NULL,
+	`type_id` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
-	INDEX `repository_FI_1` (`actor_id`),
-	CONSTRAINT `repository_FK_1`
+	INDEX `q_actor_name_FI_1` (`actor_id`),
+	CONSTRAINT `q_actor_name_FK_1`
 		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `repository_FI_2` (`repository_type_id`),
-	CONSTRAINT `repository_FK_2`
-		FOREIGN KEY (`repository_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `repository_FI_3` (`status_id`),
-	CONSTRAINT `repository_FK_3`
-		FOREIGN KEY (`status_id`)
-		REFERENCES `term` (`id`),
-	INDEX `repository_FI_4` (`level_of_detail_id`),
-	CONSTRAINT `repository_FK_4`
-		FOREIGN KEY (`level_of_detail_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_actor` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_actor_name_FI_2` (`type_id`),
+	CONSTRAINT `q_actor_name_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- repository_term_relationship
+#-- q_actor_name_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `repository_term_relationship`;
+DROP TABLE IF EXISTS `q_actor_name_i18n`;
 
 
-CREATE TABLE `repository_term_relationship`
+CREATE TABLE `q_actor_name_i18n`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`repository_id` INTEGER  NOT NULL,
-	`term_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
-	`relationship_note` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `repository_term_relationship_FI_1` (`repository_id`),
-	CONSTRAINT `repository_term_relationship_FK_1`
-		FOREIGN KEY (`repository_id`)
-		REFERENCES `repository` (`id`),
-	INDEX `repository_term_relationship_FI_2` (`term_id`),
-	CONSTRAINT `repository_term_relationship_FK_2`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `repository_term_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `repository_term_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- term
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `term`;
-
-
-CREATE TABLE `term`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`taxonomy_id` INTEGER  NOT NULL,
-	`term_name` VARCHAR(255),
-	`scope_note` TEXT,
-	`code_alpha` VARCHAR(5),
-	`code_alpha2` VARCHAR(5),
-	`code_numeric` INTEGER,
-	`sort_order` INTEGER,
-	`source` VARCHAR(255),
-	`locked` INTEGER,
-	`tree_id` INTEGER,
-	`tree_left_id` INTEGER,
-	`tree_right_id` INTEGER,
-	`tree_parent_id` INTEGER,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `term_FI_1` (`taxonomy_id`),
-	CONSTRAINT `term_FK_1`
-		FOREIGN KEY (`taxonomy_id`)
-		REFERENCES `taxonomy` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- taxonomy
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `taxonomy`;
-
-
-CREATE TABLE `taxonomy`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(50),
-	`term_use` VARCHAR(5),
-	`note` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- term_recursive_relationship
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `term_recursive_relationship`;
-
-
-CREATE TABLE `term_recursive_relationship`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`term_id` INTEGER  NOT NULL,
-	`related_term_id` INTEGER,
-	`relationship_type_id` INTEGER,
-	`relationship_description` VARCHAR(255),
-	`relationship_start_date` DATE,
-	`relationship_end_date` DATE,
-	`date_display` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `term_recursive_relationship_FI_1` (`term_id`),
-	CONSTRAINT `term_recursive_relationship_FK_1`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `term_recursive_relationship_FI_2` (`related_term_id`),
-	CONSTRAINT `term_recursive_relationship_FK_2`
-		FOREIGN KEY (`related_term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `term_recursive_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `term_recursive_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- event
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `event`;
-
-
-CREATE TABLE `event`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255),
+	`note` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_actor_name_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_actor_name` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_contact_information
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_contact_information`;
+
+
+CREATE TABLE `q_contact_information`
+(
+	`actor_id` INTEGER  NOT NULL,
+	`primary_contact` INTEGER,
+	`street_address` TEXT,
+	`website` VARCHAR(255),
+	`email` VARCHAR(255),
+	`telephone` VARCHAR(255),
+	`fax` VARCHAR(255),
+	`postal_code` VARCHAR(255),
+	`country_code` VARCHAR(255),
+	`longtitude` FLOAT,
+	`latitude` FLOAT,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`),
+	INDEX `q_contact_information_FI_1` (`actor_id`),
+	CONSTRAINT `q_contact_information_FK_1`
+		FOREIGN KEY (`actor_id`)
+		REFERENCES `q_actor` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_contact_information_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_contact_information_i18n`;
+
+
+CREATE TABLE `q_contact_information_i18n`
+(
+	`contact_type` VARCHAR(255),
+	`city` VARCHAR(255),
+	`region` VARCHAR(255),
+	`note` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_contact_information_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_contact_information` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_place
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_place`;
+
+
+CREATE TABLE `q_place`
+(
+	`id` INTEGER  NOT NULL,
+	`country_id` INTEGER,
+	`type_id` INTEGER,
+	`longtitude` FLOAT,
+	`latitude` FLOAT,
+	`altitude` FLOAT,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_place_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_place_FI_2` (`country_id`),
+	CONSTRAINT `q_place_FK_2`
+		FOREIGN KEY (`country_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_place_FI_3` (`type_id`),
+	CONSTRAINT `q_place_FK_3`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_place_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_place_i18n`;
+
+
+CREATE TABLE `q_place_i18n`
+(
+	`street_address` TEXT,
+	`city` VARCHAR(255),
+	`region` VARCHAR(255),
+	`postal_code` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_place_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_place` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_map
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_map`;
+
+
+CREATE TABLE `q_map`
+(
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_map_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_map_i18n`;
+
+
+CREATE TABLE `q_map_i18n`
+(
+	`title` VARCHAR(255),
 	`description` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_map_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_map` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_place_map_relation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_place_map_relation`;
+
+
+CREATE TABLE `q_place_map_relation`
+(
+	`id` INTEGER  NOT NULL,
+	`place_id` INTEGER  NOT NULL,
+	`map_id` INTEGER  NOT NULL,
+	`map_icon_image_id` INTEGER,
+	`map_icon_description` TEXT,
+	`type_id` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_place_map_relation_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_place_map_relation_FI_2` (`place_id`),
+	CONSTRAINT `q_place_map_relation_FK_2`
+		FOREIGN KEY (`place_id`)
+		REFERENCES `q_place` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_place_map_relation_FI_3` (`map_id`),
+	CONSTRAINT `q_place_map_relation_FK_3`
+		FOREIGN KEY (`map_id`)
+		REFERENCES `q_map` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_place_map_relation_FI_4` (`map_icon_image_id`),
+	CONSTRAINT `q_place_map_relation_FK_4`
+		FOREIGN KEY (`map_icon_image_id`)
+		REFERENCES `q_digital_object` (`id`),
+	INDEX `q_place_map_relation_FI_5` (`type_id`),
+	CONSTRAINT `q_place_map_relation_FK_5`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_term
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_term`;
+
+
+CREATE TABLE `q_term`
+(
+	`id` INTEGER  NOT NULL,
+	`taxonomy_id` INTEGER  NOT NULL,
+	`code_numeric` INTEGER,
+	`parent_id` INTEGER,
+	`lft` INTEGER  NOT NULL,
+	`rgt` INTEGER  NOT NULL,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_term_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_term_FI_2` (`taxonomy_id`),
+	CONSTRAINT `q_term_FK_2`
+		FOREIGN KEY (`taxonomy_id`)
+		REFERENCES `q_taxonomy` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_term_FI_3` (`parent_id`),
+	CONSTRAINT `q_term_FK_3`
+		FOREIGN KEY (`parent_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_term_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_term_i18n`;
+
+
+CREATE TABLE `q_term_i18n`
+(
+	`name` VARCHAR(255),
+	`scope_note` TEXT,
+	`code_alpha` VARCHAR(255),
+	`code_alpha2` VARCHAR(255),
+	`source` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_term_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_taxonomy
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_taxonomy`;
+
+
+CREATE TABLE `q_taxonomy`
+(
+	`usage` VARCHAR(255),
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_taxonomy_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_taxonomy_i18n`;
+
+
+CREATE TABLE `q_taxonomy_i18n`
+(
+	`name` VARCHAR(255),
+	`note` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_taxonomy_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_taxonomy` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_event
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_event`;
+
+
+CREATE TABLE `q_event`
+(
+	`id` INTEGER  NOT NULL,
 	`start_date` DATE,
 	`start_time` TIME,
 	`end_date` DATE,
 	`end_time` TIME,
-	`date_display` VARCHAR(255),
-	`event_type_id` INTEGER,
+	`type_id` INTEGER,
 	`actor_role_id` INTEGER,
-	`information_object_id` INTEGER  NOT NULL,
-	`actor_id` INTEGER  NOT NULL,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`information_object_id` INTEGER,
+	`actor_id` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `event_FI_1` (`event_type_id`),
-	CONSTRAINT `event_FK_1`
-		FOREIGN KEY (`event_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `event_FI_2` (`actor_role_id`),
-	CONSTRAINT `event_FK_2`
+	CONSTRAINT `q_event_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_event_FI_2` (`type_id`),
+	CONSTRAINT `q_event_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_event_FI_3` (`actor_role_id`),
+	CONSTRAINT `q_event_FK_3`
 		FOREIGN KEY (`actor_role_id`)
-		REFERENCES `term` (`id`),
-	INDEX `event_FI_3` (`information_object_id`),
-	CONSTRAINT `event_FK_3`
+		REFERENCES `q_term` (`id`),
+	INDEX `q_event_FI_4` (`information_object_id`),
+	CONSTRAINT `q_event_FK_4`
 		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `event_FI_4` (`actor_id`),
-	CONSTRAINT `event_FK_4`
+		REFERENCES `q_information_object` (`id`),
+	INDEX `q_event_FI_5` (`actor_id`),
+	CONSTRAINT `q_event_FK_5`
 		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_actor` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- event_term_relationship
+#-- q_event_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `event_term_relationship`;
+DROP TABLE IF EXISTS `q_event_i18n`;
 
 
-CREATE TABLE `event_term_relationship`
+CREATE TABLE `q_event_i18n`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`event_id` INTEGER  NOT NULL,
-	`term_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
+	`name` VARCHAR(255),
 	`description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `event_term_relationship_FI_1` (`event_id`),
-	CONSTRAINT `event_term_relationship_FK_1`
-		FOREIGN KEY (`event_id`)
-		REFERENCES `event` (`id`),
-	INDEX `event_term_relationship_FI_2` (`term_id`),
-	CONSTRAINT `event_term_relationship_FK_2`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `event_term_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `event_term_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+	`date_display` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_event_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_event` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- system_event
+#-- q_system_event
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `system_event`;
+DROP TABLE IF EXISTS `q_system_event`;
 
 
-CREATE TABLE `system_event`
+CREATE TABLE `q_system_event`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`system_event_type_id` INTEGER,
+	`type_id` INTEGER,
 	`object_class` VARCHAR(255),
 	`object_id` INTEGER,
 	`pre_event_snapshot` TEXT,
 	`post_event_snapshot` TEXT,
 	`date` DATETIME,
-	`user_name` VARCHAR(255),
-	`user_id` INTEGER  NOT NULL,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `system_event_FI_1` (`system_event_type_id`),
-	CONSTRAINT `system_event_FK_1`
-		FOREIGN KEY (`system_event_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `system_event_FI_2` (`user_id`),
-	CONSTRAINT `system_event_FK_2`
-		FOREIGN KEY (`user_id`)
-		REFERENCES `user` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- historical_event
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `historical_event`;
-
-
-CREATE TABLE `historical_event`
-(
+	`user_id` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`term_id` INTEGER  NOT NULL,
-	`historical_event_type_id` INTEGER,
+	PRIMARY KEY (`id`),
+	INDEX `q_system_event_FI_1` (`type_id`),
+	CONSTRAINT `q_system_event_FK_1`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_system_event_FI_2` (`user_id`),
+	CONSTRAINT `q_system_event_FK_2`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `q_user` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_historical_event
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_historical_event`;
+
+
+CREATE TABLE `q_historical_event`
+(
+	`id` INTEGER  NOT NULL,
+	`type_id` INTEGER,
 	`start_date` DATE,
 	`start_time` TIME,
 	`end_date` DATE,
 	`end_time` TIME,
-	`date_display` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
 	PRIMARY KEY (`id`),
-	INDEX `historical_event_FI_1` (`term_id`),
-	CONSTRAINT `historical_event_FK_1`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `historical_event_FI_2` (`historical_event_type_id`),
-	CONSTRAINT `historical_event_FK_2`
-		FOREIGN KEY (`historical_event_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+	CONSTRAINT `q_historical_event_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_historical_event_FI_2` (`type_id`),
+	CONSTRAINT `q_historical_event_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- function_description
+#-- q_function
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `function_description`;
+DROP TABLE IF EXISTS `q_function`;
 
 
-CREATE TABLE `function_description`
+CREATE TABLE `q_function`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`term_id` INTEGER  NOT NULL,
-	`function_description_type_id` INTEGER,
+	`id` INTEGER  NOT NULL,
+	`type_id` INTEGER,
+	`description_status_id` INTEGER,
+	`description_level_id` INTEGER,
+	`description_identifier` VARCHAR(255),
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_function_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_function_FI_2` (`type_id`),
+	CONSTRAINT `q_function_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_function_FI_3` (`description_status_id`),
+	CONSTRAINT `q_function_FK_3`
+		FOREIGN KEY (`description_status_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_function_FI_4` (`description_level_id`),
+	CONSTRAINT `q_function_FK_4`
+		FOREIGN KEY (`description_level_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_function_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_function_i18n`;
+
+
+CREATE TABLE `q_function_i18n`
+(
 	`classification` TEXT,
 	`domain` TEXT,
 	`dates` TEXT,
 	`history` TEXT,
 	`legislation` TEXT,
 	`general_context` TEXT,
-	`description_identifier` VARCHAR(255),
-	`institution_identifier` VARCHAR(255),
+	`institution_responsible_identifier` VARCHAR(255),
 	`rules` TEXT,
-	`status_id` INTEGER,
-	`level_id` INTEGER,
 	`sources` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `function_description_FI_1` (`term_id`),
-	CONSTRAINT `function_description_FK_1`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `function_description_FI_2` (`function_description_type_id`),
-	CONSTRAINT `function_description_FK_2`
-		FOREIGN KEY (`function_description_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `function_description_FI_3` (`status_id`),
-	CONSTRAINT `function_description_FK_3`
-		FOREIGN KEY (`status_id`)
-		REFERENCES `term` (`id`),
-	INDEX `function_description_FI_4` (`level_id`),
-	CONSTRAINT `function_description_FK_4`
-		FOREIGN KEY (`level_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+	`revision_history` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_function_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_function` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- right
+#-- q_rights
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `right`;
+DROP TABLE IF EXISTS `q_rights`;
 
 
-CREATE TABLE `right`
+CREATE TABLE `q_rights`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`information_object_id` INTEGER  NOT NULL,
-	`digital_object_id` INTEGER  NOT NULL,
-	`physical_object_id` INTEGER  NOT NULL,
+	`object_id` INTEGER  NOT NULL,
 	`permission_id` INTEGER,
-	`description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
-	INDEX `right_FI_1` (`information_object_id`),
-	CONSTRAINT `right_FK_1`
-		FOREIGN KEY (`information_object_id`)
-		REFERENCES `information_object` (`id`),
-	INDEX `right_FI_2` (`digital_object_id`),
-	CONSTRAINT `right_FK_2`
-		FOREIGN KEY (`digital_object_id`)
-		REFERENCES `digital_object` (`id`),
-	INDEX `right_FI_3` (`physical_object_id`),
-	CONSTRAINT `right_FK_3`
-		FOREIGN KEY (`physical_object_id`)
-		REFERENCES `physical_object` (`id`),
-	INDEX `right_FI_4` (`permission_id`),
-	CONSTRAINT `right_FK_4`
+	INDEX `q_rights_FI_1` (`object_id`),
+	CONSTRAINT `q_rights_FK_1`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_rights_FI_2` (`permission_id`),
+	CONSTRAINT `q_rights_FK_2`
 		FOREIGN KEY (`permission_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- right_term_relationship
+#-- q_rights_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `right_term_relationship`;
+DROP TABLE IF EXISTS `q_rights_i18n`;
 
 
-CREATE TABLE `right_term_relationship`
+CREATE TABLE `q_rights_i18n`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`right_id` INTEGER  NOT NULL,
+	`description` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_rights_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_rights` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_rights_term_relation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_rights_term_relation`;
+
+
+CREATE TABLE `q_rights_term_relation`
+(
+	`rights_id` INTEGER  NOT NULL,
 	`term_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
+	`type_id` INTEGER,
 	`description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
-	INDEX `right_term_relationship_FI_1` (`right_id`),
-	CONSTRAINT `right_term_relationship_FK_1`
-		FOREIGN KEY (`right_id`)
-		REFERENCES `right` (`id`),
-	INDEX `right_term_relationship_FI_2` (`term_id`),
-	CONSTRAINT `right_term_relationship_FK_2`
+	INDEX `q_rights_term_relation_FI_1` (`rights_id`),
+	CONSTRAINT `q_rights_term_relation_FK_1`
+		FOREIGN KEY (`rights_id`)
+		REFERENCES `q_rights` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_rights_term_relation_FI_2` (`term_id`),
+	CONSTRAINT `q_rights_term_relation_FK_2`
 		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `right_term_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `right_term_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_rights_term_relation_FI_3` (`type_id`),
+	CONSTRAINT `q_rights_term_relation_FK_3`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- right_actor_relationship
+#-- q_rights_actor_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `right_actor_relationship`;
+DROP TABLE IF EXISTS `q_rights_actor_relation`;
 
 
-CREATE TABLE `right_actor_relationship`
+CREATE TABLE `q_rights_actor_relation`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`right_id` INTEGER  NOT NULL,
+	`id` INTEGER  NOT NULL,
+	`rights_id` INTEGER  NOT NULL,
 	`actor_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
-	`description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`type_id` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `right_actor_relationship_FI_1` (`right_id`),
-	CONSTRAINT `right_actor_relationship_FK_1`
-		FOREIGN KEY (`right_id`)
-		REFERENCES `right` (`id`),
-	INDEX `right_actor_relationship_FI_2` (`actor_id`),
-	CONSTRAINT `right_actor_relationship_FK_2`
+	CONSTRAINT `q_rights_actor_relation_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_rights_actor_relation_FI_2` (`rights_id`),
+	CONSTRAINT `q_rights_actor_relation_FK_2`
+		FOREIGN KEY (`rights_id`)
+		REFERENCES `q_rights` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_rights_actor_relation_FI_3` (`actor_id`),
+	CONSTRAINT `q_rights_actor_relation_FK_3`
 		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`),
-	INDEX `right_actor_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `right_actor_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_actor` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_rights_actor_relation_FI_4` (`type_id`),
+	CONSTRAINT `q_rights_actor_relation_FK_4`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- menu
+#-- q_menu
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `menu`;
+DROP TABLE IF EXISTS `q_menu`;
 
 
-CREATE TABLE `menu`
+CREATE TABLE `q_menu`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`name` VARCHAR(100),
 	`url` VARCHAR(255),
-	`tree_id` INTEGER,
-	`tree_left_id` INTEGER,
-	`tree_right_id` INTEGER,
-	`tree_parent_id` INTEGER,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- static_page
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `static_page`;
-
-
-CREATE TABLE `static_page`
-(
+	`parent_id` INTEGER,
+	`lft` INTEGER,
+	`rgt` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`title` VARCHAR(255),
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_menu_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_menu_i18n`;
+
+
+CREATE TABLE `q_menu_i18n`
+(
+	`name` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_menu_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_menu` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_static_page
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_static_page`;
+
+
+CREATE TABLE `q_static_page`
+(
+	`id` INTEGER  NOT NULL,
 	`permalink` VARCHAR(255),
-	`page_content` TEXT,
-	`stylesheet` VARCHAR(255),
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_static_page_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_static_page_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_static_page_i18n`;
+
+
+CREATE TABLE `q_static_page_i18n`
+(
+	`title` VARCHAR(255),
+	`content` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_static_page_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_static_page` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_user
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_user`;
+
+
+CREATE TABLE `q_user`
+(
+	`id` INTEGER  NOT NULL,
+	`username` VARCHAR(255),
+	`email` VARCHAR(255),
+	`sha1_password` VARCHAR(255),
+	`salt` VARCHAR(255),
+	PRIMARY KEY (`id`),
+	CONSTRAINT `q_user_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_actor` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_role
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_role`;
+
+
+CREATE TABLE `q_role`
+(
+	`name` VARCHAR(255),
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`)
-)Type=MyISAM;
+)Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- user
+#-- q_user_role_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `user`;
+DROP TABLE IF EXISTS `q_user_role_relation`;
 
 
-CREATE TABLE `user`
+CREATE TABLE `q_user_role_relation`
 (
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`user_name` VARCHAR(50),
-	`email` VARCHAR(100),
-	`sha1_password` VARCHAR(40),
-	`salt` VARCHAR(32),
-	`actor_id` INTEGER  NOT NULL,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
-	PRIMARY KEY (`id`),
-	INDEX `user_FI_1` (`actor_id`),
-	CONSTRAINT `user_FK_1`
-		FOREIGN KEY (`actor_id`)
-		REFERENCES `actor` (`id`)
-)Type=MyISAM;
-
-#-----------------------------------------------------------------------------
-#-- user_term_relationship
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `user_term_relationship`;
-
-
-CREATE TABLE `user_term_relationship`
-(
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`user_id` INTEGER  NOT NULL,
-	`term_id` INTEGER  NOT NULL,
-	`relationship_type_id` INTEGER,
-	`repository_id` INTEGER  NOT NULL,
-	`description` TEXT,
-	`created_at` DATETIME,
-	`updated_at` DATETIME,
+	`role_id` INTEGER  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
-	INDEX `user_term_relationship_FI_1` (`user_id`),
-	CONSTRAINT `user_term_relationship_FK_1`
+	INDEX `q_user_role_relation_FI_1` (`user_id`),
+	CONSTRAINT `q_user_role_relation_FK_1`
 		FOREIGN KEY (`user_id`)
-		REFERENCES `user` (`id`),
-	INDEX `user_term_relationship_FI_2` (`term_id`),
-	CONSTRAINT `user_term_relationship_FK_2`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`),
-	INDEX `user_term_relationship_FI_3` (`relationship_type_id`),
-	CONSTRAINT `user_term_relationship_FK_3`
-		FOREIGN KEY (`relationship_type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `user_term_relationship_FI_4` (`repository_id`),
-	CONSTRAINT `user_term_relationship_FK_4`
-		FOREIGN KEY (`repository_id`)
-		REFERENCES `repository` (`id`)
-)Type=MyISAM;
+		REFERENCES `q_user` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_user_role_relation_FI_2` (`role_id`),
+	CONSTRAINT `q_user_role_relation_FK_2`
+		FOREIGN KEY (`role_id`)
+		REFERENCES `q_role` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_permission
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_permission`;
+
+
+CREATE TABLE `q_permission`
+(
+	`module` VARCHAR(255),
+	`action` VARCHAR(255),
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_role_permission_relation
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_role_permission_relation`;
+
+
+CREATE TABLE `q_role_permission_relation`
+(
+	`role_id` INTEGER  NOT NULL,
+	`permission_id` INTEGER  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`),
+	INDEX `q_role_permission_relation_FI_1` (`role_id`),
+	CONSTRAINT `q_role_permission_relation_FK_1`
+		FOREIGN KEY (`role_id`)
+		REFERENCES `q_role` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_role_permission_relation_FI_2` (`permission_id`),
+	CONSTRAINT `q_role_permission_relation_FK_2`
+		FOREIGN KEY (`permission_id`)
+		REFERENCES `q_permission` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_permission_scope
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_permission_scope`;
+
+
+CREATE TABLE `q_permission_scope`
+(
+	`name` VARCHAR(255),
+	`parameters` VARCHAR(255),
+	`permission_id` INTEGER  NOT NULL,
+	`role_id` INTEGER,
+	`user_id` INTEGER,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`),
+	INDEX `q_permission_scope_FI_1` (`permission_id`),
+	CONSTRAINT `q_permission_scope_FK_1`
+		FOREIGN KEY (`permission_id`)
+		REFERENCES `q_permission` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_permission_scope_FI_2` (`role_id`),
+	CONSTRAINT `q_permission_scope_FK_2`
+		FOREIGN KEY (`role_id`)
+		REFERENCES `q_role` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_permission_scope_FI_3` (`user_id`),
+	CONSTRAINT `q_permission_scope_FK_3`
+		FOREIGN KEY (`user_id`)
+		REFERENCES `q_user` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_setting
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_setting`;
+
+
+CREATE TABLE `q_setting`
+(
+	`name` VARCHAR(255),
+	`scope` VARCHAR(255),
+	`editable` INTEGER default 0,
+	`deleteable` INTEGER default 0,
+	`source_culture` VARCHAR(7)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_setting_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_setting_i18n`;
+
+
+CREATE TABLE `q_setting_i18n`
+(
+	`value` TEXT,
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_setting_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_setting` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

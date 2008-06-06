@@ -6,39 +6,26 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="title" content="symfony project" />
+<meta name="title" content="Qubit Toolkit - temporarily unavailable" />
 <meta name="robots" content="index, follow" />
-<meta name="description" content="symfony project" />
-<meta name="keywords" content="symfony, project" />
 <meta name="language" content="en" />
-<title>symfony project</title>
+<title>Qubit Toolkit - temporarily unavailable</title>
 
 <link rel="shortcut icon" href="/favicon.ico" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/screen.css" />
-<!--[if lt IE 7.]>
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/ie.css" />
-<![endif]-->
 
 </head>
-<body>
-<div class="sfTContainer">
-  <a title="symfony website" href="http://www.symfony-project.com/"><img alt="symfony PHP Framework" class="sfTLogo" src="<?php echo $path ?>/sf/sf_default/images/sfTLogo.png" height="39" width="186" /></a>
-  <div class="sfTMessageContainer sfTAlert">
-    <img alt="page not found" class="sfTMessageIcon" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
-    <div class="sfTMessageWrap">
-      <h1>Website Temporarily Unavailable</h1>
-      <h5>Please try again in a few seconds...</h5>
-    </div>
-  </div>
+<body style="background: #FFFFFF; padding:50px 0 0 50px;">
 
-  <dl class="sfTMessageInfo">
-    <dt>What's next</dt>
-    <dd>
-      <ul class="sfTIconList">
-        <li class="sfTReloadMessage"><a href="javascript:window.location.reload()">Try again: Reload Page</a></li>
-      </ul>
-    </dd>
-  </dl>
+<a title="Qubit" href="http://www.qubit-toolkit.org/" style="text-decoration: none;"><img alt="Qubit Toolkit" src="<?php echo $path ?>/images/qubit-logo-medium.gif" style="border: 0;" height="91" width="224" /></a>
+
+      <h1>Sorry, we are performing some quick site maintenance</h1>
+<img alt="page not found" style="float:left; border:0; margin-right: 20px;" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
+
+      <h4>The website is temporarily unavailable</h4>
+      <h4>Please wait a moment...</h4>
+
+<p style="margin-left: 70px;">...  <a href="javascript:window.location.reload()">then reload page</a>
+
 </div>
 </body>
 </html>

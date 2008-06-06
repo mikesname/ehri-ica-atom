@@ -2,69 +2,97 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 class SearchIndex
 {
-
-  public static function getIndexLocation()
+  public static function getIndexLocation($object = 'informationobject', $language = 'en')
   {
-  $index_location = SF_ROOT_DIR.DIRECTORY_SEPARATOR.'data'.DIRECTORY_SEPARATOR.'search_index';
+  $index_location = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'search_index'.DIRECTORY_SEPARATOR.$object.DIRECTORY_SEPARATOR.$language;
 
   return $index_location;
   }
 
   public static function getIndexAnalyzer()
   {
-  $index_analyzer = new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8Num();
+  $index_analyzer = new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8Num;
 
   return $index_analyzer;
   }
 
-  public static function BuildIndex()
+  public static function getEnabledI18nLanguages()
   {
-  setlocale(LC_CTYPE, 'en_US.utf-8');
+    //determine the currently enabled i18n languages
+    $enabledI18nLanguages = array();
 
-  $index = Zend_Search_Lucene::create(self::getIndexLocation());
-  Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
+    foreach (sfConfig::getAll() as $setting => $value)
+    {
+      if (0 === strpos($setting, 'app_i18n_languages'))
+         {
+           $enabledI18nLanguages[substr($setting, 19)] = $value;
+         }
+    }
 
-  $informationObjects = InformationObjectPeer::doSelect(new Criteria());
-  foreach ($informationObjects as $informationObject)
-      {
-      $doc = self::createIndexDocument($informationObject);
-
-      $index->addDocument($doc);
-      }
-
+    return $enabledI18nLanguages;
   }
 
-  public static function updateIndexDocument($id)
+  public static function getTranslatedLanguages(QubitInformationObject $informationObject)
   {
-  setlocale(LC_CTYPE, 'en_US.utf-8');
+  $criteria = new Criteria;
+  $criteria->add(QubitInformationObjectI18n::ID, $informationObject->getId());
+  $translatedInformationObjects = QubitInformationObjectI18n::get($criteria);
+  $translatedLanguages = array();
+  foreach ($translatedInformationObjects as $I18nInformationObject)
+    {
+    $translatedLanguages[] = $I18nInformationObject->getCulture();
+    }
 
-  $index = Zend_Search_Lucene::open(self::getIndexLocation());
+  return $translatedLanguages;
+  }
+
+  public static function BuildIndex()
+  {
+    //build an index for each language
+    foreach (self::getEnabledI18nLanguages() as $code => $language)
+    {
+      setlocale(LC_CTYPE, $code.'.utf-8');
+
+      $index = Zend_Search_Lucene::create(self::getIndexLocation('informationobject', $code));
+      Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
+
+      $criteria = new Criteria;
+      $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID);
+      $criteria->add(QubitInformationObjectI18n::CULTURE, $code);
+      $informationObjects = QubitInformationObject::get($criteria);
+      foreach ($informationObjects as $informationObject)
+      {
+        $doc = self::createIndexDocument($informationObject, $code);
+        $index->addDocument($doc);
+      }
+    }
+  }
+
+  public static function updateIndexDocument(QubitInformationObject $informationObject, $language)
+  {
+  setlocale(LC_CTYPE, $language.'.utf-8');
+
+  $index = Zend_Search_Lucene::open(self::getIndexLocation('informationobject', $language));
   Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
-
-  $informationObject = InformationObjectPeer::retrieveByPk($id);
 
   //first delete existing index entries for this information object
   $term =  new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
@@ -72,71 +100,200 @@ class SearchIndex
   $hits = array();
   $hits  = $index->find($query);
 
-  foreach ($hits AS $hit)
+  foreach ($hits as $hit)
     {
       $index->delete($hit->id);
     }
 
   //create and add document to index
-  $doc = self::createIndexDocument($informationObject);
+  $doc = self::createIndexDocument($informationObject, $language);
 
   $index->addDocument($doc);
-
-
   }
 
-  private static function createIndexDocument($informationObject)
+  public static function updateTranslatedLanguages(QubitInformationObject $informationObject)
   {
-    $doc = new Zend_Search_Lucene_Document();
+    foreach (self::getTranslatedLanguages($informationObject) as $code)
+    {
+      self::updateIndexDocument($informationObject, $code);
+    }
+  }
 
+  private static function createIndexDocument(QubitInformationObject $informationObject, $language)
+  {
+    $doc = new Zend_Search_Lucene_Document;
+
+    // ID
     $doc->addField(Zend_Search_Lucene_Field::Keyword('informationObjectId', $informationObject->getId()));
 
+    // Note: text fields have to be converted to lower-case for use with utf-8 analyzer
+
+    // TITLE
+    $titleField = Zend_Search_Lucene_Field::Unstored('title', strtolower($informationObject->getTitle(array('culture' => $language))));
     //boost the hit relevance for the title field
-    $titleField = Zend_Search_Lucene_Field::Unstored('title', strtolower($informationObject->getTitle()));
     $titleField->boost = 10;
     $doc->addField($titleField);
+    //store an unindexed, case-sensitive copy of the title field for use in hit display
+    if ($informationObject->getTitle(array('culture' => $language)))
+    {
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('culture' => $language)), 'utf-8'));
+    }
+    else
+    {
+      //include an i18n fallback for proper search result display in case the title field was not translated
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('sourceCulture' => true)), 'utf-8'));
+    }
 
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('scopeandcontent', strtolower($informationObject->getScopeAndContent())));
-
+    // CREATOR
+    $creatorField = Zend_Search_Lucene_Field::Unstored('creator', strtolower($informationObject->getCreatorsNameString($language)));
     //boost the hit relevance for the creator field
-    $creatorField = Zend_Search_Lucene_Field::Unstored('creator', strtolower($informationObject->getCreatorsNameString()));
     $creatorField->boost = 8;
     $doc->addField($creatorField);
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', strtolower($informationObject->getCreatorsHistoryString($language))));
 
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', strtolower($informationObject->getCreatorsHistoryString())));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', strtolower($informationObject->getRepository())));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('repositorycountry', strtolower($informationObject->getRepositoryCountry())));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('extentandmedium', strtolower($informationObject->getExtentAndMedium())));
+    //CREATION DATES
+    if (count($dates = $informationObject->getDates($eventType = 'creation')) > 0)
+    {
+      $doc->addField(Zend_Search_Lucene_Field::Text('dates', strtolower(implode(' ', $dates))));
+    }
 
-    //boost the hit relevance for the subject field
-    $subjectField = Zend_Search_Lucene_Field::Unstored('subject', strtolower($informationObject->getSubjectsString()));
+    // SCOPE AND CONTENT
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('scopeandcontent', strtolower($informationObject->getScopeAndContent(array('culture' => $language)))));
+    //store an unindexed, case-sensitive copy of the scope & content field for use in hit display
+    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_scopeandcontent', $informationObject->getScopeAndContent(array('culture' => $language)), 'utf-8'));
+
+    // REPOSITORY
+    //
+    // The following cast to (string) should not be required, but PHP <= 5.2.5
+    // dies without it.  This is a very difficult bug to reproduce.  For
+    // example, var_dump(strtolower($informationObject->getRepository())); in
+    // this function causes PHP to die, however it works when moved to the
+    // calling function.  Returning a string constant from __toString() causes
+    // strtolower($informationObject->getRepository()) to work, however calling
+    // getAuthorizedFormOfName() in __toString() before returning the string
+    // constant causes PHP to die, even though getAuthorizedFormOfName()
+    // correctly returns a string.
+    //
+    // Options for locating this bug might include using Xdebug, running PHP
+    // under gdb, or trying a PHP snapshot to see if it is resolved.
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', strtolower((string) $informationObject->getRepository())));
+
+   // I18N FIELDS
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('alternatetitle', strtolower($informationObject->getAlternateTitle(array('culture' => $language)))));
+     $doc->addField(Zend_Search_Lucene_Field::Unstored('version', strtolower($informationObject->getVersion(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('extentandmedium', strtolower($informationObject->getExtentAndMedium(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('archivalhistory', strtolower($informationObject->getArchivalHistory(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('acquisition', strtolower($informationObject->getAcquisition(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('appraisal', strtolower($informationObject->getAppraisal(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('accruals', strtolower($informationObject->getAccruals(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('arrangement', strtolower($informationObject->getArrangement(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('accessconditions', strtolower($informationObject->getAccessConditions(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('reproductionconditions', strtolower($informationObject->getReproductionConditions(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('physicalcharacteristics', strtolower($informationObject->getPhysicalCharacteristics(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('findingaids', strtolower($informationObject->getFindingAids(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('locationoforiginals', strtolower($informationObject->getLocationOfOriginals(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('locationofcopies', strtolower($informationObject->getLocationOfCopies(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('relatedunitsofdescription', strtolower($informationObject->getRelatedUnitsOfDescription(array('culture' => $language)))));
+
+   // COLLECTION ROOT
+   if ($informationObject->getCollectionRoot())
+   {
+     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectionid', $informationObject->getCollectionRoot()->getId()));
+     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectiontitle', $informationObject->getCollectionRoot()->getTitle()));
+   }
+   else
+   {
+     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectionid', null));
+     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectiontitle', null));
+   }
+
+   // SUBJECTS
+    $subjectField = Zend_Search_Lucene_Field::Unstored('subject', strtolower($informationObject->getSubjectsString($language)));
+   //boost the hit relevance for the subject field
     $subjectField->boost = 5;
     $doc->addField($subjectField);
 
-    //fields have to be converted to lower-case for use with utf-8 analyzer
-    //store unindexed, case-sensitive copies of fields for use in hit display
-    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(), 'utf-8'));
-    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_scopeandcontent', $informationObject->getScopeAndContent(), 'utf-8'));
+   // PLACE
+    $placeField = Zend_Search_Lucene_Field::Unstored('place', strtolower($informationObject->getPlacesString($language)));
+   //boost the hit relevance for the place field
+    $placeField->boost = 3;
+    $doc->addField($placeField);
 
-    return $doc;
+    // NAMES
+    $nameField = Zend_Search_Lucene_Field::Unstored('name', strtolower($informationObject->getNameAccessPointsString($language)));
+   //boost the hit relevance for the place field
+    $nameField->boost = 3;
+    $doc->addField($nameField);
 
-}
+   // DIGITAL OBJECTS
+   if ($informationObject->getDigitalObject())
+   {
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', strtolower($informationObject->getDigitalObject()->getMediaType(array('culture' => $language)))));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('filename', strtolower($informationObject->getDigitalObject()->getName(array('culture' => $language)))));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('mimetype', strtolower($informationObject->getDigitalObject()->getMimeType(array('culture' => $language)))));
+   }
 
-public static function deleteIndexDocument($informationObjectId)
+   // LANGUAGES
+  if (count($languageCodes = $informationObject->getProperties($name = 'information_object_language')) > 0)
   {
-  $index = Zend_Search_Lucene::open(self::getIndexLocation());
-  Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
-
-  $term =  new Zend_Search_Lucene_Index_Term($informationObjectId, 'informationObjectId');
-  $query = new Zend_Search_Lucene_Search_Query_Term($term);
-  $hits = array();
-  $hits  = $index->find($query);
-
-  foreach ($hits as $hit)
+    sfLoader::loadHelpers('I18N');
+    $languageString = '';
+    foreach ($languageCodes as $languageCode)
     {
-    $index->delete($hit->id);
+      $languageString .= format_language($languageCode->getValue()).' ';
     }
-
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('language', strtolower($languageString)));
   }
 
+   // SCRIPTS
+  if (count($scriptCodes = $informationObject->getProperties($name = 'information_object_script')) > 0)
+  {
+    sfLoader::loadHelpers('Qubit');
+    $scriptString = '';
+    foreach ($scriptCodes as $scriptCode)
+    {
+      $scriptString .= format_script($scriptCode->getValue()).' ';
+    }
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('script', strtolower($scriptString)));
+  }
+
+   // NOTES
+   if (count($notes = $informationObject->getNotes()) > 0)
+   {
+      $noteString = '';
+      foreach ($notes as $note)
+      {
+        $noteString .= $note.' ';
+      }
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('notes', strtolower($noteString)));
+   }
+
+    // exclude control area fields for now, maybe add a seperate index for administrative data?
+    // (institution_responsible_identifier, rules, sources, revision_history)
+
+   //TO COME:
+   //add all dynamic metadata fields to index
+
+    return $doc;
+}
+
+  public static function deleteIndexDocument($informationObject)
+  {
+    //delete the document in each language index
+    foreach (self::getEnabledI18nLanguages() as $code => $language)
+    {
+      $index = Zend_Search_Lucene::open(self::getIndexLocation('informationobject', $code));
+      Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
+
+      $term =  new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
+      $query = new Zend_Search_Lucene_Search_Query_Term($term);
+      $hits = array();
+      $hits  = $index->find($query);
+
+      foreach ($hits as $hit)
+      {
+        $index->delete($hit->id);
+      }
+    }
+  }
 }

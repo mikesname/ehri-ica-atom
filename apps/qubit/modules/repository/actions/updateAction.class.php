@@ -2,51 +2,38 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class updateAction extends sfAction
+class RepositoryUpdateAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
     if (!$this->getRequestParameter('id', 0))
     {
-      $repository = new Repository();
+      $repository = new QubitRepository;
 
       //set the user navigation context to 'add'
       $this->getUser()->setAttribute('nav_context_module', 'add');
     }
     else
     {
-      $repository = RepositoryPeer::retrieveByPk($this->getRequestParameter('id'));
+      $repository = QubitRepository::getById($this->getRequestParameter('id'));
       $this->forward404Unless($repository);
-    }
-
-    if ($repository->getActorId())
-    {
-    $actor = ActorPeer::retrieveByPk($repository->getActorId());
-    }
-    else
-    {
-    $actor = new Actor();
     }
 
     $repository->setId($this->getRequestParameter('id'));
@@ -60,17 +47,16 @@ class updateAction extends sfAction
         //default template is 'ISAAR'
         case 'isaar' :
         default :
-          $this->updateActor($repository, $actor);
+          $this->updateActorAttributes($repository);
           $this->updateRepositoryAttributes($repository);
-          //$this->updateOtherNames($actor);
-          $this->updateTermOneToManyRelationships($repository);
-          $this->updateTermManyToManyRelationships($repository);
-          $this->updateContactInformation($actor);
+          $this->updateOtherNames($repository);
+          $this->updateTermOneToManyRelations($repository);
+          $this->updateProperties($repository);
+          $this->updateContactInformation($repository);
           $this->updateRepositoryNotes($repository);
 
           break;
         }
-
 
     //set view template
     switch ($this->getRequestParameter('template'))
@@ -82,24 +68,14 @@ class updateAction extends sfAction
       default :
         return $this->redirect('repository/edit?id='.$repository->getId().'&template=editISIAH');
       }
-
   }
 
-  public function updateActor($repository, $actor)
+  public function updateActorAttributes($repository)
     {
-    if ($this->getRequestParameter('actor_id'))
-      {
-      $repository->setActorId($this->getRequestParameter('actor_id'));
+      $repository->setAuthorizedFormOfName($this->getRequestParameter('authorized_form_of_name'));
+      $repository->setHistory($this->getRequestParameter('history'));
+      $repository->setInternalStructures($this->getRequestParameter('internal_structures'));
       $repository->save();
-      }
-    else if ($this->getRequestParameter('NewActorAuthorizedName'))
-      {
-      $actor->setAuthorizedFormOfName($this->getRequestParameter('NewActorAuthorizedName'));
-      $actor->save();
-      $actorId = $actor->getId();
-      $repository->setActorId($actorId);
-      $repository->save();
-      }
     }
 
   public function updateRepositoryAttributes($repository)
@@ -118,97 +94,101 @@ class updateAction extends sfAction
   $repository->setResearchServices($this->getRequestParameter('research_services'));
   $repository->setReproductionServices($this->getRequestParameter('reproduction_services'));
   $repository->setPublicFacilities($this->getRequestParameter('public_facilities'));
-  $repository->setDescriptionIdentifier($this->getRequestParameter('description_identifier'));
-  $repository->setInstitutionIdentifier($this->getRequestParameter('institution_identifier'));
-  $repository->setRules($this->getRequestParameter('rules'));
-  $repository->setSources($this->getRequestParameter('sources'));
+  $repository->setDescIdentifier($this->getRequestParameter('desc_identifier'));
+  $repository->setDescInstitutionIdentifier($this->getRequestParameter('desc_institution_identifier'));
+  $repository->setDescRules($this->getRequestParameter('desc_rules'));
+  $repository->setDescSources($this->getRequestParameter('desc_sources'));
+  $repository->setDescRevisionHistory($this->getRequestParameter('desc_revision_history'));
 
   $repository->save();
   }
 
-  public function updateTermOneToManyRelationships($repository)
+  public function updateTermOneToManyRelations($repository)
     {
-    if ($this->getRequestParameter('repository_type_id'))
+    if ($this->getRequestParameter('type_id'))
       {
-      $repository->setRepositoryTypeId($this->getRequestParameter('repository_type_id'));
+      $repository->setTypeId($this->getRequestParameter('type_id'));
       }
     else
       {
-      $repository->setRepositoryTypeId(null);
+      $repository->setTypeId(null);
       }
 
-    if ($this->getRequestParameter('status_id'))
+    if ($this->getRequestParameter('desc_status_id'))
       {
-      $repository->setStatusId($this->getRequestParameter('status_id'));
+      $repository->setDescStatusId($this->getRequestParameter('desc_status_id'));
       }
       else
       {
-      $repository->setStatusId(null);
+      $repository->setDescStatusId(null);
       }
 
-    if ($this->getRequestParameter('level_of_detail_id'))
+    if ($this->getRequestParameter('desc_detail_id'))
       {
-      $repository->setLevelOfDetailId($this->getRequestParameter('level_of_detail_id'));
+      $repository->setDescDetailId($this->getRequestParameter('desc_detail_id'));
       }
     else
       {
-      $repository->setLevelOfDetailId(null);
+      $repository->setDescDetailId(null);
       }
 
     $repository->save();
     }
 
-  public function updateTermManyToManyRelationships($repository)
+  public function updateProperties($repository)
     {
-    if ($this->getRequestParameter('language_id'))
-      {
-      $repository->setTermRelationship($termId = $this->getRequestParameter('language_id'), $relationshipTypeId = 63);
-      }
+      if ($this->getRequestParameter('language_code'))
+        {
+          $repository->setProperty($this->getRequestParameter('language_code'), $name = 'language_of_repository_description', $scope = 'languages');
+        }
 
-    if ($this->getRequestParameter('script_id'))
-      {
-      $repository->setTermRelationship($termId = $this->getRequestParameter('script_id'), $relationshipTypeId = 64);
-      }
-
+      if ($this->getRequestParameter('script_code'))
+        {
+           $repository->setProperty($this->getRequestParameter('script_code'), $name = 'script_of_repository_description', $scope = 'scripts');
+        }
     }
 
-
-  public function updateContactInformation($actor)
+  public function updateOtherNames($repository)
     {
-    if ($actor->getId())
+    if ($this->getRequestParameter('other_name'))
+      {
+      $repository->setOtherNames($this->getRequestParameter('other_name'), $this->getRequestParameter('other_name_type_id'), $this->getRequestParameter('other_name_note'));
+      }
+    }
+
+  public function updateContactInformation($repository)
+    {
+    if ($repository->getId())
       {
       if (($this->getRequestParameter('contact_type')) or
         ($this->getRequestParameter('street_address')) or
         ($this->getRequestParameter('city')) or
         ($this->getRequestParameter('region')) or
-        ($this->getRequestParameter('country_id')) or
+        ($this->getRequestParameter('country_code')) or
         ($this->getRequestParameter('postal_code')) or
         ($this->getRequestParameter('telephone')) or
         ($this->getRequestParameter('fax')) or
         ($this->getRequestParameter('email')) or
         ($this->getRequestParameter('website')))
         {
-        $contactInformation = new ContactInformation();
-        $contactInformation->setActorId($actor->getId());
+        $contactInformation = new QubitContactInformation;
+        $contactInformation->setActorId($repository->getId());
         $contactInformation->setContactType($this->getRequestParameter('contact_type'));
         $contactInformation->setPrimaryContact($this->getRequestParameter('primary_contact'));
         $contactInformation->setStreetAddress($this->getRequestParameter('street_address'));
         $contactInformation->setCity($this->getRequestParameter('city'));
         $contactInformation->setRegion($this->getRequestParameter('region'));
-        if ($this->getRequestParameter('country_id'))
-          {
-          $contactInformation->setCountryId($this->getRequestParameter('country_id'));
-          }
+        $contactInformation->setCountryCode($this->getRequestParameter('country_code'));
         $contactInformation->setPostalCode($this->getRequestParameter('postal_code'));
         $contactInformation->setTelephone($this->getRequestParameter('telephone'));
         $contactInformation->setFax($this->getRequestParameter('fax'));
         $contactInformation->setEmail($this->getRequestParameter('email'));
         $contactInformation->setWebsite($this->getRequestParameter('website'));
-        $contactInformation->setNote($this->getRequestParameter('contactInformationNote'));
+        $contactInformation->setNote($this->getRequestParameter('contact_information_note'));
 
         $contactInformation->save();
 
-        if ($contactInformation->getPrimaryContact() == TRUE)
+        if ($contactInformation->getPrimaryContact())
           {
           $contactInformation->makePrimaryContact();
           }
@@ -218,26 +198,9 @@ class updateAction extends sfAction
 
   public function updateRepositoryNotes($repository)
     {
-    if ($this->getRequestParameter('note'))
+    if ($this->getRequestParameter('content'))
       {
-      $repository->setRepositoryNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('note'), $this->getRequestParameter('note_type_id'));
+      $repository->setRepositoryNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('content'), $this->getRequestParameter('note_type_id'));
       }
     }
-
-
-  public function handleError()
-  {
-    // repository/validate/update.yml will throw error if actor_id is null
-    // now check to see if user has entered a new actor name
-    if ($this->getRequestParameter('NewActorAuthorizedName'))
-      {
-      $this->execute();
-      }
-    else
-      {
-      //TO DO: need to get 'fillin' via validation/update.yml working so that form doesn't lose values
-      $this->forward('repository', 'create');
-      }
-   }
-
 }

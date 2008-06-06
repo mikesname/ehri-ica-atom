@@ -2,25 +2,21 @@
 
 /*
  * This file is part of the Qubit Toolkit.
+ * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
  *
- * For the full copyright and license information, please view the COPYRIGHT
- * and LICENSE files that were distributed with this source code.
+ * This program is free software; you can redistribute it and/or modify it
+ * under the terms of the GNU General Public License as published by the Free
+ * Software Foundation; either version 2 of the License, or (at your option)
+ * any later version.
  *
- * Copyright (C) 2006-2007 Peter Van Garderen <peter@artefactual.com>
- *
- * This library is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by the
- * Free Software Foundation; either version 2.1 of the License, or (at your
- * option) any later version.
- *
- * This library is distributed in the hope that it will be useful, but WITHOUT
+ * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
  * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
  * for more details.
  *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this library; if not, write to the Free Software Foundation,
- * Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, write to the Free Software Foundation, Inc., 51
+ * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
@@ -30,24 +26,26 @@ $preambleExceptions = '/'.implode('|', array(
   '\.yml$',
   preg_quote(SF_ROOT_DIR, '/').'\/apps\/qubit\/config\/config\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/apps\/qubit\/config\/tidy\.conf$',
+  preg_quote(SF_ROOT_DIR, '/').'\/apps\/qubit\/i18n\/[^\/]+\/messages.xml$',
   preg_quote(SF_ROOT_DIR, '/').'\/apps\/qubit\/modules\/[^\/]+\/templates\/[^\/.]+\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/apps\/qubit\/templates\/[^\/.]+\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/batch\/[^\/.]+\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/config\/[^\/.]+\.[^\/]+$',
   preg_quote(SF_ROOT_DIR, '/').'\/COPYRIGHT$',
-  preg_quote(SF_ROOT_DIR, '/').'\/data',
-  preg_quote(SF_ROOT_DIR, '/').'\/lib\/GoogleMapAPI',
+  preg_quote(SF_ROOT_DIR, '/').'\/data\/',
+  preg_quote(SF_ROOT_DIR, '/').'\/lib\/drupal\/',
+  preg_quote(SF_ROOT_DIR, '/').'\/lib\/GoogleMapAPI\/',
   preg_quote(SF_ROOT_DIR, '/').'\/lib\/model\/map\/[^\/.]+\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/lib\/model\/om\/[^\/.]+\.php$',
-  preg_quote(SF_ROOT_DIR, '/').'\/lib\/PHP',
   preg_quote(SF_ROOT_DIR, '/').'\/lib\/xhtml-to-xslfo.xsl$',
   preg_quote(SF_ROOT_DIR, '/').'\/LICENSE$',
+  preg_quote(SF_ROOT_DIR, '/').'\/plugins\/sfTranslatePlugin\/',
+  preg_quote(SF_ROOT_DIR, '/').'\/plugins\/sfHistoryPlugin\/',
   preg_quote(SF_ROOT_DIR, '/').'\/README$',
   preg_quote(SF_ROOT_DIR, '/').'\/symfony$',
-  preg_quote(SF_ROOT_DIR, '/').'\/test\/archival_description\/[^\/.]+\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/test\/bootstrap\/[^\/.]+\.php$',
   preg_quote(SF_ROOT_DIR, '/').'\/test\/functional\/qubit\/[^\/.]+\.php$',
-  preg_quote(SF_ROOT_DIR, '/').'\/web')).'/';
+  preg_quote(SF_ROOT_DIR, '/').'\/web\/')).'/';
 
 // Use this file's preamble
 global $preamble;
@@ -69,7 +67,7 @@ $subversionProps['/\.txt$/']['svn:eol-style'] = 'native';
 _readDir(SF_ROOT_DIR, $filePaths);
 
 global $t;
-$t = new lime_test(2 * count($filePaths), new lime_output_color());
+$t = new lime_test(2 * count($filePaths), new lime_output_color);
 
 foreach ($filePaths as $filePath)
 {

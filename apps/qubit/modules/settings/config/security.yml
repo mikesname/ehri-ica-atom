@@ -1,0 +1,14 @@
+﻿update:
+  is_secure:   on
+  credentials: administrator
+
+delete:
+  is_secure:   on
+  credentials: administrator
+
+list:
+  is_secure:   on
+  credentials: [[ administrator, translator ]]
+
+all:
+  is_secure:   on
