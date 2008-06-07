@@ -31,7 +31,7 @@
     <?php if (is_null($actorName = $actor->getAuthorizedFormOfName())) $actorName = $actor->getAuthorizedFormOfName(array('sourceCulture' => true)); ?>
     <div style="padding-left: 17px;"<?php if (count($actor->getActorsRelatedByParentId()) > 0) echo ' class="plus"' ?>>
       <?php if ($editCredentials): ?>
-        <?php echo link_to($actorName, 'actor/edit?id='.$actor->getId()) ?>
+        <?php echo link_to($actorName, 'actor/show?id='.$actor->getId()) ?>
       <?php else: ?>
         <?php echo link_to($actorName, 'actor/show?id='.$actor->getId()) ?>
       <?php endif; ?>

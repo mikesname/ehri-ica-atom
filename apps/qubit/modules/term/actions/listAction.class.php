@@ -23,49 +23,50 @@ class TermListAction extends sfAction
 {
   public function execute($request)
   {
-  if ($this->getRequestParameter('taxonomyId'))
-      {
-      $this->taxonomyId = $this->getRequestParameter('taxonomyId');
-      $this->terms = QubitTaxonomy::getTermsById($this->taxonomyId);
-      }
+    if ($this->getRequestParameter('taxonomyId'))
+    {
+        $this->taxonomyId = $this->getRequestParameter('taxonomyId');
+        $this->terms = QubitTaxonomy::getTermsById($this->taxonomyId);
+        $this->terms = $this->terms->orderBy('lft');
+    }
     else
-      {
-      // default taxonomy for list view
-      $this->taxonomyId = 0;
-      //TODO: implement sort by name (using i18n fallback when this feature is enabled in QubitQuery)
-      //$this->taxonomies = QubitTaxonomy::getEditableTaxonomies()->orderBy('name');
-
-      $this->taxonomies = QubitTaxonomy::getEditableTaxonomies();
-      }
+    {
+        // default taxonomy for list view
+        $this->taxonomyId = 0;
+        
+        //TODO: implement sort by name (using i18n fallback when this feature is enabled in QubitQuery)
+        //$this->taxonomies = QubitTaxonomy::getEditableTaxonomies()->orderBy('name');
+        $this->taxonomies = QubitTaxonomy::getEditableTaxonomies();
+    }
 
     if ($this->getRequestParameter('sort'))
-      {
+    {
       $this->sort = $this->getRequestParameter('sort');
-      }
+    }
     else
-      {
+    {
       //default sort column for list view
       $this->sort = 'default';
-      }
+    }
 
-   //determine if user has edit priviliges
+    //determine if user has edit priviliges
     $this->editCredentials = false;
     if (SecurityPriviliges::editCredentials($this->getUser(), 'term'))
-      {
+    {
       $this->editCredentials = true;
-      }
+    }
 
     //set view template
     if ($this->taxonomyId != 0)
-      {
+    {
       $taxonomy = QubitTaxonomy::getById($this->taxonomyId);
       $this->taxonomyName = $taxonomy->getName();
       $this->setTemplate('listTaxonomy');
-      }
+    }
     else
-      {
+    {
       $this->taxonomyName = '';
       $this->setTemplate('list');
-      }
+    }
   }
 }

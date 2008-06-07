@@ -26,21 +26,30 @@
 </tr>
 </thead>
 <tbody>
+<?php $prevTerm = null; $indent = 0; $lastRgt = array(); ?>
 <?php foreach ($terms as $term): ?>
-<tr>
-  <?php if (is_null($termName = $term->getName())) $termName = $term->getName(array('sourceCulture' => true)); ?>
-  <td><?php if (!$term->isProtected()): ?>
-            <?php echo link_to($termName, 'term/edit?id='.$term->getId().'&taxonomyId='.$taxonomyId) ?>
-          <?php else: ?>
-            <?php echo $termName.' '.link_to(image_tag('lock_mini', 'align=top'), 'admin/termPermission') ?>
-          <?php endif; ?>
-      </td>
-      <td>
+<?php if ($prevTerm && $term->getLft() > $prevTerm->getLft() && $term->getRgt() < $prevTerm->getRgt()): ?>
+<?php $indent += 2; array_push($lastRgt, $prevTerm->getRgt()); ?>
+<?php elseif (count($lastRgt) && $term->getRgt() > $lastRgt[count($lastRgt)-1]): ?>
+<?php $indent -= 2; array_pop($lastRgt); ?>
+<?php endif; ?>
+  <tr>
+    <?php if (is_null($termName = $term->getName())) $termName = $term->getName(array('sourceCulture' => true)); ?>
+    <td>
+      <?php echo str_repeat('&nbsp;', $indent); ?>
+      <?php if (!$term->isProtected()): ?>
+      <?php echo link_to($termName, 'term/edit?id='.$term->getId().'&taxonomyId='.$taxonomyId) ?>
+      <?php else: ?>
+      <?php echo $termName.' '.link_to(image_tag('lock_mini', 'align=top'), 'admin/termPermission') ?>
+      <?php endif; ?>
+    </td>
+    <td>
       <?php if (is_null($scopeNote = $term->getScopeNote())) $scopeNote = $term->getScopeNote(array('sourceCulture' => true)); ?>
       <?php echo $scopeNote ?>
-      </td>
-
+    </td>
   </tr>
+  
+  <?php $prevTerm = $term; ?>
 <?php endforeach; ?>
 </tbody>
 </table>

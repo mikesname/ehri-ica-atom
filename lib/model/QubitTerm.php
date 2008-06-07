@@ -58,10 +58,15 @@ class QubitTerm extends BaseTerm
   const IMAGE_ID = 36;
   const TEXT_ID = 37;
   const VIDEO_ID = 38;
+  const OTHER_ID = 39;
   //Digital Object Usage taxonomy
-  const MASTER_ID = 39;
-  const REFERENCE_ID = 40;
-  const THUMBNAIL_ID = 41;
+  const MASTER_ID = 40;
+  const REFERENCE_ID = 41;
+  const THUMBNAIL_ID = 42;
+  //Physical Object Type taxonomy
+  const LOCATION_ID = 43;
+  const CONTAINER_ID = 44;
+  const ARTEFACT_ID = 45;
 
   public function isProtected()
   {
@@ -89,9 +94,13 @@ class QubitTerm extends BaseTerm
            $this->getId() == QubitTerm::IMAGE_ID ||
            $this->getId() == QubitTerm::TEXT_ID ||
            $this->getId() == QubitTerm::VIDEO_ID ||
+           $this->getId() == QubitTerm::OTHER_ID ||
            $this->getId() == QubitTerm::MASTER_ID ||
            $this->getId() == QubitTerm::REFERENCE_ID ||
-           $this->getId() == QubitTerm::THUMBNAIL_ID;
+           $this->getId() == QubitTerm::THUMBNAIL_ID ||
+           $this->getId() == QubitTerm::LOCATION_ID ||
+           $this->getId() == QubitTerm::CONTAINER_ID ||
+           $this->getId() == QubitTerm::ARTEFACT_ID;
   }
 
   public static function getLevelsOfDescription($options = array())
@@ -115,9 +124,9 @@ class QubitTerm extends BaseTerm
   }
 
   public static function getActorEntityTypes($options = array())
-    {
+  {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::ACTOR_ENTITY_TYPE_ID, $options);
-    }
+  }
 
   public static function getActorNameTypes($options = array())
   {
@@ -125,14 +134,14 @@ class QubitTerm extends BaseTerm
   }
 
   public static function getDescriptionStatuses($options = array())
-    {
+  {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID, $options);
-    }
+  }
 
   public static function getDescriptionDetailLevels($options = array())
-    {
+  {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID, $options);
-    }
+  }
 
   public static function getRepositoryTypes($options = array())
   {
@@ -159,47 +168,56 @@ class QubitTerm extends BaseTerm
     return QubitTaxonomy::getTermsById(QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID, $options);
   }
 
-public function __toString()
-{
-  if (!$this->getName())
-    {
-    return (string) $this->getName(array('sourceCulture' => true));
-    }
+  public static function getPhysicalObjectTypes($options = array())
+  {
+    return QubitTaxonomy::getTermsById(QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID, $options);
+  } 
 
-  return (string) $this->getName();
+  public function __toString()
+  {
+    if (!$this->getName())
+      {
+      return (string) $this->getName(array('sourceCulture' => true));
+      }
+  
+    return (string) $this->getName();
+  }
+  
+  protected $CountryHitCount = null;
+  protected $LanguageHitCount = null;
+  protected $SubjectHitCount = null;
+  
+  public function setCountryHitCount($count)
+  {
+    $this->CountryHitCount = $count;
+  }
+  
+  public function getCountryHitCount()
+  {
+    return $this->CountryHitCount;
+  }
+  
+  public function setLanguageHitCount($count)
+  {
+    $this->LanguageHitCount = $count;
+  }
+  
+  public function getLanguageHitCount()
+  {
+    return $this->LanguageHitCount;
+  }
+  
+  public function setSubjectHitCount($count)
+  {
+    $this->SubjectHitCount = $count;
+  }
+  
+  public function getSubjectHitCount()
+  {
+    return $this->SubjectHitCount;
+  }
+
 }
 
-protected $CountryHitCount = null;
-protected $LanguageHitCount = null;
-protected $SubjectHitCount = null;
 
-public function setCountryHitCount($count)
-  {
-  $this->CountryHitCount = $count;
-  }
 
-public function getCountryHitCount()
-  {
-  return $this->CountryHitCount;
-  }
-
-public function setLanguageHitCount($count)
-  {
-  $this->LanguageHitCount = $count;
-  }
-
-public function getLanguageHitCount()
-  {
-  return $this->LanguageHitCount;
-  }
-
-public function setSubjectHitCount($count)
-  {
-  $this->SubjectHitCount = $count;
-  }
-
-public function getSubjectHitCount()
-  {
-  return $this->SubjectHitCount;
-  }
-}

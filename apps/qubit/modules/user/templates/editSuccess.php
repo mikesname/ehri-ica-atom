@@ -45,6 +45,11 @@
 
 </tbody>
 </table>
+
+<!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
+<div id="button-block-bump"></div>
+
+<div id="button-block" style="height: 4em;">
 <div class="menu-action">
 <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'user', 'action' => 'delete'))): ?>
   <?php if ($user->getId()): ?>
@@ -62,6 +67,7 @@
 
 <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'user', 'action' => 'list'))): ?>
 <div class="menu-extra">
-	<?php echo link_to(__('list all users'), 'user/list'); ?>
+  <?php echo link_to(__('list all users'), 'user/list'); ?>
 </div>
 <?php endif; ?>
+</div>

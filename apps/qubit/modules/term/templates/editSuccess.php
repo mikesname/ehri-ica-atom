@@ -48,6 +48,12 @@
 </tbody>
 </table>
 
+
+<!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
+<div id="button-block-bump"></div>
+
+<div id="button-block">
+
 <div class="menu-action">
 <?php if ($term->getId()): ?>
   &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId(), 'post=true&confirm='.__('are you sure?')) ?>
@@ -75,6 +81,7 @@
 <?php if ($term->getTaxonomyId()): ?>
   <?php echo link_to(__('list only %1%', array('%1%' =>$term->getTaxonomy())), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>
 <?php endif; ?>
+</div>
 </div>
 
 </form>

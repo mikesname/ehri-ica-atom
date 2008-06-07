@@ -420,7 +420,12 @@
 EOF
   ) ?>
   <?php endif; ?>
+  
+  
+<!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
+<div id="button-block-bump"></div>
 
+<div id="button-block">
   <div class="menu-action">
     <?php if ($informationObject->getId()): ?>
       <?php $deleteWarning = __('Are you sure you want to delete this %1% permanently?', array('%1%' => sfConfig::get('app_ui_label_informationobject'))); ?>
@@ -439,11 +444,11 @@ EOF
     <?php else: ?>
       <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
     <?php endif; ?>
-
   </div>
 </form>
 
 <div class="menu-extra">
   <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))), 'informationobject/create'); ?>
   <?php echo link_to(__('list all %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))), 'informationobject/list'); ?>
+</div>
 </div>

@@ -38,17 +38,19 @@ class QubitTaxonomy extends BaseTaxonomy
   const COLLECTION_TYPE_ID = 15;
   const MEDIA_TYPE_ID = 16;
   const DIGITAL_OBJECT_USAGE_ID = 17;
+  const PHYSICAL_OBJECT_TYPE_ID = 18;
 
-public function __toString()
+  public function __toString()
   {
     return (string) $this->getName();
   }
-
-public static function getEditableTaxonomies()
+  
+  public static function getEditableTaxonomies()
   {
     $criteria = new Criteria;
     $criteria->add(QubitTaxonomy::ID, array(QubitTaxonomy::QUBIT_SETTING_LABEL_ID), Criteria::NOT_IN);
-
+  
     return QubitTaxonomy::get($criteria);
   }
+
 }

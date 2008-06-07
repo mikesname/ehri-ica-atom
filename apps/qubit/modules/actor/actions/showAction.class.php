@@ -43,6 +43,14 @@ class ActorShowAction extends sfAction
 
   $this->datesOfChanges = $this->actor->getDatesOfChanges();
   $this->relatedActors = $this->actor->getRelatedActors();
+  
+  //determine if user has edit priviliges
+  $this->editCredentials = false;
+  if (SecurityPriviliges::editCredentials($this->getUser(), 'actor'))
+  {
+    $this->editCredentials = true;
+  }
+  
 
   //set view template
   switch ($this->getRequestParameter('template'))

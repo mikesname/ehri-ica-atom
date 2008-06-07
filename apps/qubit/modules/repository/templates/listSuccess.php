@@ -52,7 +52,7 @@
   <td>
   <?php if (is_null($repositoryName = $repository->getAuthorizedFormOfName())) $repositoryName = $repository->getAuthorizedFormOfName(array('sourceCulture' => true)); ?>
   <?php if ($editCredentials): ?>
-    <?php echo link_to($repositoryName, 'repository/edit?id='.$repository->getId()) ?>
+    <?php echo link_to($repositoryName, 'repository/show?id='.$repository->getId()) ?>
   <?php else: ?>
     <?php echo link_to($repositoryName, 'repository/show?id='.$repository->getId()) ?>
   <?php endif; ?>

@@ -33,7 +33,7 @@
     <ul style="padding: 0; margin: 0 0 10px 20px;">
     <li><?php echo __('users')?></li>
       <ul>
-      <li><?php echo link_to(__('login'), 'login') ?></li>
+      <li><?php echo link_to(__('login'), '/login/') ?></li>
       <li><?php echo link_to(__('view user profile'), 'user/show?id='.$sf_user->getUserID()) ?></li>
       <li><?php echo link_to(__('edit user profile'), 'user/edit?id='.$sf_user->getUserID()) ?></li>
       <li><?php echo link_to(__('reset password'), 'user/passwordEdit?id='.$sf_user->getUserID()) ?><?php echo __(' (warning: this form is active, click \'cancel\' after translating)') ?></li>
@@ -42,7 +42,7 @@
       <ul>
       <li><?php echo link_to(__('list staticpage'), 'staticpage/list') ?></li>
       <li><?php echo link_to(__('edit staticpage'), 'staticpage/edit?id=73') ?></li>
-      <li><?php echo link_to(__('view staticpage'), 'homepage') ?></li>
+      <li><?php echo link_to(__('view staticpage'), '/homepage/') ?></li>
       </ul>
     <li><?php echo __('settings')?></li>
       <ul>

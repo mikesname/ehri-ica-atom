@@ -1,10 +1,10 @@
-﻿﻿<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
+﻿<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
 
 <table class="detail">
 <tbody>
 
 <?php if ($actor->getAuthorizedFormOfName(array('sourceCulture' => true))): ?>
-    <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'actor', 'action' => 'update'))): ?>
+  <?php if ($editCredentials): ?>
     <tr><td colspan="2" class="headerCell">
     <?php echo link_to($actor, 'actor/edit?id='.$actor->getId()) ?>
     </td></tr>

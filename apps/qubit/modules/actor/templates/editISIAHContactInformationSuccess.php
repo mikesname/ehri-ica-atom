@@ -61,6 +61,13 @@
 </tbody>
 </table>
 
+</form>
+
+<!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
+<div id="button-block-bump"></div>
+
+<div id="button-block" style="height: 4em;">
+
 <div class="menu-action">
 <?php if ($contactInformation->getId()): ?>
     &nbsp;
@@ -94,4 +101,5 @@
     <?php endif; ?>
 
 </div>
-</form>
+</div>
+

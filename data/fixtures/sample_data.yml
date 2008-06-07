@@ -86,6 +86,11 @@ QubitTaxonomy:
     updated_at: '2008-04-24 09:30:11'
     id: <?php echo QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID."\n" ?>
     name: { en: 'Digital Object Usages' }
+  QubitTaxonomy_PhysicalObjectType:  
+    created_at: '2008-06-06 11:41:11'
+    updated_at: '2008-06-06 11:41:11'
+    id: <?php echo QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID."\n" ?>
+    name: { en: 'Physical Object Type' }
 QubitTerm:
   QubitTerm_1000:
     taxonomy_id: QubitTaxonomy_9
@@ -308,6 +313,13 @@ QubitTerm:
     created_at: '2008-04-24 11:37:52'
     updated_at: '2008-04-24 11:37:52'
     name: { en: video, fr: vidéo }
+  QubitTerm_other:
+    taxonomy_id: QubitTaxonomy_MediaType
+    id: <?php echo QubitTerm::OTHER_ID."\n" ?>
+    class_name: QubitTerm
+    created_at: '2008-04-24 11:37:52'
+    updated_at: '2008-04-24 11:37:52'
+    name: { en: other, fr: autre }
   QubitTerm_master:
     taxonomy_id: QubitTaxonomy_DigitalObjectUsage
     id: <?php echo QubitTerm::MASTER_ID."\n" ?>
@@ -329,6 +341,62 @@ QubitTerm:
     created_at: '2008-04-24 11:37:52'
     updated_at: '2008-04-24 11:37:52'
     name: { en: thumbnail }
+  QubitTerm_location:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    id: <?php echo QubitTerm::LOCATION_ID."\n" ?>
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: location }
+  QubitTerm_container:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    id: <?php echo QubitTerm::CONTAINER_ID."\n" ?>
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: container }
+  QubitTerm_artefact:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    id: <?php echo QubitTerm::ARTEFACT_ID."\n" ?>
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: artefact }
+  QubitTerm_box:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    parent_id: QubitTerm_container
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: box }
+  QubitTerm_cardboard_box:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    parent_id: QubitTerm_box
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: cardboard box }
+  QubitTerm_folder:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    parent_id: QubitTerm_container
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: folder }
+  QubitTerm_filingcabinet:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    parent_id: QubitTerm_container
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: filing cabinet }
+  QubitTerm_shelf:
+    taxonomy_id: QubitTaxonomy_PhysicalObjectType
+    parent_id: QubitTerm_container
+    class_name: QubitTerm
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-06-06 11:47:52'
+    name: { en: shelf }
   QubitTerm_1421:
     taxonomy_id: QubitTaxonomy_6
     class_name: QubitTerm

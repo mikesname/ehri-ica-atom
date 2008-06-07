@@ -17,6 +17,8 @@
 
 </tbody>
 </table>
+
+
 <div class="menu-action">
 <?php if ($user->getId()): ?>
   &#160;<?php echo link_to(__('cancel'), 'user/show?id='.$user->getId()) ?>
@@ -25,4 +27,5 @@
 <?php endif; ?>
 <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
 </div>
+
 </form>
