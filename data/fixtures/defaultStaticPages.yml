@@ -1,58 +1,14 @@
 QubitStaticPage:
-  StaticPage_2021:
+  StaticPage_2023:
     permalink: homepage
     created_at: '2008-03-17 18:37:09'
     updated_at: '2008-03-30 16:51:43'
-  StaticPage_2022:
-    permalink: about
-    created_at: '2008-03-17 18:37:09'
-    updated_at: '2008-03-30 16:51:43'
-  StaticPage_2023:
-    permalink: homepage-ica-atom
-    created_at: '2008-03-17 18:37:09'
-    updated_at: '2008-03-30 16:51:43'
   StaticPage_2024:
-    permalink: about-ica-atom
+    permalink: about
     created_at: '2008-03-17 18:37:09'
     updated_at: '2008-03-30 16:51:43'
 
 QubitStaticPageI18n:
-  StaticPageI18n_2021_en:
-    id: StaticPage_2021
-    culture: en
-    title: Welcome
-    content: "This is the default homepage for the Qubit open information management toolkit.\n\nQubit is fully web-based, open-source software that allows individuals and institutions such as archives, libraries, museums, and art galleries to manage and host online collections of information resources (e.g. archival documents, photographs, videos, books, etc.). Qubit supports multi-lingual and multi-repository collections.\n\nSee the <a href='http://qubit-toolkit.org/wiki'>online  manual</a> to learn how to customize Qubit and begin using it to enter and manage your data.\n"
-  StaticPageI18n_2021_fr:
-    id: StaticPage_2021
-    culture: fr
-    title: Bienvenue
-    content: "Vous êtes dans la page d'accueil par défaut de la trousse à outils ouverte Qubit pour la gestion de l'information.\n\nQubit est une application Web à code source libre qui permet aux individus et aux institutions telles que archives, bibliothèques, musées et galeries d'art de gérer et d'héberger en ligne des collections de ressources d'information (e.g. documents archivistiques, photographies, vidéos, livres, etc. ). Qubit est compatible avec des collections multilingues et multi sites.\n\nVoir le <a href='http://qubit-toolkit.org/wiki'>manuel en ligne</a> (en anglais) afin d'apprendre comment adapter Qubit à vos besoins et de commencer à l'utiliser pour saisir et gérer vos données."
-  StaticPageI18n_2021_nl:
-    id: StaticPage_2021
-    culture: nl
-  StaticPageI18n_2021_pt:
-    id: StaticPage_2021
-    culture: pt
-    title: 'Bem vindo(a)'
-    content: "Essa é a página inicial do kit de ferramentas de código fonte aberto para gerenciamento de informações Qubit.\n\nQubit é totalmente baseado na web, além de ser um software livre. O Qubit permite que indivíduos e instituições, como arquivos, bibliotecas, museus e galerias de arte possam gerenciar e disponibilizar online dados e informações acerca de seus acervos, ou seja documentos arquivísticos, fotografias, vídeos, livros etc. Qubit está disponível em diversos idiomas e pode apresentar acervos de múltiplas instituições.\n\nLeia o <a href='http://qubit-toolkit.org/wiki'>online manual</a> para aprender como personalizar o Qubit e comece a inserir e gerenciar seus dados."
-  StaticPageI18n_2022_en:
-    id: StaticPage_2022
-    culture: en
-    title: About
-    content: "This is the default <i>About</i> page for the Qubit open information management toolkit.\n\nSee the <a href='http://qubit-toolkit.org/wiki'>online  manual</a> to learn how to customize Qubit, including this page, and how to begin using it to enter and manage your data.\n\nQubit is the collaborative effort of two seperate open-source software projects that have decided to work together to leverage time, knowledge and skills. Each of these projects is using and contributing to Qubit as the underlying toolkit to build their own applications.\n\nPlease visit the <a href='http://ica-atom.org'>ICA-AtoM</a> project website</li> and the <a href='http://www.alouettecanada.ca/'>Alouette Canada</a> project website for more information.\n"
-  StaticPageI18n_2022_fr:
-    id: StaticPage_2022
-    culture: fr
-    title: 'À propos'
-    content: "Ceci est la page par défaut <i>À propos</i> de la trousse à outils ouverte Qubit pour la gestion de l'information\n\nVoir le <a href='http://qubit-toolkit.org/wiki'>manuel en ligne</a> (en anglais) afin d'apprendre comment adapter Qubit à vos besoins et de commencer à l'utiliser pour saisir et gérer vos données.\n\nQubit est le résultat de la mise en commun des efforts de deux projets de développement de logiciels libres. La mise en commun des connaissances et des habiletés a permis d'optimiser le temps de développement. Chacun des projets utilise et contribue à Qubit qui est la trousse à outil sous-jacente sur laquelle ils construisent leur propre application.\n\nPour plus d'information, nous vous invitons à visiter <a href='http://ica-atom.org'>le site Web ICA-AtoM</a> </li> et <a href='http://www.alouettecanada.ca/'>le site Web  Alouette Canada</a>. "
-  StaticPageI18n_2022_nl:
-    id: StaticPage_2022
-    culture: nl
-  StaticPageI18n_2022_pt:
-    id: StaticPage_2022
-    culture: pt
-    title: 'Sobre o Qubit'
-    content: "Essa é a página padrão <i>Sobre</i> do kit de ferramentas de código fonte aberto para gerenciamento de informações Qubit.\n\nAcesse o <a href='http://qubit-toolkit.org/wiki'>online manual</a> para aprender como personalizar o Qubit, incluindo essa página e comece a inserir e gerenciar seus dados.\n\nQubit é o resultado de um esforço colaborativo de dois projetos de software livre diferentes que decidiram trabalhar juntos para economizar tempo, agregar conhecimento e somar as habilidades. Cada um desses projetos está usando e contribuindo com o desenvolvimento do Qubit, buscando construir suas próprias aplicações a partir dele.\n\nPor favor, visite o website do projeto <a href='http://ica-atom.org'>ICA-AtoM</a></li> e o website do projeto <a href='http://www.alouettecanada.ca/'>Alouette Canada</a> para mais informações."
   StaticPageI18n_2023_en:
     id: StaticPage_2023
     culture: en

@@ -635,7 +635,7 @@ QubitUser:
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
     username: 'default administrator'
-    email: admin@qubit-toolkit.org
+    email: admin@ica-atom.org
     sha1_password: 301f96a59f916a527db584a178afef3dd9655766
     salt: 99f7032b89159227c713c1d99233773c
   QubitUser_1460:
@@ -643,7 +643,7 @@ QubitUser:
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
     username: 'default editor'
-    email: editor@qubit-toolkit.org
+    email: editor@ica-atom.org
     sha1_password: 53ffb0d3737947c68ecf909c049725fb7c848aab
     salt: 9c18cd7992fdca2e611f1e474f5a3f0e
   QubitUser_1461:
@@ -651,7 +651,7 @@ QubitUser:
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
     username: 'default contributor'
-    email: contributor@qubit-toolkit.org
+    email: contributor@ica-atom.org
     sha1_password: 295f4d264d7650a61c1c47f3824d85cad831de7e
     salt: be29c1435c1cfa83dec264010cecd7e8
   QubitUser_1462:
@@ -659,7 +659,7 @@ QubitUser:
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
     username: 'default translator'
-    email: translator@qubit-toolkit.org
+    email: translator@ica-atom.org
     sha1_password: aba32098d449bfd32213a65cbc94dd415f3318ee
     salt: 7a71698bf8588b8b8778bd739a8858d7
 QubitRepository:
@@ -1935,178 +1935,6 @@ QubitRole:
     name: contributor
   QubitRole_4:
     name: translator
-QubitSetting:
-  QubitSetting_1:
-    name: version
-    editable: '0'
-    deleteable: '0'
-    value: { en: 'Qubit 0.6-dev' }
-  QubitSetting_uploadDir:
-    name: upload_dir
-    editable: '0'
-    deleteable: '0'
-    value: { en: 'uploads' }
-  QubitSetting_reference_maxwidth:
-    name: reference_image_maxwidth
-    editable: '1'
-    deleteable: '0'
-    value: { en: '480' }
-  QubitSetting_2:
-    name: informationobject_edit
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: editISAD }
-  QubitSetting_3:
-    name: informationobject_show
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: showISAD }
-  QubitSetting_4:
-    name: informationobject_list
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: list }
-  QubitSetting_5:
-    name: actor_edit
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: editISAAR }
-  QubitSetting_6:
-    name: actor_show
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: showISAAR }
-  QubitSetting_7:
-    name: actor_list
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: list }
-  QubitSetting_8:
-    name: repository_edit
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: editISIAH }
-  QubitSetting_9:
-    name: repository_show
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: showISIAH }
-  QubitSetting_10:
-    name: repository_list
-    scope: default_template
-    editable: '1'
-    deleteable: '0'
-    value: { en: list }
-  QubitSetting_11:
-    name: informationobject
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: 'information object', fr: 'objet d''information', nl: 'information object', pt: 'objeto informacional' }
-  QubitSetting_12:
-    name: actor
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: person/organization, fr: personne/organisation, nl: persoon/organisatie, pt: pessoa/organização }
-  QubitSetting_13:
-    name: creator
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: creator, fr: producteur, nl: archiefvormer, pt: produtor }
-  QubitSetting_14:
-    name: repository
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: repository, fr: dépôt, nl: depot, pt: repositório }
-  QubitSetting_15:
-    name: term
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: term, fr: terme, nl: term, pt: termo }
-  QubitSetting_16:
-    name: subject
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: subject, fr: sujet, nl: onderwerp, pt: assunto }
-  QubitSetting_17:
-    name: collection
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: collection, fr: collection, nl: collectie, pt: fundo }
-  QubitSetting_18:
-    name: holdings
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: holdings, fr: collections, nl: collecties, pt: coleções }
-  QubitSetting_19:
-    name: place
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: place }
-  QubitSetting_20:
-    name: name
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: name }
-  QubitSetting_ui_label_digitalobject:
-    name: digitalobject
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: digital object }
-  QubitSetting_ui_label_mediatype:
-    name: mediatype
-    scope: ui_label
-    editable: '1'
-    deleteable: '0'
-    value: { en: media type }
-  QubitSetting_21:
-    name: en
-    scope: i18n_languages
-    editable: '1'
-    deleteable: '0'
-    value: { en: english }
-  QubitSetting_22:
-    name: fr
-    scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    value: { fr: français }
-  QubitSetting_23:
-    name: es
-    scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    value: { es: español }
-  QubitSetting_24:
-    name: nl
-    scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    value: { nl: nederlands }
-  QubitSetting_25:
-    name: pt
-    scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    value: { pt: português }
 QubitUserRoleRelation:
   QubitUserRoleRelation_1:
     user_id: QubitUser_1459

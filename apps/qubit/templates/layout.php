@@ -30,18 +30,17 @@
 <?php else: ?>
 <?php echo link_to(__('log in'), 'login/') ?><?php endif; ?>
 
-<?php echo link_to(__('help'), 'http://qubit-toolkit.org/wiki') ?>
+<?php echo link_to(__('help'), 'http://www.ica-atom.org/docs/index.php?title=User_manual') ?>
 <?php echo link_to(__('about'), '/about/') ?>
 <?php echo link_to(__('home'), '/homepage/') ?>
 </div>
 </div> <!--close header-top -->
 
-<div id="header-middle">
-<div id="website-name">
-<?php echo link_to('<span style="color: #FC6E3C; letter-spacing: -0.1ex;"><span style="color: #CC3204; font-size: 115%;">Q</span>ubit</span>', '/homepage/') ?>
+<div id="header-middle" style="height: 110px;"> <!--ICA-AtoM header-->
+<div id="logo">
+  <?php echo link_to(image_tag('/images/ica-atom_logo.png', 'width="440" height="95" alt="ICA-AtoM logo" style="margin: 12px 0 0 0 ; float: right; align:center;"'), '/homepage/') ?>
+  
 </div>
-<div id="website-description"><?php echo __("open information management toolkit"); ?></div>
-<div id="logo"><?php echo link_to(image_tag('/images/qubit-sphere.gif', 'width="80" height="80" alt="Qubit logo"'), '/homepage/') ?></div>
 </div> <!-- close header-middle -->
 
 <div id="header-bottom">
