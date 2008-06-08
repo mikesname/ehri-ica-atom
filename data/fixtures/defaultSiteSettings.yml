@@ -113,6 +113,30 @@ QubitSetting:
     scope: i18n_languages
     editable: '1'
     deleteable: '1'
+  QubitSetting_place:
+    name: place
+    scope: ui_label
+    editable: '1'
+    deleteable: '0'
+    value: { en: place }
+  QubitSetting_name:
+    name: name
+    scope: ui_label
+    editable: '1'
+    deleteable: '0'
+    value: { en: name }
+  QubitSetting_ui_label_digitalobject:
+    name: digitalobject
+    scope: ui_label
+    editable: '1'
+    deleteable: '0'
+    value: { en: digital object }
+  QubitSetting_ui_label_mediatype:
+    name: mediatype
+    scope: ui_label
+    editable: '1'
+    deleteable: '0'
+    value: { en: media type }
 QubitSettingI18n:
   SettingI18n_1_en:
     id: Setting_1
