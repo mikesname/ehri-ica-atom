@@ -6,17 +6,17 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="title" content="Qubit Toolkit - 500 error" />
+<meta name="title" content="ICA-AtoM - 500 error" />
 <meta name="robots" content="index, follow" />
 <meta name="language" content="en" />
-<title>Qubit Toolkit - 500 error</title>
+<title>ICA-AtoM - 500 error</title>
 
 <link rel="shortcut icon" href="/favicon.ico" />
 
 </head>
 <body style="background: #FFFFFF; padding:50px 0 0 50px;">
 
-<a title="Qubit" href="http://www.qubit-toolkit.org/" style="text-decoration: none;"><img alt="Qubit Toolkit" src="<?php echo $path ?>/images/qubit-logo-medium.gif" style="border: 0;" height="91" width="224" /></a>
+<a title="ICA-AtoM" href="http://ica-atom.org/" style="text-decoration: none;"><img alt="ICA-AtoM" src="<?php echo $path ?>/images/ica-atom_logo.png" style="border: 0;" height="95" width="440" /></a>
 
 <div style="margin-top: 50px;">
 <img alt="page not found" style="float:left; border:0; margin-right: 20px;" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
