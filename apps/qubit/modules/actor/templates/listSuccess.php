@@ -45,6 +45,6 @@
 
 <?php if ($editCredentials): ?>
   <div class="menu-action">
-    <?php echo link_to(__('add new'), 'actor/create') ?>
+    <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/create') ?>
   </div>
 <?php endif; ?>

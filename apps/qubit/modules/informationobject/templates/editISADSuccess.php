@@ -374,9 +374,7 @@
       <div class="form-item">
         <label for="mediatype"><?php echo __('media type'); ?></label>
         <?php echo object_select_tag($digitalObject, 'getMediaTypeId',
-          array('related_class' => 'QubitTerm',
-            'include_custom' => __('other'),
-            'peer_method' => 'getMediaTypes'
+          array('related_class' => 'QubitTerm', 'peer_method' => 'getMediaTypes'
           )) ?>
       </div>
 
@@ -420,7 +418,8 @@
 EOF
   ) ?>
   <?php endif; ?>
-  
+ 
+
   
 <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
 <div id="button-block-bump"></div>
@@ -428,13 +427,20 @@ EOF
 <div id="button-block">
   <div class="menu-action">
     <?php if ($informationObject->getId()): ?>
+
+    <?php if (($descendantCount = count($informationObject->getDescendants())) > 0): ?>
+         <?php $deleteWarning = __('Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?', array ('%1%' =>sfConfig::get('app_ui_label_informationobject'), '%2%' => $descendantCount)) ?> 
+         &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
+      <?php else: ?>
       <?php $deleteWarning = __('Are you sure you want to delete this %1% permanently?', array('%1%' => sfConfig::get('app_ui_label_informationobject'))); ?>
       <?php if ($digitalObjectCount > 0): ?>
         <?php $deleteWarning .= ' '.__('This will also delete %1% %2%.', array('%1%'=>$digitalObjectCount, '%2%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
       <?php endif; ?>
-
       &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
-      &nbsp;<?php echo link_to(__('cancel'), 'informationobject/show?id='.$informationObject->getId().'&template=0') ?>
+ 
+      <?php endif; ?>
+      
+       &nbsp;<?php echo link_to(__('cancel'), 'informationobject/show?id='.$informationObject->getId().'&template=0') ?>
     <?php else: ?>
       &nbsp;<?php echo link_to(__('cancel'), 'informationobject/list') ?>
     <?php endif; ?>
@@ -445,7 +451,8 @@ EOF
       <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
     <?php endif; ?>
   </div>
-</form>
+
+</form> 
 
 <div class="menu-extra">
   <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))), 'informationobject/create'); ?>

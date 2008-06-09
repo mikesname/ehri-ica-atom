@@ -582,6 +582,7 @@ abstract class BaseInformationObject extends QubitObject
 
     $affectedRows = 0;
 
+    $this->refresh(array('connection' => $connection));
     $this->deleteFromNestedSet($connection);
 
     $affectedRows += parent::delete($connection);

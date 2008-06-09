@@ -51,7 +51,7 @@ propel:
 
   property:
     object_id: { type: integer, required: true, foreignTable: object, foreignReference: id, onDelete: cascade }
-    scope: varchar(255)    
+    scope: varchar(255)
     name: varchar(255)
     value: varchar(255)
     created_at:
@@ -70,7 +70,7 @@ propel:
   note:
     object_id: { type: integer, required: true, foreignTable: object, foreignReference: id, onDelete: cascade }
     type_id: { type: integer, foreignTable: term, foreignReference: id }
-    scope: varchar(255)  
+    scope: varchar(255)
     user_id:
     parent_id: { type: integer, foreignTable: note, foreignReference: id }
     lft: { type: integer, required: true, nestedSetLeftKey: true }
@@ -93,7 +93,7 @@ propel:
     byte_size: integer
     checksum: varchar(255)
     checksum_type_id: { type: integer, foreignTable: term, foreignReference: id }
-    parent_id: { type: integer, foreignTable: digital_object, foreignReference: id }    
+    parent_id: { type: integer, foreignTable: digital_object, foreignReference: id }
     lft: { type: integer, required: true, nestedSetLeftKey: true }
     rgt: { type: integer, required: true, nestedSetRightKey: true }
     created_at:
@@ -102,6 +102,7 @@ propel:
   physical_object:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     information_object_id:
+    name: varchar(255)
     location_id: { type: integer, foreignTable: term, foreignReference: id }
     parent_id: integer
     lft: integer
@@ -185,7 +186,7 @@ propel:
     email: varchar(255)
     telephone: varchar(255)
     fax: varchar(255)
-    postal_code: varchar(255)    
+    postal_code: varchar(255)
     country_code: varchar(255)
     longtitude: float
     latitude: float
@@ -264,7 +265,7 @@ propel:
     end_time: time
     type_id: { type: integer, foreignTable: term, foreignReference: id }
     actor_role_id: { type: integer, foreignTable: term, foreignReference: id }
-    information_object_id:
+    information_object_id: { type: integer, foreignTable: information_object, foreignReference: id, onDelete: cascade }
     actor_id:
     created_at:
     updated_at:

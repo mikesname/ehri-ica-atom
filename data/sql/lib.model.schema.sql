@@ -325,6 +325,7 @@ CREATE TABLE `q_physical_object`
 (
 	`id` INTEGER  NOT NULL,
 	`information_object_id` INTEGER,
+	`name` VARCHAR(255),
 	`location_id` INTEGER,
 	`parent_id` INTEGER,
 	`lft` INTEGER,
@@ -874,7 +875,8 @@ CREATE TABLE `q_event`
 	INDEX `q_event_FI_4` (`information_object_id`),
 	CONSTRAINT `q_event_FK_4`
 		FOREIGN KEY (`information_object_id`)
-		REFERENCES `q_information_object` (`id`),
+		REFERENCES `q_information_object` (`id`)
+		ON DELETE CASCADE,
 	INDEX `q_event_FI_5` (`actor_id`),
 	CONSTRAINT `q_event_FK_5`
 		FOREIGN KEY (`actor_id`)

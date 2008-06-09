@@ -8,7 +8,9 @@ abstract class BasePhysicalObject extends QubitObject
 
   const ID = 'q_physical_object.ID';
   const INFORMATION_OBJECT_ID = 'q_physical_object.INFORMATION_OBJECT_ID';
-  const LOCATION_ID = 'q_physical_object.LOCATION_ID';
+  const NAME = 'q_physical_object.NAME';
+  const LOCATION = 'q_physical_object.LOCATION';
+  const TYPE_ID = 'q_physical_object.TYPE_ID';
   const PARENT_ID = 'q_physical_object.PARENT_ID';
   const LFT = 'q_physical_object.LFT';
   const RGT = 'q_physical_object.RGT';
@@ -24,7 +26,9 @@ abstract class BasePhysicalObject extends QubitObject
 
     $criteria->addSelectColumn(QubitPhysicalObject::ID);
     $criteria->addSelectColumn(QubitPhysicalObject::INFORMATION_OBJECT_ID);
-    $criteria->addSelectColumn(QubitPhysicalObject::LOCATION_ID);
+    $criteria->addSelectColumn(QubitPhysicalObject::NAME);
+    $criteria->addSelectColumn(QubitPhysicalObject::LOCATION);
+    $criteria->addSelectColumn(QubitPhysicalObject::TYPE_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::PARENT_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::LFT);
     $criteria->addSelectColumn(QubitPhysicalObject::RGT);
@@ -67,6 +71,23 @@ abstract class BasePhysicalObject extends QubitObject
     return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
   }
 
+  public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
+  {
+    if ($order == Criteria::DESC)
+    {
+      return $criteria->addDescendingOrderByColumn(QubitPhysicalObject::LFT);
+    }
+
+    return $criteria->addAscendingOrderByColumn(QubitPhysicalObject::LFT);
+  }
+
+  public static function addRootsCriteria(Criteria $criteria)
+  {
+    $criteria->add(QubitPhysicalObject::PARENT_ID);
+
+    return $criteria;
+  }
+
   protected $informationObjectId = null;
 
   public function getInformationObjectId()
@@ -81,16 +102,44 @@ abstract class BasePhysicalObject extends QubitObject
     return $this;
   }
 
-  protected $locationId = null;
+  protected $name = null;
 
-  public function getLocationId()
+  public function getName()
   {
-    return $this->locationId;
+    return $this->name;
   }
 
-  public function setLocationId($locationId)
+  public function setName($name)
   {
-    $this->locationId = $locationId;
+    $this->name = $name;
+
+    return $this;
+  }
+
+  protected $location = null;
+
+  public function getLocation()
+  {
+    return $this->location;
+  }
+
+  public function setLocation($location)
+  {
+    $this->location = $location;
+
+    return $this;
+  }
+
+  protected $typeId = null;
+
+  public function getTypeId()
+  {
+    return $this->typeId;
+  }
+
+  public function setTypeId($typeId)
+  {
+    $this->typeId = $typeId;
 
     return $this;
   }
@@ -116,7 +165,7 @@ abstract class BasePhysicalObject extends QubitObject
     return $this->lft;
   }
 
-  public function setLft($lft)
+  protected function setLft($lft)
   {
     $this->lft = $lft;
 
@@ -130,7 +179,7 @@ abstract class BasePhysicalObject extends QubitObject
     return $this->rgt;
   }
 
-  public function setRgt($rgt)
+  protected function setRgt($rgt)
   {
     $this->rgt = $rgt;
 
@@ -207,7 +256,9 @@ abstract class BasePhysicalObject extends QubitObject
 
     $this->columnValues['id'] = $this->id;
     $this->columnValues['informationObjectId'] = $this->informationObjectId;
-    $this->columnValues['locationId'] = $this->locationId;
+    $this->columnValues['name'] = $this->name;
+    $this->columnValues['location'] = $this->location;
+    $this->columnValues['typeId'] = $this->typeId;
     $this->columnValues['parentId'] = $this->parentId;
     $this->columnValues['lft'] = $this->lft;
     $this->columnValues['rgt'] = $this->rgt;
@@ -224,7 +275,9 @@ abstract class BasePhysicalObject extends QubitObject
 
     $this->id = $results->getInt($columnOffset++);
     $this->informationObjectId = $results->getInt($columnOffset++);
-    $this->locationId = $results->getInt($columnOffset++);
+    $this->name = $results->getString($columnOffset++);
+    $this->location = $results->getString($columnOffset++);
+    $this->typeId = $results->getInt($columnOffset++);
     $this->parentId = $results->getInt($columnOffset++);
     $this->lft = $results->getInt($columnOffset++);
     $this->rgt = $results->getInt($columnOffset++);
@@ -278,6 +331,8 @@ abstract class BasePhysicalObject extends QubitObject
 
     $affectedRows += parent::insert($connection);
 
+    $this->updateNestedSet($connection);
+
     $criteria = new Criteria;
 
     if ($this->isColumnModified('id'))
@@ -290,9 +345,19 @@ abstract class BasePhysicalObject extends QubitObject
       $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
     }
 
-    if ($this->isColumnModified('locationId'))
+    if ($this->isColumnModified('name'))
     {
-      $criteria->add(QubitPhysicalObject::LOCATION_ID, $this->locationId);
+      $criteria->add(QubitPhysicalObject::NAME, $this->name);
+    }
+
+    if ($this->isColumnModified('location'))
+    {
+      $criteria->add(QubitPhysicalObject::LOCATION, $this->location);
+    }
+
+    if ($this->isColumnModified('typeId'))
+    {
+      $criteria->add(QubitPhysicalObject::TYPE_ID, $this->typeId);
     }
 
     if ($this->isColumnModified('parentId'))
@@ -345,6 +410,11 @@ abstract class BasePhysicalObject extends QubitObject
 
     $affectedRows += parent::update($connection);
 
+    if ($this->isColumnModified('parentId'))
+    {
+      $this->updateNestedSet($connection);
+    }
+
     $criteria = new Criteria;
 
     if ($this->isColumnModified('id'))
@@ -357,9 +427,19 @@ abstract class BasePhysicalObject extends QubitObject
       $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
     }
 
-    if ($this->isColumnModified('locationId'))
+    if ($this->isColumnModified('name'))
     {
-      $criteria->add(QubitPhysicalObject::LOCATION_ID, $this->locationId);
+      $criteria->add(QubitPhysicalObject::NAME, $this->name);
+    }
+
+    if ($this->isColumnModified('location'))
+    {
+      $criteria->add(QubitPhysicalObject::LOCATION, $this->location);
+    }
+
+    if ($this->isColumnModified('typeId'))
+    {
+      $criteria->add(QubitPhysicalObject::TYPE_ID, $this->typeId);
     }
 
     if ($this->isColumnModified('parentId'))
@@ -409,6 +489,23 @@ abstract class BasePhysicalObject extends QubitObject
     return $affectedRows;
   }
 
+  public function delete($connection = null)
+  {
+    if ($this->deleted)
+    {
+      throw new PropelException('This object has already been deleted.');
+    }
+
+    $affectedRows = 0;
+
+    $this->refresh(array('connection' => $connection));
+    $this->deleteFromNestedSet($connection);
+
+    $affectedRows += parent::delete($connection);
+
+    return $affectedRows;
+  }
+
   public static function addJoinInformationObjectCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitPhysicalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
@@ -428,23 +525,81 @@ abstract class BasePhysicalObject extends QubitObject
     return $this;
   }
 
-  public static function addJoinLocationCriteria(Criteria $criteria)
+  public static function addJoinTypeCriteria(Criteria $criteria)
   {
-    $criteria->addJoin(QubitPhysicalObject::LOCATION_ID, QubitTerm::ID);
+    $criteria->addJoin(QubitPhysicalObject::TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getLocation(array $options = array())
+  public function getType(array $options = array())
   {
-    return $this->location = QubitTerm::getById($this->locationId, $options);
+    return $this->type = QubitTerm::getById($this->typeId, $options);
   }
 
-  public function setLocation(QubitTerm $term)
+  public function setType(QubitTerm $term)
   {
-    $this->locationId = $term->getId();
+    $this->typeId = $term->getId();
 
     return $this;
+  }
+
+  public static function addJoinParentCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitPhysicalObject::PARENT_ID, QubitPhysicalObject::ID);
+
+    return $criteria;
+  }
+
+  public function getParent(array $options = array())
+  {
+    return $this->parent = QubitPhysicalObject::getById($this->parentId, $options);
+  }
+
+  public function setParent(QubitPhysicalObject $physicalObject)
+  {
+    $this->parentId = $physicalObject->getId();
+
+    return $this;
+  }
+
+  public static function addPhysicalObjectsRelatedByParentIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPhysicalObject::PARENT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPhysicalObjectsRelatedByParentIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPhysicalObjectsRelatedByParentIdCriteriaById($criteria, $id);
+
+    return QubitPhysicalObject::get($criteria, $options);
+  }
+
+  public function addPhysicalObjectsRelatedByParentIdCriteria(Criteria $criteria)
+  {
+    return self::addPhysicalObjectsRelatedByParentIdCriteriaById($criteria, $this->id);
+  }
+
+  protected $physicalObjectsRelatedByParentId = null;
+
+  public function getPhysicalObjectsRelatedByParentId(array $options = array())
+  {
+    if (!isset($this->physicalObjectsRelatedByParentId))
+    {
+      if (!isset($this->id))
+      {
+        $this->physicalObjectsRelatedByParentId = QubitQuery::create();
+      }
+      else
+      {
+        $this->physicalObjectsRelatedByParentId = self::getPhysicalObjectsRelatedByParentIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->physicalObjectsRelatedByParentId;
   }
 
   public static function addPhysicalObjectI18nsCriteriaById(Criteria $criteria, $id)
@@ -533,6 +688,184 @@ abstract class BasePhysicalObject extends QubitObject
     }
 
     return $this->physicalObjectI18ns[$options['culture']];
+  }
+
+  public function addAncestorsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitPhysicalObject::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitPhysicalObject::RGT, $this->rgt, Criteria::GREATER_THAN);
+  }
+
+  protected $ancestors = null;
+
+  public function getAncestors(array $options = array())
+  {
+    if (!isset($this->ancestors))
+    {
+      if ($this->new)
+      {
+        $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
+      }
+      else
+      {
+        $criteria = new Criteria;
+        $this->addAncestorsCriteria($criteria);
+        $this->addOrderByPreorder($criteria);
+        $this->ancestors = self::get($criteria, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->ancestors;
+  }
+
+  public function addDescendantsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitPhysicalObject::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitPhysicalObject::RGT, $this->rgt, Criteria::LESS_THAN);
+  }
+
+  protected $descendants = null;
+
+  public function getDescendants(array $options = array())
+  {
+    if (!isset($this->descendants))
+    {
+      if ($this->new)
+      {
+        $this->descendants = QubitQuery::create(array('self' => $this) + $options);
+      }
+      else
+      {
+        $criteria = new Criteria;
+        $this->addDescendantsCriteria($criteria);
+        $this->addOrderByPreorder($criteria);
+        $this->descendants = self::get($criteria, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->descendants;
+  }
+
+  protected function updateNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitPhysicalObject::DATABASE_NAME);
+    }
+
+    if (null === $parent = $this->getParent(array('connection' => $connection)))
+    {
+      $stmt = $connection->prepareStatement('
+        SELECT MAX('.QubitPhysicalObject::RGT.')
+        FROM '.QubitPhysicalObject::TABLE_NAME);
+      $results = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
+      $results->next();
+      $max = $results->getInt(1);
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $max + 1;
+        $this->rgt = $max + 2;
+
+        return $this;
+      }
+
+      $shift = $max + 1 - $this->lft;
+    }
+    else
+    {
+      $parent->refresh(array('connection' => $connection));
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $delta = 2;
+      }
+      else
+      {
+        if ($this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
+        {
+          throw new PropelException('An object cannot be a descendant of itself.');
+        }
+
+        $delta = $this->rgt - $this->lft + 1;
+      }
+
+      $stmt = $connection->prepareStatement('
+        UPDATE '.QubitPhysicalObject::TABLE_NAME.'
+        SET '.QubitPhysicalObject::LFT.' = '.QubitPhysicalObject::LFT.' + ?
+        WHERE '.QubitPhysicalObject::LFT.' >= ?');
+      $stmt->setInt(1, $delta);
+      $stmt->setInt(2, $parent->rgt);
+      $stmt->executeUpdate();
+
+      $stmt = $connection->prepareStatement('
+        UPDATE '.QubitPhysicalObject::TABLE_NAME.'
+        SET '.QubitPhysicalObject::RGT.' = '.QubitPhysicalObject::RGT.' + ?
+        WHERE '.QubitPhysicalObject::RGT.' >= ?');
+      $stmt->setInt(1, $delta);
+      $stmt->setInt(2, $parent->rgt);
+      $stmt->executeUpdate();
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $parent->rgt;
+        $this->rgt = $parent->rgt + 1;
+
+        return $this;
+      }
+
+      if ($this->lft > $parent->rgt)
+      {
+        $this->lft += $delta;
+        $this->rgt += $delta;
+      }
+
+      $shift = $parent->rgt - $this->lft;
+    }
+
+    $stmt = $connection->prepareStatement('
+      UPDATE '.QubitPhysicalObject::TABLE_NAME.'
+      SET '.QubitPhysicalObject::LFT.' = '.QubitPhysicalObject::LFT.' + ?, '.QubitPhysicalObject::RGT.' = '.QubitPhysicalObject::RGT.' + ?
+      WHERE '.QubitPhysicalObject::LFT.' >= ?
+      AND '.QubitPhysicalObject::RGT.' <= ?');
+    $stmt->setInt(1, $shift);
+    $stmt->setInt(2, $shift);
+    $stmt->setInt(3, $this->lft);
+    $stmt->setInt(4, $this->rgt);
+    $stmt->executeUpdate();
+
+    $this->deleteFromNestedSet($connection);
+
+    $this->columnValues['lft'] = $this->lft += $shift;
+    $this->columnValues['rgt'] = $this->rgt += $shift;
+
+    return $this;
+  }
+
+  protected function deleteFromNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitPhysicalObject::DATABASE_NAME);
+    }
+
+    $delta = $this->rgt - $this->lft + 1;
+
+    $stmt = $connection->prepareStatement('
+      UPDATE '.QubitPhysicalObject::TABLE_NAME.'
+      SET '.QubitPhysicalObject::LFT.' = '.QubitPhysicalObject::LFT.' - ?
+      WHERE '.QubitPhysicalObject::LFT.' >= ?');
+    $stmt->setInt(1, $delta);
+    $stmt->setInt(2, $this->rgt);
+    $stmt->executeUpdate();
+
+    $stmt = $connection->prepareStatement('
+      UPDATE '.QubitPhysicalObject::TABLE_NAME.'
+      SET '.QubitPhysicalObject::RGT.' = '.QubitPhysicalObject::RGT.' - ?
+      WHERE '.QubitPhysicalObject::RGT.' >= ?');
+    $stmt->setInt(1, $delta);
+    $stmt->setInt(2, $this->rgt);
+    $stmt->executeUpdate();
+
+    return $this;
   }
 }
 

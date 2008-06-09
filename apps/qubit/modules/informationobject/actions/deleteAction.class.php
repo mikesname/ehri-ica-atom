@@ -26,15 +26,21 @@ class InformationObjectDeleteAction extends sfAction
     $informationObject = QubitInformationObject::getById($this->getRequestParameter('id'));
 
     $this->forward404Unless($informationObject);
+    
+    //retrieve all descendants to be deleted along with this informationObject
+    $informationObjects = $informationObject->getDescendants()->andSelf()->orderBy('rgt');
+    
+    foreach ($informationObjects as $deleteInformationObject)
+    { 
+      //delete existing entries for this information object from the search index
+      SearchIndex::deleteIndexDocument($deleteInformationObject);
 
-    //delete existing entries for this information object from the search index
-    SearchIndex::deleteIndexDocument($informationObject);
+      // Delete related digitalObjects
+      $this->deleteDigitalObjects($deleteInformationObject);
 
-    // Delete related digitalObjects
-    $this->deleteDigitalObjects($informationObject);
-
-    //delete the information object record from the database
-    $informationObject->delete();
+      //delete the information object record from the database
+      $deleteInformationObject->delete();
+    }
 
     return $this->redirect('informationobject/list');
   }

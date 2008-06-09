@@ -556,6 +556,7 @@ abstract class BaseNote
 
     $affectedRows = 0;
 
+    $this->refresh(array('connection' => $connection));
     $this->deleteFromNestedSet($connection);
 
     $criteria = new Criteria;

@@ -1275,6 +1275,7 @@ EOF;
     {
       $script .= <<<EOF
 
+    \$this->refresh(array('connection' => \$connection));
     \$this->deleteFromNestedSet(\$connection);
 
 EOF;
