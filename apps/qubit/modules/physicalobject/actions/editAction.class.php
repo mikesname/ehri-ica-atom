@@ -19,16 +19,28 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class QubitPhysicalObject extends BasePhysicalObject
+/**
+ * Physical Object edit
+ *
+ * @package    qubit
+ * @subpackage physicalobject
+ * @author     David Juhasz <david@artefactual.com>
+ * @version    SVN: $Id
+ */
+class PhysicalObjectEditAction extends sfAction
 {
-  
-  public function __toString()
+  public function execute($request)
   {
-    if (!$this->getName())
-      {
-      return (string) $this->getName(array('sourceCulture' => true));
-      }
-  
-    return (string) $this->getName();
+    $this->physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('id'));
+    $this->forward404Unless($this->physicalObject);
+    
+    // If coming here from another page (e.g. informationobject/edit) redirect
+    // back on update/cancel/delete
+    $this->nextAction = null;
+    if ($this->hasRequestParameter('next'))
+    {
+      $this->nextAction = $this->getRequestParameter('next');
+    }
+    
   }
 }

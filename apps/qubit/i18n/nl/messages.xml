@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2008-05-12T05:40:22Z" product-name="messages">
+  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2008-06-12T10:40:43Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -792,7 +792,7 @@
       </trans-unit>
       <trans-unit id="205">
         <source>translate</source>
-        <target>vertalen</target>
+        <target></target>
       </trans-unit>
       <trans-unit id="206">
         <source>admin</source>

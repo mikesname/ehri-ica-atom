@@ -236,10 +236,9 @@
 
       <?php echo textarea_tag('new_publication_note', '', 'size=30x3') ?>
     </div>
-
   </fieldset>
 
- <fieldset class="collapsible collapsed">
+  <fieldset class="collapsible collapsed">
     <legend><?php echo __('notes area'); ?></legend>
     <div class="form-item">
       <label for="notes"><?php echo __('notes'); ?></label>
@@ -264,7 +263,7 @@
         </tr>
       </table>
     </div>
- </fieldset>
+  </fieldset>
 
   <fieldset class="collapsible collapsed">
     <legend><?php echo __('access points'); ?></legend>
@@ -366,49 +365,15 @@
       <?php echo object_textarea_tag($informationObject, 'getSources', array('size' => '30x3')) ?>
     </div>
   </fieldset>
-
+  
   <fieldset class="collapsible collapsed">
     <legend><?php echo sfConfig::get('app_ui_label_digitalobject'); ?></legend>
-
-    <?php if (count($digitalObject)): ?>
-      <div class="form-item">
-        <label for="mediatype"><?php echo __('media type'); ?></label>
-        <?php echo object_select_tag($digitalObject, 'getMediaTypeId',
-          array('related_class' => 'QubitTerm', 'peer_method' => 'getMediaTypes'
-          )) ?>
-      </div>
-
-      <!-- Display/edit digital object representations -->
-      <?php foreach ($representations as $usageId => $representation): ?>
-      <?php if (is_object($representation) && $representation->getId()): ?>
-      <?php include_component('digitalobject', 'editRepresentation',
-        array('digitalObject'=>$digitalObject, 'representation'=>$representation)); ?>
-      <?php else: ?>
-      <div class="form-item">
-        <label for="upload"><?php echo __('Add a new %1% representation', array('%1%'=>QubitTerm::getById($usageId))); ?></label>
-        <table class="inline">
-        <tr>
-          <td width="60%"><?php include_component('digitalobject', 'upload', array('usageId'=>$usageId)); ?></td>
-          <?php if ($digitalObject->canThumbnail()): ?>
-          <td width="40%">
-            <?php echo __('or'); ?>
-            <?php echo checkbox_tag('createDerivative', $usageId, false, array('style'=>'width: auto')); ?>
-            <?php echo __('auto-generate'); ?>
-          </td>
-          <?php endif; ?>
-        </tr>
-        </table>
-      </div>
-      <?php endif; ?>
-      <?php endforeach; ?>
-
-    <?php else: ?>
-      <div class="form-item">
-        <label for="upload"><?php echo __('upload') ?></label>
-        <?php include_component('digitalobject', 'upload', array('informationObject'=>$informationObject)) ?>
-      </div>
-    <?php endif; ?>
-    </div>
+    <?php include_component('digitalobject', 'edit', array('informationObject'=>$informationObject)); ?>
+  </fieldset>
+  
+  <fieldset class="collapsible collapsed">
+    <legend><?php echo sfConfig::get('app_ui_label_physicalobject'); ?></legend>
+    <?php include_component('physicalobject', 'edit', array('informationObject'=>$informationObject)); ?>
   </fieldset>
 
   <?php if ($sf_context->getActionName() == 'create'): ?>
@@ -437,7 +402,6 @@ EOF
         <?php $deleteWarning .= ' '.__('This will also delete %1% %2%.', array('%1%'=>$digitalObjectCount, '%2%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
       <?php endif; ?>
       &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
- 
       <?php endif; ?>
       
        &nbsp;<?php echo link_to(__('cancel'), 'informationobject/show?id='.$informationObject->getId().'&template=0') ?>

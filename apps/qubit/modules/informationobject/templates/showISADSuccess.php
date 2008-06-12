@@ -58,6 +58,10 @@
 </tr>
 <?php endif; ?>
 
+<?php if (count($physicalObjects = $informationObject->getPhysicalObjects())): ?>
+  <?php include_partial('physicalobject/show', array('physicalObject'=>$physicalObjects[0])); ?>
+<?php endif; ?>
+
 <?php  foreach ($creators as $creator): ?>
   <tr>
   <th><?php echo __('creator'); ?></th>

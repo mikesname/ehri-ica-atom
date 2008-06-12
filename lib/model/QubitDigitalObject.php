@@ -40,8 +40,7 @@ class QubitDigitalObject extends BaseDigitalObject
     'application/x-msaccess'        => 'icon-ms-access.gif',
     'application/vnd.ms-excel'      => 'icon-ms-excel.gif',
     'application/msword'            => 'icon-ms-word.gif',
-    'application/vnd.ms-powerpoint' => 'icon-ms-powerpoint.gif',
-    'unknown'                       => 'blank.png'
+    'application/vnd.ms-powerpoint' => 'icon-ms-powerpoint.gif'
   );
 
   /*
@@ -301,11 +300,11 @@ class QubitDigitalObject extends BaseDigitalObject
           case 'pdf':
             $mediaTypeId = QubitTerm::TEXT_ID; break;
           default:
-            $mediaTypeId = null;
+            $mediaTypeId = QubitTerm::OTHER_ID;
         }
         break;
       default:
-       $mediaTypeId = null;
+       $mediaTypeId = QubitTerm::OTHER_ID;
     }
 
     $this->setMediaTypeId($mediaTypeId);

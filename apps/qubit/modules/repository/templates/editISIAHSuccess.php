@@ -148,13 +148,13 @@
     <legend><?php echo __('description area'); ?></legend>
 
     <div class="form-item">
-      <label for="geocultural_context"><?php echo __('geographical and cultural context'); ?></label>
-      <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('size' => '30x3')) ?>
-    </div>
-
-    <div class="form-item">
       <label for="history"><?php echo __('history'); ?></label>
        <?php echo object_textarea_tag($repository, 'getHistory', array('size' => '30x3')) ?>
+    </div>
+    
+    <div class="form-item">
+      <label for="geocultural_context"><?php echo __('geographical and cultural context'); ?></label>
+      <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -163,7 +163,7 @@
     </div>
 
     <div class="form-item">
-      <label for="collecting_policies"><?php echo __('collecting policies'); ?></label>
+      <label for="collecting_policies"><?php echo __('records management and collecting policies'); ?></label>
       <?php echo object_textarea_tag($repository, 'getCollectingPolicies', array('size' => '30x3')) ?>
     </div>
 
@@ -178,7 +178,7 @@
     </div>
 
     <div class="form-item">
-      <label for="finding_aids"><?php echo __('finding aids and publications'); ?></label>
+      <label for="finding_aids"><?php echo __('finding aids, guides, publications'); ?></label>
       <?php echo object_textarea_tag($repository, 'getFindingAids', array('size' => '30x3')) ?>
     </div>
   </fieldset>
@@ -197,13 +197,8 @@
     </div>
 
     <div class="form-item">
-      <label for="disabled_access"><?php echo __('disabled access'); ?></label>
+      <label for="disabled_access"><?php echo __('accessibility'); ?></label>
       <?php echo object_textarea_tag($repository, 'getDisabledAccess', array('size' => '30x3')) ?>
-    </div>
-
-    <div class="form-item">
-      <label for="transport"><?php echo __('transport'); ?></label>
-      <?php echo object_textarea_tag($repository, 'getTransport', array('size' => '30x3')) ?>
     </div>
   </fieldset>
 
@@ -221,7 +216,7 @@
     </div>
 
     <div class="form-item">
-      <label for="public_facilities"><?php echo __('public facilities'); ?></label>
+      <label for="public_facilities"><?php echo __('public areas'); ?></label>
       <?php echo object_textarea_tag($repository, 'getPublicFacilities', array('size' => '30x3')) ?>
     </div>
   </fieldset>
@@ -245,12 +240,12 @@
     </div>
 
     <div class="form-item">
-      <label for="desc_status_id"><?php echo __('description status'); ?></label>
+      <label for="desc_status_id"><?php echo __('status'); ?></label>
       <?php echo object_select_tag($repository, 'getDescStatusId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getDescriptionStatuses')) ?>
     </div>
 
     <div class="form-item">
-      <label for="desc_detail_id"><?php echo __('description detail'); ?></label>
+      <label for="desc_detail_id"><?php echo __('level of detail'); ?></label>
       <?php echo object_select_tag($repository, 'getDescDetailId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getDescriptionDetailLevels')) ?>
     </div>
 
@@ -260,7 +255,7 @@
     <div>
 
     <div class="form-item">
-      <label for="language_code"><?php echo __('languages of repository description'); ?></label>
+      <label for="language_code"><?php echo __('languages of institution description'); ?></label>
 
       <?php foreach ($languageCodes as $languageCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
@@ -272,7 +267,7 @@
      </div>
 
     <div class="form-item">
-      <label for="script_id"><?php echo __('scripts of repository description'); ?></label>
+      <label for="script_id"><?php echo __('scripts of institution description'); ?></label>
 
       <?php foreach ($scriptCodes as $scriptCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">

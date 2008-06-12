@@ -19,7 +19,7 @@
 <a title="ICA-AtoM" href="http://ica-atom.org/" style="text-decoration: none;"><img alt="ICA-AtoM" src="<?php echo $path ?>/images/ica-atom_logo.png" style="border: 0;" height="95" width="440" /></a>
 
       <h1>Sorry, we are performing some quick site maintenance</h1>
-<img alt="page not found" style="float:left; border:0; margin-right: 20px;" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
+<img alt="page not found" style="float:left; border:0; margin-right: 20px;" src="<?php echo $path ?>/images/tools48.png" height="48" width="48" />
 
       <h4>The website is temporarily unavailable</h4>
       <h4>Please wait a moment...</h4>

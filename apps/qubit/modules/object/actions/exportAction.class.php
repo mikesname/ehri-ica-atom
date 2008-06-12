@@ -57,12 +57,13 @@ class ObjectExportAction extends sfAction
 
     if (!file_exists($xmlView->getDirectory().DIRECTORY_SEPARATOR.$templateFile))
     {
+
       // error condition, unknown schema or no export template
       $this->setLayout(null);
       $this->errors = $this->getContext()->getI18N()->__('unknown schema or export format: "%format%"', array('%format%' => $this->getRequestParameter('format')));
       return sfView::ERROR;
     }
-    $xmlView->setTemplate($templateFile);
+    $xmlView->setTemplate($xmlView->getDirectory().DIRECTORY_SEPARATOR.$templateFile);
 
     // create a new DOM document to export
     $this->exportDOM = new DOMDocument('1,0', 'UTF-8');

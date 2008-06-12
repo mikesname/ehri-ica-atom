@@ -89,15 +89,16 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getGeoculturalContext()): ?>
-  <tr><th><?php echo __('geographical and cultural context')?></th>
-  <td><?php echo nl2br($repository->getGeoculturalContext()) ?>
-  </td></tr>
-<?php endif; ?>
 
 <?php if ($repository->getHistory()): ?>
   <tr><th><?php echo __('history')?></th><td>
   <?php echo nl2br($repository->getHistory())?>
+  </td></tr>
+<?php endif; ?>
+
+<?php if ($repository->getGeoculturalContext()): ?>
+  <tr><th><?php echo __('geographical and cultural context')?></th>
+  <td><?php echo nl2br($repository->getGeoculturalContext()) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -108,7 +109,7 @@
 <?php endif; ?>
 
 <?php if ($repository->getCollectingPolicies()): ?>
-  <tr><th><?php echo __('collecting policies')?></th><td>
+  <tr><th><?php echo __('records management and collecting policies')?></th><td>
   <?php echo nl2br($repository->getCollectingPolicies())?>
   </td></tr>
 <?php endif; ?>
@@ -126,7 +127,7 @@
 <?php endif; ?>
 
 <?php if ($repository->getFindingAids()): ?>
-  <tr><th><?php echo __('finding aids and publications')?></th><td>
+  <tr><th><?php echo __('finding aids, guides, publications')?></th><td>
   <?php echo nl2br($repository->getFindingAids())?>
   </td></tr>
 <?php endif; ?>
@@ -144,14 +145,8 @@
 <?php endif; ?>
 
 <?php if ($repository->getDisabledAccess()): ?>
-  <tr><th><?php echo __('disabled access')?></th><td>
+  <tr><th><?php echo __('accessibility')?></th><td>
   <?php echo nl2br($repository->getDisabledAccess())?>
-  </td></tr>
-<?php endif; ?>
-
-<?php if ($repository->getTransport()): ?>
-  <tr><th><?php echo __('transport')?></th><td>
-  <?php echo nl2br($repository->getTransport())?>
   </td></tr>
 <?php endif; ?>
 
@@ -168,7 +163,7 @@
 <?php endif; ?>
 
 <?php if ($repository->getPublicFacilities()): ?>
-  <tr><th><?php echo __('public facilities')?></th><td>
+  <tr><th><?php echo __('public areas')?></th><td>
   <?php echo nl2br($repository->getPublicFacilities())?>
   </td></tr>
 <?php endif; ?>
@@ -192,13 +187,13 @@
 <?php endif; ?>
 
 <?php if ($repository->getDescStatusId()): ?>
-  <tr><th><?php echo __('description status')?></th><td>
+  <tr><th><?php echo __('status')?></th><td>
   <?php echo $repository->getDescStatus() ?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getDescDetailId()): ?>
-  <tr><th><?php echo __('description detail')?></th><td>
+  <tr><th><?php echo __('level of detail')?></th><td>
   <?php echo $repository->getDescDetail() ?>
   </td></tr>
 <?php endif; ?>

@@ -325,11 +325,10 @@ CREATE TABLE `q_physical_object`
 (
 	`id` INTEGER  NOT NULL,
 	`information_object_id` INTEGER,
-	`name` VARCHAR(255),
-	`location_id` INTEGER,
+	`type_id` INTEGER,
 	`parent_id` INTEGER,
-	`lft` INTEGER,
-	`rgt` INTEGER,
+	`lft` INTEGER  NOT NULL,
+	`rgt` INTEGER  NOT NULL,
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
@@ -342,10 +341,14 @@ CREATE TABLE `q_physical_object`
 	CONSTRAINT `q_physical_object_FK_2`
 		FOREIGN KEY (`information_object_id`)
 		REFERENCES `q_information_object` (`id`),
-	INDEX `q_physical_object_FI_3` (`location_id`),
+	INDEX `q_physical_object_FI_3` (`type_id`),
 	CONSTRAINT `q_physical_object_FK_3`
-		FOREIGN KEY (`location_id`)
-		REFERENCES `q_term` (`id`)
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`),
+	INDEX `q_physical_object_FI_4` (`parent_id`),
+	CONSTRAINT `q_physical_object_FK_4`
+		FOREIGN KEY (`parent_id`)
+		REFERENCES `q_physical_object` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -359,6 +362,7 @@ CREATE TABLE `q_physical_object_i18n`
 (
 	`name` VARCHAR(255),
 	`description` TEXT,
+	`location` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),

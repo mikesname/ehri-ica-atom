@@ -102,17 +102,17 @@ propel:
   physical_object:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     information_object_id:
-    name: varchar(255)
-    location_id: { type: integer, foreignTable: term, foreignReference: id }
-    parent_id: integer
-    lft: integer
-    rgt: integer
+    type_id: { type: integer, foreignTable: term, foreignReference: id }
+    parent_id: { type: integer, foreignTable: physical_object, foreignReference: id }
+    lft: { type: integer, required: true, nestedSetLeftKey: true }
+    rgt: { type: integer, required: true, nestedSetRightKey: true }
     created_at:
     updated_at:
 
   physical_object_i18n:
     name: varchar(255)
     description: longvarchar
+    location: longvarchar
 
   actor:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }

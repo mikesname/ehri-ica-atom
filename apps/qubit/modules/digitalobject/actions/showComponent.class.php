@@ -51,17 +51,18 @@ class DigitalObjectShowComponent extends sfComponent
       case QubitTerm::IMAGE_ID:
         $this->showComponent = 'showImage';
         break;
-      case QubitTerm::AUDIO_ID:
+      //case QubitTerm::AUDIO_ID:
         //$this->showComponent = 'showAudio';
         //break;
-      case QubitTerm::VIDEO_ID:
+      //case QubitTerm::VIDEO_ID:
         //$this->showComponent = 'showVideo';
         // break;
-      case QubitTerm::TEXT_ID:
+      case (QubitTerm::TEXT_ID):
         $this->showComponent = 'showText';
         break;
       default:
         $this->showComponent = 'showDownload';
+        break;
     }
 
     if (!isset($this->link))

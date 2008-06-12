@@ -64,17 +64,10 @@ class InformationObjectEditAction extends sfAction
       }
     }
 
-    // Get related digital object with all representations
     $this->digitalObjectCount = 0;
-    $this->digitalObject = $this->informationObject->getDigitalObject();
-    if (count($this->digitalObject))
+    if (null !== $digitalObject = $this->informationObject->getDigitalObject())
     {
-      $representations[QubitTerm::MASTER_ID] = $this->digitalObject;
-      $representations[QubitTerm::REFERENCE_ID] = $this->digitalObject->getChildByUsageId(QubitTerm::REFERENCE_ID);
-      $representations[QubitTerm::THUMBNAIL_ID] = $this->digitalObject->getChildByUsageId(QubitTerm::THUMBNAIL_ID);
-      $this->representations = $representations;
-
-      $this->digitalObjectCount = count($this->digitalObject->getDescendants()->andSelf());
+      $this->digitalObjectCount = count($digitalObject->getDescendants()->andSelf());
     }
 
     //set template

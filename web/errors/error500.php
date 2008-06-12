@@ -19,7 +19,7 @@
 <a title="ICA-AtoM" href="http://ica-atom.org/" style="text-decoration: none;"><img alt="ICA-AtoM" src="<?php echo $path ?>/images/ica-atom_logo.png" style="border: 0;" height="95" width="440" /></a>
 
 <div style="margin-top: 50px;">
-<img alt="page not found" style="float:left; border:0; margin-right: 20px;" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
+<img alt="page not found" style="float:left; border:0; margin-right: 20px;" src="<?php echo $path ?>/images/tools48.png" height="48" width="48" />
       <h1>Oops! An Error Occurred (500)</h1>
 </div>
 <div style="margin-top: 50px;">

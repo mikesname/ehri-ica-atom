@@ -19,16 +19,27 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
-class QubitPhysicalObject extends BasePhysicalObject
+/**
+ * Digital Object edit component.
+ *
+ * @package    qubit
+ * @subpackage digitalobject
+ * @author     david juhasz <david@artefactual.com>
+ * @version    SVN: $Id
+ */
+class DigitalObjectEditComponent extends sfComponent
 {
-  
-  public function __toString()
+  public function execute($request)
   {
-    if (!$this->getName())
-      {
-      return (string) $this->getName(array('sourceCulture' => true));
-      }
   
-    return (string) $this->getName();
+    // Get related digital object with all representations
+    $this->digitalObject = $this->informationObject->getDigitalObject();
+    if (count($this->digitalObject))
+    {
+      $representations[QubitTerm::MASTER_ID] = $this->digitalObject;
+      $representations[QubitTerm::REFERENCE_ID] = $this->digitalObject->getChildByUsageId(QubitTerm::REFERENCE_ID);
+      $representations[QubitTerm::THUMBNAIL_ID] = $this->digitalObject->getChildByUsageId(QubitTerm::THUMBNAIL_ID);
+      $this->representations = $representations;
+    }
   }
 }

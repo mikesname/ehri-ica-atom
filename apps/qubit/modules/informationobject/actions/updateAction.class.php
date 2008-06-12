@@ -61,6 +61,7 @@ class InformationObjectUpdateAction extends sfAction
     $this->updateObjectTermRelations($informationObject);
     $this->updateActorEvents($informationObject);
     $this->updateDigitalObjects($request,$informationObject);
+    $this->updatePhysicalObjects($informationObject);
     //$this->updateRecursiveRelations($informationObject);
 
     // update informationObject in the search index
@@ -389,77 +390,83 @@ class InformationObjectUpdateAction extends sfAction
   public function updateDigitalObjects($request, $informationObject)
   {
     $uploadFiles = $request->getFileName('upload_file');
-
-    foreach ($uploadFiles as $usageId => $filename)
+    
+    if (count($uploadFiles)) 
     {
-        if (strlen($filename))
+      
+      foreach ($uploadFiles as $usageId => $filename)
+      {
+        if (strlen(!$filename)) 
         {
-          // Upload file and return meta-data about it
-          if (!$uploadFile = DigitalObjectUploadComponent::uploadAsset($request, $informationObject, $usageId))
-          {
-            return sfView::ERROR;  // exit loop if upload fails
-          }
+          continue; // Skip to next $uploadFile if no valid filename
+        }
+        
+        // Upload file and return meta-data about it
+        if (!$uploadFile = DigitalObjectUploadComponent::uploadAsset($request, $informationObject, $usageId))
+        {
+          return sfView::ERROR;  // exit loop if upload fails
+        }
 
-          // Create digital object in database
-          $newDigitalObject = new QubitDigitalObject;
+        // Create digital object in database
+        $newDigitalObject = new QubitDigitalObject;
 
-          $newDigitalObject->setName($uploadFile['name']);
-          $newDigitalObject->setPath($uploadFile['path']);
-          $newDigitalObject->setByteSize($uploadFile['size']);
-          $newDigitalObject->setUsageId($usageId);
+        $newDigitalObject->setName($uploadFile['name']);
+        $newDigitalObject->setPath($uploadFile['path']);
+        $newDigitalObject->setByteSize($uploadFile['size']);
+        $newDigitalObject->setUsageId($usageId);
 
-          // Set parent
+        // Set parent
+        if ($usageId == QubitTerm::MASTER_ID)
+        {
+           // If this is a master digital object upload, info object is parent
+          $newDigitalObject->setInformationObjectId($informationObject->getId());
+        }
+        else
+        {
+          // If this is a reference or thumbnail representation for a digital object,
+          // then digital object is parent
+          $newDigitalObject->setParentId($informationObject->getDigitalObject()->getId());
+        }
+
+        // Set Mime Type & File Type
+        $newDigitalObject->setMimeAndMediaType();
+        $newDigitalObject->save();
+
+        // Scale images (and pdfs) and create derivatives
+        if ($newDigitalObject->canThumbnail())
+        {
           if ($usageId == QubitTerm::MASTER_ID)
           {
-             // If this is a master digital object upload, info object is parent
-            $newDigitalObject->setInformationObjectId($informationObject->getId());
+            $newDigitalObject->createReferenceImage();
+            $newDigitalObject->createThumbnail();
           }
-          else
+          else if ($usageId == QubitTerm::REFERENCE_ID)
           {
-            // If this is a reference or thumbnail representation for a digital object,
-            // then digital object is parent
-            $newDigitalObject->setParentId($informationObject->getDigitalObject()->getId());
+            $newDigitalObject->resizeByUsageId(QubitTerm::REFERENCE_ID);
+            $newDigitalObject->createThumbnail();
           }
-
-          // Set Mime Type & File Type
-          $newDigitalObject->setMimeAndMediaType();
-          $newDigitalObject->save();
-
-          // Scale images (and pdfs) and create derivatives
-          if ($newDigitalObject->canThumbnail())
+          else if ($usageId == QubitTerm::THUMBNAIL_ID)
           {
-            if ($usageId == QubitTerm::MASTER_ID)
-            {
-              $newDigitalObject->createReferenceImage();
-              $newDigitalObject->createThumbnail();
-            }
-            else if ($usageId == QubitTerm::REFERENCE_ID)
-            {
-              $newDigitalObject->resizeByUsageId(QubitTerm::REFERENCE_ID);
-              $newDigitalObject->createThumbnail();
-            }
-            else if ($usageId == QubitTerm::THUMBNAIL_ID)
-            {
-              $newDigitalObject->resizeByUsageId(QubitTerm::THUMBNAIL_ID);
-            }
+            $newDigitalObject->resizeByUsageId(QubitTerm::THUMBNAIL_ID);
           }
+        }
 
-          if ($newDigitalObject->getMediaType() == 'video')
-          {
-            $newDigitalObject->createVideoDerivative(QubitTerm::REFERENCE_ID);
-          }
+        if ($newDigitalObject->getMediaType() == 'video')
+        {
+          $newDigitalObject->createVideoDerivative(QubitTerm::REFERENCE_ID);
+        }
 
-          // If this is a new information object with no title, set title to name
-          // of digital object
-          if ($request->getParameter('action') == 'update' && $informationObject->getTitle() == null && $usageId == QubitTerm::MASTER_ID)
-          {
-            $informationObject->setTitle($newDigitalObject->getName());
-            $informationObject->save();
-          }
+        // If this is a new information object with no title, set title to name
+        // of digital object
+        if ($request->getParameter('action') == 'update' && $informationObject->getTitle() == null && $usageId == QubitTerm::MASTER_ID)
+        {
+          $informationObject->setTitle($newDigitalObject->getName());
+          $informationObject->save();
+        }
 
-          $this->foreignKeyUpdate = true;
-        } // endif
+        $this->foreignKeyUpdate = true;
       } // endforeach
+    } // end if
 
     // Generate a derivative
     if ($request->hasParameter('createDerivative'))
@@ -477,4 +484,60 @@ class InformationObjectUpdateAction extends sfAction
       }
     }
   } // end function
+  
+  
+  /**
+   * Update physical object.
+   *
+   * @param  sfRequest         The current sfRequest object
+   * @param  informationObject The current informationObject object
+   *
+   */
+  public function updatePhysicalObjects($informationObject)
+  {
+    $oldPhysicalObjects = $informationObject->getPhysicalObjects();
+    
+    if (strlen($physicalObjectName = $this->getRequestParameter('physicalObjectName'))) 
+    {
+      $physicalObject = new QubitPhysicalObject;
+      
+      $physicalObject->setInformationObjectId($informationObject->getId());
+      $physicalObject->setName($physicalObjectName);
+      
+      if ($this->hasRequestParameter('physicalObjectLocation'))
+      {
+        $physicalObject->setLocation($this->getRequestParameter('physicalObjectLocation'));
+      }
+      
+      if (intval($this->getRequestParameter('physicalObjectContainerId')))
+      {
+        $physicalObject->setTypeId($this->getRequestParameter('physicalObjectContainerId'));
+      }
+    }
+    else if (intval($physicalObjectId = $this->getRequestParameter('physicalObjectId')))
+    {
+      $physicalObject = QubitPhysicalObject::getById($physicalObjectId);
+      $physicalObject->setInformationObjectId($informationObject->getId());
+    }
+    else 
+    {
+      
+      return false;
+    }
+    
+    $physicalObject->save();
+    
+    // Detach old physical objects from this info object (enforce 1-to-1)
+    if (count($oldPhysicalObjects)) 
+    {
+      foreach ($oldPhysicalObjects as $oldPhysicalObject)
+      {
+        if ($oldPhysicalObject->getId() != $physicalObject->getId())
+        {
+          $oldPhysicalObject->setInformationObjectId(null);
+          $oldPhysicalObject->save();
+        }
+      }
+    }
+  }
  }

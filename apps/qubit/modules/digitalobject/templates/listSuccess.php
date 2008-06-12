@@ -5,7 +5,7 @@
     <?php if ($sort == 'nameUp'): ?>
       <?php echo link_to(__('name'), 'digitalobject/list?sort=nameDown') ?>
       <?php echo image_tag('up.gif', array('style' => 'padding-bottom: 3px'), 'sort up') ?>
-    <?php else if ($sort == 'nameDown'): ?>
+    <?php elseif ($sort == 'nameDown'): ?>
       <?php echo link_to(__('name'), 'digitalobject/list?sort=nameUp') ?>
       <?php echo image_tag('down.gif', array('style' => 'padding-bottom: 3px'), 'sort down') ?>
     <?php else: ?>
@@ -16,7 +16,7 @@
     <?php if ($sort == 'hitsUp'): ?>
       <?php echo link_to(__('results'), 'digitalobject/list?sort=hitsDown') ?>
       <?php echo image_tag('up.gif', array('style' => 'padding-bottom: 3px'), 'sort up') ?>
-    <?php else if ($sort == 'hitsDown'): ?>
+    <?php elseif ($sort == 'hitsDown'): ?>
       <?php echo link_to(__('results'), 'digitalobject/list?sort=hitsUp') ?>
       <?php echo image_tag('down.gif', array('style' => 'padding-bottom: 3px'), 'sort down') ?>
     <?php else: ?>

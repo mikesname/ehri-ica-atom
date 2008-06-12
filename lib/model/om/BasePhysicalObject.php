@@ -8,8 +8,6 @@ abstract class BasePhysicalObject extends QubitObject
 
   const ID = 'q_physical_object.ID';
   const INFORMATION_OBJECT_ID = 'q_physical_object.INFORMATION_OBJECT_ID';
-  const NAME = 'q_physical_object.NAME';
-  const LOCATION = 'q_physical_object.LOCATION';
   const TYPE_ID = 'q_physical_object.TYPE_ID';
   const PARENT_ID = 'q_physical_object.PARENT_ID';
   const LFT = 'q_physical_object.LFT';
@@ -26,8 +24,6 @@ abstract class BasePhysicalObject extends QubitObject
 
     $criteria->addSelectColumn(QubitPhysicalObject::ID);
     $criteria->addSelectColumn(QubitPhysicalObject::INFORMATION_OBJECT_ID);
-    $criteria->addSelectColumn(QubitPhysicalObject::NAME);
-    $criteria->addSelectColumn(QubitPhysicalObject::LOCATION);
     $criteria->addSelectColumn(QubitPhysicalObject::TYPE_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::PARENT_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::LFT);
@@ -98,34 +94,6 @@ abstract class BasePhysicalObject extends QubitObject
   public function setInformationObjectId($informationObjectId)
   {
     $this->informationObjectId = $informationObjectId;
-
-    return $this;
-  }
-
-  protected $name = null;
-
-  public function getName()
-  {
-    return $this->name;
-  }
-
-  public function setName($name)
-  {
-    $this->name = $name;
-
-    return $this;
-  }
-
-  protected $location = null;
-
-  public function getLocation()
-  {
-    return $this->location;
-  }
-
-  public function setLocation($location)
-  {
-    $this->location = $location;
 
     return $this;
   }
@@ -256,8 +224,6 @@ abstract class BasePhysicalObject extends QubitObject
 
     $this->columnValues['id'] = $this->id;
     $this->columnValues['informationObjectId'] = $this->informationObjectId;
-    $this->columnValues['name'] = $this->name;
-    $this->columnValues['location'] = $this->location;
     $this->columnValues['typeId'] = $this->typeId;
     $this->columnValues['parentId'] = $this->parentId;
     $this->columnValues['lft'] = $this->lft;
@@ -275,8 +241,6 @@ abstract class BasePhysicalObject extends QubitObject
 
     $this->id = $results->getInt($columnOffset++);
     $this->informationObjectId = $results->getInt($columnOffset++);
-    $this->name = $results->getString($columnOffset++);
-    $this->location = $results->getString($columnOffset++);
     $this->typeId = $results->getInt($columnOffset++);
     $this->parentId = $results->getInt($columnOffset++);
     $this->lft = $results->getInt($columnOffset++);
@@ -343,16 +307,6 @@ abstract class BasePhysicalObject extends QubitObject
     if ($this->isColumnModified('informationObjectId'))
     {
       $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
-    }
-
-    if ($this->isColumnModified('name'))
-    {
-      $criteria->add(QubitPhysicalObject::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('location'))
-    {
-      $criteria->add(QubitPhysicalObject::LOCATION, $this->location);
     }
 
     if ($this->isColumnModified('typeId'))
@@ -425,16 +379,6 @@ abstract class BasePhysicalObject extends QubitObject
     if ($this->isColumnModified('informationObjectId'))
     {
       $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
-    }
-
-    if ($this->isColumnModified('name'))
-    {
-      $criteria->add(QubitPhysicalObject::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('location'))
-    {
-      $criteria->add(QubitPhysicalObject::LOCATION, $this->location);
     }
 
     if ($this->isColumnModified('typeId'))
@@ -661,6 +605,18 @@ abstract class BasePhysicalObject extends QubitObject
   public function setDescription($value, array $options = array())
   {
     $this->getCurrentPhysicalObjectI18n($options)->setDescription($value);
+
+    return $this;
+  }
+
+  public function getLocation(array $options = array())
+  {
+    return $this->getCurrentPhysicalObjectI18n($options)->getLocation();
+  }
+
+  public function setLocation($value, array $options = array())
+  {
+    $this->getCurrentPhysicalObjectI18n($options)->setLocation($value);
 
     return $this;
   }

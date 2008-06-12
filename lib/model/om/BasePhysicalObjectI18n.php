@@ -8,6 +8,7 @@ abstract class BasePhysicalObjectI18n
 
   const NAME = 'q_physical_object_i18n.NAME';
   const DESCRIPTION = 'q_physical_object_i18n.DESCRIPTION';
+  const LOCATION = 'q_physical_object_i18n.LOCATION';
   const ID = 'q_physical_object_i18n.ID';
   const CULTURE = 'q_physical_object_i18n.CULTURE';
 
@@ -15,6 +16,7 @@ abstract class BasePhysicalObjectI18n
   {
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::NAME);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::DESCRIPTION);
+    $criteria->addSelectColumn(QubitPhysicalObjectI18n::LOCATION);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::ID);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::CULTURE);
 
@@ -25,7 +27,7 @@ abstract class BasePhysicalObjectI18n
 
   public static function getFromResultSet(ResultSet $resultSet)
   {
-    if (!isset(self::$physicalObjectI18ns[$key = serialize(array($resultSet->getInt(3), $resultSet->getString(4)))]))
+    if (!isset(self::$physicalObjectI18ns[$key = serialize(array($resultSet->getInt(4), $resultSet->getString(5)))]))
     {
       $physicalObjectI18n = new QubitPhysicalObjectI18n;
       $physicalObjectI18n->hydrate($resultSet);
@@ -111,6 +113,20 @@ abstract class BasePhysicalObjectI18n
     return $this;
   }
 
+  protected $location = null;
+
+  public function getLocation()
+  {
+    return $this->location;
+  }
+
+  public function setLocation($location)
+  {
+    $this->location = $location;
+
+    return $this;
+  }
+
   protected $id = null;
 
   public function getId()
@@ -154,6 +170,7 @@ abstract class BasePhysicalObjectI18n
   {
     $this->columnValues['name'] = $this->name;
     $this->columnValues['description'] = $this->description;
+    $this->columnValues['location'] = $this->location;
     $this->columnValues['id'] = $this->id;
     $this->columnValues['culture'] = $this->culture;
 
@@ -164,6 +181,7 @@ abstract class BasePhysicalObjectI18n
   {
     $this->name = $results->getString($columnOffset++);
     $this->description = $results->getString($columnOffset++);
+    $this->location = $results->getString($columnOffset++);
     $this->id = $results->getInt($columnOffset++);
     $this->culture = $results->getString($columnOffset++);
 
@@ -232,6 +250,11 @@ abstract class BasePhysicalObjectI18n
       $criteria->add(QubitPhysicalObjectI18n::DESCRIPTION, $this->description);
     }
 
+    if ($this->isColumnModified('location'))
+    {
+      $criteria->add(QubitPhysicalObjectI18n::LOCATION, $this->location);
+    }
+
     if ($this->isColumnModified('id'))
     {
       $criteria->add(QubitPhysicalObjectI18n::ID, $this->id);
@@ -267,6 +290,11 @@ abstract class BasePhysicalObjectI18n
     if ($this->isColumnModified('description'))
     {
       $criteria->add(QubitPhysicalObjectI18n::DESCRIPTION, $this->description);
+    }
+
+    if ($this->isColumnModified('location'))
+    {
+      $criteria->add(QubitPhysicalObjectI18n::LOCATION, $this->location);
     }
 
     if ($this->isColumnModified('id'))

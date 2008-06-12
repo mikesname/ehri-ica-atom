@@ -36,15 +36,13 @@ class PhysicalObjectMapBuilder {
 
 		$tMap->addForeignKey('INFORMATION_OBJECT_ID', 'InformationObjectId', 'int', CreoleTypes::INTEGER, 'q_information_object', 'ID', false, null);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
-		$tMap->addForeignKey('LOCATION_ID', 'LocationId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, 'q_physical_object', 'ID', false, null);
 
-		$tMap->addColumn('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, true, null);
 
-		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, false, null);
-
-		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, true, null);
 
 		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
 

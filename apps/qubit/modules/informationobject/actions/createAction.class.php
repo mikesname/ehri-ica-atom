@@ -57,9 +57,12 @@ class InformationObjectCreateAction extends sfAction
    $this->creators = null;
    $this->newCreationEvent = new QubitEvent;
 
-   // Digital Objects
+   // Digital Object
    $this->digitalObject = null;
-
+   
+   // Physical Object
+   $this->physicalObject = null;
+   
    //set template
    switch ($this->getRequestParameter('template'))
       {

@@ -102,6 +102,17 @@ class QubitTerm extends BaseTerm
            $this->getId() == QubitTerm::CONTAINER_ID ||
            $this->getId() == QubitTerm::ARTEFACT_ID;
   }
+  
+  
+  public function __toString()
+  {
+    if (!$this->getName())
+      {
+      return (string) $this->getName(array('sourceCulture' => true));
+      }
+  
+    return (string) $this->getName();
+  }
 
   public static function getLevelsOfDescription($options = array())
   {
@@ -167,21 +178,60 @@ class QubitTerm extends BaseTerm
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID, $options);
   }
-
+  
+  
+  /**
+   * Return a list of all Physical Object terms
+   *
+   * @return QubitQuery array of Physical Object QubitTerm objects
+   */
   public static function getPhysicalObjectTypes($options = array())
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID, $options);
-  } 
-
-  public function __toString()
-  {
-    if (!$this->getName())
-      {
-      return (string) $this->getName(array('sourceCulture' => true));
-      }
-  
-    return (string) $this->getName();
   }
+  
+  
+  /**
+   * Return a list of all Physical object container types
+   *
+   * @return QubitQuery array of container QubitTerm objects
+   */
+  public static function getPhysicalObjectContainerTypes()
+  {
+    $containerTerm = QubitTerm::getById(QubitTerm::CONTAINER_ID);
+    return $containerTerm->getDescendants();
+  }
+  
+  
+  /**
+   * Get a list of child terms of $parentTermId. Prefix $indentStr * depth of child
+   * relative to parent
+   *
+   * @param integer $parentTermId  Primary key of parent term
+   * @param string  $indentStr     String to prefix to each sub-level for indenting
+   * 
+   * @return mixed  false on failure, else array of children formatted for select box
+   */
+  public static function getIndentedChildTree($parentTermId, $indentStr="&nbsp;")
+  {
+    if (!$parentTerm = QubitTerm::getById($parentTermId)) 
+    {
+
+      return false;
+    }
+    
+    $parentDepth = count($parentTerm->getAncestors());
+    
+    foreach ($parentTerm->getDescendants()->orderBy('lft') as $i => $node)
+    {
+      $relativeDepth = intval(count($node->getAncestors()) - $parentDepth - 1);
+      $tree[$node->getId()] = str_repeat($indentStr, $relativeDepth).$node->getName();
+    }
+    
+    return $tree;
+  }
+  
+
   
   protected $CountryHitCount = null;
   protected $LanguageHitCount = null;
