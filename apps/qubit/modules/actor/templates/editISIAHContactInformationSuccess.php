@@ -25,6 +25,8 @@
 <tr><th><?php echo __('Primary contact?') ?></th>
 <td><?php echo object_checkbox_tag($contactInformation, 'getPrimaryContact', array('style' => 'border: 0; width: 20px;')) ?></td></tr>
 
+<tr><th><?php echo __('Contact Person') ?></th><td><?php echo object_input_tag($contactInformation, 'getContactPerson') ?></td></tr>
+
 <tr><th><?php echo __('Street address') ?></th><td><?php echo object_textarea_tag($contactInformation, 'getStreetAddress', array ('size' => '30x3'))?></td></tr>
 
 <tr><th><?php echo __('City') ?></th><td><?php echo object_input_tag($contactInformation, 'getCity') ?></td></tr>
@@ -61,7 +63,7 @@
 </tbody>
 </table>
 
-</form>
+
 
 <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
 <div id="button-block-bump"></div>
@@ -102,4 +104,4 @@
 
 </div>
 </div>
-
+</form>

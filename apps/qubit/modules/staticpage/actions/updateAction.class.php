@@ -37,10 +37,26 @@ class StaticPageUpdateAction extends sfAction
     $staticPage->setTitle($this->getRequestParameter('title'));
     $staticPage->setContent($this->getRequestParameter('content'));
 
+    if (!$staticPage->getPermalink())
+    {
+      // check to see if the same title already exists for another page (permalinks must be unique)
+      $criteria = new Criteria;
+      $criteria->addJoin(QubitStaticPage::ID, QubitStaticPageI18n::ID);
+      $criteria->add(QubitStaticPageI18n::TITLE, $this->getRequestParameter('title'));
+      $matchingTitles = QubitStaticPageI18n::get($criteria);
+      if (($titleCount = count($matchingTitles)) > 0)    
+      {
+        //append the permalink slug if the same title text is already being used for another page
+        $staticPage->setPermalink(StaticPageFormat::stripText($this->getRequestParameter('title')).'-'.($titleCount + 1));
+      }
+      else  
+      {
+        $staticPage->setPermalink(StaticPageFormat::stripText($this->getRequestParameter('title')));
+      }
+    }
+
     $staticPage->save();
 
-    $permalink = $staticPage->getPermalink();
-
-    return $this->redirect($permalink);
+    return $this->redirect(array('module' => 'staticpage', 'action' => 'static', 'permalink' => $staticPage->getPermalink()));
   }
 }

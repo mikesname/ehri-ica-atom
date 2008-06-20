@@ -21,19 +21,5 @@
 
 class QubitStaticPage extends BaseStaticPage
 {
-/*FIXME: This function is disabled because it is causing a bug
-see http://code.google.com/p/qubit-toolkit/issues/detail?id=197
 
-	// TODO: This function still needs an exception that checks to see if the permalink name is unique
-	public function setTitle($value, array $options = array())
-	{
-		parent::setTitle($value);
-
-		// only generate the permalink if one does not already exist to avoid clobbering
-		if (!$this->getPermalink())
-		{
-			$this->setPermalink(StaticPageFormat::stripText($value));
-		}
-	}
-*/
 }

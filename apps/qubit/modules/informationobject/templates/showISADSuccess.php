@@ -58,8 +58,9 @@
 </tr>
 <?php endif; ?>
 
-<?php if (count($physicalObjects = $informationObject->getPhysicalObjects())): ?>
-  <?php include_partial('physicalobject/show', array('physicalObject'=>$physicalObjects[0])); ?>
+<?php if (count($physicalObjects) && $editCredentials): ?>
+  <?php include_partial('physicalobject/show', 
+    array('informationObject'=>$informationObject, 'physicalObjects'=>$physicalObjects)); ?>
 <?php endif; ?>
 
 <?php  foreach ($creators as $creator): ?>

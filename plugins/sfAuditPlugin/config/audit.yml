@@ -12,6 +12,10 @@
     'svn:keywords': Author Id Revision
     'svn:eol-style': native
 
+//*.png:
+  props:
+    'svn:mime-type': image/png
+
 apps/*/i18n/*/messages.xml:
   code:
 
@@ -19,6 +23,15 @@ apps/*/modules/*/templates//*:
   code:
 
 apps/*/templates//*:
+  code:
+
+apps/qubit/lib/export/*.xml:
+  code:
+
+apps/qubit/lib/xslt/*.xml:
+  code:
+
+apps/qubit/lib/xslt/*.xsl:
   code:
 
 lib/drupal//*:
@@ -33,7 +46,16 @@ lib/model/map//*:
 lib/model/om//*:
   code:
 
+lib/xhtml-to-xslfo.xsl:
+  code:
+
+package.xml.tmpl:
+  code:
+
 plugins/*/modules/*/templates//*:
+  code:
+
+plugins/*/package.xml:
   code:
 
 plugins/sfAuditPlugin/lib/vendor/PHP//*:

@@ -1,10 +1,3 @@
-<!--
-	METS 1.6 XML SCHEMA
-
-	This file is part of the Qubit Toolkit.
-	Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
--->
-
 <mets xmlns="http://www.loc.gov/METS/"
 	  xmlns:xlink="http://www.w3.org/1999/xlink"
 	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

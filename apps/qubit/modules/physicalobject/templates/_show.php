@@ -1,16 +1,19 @@
 <tr>
   <th><?php echo sfConfig::get('app_ui_label_physicalobject'); ?></th>
+  
   <td>
-    <?php if ($physicalObject->getName()): ?>
-    <?php echo '<b>'.$physicalObject->getName().'</b>'; ?>
-    <?php endif; ?>
-    
-    <?php if ($physicalObject->getLocation()): ?>
-    <?php echo '<br />'.__('location').': '.$physicalObject->getLocation(); ?>
-    <?php endif; ?>
-    
-    <?php if ($physicalObject->getType()): ?>
-    <?php echo '<br />'.__('container type').': '.$physicalObject->getType(); ?>
-    <?php endif; ?>
+    <?php foreach($physicalObjects as $i=>$physicalObject): ?>
+      <?php if ($i > 0) { echo '<br /><br />'; } ?>
+      <?php if ($physicalObject->getType()): ?>
+      <?php echo $physicalObject->getType().': '; ?>
+      <?php endif; ?>
+      <?php if ($physicalObject->getName()): ?>
+      <?php echo link_to($physicalObject->getName(), 
+        'physicalobject/edit?id='.$physicalObject->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()) ?>
+      <?php endif; ?>
+      <?php if ($physicalObject->getLocation()): ?>
+      <?php echo ' - '.$physicalObject->getLocation(); ?>
+      <?php endif; ?>
+    <?php endforeach; ?>
   </td>
 </tr>

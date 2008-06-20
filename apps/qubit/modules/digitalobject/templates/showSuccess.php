@@ -6,14 +6,14 @@
 <?php if ($informationObject->getTitle(array('sourceCulture' => true))): ?>
 <tr><td colspan="2" class="headerCell">
 <?php if ($editCredentials): ?>
-  <?php echo link_to($informationObject->getLabel(), 'digitalobject/edit/?id='.$digitalObject->getId()); ?>
+  <?php echo link_to($informationObject->getLabel(), 'informationobject/edit/?id='.$informationObject->getId()); ?>
 <?php else: ?>
   <?php echo $informationObject->getLabel(); ?>
 <?php endif; ?>
 </td></tr>
 <?php endif; ?>
 
-<tr><td style="text-align: center" colspan="2">
+<tr><td align="center" style="text-align: center;" colspan="2">
   <?php include_component('digitalobject', 'show', array(
     'digitalObject'=>$digitalObject,
     'usageType'=>QubitTerm::REFERENCE_ID,

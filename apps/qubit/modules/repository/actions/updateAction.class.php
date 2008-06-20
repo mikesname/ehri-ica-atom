@@ -74,6 +74,7 @@ class RepositoryUpdateAction extends sfAction
     {
       $repository->setAuthorizedFormOfName($this->getRequestParameter('authorized_form_of_name'));
       $repository->setHistory($this->getRequestParameter('history'));
+      $repository->setMandates($this->getRequestParameter('mandates'));
       $repository->setInternalStructures($this->getRequestParameter('internal_structures'));
       $repository->save();
     }
@@ -90,7 +91,6 @@ class RepositoryUpdateAction extends sfAction
   $repository->setOpeningTimes($this->getRequestParameter('opening_times'));
   $repository->setAccessConditions($this->getRequestParameter('access_conditions'));
   $repository->setDisabledAccess($this->getRequestParameter('disabled_access'));
-  $repository->setTransport($this->getRequestParameter('transport'));
   $repository->setResearchServices($this->getRequestParameter('research_services'));
   $repository->setReproductionServices($this->getRequestParameter('reproduction_services'));
   $repository->setPublicFacilities($this->getRequestParameter('public_facilities'));
@@ -161,6 +161,7 @@ class RepositoryUpdateAction extends sfAction
     if ($repository->getId())
       {
       if (($this->getRequestParameter('contact_type')) or
+        ($this->getRequestParameter('contact_person')) or
         ($this->getRequestParameter('street_address')) or
         ($this->getRequestParameter('city')) or
         ($this->getRequestParameter('region')) or
@@ -175,6 +176,7 @@ class RepositoryUpdateAction extends sfAction
         $contactInformation->setActorId($repository->getId());
         $contactInformation->setContactType($this->getRequestParameter('contact_type'));
         $contactInformation->setPrimaryContact($this->getRequestParameter('primary_contact'));
+        $contactInformation->setContactPerson($this->getRequestParameter('contact_person'));
         $contactInformation->setStreetAddress($this->getRequestParameter('street_address'));
         $contactInformation->setCity($this->getRequestParameter('city'));
         $contactInformation->setRegion($this->getRequestParameter('region'));

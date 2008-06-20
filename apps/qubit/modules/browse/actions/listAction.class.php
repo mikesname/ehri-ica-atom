@@ -71,6 +71,12 @@ class BrowseListAction extends sfAction
       $this->redirect('digitalobject/list');
       break;
       }
+    case 'informationobject':
+      {
+      $this->getUser()->setAttribute('browse_list', 'informationobject');
+      $this->redirect('informationobject/list');
+      break;
+      }
     case 'recentUpdates':
       {
       $this->getUser()->setAttribute('browse_list', 'recentUpdates');

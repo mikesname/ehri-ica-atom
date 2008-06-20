@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="it" datatype="plaintext" original="messages" date="2008-03-17T14:58:52Z" product-name="messages">
+  <file source-language="EN" target-language="it" datatype="plaintext" original="messages" date="2008-06-20T11:46:26Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="111">
         <source>language</source>
-        <target/>
+        <target>lingua</target>
       </trans-unit>
       <trans-unit id="112">
         <source>related items</source>
@@ -1368,6 +1368,298 @@
       </trans-unit>
       <trans-unit id="349">
         <source>open-source archival description software</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="350">
+        <source>help</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="351">
+        <source>Browse for '%1%' in '%2%' returned %3% results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="352">
+        <source>Part of: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="353">
+        <source>browse all %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="354">
+        <source>create</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="355">
+        <source>list all taxonomies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="356">
+        <source>list only %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="357">
+        <source>results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="358">
+        <source>parent level</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="359">
+        <source>Creator</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="360">
+        <source>Creation date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="361">
+        <source>script of material</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="362">
+        <source>allied materials area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="363">
+        <source>publication note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="364">
+        <source>notes area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="365">
+        <source>name access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="366">
+        <source>Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="367">
+        <source>Are you sure you want to delete this %1% permanently?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="368">
+        <source>This will also delete %1% %2%.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="369">
+        <source>language of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="370">
+        <source>script of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="371">
+        <source>unable to parse XML file: malformed or unresolvable entities</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="372">
+        <source>libxml error %code% on line %line% in input file: %message%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="373">
+        <source>unknown schema or import format: "%format%"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="374">
+        <source>unknown schema or export format: "%format%"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="375">
+        <source>export an XML file</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="376">
+        <source>export</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="377">
+        <source>&lt;span class=""&gt;No %1% found&lt;/span&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="378">
+        <source>download movie</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="379">
+        <source>usage</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="380">
+        <source>mime-type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="381">
+        <source>media type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="382">
+        <source>filesize</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="383">
+        <source>uploaded</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="384">
+        <source>derivatives</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="385">
+        <source>Add a new %1% representation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="386">
+        <source>auto-generate</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="387">
+        <source>usage type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="388">
+        <source>browse %1%s</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="389">
+        <source>Select a %1% to upload</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="390">
+        <source>Part of</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="391">
+        <source>Delete this %1%? This cannot be undone!</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="392">
+        <source>filename</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="393">
+        <source>search for '%1%' returned %2% results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="394">
+        <source>relationships area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="395">
+        <source>add new static page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="396">
+        <source>location</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="397">
+        <source>container type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="398">
+        <source>selected container</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="399">
+        <source>link to an existing container</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="400">
+        <source>or, create a new container</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="401">
+        <source>container</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="402">
+        <source>add</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="403">
+        <source>records management and collecting policies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="404">
+        <source>finding aids, guides, publications</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="405">
+        <source>accessibility</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="406">
+        <source>public areas</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="407">
+        <source>institution responsible identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="408">
+        <source>languages of institution description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="409">
+        <source>scripts of institution description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="410">
+        <source>view digital object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="411">
+        <source>view digital object master</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="412">
+        <source>edit physical object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="413">
+        <source>edit (ISDIAH)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="414">
+        <source>view (ISDIAH)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="415">
+        <source>this page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="416">
+        <source>Contact Person</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="417">
+        <source>%1% information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="418">
+        <source>containers</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="419">
+        <source>contains</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="420">
+        <source>There is 1 %1% related to this item.  Are you sure you wish proceed with delete?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="421">
+        <source>There are %1% %2%s related to this item.  Are you sure you wish to proceed with delete?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="422">
+        <source>contact person</source>
         <target/>
       </trans-unit>
     </body>

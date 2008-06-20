@@ -821,45 +821,6 @@ abstract class BaseInformationObject extends QubitObject
     return $this->digitalObjects;
   }
 
-  public static function addPhysicalObjectsCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getPhysicalObjectsById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addPhysicalObjectsCriteriaById($criteria, $id);
-
-    return QubitPhysicalObject::get($criteria, $options);
-  }
-
-  public function addPhysicalObjectsCriteria(Criteria $criteria)
-  {
-    return self::addPhysicalObjectsCriteriaById($criteria, $this->id);
-  }
-
-  protected $physicalObjects = null;
-
-  public function getPhysicalObjects(array $options = array())
-  {
-    if (!isset($this->physicalObjects))
-    {
-      if (!isset($this->id))
-      {
-        $this->physicalObjects = QubitQuery::create();
-      }
-      else
-      {
-        $this->physicalObjects = self::getPhysicalObjectsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->physicalObjects;
-  }
-
   public static function addEventsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitEvent::INFORMATION_OBJECT_ID, $id);

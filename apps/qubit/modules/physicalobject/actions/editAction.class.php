@@ -34,12 +34,18 @@ class PhysicalObjectEditAction extends sfAction
     $this->physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('id'));
     $this->forward404Unless($this->physicalObject);
     
+    $relatedInfoObjects = QubitRelation::getRelatedObjectsBySubjectId($this->physicalObject->getId(), 
+      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    $this->relatedInfoObjectCount = count($relatedInfoObjects);
+    
+    $this->relatedInfoObjects = $relatedInfoObjects;
+        
     // If coming here from another page (e.g. informationobject/edit) redirect
     // back on update/cancel/delete
     $this->nextAction = null;
     if ($this->hasRequestParameter('next'))
     {
-      $this->nextAction = $this->getRequestParameter('next');
+      $this->nextAction = urldecode($this->getRequestParameter('next'));
     }
     
   }

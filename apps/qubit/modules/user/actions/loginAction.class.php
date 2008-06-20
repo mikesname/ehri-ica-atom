@@ -21,52 +21,53 @@
 
 class UserLoginAction extends sfAction
 {
-public function execute($request)
+  
+  public function execute($request)
   {
-  $this->login_message = '';
-
-  if ($this->getRequest()->getMethod() != sfRequest::POST)
-  {
-      // set the login_route to user after the user is logged-in
-      // if the user selected the log-in page explicitely, send them back to their referring page
-      // if the user is stopped by the login page on their way to another page, send them on
-      // their way to that page after logging on successfully
-
-      if ($this->getRequest()->getPathInfo() == '/login')
+    $this->login_message = '';
+  
+    if ($this->getRequest()->getMethod() != sfRequest::POST)
+    {
+        // set the login_route to user after the user is logged-in
+        // if the user selected the log-in page explicitely, send them back to their referring page
+        // if the user is stopped by the login page on their way to another page, send them on
+        // their way to that page after logging on successfully
+  
+        if ($this->getRequest()->getPathInfo() == '/login')
+        {
+          $this->getUser()->setAttribute('login_route', $this->getRequest()->getReferer());
+          $this->login_message = $this->getContext()->getI18N()->__('log in');
+        }
+        else
+        {
+          $this->getUser()->setAttribute('login_route', $this->getRequest()->getPathInfo());
+          $this->login_message = $this->getContext()->getI18N()->__('please log-in to access that page');
+        }
+  
+      // display the form
+      return sfView::SUCCESS;
+    }
+    else
+    {
+      // handle the form submission
+  
+      // redirect to login_route, otherwise redirect to homepage
+      if ($this->getUser()->getAttribute('login_route'))
       {
-        $this->getUser()->setAttribute('login_route', $this->getRequest()->getReferer());
-        $this->login_message = $this->getContext()->getI18N()->__('log in');
+        $this->redirect($this->getUser()->getAttribute('login_route'));
       }
       else
       {
-        $this->getUser()->setAttribute('login_route', $this->getRequest()->getPathInfo());
-        $this->login_message = $this->getContext()->getI18N()->__('please log-in to access that page');
+        $this->redirect('@homepage');
       }
-
-    // display the form
-    return sfView::SUCCESS;
-  }
-  else
-  {
-    // handle the form submission
-
-    // redirect to login_route, otherwise redirect to homepage
-
-    if ($this->getUser()->getAttribute('login_route'))
-    {
-      $this->redirect($this->getUser()->getAttribute('login_route'));
-      }
-    else
-    {
-      $this->redirect('@homepage');
-      }
-  }
+    
+    }
   }
 
   public function handleError()
   {
-  $this->login_message = $this->getContext()->getI18N()->__('log in');
-
-  return sfView::SUCCESS;
+    $this->login_message = $this->getContext()->getI18N()->__('log in');
+  
+    return sfView::SUCCESS;
   }
 }

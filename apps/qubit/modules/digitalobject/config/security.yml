@@ -1,15 +1,19 @@
 delete:
   is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
-  
+
 edit:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
 
 show:
   is_secure:  off
-  
+
 update:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+
+showFullScreen: 
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
 

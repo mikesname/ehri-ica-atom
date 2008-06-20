@@ -13,7 +13,7 @@ class AuditTask extends sfBaseTask
   protected
     $patternConfigs = null;
 
-  protected static function globToPattern($glob)
+  public static function globToPattern($glob)
   {
     $pattern = '';
 
@@ -60,6 +60,15 @@ class AuditTask extends sfBaseTask
     $this->patternConfigs = array();
     foreach ($globConfigs as $glob => $globConfig)
     {
+      // Globs like //foo/... must be matched against paths with a leading
+      // slash, while globs like foo/... must be matched against paths without
+      // a leading slash.  Consequently, prefix all globs with slash, if
+      // necessary, and always match against paths with a leading slash.
+      if (strncmp($glob, '/', 1) != 0)
+      {
+        $glob = '/'.$glob;
+      }
+
       $pattern = self::globToPattern($glob);
       $this->patternConfigs[$pattern] = $globConfig;
     }
@@ -82,16 +91,14 @@ EOF;
 
   protected function getConfigForPath($path)
   {
-    $path = str_replace(sfConfig::get('sf_root_dir'), null, $path);
+    if (strncmp($path, sfConfig::get('sf_root_dir'), $len = strlen(sfConfig::get('sf_root_dir'))) == 0)
+    {
+      $path = substr($path, $len);
+    }
 
     $config = array();
     foreach ($this->patternConfigs as $pattern => $patternConfig)
     {
-      if (strncmp($pattern, '/', 1))
-      {
-        $pattern = '/'.$pattern;
-      }
-
       if (preg_match('/^'.str_replace('/', '\\/', $pattern).'$/', $path) > 0)
       {
         $config = sfToolkit::arrayDeepMerge($config, $patternConfig);

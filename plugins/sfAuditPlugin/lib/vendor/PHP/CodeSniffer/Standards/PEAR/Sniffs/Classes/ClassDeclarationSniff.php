@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ClassDeclarationSniff.php,v 1.4 2007/12/05 03:31:45 squiz Exp $
+ * @version   CVS: $Id: ClassDeclarationSniff.php,v 1.5 2008/05/19 05:59:25 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -59,6 +59,14 @@ class PEAR_Sniffs_Classes_ClassDeclarationSniff implements PHP_CodeSniffer_Sniff
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+
+        if (isset($tokens[$stackPtr]['scope_opener']) === false) {
+            $error  = 'Possible parse error: ';
+            $error .= $tokens[$stackPtr]['content'];
+            $error .= ' missing opening or closing brace';
+            $phpcsFile->addWarning($error, $stackPtr);
+            return;
+        }
 
         $curlyBrace  = $tokens[$stackPtr]['scope_opener'];
         $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($curlyBrace - 1), $stackPtr, true);

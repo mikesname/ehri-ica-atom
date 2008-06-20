@@ -32,8 +32,6 @@ class RepositoryI18nMapBuilder {
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('OFFICERS_IN_CHARGE', 'OfficersInCharge', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
 		$tMap->addColumn('GEOCULTURAL_CONTEXT', 'GeoculturalContext', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('COLLECTING_POLICIES', 'CollectingPolicies', 'string', CreoleTypes::LONGVARCHAR, false, null);
@@ -49,8 +47,6 @@ class RepositoryI18nMapBuilder {
 		$tMap->addColumn('ACCESS_CONDITIONS', 'AccessConditions', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('DISABLED_ACCESS', 'DisabledAccess', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addColumn('TRANSPORT', 'Transport', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('RESEARCH_SERVICES', 'ResearchServices', 'string', CreoleTypes::LONGVARCHAR, false, null);
 

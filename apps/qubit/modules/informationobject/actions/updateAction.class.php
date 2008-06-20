@@ -453,7 +453,12 @@ class InformationObjectUpdateAction extends sfAction
 
         if ($newDigitalObject->getMediaType() == 'video')
         {
-          $newDigitalObject->createVideoDerivative(QubitTerm::REFERENCE_ID);
+          if ($usageId == QubitTerm::MASTER_ID)
+          {
+            $newDigitalObject->createVideoDerivative(QubitTerm::REFERENCE_ID);
+            $newDigitalObject->createVideoDerivative(QubitTerm::THUMBNAIL_ID);
+          }
+          
         }
 
         // If this is a new information object with no title, set title to name
@@ -495,13 +500,15 @@ class InformationObjectUpdateAction extends sfAction
    */
   public function updatePhysicalObjects($informationObject)
   {
-    $oldPhysicalObjects = $informationObject->getPhysicalObjects();
+    $oldPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId($informationObject->getId(),
+      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
     
+    // Preferentially use "new container" input data over the selector so that
+    // new object data is not lost (but only if an object name is entered)
     if (strlen($physicalObjectName = $this->getRequestParameter('physicalObjectName'))) 
     {
       $physicalObject = new QubitPhysicalObject;
       
-      $physicalObject->setInformationObjectId($informationObject->getId());
       $physicalObject->setName($physicalObjectName);
       
       if ($this->hasRequestParameter('physicalObjectLocation'))
@@ -509,35 +516,22 @@ class InformationObjectUpdateAction extends sfAction
         $physicalObject->setLocation($this->getRequestParameter('physicalObjectLocation'));
       }
       
-      if (intval($this->getRequestParameter('physicalObjectContainerId')))
+      if (intval($this->getRequestParameter('physicalObjectTypeId')))
       {
-        $physicalObject->setTypeId($this->getRequestParameter('physicalObjectContainerId'));
+        $physicalObject->setTypeId($this->getRequestParameter('physicalObjectTypeId'));
       }
+      $physicalObject->save();
+      
+      // Link info object to physical object
+      $informationObject->addPhysicalObjectRelation($physicalObject);
     }
-    else if (intval($physicalObjectId = $this->getRequestParameter('physicalObjectId')))
-    {
-      $physicalObject = QubitPhysicalObject::getById($physicalObjectId);
-      $physicalObject->setInformationObjectId($informationObject->getId());
-    }
-    else 
+    
+    // If form is not populated, check if existing PO selected 
+    else if ($physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('physicalObjectId')))
     {
       
-      return false;
+      $informationObject->addPhysicalObjectRelation($physicalObject);
     }
     
-    $physicalObject->save();
-    
-    // Detach old physical objects from this info object (enforce 1-to-1)
-    if (count($oldPhysicalObjects)) 
-    {
-      foreach ($oldPhysicalObjects as $oldPhysicalObject)
-      {
-        if ($oldPhysicalObject->getId() != $physicalObject->getId())
-        {
-          $oldPhysicalObject->setInformationObjectId(null);
-          $oldPhysicalObject->save();
-        }
-      }
-    }
-  }
- }
+  } // end fuction updatePhysicalObjects
+}

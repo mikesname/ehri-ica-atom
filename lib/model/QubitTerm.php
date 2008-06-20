@@ -67,6 +67,8 @@ class QubitTerm extends BaseTerm
   const LOCATION_ID = 43;
   const CONTAINER_ID = 44;
   const ARTEFACT_ID = 45;
+  //Relation Type taxonomy
+  const HAS_PHYSICAL_OBJECT_ID = 46;
 
   public function isProtected()
   {
@@ -100,7 +102,8 @@ class QubitTerm extends BaseTerm
            $this->getId() == QubitTerm::THUMBNAIL_ID ||
            $this->getId() == QubitTerm::LOCATION_ID ||
            $this->getId() == QubitTerm::CONTAINER_ID ||
-           $this->getId() == QubitTerm::ARTEFACT_ID;
+           $this->getId() == QubitTerm::ARTEFACT_ID ||
+           $this->getId() == QubitTerm::HAS_PHYSICAL_OBJECT_ID;
   }
   
   
@@ -183,11 +186,24 @@ class QubitTerm extends BaseTerm
   /**
    * Return a list of all Physical Object terms
    *
+   * @param array $options  option array to pass to Qubit Query object
    * @return QubitQuery array of Physical Object QubitTerm objects
    */
   public static function getPhysicalObjectTypes($options = array())
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID, $options);
+  }
+  
+  
+  /**
+   * Return a list of all Relation Type terms
+   *
+   * @param array $options  option array to pass to Qubit Query object
+   * @return QubitQuery object
+   */
+  public static function getRelationTypes($options = array())
+  {
+    return QubitTaxonomy::getTermsById(QubitTaxonomy::RELATION_TYPE_ID, $options);
   }
   
   

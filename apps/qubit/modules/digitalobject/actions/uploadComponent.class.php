@@ -60,8 +60,8 @@ class DigitalObjectUploadComponent extends sfComponent
       return false;
     }
 
-    // Don't upload this file if it's intended usage is a reference or thumbnail object,
-    // And it's *not* an image mimetype
+    // Don't upload this file if it's intended usage is a reference or thumbnail object
+    // and it's *not* an image mimetype
     $isImage = QubitDigitalObject::isImageFile($filename);
     if (($usageId == QubitTerm::REFERENCE_ID || $usageId == QubitTerm::THUMBNAIL_ID) && $isImage === false)
     {

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: JS.php,v 1.8 2008/03/31 00:49:45 squiz Exp $
+ * @version   CVS: $Id: JS.php,v 1.9 2008/05/19 06:11:21 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -635,6 +635,10 @@ class PHP_CodeSniffer_Tokenizers_JS
 
                     $stackPtr++;
                     $newContent  .= $tokenContent;
+                    if (isset($tokens[$stackPtr]) === false) {
+                        break;
+                    }
+
                     $tokenContent = $tokens[$stackPtr]['content'];
                 }//end while
 

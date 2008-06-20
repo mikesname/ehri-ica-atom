@@ -1,76 +1,82 @@
-<?php if($physicalObject->getId()): ?>
+<?php if(count($relations)): ?>
+
 <div class="form-item">
 <table class="inline" style="width: 98%;">
   <tr>
     <td colspan="3" class="headerCell" style="width: 98%">
-      <?php echo __('current container'); ?>
+      <?php echo __('containers'); ?>
     </td>
   </tr>
+<?php foreach($relations as $relation): ?>
+  <?php $physicalObject = $relation->getSubject(); ?>
   <tr>
     <td style="width: 90%">
-      <b><?php echo __('name'); ?>:</b> <?php echo $physicalObject->getName(); ?><br />
-      <b><?php echo __('location'); ?>:</b> <?php echo $physicalObject->getLocation(); ?><br />
-      <b><?php echo __('type'); ?>:</b> <?php echo $physicalObject->getType(); ?>
+      <?php if (strlen($type = $physicalObject->getType())) echo $type.': '; ?>
+      <b><?php echo $physicalObject->getName(); ?></b>
+      <?php if ($location = $physicalObject->getLocation()) echo ' - '.$location; ?>     
     </td>
     <?php if ($physicalObject): ?>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
-      <?php echo link_to(image_tag('pencil', 'align=top'), 'physicalobject/edit?id='.$physicalObject->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()); ?>
+      <?php echo link_to(image_tag('pencil', 'align=top'), 
+        'physicalobject/edit?id='.$physicalObject->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()); ?>
     </td>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
-      <?php echo link_to(image_tag('delete', 'align=top'), 'physicalobject/delete?id='.$physicalObject->getId()); ?>
+      <?php echo link_to(image_tag('delete', 'align=top'), 
+        'relation/delete?id='.$relation->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()); ?>
     </td>
     <?php else: ?>
     <td colspan="2">&nbsp;</td>
     <?php endif; ?>
   </tr>
+<?php endforeach; ?>
 </table>
 </div>
 <?php endif; ?>
 
-<div class="form-item">
+
 <table class="inline" style="width: 98%;">
   <tr>
     <td colspan="3" class="headerCell" style="width: 98%">
-      <?php echo __('select an existing container'); ?>
-    </td>
-  </tr>
-  <tr>
-    <td style="width: 90%">
-      <?php echo object_select_tag($physicalObject, 'getId', 
-        array('related_class'=>'QubitPhysicalObject', 'name'=>'physicalObjectId')); ?><br />
+      <?php echo __('link to an existing container'); ?>
     </td>
   </tr>
 </table>
+<div class="form-item">
+  <?php echo object_select_tag(null, null, 
+    array('related_class'=>'QubitPhysicalObject', 'name'=>'physicalObjectId', 'include_blank'=>true)); ?><br />
 </div>
 
-<div class="form-item">
+
 <table class="inline" style="width: 98%;">
   <tr>
-    <td colspan="2" class="headerCell"><?php echo __('create new container'); ?></td>
-  </tr>
-  <tr>
-    <td class="headerCell" style="width: 25%;"><?php echo __('name'); ?></td>
-    <td><?php echo input_tag('physicalObjectName'); ?></td>
-  </tr>
-  <tr>
-    <td class="headerCell" style="width: 25%;"><?php echo __('location'); ?></td>
-    <td>
-      <?php echo input_tag('physicalObjectLocation'); ?>
-    </td>
-  </tr>
-  <tr>
-    <td class="headerCell" style="width: 25%;"><?php echo __('container type'); ?></td>
-    <td>
-      <?php /* Disable fancy multi-level drop-down widget until display code is fixed to 
-             * allow multiple instances per form. 
-         echo object_select_tree($physicalObject, 'getId', array(
-        'include_blank' => true,
-        'peer_method' => 'getPhysicalObjectContainerTypes',
-        'related_class' => 'QubitTerm',
-        'name' => 'physicalObjectContainerId'
-      )); */ ?>
-      <?php echo select_tag('physicalObjectContainerId', options_for_select(QubitTerm::getIndentedChildTree(QubitTerm::CONTAINER_ID))) ?>
+    <td colspan="3" class="headerCell" style="width: 98%">
+      <?php echo __('or, create a new container'); ?>
     </td>
   </tr>
 </table>
+
+<div class="form-item">  
+  <label for="physicalObjectName"><?php echo __('name'); ?></label>
+  <?php echo input_tag('physicalObjectName'); ?>
+</div>
+
+<div class="form-item">  
+  <label for="physicalObjectLocation"><?php echo __('location'); ?></label>
+  <?php echo input_tag('physicalObjectLocation'); ?>
+</div>
+
+<div class="form-item">  
+  <label for="physicalObjectType"><?php echo __('container type'); ?></label>
+  <?php 
+    /* Disable fancy multi-level drop-down widget until display code is fixed to 
+     * allow multiple instances per form. 
+     echo object_select_tree($physicalObject, 'getId', array(
+    'include_blank' => true,
+    'peer_method' => 'getPhysicalObjectContainerTypes',
+    'related_class' => 'QubitTerm',
+    'name' => 'physicalObjectContainerId'
+  )); */ ?>
+  <?php echo select_tag('physicalObjectTypeId', 
+    options_for_select(QubitTerm::getIndentedChildTree(QubitTerm::CONTAINER_ID), 
+    null, array('include_blank'=>true))); ?>
 </div>

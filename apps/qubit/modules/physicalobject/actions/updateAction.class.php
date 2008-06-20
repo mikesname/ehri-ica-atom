@@ -39,7 +39,7 @@ class PhysicalObjectUpdateAction extends sfAction
   {
     if (!$this->getRequestParameter('id', 0))
     {
-      $physicalObject = new QubitRepository;
+      $physicalObject = new QubitPhysicalObject;
     }
     else
     {
@@ -71,7 +71,16 @@ class PhysicalObjectUpdateAction extends sfAction
   {
     $physicalObject->setName($this->getRequestParameter('name'));
     $physicalObject->setLocation($this->getRequestParameter('location'));
-    $physicalObject->setTypeId($this->getRequestParameter('typeId'));
+    
+    // Set typeId to null if option "0" (blank) selected
+    if ($this->getRequestParameter('typeId') === '')
+    {
+      $physicalObject->setTypeId(null);
+    }
+    else
+    {
+      $physicalObject->setTypeId($this->getRequestParameter('typeId'));
+    }
     $physicalObject->save();
   }
 }

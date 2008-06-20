@@ -1,6 +1,7 @@
 <div class="contextMenu">
 <?php if ($repository): ?>
-  <div class="label"><?php echo sfConfig::get('app_ui_label_repository').' record' ?></div>
+  <div class="label"><?php echo __('%1% information', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?>
+</div>
   <?php echo link_to($repository, 'repository/show?id='.$repository->getId()) ?>
 <?php endif; ?>
 

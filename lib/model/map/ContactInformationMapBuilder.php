@@ -36,6 +36,8 @@ class ContactInformationMapBuilder {
 
 		$tMap->addColumn('PRIMARY_CONTACT', 'PrimaryContact', 'boolean', CreoleTypes::BOOLEAN, false, null);
 
+		$tMap->addColumn('CONTACT_PERSON', 'ContactPerson', 'string', CreoleTypes::VARCHAR, false, 255);
+
 		$tMap->addColumn('STREET_ADDRESS', 'StreetAddress', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('WEBSITE', 'Website', 'string', CreoleTypes::VARCHAR, false, 255);

@@ -23,5 +23,35 @@ class I18nListUserInterfaceTranslationAction extends sfAction
 {
   public function execute($request)
   {
+  $criteria = new Criteria;
+  $criteria->add(QubitInformationObjectI18n::TITLE, 'Townley, Matheson and Partners fonds');
+  $this->sampleInformationObject = QubitInformationObjectI18n::getOne($criteria);
+  
+  $criteria = new Criteria;
+  $criteria->addJoin(QubitPhysicalObject::ID, QubitPhysicalObjectI18n::ID);
+  $criteria->add(QubitPhysicalObjectI18n::NAME, 'Box A12');
+  $this->samplePhysicalObject = QubitPhysicalObject::getOne($criteria);
+  
+  $criteria = new Criteria;
+  $criteria->add(QubitDigitalObject::NAME, 'CVA_Townley_Hotel1.jpg');
+  $this->sampleDigitalObject = QubitDigitalObject::getOne($criteria);
+  
+  $criteria = new Criteria;
+  $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, 'Townley, Matheson and Partners');
+  $this->sampleActor = QubitActorI18n::getOne($criteria);
+ 
+  $criteria = new Criteria;
+  $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
+  $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, 'City of Vancouver Archives');
+  $this->sampleRepository = QubitActor::getOne($criteria);
+  
+  $criteria = new Criteria;
+  $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+  $criteria->add(QubitTermI18n::NAME, 'Series');
+  $this->sampleTerm = QubitTerm::getOne($criteria);
+  
+  $criteria = new Criteria;
+  $criteria->add(QubitStaticPage::PERMALINK, 'homepage');
+  $this->sampleStaticPage = QubitStaticPage::getOne($criteria);
   }
 }

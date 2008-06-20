@@ -87,6 +87,9 @@
           <?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteContactInformation?contactInformationId='.$contact->getId()) ?>
           </td></tr></table>
           <div style="padding-left: 10px; margin-bottom: 10px;">
+            <?php if ($contact->getContactPerson()): ?>
+              <?php echo $contact->getContactPerson() ?><br />
+            <?php endif; ?>
             <?php if ($contact->getStreetAddress()): ?>
               <?php echo nl2br($contact->getStreetAddress()) ?><br />
             <?php endif; ?>
@@ -125,6 +128,7 @@
         <tr><td class="headerCell" colspan="4" style="margin-top: 5px; border-top: 2px solid #999999; width: 95%;">new contact information</td></tr>
         <tr><td class="headerCell"><?php echo __('contact type'); ?></td><td><?php echo input_tag('contact_type', '', 'size=20') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('primary contact'); ?></td><td><?php echo checkbox_tag('primary_contact') ?></td></tr>
+        <tr><td class="headerCell"><?php echo __('contact person'); ?></td><td><?php echo input_tag('contact_person', '', 'size=20') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('street address'); ?></td><td><?php echo textarea_tag('street_address', '', 'size=30x3') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('city'); ?></td><td><?php echo input_tag('city', '', 'size=20') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('region/province'); ?></td><td><?php echo input_tag('region', '', 'size=20') ?></td></tr>
@@ -138,10 +142,6 @@
         </table>
     </div>
 
-    <div class="form-item">
-      <label for="officers_in_charge"><?php echo __('officers in charge'); ?></label>
-      <?php echo object_input_tag($repository, 'getOfficersInCharge', array('size' => 20)) ?>
-    </div>
   </fieldset>
 
  <fieldset class="collapsible collapsed">
@@ -155,6 +155,11 @@
     <div class="form-item">
       <label for="geocultural_context"><?php echo __('geographical and cultural context'); ?></label>
       <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('size' => '30x3')) ?>
+    </div>
+
+    <div class="form-item">
+      <label for="mandates"><?php echo __('mandates or sources of authority'); ?></label>
+      <?php echo object_textarea_tag($repository, 'getMandates', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">

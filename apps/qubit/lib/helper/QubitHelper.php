@@ -273,3 +273,24 @@ function string_wrap($longString, $width, $maxLines=3, $whiteSpaceChars = array(
 
   return implode($linebreak, $wrappedLines);
 }
+
+/**
+ * Remove element $key from $array, and return it's value.
+ *
+ * @param string $key
+ * @param array $array
+ * @return mixed string on success, false on failure
+ */
+function array_slice_key($key, &$array)
+{
+  if (!array_key_exists($key, $array))
+  {
+    
+    return false;
+  }
+  
+  $returnValue = $array[$key];
+  unset($array[$key]);
+  
+  return $returnValue;
+}

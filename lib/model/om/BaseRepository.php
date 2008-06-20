@@ -463,18 +463,6 @@ abstract class BaseRepository extends QubitActor
     return $this->repositoryI18ns;
   }
 
-  public function getOfficersInCharge(array $options = array())
-  {
-    return $this->getCurrentRepositoryI18n($options)->getOfficersInCharge();
-  }
-
-  public function setOfficersInCharge($value, array $options = array())
-  {
-    $this->getCurrentRepositoryI18n($options)->setOfficersInCharge($value);
-
-    return $this;
-  }
-
   public function getGeoculturalContext(array $options = array())
   {
     return $this->getCurrentRepositoryI18n($options)->getGeoculturalContext();
@@ -567,18 +555,6 @@ abstract class BaseRepository extends QubitActor
   public function setDisabledAccess($value, array $options = array())
   {
     $this->getCurrentRepositoryI18n($options)->setDisabledAccess($value);
-
-    return $this;
-  }
-
-  public function getTransport(array $options = array())
-  {
-    return $this->getCurrentRepositoryI18n($options)->getTransport();
-  }
-
-  public function setTransport($value, array $options = array())
-  {
-    $this->getCurrentRepositoryI18n($options)->setTransport($value);
 
     return $this;
   }

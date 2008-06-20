@@ -19,8 +19,25 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Extended methods for Information object model
+ * 
+ * @package qubit
+ * @subpackage datamodel
+ * @author Jack Bates
+ * @author Peter Van Garderen
+ * @author David Juhasz <david@artefactual.com>
+ * @version svn:$Id
+ */
 class QubitInformationObject extends BaseInformationObject
 {
+  
+  /**
+   * When cast as a string, return  i18n-ized object title with fallback to
+   * source culture
+   *
+   * @return string title value with fallback to source culture
+   */
   public function __toString()
   {
     if (null === $title = $this->getTitle())
@@ -30,6 +47,35 @@ class QubitInformationObject extends BaseInformationObject
 
     return (string) $title;
   }
+  
+  
+  /**
+   * Additional actions to take on delete
+   *
+   */
+  public function delete($connection = null)
+  {
+    $this->deletePhysicalObjectRelations();
+    
+    parent::delete($connection);
+  }
+  
+  /**
+   * Cascade delete child records in q_relation
+   *
+   */
+  protected function deletePhysicalObjectRelations()
+  {
+    
+    $relations = QubitRelation::getRelationsByObjectId($this->getId(), 
+      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    
+    foreach($relations as $relation)
+    {
+      $relation->delete();
+    }
+  }
+  
 
   public static function getList($sort = 'titleUp', $repositoryId = null, $collectionTypeId = null)
     {
@@ -185,6 +231,38 @@ class QubitInformationObject extends BaseInformationObject
 
     return QubitEvent::get($criteria);
   }
+
+
+  /**
+   * Get all digital objects from descendants of current
+   * object
+   * 
+   * @return array  of thumbnail representations
+   */
+  public function getDescendantThumbnails()
+  {
+    $thumbnails = array();
+
+    $descendants = $this->getDescendants();
+    foreach ($descendants as $descendant) 
+    {
+      if ($digitalObject = $descendant->getDigitalObject()) 
+      {
+        $thumbnail = $digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+        
+        if (!$thumbnail)
+        { 
+          $thumbnail = QubitDigitalObject::getGenericRepresentation($digitalObject->getMimeType());
+          $thumbnail->setParent($digitalObject);
+        }
+        
+        $thumbnails[] = $thumbnail;
+      }
+    }
+
+    return $thumbnails;
+  }
+
 
   public function getDates($eventType = 'creation')
   {
@@ -395,7 +473,7 @@ public function getPlacesString($language)
   return $placeString;
   }
 
-public function getNameAccessPointsString($language)
+  public function getNameAccessPointsString($language)
   {
   $nameAccessPointString = '';
 
@@ -411,6 +489,7 @@ public function getNameAccessPointsString($language)
   return $nameAccessPointString;
   }
 
+  
   /**
    * Get the digital object related to this information object. The
    * informationObject to digitalObject relationship is "one to zero or one".
@@ -429,4 +508,48 @@ public function getNameAccessPointsString($language)
       return null;
     }
   }
+
+  
+  // -------------------------------------------------------------------------
+  // Physical Object Relationship
+  // -------------------------------------------------------------------------  
+  
+  /**
+   * Add a relation from this info object to a phyical object. Check to make
+   * sure the relationship is unique.
+   *
+   * @param QubitPhysicalObject $physicalObject Subject of relationship
+   * @return mixed false on failure, QubitRelation on success
+   */
+  public function addPhysicalObjectRelation($physicalObject)
+  {
+
+    // Verify that $physicalObject is a Physical Object
+    if (get_class($physicalObject) != 'QubitPhysicalObject')
+    {
+      
+      return false;
+    }
+    
+    // Don't add an identical info object -> physical object relationship
+    $relatedPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId($this->getId(),
+      array('typeId', QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    foreach($relatedPhysicalObjects as $relatedPhysicalObject)
+    {
+      if ($relatedPhysicalObject->getId() == $physicalObject->getId())
+      {
+        
+        return false;
+      }
+    }
+    
+    $relation = new QubitRelation;
+    $relation->setObject($this);
+    $relation->setSubject($physicalObject);
+    $relation->setTypeId(QubitTerm::HAS_PHYSICAL_OBJECT_ID);
+    $relation->save();
+    
+    return $relation;
+  }
+  
 }

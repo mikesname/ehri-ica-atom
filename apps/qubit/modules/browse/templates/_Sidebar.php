@@ -4,10 +4,11 @@
 <tr>
 <td><?php echo select_tag('browseList', options_for_select(
 		array('subject' => __(sfConfig::get('app_ui_label_subject')),
-					'place' => __(sfConfig::get('app_ui_label_place')),
+		      'mediatype' => __(sfConfig::get('app_ui_label_mediatype')),
 					'name' => __(sfConfig::get('app_ui_label_name')),
-					'repository' => __(sfConfig::get('app_ui_label_repository')),
-		      'mediatype' => __(sfConfig::get('app_ui_label_mediatype'))
+          'informationobject' => __(sfConfig::get('app_ui_label_informationobject')),
+					'place' => __(sfConfig::get('app_ui_label_place')),
+					'repository' => __(sfConfig::get('app_ui_label_repository'))
 		),
 		$browseBy),
 		'class="selectbox"'); ?>

@@ -30,5 +30,12 @@ class InformationObjectContextMenuComponent extends sfComponent
     {
       $this->informationObjects = $this->informationObject->getAncestors()->andSelf()->orderBy('lft')->offsetGet(1)->getDescendants()->andSelf();
     }
+    
+    //determine if user has edit priviliges
+    $this->editCredentials = false;
+    if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
+    {
+      $this->editCredentials = true;
+    }
   }
 }

@@ -7,7 +7,6 @@ abstract class BasePhysicalObject extends QubitObject
   const TABLE_NAME = 'q_physical_object';
 
   const ID = 'q_physical_object.ID';
-  const INFORMATION_OBJECT_ID = 'q_physical_object.INFORMATION_OBJECT_ID';
   const TYPE_ID = 'q_physical_object.TYPE_ID';
   const PARENT_ID = 'q_physical_object.PARENT_ID';
   const LFT = 'q_physical_object.LFT';
@@ -23,7 +22,6 @@ abstract class BasePhysicalObject extends QubitObject
     $criteria->addJoin(QubitPhysicalObject::ID, QubitObject::ID);
 
     $criteria->addSelectColumn(QubitPhysicalObject::ID);
-    $criteria->addSelectColumn(QubitPhysicalObject::INFORMATION_OBJECT_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::TYPE_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::PARENT_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::LFT);
@@ -82,20 +80,6 @@ abstract class BasePhysicalObject extends QubitObject
     $criteria->add(QubitPhysicalObject::PARENT_ID);
 
     return $criteria;
-  }
-
-  protected $informationObjectId = null;
-
-  public function getInformationObjectId()
-  {
-    return $this->informationObjectId;
-  }
-
-  public function setInformationObjectId($informationObjectId)
-  {
-    $this->informationObjectId = $informationObjectId;
-
-    return $this;
   }
 
   protected $typeId = null;
@@ -223,7 +207,6 @@ abstract class BasePhysicalObject extends QubitObject
     parent::resetModified();
 
     $this->columnValues['id'] = $this->id;
-    $this->columnValues['informationObjectId'] = $this->informationObjectId;
     $this->columnValues['typeId'] = $this->typeId;
     $this->columnValues['parentId'] = $this->parentId;
     $this->columnValues['lft'] = $this->lft;
@@ -240,7 +223,6 @@ abstract class BasePhysicalObject extends QubitObject
     $columnOffset = parent::hydrate($results, $columnOffset);
 
     $this->id = $results->getInt($columnOffset++);
-    $this->informationObjectId = $results->getInt($columnOffset++);
     $this->typeId = $results->getInt($columnOffset++);
     $this->parentId = $results->getInt($columnOffset++);
     $this->lft = $results->getInt($columnOffset++);
@@ -302,11 +284,6 @@ abstract class BasePhysicalObject extends QubitObject
     if ($this->isColumnModified('id'))
     {
       $criteria->add(QubitPhysicalObject::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('informationObjectId'))
-    {
-      $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
     }
 
     if ($this->isColumnModified('typeId'))
@@ -376,11 +353,6 @@ abstract class BasePhysicalObject extends QubitObject
       $criteria->add(QubitPhysicalObject::ID, $this->id);
     }
 
-    if ($this->isColumnModified('informationObjectId'))
-    {
-      $criteria->add(QubitPhysicalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
-    }
-
     if ($this->isColumnModified('typeId'))
     {
       $criteria->add(QubitPhysicalObject::TYPE_ID, $this->typeId);
@@ -448,25 +420,6 @@ abstract class BasePhysicalObject extends QubitObject
     $affectedRows += parent::delete($connection);
 
     return $affectedRows;
-  }
-
-  public static function addJoinInformationObjectCriteria(Criteria $criteria)
-  {
-    $criteria->addJoin(QubitPhysicalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
-
-    return $criteria;
-  }
-
-  public function getInformationObject(array $options = array())
-  {
-    return $this->informationObject = QubitInformationObject::getById($this->informationObjectId, $options);
-  }
-
-  public function setInformationObject(QubitInformationObject $informationObject)
-  {
-    $this->informationObjectId = $informationObject->getId();
-
-    return $this;
   }
 
   public static function addJoinTypeCriteria(Criteria $criteria)

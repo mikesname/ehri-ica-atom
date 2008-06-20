@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: AbstractPatternSniff.php,v 1.22 2008/03/26 00:14:44 squiz Exp $
+ * @version   CVS: $Id: AbstractPatternSniff.php,v 1.23 2008/06/13 02:25:39 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -566,6 +566,7 @@ abstract class PHP_CodeSniffer_Standards_AbstractPatternSniff implements PHP_Cod
         $found    = str_replace("\r\n", '\n', $found);
         $found    = str_replace("\n", '\n', $found);
         $found    = str_replace("\r", '\n', $found);
+        $found    = str_replace('EOL', '\n', $found);
         $expected = str_replace('EOL', '\n', $patternCode);
 
         $error = "Expected \"$expected\"; found \"$found\"";

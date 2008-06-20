@@ -880,7 +880,7 @@ abstract class BaseTerm extends QubitObject
 
   public static function addPhysicalObjectsCriteriaById(Criteria $criteria, $id)
   {
-    $criteria->add(QubitPhysicalObject::LOCATION_ID, $id);
+    $criteria->add(QubitPhysicalObject::TYPE_ID, $id);
 
     return $criteria;
   }

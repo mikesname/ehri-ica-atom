@@ -9,7 +9,7 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ValidVariableNameSniff.php,v 1.1 2008/01/31 22:17:02 squiz Exp $
+ * @version   CVS: $Id: ValidVariableNameSniff.php,v 1.2 2008/06/13 04:10:43 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -48,8 +48,12 @@ class PEAR_Sniffs_NamingConventions_ValidVariableNameSniff extends PHP_CodeSniff
     {
         $tokens = $phpcsFile->getTokens();
 
+        $memberProps = $phpcsFile->getMemberProperties($stackPtr);
+        if (empty($memberProps) === true) {
+            return;
+        }
+
         $memberName     = ltrim($tokens[$stackPtr]['content'], '$');
-        $memberProps    = $phpcsFile->getMemberProperties($stackPtr);
         $isPublic       = ($memberProps['scope'] === 'private') ? false : true;
         $scope          = $memberProps['scope'];
         $scopeSpecified = $memberProps['scope_specified'];

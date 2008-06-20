@@ -101,7 +101,6 @@ propel:
 
   physical_object:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
-    information_object_id:
     type_id: { type: integer, foreignTable: term, foreignReference: id }
     parent_id: { type: integer, foreignTable: physical_object, foreignReference: id }
     lft: { type: integer, required: true, nestedSetLeftKey: true }
@@ -150,7 +149,6 @@ propel:
     desc_identifier: varchar(255)
 
   repository_i18n:
-    officers_in_charge: longvarchar
     geocultural_context: longvarchar
     collecting_policies: longvarchar
     buildings: longvarchar
@@ -159,7 +157,6 @@ propel:
     opening_times: longvarchar
     access_conditions: longvarchar
     disabled_access: longvarchar
-    transport: longvarchar
     research_services: longvarchar
     reproduction_services: longvarchar
     public_facilities: longvarchar
@@ -181,6 +178,7 @@ propel:
   contact_information:
     actor_id: { type: integer, required: true, foreignTable: actor, foreignReference: id, onDelete: cascade }
     primary_contact: boolean
+    contact_person: varchar(255)
     street_address: longvarchar
     website: varchar(255)
     email: varchar(255)

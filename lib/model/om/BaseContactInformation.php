@@ -8,6 +8,7 @@ abstract class BaseContactInformation
 
   const ACTOR_ID = 'q_contact_information.ACTOR_ID';
   const PRIMARY_CONTACT = 'q_contact_information.PRIMARY_CONTACT';
+  const CONTACT_PERSON = 'q_contact_information.CONTACT_PERSON';
   const STREET_ADDRESS = 'q_contact_information.STREET_ADDRESS';
   const WEBSITE = 'q_contact_information.WEBSITE';
   const EMAIL = 'q_contact_information.EMAIL';
@@ -26,6 +27,7 @@ abstract class BaseContactInformation
   {
     $criteria->addSelectColumn(QubitContactInformation::ACTOR_ID);
     $criteria->addSelectColumn(QubitContactInformation::PRIMARY_CONTACT);
+    $criteria->addSelectColumn(QubitContactInformation::CONTACT_PERSON);
     $criteria->addSelectColumn(QubitContactInformation::STREET_ADDRESS);
     $criteria->addSelectColumn(QubitContactInformation::WEBSITE);
     $criteria->addSelectColumn(QubitContactInformation::EMAIL);
@@ -47,7 +49,7 @@ abstract class BaseContactInformation
 
   public static function getFromResultSet(ResultSet $resultSet)
   {
-    if (!isset(self::$contactInformations[$id = $resultSet->getInt(15)]))
+    if (!isset(self::$contactInformations[$id = $resultSet->getInt(16)]))
     {
       $contactInformation = new QubitContactInformation;
       $contactInformation->hydrate($resultSet);
@@ -128,6 +130,20 @@ abstract class BaseContactInformation
   public function setPrimaryContact($primaryContact)
   {
     $this->primaryContact = $primaryContact;
+
+    return $this;
+  }
+
+  protected $contactPerson = null;
+
+  public function getContactPerson()
+  {
+    return $this->contactPerson;
+  }
+
+  public function setContactPerson($contactPerson)
+  {
+    $this->contactPerson = $contactPerson;
 
     return $this;
   }
@@ -351,6 +367,7 @@ abstract class BaseContactInformation
   {
     $this->columnValues['actorId'] = $this->actorId;
     $this->columnValues['primaryContact'] = $this->primaryContact;
+    $this->columnValues['contactPerson'] = $this->contactPerson;
     $this->columnValues['streetAddress'] = $this->streetAddress;
     $this->columnValues['website'] = $this->website;
     $this->columnValues['email'] = $this->email;
@@ -372,6 +389,7 @@ abstract class BaseContactInformation
   {
     $this->actorId = $results->getInt($columnOffset++);
     $this->primaryContact = $results->getBoolean($columnOffset++);
+    $this->contactPerson = $results->getString($columnOffset++);
     $this->streetAddress = $results->getString($columnOffset++);
     $this->website = $results->getString($columnOffset++);
     $this->email = $results->getString($columnOffset++);
@@ -455,6 +473,11 @@ abstract class BaseContactInformation
     if ($this->isColumnModified('primaryContact'))
     {
       $criteria->add(QubitContactInformation::PRIMARY_CONTACT, $this->primaryContact);
+    }
+
+    if ($this->isColumnModified('contactPerson'))
+    {
+      $criteria->add(QubitContactInformation::CONTACT_PERSON, $this->contactPerson);
     }
 
     if ($this->isColumnModified('streetAddress'))
@@ -551,6 +574,11 @@ abstract class BaseContactInformation
     if ($this->isColumnModified('primaryContact'))
     {
       $criteria->add(QubitContactInformation::PRIMARY_CONTACT, $this->primaryContact);
+    }
+
+    if ($this->isColumnModified('contactPerson'))
+    {
+      $criteria->add(QubitContactInformation::CONTACT_PERSON, $this->contactPerson);
     }
 
     if ($this->isColumnModified('streetAddress'))

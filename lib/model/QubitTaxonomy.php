@@ -39,6 +39,7 @@ class QubitTaxonomy extends BaseTaxonomy
   const MEDIA_TYPE_ID = 16;
   const DIGITAL_OBJECT_USAGE_ID = 17;
   const PHYSICAL_OBJECT_TYPE_ID = 18;
+  const RELATION_TYPE_ID = 19;
 
   public function __toString()
   {

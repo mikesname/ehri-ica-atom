@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ArrayDeclarationSniff.php,v 1.17 2008/01/19 10:33:58 squiz Exp $
+ * @version   CVS: $Id: ArrayDeclarationSniff.php,v 1.18 2008/05/19 03:34:56 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -386,6 +386,16 @@ class Squiz_Sniffs_Arrays_ArrayDeclarationSniff implements PHP_CodeSniffer_Sniff
                 }
 
                 continue;
+            }
+
+            if (isset($index['index_content']) === true) {
+                $indexContent = trim($index['index_content'], "'");
+                if (preg_match('|^[a-zA-Z0-9_]+$|', $indexContent) === 1) {
+                    if (strtolower($indexContent) !== $indexContent) {
+                        $error = 'Array index "'.$indexContent.'" should not contain uppercase characters';
+                        $phpcsFile->addError($error, $index['index']);
+                    }
+                }
             }
 
             if (($tokens[$index['index']]['line'] === $tokens[$stackPtr]['line'])) {

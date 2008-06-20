@@ -6,7 +6,6 @@ abstract class BaseRepositoryI18n
 
   const TABLE_NAME = 'q_repository_i18n';
 
-  const OFFICERS_IN_CHARGE = 'q_repository_i18n.OFFICERS_IN_CHARGE';
   const GEOCULTURAL_CONTEXT = 'q_repository_i18n.GEOCULTURAL_CONTEXT';
   const COLLECTING_POLICIES = 'q_repository_i18n.COLLECTING_POLICIES';
   const BUILDINGS = 'q_repository_i18n.BUILDINGS';
@@ -15,7 +14,6 @@ abstract class BaseRepositoryI18n
   const OPENING_TIMES = 'q_repository_i18n.OPENING_TIMES';
   const ACCESS_CONDITIONS = 'q_repository_i18n.ACCESS_CONDITIONS';
   const DISABLED_ACCESS = 'q_repository_i18n.DISABLED_ACCESS';
-  const TRANSPORT = 'q_repository_i18n.TRANSPORT';
   const RESEARCH_SERVICES = 'q_repository_i18n.RESEARCH_SERVICES';
   const REPRODUCTION_SERVICES = 'q_repository_i18n.REPRODUCTION_SERVICES';
   const PUBLIC_FACILITIES = 'q_repository_i18n.PUBLIC_FACILITIES';
@@ -28,7 +26,6 @@ abstract class BaseRepositoryI18n
 
   public static function addSelectColumns(Criteria $criteria)
   {
-    $criteria->addSelectColumn(QubitRepositoryI18n::OFFICERS_IN_CHARGE);
     $criteria->addSelectColumn(QubitRepositoryI18n::GEOCULTURAL_CONTEXT);
     $criteria->addSelectColumn(QubitRepositoryI18n::COLLECTING_POLICIES);
     $criteria->addSelectColumn(QubitRepositoryI18n::BUILDINGS);
@@ -37,7 +34,6 @@ abstract class BaseRepositoryI18n
     $criteria->addSelectColumn(QubitRepositoryI18n::OPENING_TIMES);
     $criteria->addSelectColumn(QubitRepositoryI18n::ACCESS_CONDITIONS);
     $criteria->addSelectColumn(QubitRepositoryI18n::DISABLED_ACCESS);
-    $criteria->addSelectColumn(QubitRepositoryI18n::TRANSPORT);
     $criteria->addSelectColumn(QubitRepositoryI18n::RESEARCH_SERVICES);
     $criteria->addSelectColumn(QubitRepositoryI18n::REPRODUCTION_SERVICES);
     $criteria->addSelectColumn(QubitRepositoryI18n::PUBLIC_FACILITIES);
@@ -55,7 +51,7 @@ abstract class BaseRepositoryI18n
 
   public static function getFromResultSet(ResultSet $resultSet)
   {
-    if (!isset(self::$repositoryI18ns[$key = serialize(array($resultSet->getInt(18), $resultSet->getString(19)))]))
+    if (!isset(self::$repositoryI18ns[$key = serialize(array($resultSet->getInt(16), $resultSet->getString(17)))]))
     {
       $repositoryI18n = new QubitRepositoryI18n;
       $repositoryI18n->hydrate($resultSet);
@@ -111,20 +107,6 @@ abstract class BaseRepositoryI18n
     $affectedRows += BasePeer::doDelete($criteria, $connection);
 
     return $affectedRows;
-  }
-
-  protected $officersInCharge = null;
-
-  public function getOfficersInCharge()
-  {
-    return $this->officersInCharge;
-  }
-
-  public function setOfficersInCharge($officersInCharge)
-  {
-    $this->officersInCharge = $officersInCharge;
-
-    return $this;
   }
 
   protected $geoculturalContext = null;
@@ -235,20 +217,6 @@ abstract class BaseRepositoryI18n
   public function setDisabledAccess($disabledAccess)
   {
     $this->disabledAccess = $disabledAccess;
-
-    return $this;
-  }
-
-  protected $transport = null;
-
-  public function getTransport()
-  {
-    return $this->transport;
-  }
-
-  public function setTransport($transport)
-  {
-    $this->transport = $transport;
 
     return $this;
   }
@@ -392,7 +360,6 @@ abstract class BaseRepositoryI18n
 
   protected function resetModified()
   {
-    $this->columnValues['officersInCharge'] = $this->officersInCharge;
     $this->columnValues['geoculturalContext'] = $this->geoculturalContext;
     $this->columnValues['collectingPolicies'] = $this->collectingPolicies;
     $this->columnValues['buildings'] = $this->buildings;
@@ -401,7 +368,6 @@ abstract class BaseRepositoryI18n
     $this->columnValues['openingTimes'] = $this->openingTimes;
     $this->columnValues['accessConditions'] = $this->accessConditions;
     $this->columnValues['disabledAccess'] = $this->disabledAccess;
-    $this->columnValues['transport'] = $this->transport;
     $this->columnValues['researchServices'] = $this->researchServices;
     $this->columnValues['reproductionServices'] = $this->reproductionServices;
     $this->columnValues['publicFacilities'] = $this->publicFacilities;
@@ -417,7 +383,6 @@ abstract class BaseRepositoryI18n
 
   public function hydrate(ResultSet $results, $columnOffset = 1)
   {
-    $this->officersInCharge = $results->getString($columnOffset++);
     $this->geoculturalContext = $results->getString($columnOffset++);
     $this->collectingPolicies = $results->getString($columnOffset++);
     $this->buildings = $results->getString($columnOffset++);
@@ -426,7 +391,6 @@ abstract class BaseRepositoryI18n
     $this->openingTimes = $results->getString($columnOffset++);
     $this->accessConditions = $results->getString($columnOffset++);
     $this->disabledAccess = $results->getString($columnOffset++);
-    $this->transport = $results->getString($columnOffset++);
     $this->researchServices = $results->getString($columnOffset++);
     $this->reproductionServices = $results->getString($columnOffset++);
     $this->publicFacilities = $results->getString($columnOffset++);
@@ -492,11 +456,6 @@ abstract class BaseRepositoryI18n
 
     $criteria = new Criteria;
 
-    if ($this->isColumnModified('officersInCharge'))
-    {
-      $criteria->add(QubitRepositoryI18n::OFFICERS_IN_CHARGE, $this->officersInCharge);
-    }
-
     if ($this->isColumnModified('geoculturalContext'))
     {
       $criteria->add(QubitRepositoryI18n::GEOCULTURAL_CONTEXT, $this->geoculturalContext);
@@ -535,11 +494,6 @@ abstract class BaseRepositoryI18n
     if ($this->isColumnModified('disabledAccess'))
     {
       $criteria->add(QubitRepositoryI18n::DISABLED_ACCESS, $this->disabledAccess);
-    }
-
-    if ($this->isColumnModified('transport'))
-    {
-      $criteria->add(QubitRepositoryI18n::TRANSPORT, $this->transport);
     }
 
     if ($this->isColumnModified('researchServices'))
@@ -604,11 +558,6 @@ abstract class BaseRepositoryI18n
 
     $criteria = new Criteria;
 
-    if ($this->isColumnModified('officersInCharge'))
-    {
-      $criteria->add(QubitRepositoryI18n::OFFICERS_IN_CHARGE, $this->officersInCharge);
-    }
-
     if ($this->isColumnModified('geoculturalContext'))
     {
       $criteria->add(QubitRepositoryI18n::GEOCULTURAL_CONTEXT, $this->geoculturalContext);
@@ -647,11 +596,6 @@ abstract class BaseRepositoryI18n
     if ($this->isColumnModified('disabledAccess'))
     {
       $criteria->add(QubitRepositoryI18n::DISABLED_ACCESS, $this->disabledAccess);
-    }
-
-    if ($this->isColumnModified('transport'))
-    {
-      $criteria->add(QubitRepositoryI18n::TRANSPORT, $this->transport);
     }
 
     if ($this->isColumnModified('researchServices'))

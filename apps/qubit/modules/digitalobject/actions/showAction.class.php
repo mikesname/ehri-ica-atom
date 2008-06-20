@@ -56,14 +56,20 @@ class DigitalObjectShowAction extends sfAction
     }
 
     // Only fullscreen images right now
-    if ($this->digitalObject->getMediaTypeId() == QubitTerm::IMAGE_ID)
+    $this->link = null;
+    
+    // Only allow fullscreen view or download if user has edit credentials
+    if ($this->editCredentials)
     {
-      $this->link = 'digitalobject/showFullScreen?id='.$this->digitalObject->getId();
-    }
-    else
-    {
-      // Build a fully qualified URL to this digital object asset
-      $this->link = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->digitalObject->getFullPath();
+      if ($this->digitalObject->getMediaTypeId() == QubitTerm::IMAGE_ID)
+      {
+        $this->link = 'digitalobject/showFullScreen?id='.$this->digitalObject->getId();
+      }
+      else
+      {
+        // Build a fully qualified URL to this digital object asset
+        $this->link = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->digitalObject->getFullPath();
+      }
     }
   }
 }

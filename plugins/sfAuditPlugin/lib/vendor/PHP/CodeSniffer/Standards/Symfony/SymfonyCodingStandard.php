@@ -43,21 +43,49 @@ class PHP_CodeSniffer_Standards_Symfony_SymfonyCodingStandard extends PHP_CodeSn
     public function getIncludedSniffs()
     {
         return array(
-	    //'Generic/Sniffs/Formatting/MultipleStatementAlignmentSniff.php',
-	    //'Generic/Sniffs/Functions/OpeningFunctionBraceBsdAllmanSniff.php',
-	    //'Generic/Sniffs/NamingConventions/UpperCaseConstantNameSniff.php',
-	    //'Generic/Sniffs/PHP/LowerCaseConstantSniff.php',
-	    'Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',
-	    'Generic/Sniffs/WhiteSpace/DisallowTabIndentSniff.php',
-	    'Generic/Sniffs/Formatting/SpaceAfterCastSniff.php',
-	    //'Squiz/Sniffs/Comments/InlineCommentSniff.php',
-	    'Squiz/Sniffs/ControlStructures/ElseIfDeclarationSniff.php',
-	    'Squiz/Sniffs/ControlStructures/ForEachLoopDeclarationSniff.php',
-	    'Squiz/Sniffs/ControlStructures/ForLoopDeclarationSniff.php',
+            'Generic/Sniffs/ControlStructures/InlineControlStructureSniff.php',
+            'Generic/Sniffs/Files/LineEndingsSniff.php',
+            'Generic/Sniffs/Formatting/SpaceAfterCastSniff.php',
+            //'Generic/Sniffs/Functions/OpeningFunctionBraceBsdAllmanSniff.php',
+            'Generic/Sniffs/NamingConventions/UpperCaseConstantNameSniff.php',
+            'Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',
+            'Generic/Sniffs/PHP/ForbiddenFunctionsSniff.php',
+            'Generic/Sniffs/PHP/LowerCaseConstantSniff.php',
+            'Generic/Sniffs/WhiteSpace/DisallowTabIndentSniff.php',
+            //'PEAR/Sniffs/Functions/FunctionCallArgumentSpacingSniff.php',
+            'PEAR/Sniffs/Functions/ValidDefaultValueSniff.php',
+            'Squiz/Sniffs/Arrays/ArrayBracketSpacingSniff.php',
+            'Squiz/Sniffs/Classes/LowercaseClassKeywordsSniff.php',
+            //'Squiz/Sniffs/Classes/SelfMemberReferenceSniff.php',
+            //'Squiz/Sniffs/Commenting/InlineCommentSniff.php',
+            'Squiz/Sniffs/ControlStructures/ElseIfDeclarationSniff.php',
+            'Squiz/Sniffs/ControlStructures/ForEachLoopDeclarationSniff.php',
+            'Squiz/Sniffs/ControlStructures/ForLoopDeclarationSniff.php',
+            'Squiz/Sniffs/ControlStructures/LowercaseDeclarationSniff.php',
+            'Squiz/Sniffs/Functions/FunctionDeclarationSniff.php',
+            'Squiz/Sniffs/Functions/LowercaseFunctionKeywordsSniff.php',
+            'Squiz/Sniffs/Operators/IncrementDecrementUsageSniff.php',
+            'Squiz/Sniffs/Operators/ValidLogicalOperatorsSniff.php',
+            'Squiz/Sniffs/PHP/LowercasePHPFunctionsSniff.php',
+            'Squiz/Sniffs/PHP/NonExecutableCodeSniff.php',
 
-	    // Don't apply to templates
-	    //'Squiz/Sniffs/ControlStructures/InlineControlStructureSniff.php',
-	    'Squiz/Sniffs/ControlStructures/LowercaseDeclarationSniff.php',
-	    'Squiz/Sniffs/Strings/ConcatenationSpacingSniff.php');
+            // Fails to understand symfony multiple line style:
+            //
+            // protected
+            //   $foo,
+            //   $bar;
+            //
+            //'Squiz/Sniffs/Scope/MemberVarScopeSniff.php',
+
+            'Squiz/Sniffs/Scope/MethodScopeSniff.php',
+            'Squiz/Sniffs/Scope/StaticThisUsageSniff.php',
+            'Squiz/Sniffs/Strings/ConcatenationSpacingSniff.php',
+            'Squiz/Sniffs/Strings/DoubleQuoteUsageSniff.php',
+            'Squiz/Sniffs/Strings/EchoedStringsSniff.php',
+            'Squiz/Sniffs/WhiteSpace/FunctionOpeningBraceSpaceSniff.php',
+            'Squiz/Sniffs/WhiteSpace/ObjectOperatorSpacingSniff.php',
+            'Squiz/Sniffs/WhiteSpace/SemicolonSpacingSniff.php',
+            'Squiz/Sniffs/WhiteSpace/SuperfluousWhitespaceSniff.php',
+            'Zend/Sniffs/Files/ClosingTagSniff.php');
     }
 }

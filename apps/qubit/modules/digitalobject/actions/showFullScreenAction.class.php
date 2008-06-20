@@ -37,5 +37,8 @@ class DigitalObjectShowFullScreenAction extends sfAction
     // Get ancestor information object
     $this->informationObject = $this->digitalObject->getTopAncestorOrSelf()->getInformationObject();
     $this->forward404Unless($this->informationObject);
+    
+    // Get refering page for "back" link
+    $this->referer = $this->getRequest()->getReferer();
   }
 }

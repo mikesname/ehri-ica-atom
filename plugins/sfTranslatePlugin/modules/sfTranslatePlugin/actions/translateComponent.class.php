@@ -35,10 +35,10 @@ class sfTranslatePluginTranslateComponent extends sfComponent
 
     ksort($this->messages);
 
-    $this->getResponse()->addStylesheet('/sfTranslatePlugin/css/l10n_client.css');
-    $this->getResponse()->addJavaScript('jquery.js');
-    $this->getResponse()->addJavaScript('drupal.js');
-    $this->getResponse()->addJavaScript('textarea.js');
-    $this->getResponse()->addJavaScript('/sfTranslatePlugin/js/l10n_client.js');
+    $this->getResponse()->addStylesheet('/sfTranslatePlugin/css/l10n_client');
+    $this->getResponse()->addJavaScript('jquery');
+    $this->getResponse()->addJavaScript('drupal');
+    $this->getResponse()->addJavaScript('textarea');
+    $this->getResponse()->addJavaScript('/sfTranslatePlugin/js/l10n_client');
   }
 }

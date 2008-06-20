@@ -31,16 +31,6 @@ class PhysicalObjectEditComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->physicalObjects = $this->informationObject->getPhysicalObjects();
-    {
-      if (count($this->physicalObjects))
-      {
-        $this->physicalObject = $this->physicalObjects[0];
-      }
-      else
-      {
-        $this->physicalObject = new QubitPhysicalObject;
-      }
-    }
+    $this->relations = QubitRelation::getRelationsByObjectId($this->informationObject->getId(), array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
   }
 }

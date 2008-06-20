@@ -69,6 +69,7 @@ class ActorUpdateContactInformationAction extends sfAction
   $contactInformation->setActorId($contactInformation->getActorId());
   $contactInformation->setContactType($this->getRequestParameter('contact_type'));
   $contactInformation->setPrimaryContact($this->getRequestParameter('primary_contact'));
+  $contactInformation->setContactPerson($this->getRequestParameter('contact_person'));
   $contactInformation->setStreetAddress($this->getRequestParameter('street_address'));
   $contactInformation->setCity($this->getRequestParameter('city'));
   $contactInformation->setRegion($this->getRequestParameter('region'));

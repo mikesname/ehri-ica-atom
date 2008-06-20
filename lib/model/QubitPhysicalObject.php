@@ -22,13 +22,65 @@
 class QubitPhysicalObject extends BasePhysicalObject
 {
   
+  /**
+   * Call this function when casting object instance as type string
+   *
+   * @return string  Physical Object Name
+   */
   public function __toString()
   {
     if (!$this->getName())
-      {
+    {
       return (string) $this->getName(array('sourceCulture' => true));
-      }
+    }
   
     return (string) $this->getName();
   }
+  
+  
+  /**
+   * Overwrite BasePhysicalObject::delete() method to add cascading delete
+   * logic
+   *
+   * @param ? $connection
+   */
+  public function delete($connection = null)
+  {
+    $this->deleteInformationObjectRelations();
+    
+    parent::delete($connection);
+  }
+  
+  
+  /**
+   * Delete relation records linking this physical object to information objects
+   *
+   */
+  public function deleteInformationObjectRelations()
+  {
+    $this->informationObjectRelations = QubitRelation::getRelationsBySubjectId($this->getId(), 
+      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+      
+    foreach($this->informationObjectRelations as $relation)
+    {
+      $relation->delete();
+    }
+  }
+  
+  /**
+   * Get related information object via QubitRelation relationship
+   *
+   * @param array $options list of options to pass to QubitQuery
+   * @return QubitQuery collection of Information Objects
+   */
+  public function getInformationObjects($options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitPhysicalObject::ID, QubitRelation::SUBJECT_ID);
+    $criteria->addJoin(QubitRelation::OBJECT_ID, QubitInformationObject::ID);
+    $criteria->add(QubitPhysicalObject::ID, $this->getId());
+    
+    return QubitQuery::createFromCriteria($criteria, 'QubitInformationObject', $options);
+  }
+ 
 }

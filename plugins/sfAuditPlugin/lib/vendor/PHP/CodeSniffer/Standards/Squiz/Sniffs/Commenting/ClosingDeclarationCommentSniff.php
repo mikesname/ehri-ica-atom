@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ClosingDeclarationCommentSniff.php,v 1.4 2008/05/08 03:58:12 squiz Exp $
+ * @version   CVS: $Id: ClosingDeclarationCommentSniff.php,v 1.5 2008/05/19 05:59:25 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -89,6 +89,14 @@ class Squiz_Sniffs_Commenting_ClosingDeclarationCommentSniff implements PHP_Code
         } else {
             $comment = '//end interface';
         }//end if
+
+        if (isset($tokens[$stackPtr]['scope_closer']) === false) {
+            $error  = 'Possible parse error: ';
+            $error .= $tokens[$stackPtr]['content'];
+            $error .= ' missing opening or closing brace';
+            $phpcsFile->addWarning($error, $stackPtr);
+            return;
+        }
 
         $closingBracket = $tokens[$stackPtr]['scope_closer'];
 

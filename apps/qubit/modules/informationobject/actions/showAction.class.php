@@ -51,6 +51,8 @@ class InformationObjectShowAction extends sfAction
         $this->nameAccessPoints[] = $event;
       }
     }
+    $this->physicalObjects = QubitRelation::getRelatedSubjectsByObjectId($this->informationObject->getId(),
+      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
     //determine if user has edit priviliges
     $this->editCredentials = false;

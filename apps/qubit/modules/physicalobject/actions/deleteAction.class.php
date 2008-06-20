@@ -34,26 +34,25 @@ class PhysicalObjectDeleteAction extends sfAction
     $physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('id'));
     $this->forward404Unless($physicalObject);
     
-    // Get related information object and redirect to it
-    $informationObject = $physicalObject->getInformationObject();
+    $this->forward404Unless($this->hasRequestParameter('next'));
+    
+    // Get related information objects (if any)
+    $informationObjects = QubitRelation::getRelatedObjectsBySubjectId($physicalObject->getId(),
+      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
     
     // Delete physical object record from the database
     $physicalObject->delete();
     
     // Update Index (if related to an information object)
-    if ($informationObject) 
+    if (count($informationObjects) > 0) 
     {
-      SearchIndex::updateTranslatedLanguages($informationObject);
+      foreach($informationObjects as $informationObject)
+      {
+        SearchIndex::updateTranslatedLanguages($informationObject);
+      }
     }
 
-    // Redirect to information object edit page
-    if ($this->hasRequestParameter('next'))
-    {
-  
-      return $this->redirect($this->getRequestParameter('next'));
-    }
-    
-    // Default redirect
-    return $this->redirect('informationobject/edit?id='.$informationObject->getId());
+    // Redirect to "next" action
+    return $this->redirect(urldecode($this->getRequestParameter('next')));
   }
 }

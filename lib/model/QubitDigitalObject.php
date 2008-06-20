@@ -287,18 +287,23 @@ class QubitDigitalObject extends BaseDigitalObject
     switch($mimePieces[0])
     {
       case 'audio':
-        $mediaTypeId = QubitTerm::AUDIO_ID; break;
+        $mediaTypeId = QubitTerm::AUDIO_ID; 
+        break;
       case 'image':
-        $mediaTypeId = QubitTerm::IMAGE_ID; break;
+        $mediaTypeId = QubitTerm::IMAGE_ID; 
+        break;
       case 'text':
-        $mediaTypeId = QubitTerm::TEXT_ID; break;
+        $mediaTypeId = QubitTerm::TEXT_ID; 
+        break;
       case 'video':
-        $mediaTypeId = QubitTerm::VIDEO_ID; break;
+        $mediaTypeId = QubitTerm::VIDEO_ID; 
+        break;
       case 'application':
         switch ($mimePieces[1])
         {
           case 'pdf':
-            $mediaTypeId = QubitTerm::TEXT_ID; break;
+            $mediaTypeId = QubitTerm::TEXT_ID; 
+            break;
           default:
             $mediaTypeId = QubitTerm::OTHER_ID;
         }
@@ -641,6 +646,9 @@ class QubitDigitalObject extends BaseDigitalObject
 
       return false;
     }
+    
+    // Set permissions on output file
+    chmod($derivativeFullPath, 0644);
 
     // Update digital object with thumbnail information
     $derivative->setName($derivativeName);
@@ -917,11 +925,22 @@ class QubitDigitalObject extends BaseDigitalObject
    */
   public function createVideoDerivative($usageId)
   {
-    $mechanism = array('QubitDigitalObject', 'createFlashVideo');
-    $extension = '.flv';
-
-    // Get max dimensions
-    $maxDimensions = array(null, null);
+    
+    
+    switch ($usageId)
+    {
+      case QubitTerm::REFERENCE_ID:
+        $mechanism = array('QubitDigitalObject', 'convertVideoToFlash');
+        $extension = '.flv';
+        $maxDimensions = array(null, null);
+        break;
+      case QubitTerm::THUMBNAIL_ID:
+      default:
+        $mechanism = array('QubitDigitalObject', 'convertVideoToThumbnail');
+        $extension = '.png';
+        $maxDimensions = self::getImageMaxDimensions($usageId);
+        break;
+    }  
 
     if ($derivative = $this->createDerivative($mechanism, $extension, $maxDimensions))
     {
@@ -952,11 +971,12 @@ class QubitDigitalObject extends BaseDigitalObject
     return $found;
   }
 
+  
   /**
    * Create a flash video derivative using the FFmpeg library.
    *
-   * @param string $originalPath  path to original video
-   * @param string $newPath       path to derivative video
+   * @param string  $originalPath path to original video
+   * @param string  $newPath      path to derivative video
    * @param integer $maxwidth     derivative video maximum width
    * @param integer $maxheight    derivative video maximum height
    *
@@ -964,22 +984,61 @@ class QubitDigitalObject extends BaseDigitalObject
    *
    * @todo implement $maxwidth and $maxheight constraints on video
    */
-  public static function createFlashVideo($originalPath, $newPath, $maxwidth=null, $maxheight=null)
+  public static function convertVideoToFlash($originalPath, $newPath, $width=null, $height=null)
   {
     // Test for FFmpeg library
     if (!self::hasFfmpeg())
     {
+      
       return false;
     }
 
     exec('ffmpeg -y -i '.$originalPath.' '.$newPath.' 2>&1', $stdout, $returnValue);
-
+    
     // If return value is non-zero, an error occured
     if ($returnValue)
     {
+
       return false;
     }
 
     return true;
   }
+  
+  
+  /**
+   * Create a flash video derivative using the FFmpeg library.
+   *
+   * @param string  $originalPath path to original video
+   * @param string  $newPath      path to derivative video
+   * @param integer $maxwidth     derivative video maximum width
+   * @param integer $maxheight    derivative video maximum height
+   *
+   * @return boolean  success or failure
+   *
+   * @todo implement $maxwidth and $maxheight constraints on video
+   */
+  public static function convertVideoToThumbnail($originalPath, $newPath, $width=null, $height=null)
+  {
+    // Test for FFmpeg library
+    if (!self::hasFfmpeg())
+    {
+      
+      return false;
+    }
+    
+    // Do conversion to png
+    $cmd = 'ffmpeg -i '.$originalPath.' -vcodec png -vframes 1 -an -f rawvideo -s '.$width.'x'.$height.' '.$newPath; 
+    exec($cmd.' 2>&1', $stdout, $returnValue);
+
+    // If return value is non-zero, an error occured
+    if ($returnValue)
+    {
+     
+      return false;
+    }
+
+    return true;
+  }
+  
 }

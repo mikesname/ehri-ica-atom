@@ -1,6 +1,6 @@
 // $Id$
 
-Qubit.treeView = Qubit.treeView || {};
+Qubit.treeView = Qubit.treeView || {}; // Information object treeview
 
 Drupal.behaviors.treeView = function (context)
   {
@@ -13,7 +13,8 @@ Drupal.behaviors.treeView = function (context)
         build(objects, expands, object.id, textNode);
       }
     }
-
+    
+    // Information object treeview
     Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
     build(Qubit.treeView.objects, Qubit.treeView.expands, Qubit.treeView.objects[0].parentId, Qubit.treeView.treeView.getRoot());
 

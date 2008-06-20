@@ -48,6 +48,9 @@
       <?php if ($contact->getPrimaryContact()): ?> (primary contact)<?php endif; ?>
       </td></tr></table>
           <div style="padding-left: 10px; margin-bottom: 0px;">
+            <?php if ($contact->getContactPerson()): ?>
+              <?php echo $contact->getContactPerson() ?><br />
+            <?php endif; ?>
             <?php if ($contact->getStreetAddress()): ?>
               <?php echo nl2br($contact->getStreetAddress()) ?><br />
             <?php endif; ?>
@@ -83,13 +86,6 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getOfficersInCharge()): ?>
-  <tr><th><?php echo __('officers in charge')?></th>
-  <td><?php echo $repository->getOfficersInCharge()?>
-  </td></tr>
-<?php endif; ?>
-
-
 <?php if ($repository->getHistory()): ?>
   <tr><th><?php echo __('history')?></th><td>
   <?php echo nl2br($repository->getHistory())?>
@@ -100,6 +96,11 @@
   <tr><th><?php echo __('geographical and cultural context')?></th>
   <td><?php echo nl2br($repository->getGeoculturalContext()) ?>
   </td></tr>
+<?php endif; ?>
+
+<?php if ($repository->getMandates(array('sourceCulture' => true))): ?>
+  <tr><th><?php echo __('mandates or sources of authority')?></th>
+  <td><?php echo nl2br($repository->getMandates(array('sourceCulture' => true))) ?></td></tr>
 <?php endif; ?>
 
 <?php if ($repository->getInternalStructures()): ?>

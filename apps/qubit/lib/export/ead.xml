@@ -1,10 +1,3 @@
-<!--
-	EAD 2002 XML SCHEMA
-
-	This file is part of the Qubit Toolkit.
-	Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
--->
-
 <!DOCTYPE ead PUBLIC "+//ISBN 1-931666-00-8//DTD ead.dtd (Encoded Archival Description (EAD) Version 2002)//EN" "http://xml.coverpages.org/EADv20-dtd.txt">
 
 <ead relatedencoding="MARC21">
@@ -16,7 +9,7 @@
                 <titleproper><?php echo htmlentities($this->baseObject->getTitle()) ?></titleproper><!-- required -->
                 <subtitle><?php echo htmlentities($this->baseObject->getAlternateTitle()) ?></subtitle>
 
-				<?php foreach($this->baseObject->getCreators() as $creator): ?>
+				<?php foreach ($this->baseObject->getCreators() as $creator): ?>
 					<author><?php echo htmlentities($creator->getAuthorizedFormOfName()) ?></author>
 				<?php endforeach; ?>
             </titlestmt>
@@ -46,7 +39,7 @@
 				<date/>
 			</creation>
 			<langusage>
-				<?php foreach($this->baseObject->getProperties('language_of_information_object_description') as $languageCode): ?>
+				<?php foreach ($this->baseObject->getProperties('language_of_information_object_description') as $languageCode): ?>
 					<language langcode="<?php echo $languageCode->getValue() ?>"><?php echo htmlentities(format_language($languageCode->getValue())) ?></language>
 				<?php endforeach; ?>			
 			</langusage>
@@ -89,7 +82,7 @@
 				</address>
 			</repository>
 			<origination>
-				<?php foreach($this->baseObject->getCreators() as $creator): ?>
+				<?php foreach ($this->baseObject->getCreators() as $creator): ?>
 					<name encodinganalog="100"><?php echo htmlentities($creator->getAuthorizedFormOfName()) ?></name>
 				<?php endforeach; ?>
 			</origination>
@@ -102,12 +95,12 @@
 				<phystech/>
 			</physdesc>
 			<langmaterial encodinganalog="546$a">
-				<?php foreach($this->baseObject->getProperties('language_of_information_object_description') as $languageCode): ?>
+				<?php foreach ($this->baseObject->getProperties('language_of_information_object_description') as $languageCode): ?>
 					<language langcode="<?php echo $languageCode->getValue() ?>"><?php echo htmlentities(format_language($languageCode->getValue())) ?></language>
 				<?php endforeach; ?>			
 			</langmaterial>
 			<materialspec/>
-			<?php foreach($this->baseObject->getNotes() as $note): ?>
+			<?php foreach ($this->baseObject->getNotes() as $note): ?>
 				<note><?php echo htmlentities($note->getContent) ?></note>
 			<?php endforeach; ?>
         </did>
@@ -133,7 +126,7 @@
 		</arrangement>
 		<bioghist encodinganalog="545">
 			<head/>
-			<?php foreach($this->baseObject->getCreators() as $creator): ?>
+			<?php foreach ($this->baseObject->getCreators() as $creator): ?>
 				<p><?php echo htmlentities($creator->getHistory()) ?></p>
 			<?php endforeach; ?>
 		</bioghist>
@@ -176,7 +169,7 @@
 			<subject/><!-- multiple -->
 		</controlaccess>		
 		<dsc type="combined">
-			<?php foreach($this->baseObject->getDescendants() as $descendant): ?>
+			<?php foreach ($this->baseObject->getDescendants() as $descendant): ?>
 				<!--  recursion is a slippery fish -->
 				<c level="<?php echo htmlentities($descendant->getLevelOfDescription()) ?>">
 					<did>

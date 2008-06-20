@@ -1,10 +1,3 @@
-<!--
-	MARC21XML SCHEMA
-
-	This file is part of the Qubit Toolkit.
-	Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
--->
-
 <record xmlns="http://www.loc.gov/MARC21/slim"
  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
  xsi:schemaLocation="http://www.loc.gov/MARC21/slim http://www.loc.gov/standards/marcxml/schema/MARC21slim.xsd" type="Bibliographic" id="ID001">

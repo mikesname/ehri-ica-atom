@@ -59,10 +59,19 @@ EOF
     <?php endif; ?>
 
     <?php if (count($informationObjects) > 1): ?>
+      <?php include_component('digitalobject', 'imageflow', array('informationObject' => $informationObject)) ?>
+    <?php endif; ?>
+
+    <?php if (count($informationObjects) > 1): ?>
       <div class="label">
         <?php if (null === $levelOfDescription = $informationObject->getCollectionRoot()->getLevelOfDescription()) $levelOfDescription = sfConfig::get('app_ui_label_collection'); echo $levelOfDescription ?>
       </div>
       <?php include_component('informationobject', 'treeView', array('informationObjects' => $informationObjects)) ?>
     <?php endif; ?>
+    
+    <?php if (count($informationObjects) > 1 && $editCredentials == true): ?>
+      <?php include_component('physicalobject', 'contextMenu', array('informationObjects' => $informationObjects)) ?>
+    <?php endif; ?>
+    
   </div>
 </div>

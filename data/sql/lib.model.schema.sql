@@ -324,7 +324,6 @@ DROP TABLE IF EXISTS `q_physical_object`;
 CREATE TABLE `q_physical_object`
 (
 	`id` INTEGER  NOT NULL,
-	`information_object_id` INTEGER,
 	`type_id` INTEGER,
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
@@ -337,16 +336,12 @@ CREATE TABLE `q_physical_object`
 		FOREIGN KEY (`id`)
 		REFERENCES `q_object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_physical_object_FI_2` (`information_object_id`),
+	INDEX `q_physical_object_FI_2` (`type_id`),
 	CONSTRAINT `q_physical_object_FK_2`
-		FOREIGN KEY (`information_object_id`)
-		REFERENCES `q_information_object` (`id`),
-	INDEX `q_physical_object_FI_3` (`type_id`),
-	CONSTRAINT `q_physical_object_FK_3`
 		FOREIGN KEY (`type_id`)
 		REFERENCES `q_term` (`id`),
-	INDEX `q_physical_object_FI_4` (`parent_id`),
-	CONSTRAINT `q_physical_object_FK_4`
+	INDEX `q_physical_object_FI_3` (`parent_id`),
+	CONSTRAINT `q_physical_object_FK_3`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `q_physical_object` (`id`)
 )Type=InnoDB;
@@ -490,7 +485,6 @@ DROP TABLE IF EXISTS `q_repository_i18n`;
 
 CREATE TABLE `q_repository_i18n`
 (
-	`officers_in_charge` TEXT,
 	`geocultural_context` TEXT,
 	`collecting_policies` TEXT,
 	`buildings` TEXT,
@@ -499,7 +493,6 @@ CREATE TABLE `q_repository_i18n`
 	`opening_times` TEXT,
 	`access_conditions` TEXT,
 	`disabled_access` TEXT,
-	`transport` TEXT,
 	`research_services` TEXT,
 	`reproduction_services` TEXT,
 	`public_facilities` TEXT,
@@ -574,6 +567,7 @@ CREATE TABLE `q_contact_information`
 (
 	`actor_id` INTEGER  NOT NULL,
 	`primary_contact` INTEGER,
+	`contact_person` VARCHAR(255),
 	`street_address` TEXT,
 	`website` VARCHAR(255),
 	`email` VARCHAR(255),

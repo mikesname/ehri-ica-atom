@@ -133,6 +133,16 @@ class MenuMainMenuComponent extends sfComponent
             $secondarymenu_css_class[0] = 'selected';
             break;
             }
+          case 'digitalobject':
+            {
+            $secondarymenu_css_class[0] = 'selected';
+            break;
+            }
+          case 'physicalobject':
+            {
+            $secondarymenu_css_class[0] = 'selected';
+            break;
+            }                        
           case 'actor':
             {
             $secondarymenu_css_class[1] = 'selected';
