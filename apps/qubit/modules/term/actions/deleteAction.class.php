@@ -23,9 +23,9 @@ class TermDeleteAction extends sfAction
 {
   public function execute($request)
   {
-  $term = QubitTerm::getById($this->getRequestParameter('id'));
+    $term = QubitTerm::getById($this->getRequestParameter('id'));
 
-  $this->forward404Unless($term);
+    $this->forward404Unless($term);
 
   //make sure a locked term value is not updated
 /*
@@ -39,8 +39,16 @@ class TermDeleteAction extends sfAction
     $this->forward('admin','TermPermission');
     }
 */
-  $term->delete();
-
-  return $this->redirect('term/list');
+    $term->delete();
+    
+    if ($this->getRequestParameter('taxonomyId'))
+    {
+      return $this->redirect('term/list?taxonomyId='.$this->getRequestParameter('taxonomyId'));
+    }
+    else
+    {
+      return $this->redirect('term/list');
+    }
+  
   }
 }

@@ -68,7 +68,7 @@
 
 <div class="menu-action">
 <?php if ($term->getId()): ?>
-  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId(), 'post=true&confirm='.__('are you sure?')) ?>
+  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId().'&taxonomyId='.$term->getTaxonomyId(), 'post=true&confirm='.__('are you sure?')) ?>
   &nbsp;<?php echo link_to(__('cancel'), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>
 <?php else: ?>
   &nbsp;<?php echo link_to(__('cancel'), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>

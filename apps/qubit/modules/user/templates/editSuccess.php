@@ -49,7 +49,7 @@
 <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
 <div id="button-block-bump"></div>
 
-<div id="button-block" style="height: 4em;">
+<div id="button-block">
 <div class="menu-action">
 <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'user', 'action' => 'delete'))): ?>
   <?php if ($user->getId()): ?>

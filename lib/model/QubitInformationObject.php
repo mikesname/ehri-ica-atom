@@ -385,6 +385,48 @@ public function getMediaTypes()
   {
   //TO DO: get via linked digital objects & physical objects
   }
+  
+  public function getReferenceCode(array $options = array())
+  {
+    // set default value
+    $options += array('standard' => 'isad');
+    
+    $countryCode = null;
+    $repositoryCode = null;
+    $identifiers = array();
+    // if current informationObject is related to a Repository record
+    // get its country and repository code from that related record
+    // otherwise go up the ancestor tree until hitting a node that has a related
+    // Repository record with country and repository code info
+    foreach ($this->getAncestors()->andSelf()->orderBy('lft') as $ancestor)
+    {
+      if (null !== $repository = $ancestor->getRepository())
+      {
+        $countryCode = $repository->getPrimaryContact()->getCountryCode().' ';
+        $repositoryCode = $repository->getIdentifier().' ';
+      }
+
+      // while going up the ancestor tree, build an array of identifiers that can be output
+      // as one compound identifier string for Reference Code display
+      if ($ancestor->getIdentifier())
+      {
+        $identifiers[] = $ancestor->getIdentifier();
+      }
+    }
+      
+    // output a Reference Code according to the rules of a particular standard      
+    switch ($options['standard'])
+    {
+      case 'isad':
+        // TODO: This should work in future, without requiring the foreach() loop above:
+        // return $this->getAncestors->andSelf->orderBy('rgt')->getRepository()->getPrimaryContact()->getCountryCode().' '.$this->getAncestors->andSelf()->getRepository()->getIdentifier().' '.implode('-', $this->getAncestors()->andSelf()->getIdentifier());
+        return $countryCode.$repositoryCode.implode('-', $identifiers);
+      case 'dublincore':
+        return $identifierString;
+      case 'ead':
+        return $identifierString;
+    }
+  }
 
 public function getRepositoryCountry()
   {

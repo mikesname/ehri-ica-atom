@@ -23,8 +23,15 @@
 
   <legend><?php echo __('identity area'); ?></legend>
 
+    <?php if ($informationObject->getIdentifier()): ?>
+      <div class="form-item">
+        <label for="reference code"><?php echo __('reference code'); ?></label>
+        <?php echo $informationObject->getReferenceCode(array('standard' => 'isad')) ?>
+      </div>
+    <?php endif; ?>
+
     <div class="form-item">
-      <label for="identifier"><?php echo __('reference code'); ?></label>
+      <label for="identifier"><?php echo __('identifier'); ?></label>
       <?php echo object_input_tag($informationObject, 'getIdentifier', array('size' => 20)) ?>
     </div>
 

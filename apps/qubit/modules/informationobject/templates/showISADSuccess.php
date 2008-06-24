@@ -13,7 +13,7 @@
 <?php if ($informationObject->getIdentifier()) : ?>
 <tr>
 <th><?php echo __('reference code'); ?></th>
-<td><?php echo $informationObject->getIdentifier(); ?></td>
+<td><?php echo $informationObject->getReferenceCode(array('standard' => 'isad')) ?></td>
 </tr>
 <?php endif; ?>
 
