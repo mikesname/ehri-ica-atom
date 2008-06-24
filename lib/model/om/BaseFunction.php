@@ -398,7 +398,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getClassification(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getClassification();
+    $classification = $this->getCurrentFunctionI18n($options)->getClassification();
+    if (!empty($options['cultureFallback']) && $classification === null)
+    {
+      $classification = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getClassification();
+    }
+
+    return $classification;
   }
 
   public function setClassification($value, array $options = array())
@@ -410,7 +416,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getDomain(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getDomain();
+    $domain = $this->getCurrentFunctionI18n($options)->getDomain();
+    if (!empty($options['cultureFallback']) && $domain === null)
+    {
+      $domain = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getDomain();
+    }
+
+    return $domain;
   }
 
   public function setDomain($value, array $options = array())
@@ -422,7 +434,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getDates(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getDates();
+    $dates = $this->getCurrentFunctionI18n($options)->getDates();
+    if (!empty($options['cultureFallback']) && $dates === null)
+    {
+      $dates = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getDates();
+    }
+
+    return $dates;
   }
 
   public function setDates($value, array $options = array())
@@ -434,7 +452,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getHistory(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getHistory();
+    $history = $this->getCurrentFunctionI18n($options)->getHistory();
+    if (!empty($options['cultureFallback']) && $history === null)
+    {
+      $history = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getHistory();
+    }
+
+    return $history;
   }
 
   public function setHistory($value, array $options = array())
@@ -446,7 +470,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getLegislation(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getLegislation();
+    $legislation = $this->getCurrentFunctionI18n($options)->getLegislation();
+    if (!empty($options['cultureFallback']) && $legislation === null)
+    {
+      $legislation = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getLegislation();
+    }
+
+    return $legislation;
   }
 
   public function setLegislation($value, array $options = array())
@@ -458,7 +488,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getGeneralContext(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getGeneralContext();
+    $generalContext = $this->getCurrentFunctionI18n($options)->getGeneralContext();
+    if (!empty($options['cultureFallback']) && $generalContext === null)
+    {
+      $generalContext = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getGeneralContext();
+    }
+
+    return $generalContext;
   }
 
   public function setGeneralContext($value, array $options = array())
@@ -470,7 +506,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getInstitutionResponsibleIdentifier(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getInstitutionResponsibleIdentifier();
+    $institutionResponsibleIdentifier = $this->getCurrentFunctionI18n($options)->getInstitutionResponsibleIdentifier();
+    if (!empty($options['cultureFallback']) && $institutionResponsibleIdentifier === null)
+    {
+      $institutionResponsibleIdentifier = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getInstitutionResponsibleIdentifier();
+    }
+
+    return $institutionResponsibleIdentifier;
   }
 
   public function setInstitutionResponsibleIdentifier($value, array $options = array())
@@ -482,7 +524,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getRules(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getRules();
+    $rules = $this->getCurrentFunctionI18n($options)->getRules();
+    if (!empty($options['cultureFallback']) && $rules === null)
+    {
+      $rules = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getRules();
+    }
+
+    return $rules;
   }
 
   public function setRules($value, array $options = array())
@@ -494,7 +542,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getSources(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getSources();
+    $sources = $this->getCurrentFunctionI18n($options)->getSources();
+    if (!empty($options['cultureFallback']) && $sources === null)
+    {
+      $sources = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getSources();
+    }
+
+    return $sources;
   }
 
   public function setSources($value, array $options = array())
@@ -506,7 +560,13 @@ abstract class BaseFunction extends QubitTerm
 
   public function getRevisionHistory(array $options = array())
   {
-    return $this->getCurrentFunctionI18n($options)->getRevisionHistory();
+    $revisionHistory = $this->getCurrentFunctionI18n($options)->getRevisionHistory();
+    if (!empty($options['cultureFallback']) && $revisionHistory === null)
+    {
+      $revisionHistory = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getRevisionHistory();
+    }
+
+    return $revisionHistory;
   }
 
   public function setRevisionHistory($value, array $options = array())

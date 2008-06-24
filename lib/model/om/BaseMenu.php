@@ -511,7 +511,13 @@ abstract class BaseMenu
 
   public function getName(array $options = array())
   {
-    return $this->getCurrentMenuI18n($options)->getName();
+    $name = $this->getCurrentMenuI18n($options)->getName();
+    if (!empty($options['cultureFallback']) && $name === null)
+    {
+      $name = $this->getCurrentMenuI18n(array('sourceCulture' => true) + $options)->getName();
+    }
+
+    return $name;
   }
 
   public function setName($value, array $options = array())

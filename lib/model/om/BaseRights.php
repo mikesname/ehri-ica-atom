@@ -571,7 +571,13 @@ abstract class BaseRights
 
   public function getDescription(array $options = array())
   {
-    return $this->getCurrentRightsI18n($options)->getDescription();
+    $description = $this->getCurrentRightsI18n($options)->getDescription();
+    if (!empty($options['cultureFallback']) && $description === null)
+    {
+      $description = $this->getCurrentRightsI18n(array('sourceCulture' => true) + $options)->getDescription();
+    }
+
+    return $description;
   }
 
   public function setDescription($value, array $options = array())

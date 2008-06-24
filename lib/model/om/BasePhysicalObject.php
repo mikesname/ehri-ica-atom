@@ -540,7 +540,13 @@ abstract class BasePhysicalObject extends QubitObject
 
   public function getName(array $options = array())
   {
-    return $this->getCurrentPhysicalObjectI18n($options)->getName();
+    $name = $this->getCurrentPhysicalObjectI18n($options)->getName();
+    if (!empty($options['cultureFallback']) && $name === null)
+    {
+      $name = $this->getCurrentPhysicalObjectI18n(array('sourceCulture' => true) + $options)->getName();
+    }
+
+    return $name;
   }
 
   public function setName($value, array $options = array())
@@ -552,7 +558,13 @@ abstract class BasePhysicalObject extends QubitObject
 
   public function getDescription(array $options = array())
   {
-    return $this->getCurrentPhysicalObjectI18n($options)->getDescription();
+    $description = $this->getCurrentPhysicalObjectI18n($options)->getDescription();
+    if (!empty($options['cultureFallback']) && $description === null)
+    {
+      $description = $this->getCurrentPhysicalObjectI18n(array('sourceCulture' => true) + $options)->getDescription();
+    }
+
+    return $description;
   }
 
   public function setDescription($value, array $options = array())
@@ -564,7 +576,13 @@ abstract class BasePhysicalObject extends QubitObject
 
   public function getLocation(array $options = array())
   {
-    return $this->getCurrentPhysicalObjectI18n($options)->getLocation();
+    $location = $this->getCurrentPhysicalObjectI18n($options)->getLocation();
+    if (!empty($options['cultureFallback']) && $location === null)
+    {
+      $location = $this->getCurrentPhysicalObjectI18n(array('sourceCulture' => true) + $options)->getLocation();
+    }
+
+    return $location;
   }
 
   public function setLocation($value, array $options = array())

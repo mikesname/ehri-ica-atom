@@ -754,7 +754,13 @@ abstract class BaseContactInformation
 
   public function getContactType(array $options = array())
   {
-    return $this->getCurrentContactInformationI18n($options)->getContactType();
+    $contactType = $this->getCurrentContactInformationI18n($options)->getContactType();
+    if (!empty($options['cultureFallback']) && $contactType === null)
+    {
+      $contactType = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getContactType();
+    }
+
+    return $contactType;
   }
 
   public function setContactType($value, array $options = array())
@@ -766,7 +772,13 @@ abstract class BaseContactInformation
 
   public function getCity(array $options = array())
   {
-    return $this->getCurrentContactInformationI18n($options)->getCity();
+    $city = $this->getCurrentContactInformationI18n($options)->getCity();
+    if (!empty($options['cultureFallback']) && $city === null)
+    {
+      $city = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getCity();
+    }
+
+    return $city;
   }
 
   public function setCity($value, array $options = array())
@@ -778,7 +790,13 @@ abstract class BaseContactInformation
 
   public function getRegion(array $options = array())
   {
-    return $this->getCurrentContactInformationI18n($options)->getRegion();
+    $region = $this->getCurrentContactInformationI18n($options)->getRegion();
+    if (!empty($options['cultureFallback']) && $region === null)
+    {
+      $region = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getRegion();
+    }
+
+    return $region;
   }
 
   public function setRegion($value, array $options = array())
@@ -790,7 +808,13 @@ abstract class BaseContactInformation
 
   public function getNote(array $options = array())
   {
-    return $this->getCurrentContactInformationI18n($options)->getNote();
+    $note = $this->getCurrentContactInformationI18n($options)->getNote();
+    if (!empty($options['cultureFallback']) && $note === null)
+    {
+      $note = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getNote();
+    }
+
+    return $note;
   }
 
   public function setNote($value, array $options = array())

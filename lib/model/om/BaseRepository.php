@@ -465,7 +465,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getGeoculturalContext(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getGeoculturalContext();
+    $geoculturalContext = $this->getCurrentRepositoryI18n($options)->getGeoculturalContext();
+    if (!empty($options['cultureFallback']) && $geoculturalContext === null)
+    {
+      $geoculturalContext = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getGeoculturalContext();
+    }
+
+    return $geoculturalContext;
   }
 
   public function setGeoculturalContext($value, array $options = array())
@@ -477,7 +483,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getCollectingPolicies(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getCollectingPolicies();
+    $collectingPolicies = $this->getCurrentRepositoryI18n($options)->getCollectingPolicies();
+    if (!empty($options['cultureFallback']) && $collectingPolicies === null)
+    {
+      $collectingPolicies = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getCollectingPolicies();
+    }
+
+    return $collectingPolicies;
   }
 
   public function setCollectingPolicies($value, array $options = array())
@@ -489,7 +501,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getBuildings(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getBuildings();
+    $buildings = $this->getCurrentRepositoryI18n($options)->getBuildings();
+    if (!empty($options['cultureFallback']) && $buildings === null)
+    {
+      $buildings = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getBuildings();
+    }
+
+    return $buildings;
   }
 
   public function setBuildings($value, array $options = array())
@@ -501,7 +519,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getHoldings(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getHoldings();
+    $holdings = $this->getCurrentRepositoryI18n($options)->getHoldings();
+    if (!empty($options['cultureFallback']) && $holdings === null)
+    {
+      $holdings = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getHoldings();
+    }
+
+    return $holdings;
   }
 
   public function setHoldings($value, array $options = array())
@@ -513,7 +537,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getFindingAids(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getFindingAids();
+    $findingAids = $this->getCurrentRepositoryI18n($options)->getFindingAids();
+    if (!empty($options['cultureFallback']) && $findingAids === null)
+    {
+      $findingAids = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getFindingAids();
+    }
+
+    return $findingAids;
   }
 
   public function setFindingAids($value, array $options = array())
@@ -525,7 +555,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getOpeningTimes(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getOpeningTimes();
+    $openingTimes = $this->getCurrentRepositoryI18n($options)->getOpeningTimes();
+    if (!empty($options['cultureFallback']) && $openingTimes === null)
+    {
+      $openingTimes = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getOpeningTimes();
+    }
+
+    return $openingTimes;
   }
 
   public function setOpeningTimes($value, array $options = array())
@@ -537,7 +573,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getAccessConditions(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getAccessConditions();
+    $accessConditions = $this->getCurrentRepositoryI18n($options)->getAccessConditions();
+    if (!empty($options['cultureFallback']) && $accessConditions === null)
+    {
+      $accessConditions = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getAccessConditions();
+    }
+
+    return $accessConditions;
   }
 
   public function setAccessConditions($value, array $options = array())
@@ -549,7 +591,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getDisabledAccess(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getDisabledAccess();
+    $disabledAccess = $this->getCurrentRepositoryI18n($options)->getDisabledAccess();
+    if (!empty($options['cultureFallback']) && $disabledAccess === null)
+    {
+      $disabledAccess = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getDisabledAccess();
+    }
+
+    return $disabledAccess;
   }
 
   public function setDisabledAccess($value, array $options = array())
@@ -561,7 +609,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getResearchServices(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getResearchServices();
+    $researchServices = $this->getCurrentRepositoryI18n($options)->getResearchServices();
+    if (!empty($options['cultureFallback']) && $researchServices === null)
+    {
+      $researchServices = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getResearchServices();
+    }
+
+    return $researchServices;
   }
 
   public function setResearchServices($value, array $options = array())
@@ -573,7 +627,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getReproductionServices(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getReproductionServices();
+    $reproductionServices = $this->getCurrentRepositoryI18n($options)->getReproductionServices();
+    if (!empty($options['cultureFallback']) && $reproductionServices === null)
+    {
+      $reproductionServices = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getReproductionServices();
+    }
+
+    return $reproductionServices;
   }
 
   public function setReproductionServices($value, array $options = array())
@@ -585,7 +645,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getPublicFacilities(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getPublicFacilities();
+    $publicFacilities = $this->getCurrentRepositoryI18n($options)->getPublicFacilities();
+    if (!empty($options['cultureFallback']) && $publicFacilities === null)
+    {
+      $publicFacilities = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getPublicFacilities();
+    }
+
+    return $publicFacilities;
   }
 
   public function setPublicFacilities($value, array $options = array())
@@ -597,7 +663,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getDescInstitutionIdentifier(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getDescInstitutionIdentifier();
+    $descInstitutionIdentifier = $this->getCurrentRepositoryI18n($options)->getDescInstitutionIdentifier();
+    if (!empty($options['cultureFallback']) && $descInstitutionIdentifier === null)
+    {
+      $descInstitutionIdentifier = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getDescInstitutionIdentifier();
+    }
+
+    return $descInstitutionIdentifier;
   }
 
   public function setDescInstitutionIdentifier($value, array $options = array())
@@ -609,7 +681,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getDescRules(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getDescRules();
+    $descRules = $this->getCurrentRepositoryI18n($options)->getDescRules();
+    if (!empty($options['cultureFallback']) && $descRules === null)
+    {
+      $descRules = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getDescRules();
+    }
+
+    return $descRules;
   }
 
   public function setDescRules($value, array $options = array())
@@ -621,7 +699,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getDescSources(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getDescSources();
+    $descSources = $this->getCurrentRepositoryI18n($options)->getDescSources();
+    if (!empty($options['cultureFallback']) && $descSources === null)
+    {
+      $descSources = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getDescSources();
+    }
+
+    return $descSources;
   }
 
   public function setDescSources($value, array $options = array())
@@ -633,7 +717,13 @@ abstract class BaseRepository extends QubitActor
 
   public function getDescRevisionHistory(array $options = array())
   {
-    return $this->getCurrentRepositoryI18n($options)->getDescRevisionHistory();
+    $descRevisionHistory = $this->getCurrentRepositoryI18n($options)->getDescRevisionHistory();
+    if (!empty($options['cultureFallback']) && $descRevisionHistory === null)
+    {
+      $descRevisionHistory = $this->getCurrentRepositoryI18n(array('sourceCulture' => true) + $options)->getDescRevisionHistory();
+    }
+
+    return $descRevisionHistory;
   }
 
   public function setDescRevisionHistory($value, array $options = array())

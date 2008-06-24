@@ -82,7 +82,6 @@ class RepositoryUpdateAction extends sfAction
   public function updateRepositoryAttributes($repository)
   {
   $repository->setIdentifier($this->getRequestParameter('identifier'));
-  $repository->setOfficersInCharge($this->getRequestParameter('officers_in_charge'));
   $repository->setGeoculturalContext($this->getRequestParameter('geocultural_context'));
   $repository->setCollectingPolicies($this->getRequestParameter('collecting_policies'));
   $repository->setBuildings($this->getRequestParameter('buildings'));

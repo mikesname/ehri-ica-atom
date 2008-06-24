@@ -446,7 +446,13 @@ abstract class BasePlace extends QubitTerm
 
   public function getStreetAddress(array $options = array())
   {
-    return $this->getCurrentPlaceI18n($options)->getStreetAddress();
+    $streetAddress = $this->getCurrentPlaceI18n($options)->getStreetAddress();
+    if (!empty($options['cultureFallback']) && $streetAddress === null)
+    {
+      $streetAddress = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getStreetAddress();
+    }
+
+    return $streetAddress;
   }
 
   public function setStreetAddress($value, array $options = array())
@@ -458,7 +464,13 @@ abstract class BasePlace extends QubitTerm
 
   public function getCity(array $options = array())
   {
-    return $this->getCurrentPlaceI18n($options)->getCity();
+    $city = $this->getCurrentPlaceI18n($options)->getCity();
+    if (!empty($options['cultureFallback']) && $city === null)
+    {
+      $city = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getCity();
+    }
+
+    return $city;
   }
 
   public function setCity($value, array $options = array())
@@ -470,7 +482,13 @@ abstract class BasePlace extends QubitTerm
 
   public function getRegion(array $options = array())
   {
-    return $this->getCurrentPlaceI18n($options)->getRegion();
+    $region = $this->getCurrentPlaceI18n($options)->getRegion();
+    if (!empty($options['cultureFallback']) && $region === null)
+    {
+      $region = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getRegion();
+    }
+
+    return $region;
   }
 
   public function setRegion($value, array $options = array())
@@ -482,7 +500,13 @@ abstract class BasePlace extends QubitTerm
 
   public function getPostalCode(array $options = array())
   {
-    return $this->getCurrentPlaceI18n($options)->getPostalCode();
+    $postalCode = $this->getCurrentPlaceI18n($options)->getPostalCode();
+    if (!empty($options['cultureFallback']) && $postalCode === null)
+    {
+      $postalCode = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getPostalCode();
+    }
+
+    return $postalCode;
   }
 
   public function setPostalCode($value, array $options = array())

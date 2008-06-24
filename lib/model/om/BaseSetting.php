@@ -430,7 +430,13 @@ abstract class BaseSetting
 
   public function getValue(array $options = array())
   {
-    return $this->getCurrentSettingI18n($options)->getValue();
+    $value = $this->getCurrentSettingI18n($options)->getValue();
+    if (!empty($options['cultureFallback']) && $value === null)
+    {
+      $value = $this->getCurrentSettingI18n(array('sourceCulture' => true) + $options)->getValue();
+    }
+
+    return $value;
   }
 
   public function setValue($value, array $options = array())

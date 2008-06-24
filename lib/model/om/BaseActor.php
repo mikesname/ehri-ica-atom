@@ -805,7 +805,13 @@ abstract class BaseActor extends QubitObject
 
   public function getAuthorizedFormOfName(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getAuthorizedFormOfName();
+    $authorizedFormOfName = $this->getCurrentActorI18n($options)->getAuthorizedFormOfName();
+    if (!empty($options['cultureFallback']) && $authorizedFormOfName === null)
+    {
+      $authorizedFormOfName = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getAuthorizedFormOfName();
+    }
+
+    return $authorizedFormOfName;
   }
 
   public function setAuthorizedFormOfName($value, array $options = array())
@@ -817,7 +823,13 @@ abstract class BaseActor extends QubitObject
 
   public function getHistory(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getHistory();
+    $history = $this->getCurrentActorI18n($options)->getHistory();
+    if (!empty($options['cultureFallback']) && $history === null)
+    {
+      $history = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getHistory();
+    }
+
+    return $history;
   }
 
   public function setHistory($value, array $options = array())
@@ -829,7 +841,13 @@ abstract class BaseActor extends QubitObject
 
   public function getPlaces(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getPlaces();
+    $places = $this->getCurrentActorI18n($options)->getPlaces();
+    if (!empty($options['cultureFallback']) && $places === null)
+    {
+      $places = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getPlaces();
+    }
+
+    return $places;
   }
 
   public function setPlaces($value, array $options = array())
@@ -841,7 +859,13 @@ abstract class BaseActor extends QubitObject
 
   public function getLegalStatus(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getLegalStatus();
+    $legalStatus = $this->getCurrentActorI18n($options)->getLegalStatus();
+    if (!empty($options['cultureFallback']) && $legalStatus === null)
+    {
+      $legalStatus = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getLegalStatus();
+    }
+
+    return $legalStatus;
   }
 
   public function setLegalStatus($value, array $options = array())
@@ -853,7 +877,13 @@ abstract class BaseActor extends QubitObject
 
   public function getFunctions(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getFunctions();
+    $functions = $this->getCurrentActorI18n($options)->getFunctions();
+    if (!empty($options['cultureFallback']) && $functions === null)
+    {
+      $functions = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getFunctions();
+    }
+
+    return $functions;
   }
 
   public function setFunctions($value, array $options = array())
@@ -865,7 +895,13 @@ abstract class BaseActor extends QubitObject
 
   public function getMandates(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getMandates();
+    $mandates = $this->getCurrentActorI18n($options)->getMandates();
+    if (!empty($options['cultureFallback']) && $mandates === null)
+    {
+      $mandates = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getMandates();
+    }
+
+    return $mandates;
   }
 
   public function setMandates($value, array $options = array())
@@ -877,7 +913,13 @@ abstract class BaseActor extends QubitObject
 
   public function getInternalStructures(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getInternalStructures();
+    $internalStructures = $this->getCurrentActorI18n($options)->getInternalStructures();
+    if (!empty($options['cultureFallback']) && $internalStructures === null)
+    {
+      $internalStructures = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getInternalStructures();
+    }
+
+    return $internalStructures;
   }
 
   public function setInternalStructures($value, array $options = array())
@@ -889,7 +931,13 @@ abstract class BaseActor extends QubitObject
 
   public function getGeneralContext(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getGeneralContext();
+    $generalContext = $this->getCurrentActorI18n($options)->getGeneralContext();
+    if (!empty($options['cultureFallback']) && $generalContext === null)
+    {
+      $generalContext = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getGeneralContext();
+    }
+
+    return $generalContext;
   }
 
   public function setGeneralContext($value, array $options = array())
@@ -901,7 +949,13 @@ abstract class BaseActor extends QubitObject
 
   public function getInstitutionResponsibleIdentifier(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getInstitutionResponsibleIdentifier();
+    $institutionResponsibleIdentifier = $this->getCurrentActorI18n($options)->getInstitutionResponsibleIdentifier();
+    if (!empty($options['cultureFallback']) && $institutionResponsibleIdentifier === null)
+    {
+      $institutionResponsibleIdentifier = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getInstitutionResponsibleIdentifier();
+    }
+
+    return $institutionResponsibleIdentifier;
   }
 
   public function setInstitutionResponsibleIdentifier($value, array $options = array())
@@ -913,7 +967,13 @@ abstract class BaseActor extends QubitObject
 
   public function getRules(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getRules();
+    $rules = $this->getCurrentActorI18n($options)->getRules();
+    if (!empty($options['cultureFallback']) && $rules === null)
+    {
+      $rules = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getRules();
+    }
+
+    return $rules;
   }
 
   public function setRules($value, array $options = array())
@@ -925,7 +985,13 @@ abstract class BaseActor extends QubitObject
 
   public function getSources(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getSources();
+    $sources = $this->getCurrentActorI18n($options)->getSources();
+    if (!empty($options['cultureFallback']) && $sources === null)
+    {
+      $sources = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getSources();
+    }
+
+    return $sources;
   }
 
   public function setSources($value, array $options = array())
@@ -937,7 +1003,13 @@ abstract class BaseActor extends QubitObject
 
   public function getRevisionHistory(array $options = array())
   {
-    return $this->getCurrentActorI18n($options)->getRevisionHistory();
+    $revisionHistory = $this->getCurrentActorI18n($options)->getRevisionHistory();
+    if (!empty($options['cultureFallback']) && $revisionHistory === null)
+    {
+      $revisionHistory = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getRevisionHistory();
+    }
+
+    return $revisionHistory;
   }
 
   public function setRevisionHistory($value, array $options = array())

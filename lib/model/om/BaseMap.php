@@ -438,7 +438,13 @@ abstract class BaseMap
 
   public function getTitle(array $options = array())
   {
-    return $this->getCurrentMapI18n($options)->getTitle();
+    $title = $this->getCurrentMapI18n($options)->getTitle();
+    if (!empty($options['cultureFallback']) && $title === null)
+    {
+      $title = $this->getCurrentMapI18n(array('sourceCulture' => true) + $options)->getTitle();
+    }
+
+    return $title;
   }
 
   public function setTitle($value, array $options = array())
@@ -450,7 +456,13 @@ abstract class BaseMap
 
   public function getDescription(array $options = array())
   {
-    return $this->getCurrentMapI18n($options)->getDescription();
+    $description = $this->getCurrentMapI18n($options)->getDescription();
+    if (!empty($options['cultureFallback']) && $description === null)
+    {
+      $description = $this->getCurrentMapI18n(array('sourceCulture' => true) + $options)->getDescription();
+    }
+
+    return $description;
   }
 
   public function setDescription($value, array $options = array())

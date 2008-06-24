@@ -68,9 +68,16 @@ public function getRepositoryNotes()
   }
 
 public function getCountry()
+{
+  if ($this->getPrimaryContact())
   {
-  return format_country($this->getPrimaryContact()->getCountryCode());
+    return format_country($this->getPrimaryContact()->getCountryCode());
   }
+  else
+  {
+    return null;
+  }
+}
 
 public function setProperty($code, $name = null, $scope = null)
   {

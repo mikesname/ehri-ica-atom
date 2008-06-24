@@ -1816,7 +1816,13 @@ abstract class BaseTerm extends QubitObject
 
   public function getName(array $options = array())
   {
-    return $this->getCurrentTermI18n($options)->getName();
+    $name = $this->getCurrentTermI18n($options)->getName();
+    if (!empty($options['cultureFallback']) && $name === null)
+    {
+      $name = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getName();
+    }
+
+    return $name;
   }
 
   public function setName($value, array $options = array())
@@ -1828,7 +1834,13 @@ abstract class BaseTerm extends QubitObject
 
   public function getScopeNote(array $options = array())
   {
-    return $this->getCurrentTermI18n($options)->getScopeNote();
+    $scopeNote = $this->getCurrentTermI18n($options)->getScopeNote();
+    if (!empty($options['cultureFallback']) && $scopeNote === null)
+    {
+      $scopeNote = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getScopeNote();
+    }
+
+    return $scopeNote;
   }
 
   public function setScopeNote($value, array $options = array())
@@ -1840,7 +1852,13 @@ abstract class BaseTerm extends QubitObject
 
   public function getCodeAlpha(array $options = array())
   {
-    return $this->getCurrentTermI18n($options)->getCodeAlpha();
+    $codeAlpha = $this->getCurrentTermI18n($options)->getCodeAlpha();
+    if (!empty($options['cultureFallback']) && $codeAlpha === null)
+    {
+      $codeAlpha = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getCodeAlpha();
+    }
+
+    return $codeAlpha;
   }
 
   public function setCodeAlpha($value, array $options = array())
@@ -1852,7 +1870,13 @@ abstract class BaseTerm extends QubitObject
 
   public function getCodeAlpha2(array $options = array())
   {
-    return $this->getCurrentTermI18n($options)->getCodeAlpha2();
+    $codeAlpha2 = $this->getCurrentTermI18n($options)->getCodeAlpha2();
+    if (!empty($options['cultureFallback']) && $codeAlpha2 === null)
+    {
+      $codeAlpha2 = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getCodeAlpha2();
+    }
+
+    return $codeAlpha2;
   }
 
   public function setCodeAlpha2($value, array $options = array())
@@ -1864,7 +1888,13 @@ abstract class BaseTerm extends QubitObject
 
   public function getSource(array $options = array())
   {
-    return $this->getCurrentTermI18n($options)->getSource();
+    $source = $this->getCurrentTermI18n($options)->getSource();
+    if (!empty($options['cultureFallback']) && $source === null)
+    {
+      $source = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getSource();
+    }
+
+    return $source;
   }
 
   public function setSource($value, array $options = array())

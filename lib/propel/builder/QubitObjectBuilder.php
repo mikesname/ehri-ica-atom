@@ -1583,7 +1583,13 @@ EOF;
 
   public function get{$column->getPhpName()}(array \$options = array())
   {
-    return \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->get{$column->getPhpName()}();
+    \${$this->getColumnVarName($column)} = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->get{$column->getPhpName()}();
+    if (!empty(\$options['cultureFallback']) && \${$this->getColumnVarName($column)} === null)
+    {
+      \${$this->getColumnVarName($column)} = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->get{$column->getPhpName()}();
+    }
+
+    return \${$this->getColumnVarName($column)};
   }
 
   public function set{$column->getPhpName()}(\$value, array \$options = array())
