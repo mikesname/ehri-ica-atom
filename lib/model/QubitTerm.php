@@ -241,7 +241,7 @@ class QubitTerm extends BaseTerm
     foreach ($parentTerm->getDescendants()->orderBy('lft') as $i => $node)
     {
       $relativeDepth = intval(count($node->getAncestors()) - $parentDepth - 1);
-      $tree[$node->getId()] = str_repeat($indentStr, $relativeDepth).$node->getName();
+      $tree[$node->getId()] = str_repeat($indentStr, $relativeDepth).$node->getName(array('cultureFallback' => 'true'));
     }
     
     return $tree;

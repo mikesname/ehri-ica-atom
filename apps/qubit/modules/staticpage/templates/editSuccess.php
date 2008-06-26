@@ -14,8 +14,8 @@
 <tr>
   <th><?php echo __('title'); ?></th>
     <td>
-      <?php if ($sf_user->getCulture() != sfConfig::get('sf_default_culture')): ?>
-        <div class="default-translation" id="title"><?php echo $staticPage->getTitle(array('culture' => sfConfig::get('sf_default_culture'))) ?></div>
+      <?php if (strlen($sourceCultureValue = $staticPage->getTitle(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $staticPage->getSourceCulture()): ?>
+      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_input_tag($staticPage, 'getTitle', array ('size' => 20)) ?>
     </td>
@@ -27,8 +27,8 @@
 <tr>
   <th><?php echo __('content'); ?></th>
   <td>
-      <?php if ($sf_user->getCulture() != sfConfig::get('sf_default_culture')): ?>
-        <div class="default-translation" id="content"><?php echo nl2br($staticPage->getContent(array('culture' => sfConfig::get('sf_default_culture')))) ?></div>
+      <?php if (strlen($sourceCultureValue = $staticPage->getContent(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $staticPage->getSourceCulture()): ?>
+      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
     <?php echo object_textarea_tag($staticPage, 'getContent', array ('size' => '30x10')) ?>
   </td>

@@ -20,13 +20,6 @@
     'link'=>$link)); ?>
 </td></tr>
 
-<?php if ($digitalObject->getUsage()): ?>
-<tr>
-<th><?php echo __('usage'); ?></th>
-<td><?php echo $digitalObject->getUsage(); ?></td>
-</tr>
-<?php endif; ?>
-
 <?php if ($digitalObject->getMimeType()): ?>
 <tr>
 <th><?php echo __('mime-type'); ?></th>

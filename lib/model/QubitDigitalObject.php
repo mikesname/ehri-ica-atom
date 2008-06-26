@@ -216,6 +216,24 @@ class QubitDigitalObject extends BaseDigitalObject
     'tgz' => 'application/x-compressed'
   );
 
+  public function save($connection = null)
+  {
+    // TODO: $cleanInformationObject = $this->getInformationObject()->clean();
+    $cleanInformationObjectId = $this->columnValues['information_object_id'];
+
+    parent::save($connection);
+
+    if ($cleanInformationObjectId != $this->getInformationObjectId() && QubitInformationObject::getById($cleanInformationObjectId) !== null)
+    {
+      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanInformationObjectId));
+    }
+
+    if ($this->getInformationObject() !== null)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getInformationObject());
+    }
+  }
+
   /**
    * Override base delete method to unlink related digital assets (thumbnail
    * and file)
@@ -246,6 +264,11 @@ class QubitDigitalObject extends BaseDigitalObject
 
     // Delete self
     parent::delete($connection);
+
+    if ($this->getInformationObject() !== null)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getInformationObject());
+    }
   }
 
   /**
@@ -287,22 +310,22 @@ class QubitDigitalObject extends BaseDigitalObject
     switch($mimePieces[0])
     {
       case 'audio':
-        $mediaTypeId = QubitTerm::AUDIO_ID; 
+        $mediaTypeId = QubitTerm::AUDIO_ID;
         break;
       case 'image':
-        $mediaTypeId = QubitTerm::IMAGE_ID; 
+        $mediaTypeId = QubitTerm::IMAGE_ID;
         break;
       case 'text':
-        $mediaTypeId = QubitTerm::TEXT_ID; 
+        $mediaTypeId = QubitTerm::TEXT_ID;
         break;
       case 'video':
-        $mediaTypeId = QubitTerm::VIDEO_ID; 
+        $mediaTypeId = QubitTerm::VIDEO_ID;
         break;
       case 'application':
         switch ($mimePieces[1])
         {
           case 'pdf':
-            $mediaTypeId = QubitTerm::TEXT_ID; 
+            $mediaTypeId = QubitTerm::TEXT_ID;
             break;
           default:
             $mediaTypeId = QubitTerm::OTHER_ID;
@@ -646,7 +669,7 @@ class QubitDigitalObject extends BaseDigitalObject
 
       return false;
     }
-    
+
     // Set permissions on output file
     chmod($derivativeFullPath, 0644);
 
@@ -925,8 +948,6 @@ class QubitDigitalObject extends BaseDigitalObject
    */
   public function createVideoDerivative($usageId)
   {
-    
-    
     switch ($usageId)
     {
       case QubitTerm::REFERENCE_ID:
@@ -940,7 +961,7 @@ class QubitDigitalObject extends BaseDigitalObject
         $extension = '.png';
         $maxDimensions = self::getImageMaxDimensions($usageId);
         break;
-    }  
+    }
 
     if ($derivative = $this->createDerivative($mechanism, $extension, $maxDimensions))
     {
@@ -971,7 +992,6 @@ class QubitDigitalObject extends BaseDigitalObject
     return $found;
   }
 
-  
   /**
    * Create a flash video derivative using the FFmpeg library.
    *
@@ -989,23 +1009,20 @@ class QubitDigitalObject extends BaseDigitalObject
     // Test for FFmpeg library
     if (!self::hasFfmpeg())
     {
-      
       return false;
     }
 
     exec('ffmpeg -y -i '.$originalPath.' '.$newPath.' 2>&1', $stdout, $returnValue);
-    
+
     // If return value is non-zero, an error occured
     if ($returnValue)
     {
-
       return false;
     }
 
     return true;
   }
-  
-  
+
   /**
    * Create a flash video derivative using the FFmpeg library.
    *
@@ -1023,22 +1040,19 @@ class QubitDigitalObject extends BaseDigitalObject
     // Test for FFmpeg library
     if (!self::hasFfmpeg())
     {
-      
       return false;
     }
-    
+
     // Do conversion to png
-    $cmd = 'ffmpeg -i '.$originalPath.' -vcodec png -vframes 1 -an -f rawvideo -s '.$width.'x'.$height.' '.$newPath; 
+    $cmd = 'ffmpeg -i '.$originalPath.' -vcodec png -vframes 1 -an -f rawvideo -s '.$width.'x'.$height.' '.$newPath;
     exec($cmd.' 2>&1', $stdout, $returnValue);
 
     // If return value is non-zero, an error occured
     if ($returnValue)
     {
-     
       return false;
     }
 
     return true;
   }
-  
 }

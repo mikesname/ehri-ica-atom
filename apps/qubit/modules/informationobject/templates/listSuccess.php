@@ -36,7 +36,10 @@
 <tbody>
 <?php foreach ($informationObjects as $informationObject): ?>
 <tr>
-      <td><div style="padding-left: 17px;"<?php if (count($informationObject->getInformationObjectsRelatedByParentId()) > 0): ?> class="plus"<?php endif; ?>>
+      <td><div style="padding-left: 17px;">
+<?php if (count($informationObject->getInformationObjectsRelatedByParentId()) > 0): ?>
+<?php echo link_to(image_tag('/images/tree_plus_link.gif', 'width="18" height="18" style="margin: 0; padding: 0; vertical-align: top;"'), 'informationobject/show?id='.$informationObject->getId()) ?>
+<?php endif; ?>
 <?php if (is_null($title = $informationObject->getTitle())) $title = $informationObject->getTitle(array('sourceCulture' => true)); echo link_to($title, 'informationobject/show?id='.$informationObject->getId()) ?>
 </div></td>
       <td><?php if ($informationObject->getRepository()): ?>

@@ -43,6 +43,11 @@ class QubitTaxonomy extends BaseTaxonomy
 
   public function __toString()
   {
+    if (!$this->getName())
+      {
+      return (string) $this->getName(array('sourceCulture' => true));
+      }
+  
     return (string) $this->getName();
   }
   

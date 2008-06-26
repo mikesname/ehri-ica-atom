@@ -21,7 +21,52 @@
 
 class QubitRelation extends BaseRelation
 {
-  
+  public function save($connection = null)
+  {
+    // TODO: $cleanObject = $this->getObject()->clean();
+    $cleanObjectId = $this->columnValues['object_id'];
+
+    // TODO: $cleanSubject = $this->getSubject()->clean();
+    $cleanSubjectId = $this->columnValues['subject_id'];
+
+    parent::save($connection);
+
+    if ($cleanObjectId != $this->getObjectId() && QubitInformationObject::getById($cleanObjectId) !== null)
+    {
+      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+    }
+
+    if ($cleanSubjectId != $this->getSubjectId() && QubitInformationObject::getById($cleanSubjectId) !== null)
+    {
+      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanSubjectId));
+    }
+
+    if ($this->getObject() instanceof QubitInformationObject)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getObject());
+    }
+
+    if ($this->getSubject() instanceof QubitInformationObject)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getSubject());
+    }
+  }
+
+  public function delete($connection = null)
+  {
+    parent::delete($connection);
+
+    if ($this->getObject() instanceof QubitInformationObject)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getObject());
+    }
+
+    if ($this->getSubject() instanceof QubitInformationObject)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getSubject());
+    }
+  }
+
   /**
    * Check $options array for key 'typeId' and add a TYPE_ID constraint
    * to $criteria if it exists.  Also remove 'typeId' key from $options
@@ -31,22 +76,22 @@ class QubitRelation extends BaseRelation
    * @param array $options array of options passed to calling method
    * @return Criteria
    */
-  public static function addTypeIdCriteriaFromOptions($criteria, &$options) {
+  public static function addTypeIdCriteriaFromOptions($criteria, &$options)
+  {
     sfLoader::loadHelpers('Qubit');
-    
+
     if ($typeId = array_slice_key('typeId', $options))
     {
       $criteria->add(QubitRelation::TYPE_ID, $typeId);
     }
-    
+
     return $criteria;
   }
-  
-  
+
   /**
-   * Get records from relation table linked to object (semantic) 
+   * Get records from relation table linked to object (semantic)
    * QubitObject identified by primary key $id.
-   * 
+   *
    * @param integer $id primary key of "object" QubitObject
    * @param integer $typeId filter by predicate
    * @return QubitQuery collection of QubitRelation objects
@@ -56,15 +101,14 @@ class QubitRelation extends BaseRelation
     $criteria = new Criteria;
     $criteria->add(QubitRelation::OBJECT_ID, $id);
     $criteria = self::addTypeIdCriteriaFromOptions($criteria, $options);
-   
+
     return QubitRelation::get($criteria, $options);
   }
-  
-  
+
   /**
-   * Get records from relation table linked to subject 
+   * Get records from relation table linked to subject
    * QubitObject identified by primary key $id.
-   * 
+   *
    * @param integer $id primary key of "subject" QubitObject
    * @param integer $typeId filter by predicate
    * @return QubitQuery collection of QubitRelation objects
@@ -73,13 +117,12 @@ class QubitRelation extends BaseRelation
   {
     $criteria = new Criteria;
     $criteria->add(QubitRelation::SUBJECT_ID, $id);
-    
+
     $criteria = self::addTypeIdCriteriaFromOptions($criteria, $options);
-    
+
     return QubitRelation::get($criteria, $options);
   }
-  
-  
+
   /**
    * Get related subject objects via QubitRelation many-to-many relationship
    *
@@ -93,13 +136,12 @@ class QubitRelation extends BaseRelation
     $criteria = new Criteria;
     $criteria->add(QubitRelation::OBJECT_ID, $objectId);
     $criteria->addJoin(QubitRelation::SUBJECT_ID, QubitObject::ID);
-    
+
     $criteria = self::addTypeIdCriteriaFromOptions($criteria, $options);
-    
+
     return QubitObject::get($criteria, $options);
   }
-  
-  
+
   /**
    * Get related "object" (semantic) QubitObjects
    *
@@ -112,9 +154,9 @@ class QubitRelation extends BaseRelation
     $criteria = new Criteria;
     $criteria->add(QubitRelation::SUBJECT_ID, $subjectId);
     $criteria->addJoin(QubitRelation::OBJECT_ID, QubitObject::ID);
-    
+
     $criteria = self::addTypeIdCriteriaFromOptions($criteria, $options);
-    
+
     return QubitObject::get($criteria, $options);
   }
 }

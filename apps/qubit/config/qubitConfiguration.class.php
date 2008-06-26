@@ -4,8 +4,6 @@ class qubitConfiguration extends sfApplicationConfiguration
 {
   public function configure()
   {
-    // Add Zend to our include_path for Lucene, until we use sfLucenePlugin
-    set_include_path(get_include_path().PATH_SEPARATOR.sfConfig::get('sf_lib_dir').'/vendor');
   }
 
   public function checkLock()

@@ -23,12 +23,39 @@ class QubitNote extends BaseNote
 {
   public function __toString()
   {
-    $note = $this->getContent();
-    if (empty($note))
+    if (null === $content = $this->getContent())
     {
-      $note = $this->getContent(array('sourceCulture' => true));
+      $content = $this->getContent(array('sourceCulture' => true));
     }
 
-    return (string) $note;
+    return (string) $content;
+  }
+
+  public function save($connection = null)
+  {
+    // TODO: $cleanObject = $this->getObject()->clean();
+    $cleanObjectId = $this->columnValues['object_id'];
+
+    parent::save($connection);
+
+    if ($cleanObjectId != $this->getObjectId() && QubitInformationObject::getById($cleanObjectId) !== null)
+    {
+      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+    }
+
+    if ($this->getObject() instanceof QubitInformationObject)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getObject());
+    }
+  }
+
+  public function delete($connection = null)
+  {
+    parent::delete($connection);
+
+    if ($this->getObject() instanceof QubitInformationObject)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getObject());
+    }
   }
 }

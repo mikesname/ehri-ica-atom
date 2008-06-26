@@ -23,9 +23,7 @@ class SearchIndex
 {
   public static function getIndexLocation($object = 'informationobject', $language = 'en')
   {
-  $index_location = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'search_index'.DIRECTORY_SEPARATOR.$object.DIRECTORY_SEPARATOR.$language;
-
-  return $index_location;
+    return sfConfig::get('sf_data_dir').'/index/'.$language;
   }
 
   public static function getIndexAnalyzer()
@@ -233,14 +231,17 @@ class SearchIndex
       $doc->addField(Zend_Search_Lucene_Field::Unstored('mimetype', strtolower($informationObject->getDigitalObject()->getMimeType(array('culture' => $language)))));
    }
 
+   $cultureInfo = new sfCultureInfo($language);
+
    // LANGUAGES
   if (count($languageCodes = $informationObject->getProperties($name = 'information_object_language')) > 0)
   {
-    sfLoader::loadHelpers('I18N');
+    $languages = $cultureInfo->getLanguages();
+
     $languageString = '';
     foreach ($languageCodes as $languageCode)
     {
-      $languageString .= format_language($languageCode->getValue()).' ';
+      $languageString .= $languages[$languageCode->getValue()].' ';
     }
     $doc->addField(Zend_Search_Lucene_Field::Unstored('language', strtolower($languageString)));
   }
@@ -248,11 +249,12 @@ class SearchIndex
    // SCRIPTS
   if (count($scriptCodes = $informationObject->getProperties($name = 'information_object_script')) > 0)
   {
-    sfLoader::loadHelpers('Qubit');
+    $scripts = $cultureInfo->getScripts();
+
     $scriptString = '';
     foreach ($scriptCodes as $scriptCode)
     {
-      $scriptString .= format_script($scriptCode->getValue()).' ';
+      $scriptString .= $scripts[$scriptCode->getValue()].' ';
     }
     $doc->addField(Zend_Search_Lucene_Field::Unstored('script', strtolower($scriptString)));
   }

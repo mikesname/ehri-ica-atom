@@ -21,4 +21,31 @@
 
 class QubitEvent extends BaseEvent
 {
+  public function save($connection = null)
+  {
+    // TODO: $cleanInformationObject = $this->getInformationObject()->clean();
+    $cleanInformationObjectId = $this->columnValues['information_object_id'];
+
+    parent::save($connection);
+
+    if ($cleanInformationObjectId != $this->getInformationObjectId() && QubitInformationObject::getById($cleanInformationObjectId) !== null)
+    {
+      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanInformationObjectId));
+    }
+
+    if ($this->getInformationObject() !== null)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getInformationObject());
+    }
+  }
+
+  public function delete($connection = null)
+  {
+    parent::delete($connection);
+
+    if ($this->getInformationObject() !== null)
+    {
+      SearchIndex::updateTranslatedLanguages($this->getInformationObject());
+    }
+  }
 }

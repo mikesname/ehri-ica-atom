@@ -12,8 +12,8 @@
   <tr>
     <td style="width: 90%">
       <?php if (strlen($type = $physicalObject->getType())) echo $type.': '; ?>
-      <b><?php echo $physicalObject->getName(); ?></b>
-      <?php if ($location = $physicalObject->getLocation()) echo ' - '.$location; ?>     
+      <b><?php echo $physicalObject->getName(array('cultureFallback' => 'true')); ?></b>
+      <?php if ($location = $physicalObject->getLocation(array('cultureFallback' => 'true'))) echo ' - '.$location; ?>     
     </td>
     <?php if ($physicalObject): ?>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
