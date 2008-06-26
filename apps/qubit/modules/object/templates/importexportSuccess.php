@@ -1,30 +1,30 @@
 <?php use_helper('Javascript') ?>
-<div class="pageTitle"><?php echo __('import an XML file'); ?></div>
 
-<?php echo form_tag('object/import', array('multipart' => 'true')) ?>
 
-<table class="list">
-<thead>
-<tr>
-  <th><?php echo __('select a file to import'); ?></th>
-  <th/>
-</tr>
-</thead>
-<tbody>
-  <tr>
-        <td><?php echo input_file_tag(__('file'), "size = 60") ?></td>
-    <td style="width: 5%;">
-    <div style="float: right; margin: 3px 8px 0 0;">
-      <?php echo my_submit_tag(__('upload'), array('style' => 'width: auto;')) ?>
-    </div>
-    </td>
-  </tr>
-</tbody>
-</table>
 
-</form>
 
-<br/><br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div class="pageTitle"><?php echo __('export an XML file'); ?></div>
 
@@ -47,9 +47,9 @@
     <?php echo select_tag('format', options_for_select(
       array(
               'ead' => 'EAD 2002',
-               'mods' => 'MODS 3.2',
-               'marc' => 'MARC21XML (via EAD)',
-               'alouette' => 'AlouetteCanada Portal'), null, array('include_blank' => true))); ?>
+
+
+            ), null, array( ))); ?>
   </td>
   <td style="width: 5%;">
     <div style="float: right; margin: 3px 8px 0 0;">

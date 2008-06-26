@@ -47,7 +47,7 @@ class MenuMainMenuComponent extends sfComponent
           $mainmenu_css_class[2]= 'selected';
           $this->versionNumberVisibility = 'visible';
 
-          $this->secondary_menu = link_to(__('users'), 'user/list').link_to(__('static pages'), 'staticpage/list', array('class' => 'selected')).link_to(__('settings'), 'settings/list').link_to(__('import/export'), 'object/importexport');
+          $this->secondary_menu = link_to(__('users'), 'user/list').link_to(__('static pages'), 'staticpage/list', array('class' => 'selected')).link_to(__('settings'), 'settings/list').link_to(__('export'), 'object/importexport');
           $this->secondaryMenuVisibility = 'visible';
         }
       break;
@@ -61,7 +61,7 @@ class MenuMainMenuComponent extends sfComponent
           $mainmenu_css_class[2]= 'selected';
           $this->versionNumberVisibility = 'visible';
 
-          $this->secondary_menu = link_to(__('users'), 'user/list', array('class' => 'selected')).link_to(__('static pages'), 'staticpage/list').link_to(__('settings'), 'settings/list').link_to(__('import/export'), 'object/importexport');
+          $this->secondary_menu = link_to(__('users'), 'user/list', array('class' => 'selected')).link_to(__('static pages'), 'staticpage/list').link_to(__('settings'), 'settings/list').link_to(__('export'), 'object/importexport');
           $this->secondaryMenuVisibility = 'visible';
         }
       }
@@ -72,7 +72,7 @@ class MenuMainMenuComponent extends sfComponent
           $mainmenu_css_class[2]= 'selected';
           $this->versionNumberVisibility = 'visible';
 
-          $this->secondary_menu = link_to(__('users'), 'user/list').link_to(__('static pages'), 'staticpage/list').link_to(__('settings'), 'settings/list', array('class' => 'selected')).link_to(__('import/export'), 'object/importexport');
+          $this->secondary_menu = link_to(__('users'), 'user/list').link_to(__('static pages'), 'staticpage/list').link_to(__('settings'), 'settings/list', array('class' => 'selected')).link_to(__('export'), 'object/importexport');
           $this->secondaryMenuVisibility = 'visible';
           }
       break;
@@ -82,7 +82,7 @@ class MenuMainMenuComponent extends sfComponent
           $mainmenu_css_class[2]= 'selected';
           $this->versionNumberVisibility = 'visible';
 
-          $this->secondary_menu = link_to(__('users'), 'user/list').link_to(__('static pages'), 'staticpage/list').link_to(__('settings'), 'settings/list').link_to(__('import/export'), 'object/importexport', array('class' => 'selected'));
+          $this->secondary_menu = link_to(__('users'), 'user/list').link_to(__('static pages'), 'staticpage/list').link_to(__('settings'), 'settings/list').link_to(__('export'), 'object/importexport', array('class' => 'selected'));
           $this->secondaryMenuVisibility = 'visible';
           }
       break;
