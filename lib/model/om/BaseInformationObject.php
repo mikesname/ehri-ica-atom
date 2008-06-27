@@ -863,7 +863,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getTitle(array $options = array())
   {
     $title = $this->getCurrentInformationObjectI18n($options)->getTitle();
-    if (!empty($options['cultureFallback']) && $title === null)
+    if (!empty($options['cultureFallback']) && strlen($title) < 1)
     {
       $title = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getTitle();
     }
@@ -881,7 +881,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getAlternateTitle(array $options = array())
   {
     $alternateTitle = $this->getCurrentInformationObjectI18n($options)->getAlternateTitle();
-    if (!empty($options['cultureFallback']) && $alternateTitle === null)
+    if (!empty($options['cultureFallback']) && strlen($alternateTitle) < 1)
     {
       $alternateTitle = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getAlternateTitle();
     }
@@ -899,7 +899,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getVersion(array $options = array())
   {
     $version = $this->getCurrentInformationObjectI18n($options)->getVersion();
-    if (!empty($options['cultureFallback']) && $version === null)
+    if (!empty($options['cultureFallback']) && strlen($version) < 1)
     {
       $version = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getVersion();
     }
@@ -917,7 +917,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getExtentAndMedium(array $options = array())
   {
     $extentAndMedium = $this->getCurrentInformationObjectI18n($options)->getExtentAndMedium();
-    if (!empty($options['cultureFallback']) && $extentAndMedium === null)
+    if (!empty($options['cultureFallback']) && strlen($extentAndMedium) < 1)
     {
       $extentAndMedium = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getExtentAndMedium();
     }
@@ -935,7 +935,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getArchivalHistory(array $options = array())
   {
     $archivalHistory = $this->getCurrentInformationObjectI18n($options)->getArchivalHistory();
-    if (!empty($options['cultureFallback']) && $archivalHistory === null)
+    if (!empty($options['cultureFallback']) && strlen($archivalHistory) < 1)
     {
       $archivalHistory = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getArchivalHistory();
     }
@@ -953,7 +953,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getAcquisition(array $options = array())
   {
     $acquisition = $this->getCurrentInformationObjectI18n($options)->getAcquisition();
-    if (!empty($options['cultureFallback']) && $acquisition === null)
+    if (!empty($options['cultureFallback']) && strlen($acquisition) < 1)
     {
       $acquisition = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getAcquisition();
     }
@@ -971,7 +971,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getScopeAndContent(array $options = array())
   {
     $scopeAndContent = $this->getCurrentInformationObjectI18n($options)->getScopeAndContent();
-    if (!empty($options['cultureFallback']) && $scopeAndContent === null)
+    if (!empty($options['cultureFallback']) && strlen($scopeAndContent) < 1)
     {
       $scopeAndContent = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getScopeAndContent();
     }
@@ -989,7 +989,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getAppraisal(array $options = array())
   {
     $appraisal = $this->getCurrentInformationObjectI18n($options)->getAppraisal();
-    if (!empty($options['cultureFallback']) && $appraisal === null)
+    if (!empty($options['cultureFallback']) && strlen($appraisal) < 1)
     {
       $appraisal = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getAppraisal();
     }
@@ -1007,7 +1007,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getAccruals(array $options = array())
   {
     $accruals = $this->getCurrentInformationObjectI18n($options)->getAccruals();
-    if (!empty($options['cultureFallback']) && $accruals === null)
+    if (!empty($options['cultureFallback']) && strlen($accruals) < 1)
     {
       $accruals = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getAccruals();
     }
@@ -1025,7 +1025,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getArrangement(array $options = array())
   {
     $arrangement = $this->getCurrentInformationObjectI18n($options)->getArrangement();
-    if (!empty($options['cultureFallback']) && $arrangement === null)
+    if (!empty($options['cultureFallback']) && strlen($arrangement) < 1)
     {
       $arrangement = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getArrangement();
     }
@@ -1043,7 +1043,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getAccessConditions(array $options = array())
   {
     $accessConditions = $this->getCurrentInformationObjectI18n($options)->getAccessConditions();
-    if (!empty($options['cultureFallback']) && $accessConditions === null)
+    if (!empty($options['cultureFallback']) && strlen($accessConditions) < 1)
     {
       $accessConditions = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getAccessConditions();
     }
@@ -1061,7 +1061,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getReproductionConditions(array $options = array())
   {
     $reproductionConditions = $this->getCurrentInformationObjectI18n($options)->getReproductionConditions();
-    if (!empty($options['cultureFallback']) && $reproductionConditions === null)
+    if (!empty($options['cultureFallback']) && strlen($reproductionConditions) < 1)
     {
       $reproductionConditions = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getReproductionConditions();
     }
@@ -1079,7 +1079,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getPhysicalCharacteristics(array $options = array())
   {
     $physicalCharacteristics = $this->getCurrentInformationObjectI18n($options)->getPhysicalCharacteristics();
-    if (!empty($options['cultureFallback']) && $physicalCharacteristics === null)
+    if (!empty($options['cultureFallback']) && strlen($physicalCharacteristics) < 1)
     {
       $physicalCharacteristics = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getPhysicalCharacteristics();
     }
@@ -1097,7 +1097,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getFindingAids(array $options = array())
   {
     $findingAids = $this->getCurrentInformationObjectI18n($options)->getFindingAids();
-    if (!empty($options['cultureFallback']) && $findingAids === null)
+    if (!empty($options['cultureFallback']) && strlen($findingAids) < 1)
     {
       $findingAids = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getFindingAids();
     }
@@ -1115,7 +1115,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getLocationOfOriginals(array $options = array())
   {
     $locationOfOriginals = $this->getCurrentInformationObjectI18n($options)->getLocationOfOriginals();
-    if (!empty($options['cultureFallback']) && $locationOfOriginals === null)
+    if (!empty($options['cultureFallback']) && strlen($locationOfOriginals) < 1)
     {
       $locationOfOriginals = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getLocationOfOriginals();
     }
@@ -1133,7 +1133,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getLocationOfCopies(array $options = array())
   {
     $locationOfCopies = $this->getCurrentInformationObjectI18n($options)->getLocationOfCopies();
-    if (!empty($options['cultureFallback']) && $locationOfCopies === null)
+    if (!empty($options['cultureFallback']) && strlen($locationOfCopies) < 1)
     {
       $locationOfCopies = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getLocationOfCopies();
     }
@@ -1151,7 +1151,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getRelatedUnitsOfDescription(array $options = array())
   {
     $relatedUnitsOfDescription = $this->getCurrentInformationObjectI18n($options)->getRelatedUnitsOfDescription();
-    if (!empty($options['cultureFallback']) && $relatedUnitsOfDescription === null)
+    if (!empty($options['cultureFallback']) && strlen($relatedUnitsOfDescription) < 1)
     {
       $relatedUnitsOfDescription = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getRelatedUnitsOfDescription();
     }
@@ -1169,7 +1169,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getInstitutionResponsibleIdentifier(array $options = array())
   {
     $institutionResponsibleIdentifier = $this->getCurrentInformationObjectI18n($options)->getInstitutionResponsibleIdentifier();
-    if (!empty($options['cultureFallback']) && $institutionResponsibleIdentifier === null)
+    if (!empty($options['cultureFallback']) && strlen($institutionResponsibleIdentifier) < 1)
     {
       $institutionResponsibleIdentifier = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getInstitutionResponsibleIdentifier();
     }
@@ -1187,7 +1187,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getRules(array $options = array())
   {
     $rules = $this->getCurrentInformationObjectI18n($options)->getRules();
-    if (!empty($options['cultureFallback']) && $rules === null)
+    if (!empty($options['cultureFallback']) && strlen($rules) < 1)
     {
       $rules = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getRules();
     }
@@ -1205,7 +1205,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getSources(array $options = array())
   {
     $sources = $this->getCurrentInformationObjectI18n($options)->getSources();
-    if (!empty($options['cultureFallback']) && $sources === null)
+    if (!empty($options['cultureFallback']) && strlen($sources) < 1)
     {
       $sources = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getSources();
     }
@@ -1223,7 +1223,7 @@ abstract class BaseInformationObject extends QubitObject
   public function getRevisionHistory(array $options = array())
   {
     $revisionHistory = $this->getCurrentInformationObjectI18n($options)->getRevisionHistory();
-    if (!empty($options['cultureFallback']) && $revisionHistory === null)
+    if (!empty($options['cultureFallback']) && strlen($revisionHistory) < 1)
     {
       $revisionHistory = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getRevisionHistory();
     }

@@ -1817,7 +1817,7 @@ abstract class BaseTerm extends QubitObject
   public function getName(array $options = array())
   {
     $name = $this->getCurrentTermI18n($options)->getName();
-    if (!empty($options['cultureFallback']) && $name === null)
+    if (!empty($options['cultureFallback']) && strlen($name) < 1)
     {
       $name = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getName();
     }
@@ -1835,7 +1835,7 @@ abstract class BaseTerm extends QubitObject
   public function getScopeNote(array $options = array())
   {
     $scopeNote = $this->getCurrentTermI18n($options)->getScopeNote();
-    if (!empty($options['cultureFallback']) && $scopeNote === null)
+    if (!empty($options['cultureFallback']) && strlen($scopeNote) < 1)
     {
       $scopeNote = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getScopeNote();
     }
@@ -1853,7 +1853,7 @@ abstract class BaseTerm extends QubitObject
   public function getCodeAlpha(array $options = array())
   {
     $codeAlpha = $this->getCurrentTermI18n($options)->getCodeAlpha();
-    if (!empty($options['cultureFallback']) && $codeAlpha === null)
+    if (!empty($options['cultureFallback']) && strlen($codeAlpha) < 1)
     {
       $codeAlpha = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getCodeAlpha();
     }
@@ -1871,7 +1871,7 @@ abstract class BaseTerm extends QubitObject
   public function getCodeAlpha2(array $options = array())
   {
     $codeAlpha2 = $this->getCurrentTermI18n($options)->getCodeAlpha2();
-    if (!empty($options['cultureFallback']) && $codeAlpha2 === null)
+    if (!empty($options['cultureFallback']) && strlen($codeAlpha2) < 1)
     {
       $codeAlpha2 = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getCodeAlpha2();
     }
@@ -1889,7 +1889,7 @@ abstract class BaseTerm extends QubitObject
   public function getSource(array $options = array())
   {
     $source = $this->getCurrentTermI18n($options)->getSource();
-    if (!empty($options['cultureFallback']) && $source === null)
+    if (!empty($options['cultureFallback']) && strlen($source) < 1)
     {
       $source = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getSource();
     }

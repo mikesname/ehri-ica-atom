@@ -1584,7 +1584,7 @@ EOF;
   public function get{$column->getPhpName()}(array \$options = array())
   {
     \${$this->getColumnVarName($column)} = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->get{$column->getPhpName()}();
-    if (!empty(\$options['cultureFallback']) && \${$this->getColumnVarName($column)} === null)
+    if (!empty(\$options['cultureFallback']) && strlen(\${$this->getColumnVarName($column)}) < 1)
     {
       \${$this->getColumnVarName($column)} = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->get{$column->getPhpName()}();
     }

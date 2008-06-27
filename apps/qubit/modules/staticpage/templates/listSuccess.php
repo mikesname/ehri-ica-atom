@@ -10,7 +10,7 @@
 <tbody>
 <?php foreach ($staticPages as $staticPage): ?>
   <tr>
-  <td><?php if (is_null($title = $staticPage->getTitle())) $title = $staticPage->getTitle(array('sourceCulture' => true)); echo link_to($title, 'staticpage/edit?id='.$staticPage->getId()) ?>
+  <td><?php echo link_to($staticPage->getTitle(array('cultureFallback' => 'true')), 'staticpage/edit?id='.$staticPage->getId()) ?>
   </td>
   <td><?php echo link_to($staticPage->getPermalink(), array('module' => 'staticpage', 'action' => 'static', 'permalink' => $staticPage->getPermalink())) ?>
   </tr>

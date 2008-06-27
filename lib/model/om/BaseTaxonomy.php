@@ -467,7 +467,7 @@ abstract class BaseTaxonomy
   public function getName(array $options = array())
   {
     $name = $this->getCurrentTaxonomyI18n($options)->getName();
-    if (!empty($options['cultureFallback']) && $name === null)
+    if (!empty($options['cultureFallback']) && strlen($name) < 1)
     {
       $name = $this->getCurrentTaxonomyI18n(array('sourceCulture' => true) + $options)->getName();
     }
@@ -485,7 +485,7 @@ abstract class BaseTaxonomy
   public function getNote(array $options = array())
   {
     $note = $this->getCurrentTaxonomyI18n($options)->getNote();
-    if (!empty($options['cultureFallback']) && $note === null)
+    if (!empty($options['cultureFallback']) && strlen($note) < 1)
     {
       $note = $this->getCurrentTaxonomyI18n(array('sourceCulture' => true) + $options)->getNote();
     }

@@ -738,7 +738,7 @@ abstract class BaseNote
   public function getContent(array $options = array())
   {
     $content = $this->getCurrentNoteI18n($options)->getContent();
-    if (!empty($options['cultureFallback']) && $content === null)
+    if (!empty($options['cultureFallback']) && strlen($content) < 1)
     {
       $content = $this->getCurrentNoteI18n(array('sourceCulture' => true) + $options)->getContent();
     }

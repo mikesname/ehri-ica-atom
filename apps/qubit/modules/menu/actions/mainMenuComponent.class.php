@@ -180,19 +180,12 @@ class MenuMainMenuComponent extends sfComponent
     $this->admin_visible = 'hidden';
   }
 
-  //set the translate menu to be hidden by default
-  if ($this->getUser()->hasCredential('translator'))
-  {
-    $this->translate_visible = 'visible';
-  }
-  else
-  {
-    $this->translate_visible = 'hidden';
-  }
-
   //build main menu
   $this->mainmenu = link_to(__('add/edit'), 'informationobject/list', array('class' => $mainmenu_css_class[0]));
-  $this->mainmenu .= link_to(__('translate'), 'i18n/listUserInterfaceTranslation', array('class' => $mainmenu_css_class[1], 'style' => 'visibility:'.$this->translate_visible));
+  if ($this->getUser()->hasCredential('translator'))
+  {
+    $this->mainmenu .= link_to(__('translate'), 'i18n/listUserInterfaceTranslation', array('class' => $mainmenu_css_class[1], 'style' => 'visibility:'.$this->translate_visible));
+  }
   $this->mainmenu .= link_to(__('admin'), 'user/list', array('class' => $mainmenu_css_class[2], 'style' => 'visibility:'.$this->admin_visible));
   }
 }

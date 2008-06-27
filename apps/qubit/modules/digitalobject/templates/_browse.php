@@ -14,7 +14,7 @@
       <div class="digitalObjectDesc" style="height: 84px">
         <?php echo string_wrap($informationObject->getTitle(), 18, 2); ?><br />
         <b><?php echo __('Part of') ?>:</b>
-        <?php echo link_to($collectionRoot->getTitle(), 'informationobject/show?id='.$collectionRoot->getId()); ?>
+        <?php echo link_to($collectionRoot->getTitle(array('cultureFallback' => true)), 'informationobject/show?id='.$collectionRoot->getId()); ?>
       </div>
   </div>
 <?php endforeach; ?>

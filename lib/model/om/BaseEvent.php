@@ -633,7 +633,7 @@ abstract class BaseEvent extends QubitObject
   public function getName(array $options = array())
   {
     $name = $this->getCurrentEventI18n($options)->getName();
-    if (!empty($options['cultureFallback']) && $name === null)
+    if (!empty($options['cultureFallback']) && strlen($name) < 1)
     {
       $name = $this->getCurrentEventI18n(array('sourceCulture' => true) + $options)->getName();
     }
@@ -651,7 +651,7 @@ abstract class BaseEvent extends QubitObject
   public function getDescription(array $options = array())
   {
     $description = $this->getCurrentEventI18n($options)->getDescription();
-    if (!empty($options['cultureFallback']) && $description === null)
+    if (!empty($options['cultureFallback']) && strlen($description) < 1)
     {
       $description = $this->getCurrentEventI18n(array('sourceCulture' => true) + $options)->getDescription();
     }
@@ -669,7 +669,7 @@ abstract class BaseEvent extends QubitObject
   public function getDateDisplay(array $options = array())
   {
     $dateDisplay = $this->getCurrentEventI18n($options)->getDateDisplay();
-    if (!empty($options['cultureFallback']) && $dateDisplay === null)
+    if (!empty($options['cultureFallback']) && strlen($dateDisplay) < 1)
     {
       $dateDisplay = $this->getCurrentEventI18n(array('sourceCulture' => true) + $options)->getDateDisplay();
     }

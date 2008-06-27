@@ -447,7 +447,7 @@ abstract class BasePlace extends QubitTerm
   public function getStreetAddress(array $options = array())
   {
     $streetAddress = $this->getCurrentPlaceI18n($options)->getStreetAddress();
-    if (!empty($options['cultureFallback']) && $streetAddress === null)
+    if (!empty($options['cultureFallback']) && strlen($streetAddress) < 1)
     {
       $streetAddress = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getStreetAddress();
     }
@@ -465,7 +465,7 @@ abstract class BasePlace extends QubitTerm
   public function getCity(array $options = array())
   {
     $city = $this->getCurrentPlaceI18n($options)->getCity();
-    if (!empty($options['cultureFallback']) && $city === null)
+    if (!empty($options['cultureFallback']) && strlen($city) < 1)
     {
       $city = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getCity();
     }
@@ -483,7 +483,7 @@ abstract class BasePlace extends QubitTerm
   public function getRegion(array $options = array())
   {
     $region = $this->getCurrentPlaceI18n($options)->getRegion();
-    if (!empty($options['cultureFallback']) && $region === null)
+    if (!empty($options['cultureFallback']) && strlen($region) < 1)
     {
       $region = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getRegion();
     }
@@ -501,7 +501,7 @@ abstract class BasePlace extends QubitTerm
   public function getPostalCode(array $options = array())
   {
     $postalCode = $this->getCurrentPlaceI18n($options)->getPostalCode();
-    if (!empty($options['cultureFallback']) && $postalCode === null)
+    if (!empty($options['cultureFallback']) && strlen($postalCode) < 1)
     {
       $postalCode = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getPostalCode();
     }

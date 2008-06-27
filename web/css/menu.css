@@ -20,8 +20,9 @@ margin: 0;
 padding: 3px 0 0 0;
 height: 12px;
 background-color: transparent;
-border: 0;
-float: right;
+position: absolute;
+top: 3px;
+right: 2px;
 }
 
 .menu-top a
@@ -76,7 +77,9 @@ padding: 3px 0 0 0;
 height: 12px;
 background-color: transparent;
 border: 0;
-float: left;
+position: absolute;
+top: 3px;
+left: 2px; 
 }
 
 .language-list a

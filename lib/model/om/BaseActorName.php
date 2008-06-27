@@ -494,7 +494,7 @@ abstract class BaseActorName
   public function getName(array $options = array())
   {
     $name = $this->getCurrentActorNameI18n($options)->getName();
-    if (!empty($options['cultureFallback']) && $name === null)
+    if (!empty($options['cultureFallback']) && strlen($name) < 1)
     {
       $name = $this->getCurrentActorNameI18n(array('sourceCulture' => true) + $options)->getName();
     }
@@ -512,7 +512,7 @@ abstract class BaseActorName
   public function getNote(array $options = array())
   {
     $note = $this->getCurrentActorNameI18n($options)->getNote();
-    if (!empty($options['cultureFallback']) && $note === null)
+    if (!empty($options['cultureFallback']) && strlen($note) < 1)
     {
       $note = $this->getCurrentActorNameI18n(array('sourceCulture' => true) + $options)->getNote();
     }

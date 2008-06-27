@@ -339,7 +339,7 @@ abstract class BaseStaticPage extends QubitObject
   public function getTitle(array $options = array())
   {
     $title = $this->getCurrentStaticPageI18n($options)->getTitle();
-    if (!empty($options['cultureFallback']) && $title === null)
+    if (!empty($options['cultureFallback']) && strlen($title) < 1)
     {
       $title = $this->getCurrentStaticPageI18n(array('sourceCulture' => true) + $options)->getTitle();
     }
@@ -357,7 +357,7 @@ abstract class BaseStaticPage extends QubitObject
   public function getContent(array $options = array())
   {
     $content = $this->getCurrentStaticPageI18n($options)->getContent();
-    if (!empty($options['cultureFallback']) && $content === null)
+    if (!empty($options['cultureFallback']) && strlen($content) < 1)
     {
       $content = $this->getCurrentStaticPageI18n(array('sourceCulture' => true) + $options)->getContent();
     }

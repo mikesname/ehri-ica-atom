@@ -755,7 +755,7 @@ abstract class BaseContactInformation
   public function getContactType(array $options = array())
   {
     $contactType = $this->getCurrentContactInformationI18n($options)->getContactType();
-    if (!empty($options['cultureFallback']) && $contactType === null)
+    if (!empty($options['cultureFallback']) && strlen($contactType) < 1)
     {
       $contactType = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getContactType();
     }
@@ -773,7 +773,7 @@ abstract class BaseContactInformation
   public function getCity(array $options = array())
   {
     $city = $this->getCurrentContactInformationI18n($options)->getCity();
-    if (!empty($options['cultureFallback']) && $city === null)
+    if (!empty($options['cultureFallback']) && strlen($city) < 1)
     {
       $city = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getCity();
     }
@@ -791,7 +791,7 @@ abstract class BaseContactInformation
   public function getRegion(array $options = array())
   {
     $region = $this->getCurrentContactInformationI18n($options)->getRegion();
-    if (!empty($options['cultureFallback']) && $region === null)
+    if (!empty($options['cultureFallback']) && strlen($region) < 1)
     {
       $region = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getRegion();
     }
@@ -809,7 +809,7 @@ abstract class BaseContactInformation
   public function getNote(array $options = array())
   {
     $note = $this->getCurrentContactInformationI18n($options)->getNote();
-    if (!empty($options['cultureFallback']) && $note === null)
+    if (!empty($options['cultureFallback']) && strlen($note) < 1)
     {
       $note = $this->getCurrentContactInformationI18n(array('sourceCulture' => true) + $options)->getNote();
     }
