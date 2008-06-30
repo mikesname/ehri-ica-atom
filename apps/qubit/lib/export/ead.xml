@@ -1,3 +1,9 @@
+<!--
+Please note: this EAD export template is incomplete. It is included simply to 
+demonstrate the XML export functionality. The next release of the software will 
+contain a complete and accurate EAD export template
+-->
+
 <!DOCTYPE ead PUBLIC "+//ISBN 1-931666-00-8//DTD ead.dtd (Encoded Archival Description (EAD) Version 2002)//EN" "http://xml.coverpages.org/EADv20-dtd.txt">
 
 <ead relatedencoding="MARC21">

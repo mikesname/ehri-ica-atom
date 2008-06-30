@@ -26,16 +26,40 @@ class ActorDeleteAction extends sfAction
     $actor = QubitActor::getById($this->getRequestParameter('id'));
 
     $this->forward404Unless($actor);
+    
+    //keep track of informationObjects that require a search index update due to the deletion of related actors (e.g. name access points, creators, creator history)
+    $informationObjects = array();
+
+    foreach ($actor->getEvents() as $event)
+    {
+      if (is_null($event->getInformationObjectId()))
+      {
+        $event->delete();
+      }
+      else
+      {
+        $informationObjects[] = $event->getInformationObject();
+        if (is_null($event->getTypeId()))
+        {
+          //Event is only relevant in relation to Actor object, therefore it can be deleted
+          $event->delete();
+        }
+        else
+        { 
+          //Event is relevant even without Actor object (e.g. creation date range), therefore it cannot be deleted
+          $event->setActorId(null);
+          $event->save();
+        }
+      }
+    }
 
     $actor->delete();
 
-    if ($this->getUser()->getAttribute('nav_context_module') == 'add')
+    foreach ($informationObjects as $informationObject)
     {
-      return $this->redirect('actor/create');
+      SearchIndex::UpdateTranslatedLanguages($informationObject);
     }
-    else
-    {
-    return $this->redirect($this->getUser()->getAttribute('nav_context_back'));
-    }
+
+    return $this->redirect('actor/list');
   }
 }

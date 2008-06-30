@@ -39,7 +39,7 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($contactInformation): ?>
+<?php if (!empty($contactInformation)): ?>
   <tr><th><?php echo __('Contact information') ?></th><td>
   <?php foreach ($contactInformation as $contact): ?>
       <table class="inline" style="margin-bottom: 5px;"><tr>
