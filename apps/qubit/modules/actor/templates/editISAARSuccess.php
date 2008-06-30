@@ -25,6 +25,9 @@
 
   <div class="form-item">
     <label for="authorized_form_of_name"><?php echo __('authorized form of name'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getAuthorizedFormOfName(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>    
     <?php echo object_input_tag($actor, 'getAuthorizedFormOfName', array('size' => 20)) ?>
   </div>
 
@@ -78,42 +81,67 @@
           <?php echo __('date display <br />(defaults to date range)'); ?> </td></tr>
           <tr><td><?php echo object_input_tag($date, 'getStartDate', array('maxlength' => 4, 'style' => 'width: 35px;')) ?></td>
           <td><?php echo object_input_tag($date, 'getEndDate',  array('maxlength' => 4, 'style' => 'width: 35px;')) ?></td>
-          <td><?php echo object_input_tag($date, 'getDescription') ?></td></tr>
+          <td>
+      <?php if (strlen($sourceCultureValue = $date->getDescription(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $date->getSourceCulture()): ?>
+      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>          
+          <?php echo object_input_tag($date, 'getDescription') ?></td></tr>
         </table>
     </div>
 
     <div class="form-item">
       <label for="history"><?php echo __('history'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>  
       <?php echo object_textarea_tag($actor, 'getHistory', array('size' => '30x10')) ?>
     </div>
 
     <div class="form-item">
       <label for="places"><?php echo __('places'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getPlaces(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getPlaces', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="legal_status"><?php echo __('legal status'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getLegalStatus(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($actor, 'getLegalStatus', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="functions"><?php echo __('functions, occupations and activities'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getFunctions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getFunctions', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="mandates"><?php echo __('mandates or sources of authority'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getMandates(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getMandates', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="internal_structures"><?php echo __('internal structures or genealogy'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getInternalStructures(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getInternalStructures', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="general_context"><?php echo __('general context'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getGeneralContext(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getGeneralContext', array('size' => '30x3')) ?>
     </div>
 
@@ -134,11 +162,17 @@
 
     <div class="form-item">
       <label for="institution_identifier"><?php echo __('institution identifier'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getInstitutionResponsibleIdentifier(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_input_tag($actor, 'getInstitutionResponsibleIdentifier', array('size' => 20)) ?>
     </div>
 
     <div class="form-item">
       <label for="rules"><?php echo __('rules or conventions'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getRules', array('size' => '30x3')) ?>
     </div>
 
@@ -154,6 +188,9 @@
 
     <div class="form-item">
       <label for="dates"><?php echo __('dates of creation, revision and deletion'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getRevisionHistory()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getRevisionHistory', array('size' => '30x3')) ?>
     <div>
 
@@ -183,6 +220,9 @@
 
     <div class="form-id">
       <label for="sources"><?php echo __('sources'); ?></label>
+      <?php if (strlen($sourceCultureValue = $actor->getSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($actor, 'getSources', array('size' => '30x3')) ?>
     </div>
 
@@ -197,7 +237,7 @@
 
         <?php foreach ($notes as $note): ?>
           <tr>
-          <td><?php echo $note->getContent() ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
+          <td><?php echo $note->getContent(array('cultureFallback' => true)) ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
           <td><?php echo $note->getType() ?></td>
           <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteNote?noteId='.$note->getId()) ?></td>
           </tr>

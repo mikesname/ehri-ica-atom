@@ -10,7 +10,7 @@
   </div>
   <?php foreach ($repositoryHoldings as $holding): ?>
   <div class="node" style="border-bottom: 1px solid #cccccc; padding-bottom: 2px;">
-    <div style="padding-left: 17px;"<?php if (count($holding->getDescendants()) > 0): ?> class="plus"<?php endif; ?>>
+    <div>
     <?php echo link_to($holding, 'informationobject/show?id='.$holding->getId()) ?>
     </div>
   </div>

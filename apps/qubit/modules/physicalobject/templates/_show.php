@@ -9,7 +9,7 @@
       <?php endif; ?>
       <?php if ($physicalObject->getName()): ?>
       <?php echo link_to($physicalObject->getName(), 
-        'physicalobject/edit?id='.$physicalObject->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()) ?>
+        'physicalobject/edit?id='.$physicalObject->getId()) ?>
       <?php endif; ?>
       <?php if ($physicalObject->getLocation()): ?>
       <?php echo ' - '.$physicalObject->getLocation(); ?>

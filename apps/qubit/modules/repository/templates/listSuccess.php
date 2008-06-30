@@ -5,13 +5,17 @@
 <tr>
   <th><?php if ($sort == 'nameUp'): ?>
     <?php echo link_to(__('name'), 'repository/list?country='.$country.'&sort=nameDown') ?>
+    <!-- hide sort option until it is working...
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
+    -->
   <?php else: ?>
     <?php echo link_to(__('name'), 'repository/list?country='.$country.'&sort=nameUp') ?>
   <?php endif; ?>
 
   <?php if ($sort == 'nameDown'): ?>
+    <!-- hide sort option until it is working...
     <?php echo image_tag('down.gif', 'style="padding-bottom: 3px;"', 'sort down') ?>
+    -->
   <?php endif; ?>
 
   <?php if ($editCredentials): ?>
@@ -21,26 +25,34 @@
 
   <th><?php if ($sort == 'typeUp'): ?>
     <?php echo link_to(__('type'), 'repository/list?country='.$country.'&sort=typeDown') ?>
+    <!-- hide sort option until it is working...
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
+    -->
   <?php else: ?>
     <?php echo link_to(__('type'), 'repository/list?country='.$country.'&sort=typeUp') ?>
   <?php endif; ?>
 
   <?php if ($sort == 'typeDown'): ?>
+    <!-- hide sort option until it is working...
     <?php echo image_tag('down.gif', 'style="padding-bottom: 3px;"', 'sort down') ?>
+    -->
   <?php endif; ?>
   </th>
 
   <th>
   <?php if ($sort == 'countryDown'): ?>
     <?php echo link_to(__('country'), 'repository/list?country='.$country.'&sort=countryUp') ?>
+    <!-- hide sort option until it is working...
     <?php echo image_tag('down.gif', 'style="padding-bottom: 3px;"', 'sort down') ?>
+    -->
   <?php else: ?>
     <?php echo link_to(__('country'), 'repository/list?country='.$country.'&sort=countryDown') ?>
   <?php endif; ?>
 
   <?php if ($sort == 'countryUp'): ?>
+    <!-- hide sort option until it is working...
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
+    -->
   <?php endif; ?>
   </th>
 
@@ -50,7 +62,7 @@
 <?php foreach ($repositories as $repository): ?>
 <tr>
   <td>
-  <?php if (is_null($repositoryName = $repository->getAuthorizedFormOfName())) $repositoryName = $repository->getAuthorizedFormOfName(array('sourceCulture' => true)); ?>
+  <?php if (strlen($repositoryName = $repository->getAuthorizedFormOfName(array('cultureFallback' => true))) > 0); ?>
   <?php if ($editCredentials): ?>
     <?php echo link_to($repositoryName, 'repository/show?id='.$repository->getId()) ?>
   <?php else: ?>

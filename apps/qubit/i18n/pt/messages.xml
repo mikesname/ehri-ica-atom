@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2008-06-20T11:46:34Z" product-name="messages">
+  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2008-06-27T18:14:31Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -544,7 +544,7 @@
       </trans-unit>
       <trans-unit id="143">
         <source>place</source>
-        <target/>
+        <target>local</target>
       </trans-unit>
       <trans-unit id="144">
         <source>description</source>
@@ -572,7 +572,7 @@
       </trans-unit>
       <trans-unit id="150">
         <source>back</source>
-        <target/>
+        <target>retornar</target>
       </trans-unit>
       <trans-unit id="151">
         <source>list places</source>
@@ -1372,7 +1372,7 @@
       </trans-unit>
       <trans-unit id="350">
         <source>help</source>
-        <target/>
+        <target>ajuda</target>
       </trans-unit>
       <trans-unit id="351">
         <source>Browse for '%1%' in '%2%' returned %3% results</source>
@@ -1488,23 +1488,23 @@
       </trans-unit>
       <trans-unit id="379">
         <source>usage</source>
-        <target/>
+        <target>uso</target>
       </trans-unit>
       <trans-unit id="380">
         <source>mime-type</source>
-        <target/>
+        <target>mime-type</target>
       </trans-unit>
       <trans-unit id="381">
         <source>media type</source>
-        <target/>
+        <target>Tipo</target>
       </trans-unit>
       <trans-unit id="382">
         <source>filesize</source>
-        <target/>
+        <target>tamanho do arquivo</target>
       </trans-unit>
       <trans-unit id="383">
         <source>uploaded</source>
-        <target/>
+        <target>inserido em</target>
       </trans-unit>
       <trans-unit id="384">
         <source>derivatives</source>
@@ -1520,7 +1520,7 @@
       </trans-unit>
       <trans-unit id="387">
         <source>usage type</source>
-        <target/>
+        <target>tipo de uso</target>
       </trans-unit>
       <trans-unit id="388">
         <source>browse %1%s</source>
@@ -1612,27 +1612,27 @@
       </trans-unit>
       <trans-unit id="410">
         <source>view digital object</source>
-        <target/>
+        <target>visualizar objeto digital</target>
       </trans-unit>
       <trans-unit id="411">
         <source>view digital object master</source>
-        <target/>
+        <target>visualizar objeto digital master</target>
       </trans-unit>
       <trans-unit id="412">
         <source>edit physical object</source>
-        <target/>
+        <target>editar objeto f&#xED;sico</target>
       </trans-unit>
       <trans-unit id="413">
         <source>edit (ISDIAH)</source>
-        <target/>
+        <target>editar (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="414">
         <source>view (ISDIAH)</source>
-        <target/>
+        <target>visualizar (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="415">
         <source>this page</source>
-        <target/>
+        <target>essa p&#xE1;gina</target>
       </trans-unit>
       <trans-unit id="416">
         <source>Contact Person</source>

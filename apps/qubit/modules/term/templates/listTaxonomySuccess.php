@@ -7,17 +7,21 @@
   <th>
   <?php if ($sort == 'termNameUp'): ?>
     <?php echo link_to(__('%1% term', array('%1%' =>$taxonomyName)), 'term/list?taxonomyId='.$taxonomyId.'&sort=termNameDown') ?>
+    <!-- disable sort until it is working...
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
+    -->
   <?php else: ?>
     <?php echo link_to(__('%1% term', array('%1%' =>$taxonomyName)), 'term/list?taxonomyId='.$taxonomyId.'&sort=termNameUp') ?>
   <?php endif; ?>
 
   <?php if ($sort == 'termNameDown'): ?>
+    <!-- disable sort until it is working...
     <?php echo image_tag('down.gif', 'style="padding-bottom: 3px;"', 'sort down') ?>
+    -->
   <?php endif; ?>
 
   <?php if ($editCredentials): ?>
-	<span class="th-link"><?php echo link_to(__('add new'), 'term/create?taxonomyId='.$taxonomyId); ?></span>
+  <span class="th-link"><?php echo link_to(__('add new'), 'term/create?taxonomyId='.$taxonomyId); ?></span>
   <?php endif; ?>
   </th>
 

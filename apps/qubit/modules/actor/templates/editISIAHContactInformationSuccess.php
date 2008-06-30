@@ -1,4 +1,4 @@
-﻿<div class="pageTitle">edit ContactInformation</div>
+﻿<div class="pageTitle"><?php echo __('edit Contact Information') ?></div>
 
 <?php echo form_tag('actor/updateContactInformation') ?>
 
@@ -18,47 +18,100 @@
 <tr><td colspan="2" class="headerCell">
   <?php echo ($contactInformation->getActorId()) ? link_to($contactInformation->getActor(), 'actor/edit?id='.$contactInformation->getActorId()) : ''; ?>
 </td></tr>
+</table>
 
-<tr><th><?php echo __('Contact type') ?> </th>
-<td><?php echo object_input_tag($contactInformation, 'getContactType') ?></td></tr>
 
-<tr><th><?php echo __('Primary contact?') ?></th>
-<td><?php echo object_checkbox_tag($contactInformation, 'getPrimaryContact', array('style' => 'border: 0; width: 20px;')) ?></td></tr>
 
-<tr><th><?php echo __('Contact Person') ?></th><td><?php echo object_input_tag($contactInformation, 'getContactPerson') ?></td></tr>
+  <div class="form-item">
+  <label for="contact type"><?php echo __('Contact type') ?> </label>
+  <?php if (strlen($sourceCultureValue = $contactInformation->getContactType(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $contactInformation->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
+  <?php echo object_input_tag($contactInformation, 'getContactType') ?>
+  </div>
 
-<tr><th><?php echo __('Street address') ?></th><td><?php echo object_textarea_tag($contactInformation, 'getStreetAddress', array ('size' => '30x3'))?></td></tr>
+  <div class="form-item">
+  <label for="primary contact"><?php echo __('Primary contact?') ?></label>
+  <?php echo object_checkbox_tag($contactInformation, 'getPrimaryContact', array('style' => 'border: 0; width: 20px;')) ?>
+  </div>
 
-<tr><th><?php echo __('City') ?></th><td><?php echo object_input_tag($contactInformation, 'getCity') ?></td></tr>
+  <div class="form-item">
+  <label for="contact person"><?php echo __('Contact Person') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getContactPerson') ?>
+  </div>
 
-<tr><th><?php echo __('Region/Province') ?></th><td><?php echo object_input_tag($contactInformation, 'getRegion') ?></td></tr>
+  <div class="form-item">
+  <label for="street address"><?php echo __('Street address') ?></label>
+  <?php echo object_textarea_tag($contactInformation, 'getStreetAddress', array ('size' => '30x3'))?>
+  </div>
 
-<tr><th><?php echo __('Country') ?></th><td><?php echo object_select_country_tag($contactInformation, 'getCountryCode', array('include_blank' => true)) ?></td></tr>
+  <div class="form-item">
+  <label for="city"><?php echo __('City') ?></label>
+  <?php if (strlen($sourceCultureValue = $contactInformation->getCity(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $contactInformation->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
+  <?php echo object_input_tag($contactInformation, 'getCity') ?>
+  </div>
+  
+  <div class="form-item">
+  <label for="region/province"><?php echo __('Region/Province') ?></label>
+  <?php if (strlen($sourceCultureValue = $contactInformation->getRegion(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $contactInformation->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>   
+  <?php echo object_input_tag($contactInformation, 'getRegion') ?>
+  </div>
 
-<tr><th><?php echo __('Postal Code') ?></th><td><?php echo object_input_tag($contactInformation, 'getPostalCode') ?></td></tr>
+  <div class="form-item">
+  <label for="country"><?php echo __('Country') ?></label>
+  <?php echo object_select_country_tag($contactInformation, 'getCountryCode', array('include_blank' => true)) ?>
+  </div>
 
-<tr>
-  <th><?php echo __('Latitude') ?></th>
-  <td><?php echo object_input_tag($contactInformation, 'getLatitude', array (
+  <div class="form-item">
+  <label for="postal code"><?php echo __('Postal Code') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getPostalCode') ?>
+  </div>
+
+  <div class="form-item">
+  <label for="latitude"><?php echo __('Latitude') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getLatitude', array (
   'size' => 20,
-)) ?></td>
-</tr>
-<tr>
-  <th><?php echo __('Longtitude') ?></th>
-  <td><?php echo object_input_tag($contactInformation, 'getLongtitude', array (
+)) ?>
+  </div>
+
+  <div class="form-item">
+  <label for="longtitude"><?php echo __('Longtitude') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getLongtitude', array (
   'size' => 20,
-)) ?></td>
-</tr>
+)) ?>
+  </div>
 
-<tr><th><?php echo __('Telephone') ?></th><td><?php echo object_input_tag($contactInformation, 'getTelephone') ?></td></tr>
+  <div class="form-item">
+  <label for="telephone"><?php echo __('Telephone') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getTelephone') ?>
+  </div>
 
-<tr><th><?php echo __('Fax') ?></th><td><?php echo object_input_tag($contactInformation, 'getFax') ?></td></tr>
+  <div class="form-item">
+  <label for="fax"> <?php echo __('Fax') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getFax') ?>
+  </div>
+  
+  <div class="form-item">
+  <label for="email"><?php echo __('Email') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getEmail') ?>
+  </div>
+  
+  <div class="form-item">
+  <label for="website"><?php echo __('Website') ?></label>
+  <?php echo object_input_tag($contactInformation, 'getWebsite') ?>
+  </div>
 
-<tr><th><?php echo __('Email') ?></th><td><?php echo object_input_tag($contactInformation, 'getEmail') ?></td></tr>
-
-<tr><th><?php echo __('Website') ?></th><td><?php echo object_input_tag($contactInformation, 'getWebsite') ?></td></tr>
-
-<tr><th><?php echo __('Note') ?></td><td><?php echo object_input_tag($contactInformation, 'getNote')?></td></tr>
+  <div class="form-item">
+  <label for="note"><?php echo __('Note') ?></label>
+  <?php if (strlen($sourceCultureValue = $contactInformation->getNote(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $contactInformation->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
+  <?php echo object_textarea_tag($contactInformation, 'getNote', array('size' => '30x3'))?>
+  </div>
 
 </tbody>
 </table>

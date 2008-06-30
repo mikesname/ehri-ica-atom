@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2008-06-20T11:46:22Z" product-name="messages">
+  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2008-06-30T11:37:10Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -240,7 +240,7 @@
       </trans-unit>
       <trans-unit id="60">
         <source>administrative/biographical history</source>
-        <target/>
+        <target>histoire administrative ou biographique</target>
       </trans-unit>
       <trans-unit id="61">
         <source>archival history</source>
@@ -376,7 +376,7 @@
       </trans-unit>
       <trans-unit id="94">
         <source>list all %1%</source>
-        <target>lister tout %1%</target>
+        <target>lister toute %1%</target>
       </trans-unit>
       <trans-unit id="95">
         <source>list %1%</source>
@@ -504,11 +504,11 @@
       </trans-unit>
       <trans-unit id="126">
         <source>dates</source>
-        <target/>
+        <target>dates</target>
       </trans-unit>
       <trans-unit id="127">
         <source>language of material</source>
-        <target/>
+        <target>langue des documents</target>
       </trans-unit>
       <trans-unit id="128">
         <source>import an XML file</source>
@@ -544,7 +544,7 @@
       </trans-unit>
       <trans-unit id="143">
         <source>place</source>
-        <target/>
+        <target>lieu</target>
       </trans-unit>
       <trans-unit id="144">
         <source>description</source>
@@ -572,7 +572,7 @@
       </trans-unit>
       <trans-unit id="150">
         <source>back</source>
-        <target/>
+        <target>page pr&#xE9;c&#xE9;dente</target>
       </trans-unit>
       <trans-unit id="151">
         <source>list places</source>
@@ -604,7 +604,7 @@
       </trans-unit>
       <trans-unit id="158">
         <source>In an upcoming version of the software this page will list all newly added or revised content that requires translation.</source>
-        <target>Dans une prochaine version du logiciel vous trouverez ici la liste de tous les contenus, nouvellement ajout&#xE9;s ou modifi&#xE9;s, n&#xE9;cessitant une traduction</target>
+        <target>Dans une prochaine version du logiciel, vous trouverez ici la liste de tous les contenus, nouvellement ajout&#xE9;s ou modifi&#xE9;s, n&#xE9;cessitant une traduction</target>
       </trans-unit>
       <trans-unit id="159">
         <source>change</source>
@@ -616,7 +616,7 @@
       </trans-unit>
       <trans-unit id="161">
         <source>%1% module</source>
-        <target>%1% module</target>
+        <target>module %1%</target>
       </trans-unit>
       <trans-unit id="162">
         <source>edit (ISAD)</source>
@@ -856,7 +856,7 @@
       </trans-unit>
       <trans-unit id="221">
         <source>detail</source>
-        <target/>
+        <target>d&#xE9;tail</target>
       </trans-unit>
       <trans-unit id="222">
         <source>dates of creation revision deletion</source>
@@ -1172,7 +1172,7 @@
       </trans-unit>
       <trans-unit id="300">
         <source>description identifier</source>
-        <target/>
+        <target>identifiant de la description</target>
       </trans-unit>
       <trans-unit id="301">
         <source>language(s) of institution description</source>
@@ -1192,7 +1192,7 @@
       </trans-unit>
       <trans-unit id="305">
         <source>contact information</source>
-        <target>information de contact</target>
+        <target>coordonn&#xE9;es</target>
       </trans-unit>
       <trans-unit id="306">
         <source>contact type</source>
@@ -1372,7 +1372,7 @@
       </trans-unit>
       <trans-unit id="350">
         <source>help</source>
-        <target/>
+        <target>aide</target>
       </trans-unit>
       <trans-unit id="351">
         <source>Browse for '%1%' in '%2%' returned %3% results</source>
@@ -1392,11 +1392,11 @@
       </trans-unit>
       <trans-unit id="355">
         <source>list all taxonomies</source>
-        <target/>
+        <target>lister toute les taxonomies</target>
       </trans-unit>
       <trans-unit id="356">
         <source>list only %1%</source>
-        <target/>
+        <target>lister uniquement %1%</target>
       </trans-unit>
       <trans-unit id="357">
         <source>results</source>
@@ -1408,31 +1408,31 @@
       </trans-unit>
       <trans-unit id="359">
         <source>Creator</source>
-        <target/>
+        <target>Cr&#xE9;ateur</target>
       </trans-unit>
       <trans-unit id="360">
         <source>Creation date(s)</source>
-        <target/>
+        <target>Date(s) de cr&#xE9;ation</target>
       </trans-unit>
       <trans-unit id="361">
         <source>script of material</source>
-        <target/>
+        <target>&#xE9;critures des documents</target>
       </trans-unit>
       <trans-unit id="362">
         <source>allied materials area</source>
-        <target/>
+        <target>zone des sources compl&#xE9;mentaires</target>
       </trans-unit>
       <trans-unit id="363">
         <source>publication note</source>
-        <target/>
+        <target>note de publication</target>
       </trans-unit>
       <trans-unit id="364">
         <source>notes area</source>
-        <target/>
+        <target>zone des notes</target>
       </trans-unit>
       <trans-unit id="365">
         <source>name access points</source>
-        <target/>
+        <target>points d'acc&#xE8;s noms</target>
       </trans-unit>
       <trans-unit id="366">
         <source>Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?</source>
@@ -1448,11 +1448,11 @@
       </trans-unit>
       <trans-unit id="369">
         <source>language of description</source>
-        <target/>
+        <target>langue de description</target>
       </trans-unit>
       <trans-unit id="370">
         <source>script of description</source>
-        <target/>
+        <target>&#xE9;critures de description</target>
       </trans-unit>
       <trans-unit id="371">
         <source>unable to parse XML file: malformed or unresolvable entities</source>
@@ -1472,11 +1472,11 @@
       </trans-unit>
       <trans-unit id="375">
         <source>export an XML file</source>
-        <target/>
+        <target>exporter un fichier XML</target>
       </trans-unit>
       <trans-unit id="376">
         <source>export</source>
-        <target/>
+        <target>exporter</target>
       </trans-unit>
       <trans-unit id="377">
         <source>&lt;span class=""&gt;No %1% found&lt;/span&gt;</source>
@@ -1488,23 +1488,23 @@
       </trans-unit>
       <trans-unit id="379">
         <source>usage</source>
-        <target/>
+        <target>utilisation</target>
       </trans-unit>
       <trans-unit id="380">
         <source>mime-type</source>
-        <target/>
+        <target>type de MIME</target>
       </trans-unit>
       <trans-unit id="381">
         <source>media type</source>
-        <target/>
+        <target>type de supports</target>
       </trans-unit>
       <trans-unit id="382">
         <source>filesize</source>
-        <target/>
+        <target>taille du fichier</target>
       </trans-unit>
       <trans-unit id="383">
         <source>uploaded</source>
-        <target/>
+        <target>t&#xE9;l&#xE9;charg&#xE9;</target>
       </trans-unit>
       <trans-unit id="384">
         <source>derivatives</source>
@@ -1520,7 +1520,7 @@
       </trans-unit>
       <trans-unit id="387">
         <source>usage type</source>
-        <target/>
+        <target>type d'utilisation</target>
       </trans-unit>
       <trans-unit id="388">
         <source>browse %1%s</source>
@@ -1528,7 +1528,7 @@
       </trans-unit>
       <trans-unit id="389">
         <source>Select a %1% to upload</source>
-        <target/>
+        <target>S&#xE9;lectionner le %1% &#xE0; t&#xE9;l&#xE9;charger</target>
       </trans-unit>
       <trans-unit id="390">
         <source>Part of</source>
@@ -1548,19 +1548,19 @@
       </trans-unit>
       <trans-unit id="394">
         <source>relationships area</source>
-        <target/>
+        <target>zone des relations</target>
       </trans-unit>
       <trans-unit id="395">
         <source>add new static page</source>
-        <target/>
+        <target>ajouter une nouvelle page statique</target>
       </trans-unit>
       <trans-unit id="396">
         <source>location</source>
-        <target/>
+        <target>localisation</target>
       </trans-unit>
       <trans-unit id="397">
         <source>container type</source>
-        <target/>
+        <target>type de contenant</target>
       </trans-unit>
       <trans-unit id="398">
         <source>selected container</source>
@@ -1568,79 +1568,79 @@
       </trans-unit>
       <trans-unit id="399">
         <source>link to an existing container</source>
-        <target/>
+        <target>relier &#xE0; un contenant existant</target>
       </trans-unit>
       <trans-unit id="400">
         <source>or, create a new container</source>
-        <target/>
+        <target>ou cr&#xE9;er un nouveau contenant</target>
       </trans-unit>
       <trans-unit id="401">
         <source>container</source>
-        <target/>
+        <target>contenant</target>
       </trans-unit>
       <trans-unit id="402">
         <source>add</source>
-        <target/>
+        <target>ajouter</target>
       </trans-unit>
       <trans-unit id="403">
         <source>records management and collecting policies</source>
-        <target/>
+        <target>gestion des archives courantes et interm&#xE9;diaires et politiques de collecte</target>
       </trans-unit>
       <trans-unit id="404">
         <source>finding aids, guides, publications</source>
-        <target/>
+        <target>outils de recherche, guides, publications</target>
       </trans-unit>
       <trans-unit id="405">
         <source>accessibility</source>
-        <target/>
+        <target>accessibilit&#xE9;</target>
       </trans-unit>
       <trans-unit id="406">
         <source>public areas</source>
-        <target/>
+        <target>aires publiques</target>
       </trans-unit>
       <trans-unit id="407">
         <source>institution responsible identifier</source>
-        <target/>
+        <target>identifiant du service responsable de la description</target>
       </trans-unit>
       <trans-unit id="408">
         <source>languages of institution description</source>
-        <target/>
+        <target>langues de description de l'institution</target>
       </trans-unit>
       <trans-unit id="409">
         <source>scripts of institution description</source>
-        <target/>
+        <target>&#xE9;critures de description de l'institution</target>
       </trans-unit>
       <trans-unit id="410">
         <source>view digital object</source>
-        <target/>
+        <target>afficher un objet num&#xE9;rique</target>
       </trans-unit>
       <trans-unit id="411">
         <source>view digital object master</source>
-        <target/>
+        <target>afficher le fichier ma&#xEE;tre d'un objet num&#xE9;rique</target>
       </trans-unit>
       <trans-unit id="412">
         <source>edit physical object</source>
-        <target/>
+        <target>&#xE9;diter un objet physique</target>
       </trans-unit>
       <trans-unit id="413">
         <source>edit (ISDIAH)</source>
-        <target/>
+        <target>&#xE9;diter (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="414">
         <source>view (ISDIAH)</source>
-        <target/>
+        <target>afficher (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="415">
         <source>this page</source>
-        <target/>
+        <target>la page actuelle</target>
       </trans-unit>
       <trans-unit id="416">
         <source>Contact Person</source>
-        <target/>
+        <target>Personne contact</target>
       </trans-unit>
       <trans-unit id="417">
         <source>%1% information</source>
-        <target/>
+        <target>information du %1%</target>
       </trans-unit>
       <trans-unit id="418">
         <source>containers</source>
@@ -1648,7 +1648,7 @@
       </trans-unit>
       <trans-unit id="419">
         <source>contains</source>
-        <target/>
+        <target>contenu</target>
       </trans-unit>
       <trans-unit id="420">
         <source>There is 1 %1% related to this item.  Are you sure you wish proceed with delete?</source>
@@ -1656,11 +1656,11 @@
       </trans-unit>
       <trans-unit id="421">
         <source>There are %1% %2%s related to this item.  Are you sure you wish to proceed with delete?</source>
-        <target/>
+        <target>%1% %2%s sont reli&#xE9;s &#xE0; cet &#xE9;l&#xE9;ment. &#xCA;tes-vous certain de vouloir le supprimer?</target>
       </trans-unit>
       <trans-unit id="422">
         <source>contact person</source>
-        <target/>
+        <target>personne contact</target>
       </trans-unit>
     </body>
   </file>

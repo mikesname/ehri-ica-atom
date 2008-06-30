@@ -38,7 +38,7 @@
     <div class="form-item">
       <label for="title"><?php echo __('title'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getTitle(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_input_tag($informationObject, 'getTitle', array('size' => 20)) ?>
     </div>
@@ -74,7 +74,7 @@
     <div class="form-item">
       <label for="extent_and_medium"><?php echo __('extent and medium'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getExtentAndMedium(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getExtentAndMedium', array('size' => '30x3')) ?>
     </div>
@@ -139,7 +139,7 @@
     <div class="form-item">
       <label for="acquisition"><?php echo __('immediate source of acquisition'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getAcquisition(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getAcquisition', array('size' => '30x3')) ?>
     </div>
@@ -147,7 +147,7 @@
     <div class="form-item">
       <label for="archival_history"><?php echo __('archival history'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getArchivalHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
        <?php echo object_textarea_tag($informationObject, 'getArchivalHistory', array('size' => '30x3')) ?>
     </div>
@@ -160,7 +160,7 @@
     <div class="form-item">
       <label for="scope_and_content"><?php echo __('scope and content'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getScopeAndContent(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getScopeAndContent', array('size' => '30x3')) ?>
     </div>
@@ -168,7 +168,7 @@
     <div class="form-item">
       <label for="appraisal"><?php echo __('appraisal, destruction and scheduling'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getAppraisal(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getAppraisal', array('size' => '30x3')) ?>
     </div>
@@ -176,7 +176,7 @@
     <div class="form-item">
       <label for="accruals"><?php echo __('accruals'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getAccruals(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getAccruals', array('size' => '30x3')) ?>
     </div>
@@ -184,7 +184,7 @@
     <div class="form-item">
       <label for="arrangement"><?php echo __('system of arrangement'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getArrangement(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getArrangement', array('size' => '30x3')) ?>
     </div>
@@ -196,7 +196,7 @@
     <div class="form-item">
       <label for="access_conditions"><?php echo __('conditions governing access'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getAccessConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getAccessConditions', array('size' => '30x3')) ?>
     </div>
@@ -204,7 +204,7 @@
     <div class="form-item">
       <label for="reproduction_conditions"><?php echo __('conditions governing reproduction'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getReproductionConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getReproductionConditions', array('size' => '30x3')) ?>
     </div>
@@ -236,7 +236,7 @@
     <div class="form-item">
       <label for="physical_characteristics"><?php echo __('physical characteristics'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getPhysicalCharacteristics(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getPhysicalCharacteristics', array('size' => '30x3')) ?>
     </div>
@@ -244,7 +244,7 @@
     <div class="form-item">
       <label for="finding_aids"><?php echo __('finding aids'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getFindingAids(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getFindingAids', array('size' => '30x3')) ?>
     </div>
@@ -255,7 +255,7 @@
     <div class="form-item">
       <label for="location_of_originals"><?php echo __('location of originals'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getLocationOfOriginals(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getLocationOfOriginals', array('size' => '30x3')) ?>
     </div>
@@ -263,7 +263,7 @@
     <div class="form-item">
       <label for="location_of_copies"><?php echo __('location of copies'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getLocationOfCopies(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getLocationOfCopies', array('size' => '30x3')) ?>
     </div>
@@ -271,7 +271,7 @@
     <div class="form-item">
       <label for="related_units_of_description"><?php echo __('related units of description'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getRelatedUnitsOfDescription(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getRelatedUnitsOfDescription', array('size' => '30x3')) ?>
     </div>
@@ -366,7 +366,7 @@
     <div class="form-item">
       <label for="institution_identifier"><?php echo __('institution identifier'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getInstitutionResponsibleIdentifier(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_input_tag($informationObject, 'getInstitutionResponsibleIdentifier', array('size' => 20)) ?>
     </div>
@@ -374,7 +374,7 @@
     <div class="form-item">
       <label for="rules"><?php echo __('rules or conventions'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getRules', array('size' => '30x3')) ?>
     </div>
@@ -392,7 +392,7 @@
     <div class="form-item">
       <label for="dates"><?php echo __('dates of creation, revision and deletion'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getRevisionHistory', array('size' => '30x3')) ?>
     </div>
@@ -424,7 +424,7 @@
     <div class="form-item">
       <label for="sources"><?php echo __('sources'); ?></label>
       <?php if (strlen($sourceCultureValue = $informationObject->getSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
-      <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
       <?php echo object_textarea_tag($informationObject, 'getSources', array('size' => '30x3')) ?>
     </div>

@@ -122,15 +122,14 @@ class QubitInformationObject extends BaseInformationObject
     {
       $title = $this->getTitle(array('sourceCulture' => true));
     }
+    
+    $label .= $title;
 
     if ($truncate !== null)
     {
-      $label .= truncate_text($title, $truncate);
+      $label = truncate_text($label, $truncate);
     }
-    else
-    {
-      $label .= $title;
-    }
+
 
   //TODO: will return an array, only display first one?
   /*
@@ -283,7 +282,7 @@ class QubitInformationObject extends BaseInformationObject
     $eventDates = array();
     foreach ($events as $event)
     {
-      $eventDates[] = $event->getDescription();
+      $eventDates[] = $event->getDescription(array('cultureFallback' => true));
     }
 
     return $eventDates;

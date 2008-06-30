@@ -52,8 +52,6 @@ public static function getOnlyActors()
     $criteria->add(QubitUser::ID);
     $criteria->addJoin(QubitActor::ID, QubitRepository::ID, Criteria::LEFT_JOIN);
     $criteria->add(QubitRepository::ID);
-    $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
-    $criteria->addAscendingOrderByColumn(QubitActorI18n::AUTHORIZED_FORM_OF_NAME);
 
     return self::get($criteria);
   }

@@ -17,10 +17,10 @@
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getVersion()) : ?>
+<?php if (strlen($value = $informationObject->getVersion(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('version'); ?></th>
-<td><?php echo $informationObject->getVersion(); ?></td>
+<td><?php echo $value; ?></td>
 </tr>
 <?php endif; ?>
 
@@ -39,10 +39,10 @@
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getExtentAndMedium()) : ?>
+<?php if (strlen($value = $informationObject->getExtentAndMedium(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('extent and medium'); ?></th>
-<td><?php echo nl2br($informationObject->getExtentAndMedium()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
@@ -67,9 +67,9 @@
   <tr>
   <th><?php echo __('creator'); ?></th>
   <td><?php echo link_to($creator, 'actor/show?id='.$creator->getId()); ?>
-    <?php if ($creator->getDatesOfExistence()) echo ' ('.$creator->getDatesOfExistence()->getDescription().')'; ?>
+    <?php if ($creator->getDatesOfExistence()) echo ' ('.$creator->getDatesOfExistence()->getDescription(array('cultureFallback' => true)).')'; ?>
   <br />
-    <?php echo nl2br($creator->getHistory()); ?>
+    <?php echo nl2br($creator->getHistory(array('cultureFallback' => true))); ?>
   </td>
   </tr>
 <?php endforeach; ?>
@@ -81,59 +81,59 @@
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getArchivalHistory()) : ?>
+<?php if (strlen($value = $informationObject->getArchivalHistory(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('archival history'); ?></th>
-<td><?php echo nl2br($informationObject->getArchivalHistory()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getAcquisition()) : ?>
+<?php if (strlen($value = $informationObject->getAcquisition(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('immediate source of acquisition'); ?></th>
-<td><?php echo nl2br($informationObject->getAcquisition()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getScopeAndContent()) : ?>
+<?php if (strlen($value = $informationObject->getScopeAndContent(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('scope and content'); ?></th>
-<td><?php echo nl2br($informationObject->getScopeAndContent()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getAppraisal()) : ?>
+<?php if (strlen($value = $informationObject->getAppraisal(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('appraisal, destruction and scheduling'); ?></th>
-<td><?php echo nl2br($informationObject->getAppraisal()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getAccruals()) : ?>
+<?php if (strlen($value = $informationObject->getAccruals(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('accruals'); ?></th>
-<td><?php echo nl2br($informationObject->getAccruals()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getArrangement()) : ?>
+<?php if (strlen($value = $informationObject->getArrangement(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('system of arrangement'); ?></th>
-<td><?php echo nl2br($informationObject->getArrangement()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getAccessConditions()) : ?>
+<?php if (strlen($value = $informationObject->getAccessConditions(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('conditions governing access'); ?></th>
-<td><?php echo nl2br($informationObject->getAccessConditions()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getReproductionConditions()) : ?>
+<?php if (strlen($value = $informationObject->getReproductionConditions(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('conditions governing reproduction'); ?></th>
-<td><?php echo nl2br($informationObject->getReproductionConditions()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
@@ -157,38 +157,38 @@
 </td></tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getPhysicalCharacteristics()) : ?>
+<?php if (strlen($value = $informationObject->getPhysicalCharacteristics(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('physical characteristics'); ?></th>
-<td><?php echo nl2br($informationObject->getPhysicalCharacteristics()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getFindingAids()) : ?>
+<?php if (strlen($value = $informationObject->getFindingAids(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('finding aids'); ?></th>
-<td><?php echo nl2br($informationObject->getFindingAids()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getLocationOfOriginals()) : ?>
+<?php if (strlen($value = $informationObject->getLocationOfOriginals(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('location of originals'); ?></th>
-<td><?php echo nl2br($informationObject->getLocationOfOriginals()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getLocationOfCopies()) : ?>
+<?php if (strlen($value = $informationObject->getLocationOfCopies(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('location of copies'); ?></th>
-<td><?php echo nl2br($informationObject->getLocationOfCopies()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getRelatedUnitsOfDescription()) : ?>
+<?php if (strlen($value = $informationObject->getRelatedUnitsOfDescription(array('cultureFallback' => true))) > 0) : ?>
 <tr>
 <th><?php echo __('related units of description'); ?></th>
-<td><?php echo nl2br($informationObject->getRelatedUnitsOfDescription()); ?></td>
+<td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
@@ -229,7 +229,7 @@
 <th><?php echo __('notes'); ?></th>
 <td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note->getType().': '.nl2br($note->getContent()); ?><br />
+    <?php echo $note->getType().': '.nl2br($note->getContent(array('cultureFallback' => true))); ?><br />
   <?php endforeach; ?>
 </td>
 </tr>
@@ -240,14 +240,14 @@
   <td><?php echo $informationObject->getDescriptionIdentifier() ?></td></tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getInstitutionResponsibleIdentifier(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $informationObject->getInstitutionResponsibleIdentifier(array('cultureFallback' => true))) > 0) : ?>
   <tr><th><?php echo __('institution identifier')?></th>
-  <td><?php echo $informationObject->getInstitutionResponsibleIdentifier(array('sourceCulture' => true)) ?></td></tr>
+  <td><?php echo $value ?></td></tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getRules(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $informationObject->getRules(array('cultureFallback' => true))) > 0) : ?>
   <tr><th><?php echo __('rules')?></th>
-  <td><?php echo nl2br($informationObject->getRules(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
 <?php if ($informationObject->getDescriptionStatusId()): ?>
@@ -262,9 +262,9 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getRevisionHistory(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $informationObject->getRevisionHistory(array('cultureFallback' => true))) > 0) : ?>
   <tr><th><?php echo __('dates of creation revision deletion')?></th><td>
-  <?php echo nl2br($informationObject->getRevisionHistory(array('sourceCulture' => true))) ?>
+  <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -286,9 +286,9 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($informationObject->getSources(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $informationObject->getSources(array('cultureFallback' => true))) > 0) : ?>
   <tr><th><?php echo __('sources')?></th>
-  <td><?php echo nl2br($informationObject->getSources(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
 </tbody>

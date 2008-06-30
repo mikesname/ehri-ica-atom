@@ -18,7 +18,7 @@
     <?php if ($physicalObject): ?>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
       <?php echo link_to(image_tag('pencil', 'align=top'), 
-        'physicalobject/edit?id='.$physicalObject->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()); ?>
+        'physicalobject/edit?id='.$physicalObject->getId()); ?>
     </td>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
       <?php echo link_to(image_tag('delete', 'align=top'), 

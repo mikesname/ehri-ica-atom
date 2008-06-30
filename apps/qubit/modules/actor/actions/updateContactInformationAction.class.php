@@ -77,6 +77,8 @@ class ActorUpdateContactInformationAction extends sfAction
   $contactInformation->setPostalCode($this->getRequestParameter('postal_code'));
   $contactInformation->setTelephone($this->getRequestParameter('telephone'));
   $contactInformation->setFax($this->getRequestParameter('fax'));
+  $contactInformation->setLatitude($this->getRequestParameter('latitude'));
+    $contactInformation->setLongtitude($this->getRequestParameter('longtitude'));  
   $contactInformation->setEmail($this->getRequestParameter('email'));
   $contactInformation->setWebsite($this->getRequestParameter('website'));
   $contactInformation->setNote($this->getRequestParameter('note'));

@@ -7,7 +7,7 @@
   <?php echo input_hidden_tag('next', $nextAction) ?>
   
   <div class="formHeader">
-    <?php echo $physicalObject->getName(); ?>
+    <?php echo $physicalObject->getName(array('cultureFallback' => true)); ?>
   </div>
  
   <fieldset class="collapsible"> 

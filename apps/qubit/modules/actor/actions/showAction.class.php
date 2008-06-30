@@ -34,7 +34,7 @@ class ActorShowAction extends sfAction
 
   if ($this->actor->getDatesOfExistence())
     {
-    $this->datesOfExistence = $this->actor->getDatesOfExistence()->getDescription(array('sourceCulture' => true));
+    $this->datesOfExistence = $this->actor->getDatesOfExistence()->getDescription(array('cultureFallback' => true));
     }
   else
     {

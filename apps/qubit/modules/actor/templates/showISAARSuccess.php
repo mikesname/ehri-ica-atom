@@ -3,39 +3,39 @@
 <table class="detail">
 <tbody>
 
-<?php if ($actor->getAuthorizedFormOfName(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getAuthorizedFormOfName(array('cultureFallback' => true))) > 0): ?>
   <?php if ($editCredentials): ?>
     <tr><td colspan="2" class="headerCell">
-    <?php echo link_to($actor, 'actor/edit?id='.$actor->getId()) ?>
+    <?php echo link_to($value, 'actor/edit?id='.$actor->getId()) ?>
     </td></tr>
   <?php else: ?>
     <tr><td colspan="2" class="headerCell">
-    <?php echo $actor->getAuthorizedFormOfName(array('sourceCulture' => true)) ?>
+    <?php echo $value ?>
     </td></tr>
   <?php endif; ?>
 <?php endif; ?>
 
 <?php if ($actor->getEntityTypeId()): ?>
   <tr><th><?php echo __('type of entity') ?></th><td>
-  <?php echo $actor->getEntityType()->getName(array('sourceCulture' => true)) ?>
+  <?php echo $actor->getEntityType()->getName(array('cultureFallback' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
 <?php if (count($otherNames) > 0): ?>
   <tr><th><?php echo __('other names') ?></th><td>
   <?php foreach ($otherNames as $otherName): ?>
-    <?php echo $otherName->getName(array('sourceCulture' => true)).' ('.$otherName->getType()->getName(array('sourceCulture' => true)).')' ?>
-    <?php if ($otherName->getNote(array('sourceCulture' => true))): ?>
-      <span class="note">--<?php echo $otherName->getNote(array('sourceCulture' => true)) ?></span>
+    <?php echo $otherName->getName(array('cultureFallback' => true)).' ('.$otherName->getType()->getName(array('cultureFallback' => true)).')' ?>
+    <?php if ($otherName->getNote(array('cultureFallback' => true))): ?>
+      <span class="note">--<?php echo $otherName->getNote(array('cultureFallback' => true)) ?></span>
     <?php endif; ?>
     <br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getCorporateBodyIdentifiers(array('sourceCulture' => true))): ?>
+<?php if ($actor->getCorporateBodyIdentifiers()): ?>
   <tr><th><?php echo __('identifiers') ?></th><td>
-  <?php echo $actor->getCorporateBodyIdentifiers(array('sourceCulture' => true)) ?>
+  <?php echo $actor->getCorporateBodyIdentifiers() ?>
   </td></tr>
 <?php endif; ?>
 
@@ -46,41 +46,41 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getHistory(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getHistory(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('history')?></th>
-  <td><?php echo nl2br($actor->getHistory(array('sourceCulture' => true)))?>
+  <td><?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getPlaces(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getPlaces(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('places')?></th>
-  <td><?php echo nl2br($actor->getPlaces(array('sourceCulture' => true))) ?>
+  <td><?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getLegalStatus(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getLegalStatus(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('legal status')?></th>
-  <td><?php echo nl2br($actor->getLegalStatus(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getFunctions(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getFunctions(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('functions occupations activities')?></th>
-  <td><?php echo nl2br($actor->getFunctions(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getMandates(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getMandates(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('mandates or sources of authority')?></th>
-  <td><?php echo nl2br($actor->getMandates(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getInternalStructures(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getHistory(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('internal structures or genealogy')?></th>
-  <td><?php echo nl2br($actor->getInternalStructures(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getGeneralContext(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getGeneralContext(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('general context')?></th>
-  <td><?php echo nl2br($actor->getGeneralContext(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
 <?php if ($relatedActors): ?>
@@ -94,14 +94,14 @@
   <td><?php echo $actor->getDescriptionIdentifier() ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getInstitutionResponsibleIdentifier(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getInstitutionResponsibleIdentifier(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('institution identifier')?></th>
-  <td><?php echo $actor->getInstitutionResponsibleIdentifier(array('sourceCulture' => true)) ?></td></tr>
+  <td><?php echo $value ?></td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getRules(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getRules(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('rules')?></th>
-  <td><?php echo nl2br($actor->getRules(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
 <?php if ($actor->getDescriptionStatusId()): ?>
@@ -116,9 +116,9 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getRevisionHistory(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getRevisionHistory(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('dates of creation revision deletion')?></th><td>
-  <?php echo $actor->getRevisionHistory(array('sourceCulture' => true)) ?>
+  <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -140,16 +140,16 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($actor->getSources(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $actor->getSources(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('sources')?></th>
-  <td><?php echo nl2br($actor->getSources(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
 <?php if (count($notes) > 0): ?>
   <tr><th><?php echo __('notes')?>:
   </th><td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note->getType()->getName(array('sourceCulture' => true)).': '.$note->getContent(array('sourceCulture' => true)) ?>
+    <?php echo $note->getType()->getName(array('cultureFallback' => true)).': '.$note->getContent(array('cultureFallback' => true)) ?>
     <br />
   <?php endforeach; ?>
   </td></tr>

@@ -24,9 +24,9 @@
 <?php if (count($otherNames) > 0): ?>
   <tr><th><?php echo __('other names') ?></th><td>
   <?php foreach ($otherNames as $otherName): ?>
-    <?php echo $otherName->getName(array('sourceCulture' => true)).' ('.$otherName->getType()->getName(array('sourceCulture' => true)).')' ?>
-    <?php if ($otherName->getNote(array('sourceCulture' => true))): ?>
-      <span class="note">--<?php echo $otherName->getNote(array('sourceCulture' => true)) ?></span>
+    <?php echo $otherName->getName(array('cultureFallback' => true)).' ('.$otherName->getType()->getName(array('cultureFallback' => true)).')' ?>
+    <?php if ($otherName->getNote(array('cultureFallback' => true))): ?>
+      <span class="note">--<?php echo $otherName->getNote(array('cultureFallback' => true)) ?></span>
     <?php endif; ?>
     <br />
   <?php endforeach; ?>
@@ -35,17 +35,17 @@
 
 <?php if ($repository->getTypeId()): ?>
   <tr><th><?php echo __('type')?></th>
-  <td><?php echo $repository->getType()?>
+  <td><?php echo $repository->getType(array('cultureFallback' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($contactInformation): ?>
-  <tr><th>Contact Info:</th><td>
+  <tr><th><?php echo __('Contact information') ?></th><td>
   <?php foreach ($contactInformation as $contact): ?>
       <table class="inline" style="margin-bottom: 5px;"><tr>
       <td class="headerCell" style="margin-top: 5px; border-top: 2px solid #999999;">
-      <?php echo $contact->getContactType() ?>
-      <?php if ($contact->getPrimaryContact()): ?> (primary contact)<?php endif; ?>
+      <?php echo $contact->getContactType(array('cultureFallback' => true)) ?>
+      <?php if ($contact->getPrimaryContact()): ?><?php echo '('.__('primary contact').')' ?><?php endif; ?>
       </td></tr></table>
           <div style="padding-left: 10px; margin-bottom: 0px;">
             <?php if ($contact->getContactPerson()): ?>
@@ -54,11 +54,11 @@
             <?php if ($contact->getStreetAddress()): ?>
               <?php echo nl2br($contact->getStreetAddress()) ?><br />
             <?php endif; ?>
-            <?php if ($contact->getCity()): ?>
-              <?php echo $contact->getCity() ?><br />
+            <?php if (strlen($value = $contact->getCity(array('cultureFallback' => true))) >0): ?>
+              <?php echo $value ?><br />
             <?php endif; ?>
-            <?php if ($contact->getRegion()): ?>
-              <?php echo $contact->getRegion() ?><br />
+            <?php if (strlen($value = $contact->getRegion(array('cultureFallback' => true))) >0): ?>
+              <?php echo $value ?><br />
             <?php endif; ?>
             <?php if ($contact->getCountryCode()): ?>
               <?php echo format_country($contact->getCountryCode()) ?><br />
@@ -78,94 +78,94 @@
             <?php if ($contact->getWebsite()): ?>
               <?php echo link_to($contact->getWebsite(), $contact->getWebsite()) ?><br />
             <?php endif; ?>
-            <?php if ($contact->getNote()): ?>
-              <span class="note"><?php echo $contact->getNote() ?></span>
+            <?php if (strlen($value = $contact->getNote(array('cultureFallback' => true))) >0): ?>
+              <span class="note"><?php echo $value ?></span>
             <?php endif; ?>
           </div>
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getHistory()): ?>
+<?php if (strlen($value = $repository->getHistory(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('history')?></th><td>
-  <?php echo nl2br($repository->getHistory())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getGeoculturalContext()): ?>
+<?php if (strlen($value = $repository->getGeoculturalContext(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('geographical and cultural context')?></th>
-  <td><?php echo nl2br($repository->getGeoculturalContext()) ?>
+  <td><?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getMandates(array('sourceCulture' => true))): ?>
+<?php if (strlen($value = $repository->getMandates(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('mandates or sources of authority')?></th>
-  <td><?php echo nl2br($repository->getMandates(array('sourceCulture' => true))) ?></td></tr>
+  <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getInternalStructures()): ?>
+<?php if (strlen($value = $repository->getInternalStructures(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('structure')?></th><td>
-  <?php echo nl2br($repository->getInternalStructures())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getCollectingPolicies()): ?>
+<?php if (strlen($value = $repository->getCollectingPolicies(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('records management and collecting policies')?></th><td>
-  <?php echo nl2br($repository->getCollectingPolicies())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getBuildings()): ?>
+<?php if (strlen($value = $repository->getBuildings(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('buildings')?></th><td>
-  <?php echo nl2br($repository->getBuildings())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getHoldings()): ?>
+<?php if (strlen($value = $repository->getHoldings(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('holdings')?></th><td>
-  <?php echo nl2br($repository->getHoldings())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getFindingAids()): ?>
+<?php if (strlen($value = $repository->getFindingAids(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('finding aids, guides, publications')?></th><td>
-  <?php echo nl2br($repository->getFindingAids())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getOpeningTimes()): ?>
+<?php if (strlen($value = $repository->getOpeningTimes(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('opening times')?></th><td>
-  <?php echo nl2br($repository->getOpeningTimes())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getAccessConditions()): ?>
+<?php if (strlen($value = $repository->getAccessConditions(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('access conditions and requirements')?></th><td>
-  <?php echo nl2br($repository->getAccessConditions())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getDisabledAccess()): ?>
+<?php if (strlen($value = $repository->getDisabledAccess(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('accessibility')?></th><td>
-  <?php echo nl2br($repository->getDisabledAccess())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getResearchServices()): ?>
+<?php if (strlen($value = $repository->getResearchServices(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('research services')?></th><td>
-  <?php echo nl2br($repository->getResearchServices())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getReproductionServices()): ?>
+<?php if (strlen($value = $repository->getReproductionServices(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('reproduction services')?></th><td>
-  <?php echo nl2br($repository->getReproductionServices())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getPublicFacilities()): ?>
+<?php if (strlen($value = $repository->getPublicFacilities(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('public areas')?></th><td>
-  <?php echo nl2br($repository->getPublicFacilities())?>
+  <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
 
@@ -175,15 +175,15 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getDescInstitutionIdentifier()): ?>
+<?php if (strlen($value = $repository->getDescInstitutionIdentifier(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('institution identifier')?></th><td>
-  <?php echo nl2br($repository->getDescInstitutionIdentifier()) ?>
+  <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getDescRules()): ?>
+<?php if (strlen($value = $repository->getDescRules(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('rules or conventions')?></th><td>
-  <?php echo nl2br($repository->getDescRules()) ?>
+  <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -199,9 +199,9 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getDescRevisionHistory()): ?>
+<?php if (strlen($value = $repository->getDescRevisionHistory(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('dates of creation, revision and deletion')?></th><td>
-  <?php echo nl2br($repository->getDescRevisionHistory()) ?>
+  <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -223,9 +223,9 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if ($repository->getDescSources()): ?>
+<?php if (strlen($value = $repository->getDescSources(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('sources')?></th><td>
-  <?php echo nl2br($repository->getDescSources()) ?>
+  <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -233,7 +233,7 @@
   <tr><th><?php echo __('notes')?>:
   </th><td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note->getType()->getName(array('sourceCulture' => true)).': '.$note->getContent(array('sourceCulture' => true)) ?>
+    <?php echo $note->getType()->getName(array('cultureFallback' => true)).': '.$note->getContent(array('cultureFallback' => true)) ?>
     <br />
   <?php endforeach; ?>
   </td></tr>

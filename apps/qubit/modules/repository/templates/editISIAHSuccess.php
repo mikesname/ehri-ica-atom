@@ -34,7 +34,9 @@
           <?php echo __('authorized form of name'); ?>
         <?php endif; ?>
      </label>
-
+      <?php if (strlen($sourceCultureValue = $repository->getAuthorizedFormOfName(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>   
        <?php echo object_input_tag($repository, 'getAuthorizedFormOfName', array('size' => 20)) ?>
     </div>
 
@@ -48,8 +50,8 @@
       </tr>
       <?php if ($otherNames): ?>
         <?php foreach ($otherNames as $otherName): ?>
-          <tr><td><?php echo $otherName->getName() ?></td><td><?php echo $otherName->getType() ?></td>
-          <td><?php echo $otherName->getNote() ?></td>
+          <tr><td><?php echo $otherName->getName(array('cultureFallback' => true)) ?></td><td><?php echo $otherName->getType() ?></td>
+          <td><?php echo $otherName->getNote(array('cultureFallback' => true)) ?></td>
           <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteOtherName?otherNameId='.$otherName->getId()) ?></td></tr>
         <?php endforeach; ?>
       <?php endif; ?>
@@ -80,7 +82,7 @@
         <?php foreach ($contactInformation as $contact): ?>
           <table class="inline"><tr><td class="headerCell" style="margin-top: 5px; border-top: 2px solid #999999; width: 90%;">
           <?php echo $contact->getContactType() ?>
-          <?php if ($contact->getPrimaryContact()): ?> (primary contact)<?php endif; ?>
+          <?php if ($contact->getPrimaryContact()): ?><?php echo '('.__('primary contact').')' ?><?php endif; ?>
           </td><td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;">
           <?php echo link_to(image_tag('pencil', 'align=top'), 'actor/editContactInformation?id='.$contact->getId().'&repositoryReroute='.$repository->getId()) ?></td>
           <td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;">
@@ -125,7 +127,7 @@
       <?php endif; ?>
 
       <table class="inline">
-        <tr><td class="headerCell" colspan="4" style="margin-top: 5px; border-top: 2px solid #999999; width: 95%;">new contact information</td></tr>
+        <tr><td class="headerCell" colspan="4" style="margin-top: 5px; border-top: 2px solid #999999; width: 95%;"><?php echo __('new contact information') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('contact type'); ?></td><td><?php echo input_tag('contact_type', '', 'size=20') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('primary contact'); ?></td><td><?php echo checkbox_tag('primary_contact') ?></td></tr>
         <tr><td class="headerCell"><?php echo __('contact person'); ?></td><td><?php echo input_tag('contact_person', '', 'size=20') ?></td></tr>
@@ -149,41 +151,65 @@
 
     <div class="form-item">
       <label for="history"><?php echo __('history'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
        <?php echo object_textarea_tag($repository, 'getHistory', array('size' => '30x3')) ?>
     </div>
     
     <div class="form-item">
       <label for="geocultural_context"><?php echo __('geographical and cultural context'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getGeoculturalContext(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="mandates"><?php echo __('mandates or sources of authority'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getMandates(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getMandates', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="structure"><?php echo __('administrative structure'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getInternalStructures(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getInternalStructures', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="collecting_policies"><?php echo __('records management and collecting policies'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getCollectingPolicies(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getCollectingPolicies', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="buildings"><?php echo __('buildings'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getBuildings(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getBuildings', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="holdings"><?php echo __('archival and other holdings'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getHoldings(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getHoldings', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="finding_aids"><?php echo __('finding aids, guides, publications'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getFindingAids(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getFindingAids', array('size' => '30x3')) ?>
     </div>
   </fieldset>
@@ -193,16 +219,25 @@
 
     <div class="form-item">
       <label for="opening_times"><?php echo __('opening times'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getOpeningTimes(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getOpeningTimes', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="access_conditions"><?php echo __('conditions and requirements'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getAccessConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getAccessConditions', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="disabled_access"><?php echo __('accessibility'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getDisabledAccess(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getDisabledAccess', array('size' => '30x3')) ?>
     </div>
   </fieldset>
@@ -212,16 +247,25 @@
 
     <div class="form-item">
       <label for="research_services"><?php echo __('research services'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getResearchServices(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getResearchServices', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="reproduction_services"><?php echo __('reproduction services'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getReproductionServices(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?> 
       <?php echo object_textarea_tag($repository, 'getReproductionServices', array('size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
       <label for="public_facilities"><?php echo __('public areas'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getPublicFacilities(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($repository, 'getPublicFacilities', array('size' => '30x3')) ?>
     </div>
   </fieldset>
@@ -231,7 +275,9 @@
 
     <div class="form-item">
       <label for="desc_identifier"><?php echo __('description identifier'); ?></label>
-      <?php echo object_input_tag($repository, 'getDescIdentifier', array('size' => 20)) ?>
+      <?php if (strlen($sourceCultureValue = $repository->getDescIdentifier(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       <?php echo object_input_tag($repository, 'getDescIdentifier', array('size' => 20)) ?>
     </div>
 
     <div class="form-item">
@@ -241,6 +287,9 @@
 
     <div class="form-item">
       <label for="desc_rules"><?php echo __('rules or conventions'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getDescRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($repository, 'getDescRules', array('size' => '30x3')) ?>
     </div>
 
@@ -256,6 +305,9 @@
 
     <div class="form-item">
       <label for="desc_revision_history"><?php echo __('dates of creation, revision and deletion'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getDescRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($repository, 'getDescRevisionHistory', array('size' => '30x3')) ?>
     <div>
 
@@ -285,6 +337,9 @@
 
     <div class="form-id">
       <label for="desc_sources"><?php echo __('sources'); ?></label>
+      <?php if (strlen($sourceCultureValue = $repository->getDescSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>       
       <?php echo object_textarea_tag($repository, 'getDescSources', array('size' => '30x3')) ?>
     </div>
 
@@ -299,7 +354,7 @@
 
         <?php foreach ($notes as $note): ?>
           <tr>
-          <td><?php echo $note->getContent() ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
+          <td><?php echo $note->getContent(array('cultureFallback' => true)) ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
           <td><?php echo $note->getType() ?></td>
           <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteNote?noteId='.$note->getId()) ?></td>
           </tr>
