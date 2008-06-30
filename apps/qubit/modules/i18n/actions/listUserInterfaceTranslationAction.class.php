@@ -33,7 +33,7 @@ class I18nListUserInterfaceTranslationAction extends sfAction
   $this->samplePhysicalObject = QubitPhysicalObject::getOne($criteria);
   
   $criteria = new Criteria;
-  $criteria->add(QubitDigitalObject::NAME, 'CVA_Townley_Hotel1.jpg');
+  $criteria->add(QubitDigitalObject::NAME, 'A37992.jpg');
   $this->sampleDigitalObject = QubitDigitalObject::getOne($criteria);
   
   $criteria = new Criteria;
