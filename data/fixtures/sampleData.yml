@@ -1,117 +1,117 @@
 QubitTaxonomy:
   QubitTaxonomy_1:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID."\n" ?>
-    name: { en: 'Description Detail Levels', fr: 'Niveaux de détail de la description', nl: 'Niveaus van detailbeschrijving', pt: 'Nível de detalhamento descritivo' }
+    name: { en: 'Description Detail Levels', es: 'Descripción detalles de niveles', fr: 'Niveaux de détail de la description', nl: 'Niveaus van detailbeschrijving', pt: 'Nível de detalhamento descritivo' }
   QubitTaxonomy_2:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::ACTOR_ENTITY_TYPE_ID."\n" ?>
     name: { en: 'Actor Entity Types', fr: 'Types d''entité acteur', nl: 'Soorten entiteiten', pt: 'Tipos de entidade' }
   QubitTaxonomy_3:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::DESCRIPTION_STATUS_ID."\n" ?>
     name: { en: 'Description Statuses', fr: 'Statuts de description', nl: Beschrijvingsstatus, pt: 'Status de descrição' }
   QubitTaxonomy_4:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID."\n" ?>
-    name: { en: 'Levels of description', es: 'Níveis de descrição', fr: 'Niveau de description', nl: Beschrijvingsniveaus, pt: 'Níveis de descrição' }
+    name: { en: 'Levels of description', es: 'Niveles de descripción', fr: 'Niveau de description', nl: Beschrijvingsniveaus, pt: 'Níveis de descrição' }
   QubitTaxonomy_5:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>
-    name: { en: Subjects, es: Assuntos, fr: Sujets, nl: Onderwerpen, pt: Assuntos }
+    name: { en: Subjects, es: Materias, fr: Sujets, nl: Onderwerpen, pt: Assuntos }
   QubitTaxonomy_6:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::ACTOR_NAME_TYPE_ID."\n" ?>
     name: { en: 'Actor Name Types', fr: 'Types de noms d''acteur', nl: 'Soorten naam van entiteiten', pt: 'Tipos de nome' }
   QubitTaxonomy_7:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::NOTE_TYPE_ID."\n" ?>
     name: { en: 'Note types', fr: 'Types de notes', nl: 'Soorten aantekeningen', pt: 'Tipos de nota' }
   QubitTaxonomy_8:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::REPOSITORY_TYPE_ID."\n" ?>
-    name: { en: 'Repository Types', fr: 'Types de services d''archives', nl: 'Soorten bewaarplaatsen', pt: 'Tipos de repositório' }
+    name: { en: 'Repository Types', es: 'tipos de repositorios', fr: 'Types de services d''archives', nl: 'Soorten bewaarplaatsen', pt: 'Tipos de repositório' }
   QubitTaxonomy_9:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::ACTOR_ROLE_ID."\n" ?>
     name: { en: 'Actor Roles', fr: 'Rôle de l''acteur', nl: 'Rollen van entiteiten', pt: Atribuições }
   QubitTaxonomy_10:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::EVENT_TYPE_ID."\n" ?>
     name: { en: 'Event Types', es: 'Tipo de evento', fr: 'Type d''événement', nl: 'Soorten gebeurtenisen', pt: 'Tipo de evento' }
     note: { en: 'Used to describe the types of Events that Actors and InformationObjects are related to.' }
   QubitTaxonomy_11:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::QUBIT_SETTING_LABEL_ID."\n" ?>
-    name: { en: 'Qubit Setting Labels', fr: 'Étiquettes des paramètres Qubit', nl: 'Qubit instellings labels', pt: 'Rótulos de configuração do Qubit' }
+    name: { en: 'Qubit Setting Labels', es: 'Etiquetas de configuración de Qubit', fr: 'Étiquettes des paramètres Qubit', nl: 'Qubit instellings labels', pt: 'Rótulos de configuração do Qubit' }
     note: { en: 'An internal, uneditable taxonomy used to store and translate alternate app setting labels used in different Qubit distributions' }
   QubitTaxonomy_12:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::PLACE_ID."\n" ?>
-    name: { en: Places, fr: Lieux, nl: Plaatsen, pt: Locais }
+    name: { en: Places, es: Lugares, fr: Lieux, nl: Plaatsen, pt: Locais }
   QubitTaxonomy_13:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
-    name: { en: Functions, fr: Fonctions, nl: Functies, pt: Funções }
+    name: { en: Functions, es: Funciones, fr: Fonctions, nl: Functies, pt: Funções }
   QubitTaxonomy_14:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::HISTORICAL_EVENT_ID."\n" ?>
-    name: { en: 'Historical Events', fr: 'Événements historiques', nl: 'Historische gebeurtenissen', pt: 'Eventos históricos' }
+    name: { en: 'Historical Events', es: 'Sucesos históricos', fr: 'Événements historiques', nl: 'Historische gebeurtenissen', pt: 'Eventos históricos' }
   QubitTaxonomy_15:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::COLLECTION_TYPE_ID."\n" ?>
-    name: { en: 'Collection Types', fr: 'Types de collection', nl: 'Soorten collectie', pt: 'Tipos de acervo' }
+    name: { en: 'Collection Types', es: 'Tipos de colecciones', fr: 'Types de collection', nl: 'Soorten collectie', pt: 'Tipos de acervo' }
   QubitTaxonomy_16:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::MEDIA_TYPE_ID."\n" ?>
     name: { en: 'Media Types', fr: 'Types de supports', nl: Bestandsformaten, pt: 'Tipo de mídia' }
   QubitTaxonomy_17:
     created_at: '2008-04-24 09:30:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID."\n" ?>
-    name: { en: 'Digital Object Usages', fr: 'Usages d''objets numériques', nl: 'Gebruik digitaal object', pt: 'Usos do objeto digital' }
+    name: { en: 'Digital Object Usages', es: 'Usos do los objetivos digitales', fr: 'Usages d''objets numériques', nl: 'Gebruik digitaal object', pt: 'Usos do objeto digital' }
   QubitTaxonomy_18:
     created_at: '2008-06-06 11:41:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID."\n" ?>
     name: { en: 'Physical Object Type', fr: 'Type d''objet physique', nl: 'Soorten fysieke objecten', pt: 'Tipo de objeto físico' }
   QubitTaxonomy_19:
     created_at: '2008-06-18 11:41:11'
-    updated_at: '2008-06-29 02:19:28'
+    updated_at: '2008-07-14 14:35:17'
     source_culture: en
     id: <?php echo QubitTaxonomy::RELATION_TYPE_ID."\n" ?>
     name: { en: 'Relation Type', fr: 'Type de relation', nl: 'Soorten relaties', pt: 'Tipo de relação' }
@@ -123,10 +123,9 @@ QubitTerm:
     lft: '1'
     rgt: '2'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Creator, es: Produtor, fr: Producteur, nl: Vervaardiger, pt: Produtor }
-    scope_note: { en: created }
   QubitTerm_6:
     taxonomy_id: QubitTaxonomy_9
     class_name: QubitTerm
@@ -134,10 +133,9 @@ QubitTerm:
     lft: '3'
     rgt: '4'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Custodian, es: Custodiador, fr: Détenteur, nl: Beheerder, pt: Custodiador }
-    scope_note: { en: 'had custody' }
   QubitTerm_7:
     taxonomy_id: QubitTaxonomy_9
     class_name: QubitTerm
@@ -145,10 +143,9 @@ QubitTerm:
     lft: '5'
     rgt: '6'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Publisher, es: Publicador, fr: Éditeur, nl: Uitgever, pt: Publicador }
-    scope_note: { en: published }
   QubitTerm_8:
     taxonomy_id: QubitTaxonomy_9
     class_name: QubitTerm
@@ -156,10 +153,9 @@ QubitTerm:
     lft: '7'
     rgt: '8'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Contributor, es: Colaborador, fr: Collaborateur, nl: Contribuant, pt: Colaborador }
-    scope_note: { en: contributed }
   QubitTerm_9:
     taxonomy_id: QubitTaxonomy_9
     class_name: QubitTerm
@@ -167,10 +163,9 @@ QubitTerm:
     lft: '9'
     rgt: '10'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Subject, fr: Sujet, nl: Onderwerp, pt: Assunto }
-    scope_note: { en: 'is a subject of' }
   QubitTerm_10:
     taxonomy_id: QubitTaxonomy_9
     class_name: QubitTerm
@@ -178,10 +173,9 @@ QubitTerm:
     lft: '11'
     rgt: '12'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Collector, fr: Collectionneur, nl: Verzamelaar, pt: Coletor }
-    scope_note: { en: collected }
   QubitTerm_11:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -189,10 +183,9 @@ QubitTerm:
     lft: '13'
     rgt: '14'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Creation, es: Criação, fr: Production, nl: Vervaardig, pt: Criação }
-    scope_note: { en: Created }
   QubitTerm_12:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -200,10 +193,9 @@ QubitTerm:
     lft: '15'
     rgt: '16'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Existence, es: Existência, fr: Existence, nl: Aanwezig, pt: Existência }
-    scope_note: { en: Existed }
   QubitTerm_13:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -211,10 +203,9 @@ QubitTerm:
     lft: '17'
     rgt: '18'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Custody, es: Custódia, fr: Garde, nl: Beheer, pt: Custódia }
-    scope_note: { en: 'Took custody' }
   QubitTerm_14:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -222,10 +213,9 @@ QubitTerm:
     lft: '19'
     rgt: '20'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Publication, es: Publicação, fr: Publication, nl: Publicatie, pt: Publicação }
-    scope_note: { en: Published }
   QubitTerm_15:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -233,10 +223,9 @@ QubitTerm:
     lft: '21'
     rgt: '22'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Contribution, es: Contribuição, fr: Contribution, nl: Bijdrage, pt: Contribuição }
-    scope_note: { en: Contributed }
   QubitTerm_16:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -244,10 +233,9 @@ QubitTerm:
     lft: '23'
     rgt: '24'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Subject access point', fr: 'Point d''accès sujet', nl: Onderwerpsontsluitingsterm, pt: 'Ponto de acesso - assunto' }
-    scope_note: { en: 'Became an access point for' }
+    name: { en: 'Subject access point', es: 'Punto de acceso', fr: 'Point d''accès sujet', nl: Onderwerpsontsluitingsterm, pt: 'Ponto de acesso - assunto' }
   QubitTerm_17:
     taxonomy_id: QubitTaxonomy_10
     class_name: QubitTerm
@@ -255,17 +243,16 @@ QubitTerm:
     lft: '25'
     rgt: '26'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Collection, fr: Collection, nl: Collectie, pt: Coleção }
-    scope_note: { en: Collected }
   QubitTerm_18:
     taxonomy_id: QubitTaxonomy_6
     class_name: QubitTerm
     lft: '27'
     rgt: '28'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: 'Parallel form', es: 'Forma paralela', fr: 'Forme parallèle', nl: 'Parallelle naam', pt: 'Forma paralela' }
   QubitTerm_19:
@@ -274,7 +261,7 @@ QubitTerm:
     lft: '29'
     rgt: '30'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: 'Standardized form', es: 'Forma normalizada', fr: 'Forme normalisée', nl: 'Geautoriseerde naam', pt: 'Forma normalizada' }
   QubitTerm_20:
@@ -283,7 +270,7 @@ QubitTerm:
     lft: '31'
     rgt: '32'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: 'Other name', es: 'Outra forma do nome', fr: 'Autre nom', nl: 'Andere naam', pt: 'Outra forma do nome' }
   QubitTerm_21:
@@ -292,16 +279,16 @@ QubitTerm:
     lft: '33'
     rgt: '34'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Previous name', fr: 'Nom précédent', nl: 'Eerdere naam', pt: 'Nome anterior' }
+    name: { en: 'Previous name', es: 'Nombre anterior', fr: 'Nom précédent', nl: 'Eerdere naam', pt: 'Nome anterior' }
   QubitTerm_22:
     taxonomy_id: QubitTaxonomy_6
     class_name: QubitTerm
     lft: '35'
     rgt: '36'
     created_at: '2008-03-17 18:37:07'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Pseudonym, es: Pseudônimo, fr: Pseudonyme, nl: Pseudoniem, pt: Pseudônimo }
   QubitTerm_23:
@@ -310,7 +297,7 @@ QubitTerm:
     lft: '37'
     rgt: '38'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Acronym, fr: Acronyme, nl: Acroniem, pt: Sigla }
   QubitTerm_24:
@@ -319,7 +306,7 @@ QubitTerm:
     lft: '39'
     rgt: '40'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Title, es: Título, fr: Titre, nl: Titel, pt: Título }
   QubitTerm_25:
@@ -329,7 +316,7 @@ QubitTerm:
     lft: '41'
     rgt: '42'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: 'Title note', fr: 'Note de titre', nl: 'Titel aantekening', pt: 'Nota de título' }
   QubitTerm_26:
@@ -339,821 +326,822 @@ QubitTerm:
     lft: '43'
     rgt: '44'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Publication note', es: 'Nota de publicação', fr: 'Note de publication', nl: Publicaties, pt: 'Nota de publicação' }
+    name: { en: 'Publication note', es: 'Nota de publicación', fr: 'Note de publication', nl: 'Notitie Publicaties', pt: 'Nota de publicação' }
   QubitTerm_27:
-    taxonomy_id: QubitTaxonomy_15
+    taxonomy_id: QubitTaxonomy_7
     class_name: QubitTerm
-    id: <?php echo QubitTerm::ARCHIVAL_MATERIAL_ID."\n" ?>
-    lft: '45'
-    rgt: '46'
-    created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
-    source_culture: en
-    name: { en: 'Archival material', fr: 'Documents d''archives', nl: 'Archivistisch materaal', pt: 'Acervo arquivístico' }
-  QubitTerm_28:
-    taxonomy_id: QubitTaxonomy_15
-    class_name: QubitTerm
-    id: <?php echo QubitTerm::FINDING_AIDS_ID."\n" ?>
+    id: <?php echo QubitTerm::SOURCE_NOTE_ID."\n" ?>
     lft: '47'
     rgt: '48'
-    created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-07-16 13:18:59'
+    updated_at: '2008-07-16 13:18:59'
     source_culture: en
-    name: { en: 'Finding aids', fr: 'Instrument de recherche', nl: Toegangen, pt: 'Instrumentos arquivísticos de referência' }
+    name: { en: 'Source note', es: 'Nota de fuente', fr: 'Note de source', nl: 'Notitie bron', pt: 'Nota de fonte' }
+  QubitTerm_28:
+    taxonomy_id: QubitTaxonomy_7
+    class_name: QubitTerm
+    id: <?php echo QubitTerm::SCOPE_NOTE_ID."\n" ?>
+    lft: '45'
+    rgt: '46'
+    created_at: '2008-07-16 13:18:59'
+    updated_at: '2008-07-16 13:18:59'
+    source_culture: en
+    name: { applica: 'nl: ''Notitie toepassingsgebied''', en: 'Scope note', es: 'Nota de alcance', fr: 'Note d', pt: 'Nota de âmbito' }
   QubitTerm_29:
     taxonomy_id: QubitTaxonomy_15
     class_name: QubitTerm
-    id: <?php echo QubitTerm::PUBLISHED_MATERIAL_ID."\n" ?>
+    id: <?php echo QubitTerm::ARCHIVAL_MATERIAL_ID."\n" ?>
     lft: '49'
     rgt: '50'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Published material', fr: 'Documents publiés', nl: 'Gepubliseerd materiaal', pt: Publicações }
+    name: { en: 'Archival material', fr: 'Documents d''archives', nl: 'Archivistisch materaal', pt: 'Acervo arquivístico' }
   QubitTerm_30:
     taxonomy_id: QubitTaxonomy_15
     class_name: QubitTerm
-    id: <?php echo QubitTerm::ARTEFACT_MATERIAL_ID."\n" ?>
+    id: <?php echo QubitTerm::FINDING_AIDS_ID."\n" ?>
     lft: '51'
     rgt: '52'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Artefact material', fr: Artefact, nl: 'Artefact materiaal', pt: Artefatos }
+    name: { en: 'Finding aids', fr: 'Instrument de recherche', nl: Toegangen, pt: 'Instrumentos arquivísticos de referência' }
   QubitTerm_31:
-    taxonomy_id: QubitTaxonomy_2
+    taxonomy_id: QubitTaxonomy_15
     class_name: QubitTerm
-    id: <?php echo QubitTerm::CORPORATE_BODY_ID."\n" ?>
+    id: <?php echo QubitTerm::PUBLISHED_MATERIAL_ID."\n" ?>
     lft: '53'
     rgt: '54'
-    created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 09:30:12'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Corporate body', es: 'Entidade coletiva', fr: Collectivité, nl: Instelling, pt: 'Entidade coletiva' }
+    name: { en: 'Published material', fr: 'Documents publiés', nl: 'Gepubliseerd materiaal', pt: Publicações }
   QubitTerm_32:
-    taxonomy_id: QubitTaxonomy_2
+    taxonomy_id: QubitTaxonomy_15
     class_name: QubitTerm
-    id: <?php echo QubitTerm::PERSON_ID."\n" ?>
+    id: <?php echo QubitTerm::ARTEFACT_MATERIAL_ID."\n" ?>
     lft: '55'
     rgt: '56'
-    created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 09:30:12'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Person, es: Pessoa, fr: Personne, nl: Persoon, pt: Pessoa }
+    name: { en: 'Artefact material', fr: Artefact, nl: 'Artefact materiaal', pt: Artefatos }
   QubitTerm_33:
     taxonomy_id: QubitTaxonomy_2
     class_name: QubitTerm
-    id: <?php echo QubitTerm::FAMILY_ID."\n" ?>
+    id: <?php echo QubitTerm::CORPORATE_BODY_ID."\n" ?>
     lft: '57'
     rgt: '58'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Family, es: Família, fr: Famille, nl: Familie, pt: Família }
-  QubitTerm_35:
-    taxonomy_id: QubitTaxonomy_16
+    name: { en: 'Corporate body', es: 'Entidade coletiva', fr: Collectivité, nl: Instelling, pt: 'Entidade coletiva' }
+  QubitTerm_34:
+    taxonomy_id: QubitTaxonomy_2
     class_name: QubitTerm
-    id: <?php echo QubitTerm::AUDIO_ID."\n" ?>
+    id: <?php echo QubitTerm::PERSON_ID."\n" ?>
     lft: '59'
     rgt: '60'
-    created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-03-17 18:37:08'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Audio, fr: Audio, nl: Audio, pt: Áudio }
-  QubitTerm_36:
-    taxonomy_id: QubitTaxonomy_16
+    name: { en: Person, es: Persona, fr: Personne, nl: Persoon, pt: Pessoa }
+  QubitTerm_35:
+    taxonomy_id: QubitTaxonomy_2
     class_name: QubitTerm
-    id: <?php echo QubitTerm::IMAGE_ID."\n" ?>
+    id: <?php echo QubitTerm::FAMILY_ID."\n" ?>
     lft: '61'
     rgt: '62'
-    created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-03-17 18:37:08'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Image, fr: Image, nl: Afbeelding, pt: Imagem }
+    name: { en: Family, es: Família, fr: Famille, nl: Familie, pt: Família }
   QubitTerm_37:
     taxonomy_id: QubitTaxonomy_16
     class_name: QubitTerm
-    id: <?php echo QubitTerm::TEXT_ID."\n" ?>
+    id: <?php echo QubitTerm::AUDIO_ID."\n" ?>
     lft: '63'
     rgt: '64'
     created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Text, fr: Texte, nl: Tekst, pt: Texto }
+    name: { en: Audio, es: Audio, fr: Audio, nl: Audio, pt: Áudio }
   QubitTerm_38:
     taxonomy_id: QubitTaxonomy_16
     class_name: QubitTerm
-    id: <?php echo QubitTerm::VIDEO_ID."\n" ?>
+    id: <?php echo QubitTerm::IMAGE_ID."\n" ?>
     lft: '65'
     rgt: '66'
     created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Video, fr: Vidéo, nl: Video, pt: Vídeo }
+    name: { en: Image, fr: Image, nl: Afbeelding, pt: Imagem }
   QubitTerm_39:
     taxonomy_id: QubitTaxonomy_16
     class_name: QubitTerm
-    id: <?php echo QubitTerm::OTHER_ID."\n" ?>
+    id: <?php echo QubitTerm::TEXT_ID."\n" ?>
     lft: '67'
     rgt: '68'
     created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Other, fr: Autre, nl: Anders, pt: Outro }
+    name: { en: Text, fr: Texte, nl: Tekst, pt: Texto }
   QubitTerm_40:
-    taxonomy_id: QubitTaxonomy_17
+    taxonomy_id: QubitTaxonomy_16
     class_name: QubitTerm
-    id: <?php echo QubitTerm::MASTER_ID."\n" ?>
+    id: <?php echo QubitTerm::VIDEO_ID."\n" ?>
     lft: '69'
     rgt: '70'
     created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Master, fr: 'Fichier maître', nl: Master, pt: Master }
+    name: { en: Video, fr: Vidéo, nl: Video, pt: Vídeo }
   QubitTerm_41:
-    taxonomy_id: QubitTaxonomy_17
+    taxonomy_id: QubitTaxonomy_16
     class_name: QubitTerm
-    id: <?php echo QubitTerm::REFERENCE_ID."\n" ?>
+    id: <?php echo QubitTerm::OTHER_ID."\n" ?>
     lft: '71'
     rgt: '72'
     created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Reference, fr: Référence, nl: Referentie, pt: Referência }
+    name: { en: Other, fr: Autre, nl: Anders, pt: Outro }
   QubitTerm_42:
     taxonomy_id: QubitTaxonomy_17
     class_name: QubitTerm
-    id: <?php echo QubitTerm::THUMBNAIL_ID."\n" ?>
+    id: <?php echo QubitTerm::MASTER_ID."\n" ?>
     lft: '73'
     rgt: '74'
     created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Thumbnail, fr: Vignette, nl: Thumbnail, pt: Thumbnail }
+    name: { en: Master, fr: 'Fichier maître', nl: Master, pt: Master }
   QubitTerm_43:
-    taxonomy_id: QubitTaxonomy_18
+    taxonomy_id: QubitTaxonomy_17
     class_name: QubitTerm
-    id: <?php echo QubitTerm::LOCATION_ID."\n" ?>
+    id: <?php echo QubitTerm::REFERENCE_ID."\n" ?>
     lft: '75'
     rgt: '76'
-    created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 11:37:52'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Location, fr: Lieu, nl: Lokatie, pt: Localização }
+    name: { en: Reference, fr: Référence, nl: Referentie, pt: Referência }
   QubitTerm_44:
-    taxonomy_id: QubitTaxonomy_18
+    taxonomy_id: QubitTaxonomy_17
     class_name: QubitTerm
-    id: <?php echo QubitTerm::CONTAINER_ID."\n" ?>
+    id: <?php echo QubitTerm::THUMBNAIL_ID."\n" ?>
     lft: '77'
-    rgt: '92'
-    created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
+    rgt: '78'
+    created_at: '2008-04-24 11:37:52'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Container, fr: Contenant, nl: Verpakking }
+    name: { en: Thumbnail, fr: Vignette, nl: Thumbnail, pt: Thumbnail }
   QubitTerm_45:
     taxonomy_id: QubitTaxonomy_18
     class_name: QubitTerm
-    id: <?php echo QubitTerm::ARTEFACT_ID."\n" ?>
-    lft: '93'
-    rgt: '94'
-    created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
-    source_culture: en
-    name: { en: Artefact, fr: Artefact, nl: Artefact, pt: Artefato }
-  QubitTerm_46:
-    taxonomy_id: QubitTaxonomy_19
-    class_name: QubitTerm
-    id: <?php echo QubitTerm::HAS_PHYSICAL_OBJECT_ID."\n" ?>
-    lft: '95'
-    rgt: '96'
-    created_at: '2008-06-18 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
-    source_culture: en
-    name: { en: 'has Physical Object', fr: 'contient un objet physique', nl: 'heeft fysiek object', pt: 'possui objeto físico' }
-  QubitTerm_47:
-    taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_44
-    class_name: QubitTerm
-    lft: '78'
-    rgt: '83'
-    created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
-    source_culture: en
-    name: { en: Box, fr: Boîte, nl: Doos, pt: Caixa }
-  QubitTerm_48:
-    taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_47
-    class_name: QubitTerm
+    id: <?php echo QubitTerm::LOCATION_ID."\n" ?>
     lft: '79'
     rgt: '80'
     created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Cardboard box', fr: 'Boîte en carton', nl: Kaartenbak }
+    name: { en: Location, fr: Lieu, nl: Lokatie, pt: Localização }
+  QubitTerm_46:
+    taxonomy_id: QubitTaxonomy_18
+    class_name: QubitTerm
+    id: <?php echo QubitTerm::CONTAINER_ID."\n" ?>
+    lft: '81'
+    rgt: '96'
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
+    source_culture: en
+    name: { en: Container, es: Contenedor, fr: Contenant, nl: Verpakking }
+  QubitTerm_47:
+    taxonomy_id: QubitTaxonomy_18
+    class_name: QubitTerm
+    id: <?php echo QubitTerm::ARTEFACT_ID."\n" ?>
+    lft: '97'
+    rgt: '98'
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
+    source_culture: en
+    name: { en: Artefact, fr: Artefact, nl: Artefact, pt: Artefato }
+  QubitTerm_48:
+    taxonomy_id: QubitTaxonomy_19
+    class_name: QubitTerm
+    id: <?php echo QubitTerm::HAS_PHYSICAL_OBJECT_ID."\n" ?>
+    lft: '99'
+    rgt: '100'
+    created_at: '2008-06-18 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
+    source_culture: en
+    name: { en: 'has Physical Object', fr: 'contient un objet physique', nl: 'heeft fysiek object', pt: 'possui objeto físico' }
   QubitTerm_49:
     taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_47
+    parent_id: QubitTerm_46
     class_name: QubitTerm
-    lft: '81'
-    rgt: '82'
-    created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
-    source_culture: en
-    name: { en: 'Hollinger box', fr: 'Boîte Hollinger', nl: Ponskaartendoos, pt: 'Caixa Hollinger' }
-  QubitTerm_50:
-    taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_44
-    class_name: QubitTerm
-    lft: '84'
-    rgt: '85'
-    created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
-    source_culture: en
-    name: { en: Folder, fr: Chemise, nl: Map, pt: Pasta }
-  QubitTerm_51:
-    taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_44
-    class_name: QubitTerm
-    lft: '86'
+    lft: '82'
     rgt: '87'
     created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Filing cabinet', fr: Classeur, nl: Dossierkast, pt: Armário }
+    name: { en: Box, fr: Boîte, nl: Doos, pt: Caixa }
+  QubitTerm_50:
+    taxonomy_id: QubitTaxonomy_18
+    parent_id: QubitTerm_49
+    class_name: QubitTerm
+    lft: '83'
+    rgt: '84'
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
+    source_culture: en
+    name: { en: 'Cardboard box', fr: 'Boîte en carton', nl: Kaartenbak }
+  QubitTerm_51:
+    taxonomy_id: QubitTaxonomy_18
+    parent_id: QubitTerm_49
+    class_name: QubitTerm
+    lft: '85'
+    rgt: '86'
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
+    source_culture: en
+    name: { en: 'Hollinger box', fr: 'Boîte Hollinger', nl: Ponskaartendoos, pt: 'Caixa Hollinger' }
   QubitTerm_52:
     taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_44
+    parent_id: QubitTerm_46
     class_name: QubitTerm
     lft: '88'
     rgt: '89'
     created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Map cabinet', fr: 'Classeur pour cartes', nl: Kaartenkast, pt: Mapoteca }
+    name: { en: Folder, fr: Chemise, nl: Map, pt: Pasta }
   QubitTerm_53:
     taxonomy_id: QubitTaxonomy_18
-    parent_id: QubitTerm_44
+    parent_id: QubitTerm_46
     class_name: QubitTerm
     lft: '90'
     rgt: '91'
     created_at: '2008-06-06 11:47:52'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Shelf, fr: Tablette, nl: Plank, pt: Prateleira }
+    name: { en: 'Filing cabinet', es: Archivador, fr: Classeur, nl: Dossierkast, pt: Armário }
   QubitTerm_54:
-    taxonomy_id: QubitTaxonomy_6
+    taxonomy_id: QubitTaxonomy_18
+    parent_id: QubitTerm_46
     class_name: QubitTerm
-    lft: '97'
-    rgt: '98'
-    created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    lft: '92'
+    rgt: '93'
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Maiden name, first name', es: 'Sobrenome de solteira, Primeiro nome', fr: 'Nom de jeune fille, prénom', nl: 'Meisjesnaam, voornaam', pt: 'Sobrenome de solteira, primeiro nome' }
+    name: { en: 'Map cabinet', fr: 'Classeur pour cartes', nl: Kaartenkast, pt: Mapoteca }
   QubitTerm_55:
-    taxonomy_id: QubitTaxonomy_6
+    taxonomy_id: QubitTaxonomy_18
+    parent_id: QubitTerm_46
     class_name: QubitTerm
-    lft: '99'
-    rgt: '100'
-    created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    lft: '94'
+    rgt: '95'
+    created_at: '2008-06-06 11:47:52'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Nickname, es: Apelido, fr: Surnom, nl: Roepnaam, pt: Apelido }
+    name: { en: Shelf, es: Anaquel, fr: Tablette, nl: Plank, pt: Prateleira }
   QubitTerm_56:
-    taxonomy_id: QubitTaxonomy_3
+    taxonomy_id: QubitTaxonomy_6
     class_name: QubitTerm
     lft: '101'
     rgt: '102'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Final, es: Final, fr: Final, nl: Finale, pt: Final }
+    name: { en: 'Maiden name, first name', es: 'Sobrenome de solteira, Primeiro nome', fr: 'Nom de jeune fille, prénom', nl: 'Meisjesnaam, voornaam', pt: 'Sobrenome de solteira, primeiro nome' }
   QubitTerm_57:
-    taxonomy_id: QubitTaxonomy_3
+    taxonomy_id: QubitTaxonomy_6
     class_name: QubitTerm
     lft: '103'
     rgt: '104'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Revised, es: Revisado, fr: Révisé, nl: Gereviseerd, pt: Revisado }
+    name: { en: Nickname, es: Apelido, fr: Surnom, nl: Roepnaam, pt: Apelido }
   QubitTerm_58:
     taxonomy_id: QubitTaxonomy_3
     class_name: QubitTerm
     lft: '105'
     rgt: '106'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Draft, es: Minuta, fr: Ébauche, nl: Klad, pt: Minuta }
+    name: { en: Final, es: Final, fr: Final, nl: Finale, pt: Final }
   QubitTerm_59:
     taxonomy_id: QubitTaxonomy_3
     class_name: QubitTerm
     lft: '107'
     rgt: '108'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Deleted, es: Apagado, fr: Détruit, nl: Verwijderd, pt: Apagado }
+    name: { en: Revised, es: Revisado, fr: Révisé, nl: Gereviseerd, pt: Revisado }
   QubitTerm_60:
-    taxonomy_id: QubitTaxonomy_1
+    taxonomy_id: QubitTaxonomy_3
     class_name: QubitTerm
     lft: '109'
     rgt: '110'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Full, es: Completo, fr: Complet, nl: Geheel, pt: Completo }
+    name: { en: Draft, es: Minuta, fr: Ébauche, nl: Klad, pt: Minuta }
   QubitTerm_61:
     taxonomy_id: QubitTaxonomy_1
     class_name: QubitTerm
     lft: '111'
     rgt: '112'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Partial, es: Parcial, fr: Moyen, nl: Gedeeltelijk, pt: Parcial }
+    name: { en: Full, es: Completo, fr: Complet, nl: Geheel, pt: Completo }
   QubitTerm_62:
     taxonomy_id: QubitTaxonomy_1
     class_name: QubitTerm
     lft: '113'
     rgt: '114'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Minimal, es: Mínimo, fr: Élémentaire, nl: Minimaal, pt: Mínimo }
+    name: { en: Partial, es: Parcial, fr: Moyen, nl: Gedeeltelijk, pt: Parcial }
   QubitTerm_63:
-    taxonomy_id: QubitTaxonomy_4
+    taxonomy_id: QubitTaxonomy_1
     class_name: QubitTerm
     lft: '115'
     rgt: '116'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Fonds, es: Fundo, fr: Fonds, nl: Archief, pt: Fundo }
+    name: { en: Minimal, es: Mínimo, fr: Élémentaire, nl: Minimaal, pt: Mínimo }
   QubitTerm_64:
     taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '117'
     rgt: '118'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Sub-fonds, es: Sub-fundo, fr: Sous-fonds, nl: Deelarchief, pt: Sub-fundo }
+    name: { en: Fonds, es: Fundo, fr: Fonds, nl: Archief, pt: Fundo }
   QubitTerm_65:
     taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '119'
     rgt: '120'
-    created_at: '2008-06-16 16:07:12'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-03-17 18:37:08'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Collection, es: Colección, fr: Collection, nl: Collectie, pt: Coleção }
+    name: { en: Sub-fonds, es: Sub-fundo, fr: Sous-fonds, nl: Deelarchief, pt: Sub-fundo }
   QubitTerm_66:
     taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '121'
     rgt: '122'
-    created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-16 16:07:12'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Series, es: Séries, fr: 'Série organique', nl: Reeks, pt: Séries }
+    name: { en: Collection, es: Colección, fr: Collection, nl: Collectie, pt: Coleção }
   QubitTerm_67:
     taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '123'
     rgt: '124'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Sub-series, es: Sub-séries, fr: 'Sous-série organique', nl: Deelreeks, pt: Sub-séries }
+    name: { en: Series, es: Séries, fr: 'Série organique', nl: Reeks, pt: Séries }
   QubitTerm_68:
     taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '125'
     rgt: '126'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: File, es: Dossiê, fr: Dossier, nl: Bestanddeel, pt: Dossiê }
+    name: { en: Sub-series, es: Sub-séries, fr: 'Sous-série organique', nl: Deelreeks, pt: Sub-séries }
   QubitTerm_69:
     taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '127'
     rgt: '128'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Item, es: Item, fr: Pièce, nl: Stuk, pt: Item }
+    name: { en: File, es: Dossiê, fr: Dossier, nl: Bestanddeel, pt: Dossiê }
   QubitTerm_70:
-    taxonomy_id: QubitTaxonomy_7
+    taxonomy_id: QubitTaxonomy_4
     class_name: QubitTerm
     lft: '129'
     rgt: '130'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Archivist''s note', es: 'Nota do arquivista', fr: 'Note de l''archiviste', nl: Verantwoording, pt: 'Nota do arquivista' }
+    name: { en: Item, es: Item, fr: Pièce, nl: Stuk, pt: Item }
   QubitTerm_71:
     taxonomy_id: QubitTaxonomy_7
     class_name: QubitTerm
     lft: '131'
     rgt: '132'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'General note', es: 'Nota geral', fr: 'Note générale', nl: 'Algemene aantekening', pt: 'Nota geral' }
+    name: { en: 'Archivist''s note', fr: 'Note de l''archiviste', nl: Verantwoording, pt: 'Nota do arquivista' }
   QubitTerm_72:
     taxonomy_id: QubitTaxonomy_7
     class_name: QubitTerm
     lft: '133'
     rgt: '134'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Maintenance note', es: 'Nota de manutenção', fr: 'Notes relatives à la mise à jour de la description', nl: Onderhoudsaantekening, pt: 'Nota de manutenção' }
+    name: { en: 'General note', fr: 'Note générale', nl: 'Algemene aantekening', pt: 'Nota geral' }
   QubitTerm_73:
-    taxonomy_id: QubitTaxonomy_11
+    taxonomy_id: QubitTaxonomy_7
     class_name: QubitTerm
     lft: '135'
     rgt: '136'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Information object', es: 'Objeto informacional', fr: 'Objet d''information', nl: 'Information object', pt: 'Objeto informacional' }
-    scope_note: { en: ui_label }
+    name: { en: 'Maintenance note', fr: 'Notes relatives à la mise à jour de la description', nl: Onderhoudsaantekening, pt: 'Nota de manutenção' }
   QubitTerm_74:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '137'
     rgt: '138'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Person/organization, es: Pessoa/organização, fr: Personne/organisation, nl: Persoon/organisatie, pt: Pessoa/organização }
-    scope_note: { en: ui_label }
+    name: { en: 'Information object', fr: 'Objet d''information', nl: 'Information object', pt: 'Objeto informacional' }
   QubitTerm_75:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '139'
     rgt: '140'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Creator, es: Produtor, fr: 'Producteur d''archives', nl: Archiefvormer, pt: Produtor }
-    scope_note: { en: ui_label }
+    name: { en: Person/organization, fr: Personne/organisation, nl: Persoon/organisatie, pt: Pessoa/organização }
   QubitTerm_76:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '141'
     rgt: '142'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Repository, es: Repositório, fr: 'Service d''archives', nl: Depot, pt: Repositório }
-    scope_note: { en: ui_label }
+    name: { en: Creator, fr: 'Producteur d''archives', nl: Archiefvormer, pt: Produtor }
   QubitTerm_77:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '143'
     rgt: '144'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Term, es: Termo, fr: Terme, nl: Term, pt: Termo }
-    scope_note: { en: ui_label }
+    name: { en: Repository, fr: 'Service d''archives', nl: Depot, pt: Repositório }
   QubitTerm_78:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '145'
     rgt: '146'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Subject, es: Termo, fr: Sujet, nl: Onderwerp, pt: Assunto }
-    scope_note: { en: ui_label }
+    name: { en: Term, fr: Terme, nl: Term, pt: Termo }
   QubitTerm_79:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '147'
     rgt: '148'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Collection, es: Coleção, fr: Collection, nl: Collectie, pt: Coleção }
-    scope_note: { en: ui_label }
+    name: { en: Subject, fr: Sujet, nl: Onderwerp, pt: Assunto }
   QubitTerm_80:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '149'
     rgt: '150'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Holdings, es: Coleções, fr: Collections, nl: Collecties, pt: Coleções }
-    scope_note: { en: ui_label }
+    name: { en: Collection, fr: Collection, nl: Collectie, pt: Coleção }
   QubitTerm_81:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '151'
     rgt: '152'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Archival description', es: 'Descrição arquivística', fr: 'Description archivistique', nl: 'Archivistische beschrijving', pt: 'Descrição arquivística' }
-    scope_note: { en: ui_label }
+    name: { en: Holdings, fr: Collections, nl: Collecties, pt: Coleções }
   QubitTerm_82:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '153'
     rgt: '154'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Authority file', es: 'Registro de autoridade', fr: 'Fichier d''autorité', nl: 'Geautoriseerd bestand', pt: 'Registro de autoridade' }
-    scope_note: { en: ui_label }
+    name: { en: 'Archival description', fr: 'Description archivistique', nl: 'Archivistische beschrijving', pt: 'Descrição arquivística' }
   QubitTerm_83:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '155'
     rgt: '156'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Fonds, es: Fundo, fr: Fonds, nl: Archief, pt: Fundo }
-    scope_note: { en: ui_label }
+    name: { en: 'Authority file', fr: 'Fichier d''autorité', nl: 'Geautoriseerd bestand', pt: 'Registro de autoridade' }
   QubitTerm_84:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '157'
     rgt: '158'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Archival institution', es: 'Instituição arquivística', fr: 'Institution archivistique', nl: Archiefinstelling, pt: 'Instituição arquivística' }
-    scope_note: { en: ui_label }
+    name: { en: Fonds, fr: Fonds, nl: Archief, pt: Fundo }
   QubitTerm_85:
-    taxonomy_id: QubitTaxonomy_8
+    taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '159'
     rgt: '160'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: International, es: Internacional, fr: International, nl: Internationaal, pt: Internacional }
+    name: { en: 'Archival institution', fr: 'Institution archivistique', nl: Archiefinstelling, pt: 'Instituição arquivística' }
   QubitTerm_86:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '161'
     rgt: '162'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: National, es: Nacional, fr: National, nl: Nationaal, pt: Nacional }
+    name: { en: International, es: Internacional, fr: International, nl: Internationaal, pt: Internacional }
   QubitTerm_87:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '163'
     rgt: '164'
     created_at: '2008-03-17 18:37:08'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Regional, es: Regional, fr: Régional, nl: Regionaal, pt: Regional }
+    name: { en: National, es: Nacional, fr: National, nl: Nationaal, pt: Nacional }
   QubitTerm_88:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '165'
     rgt: '166'
-    created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-03-17 18:37:08'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Provincial/state, es: Provincial/estadual, fr: Provincial/étatique, nl: Provinciaal, pt: Provincial/estadual }
+    name: { en: Regional, es: Regional, fr: Régional, nl: Regionaal, pt: Regional }
   QubitTerm_89:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '167'
     rgt: '168'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Community, es: Comunitário, fr: Communautaire, nl: Gemeenschap, pt: Comunitário }
+    name: { en: Provincial/state, es: Provincial/estadual, fr: Provincial/étatique, nl: Provinciaal, pt: Provincial/estadual }
   QubitTerm_90:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '169'
     rgt: '170'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Religious, es: Religioso, fr: Religieux, nl: Religie, pt: Religioso }
+    name: { en: Community, es: Comunitário, fr: Communautaire, nl: Gemeenschap, pt: Comunitário }
   QubitTerm_91:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '171'
     rgt: '172'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: University, es: Universitário, fr: Universitaire, nl: Universiteit, pt: Universitário }
+    name: { en: Religious, es: Religioso, fr: Religieux, nl: Religie, pt: Religioso }
   QubitTerm_92:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '173'
     rgt: '174'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Municipal, es: Municipal, fr: Municipal, nl: Gemeente, pt: Municipal }
+    name: { en: University, es: Universitário, fr: Universitaire, nl: Universiteit, pt: Universitário }
   QubitTerm_93:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '175'
     rgt: '176'
-    created_at: '2008-06-16 16:07:12'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 09:30:12'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Aboriginal, fr: Autochtone, pt: Aborígene }
+    name: { en: Municipal, es: Municipal, fr: Municipal, nl: Gemeente, pt: Municipal }
   QubitTerm_94:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '177'
     rgt: '178'
     created_at: '2008-06-16 16:07:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Educational, fr: Éducationnel, pt: Escolar }
+    name: { en: Aboriginal, fr: Autochtone, pt: Aborígene }
   QubitTerm_95:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '179'
     rgt: '180'
     created_at: '2008-06-16 16:07:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Medical, fr: Médical, nl: Medisch, pt: Médico }
+    name: { en: Educational, es: Educativo, fr: Éducationnel, pt: Escolar }
   QubitTerm_96:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '181'
     rgt: '182'
     created_at: '2008-06-16 16:07:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Military, fr: Militaire, nl: Militair, pt: Militar }
+    name: { en: Medical, es: Médico, fr: Médical, nl: Medisch, pt: Médico }
   QubitTerm_97:
     taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '183'
     rgt: '184'
     created_at: '2008-06-16 16:07:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Private, fr: Privé, nl: Privaat, pt: Privado }
+    name: { en: Military, es: Militar, fr: Militaire, nl: Militair, pt: Militar }
   QubitTerm_98:
-    taxonomy_id: QubitTaxonomy_5
+    taxonomy_id: QubitTaxonomy_8
     class_name: QubitTerm
     lft: '185'
     rgt: '186'
-    created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-16 16:07:12'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Local government', es: 'Governo local', fr: 'Gouvernement local', nl: 'Plaatselijk bestuur', pt: 'Governo local' }
+    name: { en: Private, fr: Privé, nl: Privaat, pt: Privado }
   QubitTerm_99:
     taxonomy_id: QubitTaxonomy_5
     class_name: QubitTerm
     lft: '187'
     rgt: '188'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Architectural records', fr: 'Archives d''architecture', nl: 'Architectuur bestanden', pt: 'Documentos arquitetônicos' }
+    name: { en: 'Local government', es: 'Governo local', fr: 'Gouvernement local', nl: 'Plaatselijk bestuur', pt: 'Governo local' }
   QubitTerm_100:
-    taxonomy_id: QubitTaxonomy_12
+    taxonomy_id: QubitTaxonomy_5
     class_name: QubitTerm
     lft: '189'
     rgt: '190'
     created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Vancouver, pt: Vancouver }
+    name: { en: 'Architectural records', fr: 'Archives d''architecture', nl: 'Architectuur bestanden', pt: 'Documentos arquitetônicos' }
   QubitTerm_101:
-    taxonomy_id: QubitTaxonomy_5
+    taxonomy_id: QubitTaxonomy_12
     class_name: QubitTerm
     lft: '191'
     rgt: '192'
-    created_at: '2008-04-24 10:43:48'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 09:30:12'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Photographic records', fr: 'Archives photographiques', nl: 'Fotografische bestanden', pt: 'Registros fotográficos' }
+    name: { en: Vancouver, pt: Vancouver }
   QubitTerm_102:
     taxonomy_id: QubitTaxonomy_5
     class_name: QubitTerm
     lft: '193'
     rgt: '194'
-    created_at: '2008-04-24 11:37:21'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 10:43:48'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Hotels, fr: Hôtels, pt: Hotéis }
+    name: { en: 'Photographic records', fr: 'Archives photographiques', nl: 'Fotografische bestanden', pt: 'Registros fotográficos' }
   QubitTerm_103:
     taxonomy_id: QubitTaxonomy_5
     class_name: QubitTerm
     lft: '195'
     rgt: '196'
-    created_at: '2008-04-24 11:37:52'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 11:37:21'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Taverns, fr: Tavernes, pt: Bares }
+    name: { en: Hotels, fr: Hôtels, pt: Hotéis }
   QubitTerm_104:
-    taxonomy_id: QubitTaxonomy_11
+    taxonomy_id: QubitTaxonomy_5
     class_name: QubitTerm
     lft: '197'
     rgt: '198'
-    created_at: '2008-06-17 17:24:34'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-04-24 11:37:52'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Place, fr: Lieu, nl: Plaats }
-    scope_note: { en: ui_label }
+    name: { en: Taverns, fr: Tavernes, pt: Bares }
   QubitTerm_105:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '199'
     rgt: '200'
-    created_at: '2008-06-17 17:24:48'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-17 17:24:34'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: Name, fr: Nom, nl: Naam }
-    scope_note: { en: ui_label }
+    name: { en: Place, fr: Lieu, nl: Plaats }
   QubitTerm_106:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '201'
     rgt: '202'
-    created_at: '2008-06-17 17:25:17'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-17 17:24:48'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Digital object', fr: 'Objet numérique', nl: 'Digitaal object' }
-    scope_note: { en: ui_label }
+    name: { en: Name, fr: Nom, nl: Naam }
   QubitTerm_107:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '203'
     rgt: '204'
-    created_at: '2008-06-17 17:25:33'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-17 17:25:17'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Physical object', fr: 'Objet physique', nl: 'fysiek object' }
-    scope_note: { en: ui_label }
+    name: { en: 'Digital object', fr: 'Objet numérique', nl: 'Digitaal object' }
   QubitTerm_108:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '205'
     rgt: '206'
-    created_at: '2008-06-17 17:25:42'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-17 17:25:33'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Physical storage', fr: 'Entreposage physique', nl: 'Fysieke opslag' }
-    scope_note: { en: ui_label }
+    name: { en: 'Physical object', fr: 'Objet physique', nl: 'fysiek object' }
   QubitTerm_109:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '207'
     rgt: '208'
-    created_at: '2008-06-17 17:26:06'
-    updated_at: '2008-06-29 02:19:15'
+    created_at: '2008-06-17 17:25:42'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Media type', fr: 'Type de support', nl: Bestandsformaat }
-    scope_note: { en: ui_label }
+    name: { en: 'Physical storage', fr: 'Entreposage physique', nl: 'Fysieke opslag' }
   QubitTerm_110:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '209'
     rgt: '210'
     created_at: '2008-06-17 17:26:06'
-    updated_at: '2008-06-29 02:19:15'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Open Information Management Toolkit', fr: 'Trousse de gestion de l''information accessible', nl: 'Open Information Management Toolkit' }
-    scope_note: { en: 'Qubit tag line' }
+    name: { en: 'Media type', fr: 'Type de support', nl: Bestandsformaat }
   QubitTerm_111:
-    taxonomy_id: QubitTaxonomy_5
+    taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
     lft: '211'
     rgt: '212'
-    created_at: '2008-06-30 12:59:24'
-    updated_at: '2008-06-30 12:59:24'
+    created_at: '2008-06-17 17:26:06'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
-    name: { en: 'Construction sites' }
+    name: { en: 'Open Information Management Toolkit', fr: 'Trousse de gestion de l''information accessible', nl: 'Open Information Management Toolkit' }
   QubitTerm_112:
     taxonomy_id: QubitTaxonomy_5
     class_name: QubitTerm
     lft: '213'
     rgt: '214'
+    created_at: '2008-06-30 12:59:24'
+    updated_at: '2008-07-14 17:49:17'
+    source_culture: en
+    name: { en: 'Construction sites' }
+  QubitTerm_113:
+    taxonomy_id: QubitTaxonomy_5
+    class_name: QubitTerm
+    lft: '215'
+    rgt: '216'
     created_at: '2008-06-30 13:00:57'
-    updated_at: '2008-06-30 13:00:57'
+    updated_at: '2008-07-14 17:49:17'
     source_culture: en
     name: { en: Businesses }
+  QubitTerm_114:
+    taxonomy_id: QubitTaxonomy_7
+    class_name: QubitTerm
+    lft: '217'
+    rgt: '218'
+    created_at: '2008-07-16 06:56:30'
+    updated_at: '2008-07-16 06:56:47'
+    source_culture: en
+    name: { en: 'Conservation note', pt: 'Nota de conservação' }
 QubitUser:
-  QubitUser_113:
+  QubitUser_115:
     class_name: QubitUser
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-06-20 15:53:22'
@@ -1162,7 +1150,7 @@ QubitUser:
     email: admin@ica-atom.org
     sha1_password: 1986cdfff12f66b1f6e7f9627f6108cd939f2063
     salt: 9fda5c7d980d2e25092828f583475be7
-  QubitUser_114:
+  QubitUser_116:
     class_name: QubitUser
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-06-20 15:53:04'
@@ -1171,7 +1159,7 @@ QubitUser:
     email: editor@ica-atom.org
     sha1_password: 6ef01652d1599b7cb35712f7c176b96ca5e081e3
     salt: ef49413bc2b9c4b21ea24678d5e93355
-  QubitUser_115:
+  QubitUser_117:
     class_name: QubitUser
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-06-20 15:52:42'
@@ -1180,7 +1168,7 @@ QubitUser:
     email: contributor@ica-atom.org
     sha1_password: 9b8e9f3b33aaf51ca5cd4658ca90a3ba63f4e947
     salt: 615c92c7f50015dcf46f0e6b3011d474
-  QubitUser_116:
+  QubitUser_118:
     class_name: QubitUser
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-06-20 15:52:20'
@@ -1189,19 +1177,28 @@ QubitUser:
     email: translator@ica-atom.org
     sha1_password: 8c332ebcfaf1442dd1ca1bf8f2b307545b5943a7
     salt: 0923c60252481168bcbf64e73bf6a2c8
+  QubitUser_252:
+    class_name: QubitUser
+    created_at: '2008-07-16 13:20:16'
+    updated_at: '2008-07-16 13:20:16'
+    source_culture: en
+    username: 'demo user'
+    email: demo@ica-atom.org
+    sha1_password: 085a6c6251e68082d601c4ed0a9eafb7b3d28575
+    salt: 2bd3f4eef173e83b1bf13e84c784fed3
 QubitRepository:
-  QubitRepository_118:
-    type_id: QubitTerm_92
+  QubitRepository_119:
+    type_id: QubitTerm_93
     class_name: QubitRepository
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-06-30 12:49:25'
     source_culture: en
     identifier: CVA
     authorized_form_of_name: { en: 'City of Vancouver Archives' }
-  QubitRepository_119:
-    type_id: QubitTerm_91
-    desc_status_id: QubitTerm_56
-    desc_detail_id: QubitTerm_62
+  QubitRepository_120:
+    type_id: QubitTerm_92
+    desc_status_id: QubitTerm_58
+    desc_detail_id: QubitTerm_63
     class_name: QubitRepository
     created_at: '2008-04-24 12:03:04'
     updated_at: '2008-06-30 12:51:00'
@@ -1209,26 +1206,26 @@ QubitRepository:
     identifier: SFU
     authorized_form_of_name: { en: 'Simon Fraser University Archives' }
 QubitActor:
-  QubitActor_120:
-    entity_type_id: QubitTerm_31
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitActor_121:
+    entity_type_id: QubitTerm_33
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitActor
     created_at: '2008-04-24 09:42:38'
     updated_at: '2008-04-24 09:50:31'
     source_culture: en
     authorized_form_of_name: { en: 'City of Vancouver. Office of the City Clerk' }
     history: { en: "The responsibilities of the City Clerk were established with the Act of Incorporation in 1886, which declared the City Clerk to be the Returning Officer of the City (the official responsible for voters' lists and elections). Additional duties included purchasing supplies and were somewhat undefined. With the clarifications of the 1900 Act of Incorporation, formalized responsibilities included recording Council minutes, keeping custody of the by-laws, and maintaining financial records. The Clerk also received all mail directed to the City. A 1912 by-law assigned responsibility for facilitating communication between the citizens, the Mayor, Council, and Council's committees to the City Clerk. In a 1953 Act of Incorporation amendment, the Clerk was named as custodian of the City seal. With the exception of financial functions, which long ago passed to financial officers, the Clerk's responsibilities have remained remarkably consistent. The primary functions over time have been:\n\n    * taking minutes for the meetings of City Council and related bodies\n      \n    * keeping the records of the City of Vancouver as required by the Vancouver Charter\n      \n    * carrying out correspondence on behalf of Council\n      \n    * keeping all records related to City Council decision making (including large volumes of supporting documents)\n      \n    * assembling voters' lists and carrying out elections (for Council, the Park Board, the School Board, and on plebiscites)\n      \n    * providing communication, information, and public relations services, including responsibility for civic ceremonies\n      \n    * since 1970, responsibility for the Archives \n      \nFrom 1886 to 1974, the City Clerk reported directly to Council; from 1974 the position has been reporting to the City Manager's Office. Although the formal organization of the City Clerk's Department has in recent years consisted of a number of divisions - the Council secretariat, the Voters' List Division, periodically a small Public Relations/Communications Division, and the Archives and Records Division (since 1970) - in practice, the Office of the City Clerk has included all divisional sections except the Archives. During some periods the Office of the City Clerk was more commonly referred to as the City Clerk's Office, though the former has prevailed.\n\nThe following individuals have served as City Clerk:\n\n    * Thomas Francis McGuigan, 1886-1905\n      \n    * Arthur McEvoy, 1905-1907\n      \n    * William McQueen, 1907-1931\n      \n    * Charles Jones, 1931-1935\n      \n    * W. L. Woodford, 1935\n      \n    * Fred Howlett, 1935-1945 (acting 1935-1937)\n      \n    * Ronald Thompson, 1945-1973\n      \n    * Douglas Haig Little, 1973-1978\n      \n    * Robert Henry, 1978-1987\n      \n    * Maria Kinsella, 1987-1997\n      \n    * Ulli Watkiss, 1998-2001\n      \n    * Syd Baxter, 2001- " }
-  QubitActor_121:
-    entity_type_id: QubitTerm_31
+  QubitActor_122:
+    entity_type_id: QubitTerm_33
     class_name: QubitActor
     created_at: '2008-04-24 10:17:56'
     updated_at: '2008-04-24 10:25:16'
     source_culture: en
     authorized_form_of_name: { en: 'Townley, Matheson and Partners' }
     history: { en: "Townley, Matheson and Partners was a major Vancouver architectural firm throughout most of the 20th century. It produced designs for over 1100 discrete projects including numerous landmark buildings in the Vancouver, most notably Vancouver City Hall. The partnership was formed in 1919 by Fred L. Townley (1887-1966) and Robert T. Matheson (1887-1935). \n\nTownley was the son of former Vancouver Mayor T.O. Townley. Townley and Matheson were both raised in Vancouver, and received their architectural training at the University of Pennsylvania, graduating together in 1911. The majority of the work the partnership did in its initial years was private residences and small scale commercial projects. It was responsible for the design of many prominent Shaughnessy homes. It also produced designs for numerous stores and offices, including approximately 100 automobile service stations in the Lower Mainland and on Vancouver Island. The partnership achieved prominence in 1935 after it was awarded the contract to design Vancouver's new City Hall. Throughout the 1930s and 1940s the partnership designed fewer residences and increasing numbers of commercial buildings, including numerous grocery stores and movie theatres. From the 1950s onward hospital design formed the most sizeable component of the partnership's business; projects included Vancouver General Hospital, Royal Columbian Hospital, Royal Jubilee Hospital, Mission Memorial Hospital, and others in British Columbia, as well as Lethbridge Municipal Hospital in Alberta. The partnership existed under several names throughout its existence:\n*Townley and Matheson (1919-1964)\n*Townley, Matheson & Associates (1965)\n*Townley & Matheson, Kelly, Humphrey & Ritchie (1966)\n*Townley, Matheson & Partners (1967-1974)\n \nAllen C. Kelly (1908-2001) and Leonard A. Humphrey were former associates who became partners in 1964; it is likely that Ross B. Ritchie became a partner at about the same time. In 1969 the partnership merged with the practice of Alfredo J. Luz, but retained the name Townley, Matheson & Partners." }
-  QubitActor_122:
-    entity_type_id: QubitTerm_31
+  QubitActor_123:
+    entity_type_id: QubitTerm_33
     class_name: QubitActor
     created_at: '2008-04-24 12:00:34'
     updated_at: '2008-04-24 12:05:03'
@@ -1236,20 +1233,20 @@ QubitActor:
     authorized_form_of_name: { en: 'TeleLearning Network Inc' }
     history: { en: "The TeleLearning Network of Centres of Excellence (TL-NCE) was established in 1995 when the federal government's Networks of Centres of Excellence (NCE) program awarded a grant to create a network of researchers from Canadian universities, focusing on the development and application of networked technologies in education and training. TeleLearning established a management office to administer its affairs, and on April 7 1997 the office incorporated under the Corporations Act as TeleLearning Network Inc. (TN Inc.), a not-for-profit corporation. Ostensibly two separate bodies, each with its own Board of Directors, in practice TL-NCE and TN Inc. were not distinct: Board members were identical for both and the same Board session dealt with the affairs of both. TL-NCE was the \"research face\" and TN Inc. the \"legal-administrative face\" of the same organization. TeleLearning's renewal application in 2001 for a second round of NCE funding was unsuccessful. The decision was made to close out the Network, and on September 30, 2002 the corporation was officially dissolved.\n\nTeleLearning's mandate was to research, develop and demonstrate effective knowledge-building pedagogies, implemented through telelearning; to support the development of a knowledge economy and learning society in Canada; and to transfer the resulting knowledge into Canadian organizations, institutions of learning and Canadian companies for worldwide exploitation. Its main functions were to organize further research and distribute funding to individual projects through seven distinct research themes; publicize research results through publications, reports, and conferences; promote cooperation among private, public and university sectors; and encourage the development of commercial applications and technologies through the formation of spin-off companies.\n\nTeleLearning was primarily funded by the federal government through the NCE programs of the Natural Science and Engineering Research Council of Canada (NSERC), the Social Sciences and Humanities Research Council of Canada (SSHRC), and Industry Canada. Additional funding was obtained through TeleLearning membership fees from participating public and private-sector organizations, including international affiliates. The chief officers of the Network were the Network Leader, Network Co-Leader, and the Executive Director. The Board of Directors was responsible for the overall management and direction of the Network, with certain powers delegated to an appointed Executive Committee. Other committees advised the Board, including the Program Committee and the Knowledge and Technology Transfer Committee. Relations between the Network and member organizations was regulated by the Network Internal Agreement.\n\nTeleLearning's management office operated out of Simon Fraser University, which served as the Network's host institution. The main functions of the management office were disbursement of funds, NCE reporting, communications, member liaison, assistance with funding proposals, and conference organization. As host institution, SFU provided TeleLearning with office space, facilities, and some administrative services (e.g. payroll and finances).\n\nThe TeleLearning Network was originally built around four \"beacon technologies\": Collaboration Architecture and Design Resources for Telelearning (CadreTel), Computer Supported Intentional Learning Environment (CSILE), Teleform, and Virtual-University (Virtual-U). Over 240 public- and private-sector organizations participated in its projects, including over 130 faculty from 30 Canadian universities. The Network supported the growth of the online learning industry with the development of more than 45 software prototypes. Its spin-off companies included TELEStraining Inc., ClearMed Medical Knowledge Inc., Math Resources Inc., Nomino Inc., InVentures Incubator Inc., Cogigraph, the Portal for Online Objects in Learning (POOL), and TeleLearning Solutions Inc." }
 QubitInformationObject:
-  QubitInformationObject_123:
+  QubitInformationObject_124:
     class_name: QubitInformationObject
     lft: '1'
     rgt: '78'
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
     source_culture: en
-  QubitInformationObject_124:
-    level_of_description_id: QubitTerm_63
-    collection_type_id: QubitTerm_27
-    repository_id: QubitRepository_118
-    parent_id: QubitInformationObject_123
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_125:
+    level_of_description_id: QubitTerm_64
+    collection_type_id: QubitTerm_29
+    repository_id: QubitRepository_119
+    parent_id: QubitInformationObject_124
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     description_identifier: '10'
     lft: '2'
@@ -1264,12 +1261,12 @@ QubitInformationObject:
     related_units_of_description: { en: "Associated material:\nPre-1911 records for the former Hastings Townsite are held at the B.C. Archives.\n\nRelated records:\nFor South Vancouver and Point Grey municipality Council, City Clerk's, and all other retained archival records dating from before amalgamation with the City of Vancouver in 1929, see the Corporation of the District of South Vancouver fonds and the Corporation of Point Grey fonds.  The offices forming City Council, the mayor and aldermen (now called councillors), are arranged as the Mayor's Office fonds and the Councillors' office fonds.\n" }
     rules: { en: 'Rules for Archival Description (RAD)' }
     revision_history: { en: "Created: 27 Feb 2001.\nSent to BCAUL: 15 Dec 2003.\nLast updated: 20 Jan 2005" }
-  QubitInformationObject_125:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_124
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_126:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_125
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     identifier: '62'
     description_identifier: '53'
@@ -1289,12 +1286,12 @@ QubitInformationObject:
     location_of_copies: { en: 'Early files (most to 1918) have been microfilmed (MCR 3 and M 107 as indicated on boxes in stacks).' }
     related_units_of_description: { en: 'Series 29 (Outward correspondence, 1886-1975) is the counterpart to this series which was formerly called "Inward correspondence", however, series 29 consists solely of letter press books containing the Clerk''s outgoing correspondence and this series contains every other document on a given subject including (variously complete) outward correspondence (once the approximate date of a given subject has been identified from series 20, researchers might wish to consult that period in series 29); this series subdivided after 1974 (as scheduled at that time), therefore continued by series 60 (Housekeeping subject files, selected files only retained by Archives) and series 62 (Operational subject files, all retained).' }
     revision_history: { en: "Created: 22 Dec 2003.\nUpdated: 5 Nov 2007." }
-  QubitInformationObject_126:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_124
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_127:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_125
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     identifier: '104'
     lft: '17'
@@ -1309,10 +1306,10 @@ QubitInformationObject:
     finding_aids: { en: 'File list available.' }
     institution_responsible_identifier: { en: '55' }
     revision_history: { en: "Created: 22 Dec 2003.\nUpdated: 5 Nov 2007." }
-  QubitInformationObject_127:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_125
+  QubitInformationObject_128:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_126
     class_name: QubitInformationObject
     lft: '4'
     rgt: '5'
@@ -1320,10 +1317,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:21:44'
     source_culture: en
     title: { en: 'Proposed development plan for parks : 1959-1976' }
-  QubitInformationObject_128:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_126
+  QubitInformationObject_129:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_127
     class_name: QubitInformationObject
     identifier: '1187'
     lft: '18'
@@ -1332,10 +1329,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:06:20'
     source_culture: en
     title: { en: 'Incoming correspondence register' }
-  QubitInformationObject_129:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_125
+  QubitInformationObject_130:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_126
     class_name: QubitInformationObject
     lft: '6'
     rgt: '7'
@@ -1344,10 +1341,10 @@ QubitInformationObject:
     source_culture: en
     title: { en: 'Standing Committee on Planning and Development - Downtown - parking' }
     revision_history: { en: 'Description revised January 17, 2007.' }
-  QubitInformationObject_130:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_125
+  QubitInformationObject_131:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_126
     class_name: QubitInformationObject
     lft: '8'
     rgt: '9'
@@ -1355,10 +1352,10 @@ QubitInformationObject:
     updated_at: '2008-06-19 16:52:30'
     source_culture: en
     title: { en: 'Standing Committee on Planning and Development - Downtown - Adams properties (Robson and Alberni)' }
-  QubitInformationObject_131:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_125
+  QubitInformationObject_132:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_126
     class_name: QubitInformationObject
     lft: '10'
     rgt: '11'
@@ -1367,10 +1364,10 @@ QubitInformationObject:
     source_culture: en
     title: { en: 'Standing Committee on Planning and Development - Downtown - transportation' }
     extent_and_medium: { en: 'File consists of 7 maps of proposed transportation routes in downtown Vancouver.' }
-  QubitInformationObject_132:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_125
+  QubitInformationObject_133:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_126
     class_name: QubitInformationObject
     lft: '12'
     rgt: '13'
@@ -1378,10 +1375,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:24:18'
     source_culture: en
     title: { en: 'Standing Committee on Planning and Development - Downtown - taxi use' }
-  QubitInformationObject_133:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_125
+  QubitInformationObject_134:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_126
     class_name: QubitInformationObject
     lft: '14'
     rgt: '15'
@@ -1389,10 +1386,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:19:54'
     source_culture: en
     title: { en: 'Standing Committee on Planning and Development - Downtown - Railway Relocation and Crossing Act' }
-  QubitInformationObject_134:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_126
+  QubitInformationObject_135:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_127
     class_name: QubitInformationObject
     identifier: '1402'
     lft: '20'
@@ -1401,13 +1398,13 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:06:40'
     source_culture: en
     title: { en: 'Incoming correspondence register' }
-  QubitInformationObject_135:
-    level_of_description_id: QubitTerm_63
-    collection_type_id: QubitTerm_27
-    repository_id: QubitRepository_118
-    parent_id: QubitInformationObject_123
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_136:
+    level_of_description_id: QubitTerm_64
+    collection_type_id: QubitTerm_29
+    repository_id: QubitRepository_119
+    parent_id: QubitInformationObject_124
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     identifier: 'Add. MSS. 1399'
     description_identifier: '152736'
@@ -1423,12 +1420,12 @@ QubitInformationObject:
     arrangement: { en: 'The fonds consists of 3 series: Architectural drawings. -- 1897-1977. ca. 5000 drawings (representing approx. 700 projects). Miscellaneous records. -- 1919-[ca.1990]. 44 cm of textual and and other material. Project photographs. -- [189-?]-[1971]. 653 photographs.' }
     access_conditions: { en: 'Access restrictions apply to some of the records. Please consult the archivist.' }
     revision_history: { en: "Created: 29 Apr 2004.\nSent to BCAUL: 15 Nov 2004.\nUpdated: 22 Feb. 2007." }
-  QubitInformationObject_136:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_135
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_137:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_136
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     description_identifier: '152720'
     lft: '25'
@@ -1443,12 +1440,12 @@ QubitInformationObject:
     access_conditions: { en: 'Access restrictions apply, please consult the archivist.' }
     related_units_of_description: { en: 'Job cards exist for most of the files in this series. Refer to "Job card index" file within the miscellaneous records series.' }
     revision_history: { en: 'Description last updated June 23, 2008.' }
-  QubitInformationObject_137:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_135
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_138:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_136
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     description_identifier: '152721'
     lft: '39'
@@ -1460,10 +1457,10 @@ QubitInformationObject:
     extent_and_medium: { en: '653 photographs' }
     scope_and_content: { en: "Series consists of photographs related to the initial planning \nprocess, supervision of building construction, and production of images of completed projects for corporate memory. The photographs depict construction sites, completed buildings, building interiors, aerial views of buildings and neighbourhoods, sequential images of buildings under construction, and persons associated with individual projects." }
     arrangement: { en: 'Some of the photographs were organized by the creator in albums or other physical groupings. These groupings have been described at the file level. Sequentuially numbered progress photographs have also been arranged and described as files. A file list is available. The remaining photographs were in no discernable order when they arrived at the Archives. All other photographs in the series are described at the item level and are not part of any file.' }
-  QubitInformationObject_138:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_135
+  QubitInformationObject_139:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_136
     class_name: QubitInformationObject
     description_identifier: '152724'
     lft: '45'
@@ -1476,10 +1473,10 @@ QubitInformationObject:
     scope_and_content: { en: 'Series consists of miscellaneous materials created or recieved by Townley, Matheson and Partners, including contract agreements and material and labour specifications used to articulate project requirements to clients and contractors, architectural drawings produced for display, a job index listing projects worked on from 1919-1966, pamphlets and catalogues used in the planning process, promotional material, Fred Townley''s and Robert Matheson''s diplomas and other accreditation certificates, and other miscellaneous materials.' }
     arrangement: { en: 'No original arrangement of the records was apparent. Series has been arranged into files by the archivist based on the documentary form and content of the records. The 12 drawings in this series have been arranged and described as discrete items and are not part of any file.' }
     revision_history: { en: 'Created: 29 Apr 2004.' }
-  QubitInformationObject_139:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_136
+  QubitInformationObject_140:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_137
     class_name: QubitInformationObject
     identifier: '01'
     description_identifier: '164062'
@@ -1491,10 +1488,10 @@ QubitInformationObject:
     title: { en: 'Job no. 575 : owner Standard Stations Ltd., station #2 B.C., Georgia & Main, [Vancouver]' }
     access_conditions: { en: 'Access to drawings may be delayed for conservation or privacy reasons. Please consult the archivist.' }
     revision_history: { en: 'Created: 2 Nov 2005' }
-  QubitInformationObject_140:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_136
+  QubitInformationObject_141:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_137
     class_name: QubitInformationObject
     identifier: '02'
     lft: '28'
@@ -1504,10 +1501,10 @@ QubitInformationObject:
     source_culture: en
     title: { en: 'Job no. 600 : owner E. W. Hamber, glass enclosure, town residence ["Greencroft"], [3838 Cypress Street, Vancouver]' }
     access_conditions: { en: 'Access to drawings may be delayed for conservation or privacy reasons. Please consult the archivist.' }
-  QubitInformationObject_141:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_136
+  QubitInformationObject_142:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_137
     class_name: QubitInformationObject
     identifier: '03'
     lft: '30'
@@ -1516,10 +1513,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:17:07'
     source_culture: en
     title: { en: 'Job no. 716 : owner Gough & Company, warehouse and office, Beatty Street, [Vancouver]' }
-  QubitInformationObject_142:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_136
+  QubitInformationObject_143:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_137
     class_name: QubitInformationObject
     identifier: '04'
     lft: '32'
@@ -1529,10 +1526,10 @@ QubitInformationObject:
     source_culture: en
     title: { en: 'Job no. 525 : owner R. M. McLuckie, government liquor store, Davie & Howe, [Vancouver]' }
     access_conditions: { en: 'Access to drawings may be delayed for conservation or privacy reasons. Please consult the archivist.' }
-  QubitInformationObject_143:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_136
+  QubitInformationObject_144:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_137
     class_name: QubitInformationObject
     identifier: '05'
     lft: '34'
@@ -1541,10 +1538,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:45:56'
     source_culture: en
     title: { en: 'Job no. 67-010 : plans for proposed hotel for L.B. Johnson & Sons' }
-  QubitInformationObject_144:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_143
+  QubitInformationObject_145:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_144
     class_name: QubitInformationObject
     lft: '35'
     rgt: '36'
@@ -1554,13 +1551,13 @@ QubitInformationObject:
     title: { en: '[Job no. 67-010] : Grosvenor Hotel, Howe and Robson Streets, Vancouver B.C. : longitudinal section' }
     extent_and_medium: { en: '2 microfiche : b&w polyester negative ; 11 x 16 cm' }
     scope_and_content: { en: 'Mircrofiche of architectural drawing.' }
-  QubitInformationObject_145:
-    level_of_description_id: QubitTerm_63
-    collection_type_id: QubitTerm_27
-    repository_id: QubitRepository_119
-    parent_id: QubitInformationObject_123
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_146:
+    level_of_description_id: QubitTerm_64
+    collection_type_id: QubitTerm_29
+    repository_id: QubitRepository_120
+    parent_id: QubitInformationObject_124
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     identifier: F-172
     lft: '50'
@@ -1579,10 +1576,10 @@ QubitInformationObject:
     related_units_of_description: { en: 'This fonds contains only the records created by the TeleLearning management office. Associated records may be held by other institutions (e.g. partner universities) and by participating researchers themselves.' }
     rules: { en: 'Rules for Archival Description (RAD)' }
     revision_history: { en: "Finding aid prepared by Enid Britt, Richard Dancy, Verna Kazakoff (February 2003).\n\nRevised by Richard Dancy (May 2004).\n\nUpdated by Richard Dancy (March 2006).\n\nFinancial assistance for the arrangement and description of the records and production of the finding aid was generously provided by the TeleLearning Network Inc., and the Office of the Vice-President President Research (Simon Fraser University)." }
-  QubitInformationObject_146:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_145
+  QubitInformationObject_147:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_146
     class_name: QubitInformationObject
     identifier: '1'
     lft: '51'
@@ -1597,10 +1594,10 @@ QubitInformationObject:
     arrangement: { en: 'Series has been arranged into separate sub-series for each meeting body.' }
     access_conditions: { en: 'Some files may contain personal or confidential information. Access to these files may be restricted as stipulated by Archives policy or the donor. Files marked ''pending review'' must be reviewed by an archivist prior to release, and as a result of the review access restrictions may apply. Please see the file lists and consult the archivist for more details.' }
     finding_aids: { en: 'File lists are available.' }
-  QubitInformationObject_147:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_145
+  QubitInformationObject_148:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_146
     class_name: QubitInformationObject
     identifier: '2'
     lft: '61'
@@ -1614,12 +1611,12 @@ QubitInformationObject:
     arrangement: { en: 'Files are arranged alphabetically.' }
     access_conditions: { en: 'Some files may contain personal or confidential information. Access to these files may be restricted as stipulated by Archives policy or the donor. Files marked ''pending review'' must be reviewed by an archivist prior to release, and as a result of the review access restrictions may apply. Please see the file lists and consult the archivist for more details.' }
     finding_aids: { en: 'A file list is available.' }
-  QubitInformationObject_148:
-    level_of_description_id: QubitTerm_66
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_145
-    description_status_id: QubitTerm_56
-    description_detail_id: QubitTerm_61
+  QubitInformationObject_149:
+    level_of_description_id: QubitTerm_67
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_146
+    description_status_id: QubitTerm_58
+    description_detail_id: QubitTerm_62
     class_name: QubitInformationObject
     identifier: '3'
     lft: '63'
@@ -1632,10 +1629,10 @@ QubitInformationObject:
     scope_and_content: { en: 'This series consists of records relating to the communications function. Activities documented include development of a communications plan, media relations, advertising and publicity, production of the Network electronic newsletter "Tele-Chat," maintenance of the TeleLearning web site, and delivery of papers, presentations and reports concerning the Network. Records include correspondence, reports, press releases, press clippings, web site, artwork, logos, graphics, photographs and negatives, papers and presentations, and TeleLearning demonstration products on compact disk. Records are retained in both paper and electronic media.' }
     access_conditions: { en: 'Some files may contain personal or confidential information. Access to these files may be restricted as stipulated by Archives policy or the donor. Files marked ''pending review'' must be reviewed by an archivist prior to release, and as a result of the review access restrictions may apply. Please see the file lists and consult the archivist for more details.' }
     finding_aids: { en: 'File and item lists are ' }
-  QubitInformationObject_149:
-    level_of_description_id: QubitTerm_67
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_148
+  QubitInformationObject_150:
+    level_of_description_id: QubitTerm_68
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_149
     class_name: QubitInformationObject
     identifier: '6'
     lft: '64'
@@ -1650,10 +1647,10 @@ QubitInformationObject:
     access_conditions: { en: 'Some files may contain personal or confidential information. Access to these files may be restricted as stipulated by Archives policy or the donor. Files marked ''pending review'' must be reviewed by an archivist prior to release, and as a result of the review access restrictions may apply. Please see the file lists and consult the archivist for more details.' }
     finding_aids: { en: 'File and item lists are available.' }
     related_units_of_description: { en: 'Other files containing photographs are found in series F-172-5-1 "Communications Manager''s subject files" file 2 "Annual report in progress."' }
-  QubitInformationObject_150:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_149
+  QubitInformationObject_151:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_150
     class_name: QubitInformationObject
     identifier: '07'
     lft: '65'
@@ -1662,10 +1659,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:41:56'
     source_culture: en
     title: { en: Flyers }
-  QubitInformationObject_151:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_150
+  QubitInformationObject_152:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_151
     class_name: QubitInformationObject
     lft: '66'
     rgt: '67'
@@ -1673,10 +1670,10 @@ QubitInformationObject:
     updated_at: '2008-06-19 16:20:42'
     source_culture: en
     title: { en: 'International Affiliates Program brochure' }
-  QubitInformationObject_152:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_150
+  QubitInformationObject_153:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_151
     class_name: QubitInformationObject
     lft: '68'
     rgt: '69'
@@ -1684,10 +1681,10 @@ QubitInformationObject:
     updated_at: '2008-06-19 16:21:21'
     source_culture: en
     title: { en: 'Membership application' }
-  QubitInformationObject_153:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_150
+  QubitInformationObject_154:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_151
     class_name: QubitInformationObject
     lft: '70'
     rgt: '71'
@@ -1695,10 +1692,10 @@ QubitInformationObject:
     updated_at: '2008-06-19 16:21:48'
     source_culture: en
     title: { en: 'Sustaining Membership brochure' }
-  QubitInformationObject_154:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_150
+  QubitInformationObject_155:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_151
     class_name: QubitInformationObject
     lft: '72'
     rgt: '73'
@@ -1706,10 +1703,10 @@ QubitInformationObject:
     updated_at: '2008-06-19 16:22:12'
     source_culture: en
     title: { en: 'TL-NCE brochure' }
-  QubitInformationObject_155:
-    level_of_description_id: QubitTerm_67
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_146
+  QubitInformationObject_156:
+    level_of_description_id: QubitTerm_68
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_147
     class_name: QubitInformationObject
     identifier: '4'
     lft: '52'
@@ -1723,10 +1720,10 @@ QubitInformationObject:
     accruals: { en: 'No further accruals are expected.' }
     access_conditions: { en: 'Some files may contain personal or confidential information. Access to these files may be restricted as stipulated by Archives policy or the donor. Files marked ''pending review'' must be reviewed by an archivist prior to release, and as a result of the review access restrictions may apply. Please see the file lists and consult the archivist for more details.' }
     finding_aids: { en: 'A file list is available.' }
-  QubitInformationObject_156:
-    level_of_description_id: QubitTerm_68
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_155
+  QubitInformationObject_157:
+    level_of_description_id: QubitTerm_69
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_156
     class_name: QubitInformationObject
     identifier: '2'
     lft: '53'
@@ -1735,10 +1732,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 13:28:06'
     source_culture: en
     title: { en: 'Annual General Meetings - general file' }
-  QubitInformationObject_157:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_156
+  QubitInformationObject_158:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_157
     class_name: QubitInformationObject
     lft: '54'
     rgt: '55'
@@ -1746,10 +1743,10 @@ QubitInformationObject:
     updated_at: '2008-04-24 13:31:26'
     source_culture: en
     title: { en: Agenda }
-  QubitInformationObject_158:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_156
+  QubitInformationObject_159:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_157
     class_name: QubitInformationObject
     lft: '56'
     rgt: '57'
@@ -1757,10 +1754,10 @@ QubitInformationObject:
     updated_at: '2008-04-24 13:32:14'
     source_culture: en
     title: { en: 'Notice and proxy' }
-  QubitInformationObject_159:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_138
+  QubitInformationObject_160:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_139
     class_name: QubitInformationObject
     lft: '46'
     rgt: '47'
@@ -1768,10 +1765,10 @@ QubitInformationObject:
     updated_at: '2008-06-30 14:05:04'
     source_culture: en
     title: { en: 'Coaches Arriving at Mammoth Hot Springs' }
-  QubitInformationObject_160:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_137
+  QubitInformationObject_161:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_138
     class_name: QubitInformationObject
     identifier: '632'
     lft: '40'
@@ -1781,10 +1778,10 @@ QubitInformationObject:
     source_culture: en
     title: { en: 'Famous Cloak and Suit Company, Ltd.' }
     extent_and_medium: { en: '1 photograph : b&w nitrate negative ; 25 x 20 cm' }
-  QubitInformationObject_161:
-    level_of_description_id: QubitTerm_69
-    collection_type_id: QubitTerm_27
-    parent_id: QubitInformationObject_137
+  QubitInformationObject_162:
+    level_of_description_id: QubitTerm_70
+    collection_type_id: QubitTerm_29
+    parent_id: QubitInformationObject_138
     class_name: QubitInformationObject
     identifier: '13'
     lft: '42'
@@ -1795,84 +1792,84 @@ QubitInformationObject:
     title: { en: 'Job no. 580: Vancouver City Hall construction site' }
     extent_and_medium: { en: '1 photograph : silver gelatin print ; 7 x 12 cm' }
 QubitObjectTermRelation:
-  QubitObjectTermRelation_162:
-    object_id: QubitInformationObject_124
-    term_id: QubitTerm_98
-    class_name: QubitObjectTermRelation
-    created_at: '2008-04-24 09:30:12'
-    updated_at: '2008-04-24 09:30:12'
   QubitObjectTermRelation_163:
-    object_id: QubitInformationObject_124
-    term_id: QubitTerm_100
+    object_id: QubitInformationObject_125
+    term_id: QubitTerm_99
     class_name: QubitObjectTermRelation
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
   QubitObjectTermRelation_164:
-    object_id: QubitInformationObject_135
-    term_id: QubitTerm_99
+    object_id: QubitInformationObject_125
+    term_id: QubitTerm_101
+    class_name: QubitObjectTermRelation
+    created_at: '2008-04-24 09:30:12'
+    updated_at: '2008-04-24 09:30:12'
+  QubitObjectTermRelation_165:
+    object_id: QubitInformationObject_136
+    term_id: QubitTerm_100
     class_name: QubitObjectTermRelation
     created_at: '2008-04-24 10:23:02'
     updated_at: '2008-04-24 10:23:02'
-  QubitObjectTermRelation_165:
-    object_id: QubitInformationObject_135
-    term_id: QubitTerm_100
+  QubitObjectTermRelation_166:
+    object_id: QubitInformationObject_136
+    term_id: QubitTerm_101
     class_name: QubitObjectTermRelation
     created_at: '2008-04-24 10:25:33'
     updated_at: '2008-04-24 10:25:33'
-  QubitObjectTermRelation_166:
-    object_id: QubitInformationObject_137
-    term_id: QubitTerm_101
+  QubitObjectTermRelation_167:
+    object_id: QubitInformationObject_138
+    term_id: QubitTerm_102
     class_name: QubitObjectTermRelation
     created_at: '2008-04-24 10:44:23'
     updated_at: '2008-04-24 10:44:23'
-  QubitObjectTermRelation_167:
-    object_id: QubitInformationObject_136
-    term_id: QubitTerm_99
+  QubitObjectTermRelation_168:
+    object_id: QubitInformationObject_137
+    term_id: QubitTerm_100
     class_name: QubitObjectTermRelation
     created_at: '2008-04-24 10:45:31'
     updated_at: '2008-04-24 10:45:31'
-  QubitObjectTermRelation_168:
-    object_id: QubitInformationObject_144
-    term_id: QubitTerm_99
-    class_name: QubitObjectTermRelation
-    created_at: '2008-04-24 11:37:01'
-    updated_at: '2008-04-24 11:37:01'
   QubitObjectTermRelation_169:
-    object_id: QubitInformationObject_144
-    term_id: QubitTerm_102
-    class_name: QubitObjectTermRelation
-    created_at: '2008-04-24 11:38:18'
-    updated_at: '2008-04-24 11:38:18'
-  QubitObjectTermRelation_170:
-    object_id: QubitInformationObject_144
-    term_id: QubitTerm_103
-    class_name: QubitObjectTermRelation
-    created_at: '2008-04-24 11:38:27'
-    updated_at: '2008-04-24 11:38:27'
-  QubitObjectTermRelation_171:
     object_id: QubitInformationObject_145
     term_id: QubitTerm_100
     class_name: QubitObjectTermRelation
+    created_at: '2008-04-24 11:37:01'
+    updated_at: '2008-04-24 11:37:01'
+  QubitObjectTermRelation_170:
+    object_id: QubitInformationObject_145
+    term_id: QubitTerm_103
+    class_name: QubitObjectTermRelation
+    created_at: '2008-04-24 11:38:18'
+    updated_at: '2008-04-24 11:38:18'
+  QubitObjectTermRelation_171:
+    object_id: QubitInformationObject_145
+    term_id: QubitTerm_104
+    class_name: QubitObjectTermRelation
+    created_at: '2008-04-24 11:38:27'
+    updated_at: '2008-04-24 11:38:27'
+  QubitObjectTermRelation_172:
+    object_id: QubitInformationObject_146
+    term_id: QubitTerm_101
+    class_name: QubitObjectTermRelation
     created_at: '2008-04-24 12:07:35'
     updated_at: '2008-04-24 12:07:35'
-  QubitObjectTermRelation_172:
-    object_id: QubitInformationObject_161
-    term_id: QubitTerm_111
+  QubitObjectTermRelation_173:
+    object_id: QubitInformationObject_162
+    term_id: QubitTerm_112
     class_name: QubitObjectTermRelation
     created_at: '2008-06-30 13:00:13'
     updated_at: '2008-06-30 13:00:13'
-  QubitObjectTermRelation_173:
-    object_id: QubitInformationObject_160
-    term_id: QubitTerm_112
+  QubitObjectTermRelation_174:
+    object_id: QubitInformationObject_161
+    term_id: QubitTerm_113
     class_name: QubitObjectTermRelation
     created_at: '2008-06-30 13:01:35'
     updated_at: '2008-06-30 13:01:35'
 QubitEvent:
-  QubitEvent_174:
+  QubitEvent_175:
     type_id: QubitTerm_11
     actor_role_id: QubitTerm_5
-    information_object_id: QubitInformationObject_124
-    actor_id: QubitActor_120
+    information_object_id: QubitInformationObject_125
+    actor_id: QubitActor_121
     class_name: QubitEvent
     start_date: '1886-01-01'
     end_date: '2003-01-01'
@@ -1880,18 +1877,18 @@ QubitEvent:
     updated_at: '2008-04-24 09:42:38'
     source_culture: en
     description: { en: '1886-2003, predominant 1886-1993' }
-  QubitEvent_175:
+  QubitEvent_176:
     type_id: QubitTerm_12
-    actor_id: QubitActor_120
+    actor_id: QubitActor_121
     class_name: QubitEvent
     start_date: '1886-01-01'
     created_at: '2008-04-24 09:50:31'
     updated_at: '2008-04-24 09:50:31'
     source_culture: en
     description: { en: 1886- }
-  QubitEvent_176:
+  QubitEvent_177:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_125
+    information_object_id: QubitInformationObject_126
     class_name: QubitEvent
     start_date: '1886-01-01'
     end_date: '1976-01-01'
@@ -1899,9 +1896,9 @@ QubitEvent:
     updated_at: '2008-04-24 09:53:36'
     source_culture: en
     description: { en: 1886-1976 }
-  QubitEvent_177:
+  QubitEvent_178:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_126
+    information_object_id: QubitInformationObject_127
     class_name: QubitEvent
     start_date: '1935-01-01'
     end_date: '1972-01-01'
@@ -1909,9 +1906,9 @@ QubitEvent:
     updated_at: '2008-04-24 09:58:51'
     source_culture: en
     description: { en: 1935-1972 }
-  QubitEvent_178:
+  QubitEvent_179:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_127
+    information_object_id: QubitInformationObject_128
     class_name: QubitEvent
     start_date: '1960-01-01'
     end_date: '1962-01-01'
@@ -1919,9 +1916,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:02:31'
     source_culture: en
     description: { en: 1960-1962 }
-  QubitEvent_179:
+  QubitEvent_180:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_129
+    information_object_id: QubitInformationObject_130
     class_name: QubitEvent
     start_date: '1973-01-01'
     end_date: '1974-01-01'
@@ -1929,9 +1926,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:05:47'
     source_culture: en
     description: { en: 1973-1974 }
-  QubitEvent_180:
+  QubitEvent_181:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_130
+    information_object_id: QubitInformationObject_131
     class_name: QubitEvent
     start_date: '1974-01-01'
     end_date: '1974-01-01'
@@ -1939,9 +1936,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:07:05'
     source_culture: en
     description: { en: '1974' }
-  QubitEvent_181:
+  QubitEvent_182:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_131
+    information_object_id: QubitInformationObject_132
     class_name: QubitEvent
     start_date: '1974-01-01'
     end_date: '1974-01-01'
@@ -1949,9 +1946,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:07:49'
     source_culture: en
     description: { en: '1974' }
-  QubitEvent_182:
+  QubitEvent_183:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_133
+    information_object_id: QubitInformationObject_134
     class_name: QubitEvent
     start_date: '1974-01-01'
     end_date: '1974-01-01'
@@ -1959,9 +1956,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:09:07'
     source_culture: en
     description: { en: '1974' }
-  QubitEvent_183:
+  QubitEvent_184:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_134
+    information_object_id: QubitInformationObject_135
     class_name: QubitEvent
     start_date: '1935-01-01'
     end_date: '1940-01-01'
@@ -1969,9 +1966,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:10:54'
     source_culture: en
     description: { en: '9 Nov. 1935 - 2 Mar. 1940' }
-  QubitEvent_184:
+  QubitEvent_185:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_128
+    information_object_id: QubitInformationObject_129
     class_name: QubitEvent
     start_date: '1940-01-01'
     end_date: '1944-01-01'
@@ -1979,11 +1976,11 @@ QubitEvent:
     updated_at: '2008-04-24 10:11:42'
     source_culture: en
     description: { en: '4 Mar. 1940 - 2 Feb. 1944' }
-  QubitEvent_185:
+  QubitEvent_186:
     type_id: QubitTerm_11
     actor_role_id: QubitTerm_5
-    information_object_id: QubitInformationObject_135
-    actor_id: QubitActor_121
+    information_object_id: QubitInformationObject_136
+    actor_id: QubitActor_122
     class_name: QubitEvent
     start_date: '1897-01-01'
     end_date: '1990-01-01'
@@ -1991,9 +1988,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:17:56'
     source_culture: en
     description: { en: '1897-[ca. 1990]; predominant 1919-1974' }
-  QubitEvent_186:
+  QubitEvent_187:
     type_id: QubitTerm_12
-    actor_id: QubitActor_121
+    actor_id: QubitActor_122
     class_name: QubitEvent
     start_date: '1919-01-01'
     end_date: '1974-01-01'
@@ -2001,9 +1998,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:25:16'
     source_culture: en
     description: { en: 1919-1974 }
-  QubitEvent_187:
+  QubitEvent_188:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_136
+    information_object_id: QubitInformationObject_137
     class_name: QubitEvent
     start_date: '1897-01-01'
     end_date: '1977-01-01'
@@ -2011,9 +2008,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:29:38'
     source_culture: en
     description: { en: 1897-1977 }
-  QubitEvent_188:
+  QubitEvent_189:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_137
+    information_object_id: QubitInformationObject_138
     class_name: QubitEvent
     start_date: '1920-01-01'
     end_date: '1971-01-01'
@@ -2021,9 +2018,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:42:23'
     source_culture: en
     description: { en: '[ca. 1920] - [1971]' }
-  QubitEvent_189:
+  QubitEvent_190:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_138
+    information_object_id: QubitInformationObject_139
     class_name: QubitEvent
     start_date: '1906-01-01'
     end_date: '1990-01-01'
@@ -2031,9 +2028,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:46:44'
     source_culture: en
     description: { en: '1906 - [ca. 1990]' }
-  QubitEvent_190:
+  QubitEvent_191:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_139
+    information_object_id: QubitInformationObject_140
     class_name: QubitEvent
     start_date: '1935-01-01'
     end_date: '1935-01-01'
@@ -2041,9 +2038,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:49:47'
     source_culture: en
     description: { en: '[1935]' }
-  QubitEvent_191:
+  QubitEvent_192:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_140
+    information_object_id: QubitInformationObject_141
     class_name: QubitEvent
     start_date: '1937-01-01'
     end_date: '1937-01-01'
@@ -2051,9 +2048,9 @@ QubitEvent:
     updated_at: '2008-04-24 10:51:52'
     source_culture: en
     description: { en: '[1937?]' }
-  QubitEvent_192:
+  QubitEvent_193:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_141
+    information_object_id: QubitInformationObject_142
     class_name: QubitEvent
     start_date: '1945-01-01'
     end_date: '1945-01-01'
@@ -2061,9 +2058,9 @@ QubitEvent:
     updated_at: '2008-04-24 11:10:37'
     source_culture: en
     description: { en: '26 Mar 1945' }
-  QubitEvent_193:
+  QubitEvent_194:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_142
+    information_object_id: QubitInformationObject_143
     class_name: QubitEvent
     start_date: '1931-01-01'
     end_date: '1931-01-01'
@@ -2071,9 +2068,9 @@ QubitEvent:
     updated_at: '2008-04-24 11:31:47'
     source_culture: en
     description: { en: 'Sept. 1931' }
-  QubitEvent_194:
+  QubitEvent_195:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_143
+    information_object_id: QubitInformationObject_144
     class_name: QubitEvent
     start_date: '1968-01-01'
     end_date: '1968-01-01'
@@ -2081,14 +2078,14 @@ QubitEvent:
     updated_at: '2008-04-24 11:33:22'
     source_culture: en
     description: { en: '1968' }
-  QubitEvent_195:
+  QubitEvent_196:
     class_name: QubitEvent
     created_at: '2008-06-16 16:07:13'
     updated_at: '2008-06-16 16:07:13'
     source_culture: en
-  QubitEvent_196:
+  QubitEvent_197:
     type_id: QubitTerm_12
-    actor_id: QubitActor_122
+    actor_id: QubitActor_123
     class_name: QubitEvent
     start_date: '1995-01-01'
     end_date: '2002-01-01'
@@ -2096,9 +2093,9 @@ QubitEvent:
     updated_at: '2008-04-24 12:05:03'
     source_culture: en
     description: { en: 1994-2002 }
-  QubitEvent_197:
+  QubitEvent_198:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_146
+    information_object_id: QubitInformationObject_147
     class_name: QubitEvent
     start_date: '1995-01-01'
     end_date: '2002-01-01'
@@ -2106,9 +2103,9 @@ QubitEvent:
     updated_at: '2008-04-24 12:14:34'
     source_culture: en
     description: { en: 1995-2002 }
-  QubitEvent_198:
+  QubitEvent_199:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_147
+    information_object_id: QubitInformationObject_148
     class_name: QubitEvent
     start_date: '1994-01-01'
     end_date: '2002-01-01'
@@ -2116,9 +2113,9 @@ QubitEvent:
     updated_at: '2008-04-24 12:16:01'
     source_culture: en
     description: { en: 1994-2002 }
-  QubitEvent_199:
+  QubitEvent_200:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_148
+    information_object_id: QubitInformationObject_149
     class_name: QubitEvent
     start_date: '1994-01-01'
     end_date: '2002-01-01'
@@ -2126,9 +2123,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:12:54'
     source_culture: en
     description: { en: 1994-2002 }
-  QubitEvent_200:
+  QubitEvent_201:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_149
+    information_object_id: QubitInformationObject_150
     class_name: QubitEvent
     start_date: '1996-01-01'
     end_date: '2002-01-01'
@@ -2136,9 +2133,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:16:22'
     source_culture: en
     description: { en: 1996-2002 }
-  QubitEvent_201:
+  QubitEvent_202:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_150
+    information_object_id: QubitInformationObject_151
     class_name: QubitEvent
     start_date: '1994-01-01'
     end_date: '2002-01-01'
@@ -2146,9 +2143,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:18:56'
     source_culture: en
     description: { en: '1994 - 2002' }
-  QubitEvent_202:
+  QubitEvent_203:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_151
+    information_object_id: QubitInformationObject_152
     class_name: QubitEvent
     start_date: '1996-01-01'
     end_date: '1996-01-01'
@@ -2156,9 +2153,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:21:33'
     source_culture: en
     description: { en: '[1996]' }
-  QubitEvent_203:
+  QubitEvent_204:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_152
+    information_object_id: QubitInformationObject_153
     class_name: QubitEvent
     start_date: '1999-01-01'
     end_date: '1999-01-01'
@@ -2166,9 +2163,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:22:25'
     source_culture: en
     description: { en: '1999 - 1999' }
-  QubitEvent_204:
+  QubitEvent_205:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_153
+    information_object_id: QubitInformationObject_154
     class_name: QubitEvent
     start_date: '1994-01-01'
     end_date: '1996-01-01'
@@ -2176,9 +2173,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:23:50'
     source_culture: en
     description: { en: '1994 - 1996' }
-  QubitEvent_205:
+  QubitEvent_206:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_154
+    information_object_id: QubitInformationObject_155
     class_name: QubitEvent
     start_date: '2000-01-01'
     end_date: '2000-01-01'
@@ -2186,9 +2183,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:25:38'
     source_culture: en
     description: { en: '2000' }
-  QubitEvent_206:
+  QubitEvent_207:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_155
+    information_object_id: QubitInformationObject_156
     class_name: QubitEvent
     start_date: '1996-01-01'
     end_date: '2002-01-01'
@@ -2196,9 +2193,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:28:23'
     source_culture: en
     description: { en: 1996-2002 }
-  QubitEvent_207:
+  QubitEvent_208:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_156
+    information_object_id: QubitInformationObject_157
     class_name: QubitEvent
     start_date: '2001-01-01'
     end_date: '2002-01-01'
@@ -2206,9 +2203,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:30:41'
     source_culture: en
     description: { en: 2001-2002 }
-  QubitEvent_208:
+  QubitEvent_209:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_157
+    information_object_id: QubitInformationObject_158
     class_name: QubitEvent
     start_date: '2002-01-01'
     end_date: '2002-01-01'
@@ -2216,9 +2213,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:31:26'
     source_culture: en
     description: { en: '2002' }
-  QubitEvent_209:
+  QubitEvent_210:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_158
+    information_object_id: QubitInformationObject_159
     class_name: QubitEvent
     start_date: '2002-01-01'
     end_date: '2002-01-01'
@@ -2226,9 +2223,9 @@ QubitEvent:
     updated_at: '2008-04-24 13:32:14'
     source_culture: en
     description: { en: '2002' }
-  QubitEvent_210:
+  QubitEvent_211:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_160
+    information_object_id: QubitInformationObject_161
     class_name: QubitEvent
     start_date: '1927-01-01'
     end_date: '0000-00-00'
@@ -2236,9 +2233,9 @@ QubitEvent:
     updated_at: '2008-06-30 12:53:26'
     source_culture: en
     description: { en: '1927' }
-  QubitEvent_211:
+  QubitEvent_212:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_161
+    information_object_id: QubitInformationObject_162
     class_name: QubitEvent
     start_date: '1936-01-01'
     end_date: '0000-00-00'
@@ -2246,9 +2243,9 @@ QubitEvent:
     updated_at: '2008-06-30 12:57:43'
     source_culture: en
     description: { en: 'Feb. 1936' }
-  QubitEvent_212:
+  QubitEvent_213:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_132
+    information_object_id: QubitInformationObject_133
     class_name: QubitEvent
     start_date: '1973-01-01'
     end_date: '1974-01-01'
@@ -2256,9 +2253,9 @@ QubitEvent:
     updated_at: '2008-06-30 13:24:18'
     source_culture: en
     description: { en: '1973 - 1974' }
-  QubitEvent_213:
+  QubitEvent_214:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_144
+    information_object_id: QubitInformationObject_145
     class_name: QubitEvent
     start_date: '1968-01-01'
     end_date: '0000-00-00'
@@ -2266,9 +2263,9 @@ QubitEvent:
     updated_at: '2008-06-30 13:47:34'
     source_culture: en
     description: { en: 'April 1968' }
-  QubitEvent_214:
+  QubitEvent_215:
     type_id: QubitTerm_11
-    information_object_id: QubitInformationObject_145
+    information_object_id: QubitInformationObject_146
     class_name: QubitEvent
     start_date: '1994-01-01'
     end_date: '2002-01-01'
@@ -2277,8 +2274,8 @@ QubitEvent:
     source_culture: en
     description: { en: '1994 - 2002' }
 QubitPhysicalObject:
-  QubitPhysicalObject_215:
-    type_id: QubitTerm_47
+  QubitPhysicalObject_216:
+    type_id: QubitTerm_49
     class_name: QubitPhysicalObject
     lft: '1'
     rgt: '2'
@@ -2287,8 +2284,8 @@ QubitPhysicalObject:
     source_culture: en
     name: { en: 'Box A12' }
     location: { en: 'Shelf 3, Aisle C10, Main Repository' }
-  QubitPhysicalObject_216:
-    type_id: QubitTerm_47
+  QubitPhysicalObject_217:
+    type_id: QubitTerm_49
     class_name: QubitPhysicalObject
     lft: '3'
     rgt: '4'
@@ -2297,8 +2294,8 @@ QubitPhysicalObject:
     source_culture: en
     name: { en: 'Box D9' }
     location: { en: 'Shelf 11, Aisle C10, Main Repository' }
-  QubitPhysicalObject_217:
-    type_id: QubitTerm_47
+  QubitPhysicalObject_218:
+    type_id: QubitTerm_49
     class_name: QubitPhysicalObject
     lft: '5'
     rgt: '6'
@@ -2307,8 +2304,8 @@ QubitPhysicalObject:
     source_culture: en
     name: { en: 'Box D10' }
     location: { en: 'Shelf 11, Aisle C10, Main Repository' }
-  QubitPhysicalObject_218:
-    type_id: QubitTerm_50
+  QubitPhysicalObject_219:
+    type_id: QubitTerm_52
     class_name: QubitPhysicalObject
     lft: '7'
     rgt: '8'
@@ -2317,8 +2314,8 @@ QubitPhysicalObject:
     source_culture: en
     name: { en: '16' }
     location: { en: 'Box 6, shelf 2, off-site storage' }
-  QubitPhysicalObject_219:
-    type_id: QubitTerm_52
+  QubitPhysicalObject_220:
+    type_id: QubitTerm_54
     class_name: QubitPhysicalObject
     lft: '9'
     rgt: '10'
@@ -2328,109 +2325,109 @@ QubitPhysicalObject:
     name: { en: C4 }
     location: { en: 'Aisle 7, off-site storage' }
 QubitRelation:
-  QubitRelation_220:
-    subject_id: QubitPhysicalObject_215
-    object_id: QubitInformationObject_127
-    type_id: QubitTerm_46
+  QubitRelation_221:
+    subject_id: QubitPhysicalObject_216
+    object_id: QubitInformationObject_128
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-19 16:41:51'
     updated_at: '2008-06-19 16:41:51'
-  QubitRelation_221:
-    subject_id: QubitPhysicalObject_215
-    object_id: QubitInformationObject_129
-    type_id: QubitTerm_46
-    class_name: QubitRelation
-    created_at: '2008-06-19 16:43:42'
-    updated_at: '2008-06-19 16:43:42'
   QubitRelation_222:
     subject_id: QubitPhysicalObject_216
     object_id: QubitInformationObject_130
-    type_id: QubitTerm_46
+    type_id: QubitTerm_48
+    class_name: QubitRelation
+    created_at: '2008-06-19 16:43:42'
+    updated_at: '2008-06-19 16:43:42'
+  QubitRelation_223:
+    subject_id: QubitPhysicalObject_217
+    object_id: QubitInformationObject_131
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-19 16:50:35'
     updated_at: '2008-06-19 16:50:35'
-  QubitRelation_223:
-    subject_id: QubitPhysicalObject_217
-    object_id: QubitInformationObject_130
-    type_id: QubitTerm_46
+  QubitRelation_224:
+    subject_id: QubitPhysicalObject_218
+    object_id: QubitInformationObject_131
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-19 16:52:30'
     updated_at: '2008-06-19 16:52:30'
-  QubitRelation_224:
-    subject_id: QubitPhysicalObject_218
-    object_id: QubitInformationObject_160
-    type_id: QubitTerm_46
+  QubitRelation_225:
+    subject_id: QubitPhysicalObject_219
+    object_id: QubitInformationObject_161
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 12:54:56'
     updated_at: '2008-06-30 12:54:56'
-  QubitRelation_225:
-    subject_id: QubitPhysicalObject_218
-    object_id: QubitInformationObject_161
-    type_id: QubitTerm_46
+  QubitRelation_226:
+    subject_id: QubitPhysicalObject_219
+    object_id: QubitInformationObject_162
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 12:58:33'
     updated_at: '2008-06-30 12:58:33'
-  QubitRelation_226:
-    subject_id: QubitPhysicalObject_219
-    object_id: QubitInformationObject_131
-    type_id: QubitTerm_46
+  QubitRelation_227:
+    subject_id: QubitPhysicalObject_220
+    object_id: QubitInformationObject_132
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:13:28'
     updated_at: '2008-06-30 13:13:28'
-  QubitRelation_227:
-    subject_id: QubitPhysicalObject_216
-    object_id: QubitInformationObject_139
-    type_id: QubitTerm_46
+  QubitRelation_228:
+    subject_id: QubitPhysicalObject_217
+    object_id: QubitInformationObject_140
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:15:55'
     updated_at: '2008-06-30 13:15:55'
-  QubitRelation_228:
-    subject_id: QubitPhysicalObject_216
-    object_id: QubitInformationObject_140
-    type_id: QubitTerm_46
+  QubitRelation_229:
+    subject_id: QubitPhysicalObject_217
+    object_id: QubitInformationObject_141
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:16:12'
     updated_at: '2008-06-30 13:16:12'
-  QubitRelation_229:
-    subject_id: QubitPhysicalObject_217
-    object_id: QubitInformationObject_142
-    type_id: QubitTerm_46
+  QubitRelation_230:
+    subject_id: QubitPhysicalObject_218
+    object_id: QubitInformationObject_143
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:16:50'
     updated_at: '2008-06-30 13:16:50'
-  QubitRelation_230:
-    subject_id: QubitPhysicalObject_217
-    object_id: QubitInformationObject_141
-    type_id: QubitTerm_46
+  QubitRelation_231:
+    subject_id: QubitPhysicalObject_218
+    object_id: QubitInformationObject_142
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:17:07'
     updated_at: '2008-06-30 13:17:07'
-  QubitRelation_231:
-    subject_id: QubitPhysicalObject_217
-    object_id: QubitInformationObject_143
-    type_id: QubitTerm_46
+  QubitRelation_232:
+    subject_id: QubitPhysicalObject_218
+    object_id: QubitInformationObject_144
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:17:26'
     updated_at: '2008-06-30 13:17:26'
-  QubitRelation_232:
-    subject_id: QubitPhysicalObject_215
-    object_id: QubitInformationObject_132
-    type_id: QubitTerm_46
+  QubitRelation_233:
+    subject_id: QubitPhysicalObject_216
+    object_id: QubitInformationObject_133
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:19:38'
     updated_at: '2008-06-30 13:19:38'
-  QubitRelation_233:
-    subject_id: QubitPhysicalObject_215
-    object_id: QubitInformationObject_133
-    type_id: QubitTerm_46
+  QubitRelation_234:
+    subject_id: QubitPhysicalObject_216
+    object_id: QubitInformationObject_134
+    type_id: QubitTerm_48
     class_name: QubitRelation
     created_at: '2008-06-30 13:19:55'
     updated_at: '2008-06-30 13:19:55'
 QubitDigitalObject:
-  QubitDigitalObject_234:
-    information_object_id: QubitInformationObject_159
-    usage_id: QubitTerm_40
-    media_type_id: QubitTerm_38
+  QubitDigitalObject_235:
+    information_object_id: QubitInformationObject_160
+    usage_id: QubitTerm_42
+    media_type_id: QubitTerm_40
     class_name: QubitDigitalObject
     mime_type: video/mpeg
     name: 0239.mpg
@@ -2440,10 +2437,10 @@ QubitDigitalObject:
     rgt: '6'
     created_at: '2008-06-19 06:29:58'
     updated_at: '2008-06-19 06:29:58'
-  QubitDigitalObject_235:
-    usage_id: QubitTerm_41
-    media_type_id: QubitTerm_38
-    parent_id: QubitDigitalObject_234
+  QubitDigitalObject_236:
+    usage_id: QubitTerm_43
+    media_type_id: QubitTerm_40
+    parent_id: QubitDigitalObject_235
     class_name: QubitDigitalObject
     mime_type: video/x-flv
     name: 0239_212.flv
@@ -2453,10 +2450,10 @@ QubitDigitalObject:
     rgt: '3'
     created_at: '2008-06-19 06:29:58'
     updated_at: '2008-06-19 06:30:00'
-  QubitDigitalObject_236:
-    usage_id: QubitTerm_42
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_234
+  QubitDigitalObject_237:
+    usage_id: QubitTerm_44
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_235
     class_name: QubitDigitalObject
     mime_type: image/png
     name: 0239_213.png
@@ -2466,10 +2463,10 @@ QubitDigitalObject:
     rgt: '5'
     created_at: '2008-06-19 06:30:00'
     updated_at: '2008-06-19 06:30:00'
-  QubitDigitalObject_237:
-    information_object_id: QubitInformationObject_151
-    usage_id: QubitTerm_40
-    media_type_id: QubitTerm_37
+  QubitDigitalObject_238:
+    information_object_id: QubitInformationObject_152
+    usage_id: QubitTerm_42
+    media_type_id: QubitTerm_39
     class_name: QubitDigitalObject
     mime_type: application/pdf
     name: international.pdf
@@ -2479,10 +2476,10 @@ QubitDigitalObject:
     rgt: '12'
     created_at: '2008-06-19 16:20:42'
     updated_at: '2008-06-19 16:20:42'
-  QubitDigitalObject_238:
-    usage_id: QubitTerm_41
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_237
+  QubitDigitalObject_239:
+    usage_id: QubitTerm_43
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_238
     class_name: QubitDigitalObject
     mime_type: image/png
     name: international_227.png
@@ -2492,10 +2489,10 @@ QubitDigitalObject:
     rgt: '9'
     created_at: '2008-06-19 16:20:42'
     updated_at: '2008-06-19 16:20:43'
-  QubitDigitalObject_239:
-    usage_id: QubitTerm_42
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_237
+  QubitDigitalObject_240:
+    usage_id: QubitTerm_44
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_238
     class_name: QubitDigitalObject
     mime_type: image/png
     name: international_228.png
@@ -2505,10 +2502,10 @@ QubitDigitalObject:
     rgt: '11'
     created_at: '2008-06-19 16:20:43'
     updated_at: '2008-06-19 16:20:44'
-  QubitDigitalObject_240:
-    information_object_id: QubitInformationObject_152
-    usage_id: QubitTerm_40
-    media_type_id: QubitTerm_37
+  QubitDigitalObject_241:
+    information_object_id: QubitInformationObject_153
+    usage_id: QubitTerm_42
+    media_type_id: QubitTerm_39
     class_name: QubitDigitalObject
     mime_type: application/pdf
     name: membership_applic_ltrhead.pdf
@@ -2518,10 +2515,10 @@ QubitDigitalObject:
     rgt: '18'
     created_at: '2008-06-19 16:21:22'
     updated_at: '2008-06-19 16:21:22'
-  QubitDigitalObject_241:
-    usage_id: QubitTerm_41
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_240
+  QubitDigitalObject_242:
+    usage_id: QubitTerm_43
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_241
     class_name: QubitDigitalObject
     mime_type: image/png
     name: membership_applic_ltrhead_230.png
@@ -2531,10 +2528,10 @@ QubitDigitalObject:
     rgt: '15'
     created_at: '2008-06-19 16:21:22'
     updated_at: '2008-06-19 16:21:23'
-  QubitDigitalObject_242:
-    usage_id: QubitTerm_42
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_240
+  QubitDigitalObject_243:
+    usage_id: QubitTerm_44
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_241
     class_name: QubitDigitalObject
     mime_type: image/png
     name: membership_applic_ltrhead_231.png
@@ -2544,10 +2541,10 @@ QubitDigitalObject:
     rgt: '17'
     created_at: '2008-06-19 16:21:23'
     updated_at: '2008-06-19 16:21:24'
-  QubitDigitalObject_243:
-    information_object_id: QubitInformationObject_160
-    usage_id: QubitTerm_40
-    media_type_id: QubitTerm_36
+  QubitDigitalObject_244:
+    information_object_id: QubitInformationObject_161
+    usage_id: QubitTerm_42
+    media_type_id: QubitTerm_38
     class_name: QubitDigitalObject
     mime_type: image/jpeg
     name: A08917.jpg
@@ -2557,10 +2554,10 @@ QubitDigitalObject:
     rgt: '24'
     created_at: '2008-06-30 12:53:26'
     updated_at: '2008-06-30 12:53:26'
-  QubitDigitalObject_244:
-    usage_id: QubitTerm_41
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_243
+  QubitDigitalObject_245:
+    usage_id: QubitTerm_43
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_244
     class_name: QubitDigitalObject
     mime_type: image/png
     name: A08917_240.png
@@ -2570,10 +2567,10 @@ QubitDigitalObject:
     rgt: '21'
     created_at: '2008-06-30 12:53:26'
     updated_at: '2008-06-30 12:53:28'
-  QubitDigitalObject_245:
-    usage_id: QubitTerm_42
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_243
+  QubitDigitalObject_246:
+    usage_id: QubitTerm_44
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_244
     class_name: QubitDigitalObject
     mime_type: image/png
     name: A08917_241.png
@@ -2583,10 +2580,10 @@ QubitDigitalObject:
     rgt: '23'
     created_at: '2008-06-30 12:53:28'
     updated_at: '2008-06-30 12:53:28'
-  QubitDigitalObject_246:
-    information_object_id: QubitInformationObject_161
-    usage_id: QubitTerm_40
-    media_type_id: QubitTerm_36
+  QubitDigitalObject_247:
+    information_object_id: QubitInformationObject_162
+    usage_id: QubitTerm_42
+    media_type_id: QubitTerm_38
     class_name: QubitDigitalObject
     mime_type: image/jpeg
     name: A37992.jpg
@@ -2596,10 +2593,10 @@ QubitDigitalObject:
     rgt: '30'
     created_at: '2008-06-30 12:58:00'
     updated_at: '2008-06-30 12:58:00'
-  QubitDigitalObject_247:
-    usage_id: QubitTerm_41
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_246
+  QubitDigitalObject_248:
+    usage_id: QubitTerm_43
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_247
     class_name: QubitDigitalObject
     mime_type: image/png
     name: A37992_247.png
@@ -2609,10 +2606,10 @@ QubitDigitalObject:
     rgt: '27'
     created_at: '2008-06-30 12:58:00'
     updated_at: '2008-06-30 12:58:01'
-  QubitDigitalObject_248:
-    usage_id: QubitTerm_42
-    media_type_id: QubitTerm_36
-    parent_id: QubitDigitalObject_246
+  QubitDigitalObject_249:
+    usage_id: QubitTerm_44
+    media_type_id: QubitTerm_38
+    parent_id: QubitDigitalObject_247
     class_name: QubitDigitalObject
     mime_type: image/png
     name: A37992_248.png
@@ -2623,15 +2620,15 @@ QubitDigitalObject:
     created_at: '2008-06-30 12:58:01'
     updated_at: '2008-06-30 12:58:01'
 QubitStaticPage:
-  QubitStaticPage_240:
+  QubitStaticPage_250:
     class_name: QubitStaticPage
     permalink: homepage
     created_at: '2008-03-17 18:37:09'
     updated_at: '2008-06-28 11:18:57'
     source_culture: en
     title: { en: Welcome, es: Bienvenido, fr: Bienvenue, nl: welkom, pt: 'Bem vindo(a)' }
-    content: { en: "This is the default homepage for ICA-AtoM v1.0. This is an early beta version that is still under active development and testing.\n\nICA-AtoM is a fully web-based archival description application that is based on <a href='http://www.ica.org'>International Council on Archives</a> (ICA) standards. <i>AtoM</i> is an acronymn for <i>Access to Memory</i>.\n\nThe ICA and its <a href='http://ica-atom.org/partners.html'>project collaborators</a> are making this application available as open-source software to provide archival institutions with a free and easy-to-use option for putting their archival collections online. See the <a href='about-ica-atom'>about page</a> to learn more about the ICA-AtoM project.\n\nSee the online <a href='http://ica-atom.org/docs'>documentation</a> to learn more about using the software or press the <i>browse</i> button on the right to view some sample data.\n", es: "Ésta es la página inicial por defecto de ICA-AtoM v1.0, una versión beta preliminar aún en etapa de desarrollo.  ICA-AtoM  es una aplicación para la descripción archivística localizada en la red  que cumple estándares <a href='http://www.ica.org'>Consejo Internacional de Archivos</a> (CIA).  <i>AtoM</i> es el acrónimo de <i>Access to Memory</i>.\nEl CIA y sus colaboradores en el proyecto <a href='http://ica-atom.org/partners.html'>project collaborators</a> han concebido esta aplicación como un software de código abierto cuyo propósito es ofrecer a las instituciones archivísticas una alternativa gratuita y de fácil uso para publicar sus colecciones en línea.  Si desea leer más sobre el proyecto ICA-AtoM, sírvase consultar <a href='Acerca-ica-atom'>Acerca</a>.\nSi desea más información sobre cómo utilizar el software, vaya a <a href='http://ica-atom.org/docs'>documentation</a> o si desea desplegar ejemplos de datos pulse el botón <i>Navegar</i> que se muestra a su derecha.\n", fr: "Vous êtes dans la page d'accueil par défaut de ICA-AtoM v.1.0. Il s'agit d'une version bêta préliminaire qui est toujours activement développée et testée.\n\nICA-AtoM est une application Web de description archivistique qui s'appuie sur les normes du <a href='http://www.ica.org'>Conseil International des Archives</a> (ICA). <i>AtoM</i> est un acronymne anglais signifiant <i>Access to Memory (Accès à la Mémoire)</i>.\n\nL'ICA et ses <a href='http://ica-atom.org/partners.html'>partenaires de projet </a>rendent cette application disponible en code source libre afin de fournir aux institutions archivistiques une option gratuite et facile à utiliser pour mettre leurs collections en ligne. Voir la page <a href='about-ica-atom'>à propos</a> pour en apprendre davantage au sujet du projet ICA-AtoM.\n\nVoir la <a href='http://ica-atom.org/docs'>documentation en ligne </a> pour apprendre à utiliser le logiciel ou appuyez le bouton <i>parcourir</i> à droite pour voir quelques données-échantillons.\n", nl: "Dit is de standaard homepage voor ICA-AtoM v1.0. Dit is een vroege beta-versie die nog steeds verder wordt ontwikkeld en getest.\n\nICA-AtoM is een volledig web-gebaseerd archivistische beschrijvingsapplicatie die is gebaseerd op <a href='http://www.ica.org'>International Council on Archives</a> (ICA) standaarden. <i>AtoM</i> is een acroniem voor <i>Acces to Memory</i>.\n\nDe ICA en haar <a href='http://ica-atom.org/partners.html'>partners in dit project</a> maken deze applicatie als open-source software om zo archiefinstellingen te voorzien van een vrij en eenvoudig te gebruiken mogelijkheid om haar  archiefcollectie online te plaatsen. Zie de <a href='about-ica-atom'>over... pagina</a> om meer te weten te komen over het ICA-AtoM project.\n\nZie de online <a href='http://ica-atom.org/docs'>documentatie</a> om meer te weten te komen over het gebruik van de software of klik op de <i>bladeren</i> knop rechts om voorbeeld gegevens te bekijken.\n", pt: "Essa é a página inicial padrão do ICA-AtoM, versão 1.0. Essa ainda é uma versão beta e em contínuo desenvolvimento e teste.\n\nICA-AtoM é um aplicativo para web destinado a apoiar as atividades de Descrição Arquivística em conformidade com os padrões do <a href='http://www.ica.org'>Conselho Internacional de Arquivos</a> (CIA). <i>AtoM</i> é um acrônimo para <i>Access to Memory</i>, ou, Acesso à Memória, em inglês.\n\nO CIA e os colaboradores do projeto <a href='http://ica-atom.org/partners.html'>ICA-AtoM</a> estão disponibilizando esse aplicativo como um software livre, de forma que as instituições arquivísticas tenham acesso a um sistema gratuito, fácil de usar e que as permitam disponibilizar online informações acerca de seus acervos.\n\nAcesse a <a href='http://ica-atom.org/docs'>documentação</a> online para aprender mais acerca do uso desse software ou clique no botão <i>navegar</i> no lado direito para visualizar algumas descrições de exemplo." }
-  QubitStaticPage_241:
+    content: { en: "This is the default homepage for ICA-AtoM v1.0.1. This is an early beta version that is still under active development and testing.\n\nICA-AtoM is a fully web-based archival description application that is based on <a href='http://www.ica.org'>International Council on Archives</a> (ICA) standards. <i>AtoM</i> is an acronymn for <i>Access to Memory</i>.\n\nThe ICA and its <a href='http://ica-atom.org/partners.html'>project collaborators</a> are making this application available as open-source software to provide archival institutions with a free and easy-to-use option for putting their archival collections online. See the <a href='about-ica-atom'>about page</a> to learn more about the ICA-AtoM project.\n\nSee the online <a href='http://ica-atom.org/docs'>documentation</a> to learn more about using the software or press the <i>browse</i> button on the right to view some sample data.\n", es: "Ésta es la página inicial por defecto de ICA-AtoM v1.0.1, una versión beta preliminar aún en etapa de desarrollo.  ICA-AtoM  es una aplicación para la descripción archivística localizada en la red  que cumple estándares <a href='http://www.ica.org'>Consejo Internacional de Archivos</a> (CIA).  <i>AtoM</i> es el acrónimo de <i>Access to Memory</i>.\nEl CIA y sus colaboradores en el proyecto <a href='http://ica-atom.org/partners.html'>project collaborators</a> han concebido esta aplicación como un software de código abierto cuyo propósito es ofrecer a las instituciones archivísticas una alternativa gratuita y de fácil uso para publicar sus colecciones en línea.  Si desea leer más sobre el proyecto ICA-AtoM, sírvase consultar <a href='Acerca-ica-atom'>Acerca</a>.\nSi desea más información sobre cómo utilizar el software, vaya a <a href='http://ica-atom.org/docs'>documentation</a> o si desea desplegar ejemplos de datos pulse el botón <i>Navegar</i> que se muestra a su derecha.\n", fr: "Vous êtes dans la page d'accueil par défaut de ICA-AtoM v.1.0.1. Il s'agit d'une version bêta préliminaire qui est toujours activement développée et testée.\n\nICA-AtoM est une application Web de description archivistique qui s'appuie sur les normes du <a href='http://www.ica.org'>Conseil International des Archives</a> (ICA). <i>AtoM</i> est un acronymne anglais signifiant <i>Access to Memory (Accès à la Mémoire)</i>.\n\nL'ICA et ses <a href='http://ica-atom.org/partners.html'>partenaires de projet </a>rendent cette application disponible en code source libre afin de fournir aux institutions archivistiques une option gratuite et facile à utiliser pour mettre leurs collections en ligne. Voir la page <a href='about-ica-atom'>à propos</a> pour en apprendre davantage au sujet du projet ICA-AtoM.\n\nVoir la <a href='http://ica-atom.org/docs'>documentation en ligne </a> pour apprendre à utiliser le logiciel ou appuyez le bouton <i>parcourir</i> à droite pour voir quelques données-échantillons.\n", nl: "Dit is de standaard homepage voor ICA-AtoM v1.0.1. Dit is een vroege beta-versie die nog steeds verder wordt ontwikkeld en getest.\n\nICA-AtoM is een volledig web-gebaseerd archivistische beschrijvingsapplicatie die is gebaseerd op <a href='http://www.ica.org'>International Council on Archives</a> (ICA) standaarden. <i>AtoM</i> is een acroniem voor <i>Acces to Memory</i>.\n\nDe ICA en haar <a href='http://ica-atom.org/partners.html'>partners in dit project</a> maken deze applicatie als open-source software om zo archiefinstellingen te voorzien van een vrij en eenvoudig te gebruiken mogelijkheid om haar  archiefcollectie online te plaatsen. Zie de <a href='about-ica-atom'>over... pagina</a> om meer te weten te komen over het ICA-AtoM project.\n\nZie de online <a href='http://ica-atom.org/docs'>documentatie</a> om meer te weten te komen over het gebruik van de software of klik op de <i>bladeren</i> knop rechts om voorbeeld gegevens te bekijken.\n", pt: "Essa é a página inicial padrão do ICA-AtoM, versão 1.0.1. Essa ainda é uma versão beta e em contínuo desenvolvimento e teste.\n\nICA-AtoM é um aplicativo para web destinado a apoiar as atividades de Descrição Arquivística em conformidade com os padrões do <a href='http://www.ica.org'>Conselho Internacional de Arquivos</a> (CIA). <i>AtoM</i> é um acrônimo para <i>Access to Memory</i>, ou, Acesso à Memória, em inglês.\n\nO CIA e os colaboradores do projeto <a href='http://ica-atom.org/partners.html'>ICA-AtoM</a> estão disponibilizando esse aplicativo como um software livre, de forma que as instituições arquivísticas tenham acesso a um sistema gratuito, fácil de usar e que as permitam disponibilizar online informações acerca de seus acervos.\n\nAcesse a <a href='http://ica-atom.org/docs'>documentação</a> online para aprender mais acerca do uso desse software ou clique no botão <i>navegar</i> no lado direito para visualizar algumas descrições de exemplo." }
+  QubitStaticPage_251:
     class_name: QubitStaticPage
     permalink: about
     created_at: '2008-03-17 18:37:09'
@@ -2641,9 +2638,9 @@ QubitStaticPage:
     content: { en: "This is the default <i>About</i> page for the ICA-AtoM open-source archival description application. See the online <a href='http://ica-atom.org/docs'>documentation</a> to learn how to get started with ICA-AtoM, including how to customize and edit this page to suit your own website.\n\nICA-AtoM is a <a href='http://ica-atom.org/partners.html'>collaborative project</a> with the aim to provide the international archival community with a free, open-source software application to manage archival descriptions in accord with ICA standards.\n\nThe goal is to provide an easy-to-use, multi-lingual application that is fully web-based and will allow institutions to make their archival collections available online.\n", es: "Ésta es la página por defecto <i>Acerca</i> de la aplicación para descripción archivística de código abierto ICA-AtoM. Para información sobre  cómo utilizar ICA-AtoM, personalizar y editar esta página según las características de su propio sitio Web,  consulte <a href='http://ica-atom.org/docs'>documentation</a> .\n\nEl proyecto ICA-AtoM  <a href='http://ica-atom.org/partners.html'>collaborative project</a> tiene por objetivo proporcionar a la comunidad archivística internacional una aplicación gratuita de código abierto para la administración descripciones archivísticas en cumplimiento con estándares ICA.\n\nLa meta es poner a disposición del usuario una aplicación multilingüe, de fácil uso y situada en la red, que permita a las instituciones publicar sus colecciones archivísticas en línea.\n", fr: "Vous êtes dans la page <i>À propos</i> du logiciel libre de description archivistique ICA-AtoM. Voir la <a href='http://ica-atom.org/docs'>documentation en ligne </a> pour apprendre à utiliser ICA-AtoM, l'adapter à vos besoins et modifier cette page afin qu'elle convienne à votre propre site Web.\n\nICA-AtoM est une application Web de description archivistique qui s'appuie sur les normes du <a href='http://www.ica.org'>Conseil International des Archives</a> (ICA). <i>AtoM</i> est un acronyme anglais signifiant <i>Access to Memory (Accès à la Mémoire)</i>.\n\nICA-AtoM est un <a href='http://ica-atom.org/partners.html'>projet collaboratif </a>ayant pour but de fournir à la communauté archivistique internationale une application gratuite, disponible en code source libre, permettant de gérer des descriptions archivistiques conformément aux normes de l'ICA.\n\nLe but est de fournir une application facile à utiliser, multilingue et entièrement basée sur le Web qui permettra aux institutions de rendre accessible en ligne leurs collections d'archives.", nl: "Dit is de standaard <i>over...</i> pagina voor de ICA-AtoM open-source archivistisch beschrijvingsapplicatie. Kijk naar de online <a href='http://ica-atom.org/docs'>documentatie</a> om te leren hoe van start te gaan met deze applicatie, inclusief het aanpassen en bewerken van deze pagina om binnen uw eigen webpagina in te passen.\n\nICA-AtoM is een <a href='http://ica-atom.org/partners.html'>samenwerkingsproject</a> met het doel om de internationale archiefwereld te voorzien van een vrij, open-source software applicatie om hun archiefbeschrijvingen te beheren conform de ICA-standaarden.\n\nHet doel is om een eenvoudig te gebruiken, meertalige applicatie, dat volledig web-gebaseerd is beschikbaar te stellen. Het geeft instellingen de mogelijkheid om hun archiefcollecties online beschikbaar te stellen.\n", pt: "Essa é a página padrão <i>Sobre</i> do ICA-AtoM, um aplicativo de código-fonte aberto para descrição arquivística. Acesse a <a href='http://ica-atom.org/docs'>documentação</a> online para aprender como começar a usar o ICA-AtoM, incluindo como personalizar e editar essa página para incluir ele em seu site.\n\nICA-AtoM é <a href='http://ica-atom.org/partners.html'>projeto colaborativo</a> com a missão de prover a comunidade arquivística internacional com um software aplicativo gratuito e de código-fonte aberto para gerenciamento de descrição arquivística, em conformidade com os padrões do Conselho Internacional de Arquivos (ICA).\n\nO objetivo é disponibilizar um aplicativo fácil de usar, multilíngue, e totalmente baseado na web, permitindo que instituições possam representar seus acervos arquivísticos em meio eletrônico." }
 QubitNote:
   QubitNote_1:
-    object_id: QubitInformationObject_124
+    object_id: QubitInformationObject_125
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '1'
     rgt: '46'
@@ -2652,9 +2649,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on provenance of fonds.' }
   QubitNote_2:
-    object_id: QubitInformationObject_125
+    object_id: QubitInformationObject_126
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '2'
     rgt: '45'
@@ -2663,9 +2660,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on characteristics of records.' }
   QubitNote_3:
-    object_id: QubitInformationObject_125
+    object_id: QubitInformationObject_126
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '3'
     rgt: '44'
@@ -2674,9 +2671,9 @@ QubitNote:
     source_culture: en
     content: { en: 'The over 8,000 file titles in this series were previously known by several series titles, as follows. Files located at bays 10, 13-20, 67-68, 88-90, 82, 142-143, 22 and 27 were previously known as "Inward correspondence, 1886-1975" (series 20); files located at bays 16-22 were previously known as "Operational files, predominant 1971-1975" (series 21); files located at bays 81, 79, 141-142 were previously known as "Special subjects, predominant 1962-1972" (series 23); files located at boxes 42-B-7, 80-C-7, and shelf 80-D were previously known as "Standing Committee on Finance and Administration subject files, 1962-1970 (series 25); files located at boxes 142-C-5 to 142-C-6 (files 1- 3) were previously known as "Standing Committee on Planning and Development subject files, 1969-1975" (series 26); files located at shelf 82-A were previously known as "From the City Clerk''s Office, predominant 1935- 1966" (series 57); files located at boxes 594- A-8, 594-B-5 and 594-C-1 were previously known as "McGuigan family fonds" (Add.MSS 920, City Clerk''s Office, Inward correspondence).' }
   QubitNote_4:
-    object_id: QubitInformationObject_126
+    object_id: QubitInformationObject_127
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '4'
     rgt: '43'
@@ -2685,9 +2682,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on form of records.' }
   QubitNote_5:
-    object_id: QubitInformationObject_135
+    object_id: QubitInformationObject_136
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '5'
     rgt: '42'
@@ -2696,9 +2693,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on name of creator' }
   QubitNote_6:
-    object_id: QubitInformationObject_136
+    object_id: QubitInformationObject_137
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '6'
     rgt: '41'
@@ -2707,9 +2704,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on content of series' }
   QubitNote_7:
-    object_id: QubitInformationObject_137
+    object_id: QubitInformationObject_138
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '7'
     rgt: '40'
@@ -2718,9 +2715,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on content of series' }
   QubitNote_8:
-    object_id: QubitInformationObject_138
+    object_id: QubitInformationObject_139
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '8'
     rgt: '39'
@@ -2729,9 +2726,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on content of series.' }
   QubitNote_9:
-    object_id: QubitInformationObject_139
+    object_id: QubitInformationObject_140
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '9'
     rgt: '38'
@@ -2740,9 +2737,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title taken from job index card.' }
   QubitNote_10:
-    object_id: QubitInformationObject_139
-    type_id: QubitTerm_71
-    user_id: QubitUser_113
+    object_id: QubitInformationObject_140
+    type_id: QubitTerm_72
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '10'
     rgt: '37'
@@ -2751,9 +2748,9 @@ QubitNote:
     source_culture: en
     content: { en: 'On job card: "Contractor George Snider". Building has been demolished.' }
   QubitNote_11:
-    object_id: QubitInformationObject_140
+    object_id: QubitInformationObject_141
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '11'
     rgt: '36'
@@ -2762,9 +2759,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title taken from job index card.' }
   QubitNote_12:
-    object_id: QubitInformationObject_140
-    type_id: QubitTerm_71
-    user_id: QubitUser_113
+    object_id: QubitInformationObject_141
+    type_id: QubitTerm_72
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '12'
     rgt: '35'
@@ -2773,9 +2770,9 @@ QubitNote:
     source_culture: en
     content: { en: 'On job card: "Contractor Stuart & Fidder". This part of building has been demolished.' }
   QubitNote_13:
-    object_id: QubitInformationObject_141
+    object_id: QubitInformationObject_142
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '13'
     rgt: '34'
@@ -2784,9 +2781,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title taken from job index card.' }
   QubitNote_14:
-    object_id: QubitInformationObject_142
+    object_id: QubitInformationObject_143
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '14'
     rgt: '33'
@@ -2795,9 +2792,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title taken from job index card.' }
   QubitNote_15:
-    object_id: QubitInformationObject_142
-    type_id: QubitTerm_71
-    user_id: QubitUser_113
+    object_id: QubitInformationObject_143
+    type_id: QubitTerm_72
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '15'
     rgt: '32'
@@ -2806,9 +2803,9 @@ QubitNote:
     source_culture: en
     content: { en: 'On job card: "Contractor John K. Sinclair". Building has been demolished.' }
   QubitNote_16:
-    object_id: QubitInformationObject_143
+    object_id: QubitInformationObject_144
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '16'
     rgt: '31'
@@ -2817,9 +2814,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title taken from job index card.' }
   QubitNote_17:
-    object_id: QubitInformationObject_144
-    type_id: QubitTerm_71
-    user_id: QubitUser_113
+    object_id: QubitInformationObject_145
+    type_id: QubitTerm_72
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '17'
     rgt: '30'
@@ -2828,9 +2825,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Drawing spans 2 fiche' }
   QubitNote_18:
-    object_id: QubitInformationObject_145
+    object_id: QubitInformationObject_146
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '18'
     rgt: '29'
@@ -2839,9 +2836,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title of the fonds is based on the name of its creator.' }
   QubitNote_19:
-    object_id: QubitInformationObject_146
+    object_id: QubitInformationObject_147
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '19'
     rgt: '28'
@@ -2850,9 +2847,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title is based on contents of the series.' }
   QubitNote_20:
-    object_id: QubitInformationObject_147
+    object_id: QubitInformationObject_148
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '20'
     rgt: '27'
@@ -2861,9 +2858,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title based on content of series' }
   QubitNote_21:
-    object_id: QubitInformationObject_148
+    object_id: QubitInformationObject_149
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '21'
     rgt: '26'
@@ -2872,9 +2869,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title is based on contents of the series.' }
   QubitNote_22:
-    object_id: QubitInformationObject_149
+    object_id: QubitInformationObject_150
     type_id: QubitTerm_25
-    user_id: QubitUser_113
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '22'
     rgt: '25'
@@ -2883,9 +2880,9 @@ QubitNote:
     source_culture: en
     content: { en: 'Title is based on contents of the sub-series.' }
   QubitNote_23:
-    object_id: QubitInformationObject_159
-    type_id: QubitTerm_70
-    user_id: QubitUser_113
+    object_id: QubitInformationObject_160
+    type_id: QubitTerm_71
+    user_id: QubitUser_117
     scope: QubitInformationObject
     lft: '23'
     rgt: '24'
@@ -2895,154 +2892,154 @@ QubitNote:
     content: { en: 'This movie is not part of the Townley, Matheson and Partners fonds. It is made available for sample data purposes only. It is used with permission from the U.S. Library of Congress under a Creative Commons license.' }
 QubitProperty:
   QubitProperty_1:
-    object_id: QubitInformationObject_124
+    object_id: QubitInformationObject_125
     scope: languages
     name: information_object_language
     value: en
     created_at: '2008-04-24 09:48:35'
     updated_at: '2008-04-24 09:48:35'
   QubitProperty_2:
-    object_id: QubitInformationObject_124
+    object_id: QubitInformationObject_125
     scope: scripts
     name: information_object_script
     value: Latn
     created_at: '2008-04-24 09:48:35'
     updated_at: '2008-04-24 09:48:35'
   QubitProperty_3:
-    object_id: QubitInformationObject_124
+    object_id: QubitInformationObject_125
     scope: languages
     name: language_of_information_object_description
     value: en
     created_at: '2008-04-24 09:48:35'
     updated_at: '2008-04-24 09:48:35'
   QubitProperty_4:
-    object_id: QubitInformationObject_124
+    object_id: QubitInformationObject_125
     scope: scripts
     name: script_of_information_object_description
     value: Latn
     created_at: '2008-04-24 09:48:35'
     updated_at: '2008-04-24 09:48:35'
   QubitProperty_5:
-    object_id: QubitActor_120
+    object_id: QubitActor_121
     scope: languages
     name: language_of_actor_description
     value: en
     created_at: '2008-04-24 09:50:31'
     updated_at: '2008-04-24 09:50:31'
   QubitProperty_6:
-    object_id: QubitActor_120
+    object_id: QubitActor_121
     scope: scripts
     name: script_of_actor_description
     value: Latn
     created_at: '2008-04-24 09:50:31'
     updated_at: '2008-04-24 09:50:31'
   QubitProperty_7:
-    object_id: QubitInformationObject_125
+    object_id: QubitInformationObject_126
     scope: languages
     name: information_object_language
     value: en
     created_at: '2008-04-24 09:54:36'
     updated_at: '2008-04-24 09:54:36'
   QubitProperty_8:
-    object_id: QubitInformationObject_125
+    object_id: QubitInformationObject_126
     scope: scripts
     name: information_object_script
     value: Latn
     created_at: '2008-04-24 09:54:36'
     updated_at: '2008-04-24 09:54:36'
   QubitProperty_9:
-    object_id: QubitInformationObject_125
+    object_id: QubitInformationObject_126
     scope: languages
     name: language_of_information_object_description
     value: en
     created_at: '2008-04-24 09:56:10'
     updated_at: '2008-04-24 09:56:10'
   QubitProperty_10:
-    object_id: QubitInformationObject_125
+    object_id: QubitInformationObject_126
     scope: scripts
     name: script_of_information_object_description
     value: Latn
     created_at: '2008-04-24 09:56:10'
     updated_at: '2008-04-24 09:56:10'
   QubitProperty_11:
-    object_id: QubitInformationObject_126
+    object_id: QubitInformationObject_127
     scope: languages
     name: language_of_information_object_description
     value: en
     created_at: '2008-04-24 10:00:23'
     updated_at: '2008-04-24 10:00:23'
   QubitProperty_12:
-    object_id: QubitInformationObject_126
+    object_id: QubitInformationObject_127
     scope: scripts
     name: script_of_information_object_description
     value: Latn
     created_at: '2008-04-24 10:00:23'
     updated_at: '2008-04-24 10:00:23'
   QubitProperty_13:
-    object_id: QubitInformationObject_135
+    object_id: QubitInformationObject_136
     scope: languages
     name: information_object_language
     value: en
     created_at: '2008-04-24 10:21:23'
     updated_at: '2008-04-24 10:21:23'
   QubitProperty_14:
-    object_id: QubitInformationObject_135
+    object_id: QubitInformationObject_136
     scope: scripts
     name: information_object_script
     value: Latn
     created_at: '2008-04-24 10:21:23'
     updated_at: '2008-04-24 10:21:23'
   QubitProperty_15:
-    object_id: QubitInformationObject_135
+    object_id: QubitInformationObject_136
     scope: languages
     name: language_of_information_object_description
     value: en
     created_at: '2008-04-24 10:23:02'
     updated_at: '2008-04-24 10:23:02'
   QubitProperty_16:
-    object_id: QubitInformationObject_135
+    object_id: QubitInformationObject_136
     scope: scripts
     name: script_of_information_object_description
     value: Latn
     created_at: '2008-04-24 10:23:02'
     updated_at: '2008-04-24 10:23:02'
   QubitProperty_17:
-    object_id: QubitRepository_119
+    object_id: QubitRepository_120
     scope: languages
     name: language_of_repository_description
     value: en
     created_at: '2008-04-24 12:03:04'
     updated_at: '2008-04-24 12:03:04'
   QubitProperty_18:
-    object_id: QubitRepository_119
+    object_id: QubitRepository_120
     scope: scripts
     name: script_of_repository_description
     value: Latn
     created_at: '2008-04-24 12:03:04'
     updated_at: '2008-04-24 12:03:04'
   QubitProperty_19:
-    object_id: QubitInformationObject_145
+    object_id: QubitInformationObject_146
     scope: languages
     name: information_object_language
     value: en
     created_at: '2008-04-24 12:06:48'
     updated_at: '2008-04-24 12:06:48'
   QubitProperty_20:
-    object_id: QubitInformationObject_145
+    object_id: QubitInformationObject_146
     scope: scripts
     name: information_object_script
     value: Latn
     created_at: '2008-04-24 12:06:48'
     updated_at: '2008-04-24 12:06:48'
   QubitProperty_21:
-    object_id: QubitInformationObject_145
+    object_id: QubitInformationObject_146
     scope: languages
     name: language_of_information_object_description
     value: en
     created_at: '2008-04-24 12:08:15'
     updated_at: '2008-04-24 12:08:15'
   QubitProperty_22:
-    object_id: QubitInformationObject_145
+    object_id: QubitInformationObject_146
     scope: scripts
     name: script_of_information_object_description
     value: Latn
@@ -3050,7 +3047,7 @@ QubitProperty:
     updated_at: '2008-04-24 12:08:15'
 QubitContactInformation:
   QubitContactInformation_1:
-    actor_id: QubitRepository_119
+    actor_id: QubitRepository_120
     primary_contact: '1'
     street_address: '8888 University Dr'
     postal_code: 'V5S 1A1'
@@ -3061,7 +3058,7 @@ QubitContactInformation:
     city: { en: Burnaby }
     region: { en: BC }
   QubitContactInformation_2:
-    actor_id: QubitRepository_118
+    actor_id: QubitRepository_119
     primary_contact: '1'
     street_address: '1150 Chestnut Street'
     website: 'http://www.city.vancouver.bc.ca/ctyclerk/archives/index.htm'
@@ -3090,7 +3087,7 @@ QubitSetting:
     editable: '0'
     deleteable: '0'
     source_culture: en
-    value: { en: 'ICA-AtoM 1.0-beta' }
+    value: { en: 'ICA-AtoM 1.0.1-beta' }
   QubitSetting_2:
     name: upload_dir
     editable: '0'
@@ -3294,17 +3291,20 @@ QubitSetting:
     value: { pt: português }
 QubitUserRoleRelation:
   QubitUserRoleRelation_1:
-    user_id: QubitUser_113
+    user_id: QubitUser_115
     role_id: QubitRole_1
   QubitUserRoleRelation_2:
-    user_id: QubitUser_113
+    user_id: QubitUser_115
     role_id: QubitRole_4
   QubitUserRoleRelation_3:
-    user_id: QubitUser_114
+    user_id: QubitUser_116
     role_id: QubitRole_2
   QubitUserRoleRelation_4:
-    user_id: QubitUser_115
+    user_id: QubitUser_117
     role_id: QubitRole_3
   QubitUserRoleRelation_5:
-    user_id: QubitUser_116
+    user_id: QubitUser_118
     role_id: QubitRole_4
+  QubitUserRoleRelation_6:
+    user_id: QubitUser_252
+    role_id: QubitRole_1
