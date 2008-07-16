@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2008-06-30T10:46:07Z" product-name="messages">
+  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2008-07-14T14:59:11Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -108,7 +108,7 @@
       </trans-unit>
       <trans-unit id="27">
         <source>code alpha2</source>
-        <target/>
+        <target>C&#xF3;digo alfa2</target>
       </trans-unit>
       <trans-unit id="28">
         <source>edit</source>
@@ -240,7 +240,7 @@
       </trans-unit>
       <trans-unit id="60">
         <source>administrative/biographical history</source>
-        <target/>
+        <target>historia administrativa/biogr&#xE1;fica</target>
       </trans-unit>
       <trans-unit id="61">
         <source>archival history</source>
@@ -861,7 +861,7 @@
       </trans-unit>
       <trans-unit id="222">
         <source>dates of creation revision deletion</source>
-        <target/>
+        <target>fechas de creaci&#xF3;n revisi&#xF3;n eliminaci&#xF3;n</target>
       </trans-unit>
       <trans-unit id="223">
         <source>language of authority record</source>
@@ -1415,7 +1415,7 @@
       </trans-unit>
       <trans-unit id="358">
         <source>parent level</source>
-        <target/>
+        <target>a un nivel principal</target>
       </trans-unit>
       <trans-unit id="359">
         <source>Creator</source>
@@ -1435,7 +1435,7 @@
       </trans-unit>
       <trans-unit id="363">
         <source>publication note</source>
-        <target/>
+        <target>nota de publicaci&#xF3;n</target>
       </trans-unit>
       <trans-unit id="364">
         <source>notes area</source>
@@ -1511,11 +1511,11 @@
       </trans-unit>
       <trans-unit id="382">
         <source>filesize</source>
-        <target>Tama&#xF1;o del archivo</target>
+        <target>Peso del archivo</target>
       </trans-unit>
       <trans-unit id="383">
         <source>uploaded</source>
-        <target/>
+        <target>cargado</target>
       </trans-unit>
       <trans-unit id="384">
         <source>derivatives</source>
@@ -1531,7 +1531,7 @@
       </trans-unit>
       <trans-unit id="387">
         <source>usage type</source>
-        <target/>
+        <target>tipo de uso</target>
       </trans-unit>
       <trans-unit id="388">
         <source>browse %1%s</source>
@@ -1539,7 +1539,7 @@
       </trans-unit>
       <trans-unit id="389">
         <source>Select a %1% to upload</source>
-        <target/>
+        <target>Seleccione un %1% para cargar</target>
       </trans-unit>
       <trans-unit id="390">
         <source>Part of</source>
@@ -1571,7 +1571,7 @@
       </trans-unit>
       <trans-unit id="397">
         <source>container type</source>
-        <target/>
+        <target>tipo de contenedor</target>
       </trans-unit>
       <trans-unit id="398">
         <source>selected container</source>
@@ -1579,11 +1579,11 @@
       </trans-unit>
       <trans-unit id="399">
         <source>link to an existing container</source>
-        <target/>
+        <target>establezca un v&#xED;nculo a un contenedor ya existente</target>
       </trans-unit>
       <trans-unit id="400">
         <source>or, create a new container</source>
-        <target/>
+        <target>o, cree un contenedor nuevo</target>
       </trans-unit>
       <trans-unit id="401">
         <source>container</source>
@@ -1631,7 +1631,7 @@
       </trans-unit>
       <trans-unit id="412">
         <source>edit physical object</source>
-        <target/>
+        <target>editar objecto f&#xED;sico</target>
       </trans-unit>
       <trans-unit id="413">
         <source>edit (ISDIAH)</source>
@@ -1647,7 +1647,7 @@
       </trans-unit>
       <trans-unit id="416">
         <source>Contact Person</source>
-        <target/>
+        <target>Persona de contacto</target>
       </trans-unit>
       <trans-unit id="417">
         <source>%1% information</source>
@@ -1667,7 +1667,7 @@
       </trans-unit>
       <trans-unit id="421">
         <source>There are %1% %2%s related to this item.  Are you sure you wish to proceed with delete?</source>
-        <target/>
+        <target>Hay %1% %2% asociados con este &#xED;tem. &#xBF;Est&#xE1; seguro que desea continuar la operaci&#xF3;n de eliminaci&#xF3;n?</target>
       </trans-unit>
       <trans-unit id="422">
         <source>contact person</source>

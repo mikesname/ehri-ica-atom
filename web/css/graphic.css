@@ -180,6 +180,15 @@ ol li
 margin: 5px 0 0 0;
 }
 
+/* sub-lists in the UI translation list */
+
+.translationList ul
+{
+padding: 0; 
+margin: 0 0 10px 20px;
+}
+
+
 /*links*/
 
 a:link, a:visited, a:active {
@@ -503,6 +512,15 @@ font: normal 11px/14px verdana, lucida, sans-serif;
 color: #000000;
 }
 
+table.list thead tr {
+border-left: 2px solid #999999;
+}
+
+table.list ul {
+padding: 0;
+margin: 0;
+}
+
 table.list tr {
 }
 
@@ -512,6 +530,7 @@ table.list td {
     border-spacing: 20px;
     border: 0;
     border-bottom: 1px solid #cccccc;
+    vertical-align: top;
 }
 
 table.list th {

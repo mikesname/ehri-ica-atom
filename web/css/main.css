@@ -1,0 +1,82 @@
+/* Override Drupal's background */
+
+body,
+#wrapper,
+#wrapper #container #center #squeeze,
+#wrapper #container #center .right-corner,
+#wrapper #container #center .right-corner .left-corner
+{
+  background: white;
+}
+
+/* Position logo to the right of title */
+
+#wrapper #container #header h1 img
+{
+  float: right;
+
+  /* This is the width of the logo image.  Otherwise its right margin is aligned with the right margin of the title */
+  left: 80px;
+
+  position: relative;
+}
+
+/* Add style to Qubit logo text */
+
+#wrapper #container #header h1 div
+{
+  color: #FC6E3C;
+  font-family: Verdana, serif;
+  font-size: 4em;
+  font-weight: bold;
+  letter-spacing: -0.1ex;
+}
+
+#wrapper #container #header h1 div:first-letter
+{
+  color: #CC3204;
+  font-size: 115%;
+}
+
+/* Drop decoration, margin, and padding from lists in the context menu */
+/* FIXME: Is there a Drupal class for such undecorated lists? */
+
+.contextMenu ul
+{
+  margin: 0;
+  padding: 0;
+}
+
+.contextMenu ul li
+{
+  background: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Fixes for Drupal and YUI to play together */
+
+.ygtvitem table
+{
+  margin: 0;
+}
+
+.ygtvitem tbody
+{
+  border: 0;
+}
+
+.ygtvitem td, th
+{
+  padding: 0;
+}
+
+/* Drupal system.css sets position: relative, which causes parts of YUI menus
+ * which overflow the fieldset to disappear */
+/* TODO: Is this a bug in YUI menus?  Perhaps if position is relative, menu
+ * parts should not overflow the fieldset? */
+
+html.js fieldset.collapsible
+{
+  position: static;
+}

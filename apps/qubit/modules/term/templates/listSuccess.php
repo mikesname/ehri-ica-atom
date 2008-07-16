@@ -31,8 +31,13 @@
         <?php endif; ?>
       </td>
       <td>
-    <?php if (is_null($scopeNote = $term->getScopeNote())) $scopeNote = $term->getScopeNote(array('sourceCulture' => true)); ?>
-      <?php echo $scopeNote ?>
+      <?php if (($scopeNotes = $term->getNotesByType($noteTypeId = QubitTerm::SCOPE_NOTE_ID, $exclude = null)) > 0): ?>
+      <ul>
+        <?php foreach ($scopeNotes as $scopeNote): ?>
+          <li><?php echo $scopeNote->getContent(array('cultureFallback' => 'true')) ?></li>
+        <?php endforeach; ?>
+      </ul>
+      <?php endif; ?>
       </td></tr>
     
     <?php $prevTerm = $term; ?>

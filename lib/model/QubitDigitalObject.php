@@ -620,6 +620,8 @@ class QubitDigitalObject extends BaseDigitalObject
     // (assume last extension is most significant)
     foreach ($rfilePieces as $key => $ext)
     {
+      $ext = strtolower($ext);  // Convert uppercase extensions to lowercase
+      
       // Try to match this extension to a mime-type
       if (array_key_exists($ext, $mimeTypeList))
       {
@@ -801,7 +803,7 @@ class QubitDigitalObject extends BaseDigitalObject
     }
 
     // Create a thumbnail
-    $newImage = new sfThumbnail($width, $height, true, false, 75, $adapter);
+    $newImage = new sfThumbnail($width, $height, true, false, 75, $adapter, array('extract' => 1));
     $newImage->loadFile($originalImageName);
     $newImage->save($newImageName, self::THUMB_MIME_TYPE);
 

@@ -8,9 +8,9 @@
         <?php if (null === $repository = $ancestor->getRepository()): ?>
           <?php continue ?>
         <?php endif; ?>
-        <?php $sf_response->addStylesheet('yui/container/assets/skins/sam/container') ?>
-        <?php $sf_response->addJavaScript('yui/yahoo-dom-event/yahoo-dom-event') ?>
-        <?php $sf_response->addJavaScript('yui/container/container-min') ?>
+        <?php $sf_response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event') ?>
+        <?php $sf_response->addJavaScript('/vendor/yui/container/container-min') ?>
+        <?php $sf_response->addStylesheet('/vendor/yui/container/assets/skins/sam/container') ?>
         <?php echo javascript_tag(<<<EOF
 var repositoryTooltip = new YAHOO.widget.Tooltip('repositoryTooltip', {
   context: 'repositoryLink'});
@@ -34,9 +34,9 @@ EOF
         <?php if (count($creators = $ancestor->getCreators()) < 1): ?>
           <?php continue ?>
         <?php endif; ?>
-        <?php $sf_response->addStylesheet('yui/container/assets/skins/sam/container') ?>
-        <?php $sf_response->addJavaScript('yui/yahoo-dom-event/yahoo-dom-event') ?>
-        <?php $sf_response->addJavaScript('yui/container/container-min') ?>
+        <?php $sf_response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event') ?>
+        <?php $sf_response->addJavaScript('/vendor/yui/container/container-min') ?>
+        <?php $sf_response->addStylesheet('/vendor/yui/container/assets/skins/sam/container') ?>
         <?php echo javascript_tag(<<<EOF
 var repositoryTooltip = new YAHOO.widget.Tooltip('creatorsTooltip', {
   context: 'creatorsLink'});
@@ -51,9 +51,9 @@ EOF
       <div class="label">
         <?php echo sfConfig::get('app_ui_label_creator') ?>
       </div>
-      <ul style="margin:0; padding: 0;">
+      <ul>
         <?php foreach ($creators as $creator): ?>
-          <li style="margin:0; padding 0;"><?php echo link_to($creator, 'actor/show?id='.$creator->getId(), $options) ?></li>
+          <li><?php echo link_to($creator, 'actor/show?id='.$creator->getId(), $options) ?></li>
         <?php endforeach; ?>
       </ul>
     <?php endif; ?>

@@ -2,9 +2,21 @@
   code:
     standard: Symfony
 
+//*.flv:
+  code:
+
 //*.gif:
   props:
     'svn:mime-type': image/gif
+
+//*.jpg:
+  code:
+
+//*.mpg:
+  code:
+
+//*.pdf:
+  code:
 
 //*.php:
   preamble:
@@ -13,8 +25,12 @@
     'svn:eol-style': native
 
 //*.png:
+  code:
   props:
     'svn:mime-type': image/png
+
+//*.swf:
+  code:
 
 apps/*/i18n/*/messages.xml:
   code:

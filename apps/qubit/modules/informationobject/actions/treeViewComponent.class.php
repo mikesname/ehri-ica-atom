@@ -30,14 +30,14 @@ class InformationObjectTreeViewComponent extends sfComponent
       return sfView::NONE;
     }
 
-    $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin');
-
     $this->getResponse()->addJavaScript('jquery');
-    $this->getResponse()->addJavaScript('drupal');
+    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('qubit');
-    $this->getResponse()->addJavaScript('yui/yahoo-dom-event/yahoo-dom-event');
-    $this->getResponse()->addJavaScript('yui/treeview/treeview-min');
+    $this->getResponse()->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
+    $this->getResponse()->addJavaScript('/vendor/yui/treeview/treeview-min');
     $this->getResponse()->addJavaScript('treeView');
+
+    $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin');
 
     $this->treeViewObjects = array();
     foreach ($this->informationObjects->orderBy('lft') as $informationObject)

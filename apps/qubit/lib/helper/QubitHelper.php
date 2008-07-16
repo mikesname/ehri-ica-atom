@@ -89,15 +89,17 @@ function format_script($script_iso, $culture = null)
 function object_select_tree($object, $method, array $options = array())
 {
   $response = sfContext::getInstance()->getResponse();
+
   $response->addJavaScript('jquery');
-  $response->addJavaScript('drupal');
-  $response->addJavaScript('yui/yahoo-dom-event/yahoo-dom-event');
-  $response->addJavaScript('yui/element/element-beta-min');
-  $response->addJavaScript('yui/button/button-min');
-  $response->addJavaScript('yui/container/container_core-min');
-  $response->addJavaScript('yui/menu/menu-min');
-  $response->addStylesheet('yui/button/assets/skins/qubit/button');
-  $response->addStylesheet('yui/menu/assets/skins/qubit/menu');
+  $response->addJavaScript('/vendor/drupal/misc/drupal');
+  $response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
+  $response->addJavaScript('/vendor/yui/element/element-beta-min');
+  $response->addJavaScript('/vendor/yui/button/button-min');
+  $response->addJavaScript('/vendor/yui/container/container_core-min');
+  $response->addJavaScript('/vendor/yui/menu/menu-min');
+
+  $response->addStylesheet('/vendor/yui/button/assets/skins/sam/button');
+  $response->addStylesheet('/vendor/yui/menu/assets/skins/sam/menu');
 
   if (is_null($relatedClass = _get_option($options, 'related_class')) && preg_match('/^get(.+?)Id$/', $method, $matches) === 1)
   {

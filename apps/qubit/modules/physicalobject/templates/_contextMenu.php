@@ -7,7 +7,9 @@
 <tr><td>
   <?php if($type = $physicalObject->getType()) echo $type.': '; ?>
   <?php echo link_to($physicalObject->getName(array('cultureFallback' => 'true')),
-    'physicalobject/edit?id='.$physicalObject->getId()) ?>
+    array('module' => 'physicalobject', 'action' => 'edit', 'id' => $physicalObject->getId()), 
+    array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $currentInformationObject->getId())))
+  ) ?>
   <?php if($location = $physicalObject->getLocation(array('cultureFallback' => 'true'))) echo ' - '.$location; ?>
 </td></tr>
 <?php endforeach; ?>

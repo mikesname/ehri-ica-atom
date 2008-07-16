@@ -42,33 +42,35 @@ class QubitTerm extends BaseTerm
   //NoteType taxonomy
   const TITLE_NOTE_ID = 25;
   const PUBLICATION_NOTE_ID = 26;
+  const SOURCE_NOTE_ID = 27;
+  const SCOPE_NOTE_ID = 28;
   //CollectionType taxonomy
-  const ARCHIVAL_MATERIAL_ID = 27;
-  const FINDING_AIDS_ID = 28;
-  const PUBLISHED_MATERIAL_ID = 29;
-  const ARTEFACT_MATERIAL_ID = 30;
+  const ARCHIVAL_MATERIAL_ID = 29;
+  const FINDING_AIDS_ID = 30;
+  const PUBLISHED_MATERIAL_ID = 31;
+  const ARTEFACT_MATERIAL_ID = 32;
   //ActorEntityType taxonomy
-  const CORPORATE_BODY_ID = 31;
-  const PERSON_ID = 32;
-  const FAMILY_ID = 33;
+  const CORPORATE_BODY_ID = 33;
+  const PERSON_ID = 34;
+  const FAMILY_ID = 35;
   //OtherNameType taxonomy
-  const FAMILY_NAME_FIRST_NAME_ID = 34;
+  const FAMILY_NAME_FIRST_NAME_ID = 36;
   //MediaType taxonomy
-  const AUDIO_ID = 35;
-  const IMAGE_ID = 36;
-  const TEXT_ID = 37;
-  const VIDEO_ID = 38;
-  const OTHER_ID = 39;
+  const AUDIO_ID = 37;
+  const IMAGE_ID = 38;
+  const TEXT_ID = 39;
+  const VIDEO_ID = 40;
+  const OTHER_ID = 41;
   //Digital Object Usage taxonomy
-  const MASTER_ID = 40;
-  const REFERENCE_ID = 41;
-  const THUMBNAIL_ID = 42;
+  const MASTER_ID = 42;
+  const REFERENCE_ID = 43;
+  const THUMBNAIL_ID = 44;
   //Physical Object Type taxonomy
-  const LOCATION_ID = 43;
-  const CONTAINER_ID = 44;
-  const ARTEFACT_ID = 45;
+  const LOCATION_ID = 45;
+  const CONTAINER_ID = 46;
+  const ARTEFACT_ID = 47;
   //Relation Type taxonomy
-  const HAS_PHYSICAL_OBJECT_ID = 46;
+  const HAS_PHYSICAL_OBJECT_ID = 48;
 
   public function isProtected()
   {
@@ -84,6 +86,8 @@ class QubitTerm extends BaseTerm
            $this->getId() == QubitTerm::CONTRIBUTION_ID ||
            $this->getId() == QubitTerm::TITLE_NOTE_ID ||
            $this->getId() == QubitTerm::PUBLICATION_NOTE_ID ||
+           $this->getId() == QubitTerm::SOURCE_NOTE_ID ||
+           $this->getId() == QubitTerm::SCOPE_NOTE_ID ||
            $this->getId() == QubitTerm::ARCHIVAL_MATERIAL_ID ||
            $this->getId() == QubitTerm::FINDING_AIDS_ID ||
            $this->getId() == QubitTerm::PUBLISHED_MATERIAL_ID ||
@@ -116,6 +120,37 @@ class QubitTerm extends BaseTerm
   
     return (string) $this->getName();
   }
+  
+  
+  public function setNote($userId, $note, $noteTypeId)
+  {
+    $newNote = new QubitNote;
+    $newNote->setObjectId($this->getId());
+    $newNote->setScope('QubitTerm');
+    $newNote->setUserId($userId);
+    $newNote->setContent($note);
+    $newNote->setTypeId($noteTypeId);
+    $newNote->save();
+  }
+
+  public function getNotesByType($noteTypeId = null, $excludeNoteTypeId = null)
+  {
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
+    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
+    if ($noteTypeId)
+      {
+      $criteria->add(QubitNote::TYPE_ID, $noteTypeId);
+      }
+    if ($excludeNoteTypeId)
+      {
+      $criteria->add(QubitNote::TYPE_ID, $excludeNoteTypeId, Criteria::NOT_EQUAL);
+      }
+
+    return QubitNote::get($criteria);
+  }
+  
+  
 
   public static function getLevelsOfDescription($options = array())
   {
@@ -247,8 +282,9 @@ class QubitTerm extends BaseTerm
     return $tree;
   }
   
-
   
+  
+   
   protected $CountryHitCount = null;
   protected $LanguageHitCount = null;
   protected $SubjectHitCount = null;

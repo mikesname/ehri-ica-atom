@@ -7,124 +7,134 @@
 - menu.css is used to structure and style menus
 - all other graphical elements are handled by graphic.css */
 
-
 /*********************************************************
                UNIVERSAL FORM PROPERTIES
 **********************************************************/
 
-form {
+form
+{
 margin: 0;
 padding: 0;
 border: 0;
 }
 
-form input {
-	width: 95%;
-	padding: 0 3px 3px 3px;
-	margin: 0;
-	font: normal 12px Verdana, Arial, Sans-Serif;
+form input
+{
+  width: 95%;
+  padding: 0 3px 3px 3px;
+  margin: 0;
+  font: normal 12px Verdana, Arial, Sans-Serif;
   background-color: #FFFFFF;
-	border: 1px solid #a3a3a3;
-	}
-
-
-form textarea {
-	width: 95%;
-	padding: 0 3px 3px 3px;
-	margin: 0;
-	font: normal 12px Verdana, Arial, Sans-Serif;
-  background-color: #FFFFFF;
-	border: 1px solid #a3a3a3;
+  border: 1px solid #a3a3a3;
 }
 
-
-form radio {
-	padding: 0;
-	margin: 0 0 0 20px;
-	vertical-align: top;
+form textarea
+{
+  width: 95%;
+  padding: 0 3px 3px 3px;
+  margin: 0;
+  font: normal 12px Verdana, Arial, Sans-Serif;
+  background-color: #FFFFFF;
+  border: 1px solid #a3a3a3;
 }
 
-form select {
-	font: normal 12px Verdana, Arial, Sans-Serif;
+form radio
+{
+  padding: 0;
+  margin: 0 0 0 20px;
+  vertical-align: top;
+}
+
+form select
+{
+  font: normal 12px Verdana, Arial, Sans-Serif;
   width: 97%;
 }
 
-form input:focus, textarea:focus, select:focus {
+form input:focus, textarea:focus, select:focus
+{
 background: #cccccc;
 }
-
-
-
 
 /*********************************************************
                 FORM HEADER
 **********************************************************/
 
-.formHeader {
+.formHeader
+{
   display: block;
   padding: 4px;
-	vertical-align:top;
-	text-align:left;
+  vertical-align:top;
+  text-align:left;
   font: bold 18px/18px georgia, verdana, sans-serif;
   border: 0;
-	border-bottom: 1px solid #999999;
-	border-top: 2px solid #999999;
+  border-bottom: 1px solid #999999;
+  border-top: 2px solid #999999;
   color: #000033;
-	background-color: #FF9D3C;
-	margin-bottom: 10px;
+  background-color: #FF9D3C;
+  margin-bottom: 10px;
 }
 
-.formHeader a:link, .formHeader a:visited, .formHeader a:active {
+.formHeader a:link, .formHeader a:visited, .formHeader a:active
+{
   color: #000000;
-  }
+}
 
-.formHeader a:hover {
+.formHeader a:hover
+{
   color: #ffffff;
   background-color: #000000;
-  }
+}
 
 /*********************************************************
                 COLLAPSIBLE FORM FIELD SETS
 **********************************************************/
 
-html.js fieldset.collapsed legend a:link, html.js fieldset.collapsed legend a:active, html.js fieldset.collapsed legend a:hover, html.js fieldset.collapsed legend a:visited  {
+html.js fieldset.collapsed legend a:link, html.js fieldset.collapsed legend a:active, html.js fieldset.collapsed legend a:hover, html.js fieldset.collapsed legend a:visited
+{
   color: #0066CC;
-  }
+}
 
-
-html.js fieldset.collapsible legend a:link, html.js fieldset.collapsible legend a:active, html.js fieldset.collapsible legend a:visited  {
+html.js fieldset.collapsible legend a:link, html.js fieldset.collapsible legend a:active, html.js fieldset.collapsible legend a:visited
+{
   color: #0066CC;
-  }
+}
 
-html.js fieldset {
+html.js fieldset
+{
 padding-top: 7px;
 padding-bottom: 7px;
 }
 
-html.js fieldset legend {
+html.js fieldset legend
+{
   margin-bottom: 10px;
-  }
+}
 
-
-html.js fieldset.collapsed {
+html.js fieldset.collapsed
+{
   border-bottom-width: 0;
   border-left-width: 0;
   border-right-width: 0;
   margin-bottom: 0;
   height: 1em;
 }
-html.js fieldset.collapsed * {
+html.js fieldset.collapsed *
+{
   display: none;
 }
-html.js fieldset.collapsed legend {
+html.js fieldset.collapsed legend
+{
   display: inline;
 }
 
-html.js fieldset.collapsible legend a {
+html.js fieldset.collapsible legend a
+{
   padding-left: 15px;
   background: url(../images/menu-expanded.png) 5px 75% no-repeat;
 }
-html.js fieldset.collapsed legend a {
+html.js fieldset.collapsed legend a
+{
   background-image: url(../images/menu-collapsed.png);
   background-position: 5px 50%;
 
@@ -132,216 +142,182 @@ html.js fieldset.collapsed legend a {
 /* Note: IE-only fix due to '* html' (breaks Konqueror otherwise). */
 * html.js fieldset.collapsed legend,
 * html.js fieldset.collapsed legend *,
-* html.js fieldset.collapsed table * {
+* html.js fieldset.collapsed table *
+{
   display: inline;
 }
-html.js fieldset.collapsible legend a {
+html.js fieldset.collapsible legend a
+{
   display: block;
 }
 /* Avoid jumping around due to margins collapsing into collapsible fieldset border */
-html.js fieldset.collapsible .fieldset-wrapper {
+html.js fieldset.collapsible .fieldset-wrapper
+{
   overflow: auto;
 }
 
-.form-item {
+.form-item
+{
   margin-top: 1em;
   margin-bottom: 1em;
 }
 
-.form-item .description {
+.form-item .description
+{
   font-size: 0.85em;
 }
-.form-item label {
+.form-item label
+{
   display: block;
   font-weight: bold;
   color: #999999;
 }
 
-.form-item label.option {
+.form-item label.option
+{
   display: inline;
   font-weight: normal;
 }
 
-label:first-letter {
-	text-transform: capitalize;
+label:first-letter
+{
+  text-transform: capitalize;
 }
-
-
 
 /*********************************************************
                 SIDEBAR FORM
 **********************************************************/
-.sidebarForm {
+.sidebarForm
+{
 margin: 0;
 padding: 0;
 border: 0;
 }
 
-/*********************************************************
-                SEARCH - SELECTBOX - SIDEBAR
-**********************************************************/
-
-#search-sidebar table {
-border: 0;
-border-collapse: collapse;
-margin: 0;
-padding: 0;
+#search-sidebar, #browse-sidebar
+{
+  padding: 2px;
 }
 
-#search-sidebar td {
- border: 0;
- vertical-align: center;
-}
-
-#search-sidebar .textbox {
-	background-color: #FFFFFF;
-	border: 1px solid #a3a3a3;
-	width: 145px;
-	padding: 0 2px 2px 2px;
-	margin: 5px 0 0 2px;
-	font: bold 14px Verdana, Arial, Sans-Serif;
-}
-
-#search-sidebar .textbox:focus {
-background: #cccccc;
-}
-
-
-#search-sidebar .submit {
-
-font: 11px Verdana, Arial, Sans-Serif;
-margin: 0 0 0 2px;
-padding: 0;
-width: 70px;
-}
-
-#search-sidebar .submithover {
-
-font: 11px Verdana, Arial, Sans-Serif;
-margin: 0 0 0 2px;
-padding: 0;
-width: 70px;
-}
-
-/*********************************************************
-                BROWSE - SELECTBOX - SIDEBAR
-**********************************************************/
-
-#browse-sidebar table {
-border: 0;
-border-collapse: collapse;
-margin: 10px 0 0 0;
-padding: 0;
-}
-
-#browse-sidebar td {
- border: 0;
- vertical-align: center;
-}
-
-#browse-sidebar .selectbox {
-	background-color: #FFFFFF;
-	border: 1px solid #a3a3a3;
-	width: 153px;
-	padding: 0 2px 2px 2px;
-	margin: 5px 0 0 2px;
-	font: normal 12px Verdana, Arial, Sans-Serif;
+#search-sidebar form div:first-child, #browse-sidebar form div:first-child
+{
   float: left;
+  width: 160px;
 }
 
-#browse-sidebar .selectbox:focus {
-background: #cccccc;
+#search-sidebar .submit, #search-sidebar .submithover, #browse-sidebar .submit, #browse-sidebar .submithover
+{
+  float: none;
+  font: 11px Verdana, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  width: 70px;
 }
 
-#browse-sidebar .submit {
-
-font: 11px Verdana, Arial, Sans-Serif;
-margin: 0 0 0 2px;
-padding: 0;
-width: 70px;
+#search-sidebar .textbox
+{
+  background-color: #FFFFFF;
+  border: 1px solid #A3A3A3;
+  width: 145px;
+  font: bold 14px Verdana, Arial, sans-serif;
 }
 
-#browse-sidebar .submithover {
-
-font: 11px Verdana, Arial, Sans-Serif;
-margin: 0 0 0 2px;
-padding: 0;
-width: 70px;
+#search-sidebar .textbox:focus
+{
+  background: #CCCCCC;
 }
 
+#browse-sidebar .selectbox
+{
+  background-color: #FFFFFF;
+  border: 1px solid #A3A3A3;
+  width: 153px;
+  font: normal 12px Verdana, Arial, sans-serif;
+}
+
+#browse-sidebar .selectbox:focus
+{
+  background: #CCCCCC;
+}
 
 /*********************************************************
                 LANGUAGE - SELECTBOX
 **********************************************************/
 
-#language-selector table {
+#language-selector table
+{
 border: 0;
 border-collapse: collapse;
 margin: 0;
 padding: 0;
 }
 
-#language-selector td {
+#language-selector td
+{
  border: 0;
  vertical-align: center;
 }
 
-#language-selector .selectbox {
-	background-color: #FFFFFF;
-	border: 1px solid #a3a3a3;
-	width: 153px;
-	padding: 0 2px 2px 2px;
-	margin: 5px 0 0 2px;
-	font: normal 12px Verdana, Arial, Sans-Serif;
+#language-selector .selectbox
+{
+  background-color: #FFFFFF;
+  border: 1px solid #a3a3a3;
+  width: 153px;
+  padding: 0 2px 2px 2px;
+  margin: 5px 0 0 2px;
+  font: normal 12px Verdana, Arial, Sans-Serif;
   float: left;
 }
 
-#language-selector .selectbox:focus {
+#language-selector .selectbox:focus
+{
 background: #cccccc;
 }
 
-#language-selector .submit {
+#language-selector .submit
+{
 
 font: 12px Verdana, Arial, Sans-Serif;
 margin: 5px 0 0 5px;
 width: 70px;
 }
 
-#language-selector .submithover {
+#language-selector .submithover
+{
 
 font: 12px Verdana, Arial, Sans-Serif;
 margin: 5px 0 0 5px;
 width: 70px;
 }
-
-
-
 
 /*********************************************************
                 LOGIN FORM
 **********************************************************/
 
-.login-form {
+.login-form
+{
 border: 0;
 width: 450px;
 margin: 0 0 0 20px;
 font: bold 18px/19px georgia, serif;
 }
 
-
-.login-form legend {
+.login-form legend
+{
 font: bold 18px/20px georgia, serif;
 color: #000000;
 margin: 0;
 }
 
-.login-form input {
+.login-form input
+{
 width: 400px;
 font: bold 27px/27px georgia, serif;
 border: 1px solid #999999;
 }
 
-.login-form input.submit {
+.login-form input.submit
+{
 text-decoration: none;
 padding: 0 6px 1px 6px;
 margin: 16px 15px 0 5px;
@@ -355,7 +331,8 @@ border-right: 3px solid #999999;
 border-bottom: 3px solid #999999;
 }
 
-.login-form input.submithover {
+.login-form input.submithover
+{
 text-decoration: none;
 padding: 0 6px 1px 6px;
 margin: 16px 15px 0 5px;
@@ -369,20 +346,22 @@ border-right: 3px solid #999999;
 border-bottom: 3px solid #999999;
 }
 
-.login-form table {
+.login-form table
+{
 margin-top: 15px;
 }
 
-.login-form table th {
+.login-form table th
+{
 border: 0;
 vertical-align: center;
 text-align: right;
 }
 
-.login-form table tr {
+.login-form table tr
+{
 margin-top: 20px;
 }
-
 
 /*********************************************************
                 FORM ERROR
@@ -412,7 +391,7 @@ margin-top: 20px;
 {
   padding: 0.2em;
   margin-bottom: 1em;
-  margin-right: 1em; 
+  margin-right: 1em;
   color: #000000;
   background: #FFFFE0;
   border: 1px dashed #FFD700;

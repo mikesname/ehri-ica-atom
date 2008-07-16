@@ -34,9 +34,10 @@ class RelationDeleteAction extends sfAction
     $this->relation = QubitRelation::getById($this->getRequestParameter('id'));
     $this->forward404Unless($this->relation);
     
-    // Currently no default template for post-delete, so require the "next" 
-    // parameter for redirect
-    $next = urldecode($this->getRequestParameter('next'));
+    // Make the $next parameter into an absolute URL because redirect() expects
+    // an absolute URL or an array containing module and action
+    // (Pre-pend code copied from sfWebController->genUrl() method)  
+    $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
     $this->forward404Unless($next);
     
     // Do delete

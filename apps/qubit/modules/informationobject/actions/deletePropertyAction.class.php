@@ -27,14 +27,10 @@ class InformationObjectDeletePropertyAction extends sfAction
 
   $this->forward404Unless($this->deleteProperty);
 
-  $informationObjectId = $this->deleteProperty->getObjectId();
-
   $this->deleteProperty->delete();
-
-  SearchIndex::updateTranslatedLanguages($this->informationObject);
 
   $returnTemplate = $this->getRequestParameter('ReturnTemplate');
 
-  return $this->redirect('informationobject/edit/?id='.$informationObjectId.'&template='.$returnTemplate);
+  return $this->redirect('informationobject/edit/?id='.$this->deleteProperty->getObjectId().'&template='.$returnTemplate);
   }
 }

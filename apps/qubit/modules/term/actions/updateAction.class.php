@@ -49,23 +49,22 @@ class TermUpdateAction extends sfAction
     $term->setId($this->getRequestParameter('id'));
     $term->setTaxonomyId($this->getRequestParameter('taxonomy_id') ? $this->getRequestParameter('taxonomy_id') : null);
     $term->setName($this->getRequestParameter('name'));
-    $term->setScopeNote($this->getRequestParameter('scope_note'));
-    $term->setCodeAlpha($this->getRequestParameter('code_alpha'));
-    $term->setCodeAlpha2($this->getRequestParameter('code_alpha2'));
-    if ($this->getRequestParameter('code_numeric'))
-    { $term->setCodeNumeric($this->getRequestParameter('code_numeric')); }
-    else
-    { $term->setCodeNumeric(null); }
-/*
-//DEPRECATED:
-        if ($this->getRequestParameter('sort_order'))
-    { $term->setSortOrder($this->getRequestParameter('sort_order')); }
-    else
-    { $term->setSortOrder(null); }
-*/
-    $term->setSource($this->getRequestParameter('source'));
-
+    $term->setCode($this->getRequestParameter('code'));
     $term->save();
+
+    if ($this->getRequestParameter('new_scope_note'))
+    {
+      $term->setNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('new_scope_note'), QubitTerm::SCOPE_NOTE_ID);
+    }
+
+    if ($this->getRequestParameter('new_source_note'))
+    {
+      $term->setNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('new_source_note'), QubitTerm::SOURCE_NOTE_ID);
+    }
+
+    if ($this->getRequestParameter('content'))
+
+
 
     $taxonomyId = $term->getTaxonomyId();
 

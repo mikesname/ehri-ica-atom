@@ -1,0 +1,4 @@
+default:
+  layout: installLayout
+
+  stylesheets: [-form, -graphic, -layout, -menu]

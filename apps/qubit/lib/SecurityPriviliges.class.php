@@ -26,7 +26,7 @@ class SecurityPriviliges
   switch($object)
     {
     case 'informationObject':
-      if ($user->hasCredential(array('administrator', 'editor', 'contributor'), false))
+      if ($user->hasCredential(array('administrator', 'editor', 'contributor', 'translator'), false))
         {
         return true;
         }
@@ -35,7 +35,7 @@ class SecurityPriviliges
         return false;
         }
     case 'actor':
-      if ($user->hasCredential(array('administrator', 'editor', 'contributor'), false))
+      if ($user->hasCredential(array('administrator', 'editor', 'contributor', 'translator'), false))
         {
         return true;
         }
@@ -44,7 +44,7 @@ class SecurityPriviliges
         return false;
         }
      case 'repository':
-      if ($user->hasCredential(array('administrator', 'editor', 'contributor'), false))
+      if ($user->hasCredential(array('administrator', 'editor', 'contributor', 'translator'), false))
         {
         return true;
         }
@@ -53,7 +53,7 @@ class SecurityPriviliges
         return false;
         }
      case 'term':
-      if ($user->hasCredential(array('administrator', 'editor'), false))
+      if ($user->hasCredential(array('administrator', 'editor', 'translator'), false))
         {
         return true;
         }

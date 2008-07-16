@@ -9,9 +9,21 @@ default:
     #language:     en
     robots:       index, follow
 
-  stylesheets:    [yui/button/assets/skins/qubit/button-skin, yui/menu/assets/skins/qubit/menu-skin, form, graphic, layout, menu]
+  stylesheets:
+    /vendor/drupal/modules/system/defaults: { media: all }
+    /vendor/drupal/modules/system/system: { media: all }
+    /vendor/drupal/themes/garland/style: { media: all }
+    /vendor/drupal/themes/garland/minnelli/minnelli: { media: all }
+    /vendor/drupal/themes/garland/print: { media: print }
+    /vendor/yui/button/assets/skins/sam/button: {}
+    /vendor/yui/menu/assets/skins/sam/menu: {}
+    form: {}
+    graphic: {}
+    layout: {}
+    main: { position: last }
+    menu: {}
 
-  javascripts:    [jquery, drupal, yui/yahoo-dom-event/yahoo-dom-event, yui/element/element-beta-min, yui/button/button-min, yui/container/container_core-min, yui/menu/menu-min]
+  javascripts:    [jquery, /vendor/drupal/misc/drupal, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-beta-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
 
   has_layout:     on
   layout:         layout
@@ -21,7 +33,7 @@ default:
     header:       []
     sidebar:      []
     MainMenu:     [menu, mainMenu]
-    SearchSidebar: [search, Sidebar]
-    BrowseSidebar: [browse, Sidebar]
+    SearchSidebar: [search, sidebar]
+    BrowseSidebar: [browse, sidebar]
     ChangeLanguageList: [i18n, changeLanguageList]
     ChangeLanguageSelectbox: [i18n, changeLanguageSelectbox]

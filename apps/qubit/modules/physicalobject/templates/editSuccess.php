@@ -75,7 +75,7 @@
           &nbsp;<?php echo link_to(__('delete'), 
                   'physicalobject/delete?id='.$physicalObject->getId().'&next='.urlencode($nextAction),
                   array('confirm'=>$deleteWarning)); ?>
-          &nbsp;<?php echo link_to(__('cancel'), $nextAction); ?>
+          &nbsp;<a href="<?php echo $nextAction ?>"><?php echo __('cancel') ?></a>
         <?php endif; ?>
         
         &nbsp;<?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>

@@ -18,11 +18,15 @@
     <?php if ($physicalObject): ?>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
       <?php echo link_to(image_tag('pencil', 'align=top'), 
-        'physicalobject/edit?id='.$physicalObject->getId()); ?>
+        array('module' => 'physicalobject', 'action' => 'edit', 'id' => $physicalObject->getId()), 
+        array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())))
+      ) ?>
     </td>
     <td style="width: 20px; border-top: 1px solid #cccccc;">
-      <?php echo link_to(image_tag('delete', 'align=top'), 
-        'relation/delete?id='.$relation->getId().'&next=informationobject%2Fedit%3Fid%3D'.$informationObject->getId()); ?>
+      <?php echo link_to(image_tag('delete', 'align=top'),
+        array('module' => 'relation', 'action' => 'delete', 'id' => $relation->getId()), 
+        array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())))
+      ) ?>
     </td>
     <?php else: ?>
     <td colspan="2">&nbsp;</td>

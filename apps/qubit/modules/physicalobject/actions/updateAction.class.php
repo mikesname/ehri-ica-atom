@@ -53,8 +53,11 @@ class PhysicalObjectUpdateAction extends sfAction
     // Redirect to information object edit page
     if ($this->hasRequestParameter('next'))
     {
-      
-      return $this->redirect($this->getRequestParameter('next'));
+      // Make the $next parameter into an absolute URL because redirect() expects
+      // an absolute URL or an array containing module and action
+      // (Pre-pend code copied from sfWebController->genUrl() method)  
+      $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
+      return $this->redirect($next);
     }
     
     // Default redirect  

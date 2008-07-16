@@ -232,7 +232,7 @@ propel:
   term:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     taxonomy_id: { type: integer, required: true, foreignTable: taxonomy, foreignReference: id, onDelete: cascade }
-    code_numeric: integer
+    code: varchar(255)
     parent_id: { type: integer, foreignTable: term, foreignReference: id }
     lft: { type: integer, required: true, nestedSetLeftKey: true }
     rgt: { type: integer, required: true, nestedSetRightKey: true }
@@ -241,10 +241,6 @@ propel:
 
   term_i18n:
     name: varchar(255)
-    scope_note: longvarchar
-    code_alpha: varchar(255)
-    code_alpha2: varchar(255)
-    source: varchar(255)
 
   taxonomy:
     usage: varchar(255)

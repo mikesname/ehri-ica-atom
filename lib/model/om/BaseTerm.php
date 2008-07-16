@@ -8,7 +8,7 @@ abstract class BaseTerm extends QubitObject
 
   const ID = 'q_term.ID';
   const TAXONOMY_ID = 'q_term.TAXONOMY_ID';
-  const CODE_NUMERIC = 'q_term.CODE_NUMERIC';
+  const CODE = 'q_term.CODE';
   const PARENT_ID = 'q_term.PARENT_ID';
   const LFT = 'q_term.LFT';
   const RGT = 'q_term.RGT';
@@ -24,7 +24,7 @@ abstract class BaseTerm extends QubitObject
 
     $criteria->addSelectColumn(QubitTerm::ID);
     $criteria->addSelectColumn(QubitTerm::TAXONOMY_ID);
-    $criteria->addSelectColumn(QubitTerm::CODE_NUMERIC);
+    $criteria->addSelectColumn(QubitTerm::CODE);
     $criteria->addSelectColumn(QubitTerm::PARENT_ID);
     $criteria->addSelectColumn(QubitTerm::LFT);
     $criteria->addSelectColumn(QubitTerm::RGT);
@@ -98,16 +98,16 @@ abstract class BaseTerm extends QubitObject
     return $this;
   }
 
-  protected $codeNumeric = null;
+  protected $code = null;
 
-  public function getCodeNumeric()
+  public function getCode()
   {
-    return $this->codeNumeric;
+    return $this->code;
   }
 
-  public function setCodeNumeric($codeNumeric)
+  public function setCode($code)
   {
-    $this->codeNumeric = $codeNumeric;
+    $this->code = $code;
 
     return $this;
   }
@@ -224,7 +224,7 @@ abstract class BaseTerm extends QubitObject
 
     $this->columnValues['id'] = $this->id;
     $this->columnValues['taxonomyId'] = $this->taxonomyId;
-    $this->columnValues['codeNumeric'] = $this->codeNumeric;
+    $this->columnValues['code'] = $this->code;
     $this->columnValues['parentId'] = $this->parentId;
     $this->columnValues['lft'] = $this->lft;
     $this->columnValues['rgt'] = $this->rgt;
@@ -241,7 +241,7 @@ abstract class BaseTerm extends QubitObject
 
     $this->id = $results->getInt($columnOffset++);
     $this->taxonomyId = $results->getInt($columnOffset++);
-    $this->codeNumeric = $results->getInt($columnOffset++);
+    $this->code = $results->getString($columnOffset++);
     $this->parentId = $results->getInt($columnOffset++);
     $this->lft = $results->getInt($columnOffset++);
     $this->rgt = $results->getInt($columnOffset++);
@@ -309,9 +309,9 @@ abstract class BaseTerm extends QubitObject
       $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
     }
 
-    if ($this->isColumnModified('codeNumeric'))
+    if ($this->isColumnModified('code'))
     {
-      $criteria->add(QubitTerm::CODE_NUMERIC, $this->codeNumeric);
+      $criteria->add(QubitTerm::CODE, $this->code);
     }
 
     if ($this->isColumnModified('parentId'))
@@ -381,9 +381,9 @@ abstract class BaseTerm extends QubitObject
       $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
     }
 
-    if ($this->isColumnModified('codeNumeric'))
+    if ($this->isColumnModified('code'))
     {
-      $criteria->add(QubitTerm::CODE_NUMERIC, $this->codeNumeric);
+      $criteria->add(QubitTerm::CODE, $this->code);
     }
 
     if ($this->isColumnModified('parentId'))
@@ -1828,78 +1828,6 @@ abstract class BaseTerm extends QubitObject
   public function setName($value, array $options = array())
   {
     $this->getCurrentTermI18n($options)->setName($value);
-
-    return $this;
-  }
-
-  public function getScopeNote(array $options = array())
-  {
-    $scopeNote = $this->getCurrentTermI18n($options)->getScopeNote();
-    if (!empty($options['cultureFallback']) && strlen($scopeNote) < 1)
-    {
-      $scopeNote = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getScopeNote();
-    }
-
-    return $scopeNote;
-  }
-
-  public function setScopeNote($value, array $options = array())
-  {
-    $this->getCurrentTermI18n($options)->setScopeNote($value);
-
-    return $this;
-  }
-
-  public function getCodeAlpha(array $options = array())
-  {
-    $codeAlpha = $this->getCurrentTermI18n($options)->getCodeAlpha();
-    if (!empty($options['cultureFallback']) && strlen($codeAlpha) < 1)
-    {
-      $codeAlpha = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getCodeAlpha();
-    }
-
-    return $codeAlpha;
-  }
-
-  public function setCodeAlpha($value, array $options = array())
-  {
-    $this->getCurrentTermI18n($options)->setCodeAlpha($value);
-
-    return $this;
-  }
-
-  public function getCodeAlpha2(array $options = array())
-  {
-    $codeAlpha2 = $this->getCurrentTermI18n($options)->getCodeAlpha2();
-    if (!empty($options['cultureFallback']) && strlen($codeAlpha2) < 1)
-    {
-      $codeAlpha2 = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getCodeAlpha2();
-    }
-
-    return $codeAlpha2;
-  }
-
-  public function setCodeAlpha2($value, array $options = array())
-  {
-    $this->getCurrentTermI18n($options)->setCodeAlpha2($value);
-
-    return $this;
-  }
-
-  public function getSource(array $options = array())
-  {
-    $source = $this->getCurrentTermI18n($options)->getSource();
-    if (!empty($options['cultureFallback']) && strlen($source) < 1)
-    {
-      $source = $this->getCurrentTermI18n(array('sourceCulture' => true) + $options)->getSource();
-    }
-
-    return $source;
-  }
-
-  public function setSource($value, array $options = array())
-  {
-    $this->getCurrentTermI18n($options)->setSource($value);
 
     return $this;
   }

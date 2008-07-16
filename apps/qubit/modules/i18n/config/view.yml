@@ -1,5 +1,5 @@
 listDefaultContentTranslationSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 listUserInterfaceTranslationSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]

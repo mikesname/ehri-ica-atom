@@ -1,14 +1,14 @@
 editSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 editISADSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 editMODSSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 editDublinCoreSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 all:
   components:

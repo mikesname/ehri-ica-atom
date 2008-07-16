@@ -21,50 +21,40 @@
       <?php endif; ?>
       <?php echo object_input_tag($term, 'getName', array ('size' => 80)) ?>
     </div>
-
+    
     <div class="form-item">
      <label for="taxonomy"><?php echo __('taxonomy'); ?></label>
     <?php echo object_select_tag($term, 'getTaxonomyId', array ('related_class' => 'QubitTaxonomy', 'peer_method' => 'getEditableTaxonomies', 'include_blank' => true)) ?>
     </div>
 
     <div class="form-item">
+      <label for="code"><?php echo __('code'); ?></label>
+      <?php echo object_input_tag($term, 'getCode', array ('size' => 20)) ?>
+    </div>
+
+    <div class="form-item">
       <label for="scope note"><?php echo __('scope note'); ?></label>
-      <?php if (strlen($sourceCultureValue = $term->getScopeNote(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $term->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php if ($scopeNotes): ?>
+        <?php foreach ($scopeNotes as $scopeNote): ?>
+          <?php echo $scopeNote->getContent(array('cultureFallback' => 'true')) ?>
+          <?php echo link_to(image_tag('delete', 'align=top'), 'term/deleteNote?noteId='.$scopeNote->getId()) ?><br />
+        <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_textarea_tag($term, 'getScopeNote', array ('size' => '30x3')) ?>
+
+      <?php echo input_tag('new_scope_note') ?>
     </div>
 
     <div class="form-item">
-      <label for="code alpha"><?php echo __('code alpha'); ?></label>
-      <?php if (strlen($sourceCultureValue = $term->getCodeAlpha(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $term->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <label for="source note"><?php echo __('source note'); ?></label>
+       <?php if ($sourceNotes): ?>
+        <?php foreach ($sourceNotes as $sourceNote): ?>
+          <?php echo $sourceNote->getContent(array('cultureFallback' => 'true')) ?>
+          <?php echo link_to(image_tag('delete', 'align=top'), 'term/deleteNote?noteId='.$sourceNote->getId()) ?><br />
+        <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_input_tag($term, 'getCodeAlpha', array ('size' => 20)) ?>
-    </div>
 
-    <div class="form-item">
-      <label for="code alpha2"><?php echo __('code alpha2'); ?></label>
-      <?php if (strlen($sourceCultureValue = $term->getCodeAlpha2(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $term->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_input_tag($term, 'getCodeAlpha2', array ('size' => 20)) ?>
-    </div>
+      <?php echo input_tag('new_source_note') ?>
 
-    <div class="form-item">
-      <label for="code numeric"><?php echo __('code numeric'); ?></label>
-      <?php if (strlen($sourceCultureValue = $term->getCodeNumeric(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $term->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_input_tag($term, 'getCodeNumeric', array ('size' => 20)) ?>
-    </div>
-
-    <div class="form-item">
-      <label for="source"><?php echo __('source'); ?></label>
-      <?php if (strlen($sourceCultureValue = $term->getSource(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $term->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_input_tag($term, 'getSource', array ('size' => 20)) ?>
     </div>
 
 

@@ -1,0 +1,14 @@
+transaction: ~
+
+history: ~
+
+rendering: ~
+security:  ~
+
+# insert your own filters here
+siteSettingsFilter:
+  enabled: false
+
+cache:     ~
+common:    ~
+execution: ~

@@ -1,11 +1,11 @@
 create:
   is_secure:   on
-  credentials: [[ contributor, editor, administrator ]]
-  
+  credentials: [[ contributor, editor, administrator, translator ]]
+
 delete:
   is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
-  
+
 deleteActorRelation:
   is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
@@ -13,17 +13,17 @@ deleteActorRelation:
 deleteTermRelation:
   is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
-  
+
 edit:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
-  
+
 list:
   is_secure:   off
 
 show:
   is_secure:  off
-  
+
 update:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]

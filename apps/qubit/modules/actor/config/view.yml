@@ -1,5 +1,5 @@
 editISAARSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 listSuccess:
   components:

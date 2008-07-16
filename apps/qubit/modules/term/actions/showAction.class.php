@@ -23,7 +23,18 @@ class TermShowAction extends sfAction
 {
   public function execute($request)
   {
-  $this->term = QubitTerm::getById($this->getRequestParameter('id'));
-  $this->forward404Unless($this->term);
+    $this->term = QubitTerm::getById($this->getRequestParameter('id'));
+    $this->forward404Unless($this->term);
+  
+    $this->scopeNotes = $this->term->getNotesByType($noteTypeId = QubitTerm::SCOPE_NOTE_ID, $exclude = null);
+    $this->sourceNotes = $this->term->getNotesByType($noteTypeId = QubitTerm::SOURCE_NOTE_ID, $exclude = null);
+  
+    //determine if user has edit priviliges
+    $this->editCredentials = false;
+    if (SecurityPriviliges::editCredentials($this->getUser(), 'term'))
+    {
+      $this->editCredentials = true;
+    }
+  
   }
 }

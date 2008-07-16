@@ -45,7 +45,7 @@
     <tr>
     <?php if ($scope == 'i18n_languages'): ?>
       <td colspan="2">
-      <?php echo select_language_tag('language_code', null, array('include_blank' => true)) ?>
+      <?php echo select_tag('language_code', options_for_select(array('' => '&nbsp;', 'en' => 'english', 'es' => 'español', 'fr' => 'français', 'nl' => 'nederlands', 'pt' => 'português'))) ?>
       </td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
@@ -53,8 +53,7 @@
         </div>
       </td>
   <?php else: ?>
-    <td><?php echo input_tag('new_setting_name') ?></td>
-    <td><?php echo input_tag('new_setting_value') ?></td>
+      <td></td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
           <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>

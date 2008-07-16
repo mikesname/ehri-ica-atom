@@ -10,7 +10,7 @@
 <link rel="shortcut icon" href="/favicon.ico" />
 
 </head>
-<body class="yui-skin-qubit">
+<body class="yui-skin-sam">
 
 <div id="body-banner-top">
 </div>
@@ -30,7 +30,7 @@
 <?php else: ?>
 <?php echo link_to(__('log in'), 'login/') ?><?php endif; ?>
 
-<?php echo link_to(__('help'), 'http://www.ica-atom.org/docs/index.php?title=User_manual', array('target' => '_blank')) ?>
+<?php echo link_to(__('help'), 'http://qubit-toolkit.org/wiki', array('target' => '_blank')) ?>
 <?php echo link_to(__('about'), '/about/') ?>
 <?php echo link_to(__('home'), '/homepage/') ?>
 </div>
@@ -39,7 +39,7 @@
 <div id="header-middle" style="height: 110px;"> <!--ICA-AtoM header-->
 <div id="logo">
   <?php echo link_to(image_tag('/images/ica-atom_logo.png', 'width="440" height="95" alt="ICA-AtoM logo" style="margin: 12px 0 0 0 ; float: right; align:center;"'), '/homepage/') ?>
-  
+
 </div>
 </div> <!-- close header-middle -->
 

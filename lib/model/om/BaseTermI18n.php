@@ -7,20 +7,12 @@ abstract class BaseTermI18n
   const TABLE_NAME = 'q_term_i18n';
 
   const NAME = 'q_term_i18n.NAME';
-  const SCOPE_NOTE = 'q_term_i18n.SCOPE_NOTE';
-  const CODE_ALPHA = 'q_term_i18n.CODE_ALPHA';
-  const CODE_ALPHA2 = 'q_term_i18n.CODE_ALPHA2';
-  const SOURCE = 'q_term_i18n.SOURCE';
   const ID = 'q_term_i18n.ID';
   const CULTURE = 'q_term_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitTermI18n::NAME);
-    $criteria->addSelectColumn(QubitTermI18n::SCOPE_NOTE);
-    $criteria->addSelectColumn(QubitTermI18n::CODE_ALPHA);
-    $criteria->addSelectColumn(QubitTermI18n::CODE_ALPHA2);
-    $criteria->addSelectColumn(QubitTermI18n::SOURCE);
     $criteria->addSelectColumn(QubitTermI18n::ID);
     $criteria->addSelectColumn(QubitTermI18n::CULTURE);
 
@@ -31,7 +23,7 @@ abstract class BaseTermI18n
 
   public static function getFromResultSet(ResultSet $resultSet)
   {
-    if (!isset(self::$termI18ns[$key = serialize(array($resultSet->getInt(6), $resultSet->getString(7)))]))
+    if (!isset(self::$termI18ns[$key = serialize(array($resultSet->getInt(2), $resultSet->getString(3)))]))
     {
       $termI18n = new QubitTermI18n;
       $termI18n->hydrate($resultSet);
@@ -103,62 +95,6 @@ abstract class BaseTermI18n
     return $this;
   }
 
-  protected $scopeNote = null;
-
-  public function getScopeNote()
-  {
-    return $this->scopeNote;
-  }
-
-  public function setScopeNote($scopeNote)
-  {
-    $this->scopeNote = $scopeNote;
-
-    return $this;
-  }
-
-  protected $codeAlpha = null;
-
-  public function getCodeAlpha()
-  {
-    return $this->codeAlpha;
-  }
-
-  public function setCodeAlpha($codeAlpha)
-  {
-    $this->codeAlpha = $codeAlpha;
-
-    return $this;
-  }
-
-  protected $codeAlpha2 = null;
-
-  public function getCodeAlpha2()
-  {
-    return $this->codeAlpha2;
-  }
-
-  public function setCodeAlpha2($codeAlpha2)
-  {
-    $this->codeAlpha2 = $codeAlpha2;
-
-    return $this;
-  }
-
-  protected $source = null;
-
-  public function getSource()
-  {
-    return $this->source;
-  }
-
-  public function setSource($source)
-  {
-    $this->source = $source;
-
-    return $this;
-  }
-
   protected $id = null;
 
   public function getId()
@@ -201,10 +137,6 @@ abstract class BaseTermI18n
   protected function resetModified()
   {
     $this->columnValues['name'] = $this->name;
-    $this->columnValues['scopeNote'] = $this->scopeNote;
-    $this->columnValues['codeAlpha'] = $this->codeAlpha;
-    $this->columnValues['codeAlpha2'] = $this->codeAlpha2;
-    $this->columnValues['source'] = $this->source;
     $this->columnValues['id'] = $this->id;
     $this->columnValues['culture'] = $this->culture;
 
@@ -214,10 +146,6 @@ abstract class BaseTermI18n
   public function hydrate(ResultSet $results, $columnOffset = 1)
   {
     $this->name = $results->getString($columnOffset++);
-    $this->scopeNote = $results->getString($columnOffset++);
-    $this->codeAlpha = $results->getString($columnOffset++);
-    $this->codeAlpha2 = $results->getString($columnOffset++);
-    $this->source = $results->getString($columnOffset++);
     $this->id = $results->getInt($columnOffset++);
     $this->culture = $results->getString($columnOffset++);
 
@@ -281,26 +209,6 @@ abstract class BaseTermI18n
       $criteria->add(QubitTermI18n::NAME, $this->name);
     }
 
-    if ($this->isColumnModified('scopeNote'))
-    {
-      $criteria->add(QubitTermI18n::SCOPE_NOTE, $this->scopeNote);
-    }
-
-    if ($this->isColumnModified('codeAlpha'))
-    {
-      $criteria->add(QubitTermI18n::CODE_ALPHA, $this->codeAlpha);
-    }
-
-    if ($this->isColumnModified('codeAlpha2'))
-    {
-      $criteria->add(QubitTermI18n::CODE_ALPHA2, $this->codeAlpha2);
-    }
-
-    if ($this->isColumnModified('source'))
-    {
-      $criteria->add(QubitTermI18n::SOURCE, $this->source);
-    }
-
     if ($this->isColumnModified('id'))
     {
       $criteria->add(QubitTermI18n::ID, $this->id);
@@ -331,26 +239,6 @@ abstract class BaseTermI18n
     if ($this->isColumnModified('name'))
     {
       $criteria->add(QubitTermI18n::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('scopeNote'))
-    {
-      $criteria->add(QubitTermI18n::SCOPE_NOTE, $this->scopeNote);
-    }
-
-    if ($this->isColumnModified('codeAlpha'))
-    {
-      $criteria->add(QubitTermI18n::CODE_ALPHA, $this->codeAlpha);
-    }
-
-    if ($this->isColumnModified('codeAlpha2'))
-    {
-      $criteria->add(QubitTermI18n::CODE_ALPHA2, $this->codeAlpha2);
-    }
-
-    if ($this->isColumnModified('source'))
-    {
-      $criteria->add(QubitTermI18n::SOURCE, $this->source);
     }
 
     if ($this->isColumnModified('id'))

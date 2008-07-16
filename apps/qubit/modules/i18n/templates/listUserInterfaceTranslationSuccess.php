@@ -1,7 +1,11 @@
 <div class="pageTitle"><?php echo __('user interface translation'); ?></div>
 
+<div class="translationList">
+
+
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_informationobject')))?></div>
-    <ul style="padding: 0; margin: 0 0 10px 20px;">
+    <ul>
+    <li><?php echo link_to(__('create (ISAD)'), 'informationobject/create') ?></li>
     <li><?php echo link_to(__('edit (ISAD)'), 'informationobject/edit?template=isad&id='.$sampleInformationObject->getId()) ?></li>
     <li><?php echo link_to(__('edit (Dublin Core)'), 'informationobject/edit?template=dublincore&id='.$sampleInformationObject->getId()) ?></li>
     <li><?php echo link_to(__('list'), 'informationobject/list') ?></li>
@@ -12,14 +16,14 @@
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_actor')))?></div>
-    <ul style="padding: 0; margin: 0 0 10px 20px;">
+    <ul>
     <li><?php echo link_to(__('edit (ISAAR)'), 'actor/edit?template=isaar&id='.$sampleActor->getId()) ?></li>
     <li><?php echo link_to(__('list'), 'actor/list') ?></li>
     <li><?php echo link_to(__('view (ISAAR)'), 'actor/show?template=isaar&id='.$sampleActor->getId()) ?></li>
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_repository')))?></div>
-    <ul style="padding: 0; margin: 0 0 10px 20px;">
+    <ul>
     <li><?php echo link_to(__('edit (ISDIAH)'), 'repository/edit?template=isiah&id='.$sampleRepository->getId()) ?></li>
     <li><?php echo link_to(__('edit contact information'), 'actor/editContactInformation?id='.$sampleRepository->getPrimaryContact()->getId()) ?></li>
     <li><?php echo link_to(__('list'), 'repository/list') ?></li>
@@ -27,13 +31,13 @@
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('term module')?></div>
-    <ul style="padding: 0; margin: 0 0 10px 20px;">
+    <ul>
     <li><?php echo link_to(__('list'), 'term/list') ?></li>
     <li><?php echo link_to(__('edit'), 'term/edit?id='.$sampleTerm->getId().'&taxonomyId=0') ?></li>
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('admin module')?></div>
-    <ul style="padding: 0; margin: 0 0 10px 20px;">
+    <ul>
     <li><?php echo __('users')?></li>
       <ul>
       <li><?php echo link_to(__('login'), '/login/') ?></li>
@@ -65,8 +69,9 @@
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('internationalization module')?></div>
-    <ul style="padding: 0; margin: 0 0 10px 20px;">
+    <ul>
     <li><?php echo link_to(__('user interface translation list'), 'i18n/listUserInterfaceTranslation') ?> <?php echo ' ('.__('this page').')' ?></li>
     <li><?php echo link_to(__('default content translation list'), 'i18n/listDefaultContentTranslation') ?></li>
     <li><?php echo link_to(__('new content translation'), 'i18n/listNewContentTranslation') ?></li>
     </ul>
+</div>

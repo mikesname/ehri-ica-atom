@@ -73,7 +73,7 @@
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $actor->getHistory(array('cultureFallback' => true))) >0): ?>
+<?php if (strlen($value = $actor->getInternalStructures(array('cultureFallback' => true))) >0): ?>
   <tr><th><?php echo __('internal structures or genealogy')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>

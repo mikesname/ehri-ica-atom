@@ -22,11 +22,11 @@ class ReleaseTask extends sfBaseTask
 
   protected function execute($arguments = array(), $options = array())
   {
-    $filesystem = new sfFilesystem();
+    $filesystem = new sfFilesystem;
 
     if (($arguments['stability'] == 'beta' || $arguments['stability'] == 'alpha') && count(explode('.', $arguments['version'])) < 2)
     {
-      if (preg_match('/Status against revision\:\s+(\d+)\s*$/im', $filesystem->sh('svn status -u '.getcwd()), $matches) < 1)
+      if (preg_match('/Status against revision\:\s+(\d+)\s*$/im', $filesystem->sh('svn status -u '.sfConfig::get('sf_root_dir')), $matches) < 1)
       {
         throw new Exception('Unable to find last svn revision');
       }
@@ -40,19 +40,19 @@ class ReleaseTask extends sfBaseTask
     // Local changes mean patches may conflict.  All lines which start with a
     // character other than 'P' ('Performing...'), 'S' ('Status...'), or 'X'
     // (externals definition) are local changes.
-    if (preg_match('/^[^PSX\n]/m', $filesystem->sh('svn status -u '.getcwd())) > 0)
+    if (preg_match('/^[^PSX\n]/m', $filesystem->sh('svn status -u '.sfConfig::get('sf_root_dir'))) > 0)
     {
       throw new Exception('Local modifications. Release process aborted!');
     }
 
     // Apply patches
-    $filesystem->sh('cat '.getcwd().'/patches/* | patch --no-backup-if-mismatch -p0');
+    $filesystem->sh('cat '.sfConfig::get('sf_root_dir').'/patches/* | patch --no-backup-if-mismatch -p0');
 
     // Test
-    require_once(dirname(__FILE__).'/../vendor/symfony/lib/vendor/lime/lime.php');
-    $h = new lime_harness(new lime_output_color());
+    require_once(sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php');
+    $h = new lime_harness(new lime_output_color);
 
-    $h->base_dir = realpath(dirname(__FILE__).'/../../test');
+    $h->base_dir = sfConfig::get('sf_test_dir');
 
     // unit tests
     $h->register_glob($h->base_dir.'/unit/*/*Test.php');
@@ -67,61 +67,61 @@ class ReleaseTask extends sfBaseTask
     }
 
     $doc = new DOMDocument;
-    $doc->load(getcwd().'/package.xml.tmpl');
+    $doc->load(sfConfig::get('sf_config_dir').'/package.xml');
 
     $xpath = new DOMXPath($doc);
-    $xpath->registerNamespace('pkg', 'http://pear.php.net/dtd/package-2.0');
+    $xpath->registerNamespace('p', 'http://pear.php.net/dtd/package-2.0');
 
-    if (!$xpath->evaluate('boolean(pkg:date)', $doc->documentElement))
+    if (!$xpath->evaluate('boolean(p:date)', $doc->documentElement))
     {
       $dateNode = $doc->createElement('date', date('Y-m-d'));
 
       // Date element must immediately precede the optional time element or the
       // mandatory version element
-      $timeOrVersionNode = $xpath->query('pkg:time | pkg:version', $doc->documentElement)->item(0);
+      $timeOrVersionNode = $xpath->query('p:time | p:version', $doc->documentElement)->item(0);
       $doc->documentElement->insertBefore($dateNode, $timeOrVersionNode);
     }
 
-    if (!$xpath->evaluate('boolean(pkg:version/pkg:release)', $doc->documentElement))
+    if (!$xpath->evaluate('boolean(p:version/p:release)', $doc->documentElement))
     {
       $releaseNode = $doc->createElement('release', $arguments['version']);
 
-      $apiNode = $xpath->query('pkg:version/pkg:api', $doc->documentElement)->item(0);
+      $apiNode = $xpath->query('p:version/p:api', $doc->documentElement)->item(0);
       $apiNode->parentNode->insertBefore($releaseNode, $apiNode);
     }
 
-    if (null === $stabilityNode = $xpath->query('pkg:stability', $doc->documentElement)->item(0))
+    if (null === $stabilityNode = $xpath->query('p:stability', $doc->documentElement)->item(0))
     {
       $stabilityNode = $doc->createElement('stability');
 
-      $licenseNode = $xpath->query('pkg:license', $doc->documentElement)->item(0);
+      $licenseNode = $xpath->query('p:license', $doc->documentElement)->item(0);
       $doc->documentElement->insertBefore($stabilityNode, $licenseNode);
     }
 
-    if (null === $apiNode = $xpath->query('pkg:api', $stabilityNode)->item(0))
+    if (null === $apiNode = $xpath->query('p:api', $stabilityNode)->item(0))
     {
       $apiNode = $doc->createElement('api', $arguments['stability']);
       $stabilityNode->appendChild($apiNode);
     }
 
-    if (!$xpath->evaluate('boolean(pkg:release)', $stabilityNode))
+    if (!$xpath->evaluate('boolean(p:release)', $stabilityNode))
     {
       $releaseNode = $doc->createElement('release', $arguments['stability']);
       $stabilityNode->insertBefore($releaseNode, $apiNode);
     }
 
     // add class files
-    if (null === $dirNode = $xpath->query('pkg:contents/pkg:dir', $doc->documentElement)->item(0))
+    if (null === $dirNode = $xpath->query('p:contents/p:dir', $doc->documentElement)->item(0))
     {
       $dirNode = $doc->createElement('dir');
       $dirNode->setAttribute('name', '/');
 
-      $contentsNode = $xpath->query('pkg:contents', $doc->documentElement)->item(0);
+      $contentsNode = $xpath->query('p:contents', $doc->documentElement)->item(0);
       $contentsNode->appendChild($dirNode);
     }
 
     $patternNodes = array();
-    foreach ($xpath->query('pkg:contents//pkg:file', $doc->documentElement) as $patternNode)
+    foreach ($xpath->query('p:contents//p:file', $doc->documentElement) as $patternNode)
     {
       // Globs like //foo/... must be matched against paths with a leading
       // slash, while globs like foo/... must be matched against paths without
@@ -138,7 +138,8 @@ class ReleaseTask extends sfBaseTask
       $patternNode->parentNode->removeChild($patternNode);
     }
 
-    $finder = new SvnFinder;
+    // FIXME: Switch back to SvnFinder when it supports externals
+    $finder = new sfFinder;
     foreach ($finder->in(sfConfig::get('sf_root_dir')) as $path)
     {
       if (strncmp($path, sfConfig::get('sf_root_dir'), $len = strlen(sfConfig::get('sf_root_dir'))) == 0)
@@ -170,10 +171,12 @@ class ReleaseTask extends sfBaseTask
       }
     }
 
-    $doc->save(getcwd().'/package.xml');
+    $packageXmlPath = sfConfig::get('sf_root_dir').'/package.xml';
+
+    $doc->save($packageXmlPath);
 
     print $filesystem->sh('pear package');
 
-    $filesystem->remove(getcwd().'/package.xml');
+    $filesystem->remove($packageXmlPath);
   }
 }

@@ -1,8 +1,8 @@
 editSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 editISIAHSuccess:
-  javascripts: [collapse]
+  javascripts: [/vendor/drupal/misc/collapse]
 
 listSuccess:
   components:

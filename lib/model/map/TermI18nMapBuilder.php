@@ -34,14 +34,6 @@ class TermI18nMapBuilder {
 
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('SCOPE_NOTE', 'ScopeNote', 'string', CreoleTypes::LONGVARCHAR, false, null);
-
-		$tMap->addColumn('CODE_ALPHA', 'CodeAlpha', 'string', CreoleTypes::VARCHAR, false, 255);
-
-		$tMap->addColumn('CODE_ALPHA2', 'CodeAlpha2', 'string', CreoleTypes::VARCHAR, false, 255);
-
-		$tMap->addColumn('SOURCE', 'Source', 'string', CreoleTypes::VARCHAR, false, 255);
-
 		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_term', 'ID', true, null);
 
 		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);

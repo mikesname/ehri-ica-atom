@@ -753,7 +753,7 @@ CREATE TABLE `q_term`
 (
 	`id` INTEGER  NOT NULL,
 	`taxonomy_id` INTEGER  NOT NULL,
-	`code_numeric` INTEGER,
+	`code` VARCHAR(255),
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
@@ -786,10 +786,6 @@ DROP TABLE IF EXISTS `q_term_i18n`;
 CREATE TABLE `q_term_i18n`
 (
 	`name` VARCHAR(255),
-	`scope_note` TEXT,
-	`code_alpha` VARCHAR(255),
-	`code_alpha2` VARCHAR(255),
-	`source` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),

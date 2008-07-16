@@ -36,7 +36,7 @@ class TermMapBuilder {
 
 		$tMap->addForeignKey('TAXONOMY_ID', 'TaxonomyId', 'int', CreoleTypes::INTEGER, 'q_taxonomy', 'ID', true, null);
 
-		$tMap->addColumn('CODE_NUMERIC', 'CodeNumeric', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('CODE', 'Code', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addForeignKey('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
