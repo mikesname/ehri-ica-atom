@@ -1,2 +1,3 @@
-#default config
-#all:
+# default values
+all:
+  name: ICA-AtoM

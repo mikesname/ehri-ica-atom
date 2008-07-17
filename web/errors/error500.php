@@ -1,3 +1,4 @@
+<?php $appName = 'ICA-AtoM' ?>
 <?php $path = preg_replace('/\/[^\/]+\.php5?$/', null, isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_SERVER['ORIG_SCRIPT_NAME']) ? $_SERVER['ORIG_SCRIPT_NAME'] : null)) ?>
 <?php if (isset($exception) && $exception instanceof sfConfigurationException): ?>
   <?php
@@ -19,10 +20,10 @@
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="title" content="Qubit - error 500" />
+<meta name="title" content="<?php echo $appName ?> - error 500" />
 <meta name="robots" content="index, follow" />
 <meta name="language" content="en" />
-<title>Qubit - error 500</title>
+<title><?php echo $appName ?> - error 500</title>
 
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/screen.css" />
@@ -44,7 +45,7 @@
 
     <div id="header">
       <div id="logo-floater">
-        <h1><img alt="Qubit" id="logo" src="<?php echo $path ?>/images/ica-atom_logo.png" /><div>i want to add</div></h1>
+        <h1><img alt="<?php echo $appName ?>" id="logo" src="<?php echo $path ?>/images/logo.png" /><div><?php echo $appName ?></div></h1>
       </div>
     </div>
 

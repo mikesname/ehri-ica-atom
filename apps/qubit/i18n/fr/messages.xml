@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="36">
         <source>add new</source>
-        <target/>
+        <target>ajouter nouveau</target>
       </trans-unit>
       <trans-unit id="37">
         <source>add/edit term</source>
@@ -1388,7 +1388,7 @@
       </trans-unit>
       <trans-unit id="354">
         <source>create</source>
-        <target/>
+        <target>créer</target>
       </trans-unit>
       <trans-unit id="355">
         <source>list all taxonomies</source>

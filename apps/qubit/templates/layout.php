@@ -39,7 +39,6 @@
 <div id="header-middle" style="height: 110px;"> <!--ICA-AtoM header-->
 <div id="logo">
   <?php echo link_to(image_tag('/images/ica-atom_logo.png', 'width="440" height="95" alt="ICA-AtoM logo" style="margin: 12px 0 0 0 ; float: right; align:center;"'), '/homepage/') ?>
-
 </div>
 </div> <!-- close header-middle -->
 

@@ -7,31 +7,32 @@
 - form.css, which is used to structure and style forms
 - layout.css,which is used to structure and style the physical page layout */
 
-
-
 /*********************************************************
                 WEBSITE NAME & LOGO
 **********************************************************/
 
-#website-name {
+#website-name
+{
 font: bold 64px/78px verdana, georgia, garamond, serif;
 letter-spacing: 3px;
 color: #04025C;
 border: 0;
 margin-bottom: 3px;
 text-align: left;
-float:left;
+float: left;
 /*background-image: url(../images/background.gif);*/
 }
 
-#website-name a:hover, #website-name a:link, #website-name a:visited, #website-name a:active {
+#website-name a:hover, #website-name a:link, #website-name a:visited, #website-name a:active
+{
 text-decoration: none;
 border: 0;
 color: #04025C;
 background-color: transparent;
 }
 
-#website-description {
+#website-description
+{
 color: #04025C;
 font: bold 15px/16px georgia, garamond, serif;
 margin: 75px 0 0 0;
@@ -40,7 +41,8 @@ text-align: left;
 float: right;
 }
 
-#logo a:hover, #logo a:link, #logo a:visited, #logo a:active {
+#logo a:hover, #logo a:link, #logo a:visited, #logo a:active
+{
 border: 0;
 color: #ffffff;
 background-color: transparent;
@@ -49,7 +51,8 @@ padding: 0;
 margin: 0;
 }
 
-#logo img {
+#logo img
+{
 margin: 0 0 0 20px;
 }
 
@@ -57,7 +60,8 @@ margin: 0 0 0 20px;
                 APP VERSION NUMBER
 **********************************************************/
 
-.versionNumber {
+.versionNumber
+{
 float: right;
 color: #999999;
 margin: 10px 5px 0 0;
@@ -69,26 +73,29 @@ z-index: 1;
                 GENERAL TEXT STYLING
 **********************************************************/
 
-body {
+body
+{
 font: normal 11px/14px verdana, lucida, sans-serif;
 color: #000000;
 }
 /* see also .staticPageContent below */
 
-
-p {
+p
+{
 margin: 15px 0 0 0;
 text-align: left;
 }
 
-img {
+img
+{
 /* vertical-align: middle; */
 border: 0;
 background-color: transparent;
 text-decoration: none;
 }
 
-img.static_page {
+img.static_page
+{
 padding: 5px;
 border: 1px solid #000000;
 background-color: #ffffff;
@@ -120,15 +127,15 @@ background-color: #ff9933;
 border-bottom: 2px solid #000066;
 }
 
-h1.search {
-margin-top:35px; 
-padding: 3px 0 3px 5px; 
+h1.search
+{
+margin-top: 35px;
+padding: 3px 0 3px 5px;
 background-color: #FF9933;
 color: #000000;
 border-top: 2px solid #999999;
 border-bottom: 2px solid #999999;
 }
-
 
 h2
 {
@@ -152,13 +159,15 @@ padding: 0;
 border: 0;
 }
 
-.heading-link {
+.heading-link
+{
 font: bold 16px/18px georgia, garamond, serif;
 margin: 3px 0 0 0;
 padding: 0 0 3px 0;
 }
 
-div.pageTitle {
+div.pageTitle
+{
 font: bold 25px/25px Lucida Sans Unicode, Lucida Grande, sans-serif;
 color: #cccccc;
 letter-spacing: -2px;
@@ -169,8 +178,9 @@ text-align: right;
 height: 25px;
 }
 
-div.pageTitle:first-letter {
-	text-transform: capitalize;
+div.pageTitle:first-letter
+{
+  text-transform: capitalize;
 }
 
 /*lists*/
@@ -184,52 +194,68 @@ margin: 5px 0 0 0;
 
 .translationList ul
 {
-padding: 0; 
+padding: 0;
 margin: 0 0 10px 20px;
 }
 
-
 /*links*/
 
-a:link, a:visited, a:active {
+a:link, a:visited, a:active
+{
 text-decoration: none;
 color: #0066cc;
 }
 
-a:hover {
+a:hover
+{
 text-decoration: none;
 color: #ffffff;
 background: #000000;
 }
 
+/* Giving hovered-over anchors a solid background does not play nice with YUI's
+ * menu because YUI does not override our hovered-over anchor style.  Instead
+ * it styles a .yuimenuitem-selected class.  So make an exception for YUI menu
+ * items.  Ideally we would make an exception in the above selector, but CSS
+ * does not support a "parent" selector.  See discussion on css-discuss list. */
+
+.yuimenuitem a:hover
+{
+  background: transparent;
+}
+
 /*line*/
-.line {
+.line
+{
 width: 100%;
 border-bottom: 2px solid #a5bcca;
 }
-
 
 /*********************************************************
                 SEARCH/BROWSE RESULTS LIST
 **********************************************************/
 
-#search-info {
+#search-info
+{
 font-weight: bold;
 margin: 20px 0 20px 0;
 }
 
-#search-results {
+#search-results
+{
 padding: 10px 3px 10px 3px;
 }
 
-#search-results table {
+#search-results table
+{
 width: 90%;
 border: 0;
 border-collapse: collapse;
 margin-bottom: 20px;
 }
 
-.search-result-number {
+.search-result-number
+{
 width: 40px;
 text-align: right;
 padding: 5px 0 5px 0;
@@ -237,14 +263,16 @@ background-color: transparent;
 border-bottom: solid 1px #999999;
 }
 
-.search-result {
+.search-result
+{
 text-align: left;
 padding-left: 5px;
 background-color: transparent;
 border-bottom: solid 1px #999999;
 }
 
-.search-results-page-number {
+.search-results-page-number
+{
 width: 10px;
 text-align: center;
 font: normal 14px/17px verdana, lucida, sans-serif;
@@ -254,25 +282,29 @@ border: 1px solid #999999;
 background: #ccccff;
 }
 
-.search-results-page-number a {
+.search-results-page-number a
+{
 text-decoration: none;
 color: #000000;
 background: #ccccff;
 }
 
-.search-results-page-number a:visited {
+.search-results-page-number a:visited
+{
 text-decoration: none;
 color: #000000;
 background: #ccccff;
 }
 
-.search-results-page-number a:hover {
+.search-results-page-number a:hover
+{
 text-decoration: none;
 color: #ffffff;
 background: #000000;
 }
 
-.search-results-page-number-current {
+.search-results-page-number-current
+{
 width: 10px;
 text-align: center;
 font: normal 14px/17px verdana, lucida, sans-serif;
@@ -282,52 +314,58 @@ border: 1px solid #999999;
 background: #dddddd;
 }
 
-.search-results-page-button {
+.search-results-page-button
+{
 float: left;
 padding-top: 2px;
 }
 
-#search-results-summary {
+#search-results-summary
+{
 float: left;
 margin-left: 10px;
 padding-top: 3px;
 }
 
-
 /*********************************************************
                 SEARCH FORM - ADVANCED
 **********************************************************/
 
-#search-form table {
+#search-form table
+{
 border: 0;
 border-collapse: collapse;
 margin: 0;
 padding: 0;
 }
 
-#search-form td {
+#search-form td
+{
  border: 0;
  vertical-align: center;
 }
 
-#search-form .textbox {
-	background-color: #FFFFFF;
-	border: 2px solid #a3a3a3;
-	width: 500px;
-	padding: 0 3px 3px 3px;
-	margin: 0 0 0 10px;
-	font: bold 20px Verdana, Arial, Sans-Serif;
+#search-form .textbox
+{
+  background-color: #FFFFFF;
+  border: 2px solid #a3a3a3;
+  width: 500px;
+  padding: 0 3px 3px 3px;
+  margin: 0 0 0 10px;
+  font: bold 20px Verdana, Arial, Sans-Serif;
     float: left;
 }
 
-#search-form .submit {
+#search-form .submit
+{
 height: 30px;
 font: 15px Verdana, Arial, Sans-Serif;
 margin: 0 5px 0 5px;
 width: 100px;
 }
 
-#search-form .submithover {
+#search-form .submithover
+{
 height: 30px;
 font: 15px Verdana, Arial, Sans-Serif;
 margin: 0 0 0 5px;
@@ -338,7 +376,8 @@ width: 100px;
               DETAIL (SHOW/EDIT) TABLES
 **********************************************************/
 
-table.detail {
+table.detail
+{
 width: 99%;
 margin: 0;
 /*border-collapse: collapse;*/
@@ -348,96 +387,108 @@ font: normal 11px/14px verdana, lucida, sans-serif;
 color: #000000;
 }
 
-table.detail tr {
+table.detail tr
+{
 vertical-align: top;
 }
 
-table.detail td {
+table.detail td
+{
   border: 0;
   border-bottom: 1px solid #cccccc;
-	padding: 4px;
-	font-weight: normal;
+  padding: 4px;
+  font-weight: normal;
 }
 
-table.detail th {
-	padding: 4px;
-	font-weight: bold;
-	vertical-align:top;
-	text-align:right;
-    width: 30%;
-	border-bottom: 1px solid #999999;
-	border-right: 1px solid #999999;
-	border-left: 0;
-	border-top: 0;
-	background-color: #a0a9bc;
-	color: #ffffff;
+table.detail th
+{
+  padding: 4px;
+  font-weight: bold;
+  vertical-align: top;
+  text-align: right;
+  width: 30%;
+  border-bottom: 1px solid #999999;
+  border-right: 1px solid #999999;
+  border-left: 0;
+  border-top: 0;
+  background-color: #a0a9bc;
+  color: #ffffff;
 }
 
-table.detail th:after {
+table.detail th:after
+{
 content: ":";
 }
 
 table.list th:first-letter,
-table.detail th:first-letter {
-	text-transform: capitalize;
+table.detail th:first-letter
+{
+  text-transform: capitalize;
 }
 
-table.detail td.headerCell {
-	padding: 4px;
-	vertical-align:top;
-	text-align:left;
+table.detail td.headerCell
+{
+  padding: 4px;
+  vertical-align: top;
+  text-align: left;
   font: bold 18px/18px georgia, verdana, sans-serif;
   border: 0;
-	border-bottom: 1px solid #999999;
-	border-top: 2px solid #999999;
+  border-bottom: 1px solid #999999;
+  border-top: 2px solid #999999;
   color: #000033;
-	background-color: #FF9D3C;
-	height: 20px;
+  background-color: #FF9D3C;
+  height: 20px;
 }
 
-table.detail td.headerCell a {
+table.detail td.headerCell a
+{
   color: #000000;
-	background-color: #FF9D3C;
+  background-color: #FF9D3C;
 }
 
-table.detail td.headerCell a:hover {
+table.detail td.headerCell a:hover
+{
 color: #ffffff;
 background-color: #000000;
 }
 
-table.detail td.headerCell-name {
-	border: 0;
-	border-bottom: 1px solid #333333;
-	background-color: #006699;
-	color: #ffffff;
-	padding: 4px;
-	vertical-align:top;
-	text-align:center;
-	font: bold 16px/17px verdana, lucida, sans-serif;
+table.detail td.headerCell-name
+{
+  border: 0;
+  border-bottom: 1px solid #333333;
+  background-color: #006699;
+  color: #ffffff;
+  padding: 4px;
+  vertical-align: top;
+  text-align: center;
+  font: bold 16px/17px verdana, lucida, sans-serif;
 }
 
-table.detail td.subHeaderCell {
-	padding: 2px;
-	vertical-align: top;
-	text-align: right;
+table.detail td.subHeaderCell
+{
+  padding: 2px;
+  vertical-align: top;
+  text-align: right;
   font: normal 14px/14px georgia, verdana, sans-serif;
   border: 0;
-	border-bottom: 1px solid #999999;
-	border-top: 1px solid #999999;
+  border-bottom: 1px solid #999999;
+  border-top: 1px solid #999999;
   color: #000033;
-	background-color: #FF9D3C;
+  background-color: #FF9D3C;
 }
 
 /*********************************************************
               INLINE TABLES
 **********************************************************/
 
-table.inline {
+table.inline
+{
   width: 100%;
   border: 0;
 }
 
-table.inline td.headerCell {
+table.inline td.headerCell
+{
   border: 0;
   background-color: #cccccc;
   color: #ffffff;
@@ -447,62 +498,66 @@ table.inline td.headerCell {
   width: 15%;
 }
 
-table.inline tr {
+table.inline tr
+{
 vertical-align: top;
 }
 
-table.inline td {
+table.inline td
+{
 border: 0;
 border-top: 1px solid #cccccc;
 text-align: left;
 }
 
-table.inlineClear {
+table.inlineClear
+{
  width: 100%;
  border: 0;
  margin: 0;
  padding: 0;
 }
 
-table.inlineClear tr {
+table.inlineClear tr
+{
 vertical-align: top;
  margin: 0;
  padding: 0;
 }
 
-table.inlineClear th {
+table.inlineClear th
+{
   text-align: left;
   border: 0;
   width: 30%;
   background: transparent;
 }
 
-table.inlineClear td {
+table.inlineClear td
+{
   width: 70%;
   text-align: left;
   border: 0;
   background: transparent;
 }
 
-
-
-
 /*********************************************************
               NOTE SPAN
 **********************************************************/
 
-span.note {
+span.note
+{
 font-size: 9px;
 font-style: italic;
 margin-left: 10px;
 }
 
-
 /*********************************************************
               LIST TABLES
 **********************************************************/
 
-table.list {
+table.list
+{
 width: 99%;
 margin: 0;
 /*border-collapse: collapse;*/
@@ -512,20 +567,24 @@ font: normal 11px/14px verdana, lucida, sans-serif;
 color: #000000;
 }
 
-table.list thead tr {
+table.list thead tr
+{
 border-left: 2px solid #999999;
 }
 
-table.list ul {
+table.list ul
+{
 padding: 0;
 margin: 0;
 }
 
-table.list tr {
+table.list tr
+{
 }
 
-table.list td {
-	padding: 4px 4px 4px 10px;
+table.list td
+{
+  padding: 4px 4px 4px 10px;
     text-align: left;
     border-spacing: 20px;
     border: 0;
@@ -533,172 +592,189 @@ table.list td {
     vertical-align: top;
 }
 
-table.list th {
-	border: 1px solid #999999;
-	background-color: #ff9933;
-	color: #000000;
+table.list th
+{
+  border: 1px solid #999999;
+  background-color: #ff9933;
+  color: #000000;
     padding: 4px 4px 4px 10px;
-  	font-weight: bold;
-	vertical-align: top;
-	text-align: left;
+    font-weight: bold;
+  vertical-align: top;
+  text-align: left;
 }
 
-table.list th.header {
-	border: 1px solid #999999;
-	background-color: #cccccc;
-	color: #000000;
+table.list th.header
+{
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #000000;
   padding: 4px 4px 4px 10px;
   font-weight: bold;
   font-size: 14px;
-	vertical-align: top;
-	text-align: left;
+  vertical-align: top;
+  text-align: left;
 }
 
-.tableHeader {
+.tableHeader
+{
 
-width: 99%; 
-background: #6992AF; 
-font-weight: bold; 
-font-size: 110%; 
-padding: 5px 0 5px 10px; 
-border: 1px solid #999999; 
+width: 99%;
+background: #6992AF;
+font-weight: bold;
+font-size: 110%;
+padding: 5px 0 5px 10px;
+border: 1px solid #999999;
 margin-top: 10px;
 }
 
-.translationTableHeader {
+.translationTableHeader
+{
 
-width: 97%; 
+width: 97%;
 background: #FFD700;
-font-weight: bold; 
-font-size: 110%; 
-padding: 5px 0 5px 10px; 
-border: 1px solid #999999; 
+font-weight: bold;
+font-size: 110%;
+padding: 5px 0 5px 10px;
+border: 1px solid #999999;
 margin-top: 10px;
 }
 
-table.list td.headerCell {
-	border: 0;
-	border-bottom: 1px solid #999999;
-	background-color: #eeeeee;
-	color: #000000;
+table.list td.headerCell
+{
+  border: 0;
+  border-bottom: 1px solid #999999;
+  background-color: #eeeeee;
+  color: #000000;
 }
 
-table.list td.headerCell-name {
-	border: 0;
-	border-bottom: 1px solid #999999;
-	background-color: #006699;
-	color: #ffffff;
+table.list td.headerCell-name
+{
+  border: 0;
+  border-bottom: 1px solid #999999;
+  background-color: #006699;
+  color: #ffffff;
 }
 
-table.list th a {
+table.list th a
+{
     color: #000000;
     padding: 0;
     margin: 0;
 }
 
-table.list th a:visited {
+table.list th a:visited
+{
     color: #000000;
     padding: 0;
     margin: 0;
 }
 
-table.list th a:active {
+table.list th a:active
+{
     color: #000000;
     padding: 0;
     margin: 0;
 }
 
-
-
-table.list th a:hover {
+table.list th a:hover
+{
     color: #ffffff;
 }
 
-table.list td.headerCell {
-	padding: 4px;
-	vertical-align:top;
-	text-align:center;
+table.list td.headerCell
+{
+  padding: 4px;
+  vertical-align: top;
+  text-align: center;
 }
 
-table.list td.headerCell-name {
-	padding: 4px;
-	vertical-align:top;
-	text-align:center;
-	font: bold 16px/17px verdana, lucida, sans-serif;
+table.list td.headerCell-name
+{
+  padding: 4px;
+  vertical-align: top;
+  text-align: center;
+  font: bold 16px/17px verdana, lucida, sans-serif;
 }
 
-.th-link {
+.th-link
+{
 font-weight: normal;
 }
 
-.th-link a:before {
+.th-link a:before
+{
 content: "(";
 }
 
-.th-link a:after {
+.th-link a:after
+{
 content: ")";
 }
 
-
-}
-
-.th-link a:hover {
+.th-link a:hover
+{
 color: #ffffff;
 background: #000000;
 }
 
-.plus {
+.plus
+{
 background-image: url('../images/tree_plus.gif');
 background-repeat: no-repeat;
 background-position: top left;
 }
 
-
 /*********************************************************
                 STATIC PAGE
 **********************************************************/
 
-.staticPageContent {
+.staticPageContent
+{
 font: normal 14px/16px verdana, lucida, sans-serif;
 margin-top: 5px;
 }
 
-.editLink {
+.editLink
+{
 margin-top: 15px;
 color: #999999;
 }
 
-.editLink a {
+.editLink a
+{
 color: #999999;
 }
 
-.editLink a:before {
+.editLink a:before
+{
 content: "[";
 }
 
-.editLink a:after {
+.editLink a:after
+{
 content: "]";
 }
-
 
 /*********************************************************
                 CAPITALIZATION
 **********************************************************/
 
-.firstLetter:first-letter {
-	text-transform: uppercase;
+.firstLetter:first-letter
+{
+  text-transform: uppercase;
 }
 
-.capitalize {
-	text-transform: capitalize;
+.capitalize
+{
+  text-transform: capitalize;
 }
-
 
 /*********************************************************
-             DIGITAL OBJECT THUMBS 
+             DIGITAL OBJECT THUMBS
 **********************************************************/
 
-div.digitalObjectList {
+div.digitalObjectList
+{
   border: 1px solid black;
   background-color: #eee;
   height: 100%;
@@ -706,7 +782,8 @@ div.digitalObjectList {
   width: 98%;
 }
 
-div.digitalObject {
+div.digitalObject
+{
   float: left;
   margin: 5px;
   padding: 5px;
@@ -718,8 +795,9 @@ div.digitalObject {
   background-color: #eee;
 }
 
-div.digitalObjectRep {
-	height: 102px;
+div.digitalObjectRep
+{
+  height: 102px;
   width: 102px;
   vertical-align: middle;
   text-align: center;
@@ -728,10 +806,12 @@ div.digitalObjectRep {
   display: table-cell;
 }
 
-.digitalObjectDesc {
-	height: auto;
+.digitalObjectDesc
+{
+  height: auto;
 }
 
-div.digitalObjectDesc img {
+div.digitalObjectDesc img
+{
   float: right;
 }

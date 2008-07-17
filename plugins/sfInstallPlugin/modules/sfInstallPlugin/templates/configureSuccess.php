@@ -12,13 +12,13 @@
 <?php endif; ?>
 
 <p>
-  <?php echo link_to('A database must exist on your server before Qubit can be installed.', 'http://qubit-toolkit.org/wiki/index.php?title=Install#Create_database') ?>
+  <?php echo link_to('A database must exist on your server before '.sfConfig::get('app_name', 'Qubit').' can be installed.', 'http://qubit-toolkit.org/wiki/index.php?title=Install#Create_database') ?>
 </p>
 
 <form action="<?php echo url_for(array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?>" method="post">
   <div class="description">
     <p>
-      To set up your Qubit database, enter the following information.
+      To set up your database, enter the following information.
     </p>
   </div>
   <?php echo $form ?>

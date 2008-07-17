@@ -19,7 +19,7 @@
 
     <div id="header">
       <div id="logo-floater">
-        <h1><?php echo image_tag('ica-atom_logo', array('alt' => 'ICA-AtoM', 'id' => 'logo')) ?><div></div></h1>
+        <h1><?php echo image_tag('logo', array('alt' => sfConfig::get('app_name', 'Qubit'), 'id' => 'logo')) ?><div><?php echo sfConfig::get('app_name', 'Qubit') ?></div></h1>
       </div>
     </div>
 

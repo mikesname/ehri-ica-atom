@@ -1,15 +1,16 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+<?php $appName = 'ICA-AtoM' ?>
 <?php $path = preg_replace('/\/[^\/]+\.php5?$/', null, isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_SERVER['ORIG_SCRIPT_NAME']) ? $_SERVER['ORIG_SCRIPT_NAME'] : '')) ?>
 
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="title" content="Qubit - unavailable" />
+<meta name="title" content="<?php echo $appName ?> - unavailable" />
 <meta name="robots" content="index, follow" />
 <meta name="language" content="en" />
-<title>Qubit - unavailable</title>
+<title><?php echo $appName ?> - unavailable</title>
 
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/screen.css" />
@@ -31,7 +32,7 @@
 
     <div id="header">
       <div id="logo-floater">
-        <h1><img alt="Qubit" id="logo" src="<?php echo $path ?>/images/ica-atom_logo.png" /><div></div></h1>
+        <h1><img alt="<?php echo $appName ?>" id="logo" src="<?php echo $path ?>/images/logo.png" /><div><?php echo $appName ?></div></h1>
       </div>
     </div>
 
