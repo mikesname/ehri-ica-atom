@@ -90,7 +90,7 @@
   </div>
 <?php endif; ?>
 
-<?php $error |= count($settingsYml = sfInstall::checkSettingsYml(count($htaccess) > 0)) > 0 ?>
+<?php $error |= count($settingsYml = sfInstall::checkSettingsYml(count($htaccess) < 1)) > 0 ?>
 <?php if (isset($settingsYml['notWritable'])): ?>
   <div class="messages error">
     <p>
