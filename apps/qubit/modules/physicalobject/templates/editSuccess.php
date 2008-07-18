@@ -15,11 +15,17 @@
 
     <div class="form-item">
       <label for="name"><?php echo __('name'); ?></label>
+      <?php if (strlen($sourceCultureValue = $physicalObject->getName(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $physicalObject->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>
       <?php echo object_input_tag($physicalObject, 'getName'); ?>
     </div>
 
     <div class="form-item">
       <label for="location"><?php echo __('location'); ?></label>
+      <?php if (strlen($sourceCultureValue = $physicalObject->getLocation(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $physicalObject->getSourceCulture()): ?>
+      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+      <?php endif; ?>
       <?php echo object_input_tag($physicalObject, 'getLocation'); ?>
     </div>
     
