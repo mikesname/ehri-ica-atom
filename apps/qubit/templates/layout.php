@@ -30,7 +30,7 @@
 <?php else: ?>
 <?php echo link_to(__('log in'), 'login/') ?><?php endif; ?>
 
-<?php echo link_to(__('help'), 'http://www.ica-atom.org/docs/index.php', array('target' => '_blank')) ?>
+<?php echo link_to(__('help'), 'http://www.ica-atom.org/docs/index.php?title=User_manual', array('target' => '_blank')) ?>
 <?php echo link_to(__('about'), '/about/') ?>
 <?php echo link_to(__('home'), '/homepage/') ?>
 </div>
