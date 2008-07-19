@@ -58,7 +58,7 @@
 <?php endif; ?>
 
 <!-- HACK: This checkSettingsYml() was meant to get called after checkHtaccess() but without settings.yml, sfInstallPlugin is disabled, breaking the checkHtaccess() callbacks : ( -->
-<?php sfInstall::checkSettingsYml() ?>
+<?php sfInstall::checkSettingsYml(false) ?>
 
 <?php $error |= count($htaccess = sfInstall::checkHtaccess()) > 0 ?>
 <?php if (isset($htaccess['notWritable'])): ?>
@@ -114,10 +114,14 @@
 <?php endif; ?>
 
 <?php if ($error): ?>
-  <?php echo link_to('Try again', $sf_request->getUri()) ?>
-  <?php echo link_to('Ignore errors and continue', array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?>
+  <ul>
+    <li><?php echo link_to('Try again', $sf_request->getUri()) ?></li>
+    <li><?php echo link_to('Ignore errors and continue', array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?></li>
+  </ul>
 <?php else: ?>
   <!-- If JavaScript is enabled, automatically redirect to the next task.  Include a link in case it is not. -->
-  <?php echo link_to('Continue', array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?>
+  <ul>
+    <li><?php echo link_to('Continue', array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?></li>
+  </ul>
   <?php $sf_context->getController()->redirect(array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?>
 <?php endif; ?>

@@ -22,5 +22,12 @@ class sfInstallPluginConfigureAction extends sfAction
         }
       }
     }
+    else
+    {
+      $configuration = sfPropelDatabase::getConfiguration();
+      $this->form->setDefault('database_name', $configuration['propel']['datasources']['propel']['connection']['database']);
+      $this->form->setDefault('database_username', $configuration['propel']['datasources']['propel']['connection']['username']);
+      $this->form->setDefault('database_password', $configuration['propel']['datasources']['propel']['connection']['password']);
+    }
   }
 }

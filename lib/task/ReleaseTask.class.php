@@ -35,7 +35,14 @@ class ReleaseTask extends sfBaseTask
       $arguments['version'] .= $matches[1];
     }
 
-    print 'Releasing Qubit version "'.$arguments['version']."\"\n";
+    $doc = new DOMDocument;
+    $doc->load(sfConfig::get('sf_config_dir').'/package.xml');
+
+    $xpath = new DOMXPath($doc);
+    $xpath->registerNamespace('p', 'http://pear.php.net/dtd/package-2.0');
+
+    $name = $xpath->evaluate('string(p:name)', $doc->documentElement);
+    print 'Releasing '.$name.' version "'.$arguments['version']."\"\n";
 
     // Local changes mean patches may conflict.  All lines which start with a
     // character other than 'P' ('Performing...'), 'S' ('Status...'), or 'X'
@@ -65,12 +72,6 @@ class ReleaseTask extends sfBaseTask
     {
       throw new Exception('Some tests failed. Release process aborted!');
     }
-
-    $doc = new DOMDocument;
-    $doc->load(sfConfig::get('sf_config_dir').'/package.xml');
-
-    $xpath = new DOMXPath($doc);
-    $xpath->registerNamespace('p', 'http://pear.php.net/dtd/package-2.0');
 
     if (!$xpath->evaluate('boolean(p:date)', $doc->documentElement))
     {

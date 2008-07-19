@@ -22,5 +22,5 @@
     </p>
   </div>
   <?php echo $form ?>
-  <input type="submit" value="Save and continue"/>
+  <input class="form-submit" type="submit" value="Save and continue"/>
 </form>
