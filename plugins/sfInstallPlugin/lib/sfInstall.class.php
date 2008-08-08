@@ -6,6 +6,9 @@
 // TODO: Integrate with symfony/data/bin/check_configuration.php
 class sfInstall
 {
+  public static $MINIMUM_MEMORY_LIMIT_MB = 64;
+  
+  
   // Returns an array of missing dependencies
   // TODO: This is already implemented in PEAR.  Make this check more robust by
   // calling their code.
@@ -226,10 +229,10 @@ EOF;
     $htaccessPath = sfConfig::get('sf_web_dir').'/.htaccess';
 
     // TODO: no_script_name should be a genUrl() option
-    sfConfig::set('no_script_name', false);
+    sfConfig::set('sf_no_script_name', false);
     $url = sfContext::getInstance()->getController()->genUrl(array('module' => 'sfInstallPlugin', 'action' => 'callback'));
 
-    sfConfig::set('no_script_name', true);
+    sfConfig::set('sf_no_script_name', true);
     $noScriptNameUrl = sfContext::getInstance()->getController()->genUrl(array('module' => 'sfInstallPlugin', 'action' => 'callback'));
 
     // Remember if the .htaccess file already exists
@@ -327,7 +330,18 @@ EOF;
     }
 
     // TODO: Make this pattern more robust, or parse the YAML?
-    $settingsYmlContents = preg_replace('/^(prod:\v+  .settings:\v+    no_script_name:\h*)[^\v]+/', '\1'.($noScriptName ? 'true' : 'false'), $settingsYmlContents);
+    $pattern = '/^(prod:\v+  .settings:)(?:\v+    no_script_name:\h*[^\v]+)?/';
+
+    $replacement = '\1';
+    if ($noScriptName)
+    {
+      $replacement .= <<<EOF
+
+    no_script_name: true
+EOF;
+    }
+
+    $settingsYmlContents = preg_replace($pattern, $replacement, $settingsYmlContents);
 
     if (false === file_put_contents($settingsYmlPath, $settingsYmlContents))
     {
@@ -407,6 +421,42 @@ EOF;
     }
 
     return $searchIndex;
+  }
+  
+  
+  /**
+   * Check that memory_limit ini value meets Qubit's minimum requirements
+   * (currently 64 MB)
+   *
+   * @return current memory limit if less than 64M
+   */
+  public static function checkMemoryLimit()
+  {
+    $memoryLimit = ini_get('memory_limit');
+    
+    // Convert memoryLimit to float or integer value in units of MB
+    // See http://ca.php.net/manual/en/faq.using.php#faq.using.shorthandbytes
+    switch (strtolower(substr($memoryLimit, -1)))
+    {
+      case 'k':
+        $memoryLimit = round(intval(substr($memoryLimit, 0, -1))/1024, 3);
+        break;
+      case 'm':
+        $memoryLimit = intval(substr($memoryLimit, 0, -1));
+        break;
+      case 'g':
+        $memoryLimit = intval(substr($memoryLimit, 0, -1))*1024;
+        break; 
+      default:
+        // If suffix is not K, M, or G (case-insensitive), then value is assumed to be bytes
+        $memoryLimit = round(intval($memoryLimit)/1048576, 3);
+    }
+    
+    if ($memoryLimit < self::$MINIMUM_MEMORY_LIMIT_MB)
+    {
+    
+      return $memoryLimit;
+    }
   }
 
   public static function configureDatabase($databaseName, $databaseUsername, $databasePassword)

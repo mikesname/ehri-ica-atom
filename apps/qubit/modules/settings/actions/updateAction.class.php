@@ -55,10 +55,6 @@ class SettingsUpdateAction extends sfAction
       $this->refreshSettings();
       return $this->redirect('settings/list');
     }
-    else
-    {
-      $this->forward404Unless($this->getRequestParameter('fieldset'));
-    }
 
     // update any existing values
     $parameters = $this->getRequest()->getParameterHolder()->getAll();

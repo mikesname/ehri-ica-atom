@@ -20,23 +20,23 @@
   <?php foreach ($settings as $setting): ?>
     <tr>
     <td>
-      <?php if ($sf_user->getCulture() != $setting->getCulture() && $scope != 'i18n_languages'): ?>
-        <div class="default-translation"><?php echo $setting->getName() ?></div>
-        <?php else: ?>
-        <?php echo $setting->getName() ?>
+    <?php if ($sf_user->getCulture() != $setting->getCulture() && $scope != 'i18n_languages'): ?>
+      <div class="default-translation"><?php echo $setting->getName() ?></div>
+    <?php else: ?>
+      <?php echo $setting->getName() ?>
     <?php endif; ?>
     </td>
     <td>
-      <?php if ($scope == 'i18n_languages'): ?>
+    <?php if ($scope == 'i18n_languages'): ?>
       <?php echo format_language($setting->getName()) ?>
-      <?php elseif ($setting->isEditable()): ?>
+    <?php elseif ($setting->isEditable()): ?>
       <?php echo input_tag($setting->getId(), $setting->getValue()) ?>
     <?php else: ?>
       <?php echo $setting->getValue() ?>
     <?php endif; ?>
     </td>
   <td>
-      <?php if ($setting->isDeleteable()): ?>
+    <?php if ($setting->isDeleteable()): ?>
       <?php echo link_to(image_tag('delete', 'valign=top'), 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
     <?php endif; ?>
   </td>
@@ -52,14 +52,14 @@
           <?php echo my_submit_tag(__('add'), array('style' => 'width: auto;')) ?>
         </div>
       </td>
-  <?php else: ?>
+    <?php else: ?>
       <td></td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
           <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
         </div>
       </td>
-  <?php endif; ?>
+    <?php endif; ?>
     </tr>
   </tbody>
 </table>

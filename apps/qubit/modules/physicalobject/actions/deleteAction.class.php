@@ -52,7 +52,10 @@ class PhysicalObjectDeleteAction extends sfAction
       }
     }
 
-    // Redirect to "next" action
-    return $this->redirect(urldecode($this->getRequestParameter('next')));
+    // Make the $next parameter into an absolute URL because redirect() expects
+    // an absolute URL or an array containing module and action
+    // (Pre-pend code copied from sfWebController->genUrl() method)  
+    $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
+    return $this->redirect($next);
   }
 }

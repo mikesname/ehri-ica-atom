@@ -117,7 +117,11 @@
               <?php echo $contact->getEmail() ?><br />
             <?php endif; ?>
             <?php if ($contact->getWebsite()): ?>
-              <?php echo link_to($contact->getWebsite(), $contact->getWebsite()) ?><br />
+              <?php
+                // Add http:// to the beginning of website urls that don't already have it
+                $fullUrl = (preg_match('|^https?://|', $contact->getWebsite())) ? $contact->getWebsite() : 'http://'.$contact->getWebsite();
+              ?>
+              <?php echo '<a href="'.$fullUrl.'" target="_NEW">'.$fullUrl.'</a>' ?><br />
             <?php endif; ?>
             <?php if ($contact->getNote()): ?>
               <span class="note"><?php echo $contact->getNote() ?></span>

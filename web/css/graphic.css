@@ -175,7 +175,6 @@ padding: 3px 10px 2px 0;
 border: 0;
 margin: 0;
 text-align: right;
-height: 25px;
 }
 
 div.pageTitle:first-letter
@@ -773,13 +772,25 @@ content: "]";
              DIGITAL OBJECT THUMBS
 **********************************************************/
 
-div.digitalObjectList
+table.digitalObjectBrowse
 {
   border: 1px solid black;
   background-color: #eee;
   height: 100%;
-  float: left;
   width: 98%;
+  border-collapse: separate;
+}
+
+td.digitalObjectBrowse
+{
+  margin: 0px;
+  padding: 0px;
+  width: 102px;
+  text-align: center;
+  vertical-align: top;
+  color: black;
+  background-color: #eee;
+  border: 0px;
 }
 
 div.digitalObject

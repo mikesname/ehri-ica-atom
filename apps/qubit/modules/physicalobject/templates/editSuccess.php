@@ -75,12 +75,14 @@
         <?php endif; ?>
         
         <?php if($nextAction == null): ?>
-          &nbsp;<?php echo link_to(__('delete'), 'physicalobject/delete?id='.$physicalObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
-          &nbsp;<?php echo link_to(__('cancel'), 'physicalobject/show?id='.$physicalObject->getId()); ?>
+          &nbsp;<?php echo link_to(__('delete'), array('module'=>'physicalobject', 'action'=>'delete', 'id'=>$physicalObject->getId(), 
+                  array('post'=>true, 'confirm'=>$deleteWarning))) ?>
+          &nbsp;<?php echo link_to(__('cancel'), array('module'=>'physicalobject', 'action'=>'show', 'id'=>$physicalObject->getId())); ?>
         <?php else: ?>
-          &nbsp;<?php echo link_to(__('delete'), 
-                  'physicalobject/delete?id='.$physicalObject->getId().'&next='.urlencode($nextAction),
-                  array('confirm'=>$deleteWarning)); ?>
+          &nbsp;<?php echo link_to(__('delete'),
+                  array('module' => 'physicalobject', 'action' => 'delete', 'id' => $physicalObject->getId()), 
+                  array('query_string' => 'next='.urlencode($nextAction), 'post'=>true, 'confirm'=>$deleteWarning)
+                ) ?>
           &nbsp;<a href="<?php echo $nextAction ?>"><?php echo __('cancel') ?></a>
         <?php endif; ?>
         

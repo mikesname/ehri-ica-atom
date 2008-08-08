@@ -76,7 +76,11 @@
               <?php echo $contact->getEmail() ?><br />
             <?php endif; ?>
             <?php if ($contact->getWebsite()): ?>
-              <?php echo link_to($contact->getWebsite(), $contact->getWebsite()) ?><br />
+              <?php
+                // Add http:// to the beginning of website urls that don't already have it
+                $fullUrl = (preg_match('|^https?://|', $contact->getWebsite())) ? $contact->getWebsite() : 'http://'.$contact->getWebsite();
+              ?>
+              <?php echo '<a href="'.$fullUrl.'" target="_NEW">'.$fullUrl.'</a>' ?><br />
             <?php endif; ?>
             <?php if (strlen($value = $contact->getNote(array('cultureFallback' => true))) >0): ?>
               <span class="note"><?php echo $value ?></span>

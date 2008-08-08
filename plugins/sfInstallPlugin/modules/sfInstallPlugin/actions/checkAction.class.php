@@ -4,5 +4,6 @@ class sfInstallPluginCheckAction extends sfAction
 {
   public function execute($request)
   {
+    $this->qubitWikiIndexUrl = 'http://qubit-toolkit.org/index.php';
   }
 }

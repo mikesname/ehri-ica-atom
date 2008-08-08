@@ -56,6 +56,16 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
 
     return $query;
   }
+  
+  public static function createFromResultSet(ResultSet $resultSet, $className, array $options = array())
+  {
+    $query = new QubitQuery;
+    $query->resultSet = $resultSet;
+    $query->className = $className;
+    $query->options = $options;
+    
+    return $query;
+  }
 
   // Not recursive: Only ever called from the root.
   protected function getResultSet(QubitQuery $leaf)
@@ -109,7 +119,10 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
         if (isset($this->criteria))
         {
           list ($this->resultSet, $sorted) = $this->getResultSet($leaf);
-
+        }
+        
+        if ($this->resultSet)
+        {
           while ($this->resultSet->next())
           {
             // $this->parent is unset, so we should have a className?

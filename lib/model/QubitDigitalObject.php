@@ -33,7 +33,8 @@ class QubitDigitalObject extends BaseDigitalObject
   const GENERIC_ICON_DIR = 'generic-icons';
 
   // Mime-type for thumbnails (including reference image)
-  const THUMB_MIME_TYPE = 'image/png';
+  const THUMB_MIME_TYPE = 'image/jpeg';
+  const THUMB_EXTENSION = 'jpg';
 
   // Qubit Generic Icon list
   private static $qubitGenericIcons = array(
@@ -730,7 +731,7 @@ class QubitDigitalObject extends BaseDigitalObject
   public function createImageDerivative($usageId)
   {
     $mechanism = array('QubitDigitalObject', 'resizeImage');
-    $extension = '.png';
+    $extension = '.'.self::THUMB_EXTENSION;
 
     // Get max dimensions
     $maxDimensions = self::getImageMaxDimensions($usageId);
@@ -960,7 +961,7 @@ class QubitDigitalObject extends BaseDigitalObject
       case QubitTerm::THUMBNAIL_ID:
       default:
         $mechanism = array('QubitDigitalObject', 'convertVideoToThumbnail');
-        $extension = '.png';
+        $extension = '.'.self::THUMB_EXTENSION;
         $maxDimensions = self::getImageMaxDimensions($usageId);
         break;
     }
@@ -1045,8 +1046,8 @@ class QubitDigitalObject extends BaseDigitalObject
       return false;
     }
 
-    // Do conversion to png
-    $cmd = 'ffmpeg -i '.$originalPath.' -vcodec png -vframes 1 -an -f rawvideo -s '.$width.'x'.$height.' '.$newPath;
+    // Do conversion to jpeg
+    $cmd = 'ffmpeg -i '.$originalPath.' -vcodec jpeg -vframes 1 -an -f rawvideo -s '.$width.'x'.$height.' '.$newPath;
     exec($cmd.' 2>&1', $stdout, $returnValue);
 
     // If return value is non-zero, an error occured

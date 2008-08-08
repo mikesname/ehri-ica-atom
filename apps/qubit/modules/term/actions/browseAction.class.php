@@ -43,17 +43,17 @@ class TermBrowseAction extends sfAction
     {
       $this->sort = $this->getRequestParameter('sort', 'termNameUp');
       if ($this->getRequestParameter('taxonomyId'))
-        {
-          $taxonomyId = $this->getRequestParameter('taxonomyId');
-        }
+      {
+        $taxonomyId = $this->getRequestParameter('taxonomyId');
+      }
       else
-        {
-          $taxonomyId = QubitTaxonomy::SUBJECT_ID;
-        }
+      {
+        $taxonomyId = QubitTaxonomy::SUBJECT_ID;
+      }
 
       $this->taxonomy = QubitTaxonomy::getById($taxonomyId);
       $language = $this->getUser()->getCulture();
-      $this->terms = TermPeer::getTaxonomyBrowseList($taxonomyId, $this->sort, $language);
+      $this->terms = QubitTerm::getBrowseList($taxonomyId, array('sort'=>$this->sort, 'language'=>$language, 'cultureFallback'=>true));
 
       $this->setTemplate('browseTaxonomy');
     }

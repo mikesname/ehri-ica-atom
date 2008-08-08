@@ -21,57 +21,7 @@
 
 class TermPeer extends BaseTerm
 {
-  public static function getTaxonomyBrowseList($taxonomyId = null, $sort = null, $language = null)
-  {
-  $criteria = new Criteria;
-  $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
-  $criteria->add(QubitTermI18n::CULTURE, $language);
-  $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
-  $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::RIGHT_JOIN);
-
-  switch($sort)
-    {
-    case 'termNameUp' :
-      {
-      $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME);
-      }
-    case 'termNameDown' :
-      {
-      $criteria->addDescendingOrderByColumn(QubitTermI18n::NAME);
-      }
-    }
-
-  $criteria->setDistinct(true);
-
-  $terms = QubitTerm::get($criteria);
-  $taxonomyBrowseList = array();
-
-  foreach ($terms as $term)
-    {
-        $criteria = new Criteria;
-        $criteria->add(QubitObjectTermRelation::TERM_ID, $term->getId());
-        $hits = count(QubitObjectTermRelation::get($criteria));
-
-    if (is_null($termName = $term->getName()))
-      {
-        $termName = $term->getName(array('sourceCulture' => true));
-      }
-
-    $taxonomyBrowseList[] = array('termName' => $termName, 'termId' => $term->getId(), 'hits' => $hits);
-    }
-
-  //use ArraySort helper
-  switch($sort)
-    {
-    case 'hitsUp' :
-      return ArraySort::termHitsSortUp($taxonomyBrowseList);
-    case 'hitsDown' :
-      return ArraySort::termHitsSortDown($taxonomyBrowseList);
-    default :
-      return $taxonomyBrowseList;
-    }
-  }
-
+ 
   public static function getActorRelationTypes()
     {
     return self::getTaxonomy($taxonomyId = 1, $sort, $restrict = false);

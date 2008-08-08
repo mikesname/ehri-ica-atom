@@ -15,7 +15,7 @@ class sfInstallConfigureForm extends sfForm
     $this->setWidgets(array(
       'database_name' => new sfWidgetFormInput,
       'database_username' => new sfWidgetFormInput,
-      'database_password' => new sfWidgetFormInputPassword(array('always_render_empty' => false))));
+      'database_password' => new sfWidgetFormInputPassword(array('always_render_empty' => true))));
 
     // FIXME: This should be done in ProjectConfiguration::setup()
     $this->widgetSchema->addFormFormatter('qubit', new QubitWidgetFormSchemaFormatter($this->widgetSchema));

@@ -31,7 +31,7 @@
         <?php endif; ?>
       </td>
       <td>
-      <?php if (($scopeNotes = $term->getNotesByType($noteTypeId = QubitTerm::SCOPE_NOTE_ID, $exclude = null)) > 0): ?>
+      <?php if ((count($scopeNotes = $term->getNotesByType($noteTypeId = QubitTerm::SCOPE_NOTE_ID, $exclude = null))) > 0): ?>
       <ul>
         <?php foreach ($scopeNotes as $scopeNote): ?>
           <li><?php echo $scopeNote->getContent(array('cultureFallback' => 'true')) ?></li>
