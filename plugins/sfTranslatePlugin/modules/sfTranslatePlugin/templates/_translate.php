@@ -1,6 +1,5 @@
 <?php use_helper('Javascript') ?>
 <?php use_helper('Text') ?>
-
 <div id="l10n-client">
   <div class="labels">
     <span id="l10n-client-hide"><?php echo __('X') ?></span>
@@ -17,8 +16,8 @@
   </div>
   <div id="l10n-client-string-select">
     <ul class="string-list">
-      <?php foreach ($messages as $source => $target): ?>
-        <li><?php echo truncate_text(esc_entities(empty($target) ? $source : $target)) ?></li>
+      <?php foreach ($sf_data->getRaw('messages') as $source => $target): ?>
+        <li><?php echo truncate_text(empty($target) ? $source : $target) ?></li>
       <?php endforeach; ?>
     </ul>
   </div>

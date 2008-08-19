@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2008-06-28T17:21:18Z" product-name="messages">
+  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2008-08-14T15:04:24Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -26,17 +26,9 @@
         <source>open information management toolkit</source>
         <target/>
       </trans-unit>
-      <trans-unit id="7">
-        <source>list %1% terms</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="8">
         <source>title</source>
         <target>titel</target>
-      </trans-unit>
-      <trans-unit id="9">
-        <source>browse all %1% terms</source>
-        <target/>
       </trans-unit>
       <trans-unit id="10">
         <source>add/edit %1% term</source>
@@ -53,22 +45,6 @@
       <trans-unit id="13">
         <source>scope note</source>
         <target>notitie toepassingsgebied</target>
-      </trans-unit>
-      <trans-unit id="14">
-        <source>code alpha</source>
-        <target>alfabetische code</target>
-      </trans-unit>
-      <trans-unit id="15">
-        <source>code numeric</source>
-        <target>numerieke code</target>
-      </trans-unit>
-      <trans-unit id="16">
-        <source>sort order</source>
-        <target>sorteervolgorde</target>
-      </trans-unit>
-      <trans-unit id="17">
-        <source>source</source>
-        <target>bron</target>
       </trans-unit>
       <trans-unit id="18">
         <source>delete</source>
@@ -90,24 +66,8 @@
         <source>add new %1% term</source>
         <target>toevoegen nieuwe term %1%</target>
       </trans-unit>
-      <trans-unit id="23">
-        <source>list all terms</source>
-        <target>lijst van alle termen</target>
-      </trans-unit>
-      <trans-unit id="24">
-        <source>list only %1% terms</source>
-        <target>lijst van alleen termen %1%</target>
-      </trans-unit>
       <trans-unit id="25">
         <source>view term</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="26">
-        <source>term type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="27">
-        <source>code alpha2</source>
         <target/>
       </trans-unit>
       <trans-unit id="28">
@@ -133,10 +93,6 @@
       <trans-unit id="33">
         <source>add/edit</source>
         <target>toevoegen/wijzigen</target>
-      </trans-unit>
-      <trans-unit id="34">
-        <source>hits</source>
-        <target/>
       </trans-unit>
       <trans-unit id="35">
         <source>%1% term</source>
@@ -234,10 +190,6 @@
         <source>date display (defaults to date range)</source>
         <target>datering (standaard is datumbereik)</target>
       </trans-unit>
-      <trans-unit id="59">
-        <source>creation date(s)</source>
-        <target>datering</target>
-      </trans-unit>
       <trans-unit id="60">
         <source>administrative/biographical history</source>
         <target>administratieve/biografische geschiedenis</target>
@@ -286,14 +238,6 @@
         <source>conditions governing reproduction</source>
         <target>voorwaarden voor reproductie</target>
       </trans-unit>
-      <trans-unit id="72">
-        <source>languages of material</source>
-        <target>taal en schift</target>
-      </trans-unit>
-      <trans-unit id="73">
-        <source>scripts of material</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="74">
         <source>physical characteristics</source>
         <target>technische vereisten</target>
@@ -325,14 +269,6 @@
       <trans-unit id="81">
         <source>place access points</source>
         <target>plaatsnaam ontsluitingsterm</target>
-      </trans-unit>
-      <trans-unit id="82">
-        <source>person/organization access points</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="83">
-        <source>description control area</source>
-        <target>beschrijvingsbeheer</target>
       </trans-unit>
       <trans-unit id="84">
         <source>description record identifier</source>
@@ -386,34 +322,6 @@
         <source>edit information object</source>
         <target/>
       </trans-unit>
-      <trans-unit id="97">
-        <source>title info</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="98">
-        <source>subtitle</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="99">
-        <source>origin info</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="100">
-        <source>edition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="101">
-        <source>creation date</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="102">
-        <source>frequency</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="103">
-        <source>physical description</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="104">
         <source>extent</source>
         <target>bereik</target>
@@ -422,45 +330,9 @@
         <source>name</source>
         <target>naam</target>
       </trans-unit>
-      <trans-unit id="106">
-        <source>name part</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="107">
-        <source>abstract</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="108">
-        <source>access condition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="109">
-        <source>restriction on access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="110">
-        <source>use and reproduction</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="111">
         <source>language</source>
         <target>taal</target>
-      </trans-unit>
-      <trans-unit id="112">
-        <source>related items</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="113">
-        <source>originals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="114">
-        <source>subjects</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="115">
-        <source>topics</source>
-        <target/>
       </trans-unit>
       <trans-unit id="116">
         <source>add new information object</source>
@@ -474,25 +346,9 @@
         <source>Inherited from %ancestor%</source>
         <target>geerft van %ancestor%</target>
       </trans-unit>
-      <trans-unit id="119">
-        <source>view information object</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="120">
         <source>identifier</source>
         <target>bestandsidentificatie </target>
-      </trans-unit>
-      <trans-unit id="121">
-        <source>date created</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="122">
-        <source>script</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="123">
-        <source>dates of description</source>
-        <target/>
       </trans-unit>
       <trans-unit id="124">
         <source>alternate title</source>
@@ -638,14 +494,6 @@
         <source>view (ISAAR)</source>
         <target>bekijken (ISAAR)</target>
       </trans-unit>
-      <trans-unit id="167">
-        <source>edit (ISIAH)</source>
-        <target>bewerken (ISIAH)</target>
-      </trans-unit>
-      <trans-unit id="168">
-        <source>view (ISIAH)</source>
-        <target>bekijken (ISIAH)</target>
-      </trans-unit>
       <trans-unit id="169">
         <source>term module</source>
         <target>termen module</target>
@@ -705,10 +553,6 @@
       <trans-unit id="183">
         <source>import/export</source>
         <target>import/export</target>
-      </trans-unit>
-      <trans-unit id="184">
-        <source>import</source>
-        <target>import</target>
       </trans-unit>
       <trans-unit id="185">
         <source>error messages</source>
@@ -954,10 +798,6 @@
         <source>functions, occupations and activities</source>
         <target>functies, beroepen en activiteiten</target>
       </trans-unit>
-      <trans-unit id="246">
-        <source>relation area</source>
-        <target>relaties</target>
-      </trans-unit>
       <trans-unit id="247">
         <source>control area</source>
         <target>beheer</target>
@@ -977,10 +817,6 @@
       <trans-unit id="251">
         <source>content</source>
         <target/>
-      </trans-unit>
-      <trans-unit id="252">
-        <source>create new static page</source>
-        <target>maak een nieuwe statische pagina</target>
       </trans-unit>
       <trans-unit id="253">
         <source>edit this page</source>
@@ -1102,22 +938,6 @@
         <source>view map</source>
         <target/>
       </trans-unit>
-      <trans-unit id="283">
-        <source>list repositories</source>
-        <target>lijst archiefinstellingen</target>
-      </trans-unit>
-      <trans-unit id="284">
-        <source>add new repository</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="285">
-        <source>view archival institution</source>
-        <target>bekijk archiefinstelling</target>
-      </trans-unit>
-      <trans-unit id="286">
-        <source>officers in charge</source>
-        <target>leidinggevenden</target>
-      </trans-unit>
       <trans-unit id="287">
         <source>geographical and cultural context</source>
         <target>geografische en culturele context</target>
@@ -1126,20 +946,12 @@
         <source>structure</source>
         <target/>
       </trans-unit>
-      <trans-unit id="289">
-        <source>collecting policies</source>
-        <target>collectiebeleid</target>
-      </trans-unit>
       <trans-unit id="290">
         <source>buildings</source>
         <target>gebouwen</target>
       </trans-unit>
       <trans-unit id="291">
         <source>holdings</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="292">
-        <source>finding aids and publications</source>
         <target/>
       </trans-unit>
       <trans-unit id="293">
@@ -1150,14 +962,6 @@
         <source>access conditions and requirements</source>
         <target/>
       </trans-unit>
-      <trans-unit id="295">
-        <source>disabled access</source>
-        <target>toegang voor andersvaliden</target>
-      </trans-unit>
-      <trans-unit id="296">
-        <source>transport</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="297">
         <source>research services</source>
         <target>onderzoeksdienstverlening</target>
@@ -1166,25 +970,9 @@
         <source>reproduction services</source>
         <target>reproduktiedienstverlening</target>
       </trans-unit>
-      <trans-unit id="299">
-        <source>public facilities</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="300">
         <source>description identifier</source>
         <target>identificatie van de beschrijving</target>
-      </trans-unit>
-      <trans-unit id="301">
-        <source>language(s) of institution description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="302">
-        <source>script(s) of institution description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="303">
-        <source>edit archival institution</source>
-        <target/>
       </trans-unit>
       <trans-unit id="304">
         <source>contact area</source>
@@ -1249,18 +1037,6 @@
       <trans-unit id="319">
         <source>services area</source>
         <target>dienstverlening</target>
-      </trans-unit>
-      <trans-unit id="320">
-        <source>repository description identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="321">
-        <source>languages of repository description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="322">
-        <source>scripts of repository description</source>
-        <target/>
       </trans-unit>
       <trans-unit id="323">
         <source>sorry, you do not have permission to access that page</source>
@@ -1365,10 +1141,6 @@
       <trans-unit id="348">
         <source>Sorry, you do not have permission to make %1% language translations</source>
         <target>Excusses, je hebt geen recht tot het maken een vertaling in het Nederlands</target>
-      </trans-unit>
-      <trans-unit id="349">
-        <source>open-source archival description software</source>
-        <target>open-source archivistische beschrijvingssoftware</target>
       </trans-unit>
       <trans-unit id="350">
         <source>help</source>
@@ -1656,6 +1428,30 @@
       </trans-unit>
       <trans-unit id="421">
         <source>scripts of institution description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="422">
+        <source>code</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="423">
+        <source>source note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="424">
+        <source>create (ISAD)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="425">
+        <source>edit Contact Information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="426">
+        <source>Contact information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="427">
+        <source>new contact information</source>
         <target/>
       </trans-unit>
     </body>
