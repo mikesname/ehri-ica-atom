@@ -40,7 +40,9 @@ class SearchKeywordAction extends sfAction
   if ($this->query)
   {
       $index = Zend_Search_Lucene::open($search_index);
-      $hits = $index->find(strtolower($this->query));
+      $parser = new Zend_Search_Lucene_Search_QueryParser;
+      $c = $parser->parse(strtolower($this->query), 'UTF-8');
+      $hits = $index->find($c);
   }
   $this->hits = $hits;
   }

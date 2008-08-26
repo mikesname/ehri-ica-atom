@@ -90,7 +90,7 @@ class SearchIndex
   setlocale(LC_CTYPE, $language.'.utf-8');
 
   $index = Zend_Search_Lucene::open(self::getIndexLocation('informationobject', $language));
-  Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
+  Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8Num());
 
   //first delete existing index entries for this information object
   $term =  new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
@@ -117,7 +117,7 @@ class SearchIndex
     }
   }
 
-  private static function createIndexDocument(QubitInformationObject $informationObject, $language)
+  private static function createIndexDocument(QubitInformationObject $informationObject, $language, $encoding='utf-8')
   {
     $doc = new Zend_Search_Lucene_Document;
 
@@ -127,27 +127,27 @@ class SearchIndex
     // Note: text fields have to be converted to lower-case for use with utf-8 analyzer
 
     // TITLE
-    $titleField = Zend_Search_Lucene_Field::Unstored('title', strtolower($informationObject->getTitle(array('culture' => $language))));
+    $titleField = Zend_Search_Lucene_Field::Unstored('title', strtolower($informationObject->getTitle(array('culture' => $language))), $encoding);
     //boost the hit relevance for the title field
     $titleField->boost = 10;
     $doc->addField($titleField);
     //store an unindexed, case-sensitive copy of the title field for use in hit display
     if ($informationObject->getTitle(array('culture' => $language)))
     {
-      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('culture' => $language)), 'utf-8'));
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('culture' => $language)), $encoding));
     }
     else
     {
       //include an i18n fallback for proper search result display in case the title field was not translated
-      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('sourceCulture' => true)), 'utf-8'));
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('sourceCulture' => true)), $encoding));
     }
 
     // CREATOR
-    $creatorField = Zend_Search_Lucene_Field::Unstored('creator', strtolower($informationObject->getCreatorsNameString($language)));
+    $creatorField = Zend_Search_Lucene_Field::Unstored('creator', strtolower($informationObject->getCreatorsNameString($language)), $encoding);
     //boost the hit relevance for the creator field
     $creatorField->boost = 8;
     $doc->addField($creatorField);
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', strtolower($informationObject->getCreatorsHistoryString($language))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', strtolower($informationObject->getCreatorsHistoryString($language)), $encoding));
 
     //CREATION DATES
     if (count($dates = $informationObject->getDates($eventType = 'creation')) > 0)
@@ -156,9 +156,9 @@ class SearchIndex
     }
 
     // SCOPE AND CONTENT
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('scopeandcontent', strtolower($informationObject->getScopeAndContent(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('scopeandcontent', strtolower($informationObject->getScopeAndContent(array('culture' => $language))), $encoding));
     //store an unindexed, case-sensitive copy of the scope & content field for use in hit display
-    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_scopeandcontent', $informationObject->getScopeAndContent(array('culture' => $language)), 'utf-8'));
+    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_scopeandcontent', $informationObject->getScopeAndContent(array('culture' => $language)), $encoding));
 
     // REPOSITORY
     //
@@ -174,30 +174,30 @@ class SearchIndex
     //
     // Options for locating this bug might include using Xdebug, running PHP
     // under gdb, or trying a PHP snapshot to see if it is resolved.
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', strtolower((string) $informationObject->getRepository())));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', strtolower((string) $informationObject->getRepository()), $encoding));
 
    // I18N FIELDS
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('alternatetitle', strtolower($informationObject->getAlternateTitle(array('culture' => $language)))));
-     $doc->addField(Zend_Search_Lucene_Field::Unstored('version', strtolower($informationObject->getVersion(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('extentandmedium', strtolower($informationObject->getExtentAndMedium(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('archivalhistory', strtolower($informationObject->getArchivalHistory(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('acquisition', strtolower($informationObject->getAcquisition(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('appraisal', strtolower($informationObject->getAppraisal(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('accruals', strtolower($informationObject->getAccruals(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('arrangement', strtolower($informationObject->getArrangement(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('accessconditions', strtolower($informationObject->getAccessConditions(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('reproductionconditions', strtolower($informationObject->getReproductionConditions(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('physicalcharacteristics', strtolower($informationObject->getPhysicalCharacteristics(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('findingaids', strtolower($informationObject->getFindingAids(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('locationoforiginals', strtolower($informationObject->getLocationOfOriginals(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('locationofcopies', strtolower($informationObject->getLocationOfCopies(array('culture' => $language)))));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('relatedunitsofdescription', strtolower($informationObject->getRelatedUnitsOfDescription(array('culture' => $language)))));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('alternatetitle', strtolower($informationObject->getAlternateTitle(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('version', strtolower($informationObject->getVersion(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('extentandmedium', strtolower($informationObject->getExtentAndMedium(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('archivalhistory', strtolower($informationObject->getArchivalHistory(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('acquisition', strtolower($informationObject->getAcquisition(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('appraisal', strtolower($informationObject->getAppraisal(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('accruals', strtolower($informationObject->getAccruals(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('arrangement', strtolower($informationObject->getArrangement(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('accessconditions', strtolower($informationObject->getAccessConditions(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('reproductionconditions', strtolower($informationObject->getReproductionConditions(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('physicalcharacteristics', strtolower($informationObject->getPhysicalCharacteristics(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('findingaids', strtolower($informationObject->getFindingAids(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('locationoforiginals', strtolower($informationObject->getLocationOfOriginals(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('locationofcopies', strtolower($informationObject->getLocationOfCopies(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('relatedunitsofdescription', strtolower($informationObject->getRelatedUnitsOfDescription(array('culture' => $language))), $encoding));
 
    // COLLECTION ROOT
    if ($informationObject->getCollectionRoot())
    {
      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectionid', $informationObject->getCollectionRoot()->getId()));
-     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectiontitle', $informationObject->getCollectionRoot()->getTitle()));
+     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectiontitle', $informationObject->getCollectionRoot()->getTitle(), $encoding));
    }
    else
    {
@@ -206,19 +206,19 @@ class SearchIndex
    }
 
    // SUBJECTS
-    $subjectField = Zend_Search_Lucene_Field::Unstored('subject', strtolower($informationObject->getSubjectsString($language)));
+    $subjectField = Zend_Search_Lucene_Field::Unstored('subject', strtolower($informationObject->getSubjectsString($language)), $encoding);
    //boost the hit relevance for the subject field
     $subjectField->boost = 5;
     $doc->addField($subjectField);
 
    // PLACE
-    $placeField = Zend_Search_Lucene_Field::Unstored('place', strtolower($informationObject->getPlacesString($language)));
+    $placeField = Zend_Search_Lucene_Field::Unstored('place', strtolower($informationObject->getPlacesString($language)), $encoding);
    //boost the hit relevance for the place field
     $placeField->boost = 3;
     $doc->addField($placeField);
 
     // NAMES
-    $nameField = Zend_Search_Lucene_Field::Unstored('name', strtolower($informationObject->getNameAccessPointsString($language)));
+    $nameField = Zend_Search_Lucene_Field::Unstored('name', strtolower($informationObject->getNameAccessPointsString($language)), $encoding);
    //boost the hit relevance for the place field
     $nameField->boost = 3;
     $doc->addField($nameField);
@@ -226,9 +226,9 @@ class SearchIndex
    // DIGITAL OBJECTS
    if ($informationObject->getDigitalObject())
    {
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', strtolower($informationObject->getDigitalObject()->getMediaType(array('culture' => $language)))));
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('filename', strtolower($informationObject->getDigitalObject()->getName(array('culture' => $language)))));
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('mimetype', strtolower($informationObject->getDigitalObject()->getMimeType(array('culture' => $language)))));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', strtolower($informationObject->getDigitalObject()->getMediaType(array('culture' => $language))), $encoding));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('filename', strtolower($informationObject->getDigitalObject()->getName(array('culture' => $language))), $encoding));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('mimetype', strtolower($informationObject->getDigitalObject()->getMimeType(array('culture' => $language))), $encoding));
    }
 
    $cultureInfo = new sfCultureInfo($language);
@@ -243,7 +243,7 @@ class SearchIndex
     {
       $languageString .= $languages[$languageCode->getValue()].' ';
     }
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('language', strtolower($languageString)));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('language', strtolower($languageString), $encoding));
   }
 
    // SCRIPTS
@@ -256,7 +256,7 @@ class SearchIndex
     {
       $scriptString .= $scripts[$scriptCode->getValue()].' ';
     }
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('script', strtolower($scriptString)));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('script', strtolower($scriptString), $encoding));
   }
 
    // NOTES
@@ -267,7 +267,7 @@ class SearchIndex
       {
         $noteString .= $note.' ';
       }
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('notes', strtolower($noteString)));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('notes', strtolower($noteString), $encoding));
    }
 
     // exclude control area fields for now, maybe add a seperate index for administrative data?
