@@ -45,7 +45,7 @@
     <tr>
     <?php if ($scope == 'i18n_languages'): ?>
       <td colspan="2">
-      <?php echo select_tag('language_code', options_for_select(array('' => '&nbsp;', 'en' => 'english', 'es' => 'español', 'fr' => 'français', 'nl' => 'nederlands', 'pt' => 'português'))) ?>
+      <?php echo select_tag('language_code', options_for_select($sf_data->getRaw('availableLanguages'))) ?>
       </td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">

@@ -41,13 +41,13 @@
 <table class="inline" style="width: 98%;">
   <tr>
     <td colspan="3" class="headerCell" style="width: 98%">
-      <?php echo __('link to an existing container'); ?>
+      <?php echo __('add container links (duplicate links will be ignored)'); ?>
     </td>
   </tr>
 </table>
 <div class="form-item">
   <?php echo object_select_tag(null, null, 
-    array('related_class'=>'QubitPhysicalObject', 'name'=>'physicalObjectId', 'include_blank'=>true)); ?><br />
+    array('related_class'=>'QubitPhysicalObject', 'name'=>'physicalObjectId', 'include_blank'=>true, 'class'=>'multiInstance')); ?><br />
 </div>
 
 

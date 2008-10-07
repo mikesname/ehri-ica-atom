@@ -178,7 +178,7 @@ class SearchIndex
 
    // I18N FIELDS
     $doc->addField(Zend_Search_Lucene_Field::Unstored('alternatetitle', strtolower($informationObject->getAlternateTitle(array('culture' => $language))), $encoding));
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('version', strtolower($informationObject->getVersion(array('culture' => $language))), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('edition', strtolower($informationObject->getEdition(array('culture' => $language))), $encoding));
     $doc->addField(Zend_Search_Lucene_Field::Unstored('extentandmedium', strtolower($informationObject->getExtentAndMedium(array('culture' => $language))), $encoding));
     $doc->addField(Zend_Search_Lucene_Field::Unstored('archivalhistory', strtolower($informationObject->getArchivalHistory(array('culture' => $language))), $encoding));
     $doc->addField(Zend_Search_Lucene_Field::Unstored('acquisition', strtolower($informationObject->getAcquisition(array('culture' => $language))), $encoding));

@@ -8,7 +8,7 @@ abstract class BaseInformationObjectI18n
 
   const TITLE = 'q_information_object_i18n.TITLE';
   const ALTERNATE_TITLE = 'q_information_object_i18n.ALTERNATE_TITLE';
-  const VERSION = 'q_information_object_i18n.VERSION';
+  const EDITION = 'q_information_object_i18n.EDITION';
   const EXTENT_AND_MEDIUM = 'q_information_object_i18n.EXTENT_AND_MEDIUM';
   const ARCHIVAL_HISTORY = 'q_information_object_i18n.ARCHIVAL_HISTORY';
   const ACQUISITION = 'q_information_object_i18n.ACQUISITION';
@@ -34,7 +34,7 @@ abstract class BaseInformationObjectI18n
   {
     $criteria->addSelectColumn(QubitInformationObjectI18n::TITLE);
     $criteria->addSelectColumn(QubitInformationObjectI18n::ALTERNATE_TITLE);
-    $criteria->addSelectColumn(QubitInformationObjectI18n::VERSION);
+    $criteria->addSelectColumn(QubitInformationObjectI18n::EDITION);
     $criteria->addSelectColumn(QubitInformationObjectI18n::EXTENT_AND_MEDIUM);
     $criteria->addSelectColumn(QubitInformationObjectI18n::ARCHIVAL_HISTORY);
     $criteria->addSelectColumn(QubitInformationObjectI18n::ACQUISITION);
@@ -149,16 +149,16 @@ abstract class BaseInformationObjectI18n
     return $this;
   }
 
-  protected $version = null;
+  protected $edition = null;
 
-  public function getVersion()
+  public function getEdition()
   {
-    return $this->version;
+    return $this->edition;
   }
 
-  public function setVersion($version)
+  public function setEdition($edition)
   {
-    $this->version = $version;
+    $this->edition = $edition;
 
     return $this;
   }
@@ -458,7 +458,7 @@ abstract class BaseInformationObjectI18n
   {
     $this->columnValues['title'] = $this->title;
     $this->columnValues['alternateTitle'] = $this->alternateTitle;
-    $this->columnValues['version'] = $this->version;
+    $this->columnValues['edition'] = $this->edition;
     $this->columnValues['extentAndMedium'] = $this->extentAndMedium;
     $this->columnValues['archivalHistory'] = $this->archivalHistory;
     $this->columnValues['acquisition'] = $this->acquisition;
@@ -487,7 +487,7 @@ abstract class BaseInformationObjectI18n
   {
     $this->title = $results->getString($columnOffset++);
     $this->alternateTitle = $results->getString($columnOffset++);
-    $this->version = $results->getString($columnOffset++);
+    $this->edition = $results->getString($columnOffset++);
     $this->extentAndMedium = $results->getString($columnOffset++);
     $this->archivalHistory = $results->getString($columnOffset++);
     $this->acquisition = $results->getString($columnOffset++);
@@ -574,9 +574,9 @@ abstract class BaseInformationObjectI18n
       $criteria->add(QubitInformationObjectI18n::ALTERNATE_TITLE, $this->alternateTitle);
     }
 
-    if ($this->isColumnModified('version'))
+    if ($this->isColumnModified('edition'))
     {
-      $criteria->add(QubitInformationObjectI18n::VERSION, $this->version);
+      $criteria->add(QubitInformationObjectI18n::EDITION, $this->edition);
     }
 
     if ($this->isColumnModified('extentAndMedium'))
@@ -706,9 +706,9 @@ abstract class BaseInformationObjectI18n
       $criteria->add(QubitInformationObjectI18n::ALTERNATE_TITLE, $this->alternateTitle);
     }
 
-    if ($this->isColumnModified('version'))
+    if ($this->isColumnModified('edition'))
     {
-      $criteria->add(QubitInformationObjectI18n::VERSION, $this->version);
+      $criteria->add(QubitInformationObjectI18n::EDITION, $this->edition);
     }
 
     if ($this->isColumnModified('extentAndMedium'))

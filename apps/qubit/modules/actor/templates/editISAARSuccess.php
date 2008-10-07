@@ -197,25 +197,29 @@
     <div class="form-item">
       <label for="language_code"><?php echo __('languages of authority record'); ?></label>
 
+      <?php if (count($languageCodes) > 0): ?>
       <?php foreach ($languageCodes as $languageCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
         <?php echo format_language($languageCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteProperty?Id='.$languageCode->getId()) ?><br/>
         </div>
       <?php endforeach; ?>
+      <?php endif; ?>
 
-      <?php echo select_language_tag('language_code', null, array('include_blank' => true)) ?>
+      <?php echo select_language_tag('language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
      </div>
 
     <div class="form-item">
       <label for="script_id"><?php echo __('scripts of authority record'); ?></label>
-
+      
+      <?php if (count($scriptCodes) > 0): ?>
       <?php foreach ($scriptCodes as $scriptCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
         <?php echo format_script($scriptCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteProperty?Id='.$scriptCode->getId()) ?><br/>
         </div>
       <?php endforeach; ?>
+      <?php endif; ?>
 
-      <?php echo select_script_tag('script_code', null, array('include_blank' => true)) ?>
+      <?php echo select_script_tag('script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-id">
@@ -234,7 +238,8 @@
           <td class="headerCell" style="width: 30%"><?php echo __('note type'); ?></td>
           <td class="headerCell" style="width: 5%;"></td>
         </tr>
-
+        
+        <?php if (count($notes) > 0): ?>
         <?php foreach ($notes as $note): ?>
           <tr>
           <td><?php echo $note->getContent(array('cultureFallback' => true)) ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
@@ -242,6 +247,7 @@
           <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteNote?noteId='.$note->getId()) ?></td>
           </tr>
         <?php endforeach; ?>
+        <?php endif; ?>
 
         <tr valign="top">
           <td><?php echo object_textarea_tag($newNote, 'getContent', array('size' => '10x1')) ?></td>

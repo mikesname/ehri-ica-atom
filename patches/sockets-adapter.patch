@@ -1,0 +1,13 @@
+Index: plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php
+===================================================================
+--- plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php	(revision 11451)
++++ plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php	(working copy)
+@@ -91,7 +91,7 @@
+       fclose($fp);
+     }
+ 
+-    $request = "\r\n";
++    $request .= "\r\n";
+ 
+     fwrite($socket, $request);
+ 

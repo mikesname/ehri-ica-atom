@@ -36,7 +36,7 @@ class InformationObjectI18nMapBuilder {
 
 		$tMap->addColumn('ALTERNATE_TITLE', 'AlternateTitle', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('VERSION', 'Version', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('EDITION', 'Edition', 'string', CreoleTypes::VARCHAR, false, 255);
 
 		$tMap->addColumn('EXTENT_AND_MEDIUM', 'ExtentAndMedium', 'string', CreoleTypes::LONGVARCHAR, false, null);
 

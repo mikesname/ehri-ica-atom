@@ -34,6 +34,8 @@ class DigitalObjectListAction extends sfAction
    */
   public function execute($request)
   {
+    $this->culture = $this->getUser()->getCulture();
+    
     if ($this->getRequestParameter('sort'))
     {
       $this->sort = $this->getRequestParameter('sort');
@@ -48,28 +50,40 @@ class DigitalObjectListAction extends sfAction
     // Build funky join query to get a count of top level digital objects
     // for each media type (term)
     $criteria = new Criteria;
+    $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MEDIA_TYPE_ID);
+    $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
+    $criteria->addAsColumn('hits', 'COUNT('.QubitDigitalObject::ID.')');
+    $criteria->addGroupByColumn(QubitTerm::ID);
+    
+    /*
+    $criteria = new Criteria;
     $criteria->addSelectColumn(QubitTerm::ID);
     $criteria->addSelectColumn('COUNT('.QubitDigitalObject::ID.')');
     $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
     $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
     $criteria->add(QubitDigitalObject::PARENT_ID, null, Criteria::ISNULL);
     $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MEDIA_TYPE_ID);
-    $criteria->add(QubitTermI18n::CULTURE, $this->getUser()->getCulture());
     $criteria->addGroupByColumn(QubitTerm::ID);
+    */
 
     // Sort the list
     switch ($this->sort)
     {
       case 'nameUp':
-        $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME); break;
+        $criteria->addAscendingOrderByColumn('name'); break;
       case 'nameDown':
-        $criteria->addDescendingOrderByColumn(QubitTermI18n::NAME); break;
+        $criteria->addDescendingOrderByColumn('name'); break;
       case 'hitsUp':
-        $criteria->addAscendingOrderByColumn('COUNT('.QubitDigitalObject::ID.')'); break;
+        $criteria->addAscendingOrderByColumn('hits'); break;
       case 'hitsDown':
-        $criteria->addDescendingOrderByColumn('COUNT('.QubitDigitalObject::ID.')'); break;
+        $criteria->addDescendingOrderByColumn('hits'); break;
     }
-    $this->resultSet = BasePeer::doSelect($criteria);
+    
+    // Add I18n fallback
+    $options = array();
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $this->culture, $options);
+    
+    $this->terms = QubitTerm::get($criteria);
 
     //determine if user has edit priviliges
     $this->editCredentials = false;

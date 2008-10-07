@@ -20,13 +20,14 @@ class ReleaseTask extends sfBaseTask
       new sfCommandArgument('stability', sfCommandArgument::REQUIRED, 'FIXME')));
   }
 
+  /**
+   * @see sfBaseTask
+   */
   protected function execute($arguments = array(), $options = array())
   {
-    $filesystem = new sfFilesystem;
-
     if (($arguments['stability'] == 'beta' || $arguments['stability'] == 'alpha') && count(explode('.', $arguments['version'])) < 2)
     {
-      if (preg_match('/Status against revision\:\s+(\d+)\s*$/im', $filesystem->sh('svn status -u '.sfConfig::get('sf_root_dir')), $matches) < 1)
+      if (preg_match('/Status against revision\:\s+(\d+)\s*$/im', $this->getFilesystem()->sh('svn status -u '.sfConfig::get('sf_root_dir')), $matches) < 1)
       {
         throw new Exception('Unable to find last svn revision');
       }
@@ -44,16 +45,12 @@ class ReleaseTask extends sfBaseTask
     $name = $xpath->evaluate('string(p:name)', $doc->documentElement);
     print 'Releasing '.$name.' version "'.$arguments['version']."\"\n";
 
-    // Local changes mean patches may conflict.  All lines which start with a
-    // character other than 'P' ('Performing...'), 'S' ('Status...'), or 'X'
-    // (externals definition) are local changes.
-    if (preg_match('/^[^PSX\n]/m', $filesystem->sh('svn status -u '.sfConfig::get('sf_root_dir'))) > 0)
+    // All lines which start with a character other than 'P' ('Performing...'),
+    // 'S' ('Status...'), or 'X' (externals definition) are local changes.
+    if (preg_match('/^[^PSX\n]/m', $this->getFilesystem()->sh('svn status --no-ignore -u '.sfConfig::get('sf_root_dir'))) > 0)
     {
       throw new Exception('Local modifications. Release process aborted!');
     }
-
-    // Apply patches
-    $filesystem->sh('cat '.sfConfig::get('sf_root_dir').'/patches/* | patch --no-backup-if-mismatch -p0');
 
     // Test
     require_once(sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php');
@@ -176,8 +173,8 @@ class ReleaseTask extends sfBaseTask
 
     $doc->save($packageXmlPath);
 
-    print $filesystem->sh('pear package');
+    print $this->getFilesystem()->sh('pear package');
 
-    $filesystem->remove($packageXmlPath);
+    $this->getFilesystem()->remove($packageXmlPath);
   }
 }

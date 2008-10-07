@@ -19,40 +19,55 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Controller for creating a repository.
+ * 
+ * @package    qubit
+ * @subpackage repository
+ * @version    svn: $Id$
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @author     Jack Bates <jack@artefactual.com>
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class RepositoryCreateAction extends sfAction
 {
   public function execute($request)
   {
-  $this->repository = new QubitRepository;
+    $this->repository = new QubitRepository;
 
-  $this->contactInformation = null;
-  $this->newContactInformation = new QubitContactInformation;
+    $this->contactInformation = null;
+    $this->newContactInformation = new QubitContactInformation;
 
-  // Properties
-  $this->languageCodes = null;
-  $this->scriptCodes = null;
+    // Properties
+    $this->languageCodes = null;
+    $this->scriptCodes = null;
 
-  // Other Forms of Name
-  $this->otherNames = $this->repository->getOtherNames();
-  $otherNameTypes = array();
-  foreach (QubitTerm::getActorNameTypes() as $type)
+    // Other Forms of Name
+    $this->otherNames = $this->repository->getOtherNames();
+    $otherNameTypes = array();
+    foreach (QubitTerm::getActorNameTypes() as $type)
     {
       $otherNameTypes[$type->getId()] = $type->getName();
     }
-  $this->otherNameTypes = $otherNameTypes;
+    $this->otherNameTypes = $otherNameTypes;
 
-  // Notes
-  $this->notes = null;
-  $this->newNote = new QubitNote;
+    // Notes
+    $this->notes = null;
+    $this->newNote = new QubitNote;
+    
+    // Add javascript libraries to allow multiple instance select boxes
+    $this->getResponse()->addJavaScript('jquery');
+    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
+    $this->getResponse()->addJavaScript('multiInstanceSelect');
 
-  // set view template
-  switch ($this->getRequestParameter('template'))
+    // set view template
+    switch ($this->getRequestParameter('template'))
     {
-    case 'isiah' :
-      $this->setTemplate('editISIAH');
-      break;
-    default :
-      $this->setTemplate(sfConfig::get('app_default_template_repository_edit'));
+      case 'isiah' :
+        $this->setTemplate('editISIAH');
+        break;
+      default :
+        $this->setTemplate(sfConfig::get('app_default_template_repository_edit'));
     }
   }
 }

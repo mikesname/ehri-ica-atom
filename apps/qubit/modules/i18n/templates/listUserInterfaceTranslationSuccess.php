@@ -12,11 +12,12 @@
     <li><?php echo link_to(__('view (ISAD)'), 'informationobject/show?template=isad&id='.$sampleInformationObject->getId()) ?></li>
     <li><?php echo link_to(__('view digital object'), 'digitalobject/show?id='.$sampleDigitalObject->getId()) ?></li>
     <li><?php echo link_to(__('view digital object master'), 'digitalobject/showFullScreen?id='.$sampleDigitalObject->getId()) ?></li>
-    <li><?php echo link_to(__('edit physical object'), 'physicalobject/edit?id='.$samplePhysicalObject->getId()) ?></li>
+    <li><?php echo link_to(__('edit physical storage'), 'physicalobject/edit?id='.$samplePhysicalObject->getId()) ?></li>
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_actor')))?></div>
     <ul>
+    <li><?php echo link_to(__('create (ISAAR)'), 'actor/create?template=isaar') ?></li>
     <li><?php echo link_to(__('edit (ISAAR)'), 'actor/edit?template=isaar&id='.$sampleActor->getId()) ?></li>
     <li><?php echo link_to(__('list'), 'actor/list') ?></li>
     <li><?php echo link_to(__('view (ISAAR)'), 'actor/show?template=isaar&id='.$sampleActor->getId()) ?></li>
@@ -24,6 +25,7 @@
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_repository')))?></div>
     <ul>
+    <li><?php echo link_to(__('create (ISDIAH)'), 'repository/create?template=isiah') ?></li>
     <li><?php echo link_to(__('edit (ISDIAH)'), 'repository/edit?template=isiah&id='.$sampleRepository->getId()) ?></li>
     <li><?php echo link_to(__('edit contact information'), 'actor/editContactInformation?id='.$sampleRepository->getPrimaryContact()->getId()) ?></li>
     <li><?php echo link_to(__('list'), 'repository/list') ?></li>
@@ -34,6 +36,11 @@
     <ul>
     <li><?php echo link_to(__('list'), 'term/list') ?></li>
     <li><?php echo link_to(__('edit'), 'term/edit?id='.$sampleTerm->getId().'&taxonomyId=0') ?></li>
+    </ul>
+
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('search')?></div>
+    <ul>
+    <li><?php echo link_to(__('search results'), 'search/keyword?search_query=foo') ?></li>
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('admin module')?></div>
@@ -47,9 +54,9 @@
       </ul>
     <li><?php echo __('static pages')?></li>
       <ul>
-      <li><?php echo link_to(__('list staticpage'), 'staticpage/list') ?></li>
-      <li><?php echo link_to(__('edit staticpage'), 'staticpage/edit?id='.$sampleStaticPage->getId()) ?></li>
-      <li><?php echo link_to(__('view staticpage'), '/homepage/') ?></li>
+      <li><?php echo link_to(__('list static page'), 'staticpage/list') ?></li>
+      <li><?php echo link_to(__('edit static page'), 'staticpage/edit?id='.$sampleStaticPage->getId()) ?></li>
+      <li><?php echo link_to(__('view static page'), '/homepage/') ?></li>
       </ul>
     <li><?php echo __('settings')?></li>
       <ul>

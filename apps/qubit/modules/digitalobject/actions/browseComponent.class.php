@@ -37,16 +37,7 @@ class DigitalObjectBrowseComponent extends sfComponent
     }
     else
     {
-      $criteria = new Criteria;
-
-      if (isset($this->mediaType))
-      {
-        $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $this->mediaType->getId());
-      }
-      $criteria->add(QubitDigitalObject::INFORMATION_OBJECT_ID, null, Criteria::ISNOTNULL);
-      $criteria->addAscendingOrderByColumn(QubitDigitalObject::NAME);
-
-      $this->digitalObjects = QubitDigitalObject::get($criteria);
+      $this->digitalObjects = QubitDigitalObject::getIconList($this->mediaTypeId, $this->page);
     }
 
     if (count($this->digitalObjects) == 0)

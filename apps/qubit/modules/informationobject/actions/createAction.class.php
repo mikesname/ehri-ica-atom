@@ -27,6 +27,11 @@ class InformationObjectCreateAction extends sfAction
    $this->informationObject = new QubitInformationObject;
 
    $request->setAttribute('informationObject', $this->informationObject);
+   
+   // Add javascript libraries to allow adding multiple instances of a select box
+   $this->getResponse()->addJavaScript('jquery');
+   $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
+   $this->getResponse()->addJavaScript('multiInstanceSelect');
 
    //TermManyToManyRelations
    $this->subjectAccessPoints = null;

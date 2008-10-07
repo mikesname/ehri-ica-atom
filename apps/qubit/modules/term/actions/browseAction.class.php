@@ -25,35 +25,56 @@ class TermBrowseAction extends sfAction
   {
     //determine if user has edit priviliges
     $this->editCredentials = SecurityPriviliges::editCredentials($this->getUser(), 'term');
+    
+    $this->culture = $this->getUser()->getCulture();
 
-    if (null !== $termId = $this->getRequestParameter('termId'))
+    if (null !== $this->getRequestParameter('termId'))
     {
-      $this->term = QubitTerm::getById($termId);
-
+      $options = array();
+      
+      $this->termId = $this->getRequestParameter('termId');
+      $this->term = QubitTerm::getById($this->termId);
       $this->forward404Unless(isset($this->term));
+      
+      $options['culture'] = $this->culture;
 
-      $this->sortColumn = $this->getRequestParameter('sortColumn');
-      $this->sortDirection = $this->getRequestParameter('sortDirection');
+      $this->sortColumn = $this->getRequestParameter('sortColumn', 'title');
+      $options['sortColumn'] = $this->sortColumn;
+      
+      $this->sortDirection = $this->getRequestParameter('sortDirection', 'ascending');
+      $options['sortDirection'] = $this->sortDirection;
+      
+      $this->page = $this->getRequestParameter('page', 1);
+      $options['page'] = $this->page;
 
-      $this->informationObjects = QubitObjectTermRelation::getTermBrowseList($termId, $className = 'QubitInformationObject', $this->sortColumn, $this->sortDirection);
+      $this->informationObjects = QubitObjectTermRelation::getTermBrowseList($this->termId, 'QubitInformationObject', $options);
 
       $this->setTemplate('browseTerm');
     }
     else
     {
+      $options = array();
+      
+      // Do cultural fallback
+      $options['cultureFallback'] = true;
+      
       $this->sort = $this->getRequestParameter('sort', 'termNameUp');
+      $options['sort'] = $this->sort;
+      
+      // Get taxonomy id (default to "Subjects" taxonomy)
       if ($this->getRequestParameter('taxonomyId'))
       {
-        $taxonomyId = $this->getRequestParameter('taxonomyId');
+        $this->taxonomyId = $this->getRequestParameter('taxonomyId');
       }
       else
       {
-        $taxonomyId = QubitTaxonomy::SUBJECT_ID;
+        $this->taxonomyId = QubitTaxonomy::SUBJECT_ID;
       }
-
-      $this->taxonomy = QubitTaxonomy::getById($taxonomyId);
-      $language = $this->getUser()->getCulture();
-      $this->terms = QubitTerm::getBrowseList($taxonomyId, array('sort'=>$this->sort, 'language'=>$language, 'cultureFallback'=>true));
+      $options['taxonomyId'] = $this->taxonomyId;
+    
+      // Get taxonomy object and term list
+      $this->taxonomy = QubitTaxonomy::getById($this->taxonomyId);
+      $this->terms = QubitTerm::getBrowseList($this->culture, new Criteria, $options);
 
       $this->setTemplate('browseTaxonomy');
     }

@@ -123,8 +123,7 @@
 <?php endif; ?>
 
 <?php if (count($languageCodes) > 0): ?>
-  <tr><th><?php echo __('language of authority record')?>:
-  </th><td>
+  <tr><th><?php echo __('language of authority record')?></th><td>
   <?php foreach ($languageCodes as $languageCode): ?>
     <?php echo format_language($languageCode->getValue()) ?><br />
   <?php endforeach; ?>
@@ -132,8 +131,7 @@
 <?php endif; ?>
 
 <?php if (count($scriptCodes) > 0): ?>
-  <tr><th><?php echo __('script of authority record')?>:
-  </th><td>
+  <tr><th><?php echo __('script of authority record')?></th><td>
   <?php foreach ($scriptCodes as $scriptCode): ?>
     <?php echo format_script($scriptCode->getValue()) ?><br />
   <?php endforeach; ?>

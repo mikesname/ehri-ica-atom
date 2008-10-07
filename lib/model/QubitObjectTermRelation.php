@@ -48,58 +48,85 @@ class QubitObjectTermRelation extends BaseObjectTermRelation
       SearchIndex::updateTranslatedLanguages($this->getObject());
     }
   }
-
-  public static function getTermBrowseList($termId = null, $className = 'QubitInformationObject', $sortColumn = null, $sortDirection = 'ascending')
+  
+  /**
+   * Get a list of objects related to the given $termId
+   *
+   * @param integer $termId Primary key of specified term
+   * @param string  $className type of class to return
+   * @param array   $options array of optional parameters
+   * @return sfPager paginated list of objects
+   *
+   * @todo Figure out sorting - it's a NASTY problem!
+   */
+  public static function getTermBrowseList($termId=null, $className='QubitInformationObject', $options=array())
   {
     $criteria = new Criteria;
     $criteria->add(QubitObject::CLASS_NAME, $className);
     $criteria->addJoin(QubitObject::ID, QubitObjectTermRelation::OBJECT_ID);
     $criteria->add(QubitObjectTermRelation::TERM_ID, $termId);
+    
+    $page = isset($options['page']) ? $options['page'] : 1;
+    
     switch($className)
+    {
+      case 'QubitInformationObject':
       {
-        case 'QubitInformationObject':
-         {
-           $criteria->addJoin(QubitObject::ID, QubitInformationObject::ID);
-           if ($sortColumn)
-             {
-               if ($sortDirection == 'ascending')
-                 {
-                 //TODO: figure out how to dynamically add SORT_COLUMNS (will also require a join to _i18n)
-                 //$criteria->addAscendingOrderByColumn(QubitInformationObject::$sortColumn);
-                 }
-               else
-                 {
-                 //TODO: figure out how to dynamically add SORT_COLUMNS (will also require a join to _i18n)
-                 //$criteria->addDescendingOrderByColumn(QubitInformationObject::$sortColumn);
-                 }
-             }
-      return QubitInformationObject::get($criteria);
-      break;
+        $criteria->addJoin(QubitObject::ID, QubitInformationObject::ID);
+        if ($options['sortColumn'])
+        {
+          if ($options['sortDirection'] == 'ascending')
+          {
+            //TODO: figure out how to dynamically add SORT_COLUMNS (will also require a join to _i18n)
+            /*
+            $criteria->addAscendingOrderByColumn('name');
+            */
+          }
+          else
+          {
+            //TODO: figure out how to dynamically add SORT_COLUMNS (will also require a join to _i18n)
+            /*
+            $criteria->addDescendingOrderByColumn('name');
+            */
+          }
+        }   
+        
+        // Page results
+        $pager = new QubitPager('QubitInformationObject');
+      
+        break;
       }
-    case 'QubitActor':
+      case 'QubitActor':
       {
-      $criteria->addJoin(QubitObject::ID, QubitActor::ID);
-      return QubitActor::get($criteria);
-      break;
+        $criteria->addJoin(QubitObject::ID, QubitActor::ID);
+        $pager = new QubitPager('QubitActor');
+        break;
       }
-    case 'QubitRepository':
+      case 'QubitRepository':
       {
-      $criteria->addJoin(QubitObject::ID, QubitRepository::ID);
-      return QubitRepository::get($criteria);
-      break;
+        $criteria->addJoin(QubitObject::ID, QubitRepository::ID);
+        $pager = new QubitPager('QubitRepository');
+        break;
       }
-    case 'QubitDigitalObject':
+      case 'QubitDigitalObject':
       {
-      $criteria->addJoin(QubitObject::ID, QubitDigitalObject::ID);
-      return QubitDigitalObject::get($criteria);
-      break;
+        $criteria->addJoin(QubitObject::ID, QubitDigitalObject::ID);
+        $pager = new QubitPager('QubitDigitalObject');
+        break;
       }
-    case 'QubitPhysicalObject':
+      case 'QubitPhysicalObject':
       {
-      $criteria->addJoin(QubitObject::ID, QubitPhysicalObject::ID);
-      return QubitPhysicalObject::get($criteria);
-      break;
+        $criteria->addJoin(QubitObject::ID, QubitPhysicalObject::ID);
+        $pager = new QubitPager('QubitPhysicalObject');
+        break;
       }
     }
+    
+    // Return paged results
+    $pager->setCriteria($criteria);
+    $pager->setPage($page);
+    $pager->init();
+    
+    return $pager;
   }
 }

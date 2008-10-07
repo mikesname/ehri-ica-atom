@@ -23,16 +23,25 @@ class ActorDeletePropertyAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteProperty = QubitProperty::getById($this->getRequestParameter('Id'));
+	  $this->deleteProperty = QubitProperty::getById($this->getRequestParameter('Id'));
+	  $this->forward404Unless($this->deleteProperty);
+	  $actorId = $this->deleteProperty->getObjectId();
+	
+	  $this->deleteProperty->delete();
 
-  $this->forward404Unless($this->deleteProperty);
-
-  $actorId = $this->deleteProperty->getObjectId();
-
-  $this->deleteProperty->delete();
-
-  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-
-  return $this->redirect('actor/edit/?id='.$actorId.'&template='.$returnTemplate);
+	  if ($this->getRequestParameter('next'))
+    {
+      // Make the $next parameter into an absolute URL because redirect() expects
+      // an absolute URL or an array containing module and action
+      // (Pre-pend code copied from sfWebController->genUrl() method)  
+      $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
+      return $this->redirect($next);
+    } 
+    else 
+    {
+	    // Default redirect to actor/edit page
+      $returnTemplate = $this->getRequestParameter('ReturnTemplate');
+	    return $this->redirect('actor/edit/?id='.$actorId.'&template='.$returnTemplate);
+    }
   }
 }

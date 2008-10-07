@@ -28,4 +28,4 @@
   <?php echo $representation->getHRfileSize(); ?>
 </div>
 
-<br clear="both" />
+<br style="clear:both" />

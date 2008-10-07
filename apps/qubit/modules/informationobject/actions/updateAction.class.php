@@ -24,8 +24,9 @@
  *
  * @package    qubit
  * @subpackage informationObject
- * @author     ?
- * @version    SVN: $Id
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @author     David Juhasz <david@artefactual.com>
+ * @version    SVN: $Id$
  */
 class InformationObjectUpdateAction extends sfAction
 {
@@ -102,9 +103,9 @@ class InformationObjectUpdateAction extends sfAction
     {
       $informationObject->setIdentifier($this->getRequestParameter('identifier'));
     }
-    if ($this->hasRequestParameter('version'))
+    if ($this->hasRequestParameter('edition'))
     {
-      $informationObject->setVersion($this->getRequestParameter('version'));
+      $informationObject->setVersion($this->getRequestParameter('edition'));
     }
     if ($this->hasRequestParameter('extent_and_medium'))
     {
@@ -277,57 +278,114 @@ class InformationObjectUpdateAction extends sfAction
 
   public function updateProperties($informationObject)
   {
-    if ($this->getRequestParameter('language_code'))
+    
+    // Add multiple languages of access
+    if ($language_codes = $this->getRequestParameter('language_code'))
     {
-      $informationObject->setProperty($this->getRequestParameter('language_code'), $name = 'information_object_language', $scope = 'languages');
-      $this->foreignKeyUpdate = true;
+      // If string, turn into single element array
+      $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
+      
+      foreach ($language_codes as $language_code) {
+        if (strlen($language_code)) {
+          $informationObject->addProperty($name = 'information_object_language', $language_code, $scope = 'languages');
+	        $this->foreignKeyUpdate = true;
+        }
+      }
     }
-    if ($this->getRequestParameter('script_code'))
+    
+    // Add multiple scripts of access
+    if ($script_codes = $this->getRequestParameter('script_code'))
     {
-      $informationObject->setProperty($this->getRequestParameter('script_code'), $name = 'information_object_script', $scope = 'scripts');
-      $this->foreignKeyUpdate = true;
+      // If string, turn into single element array
+      $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
+      
+      foreach ($script_codes as $script_code) {
+        if (strlen($script_code)) {
+          $informationObject->addProperty($name = 'information_object_script', $script_code, $scope = 'scripts');
+          $this->foreignKeyUpdate = true;
+        }
+      }
     }
-    if ($this->getRequestParameter('description_language_code'))
+    
+    // Add multiple languages of description
+    if ($language_codes = $this->getRequestParameter('description_language_code'))
     {
-      $informationObject->setProperty($this->getRequestParameter('description_language_code'), $name = 'language_of_information_object_description', $scope = 'languages');
-      $this->foreignKeyUpdate = true;
+      // If string, turn into single element array
+      $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
+      
+      foreach ($language_codes as $language_code) {
+        if (strlen($language_code)) {
+          $informationObject->addProperty($name = 'language_of_information_object_description', $language_code, $scope = 'languages');
+          $this->foreignKeyUpdate = true;
+        }
+      }
     }
-    if ($this->getRequestParameter('description_script_code'))
+    
+    // Add multiple scripts of description
+    if ($script_codes = $this->getRequestParameter('description_script_code'))
     {
-      $informationObject->setProperty($this->getRequestParameter('description_script_code'), $name = 'script_of_information_object_description', $scope = 'scripts');
-      $this->foreignKeyUpdate = true;
+      // If string, turn into single element array
+      $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
+      
+      foreach ($script_codes as $script_code) {
+        if (strlen($script_code)) {
+          $informationObject->addProperty($name = 'script_of_information_object_description', $script_code, $scope = 'scripts');
+          $this->foreignKeyUpdate = true;
+        }
+      }
+    }
+  }
+  
+  /**
+   * Update ObjectTermRelations (Subject and place access points)
+   * 
+   * @param QubitInformationObject $informationObject current information objects 
+   */
+  public function updateObjectTermRelations($informationObject)
+  {
+    if ($subject_ids = $this->getRequestParameter('subject_id'))
+    {
+      // Make sure that $subject_id is an array, even if it's only got one value
+      $subject_ids = (is_array($subject_ids)) ? $subject_ids : array($subject_ids);
+      
+      foreach ($subject_ids as $subject_id) {
+        if (intval($subject_id)) {
+          $informationObject->addTermRelation($subject_id, QubitTaxonomy::SUBJECT_ID);
+          $this->foreignKeyUpdate = true;
+      
+        }
+      }
+    }
+
+    if ($place_ids = $this->getRequestParameter('place_id'))
+    {
+      // Make sure that $place_id is an array, even if it's only got one value
+      $place_ids = (is_array($place_ids)) ? $place_ids : array($place_ids);
+      
+      foreach ($place_ids as $place_id) {
+        if (intval($place_id)) {
+	        $informationObject->addTermRelation($place_id, QubitTaxonomy::PLACE_ID);
+		      $this->foreignKeyUpdate = true;
+        }
+      }
     }
   }
 
-  public function updateObjectTermRelations($informationObject)
-    {
-    if ($this->getRequestParameter('subject_id'))
-      {
-      $informationObject->setTermRelation($this->getRequestParameter('subject_id'), QubitTaxonomy::SUBJECT_ID);
-      $this->foreignKeyUpdate = true;
-      }
-
-    if ($this->getRequestParameter('place_id'))
-      {
-      $informationObject->setTermRelation($this->getRequestParameter('place_id'), $relationTypeId = 337);
-      $this->foreignKeyUpdate = true;
-      }
-    }
-
   public function updateActorEvents($informationObject)
-    {
+  {
     $newCreationEvent = new QubitEvent;
+    
     //add creator
     if ($this->getRequestParameter('actor_id'))
-      {
+    {
       $newCreationEvent->setActorId($this->getRequestParameter('actor_id'));
       $newCreationEvent->setInformationObjectId($informationObject->getId());
       $newCreationEvent->setActorRoleId(QubitTerm::CREATOR_ID);
       $newCreationEvent->save();
       $this->foreignKeyUpdate = true;
-      }
+    }
     else if ($this->getRequestParameter('newActorAuthorizedName'))
-      {
+    {
       $actor = new QubitActor;
       $actor->setAuthorizedFormOfName($this->getRequestParameter('newActorAuthorizedName'));
       $actor->save();
@@ -336,45 +394,47 @@ class InformationObjectUpdateAction extends sfAction
       $newCreationEvent->setActorRoleId(QubitTerm::CREATOR_ID);
       $newCreationEvent->save();
       $this->foreignKeyUpdate = true;
-      }
+    }
 
     //add creation event date/date range
     if (($this->getRequestParameter('creationYear')) or ($this->getRequestParameter('newCreationDateNote')))
-      {
+    {
       $newCreationEvent->setTypeId(QubitTerm::CREATION_ID);
       $newCreationEvent->setInformationObjectId($informationObject->getId());
       $newCreationEvent->setStartDate($this->getRequestParameter('creationYear').'-01-01');
       $newCreationEvent->setEndDate($this->getRequestParameter('endYear').'-01-01');
 
       if ($this->getRequestParameter('newCreationDateNote'))
-        {
+      {
         $newCreationEvent->setDescription($this->getRequestParameter('newCreationDateNote'));
-        }
+      }
       else
-        {
+      {
         $dateString = $this->getRequestParameter('creationYear');
         if ($this->getRequestParameter('endYear'))
-          {
+        {
           $dateString .= ' - '.$this->getRequestParameter('endYear');
-          }
-        $newCreationEvent->setDescription($dateString);
         }
+        $newCreationEvent->setDescription($dateString);
+      }
 
       $newCreationEvent->save();
       $this->foreignKeyUpdate = true;
-      }
+    }
 
-    if ($this->getRequestParameter('name_id'))
-      {
-        $newNameAccessPoint = new QubitEvent;
-        $newNameAccessPoint->setActorId($this->getRequestParameter('name_id'));
-        $newNameAccessPoint->setActorRoleId(QubitTerm::SUBJECT_ID);
-        $newNameAccessPoint->setInformationObjectId($informationObject->getId());
-
-        $newNameAccessPoint->save();
-        $this->foreignKeyUpdate = true;
+    if ($name_ids = $this->getRequestParameter('name_id'))
+    {
+      // Make sure that $name_ids is an array, even if it's only got one value
+      $name_ids = (is_array($name_ids)) ? $name_ids : array($name_ids);
+      
+      foreach ($name_ids as $name_id) {
+        if (intval($name_id)) {
+	        $informationObject->addNameAccessPoint($name_id, QubitTerm::SUBJECT_ID);
+	        $this->foreignKeyUpdate = true;
+        }
       }
     }
+  }
 
   /**
    * Add a new digital object to $informationObject, upload a digital asset,
@@ -463,7 +523,7 @@ class InformationObjectUpdateAction extends sfAction
 
         // If this is a new information object with no title, set title to name
         // of digital object
-        if ($request->getParameter('action') == 'update' && $informationObject->getTitle() == null && $usageId == QubitTerm::MASTER_ID)
+        if ($request->getParameter('action') == 'update' && $informationObject->getTitle(array('cultureFallback'=>true)) == null && $usageId == QubitTerm::MASTER_ID)
         {
           $informationObject->setTitle($newDigitalObject->getName());
           $informationObject->save();
@@ -492,11 +552,9 @@ class InformationObjectUpdateAction extends sfAction
   
   
   /**
-   * Update physical object.
+   * Update physical object relations.
    *
-   * @param  sfRequest         The current sfRequest object
    * @param  informationObject The current informationObject object
-   *
    */
   public function updatePhysicalObjects($informationObject)
   {
@@ -523,15 +581,25 @@ class InformationObjectUpdateAction extends sfAction
       $physicalObject->save();
       
       // Link info object to physical object
-      $informationObject->addPhysicalObjectRelation($physicalObject);
+      $informationObject->addPhysicalObject($physicalObject);
     }
     
-    // If form is not populated, check if existing PO selected 
-    else if ($physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('physicalObjectId')))
+    // If form is not populated, Add any existing physical objects that are selected
+    else if ($physicalObjectIds = $this->getRequestParameter('physicalObjectId'))
     {
+      // Make sure that $subject_id is an array, even if it's only got one value
+      $physicalObjectIds = (is_array($physicalObjectIds)) ? $physicalObjectIds : array($physicalObjectIds);
       
-      $informationObject->addPhysicalObjectRelation($physicalObject);
+      foreach ($physicalObjectIds as $physicalObjectId) {
+        
+        // If a value is set for this select box, and the physical object exists,
+        // add a relation to this info object
+        if (intval($physicalObjectId) && (null !== $physicalObject = QubitPhysicalObject::getById($physicalObjectId))) {
+          $informationObject->addPhysicalObject($physicalObject);
+          $this->foreignKeyUpdate = true;
+        }
+      }
     }
     
-  } // end fuction updatePhysicalObjects
+  } // end method: updatePhysicalObjects
 }

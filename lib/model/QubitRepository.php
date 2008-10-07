@@ -19,33 +19,60 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @package    qubit
+ * @subpackage repository
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @version    svn:$Id$
+ */
 class QubitRepository extends BaseRepository
 {
-public function setTermRelation($termId, $relationNote = null)
+  
+  /**
+   * Save new link to a term.
+   *
+   * @param integer $termId QubitTerm primary key
+   * @param string $relationNote DEPRECATED
+   */
+  public function setTermRelation($termId, $relationNote = null)
   {
-  $newTermRelation = new QubitObjectTermRelation;
-  $newTermRelation->setTermId($termId);
-//TODO: move to QubitNote
-//  $newTermRelation->setRelationNote($relationNote);
-  $newTermRelation->setObjectId($this->getId());
-  $newTermRelation->save();
+    $newTermRelation = new QubitObjectTermRelation;
+    $newTermRelation->setTermId($termId);
+    
+    //TODO: move to QubitNote
+    //  $newTermRelation->setRelationNote($relationNote);
+    $newTermRelation->setObjectId($this->getId());
+    $newTermRelation->save();
   }
-
-public function getTermRelations($taxonomyId = 'all')
+  
+  /**
+   * Get many-to-many links to QubitTerm objects
+   * 
+   * @param mixed $taxonomyId  Limit results by taxonomy type
+   * @return QubitQuery collection of QubitObjectTermRelation objects
+   */
+  public function getTermRelations($taxonomyId = 'all')
   {
-  $criteria = new Criteria;
-  $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->getId());
-
-  if ($taxonomyId != 'all')
+    $criteria = new Criteria;
+    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->getId());
+  
+    if ($taxonomyId != 'all')
     {
-    $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTERM::ID);
-    $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
+      $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTERM::ID);
+      $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
     }
-
-  return QubitObjectTermRelation::get($criteria);
+  
+    return QubitObjectTermRelation::get($criteria);
   }
-
-public function setRepositoryNote($userId, $note, $noteTypeId)
+  
+  /**
+   * Create new related QubitNote
+   *
+   * @param integer $userId     QubitUser id
+   * @param string  $note       Note text
+   * @param integer $noteTypeId Type of note (QubitTerm pk)
+   */
+  public function setRepositoryNote($userId, $note, $noteTypeId)
   {
     $newNote = new QubitNote;
     $newNote->setObjectId($this->getId());
@@ -55,8 +82,13 @@ public function setRepositoryNote($userId, $note, $noteTypeId)
     $newNote->setTypeId($noteTypeId);
     $newNote->save();
   }
-
-public function getRepositoryNotes()
+  
+  /**
+   * Get related notes
+   *
+   * @return QubitQuery list of QubitNote objects
+   */
+  public function getRepositoryNotes()
   {
     $criteria = new Criteria;
     $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
@@ -66,46 +98,30 @@ public function getRepositoryNotes()
 
     return QubitNote::get($criteria);
   }
-
-public function getCountry()
-{
-  if ($this->getPrimaryContact())
+  
+  /**
+   * Get country of primary contact for repository (If one exists)
+   *
+   * @return string primary contact's country
+   */
+  public function getCountry()
   {
-    return format_country($this->getPrimaryContact()->getCountryCode());
-  }
-  else
-  {
-    return null;
-  }
-}
-
-public function setProperty($code, $name = null, $scope = null)
-  {
-    $newCode = new QubitProperty;
-    $newCode->setObjectId($this->getId());
-    $newCode->setScope($scope);
-    $newCode->setName($name);
-    $newCode->setValue($code);
-    $newCode->save();
+    if ($this->getPrimaryContact())
+    {
+      return format_country($this->getPrimaryContact()->getCountryCode());
+    }
+    else
+    {
+      return null;
+    }
   }
 
-public function getProperties($name = null, $scope = null)
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitProperty::OBJECT_ID, $this->getId());
-    if ($name)
-      {
-        $criteria->add(QubitProperty::NAME, $name);
-      }
-    if ($scope)
-      {
-        $criteria->add(QubitProperty::SCOPE, $scope);
-      }
-
-    return QubitProperty::get($criteria);
-  }
-
-public function getRepositoryHoldings()
+  /**
+   * Get information objects in this repository.
+   *
+   * @return QubitQuery collection of QubitInformationObject objects
+   */
+  public function getRepositoryHoldings()
   {
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::REPOSITORY_ID, $this->getId());
@@ -113,29 +129,107 @@ public function getRepositoryHoldings()
 
     return $holdings;
   }
-
-public static function getRepositories($sort=null, $countryId=null)
+  
+  /**
+   * Get a list of repositories.
+   *
+   * @param string $sort sort order (optional)
+   * @param string $countryCode filter by two-letter country code (optional)
+   * @return QubitQuery collection of QubitRepository objects
+   * 
+   * @todo implement fallback
+   */
+  public static function addGetRepositoriesCriteria($criteria)
+  {
+    
+  }
+  
+  public static function addCountryCodeCriteria($criteria, $countryCode)
+  {
+    if ($countryCode !== null)
+    {
+      $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID, Criteria::INNER_JOIN);
+      $criteria->add(QubitContactInformation::PRIMARY_CONTACT, true);
+      $criteria->add(QubitContactInformation::COUNTRY_CODE, $countryCode);
+    }
+    
+    return $criteria;
+  }
+  
+  
+  public static function getList($culture, $criteria, $options=array())
   {
     $criteria = new Criteria;
-
+    
+    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
+    $sort = (isset($options['sort'])) ? $options['sort'] : 'nameUp';
+    $page = (isset($options['page'])) ? $options['page'] : 1;
+    
+    if (isset($options['countryCode']))
+    {
+      $criteria = self::addCountryCodeCriteria($criteria, $options['countryCode']);
+    }
+    
     //Establish sort order
     switch($sort)
-      {
-      case 'idDown' :
-        $criteria->addDescendingOrderByColumn(self::ID);
+    {
+      case 'typeDown' :
+        $fallbackTable = 'QubitTerm';
+        $criteria->addJoin(QubitRepository::TYPE_ID, QubitTerm::ID, Criteria::INNER_JOIN);
+        $criteria->addDescendingOrderByColumn('name');
         break;
-      case 'idUp' :
-        $criteria->addAscendingOrderByColumn(self::ID);
+      case 'typeUp' :
+        $fallbackTable = 'QubitTerm';
+        $criteria->addJoin(QubitRepository::TYPE_ID, QubitTerm::ID, Criteria::INNER_JOIN);
+        $criteria->addAscendingOrderByColumn('name');
         break;
+      
+      /*
+       * Can't sort on country "name" currently because it's a lookup value
+       * on country *code* (key) with the *name* being returned from
+       * symfony's sfCultureInfo data files.
+       *
+      case 'countryDown' :
+        $fallbackTable = 'QubitContactInformation';
+        $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID.' AND '.QubitContactInformation::PRIMARY_CONTACT.'=1', Criteria::LEFT_JOIN);
+        $criteria->addDescendingOrderByColumn('country_code');
+        break;
+      case 'countryUp' :
+        $fallbackTable = 'QubitContactInformation';
+        $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID, Criteria::LEFT_JOIN);
+        $criteria->addAscendingOrderByColumn('country_code');
+        break;
+      */
       case 'nameDown' :
-//      $criteria->addDescendingOrderByColumn(ActorI18n::AUTHORIZED_FORM_OF_NAME);
+        $fallbackTable = 'QubitActor';
+        $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::LEFT_JOIN);
+        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
         break;
+      case 'nameUp' :
       default :
-        case 'nameUp' :
-//      $criteria->addAscendingOrderByColumn(ActorI18n::AUTHORIZED_FORM_OF_NAME);
-        break;
-      }
-
-    return QubitRepository::get($criteria);
+        $fallbackTable = 'QubitActor';
+        $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::LEFT_JOIN);
+        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+    }
+    
+    // Do source culture fallback
+    if ($cultureFallback === true)
+    {
+      // Return a QubitQuery object of class-type QubitInformationObject
+      $options = array('returnClass'=>'QubitRepository');
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $culture, $options);
+    }
+    else
+    {
+      // Do straight joins without fallback
+    }
+    
+    // Page results
+    $pager = new QubitPager('QubitRepository');
+    $pager->setCriteria($criteria);
+    $pager->setPage($page);
+    $pager->init();
+    
+    return $pager;
   }
 }

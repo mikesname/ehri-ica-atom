@@ -19,15 +19,28 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Get current state data for information object edit form.
+ * 
+ * @package    qubit
+ * @subpackage informationobject
+ * @version    svn: $Id$
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class InformationObjectEditAction extends sfAction
 {
   public function execute($request)
   {
     $this->informationObject = QubitInformationObject::getById($this->getRequestParameter('id'));
-
     $this->forward404Unless($this->informationObject);
 
     $request->setAttribute('informationObject', $this->informationObject);
+    
+    // Add javascript libraries to allow selecting multiple access points
+    $this->getResponse()->addJavaScript('jquery');
+    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
+    $this->getResponse()->addJavaScript('multiInstanceSelect');
 
     //Actor (Event) Relations
     $this->creationEvents = $this->informationObject->getCreationEvents();
@@ -63,11 +76,13 @@ class InformationObjectEditAction extends sfAction
         $this->nameAccessPoints[] = $event;
       }
     }
-
+    
+    // Count related digital objects for warning message when deleting info object
+    // Note: This should only be 0 or 1 digital objects.
     $this->digitalObjectCount = 0;
     if (null !== $digitalObject = $this->informationObject->getDigitalObject())
     {
-      $this->digitalObjectCount = count($digitalObject->getDescendants()->andSelf());
+      $this->digitalObjectCount = 1;
     }
 
     //set template

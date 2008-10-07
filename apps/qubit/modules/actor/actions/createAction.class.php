@@ -19,39 +19,54 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Controller for Actor creation.
+ * 
+ * @package    qubit
+ * @subpackage actor
+ * @version    svn: $Id$
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @author     Jack Bates <jack@artefactual.com>
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class ActorCreateAction extends sfAction
 {
   public function execute($request)
   {
-  $this->actor = new QubitActor;
-
-  //Other Forms of Name
-  $this->otherNames = null;
-  $this->newName = new QubitActorName;
-
-  //Properties
-  $this->languageCodes = null;
-  $this->scriptCodes = null;
-
-  //Notes
-  $this->notes = null;
-  $this->newNote = new QubitNote;
-
- //Events
- $this->date = new QubitEvent;
-
-  $this->repositoryReroute = null;
-  $this->informationObjectReroute = null;
-
-  //set view template
-  switch ($this->getRequestParameter('template'))
-    {
-    case 'isaar' :
-      $this->setTemplate('editISAAR');
-      break;
-    default :
-      $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
-      break;
-    }
+	  $this->actor = new QubitActor;
+	  
+	  //Other Forms of Name
+	  $this->otherNames = null;
+	  $this->newName = new QubitActorName;
+	
+	  //Properties
+	  $this->languageCodes = null;
+	  $this->scriptCodes = null;
+	
+	  //Notes
+	  $this->notes = null;
+	  $this->newNote = new QubitNote;
+	
+	  //Events
+	  $this->date = new QubitEvent;
+	
+	  $this->repositoryReroute = null;
+	  $this->informationObjectReroute = null;
+	  
+	  // Add javascript libraries to allow multiple instance select boxes
+    $this->getResponse()->addJavaScript('jquery');
+    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
+    $this->getResponse()->addJavaScript('multiInstanceSelect');
+	
+	  // set view template
+	  switch ($this->getRequestParameter('template'))
+	  {
+	    case 'isaar' :
+	      $this->setTemplate('editISAAR');
+	      break;
+	    default :
+	      $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
+	      break;
+	  }
   }
 }

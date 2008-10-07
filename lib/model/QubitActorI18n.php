@@ -19,6 +19,11 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Qubit specific functionality extending the BaseActorI18n class.
+ * 
+ * @see lib/model/om/BaseActorI18n.php
+ */
 class QubitActorI18n extends BaseActorI18n
 {
 }

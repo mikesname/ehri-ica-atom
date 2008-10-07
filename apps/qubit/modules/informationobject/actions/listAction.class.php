@@ -19,63 +19,78 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * @package    qubit
+ * @subpackage repository
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @version    svn:$Id$
+ */
 class InformationObjectListAction extends sfAction
 {
+  
+  /**
+   * Display a paginated hitlist of information objects (top-level only)
+   *
+   * @param sfRequest $request
+   */
   public function execute($request)
   {
-  // HACK: populate root information object from ORM
-  $criteria = new Criteria;
-  $criteria->add(QubitInformationObject::PARENT_ID);
-  $request->setAttribute('informationObject', QubitInformationObject::getOne($criteria));
-
-  //establish list filters
-  if ($this->getRequestParameter('repository'))
-      {
+    $options = array();
+    $this->repositoryId = 0;
+    
+    // HACK: Get root information object for _contextMenu partial
+    $criteria = new Criteria;
+    $criteria->add(QubitInformationObject::PARENT_ID);
+    $root = QubitInformationObject::getOne($criteria);
+    $request->setAttribute('informationObject', $root);
+    
+    // Set parent id to the root node id
+    $options['parentId'] = $root->getId();
+    
+    // Set culture and cultural fallback flag
+    $this->culture = $this->getUser()->getCulture();
+    $options['cultureFallback'] = true; // Do cultural fallback
+    
+    // Set sort
+    $this->sort = $this->getRequestParameter('sort', 'titleUp');
+    $options['sort'] = $this->sort;
+    
+    // Set current page
+    $this->page = $this->getRequestParameter('page', 1);
+    $options['page'] = $this->page;
+    
+    // Filter by repository
+    if ($this->getRequestParameter('repository'))
+    {
       $this->repositoryId = $this->getRequestParameter('repository');
-      }
-    else
-      {
-      //default repositoryId for list view
-      $this->repositoryId = 0;
-      }
-
-  if ($this->getRequestParameter('collectionType'))
-      {
-      $this->collectionTypeId = $this->getRequestParameter('collectionType');
-      }
-    else
-      {
-      //default collectionTypeId for list view
-      $this->collectionTypeId = 0;
-      }
-
-    if ($this->getRequestParameter('sort'))
-      {
-      $this->sort = $this->getRequestParameter('sort');
-      }
-    else
-      {
-      //default sort column for list view
-      $this->sort = 'titleUp';
-      }
-
-    $this->informationObjects = QubitInformationObject::getList($this->sort, $this->repositoryId, $this->collectionTypeId);
-
+      $options['repositoryId'] = $this->repositoryId;
+    }
+    
+    // Filter by collection type
+    if ($this->getRequestParameter('collectionType'))
+    {
+      $this->collectionType = $this->getRequestParameter('collectionType');
+      $options['collectionType'] = $this->collectionType;
+    }
+    
+    // Get QubitQuery collection of information objects (with pagination, fallback and sorting)
+    $this->informationObjects = QubitInformationObject::getList($this->culture, new Criteria, $options);
+    
     //determine if user has edit priviliges
     $this->editCredentials = false;
     if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
-      {
+    {
       $this->editCredentials = true;
-      }
-
-   //set view template
+    }
+  
+    //set view template
     switch ($this->getRequestParameter('template'))
-      {
+    {
       case 'isad' :
         $this->setTemplate('listISAD');
         break;
       default :
         $this->setTemplate(sfConfig::get('app_default_template_informationobject_list'));
     }
-    }
+  }
 }

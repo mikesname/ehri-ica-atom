@@ -896,20 +896,20 @@ abstract class BaseInformationObject extends QubitObject
     return $this;
   }
 
-  public function getVersion(array $options = array())
+  public function getEdition(array $options = array())
   {
-    $version = $this->getCurrentInformationObjectI18n($options)->getVersion();
-    if (!empty($options['cultureFallback']) && strlen($version) < 1)
+    $edition = $this->getCurrentInformationObjectI18n($options)->getEdition();
+    if (!empty($options['cultureFallback']) && strlen($edition) < 1)
     {
-      $version = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getVersion();
+      $edition = $this->getCurrentInformationObjectI18n(array('sourceCulture' => true) + $options)->getEdition();
     }
 
-    return $version;
+    return $edition;
   }
 
-  public function setVersion($value, array $options = array())
+  public function setEdition($value, array $options = array())
   {
-    $this->getCurrentInformationObjectI18n($options)->setVersion($value);
+    $this->getCurrentInformationObjectI18n($options)->setEdition($value);
 
     return $this;
   }

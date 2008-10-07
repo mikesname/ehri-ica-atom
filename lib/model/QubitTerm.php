@@ -282,8 +282,6 @@ class QubitTerm extends BaseTerm
     return $tree;
   }
   
-  
-  
    
   protected $CountryHitCount = null;
   protected $LanguageHitCount = null;
@@ -319,117 +317,80 @@ class QubitTerm extends BaseTerm
     return $this->SubjectHitCount;
   }
   
-  
   /**
-   * Get a sorted, localized list of terms by taxonomy id for the "term/browse" action
+   * Get a sorted, localized list of terms for the"term/browse" action
    * with an option for culture fallback values in list.
    *
-   * @param integer $taxonomyId
-   * @param string $sort      sort criteria
-   * @param string $language  preferred language for list values
-   * @param array  $options   array of options
+   * @param string   $culture localize list for $culture
+   * @param Criteria $criteria Propel criteria object
+   * @param array    $options array of additonal options
    * @return QubitQuery array of QubitTermI18n objects
-   * 
-   * @todo abstract fallback behaviour for general use in QubitQuery or lib/model
-   * @todo investigate if Propel 1.3 supports sub-selects or complex joins so we can use standard Propel objects for fallback
    */
-  public static function getBrowseList($taxonomyId = null, $options = array())
-  {    
-    $browseList = array();
-    
-    $language = (isset($options['language'])) ? $options['language'] : 'en';
+  public static function getBrowseList($culture, $criteria, $options = array())
+  {
     $sort = (isset($options['sort'])) ? $options['sort'] : 'termNameUp';
-    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : true;
+    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
     
+    if (isset($options['taxonomyId']))
+    {
+      $criteria->add(QubitTerm::TAXONOMY_ID, $options['taxonomyId']);
+    }
+    
+    // Add join to get count of related objects
+    $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::LEFT_JOIN);
+    $criteria->addAsColumn('hits', 'COUNT('.QubitObjectTermRelation::OBJECT_ID.')');
+    $criteria->addGroupByColumn(QubitObjectTermRelation::TERM_ID);
+    
+    switch($sort)
+    {
+      case 'hitsUp' :
+        $criteria->addAscendingOrderByColumn('hits');
+        break;
+      case 'hitsDown' :
+        $criteria->addDescendingOrderByColumn('hits');
+        break;
+      case 'termNameDown' :
+        $criteria->addDescendingOrderByColumn('name');
+        break;
+      case 'termNameUp' :
+      default :
+        $criteria->addAscendingOrderByColumn('name');
+    }
+    
+    // Do source culture fallback
     if ($cultureFallback === true)
     {
-      
-      $conn = Propel::getConnection(QubitTaxonomy::DATABASE_NAME);
-      
-      // Do fancy sub-select to get fallback values for terms that have not been translated to $language
-      // NOTE: GROUP BY eliminates duplicate rows for final fallback value, and grabs random culture value 
-      // but there may be a more elegant way to do this
-      $fallbackSubSelect = "SELECT tbl.id,
-        (CASE WHEN i1.name IS NOT NULL THEN i1.name WHEN i2.name IS NOT NULL THEN i2.name ELSE i3.name END) AS name,
-        (CASE WHEN i1.name IS NOT NULL THEN i1.culture WHEN i2.name IS NOT NULL THEN i2.culture ELSE i3.culture END) AS culture
-        FROM q_term tbl LEFT JOIN q_term_i18n i1 ON tbl.id = i1.id AND i1.culture = 'en'
-        LEFT JOIN q_term_i18n i2 ON tbl.id = i2.id AND tbl.source_culture = i2.culture AND i2.culture <> 'en'
-        LEFT JOIN q_term_i18n i3 ON tbl.id = i3.id AND tbl.source_culture <> i3.culture AND i3.culture <> 'en'
-        GROUP BY tbl.id";
-      
-      // NOTE: selected columns must be in order of "name, id, culture" so
-      // they are correctly matched with QubitTermI18n table columns in when
-      // calling QubitQuery::createFromResultSet() below
-      $sql = "SELECT fallback.name, ".QubitTerm::ID.", fallback.culture, COUNT(q_object_term_relation.term_id) as hits 
-        FROM ".QubitTerm::TABLE_NAME."
-        INNER JOIN  ($fallbackSubSelect) as fallback ON ".QubitTerm::ID." = fallback.id
-        LEFT JOIN ".QubitObjectTermRelation::TABLE_NAME." ON ".QubitTerm::ID." = ".QubitObjectTermRelation::TERM_ID."
-        WHERE ".QubitTerm::TAXONOMY_ID." = ".$taxonomyId."
-        GROUP BY ".QubitObjectTermRelation::TERM_ID;
-      
-      // Sort results
-      switch($sort)
-      {
-        case 'termNameDown' :
-          $sql .= " ORDER BY name DESC";
-          break;
-        case 'hitsUp':
-          $sql .= " ORDER BY hits ASC";
-          break;
-        case 'hitsDown':
-          $sql .= " ORDER BY hits DESC";
-          break;
-        default:
-          $sql .= " ORDER BY name ASC";
-      }
-      
-      $stmt = $conn->prepareStatement($sql);
-      $rs = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
-      $terms = QubitQuery::createFromResultSet($rs, 'QubitTermI18n');
+      // Add Fallback criteria
+      $options = array();
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $culture, $options);
     }
-    else 
+    else
     {
-      $criteria = new Criteria;
-      $criteria->addAsColumn('hits', 'count('.QubitObjectTermRelation::TERM_ID.')');
+      // Do straight joins without fallback
       $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
-      $criteria->add(QubitTermI18n::CULTURE, $language);
-      $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
-      $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::LEFT_JOIN);
-      $criteria->addGroupByColumn(QubitObjectTermRelation::TERM_ID);
-    
-      switch($sort)
-      {
-        case 'termNameDown' :
-          $criteria->addDescendingOrderByColumn(QubitTermI18n::NAME);
-          break;
-        case 'hitsUp' :
-          $criteria->addAscendingOrderByColumn('hits');
-          break;
-        case 'hitsDown' :
-          $criteria->addDescendingOrderByColumn('hits');
-          break;
-        default :
-          $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME);
-      }
-    
-      $terms = QubitTerm::get($criteria);
+      $criteria->add(QubitTermI18n::CULTURE, $culture);
     }
-
-
-    // HACK: Loop through term list and count number of related IOs
-    // TODO Hopefully this will be unnecessary with Propel 1.3
-    foreach ($terms as $term)
-    {
-      $criteria = new Criteria;
-      $criteria->add(QubitObjectTermRelation::TERM_ID, $term->getId());
-      $hits = count(QubitObjectTermRelation::get($criteria));
-
-      $browseList[] = array('termName' => $term->getName(), 'termId' => $term->getId(), 'hits' => $hits);
-    }
+    
+    return QubitTerm::get($criteria);
+  }
   
-    return $browseList;
-  } 
-  
+  /**
+   * Get a count of objects related to this term
+   *
+   * @return integer related object count
+   */
+  public function getRelatedObjectCount()
+  {
+    $sql = 'SELECT COUNT(*) FROM '.QubitObjectTermRelation::TABLE_NAME.'
+      WHERE '.QubitObjectTermRelation::TERM_ID.' = '.$this->getId().';';
+    
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($sql);
+    $rs = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
+    $rs->next();
+    
+    return $rs->getInt(1);
+  }  
 }
 
 

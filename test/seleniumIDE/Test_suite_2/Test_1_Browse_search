@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_1_Browse_search</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_1_Browse_search</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/~evelyn/qubit/web/homepage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>browseList</td>
+	<td>label=subject</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='browse']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>browseList</td>
+	<td>label=media type</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='browse']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list media type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>browseList</td>
+	<td>label=name</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='browse']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list person/organization</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>browseList</td>
+	<td>label=information object</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='browse']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list information object</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>browseList</td>
+	<td>label=place</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='browse']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>browseList</td>
+	<td>label=repository</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='browse']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list repository</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>city hall</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Search for 'city hall' returned 5 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>vancouver and &quot;city hall&quot;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Search for 'vancouver and &quot;city hall&quot;' returned 2 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>vancouver or &quot;city hall&quot;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Search for 'vancouver or &quot;city hall&quot;' returned 11 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>vancouver and not &quot;city hall&quot;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Search for 'vancouver and not &quot;city hall&quot;' returned 8 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>scopeandcontent:&quot;press releases&quot;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Search for 'scopeandcontent:&quot;press releases&quot;' returned 2 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='website-name']/a/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>series</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Search for 'series' returned 12 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>displaying 1 to 10 of 12 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=next &gt;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>displaying 11 to 12 of 12 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>displaying 1 to 10 of 12 results</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='website-name']/a/span</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

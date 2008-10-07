@@ -82,7 +82,7 @@ CREATE TABLE `q_information_object_i18n`
 (
 	`title` VARCHAR(255),
 	`alternate_title` VARCHAR(255),
-	`version` VARCHAR(255),
+	`edition` VARCHAR(255),
 	`extent_and_medium` TEXT,
 	`archival_history` TEXT,
 	`acquisition` TEXT,

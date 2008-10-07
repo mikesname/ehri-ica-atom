@@ -17,9 +17,9 @@
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getVersion(array('cultureFallback' => true))) > 0) : ?>
+<?php if (strlen($value = $informationObject->getEdition(array('cultureFallback' => true))) > 0) : ?>
 <tr>
-<th><?php echo __('version'); ?></th>
+<th><?php echo __('edition'); ?></th>
 <td><?php echo $value; ?></td>
 </tr>
 <?php endif; ?>
@@ -252,13 +252,13 @@
 
 <?php if ($informationObject->getDescriptionStatusId()): ?>
   <tr><th><?php echo __('status')?></th><td>
-  <?php echo $informationObject->getDescriptionStatus()->getName(array('sourceCulture' => true)) ?>
+  <?php echo $informationObject->getDescriptionStatus()->getName(array('cultureFallback' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
 <?php if ($informationObject->getDescriptionDetailId()): ?>
   <tr><th><?php echo __('detail')?></th><td>
-  <?php echo $informationObject->getDescriptionDetail()->getName(array('sourceCulture' => true)) ?>
+  <?php echo $informationObject->getDescriptionDetail()->getName(array('cultureFallback' => true)) ?>
   </td></tr>
 <?php endif; ?>
 
@@ -269,8 +269,7 @@
 <?php endif; ?>
 
 <?php if (count($descriptionLanguageCodes) > 0): ?>
-  <tr><th><?php echo __('language of description')?>:
-  </th><td>
+  <tr><th><?php echo __('language of description')?></th><td>
   <?php foreach ($descriptionLanguageCodes as $languageCode): ?>
     <?php echo format_language($languageCode->getValue()) ?><br />
   <?php endforeach; ?>
@@ -278,8 +277,7 @@
 <?php endif; ?>
 
 <?php if (count($descriptionScriptCodes) > 0): ?>
-  <tr><th><?php echo __('script of description')?>:
-  </th><td>
+  <tr><th><?php echo __('script of description')?></th><td>
   <?php foreach ($descriptionScriptCodes as $scriptCode): ?>
     <?php echo format_script($scriptCode->getValue()) ?><br />
   <?php endforeach; ?>

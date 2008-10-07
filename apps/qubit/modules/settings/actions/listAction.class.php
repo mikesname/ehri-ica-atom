@@ -24,6 +24,25 @@ class SettingsListAction extends sfAction
   public function execute($request)
   {
     $settings = QubitSetting::getAll();
+    
+    // Available languages (have XLIFF dir and search engine config)
+    $this->availableLanguages = array(
+   	  '' => '&nbsp;',
+      'ar' => 'العربية',
+      'de' => 'deutsch',
+      'el' => 'eλληνικά',
+      'en' => 'english',
+      'es' => 'español',
+      'fa' => 'فارسی',
+      'fr' => 'français',
+      'is' => 'íslenska',
+      'it' => 'italiano',
+      'ja' => '日本語',
+      'ko' => '한국어 ',
+      'nl' => 'nederlands',
+      'pt' => 'português',
+      'sl' => 'slovenščina'
+    );
 
     // loop through settings objects and group by scope
     foreach ($settings as $setting)

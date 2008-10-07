@@ -19,6 +19,11 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Qubit specific functionality extending the BaseInformationObjectI18n class.
+ * 
+ * @see lib/model/om/BaseInformationObjectI18n.php
+ */
 class QubitInformationObjectI18n extends BaseInformationObjectI18n
 {
 }

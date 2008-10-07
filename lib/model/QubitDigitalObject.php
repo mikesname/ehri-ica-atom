@@ -271,7 +271,59 @@ class QubitDigitalObject extends BaseDigitalObject
       SearchIndex::updateTranslatedLanguages($this->getInformationObject());
     }
   }
-
+  
+  
+  /**
+   * Get a list of digital objects for an icon table
+   *
+   * @param integer  $mediaTypeId Media-type foreign key
+   * @param integer  $page current Pager page
+   * @return QubitPager paginated list of digital objects
+   */
+  public static function getIconList($mediaTypeId=null, $page=1)
+  {
+    $criteria = new Criteria;
+    
+    if (isset($mediaTypeId))
+    {
+      $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $mediaTypeId);
+    }
+    
+    // Don't show derivative Digital Objects
+    $criteria->add(QubitDigitalObject::INFORMATION_OBJECT_ID, null, Criteria::ISNOTNULL);
+    
+    // Sort by name ascending
+    $criteria->addAscendingOrderByColumn(QubitDigitalObject::NAME);
+    
+    $pager = new QubitPager('QubitDigitalObject', '8'); // 8 thumbs per page
+    $pager->setCriteria($criteria);
+    $pager->setPage($page);
+    $pager->init();
+    
+    return $pager;
+  }
+  
+  /**
+   * Get count of digital objects by media-type
+   */
+  public static function getCount($mediaTypeId=null)
+  {
+    $sql = 'SELECT COUNT(*) as hits FROM '.QubitDigitalObject::TABLE_NAME.'
+      WHERE '.QubitDigitalObject::PARENT_ID.' IS NULL';
+    
+    if (isset($mediaTypeId))
+    {
+      $sql .= ' AND '.QubitDigitalObject::MEDIA_TYPE_ID.'='.$mediaTypeId;
+    }
+    
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepareStatement($sql);
+    $rs = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
+    $rs->next();
+    
+    return $rs->getInt(1);
+  }
+  
   /**
    * Get full path to asset, relative to the web directory
    *

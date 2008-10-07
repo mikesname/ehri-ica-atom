@@ -25,7 +25,7 @@ class SearchKeywordAction extends sfAction
   {
   $culture = $this->getUser()->getCulture();
   setlocale(LC_CTYPE, $culture.'.utf-8');
-  $this->query = $this->getRequestParameter('search_query');
+  $this->query = urldecode($this->getRequestParameter('query'));
 
   if ($this->query)
   {
@@ -45,6 +45,22 @@ class SearchKeywordAction extends sfAction
       $hits = $index->find($c);
   }
   $this->hits = $hits;
+
+  //* begin pager expirement */
+  // send results through pagination
+  if ($this->getRequestParameter('page')) 
+  {
+    $page = $this->getRequestParameter('page');
+  }
+  else
+  {
+    //set default page
+    $page = 1;
+  }
+
+  $this->results = new SearchPager($hits, $page);
+  //* end pager expirement */
+
   }
 
   public function handleError()

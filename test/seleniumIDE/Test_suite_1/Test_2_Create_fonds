@@ -1,0 +1,457 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_2_Create_fonds</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_2_Create_fonds</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>66</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>Selenium test fonds</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_title_note</td>
+	<td>Title based on contents of fonds</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>level_of_description_id</td>
+	<td>label=Fonds</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>extent_and_medium</td>
+	<td>20 cm of textual records</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=context area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>actor_id</td>
+	<td>label=City of Vancouver. Office of the City Clerk</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>creationYear</td>
+	<td>2000</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>endYear</td>
+	<td>2008</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newCreationDateNote</td>
+	<td>[ca. 2000] - 2008</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>repository_id</td>
+	<td>label=City of Vancouver Archives</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>acquisition</td>
+	<td>Transferred directly from department.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>archival_history</td>
+	<td>Transferred directly to city archives</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=content and structure area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>scope_and_content</td>
+	<td>Fonds consists of a variety of records.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>appraisal</td>
+	<td>Scheduled transfers aquired every two years.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>accruals</td>
+	<td>Further accruals expected</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>arrangement</td>
+	<td>Fonds arranged into three series</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=conditions of access and use area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>access_conditions</td>
+	<td>No restrictions apply to access.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reproduction_conditions</td>
+	<td>No restrictions apply to reproduction.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>language_code</td>
+	<td>label=English</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>script_code</td>
+	<td>label=Latin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>physical_characteristics</td>
+	<td>Some records are torn and frayed.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>finding_aids</td>
+	<td>File lists available.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=allied materials area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>location_of_originals</td>
+	<td>Originals remain in department.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>location_of_copies</td>
+	<td>Provincial archives also has copies.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>related_units_of_description</td>
+	<td>See other fonds descriptions.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_publication_note</td>
+	<td>Not published.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=notes area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content</td>
+	<td>Title formerly Selenium IDE test fonds.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>note_type_id</td>
+	<td>label=Title note</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=access points</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>subject_id</td>
+	<td>label=Local government</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>place_id</td>
+	<td>label=Vancouver</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>name_id</td>
+	<td>label=City of Vancouver. Office of the City Clerk</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=control area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description_identifier</td>
+	<td>IDE 01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rules</td>
+	<td>No rules apply.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_status_id</td>
+	<td>label=Final</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_detail_id</td>
+	<td>label=Minimal</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>revision_history</td>
+	<td>Revised 2008.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_language_code</td>
+	<td>label=English</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_script_code</td>
+	<td>label=Latin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sources</td>
+	<td>ISAD(G)</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=identity area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=identity area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Fonds 66 - Selenium test fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>CA CVA 66</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>[ca. 2000] - 2008</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>20 cm of textual records</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>City of Vancouver Archives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Transferred directly to city archives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Transferred directly from department.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Fonds consists of a variety of records.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Scheduled transfers aquired every two years.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Scheduled transfers aquired every two years.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Further accruals expected</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Fonds arranged into three series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No restrictions apply to access.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No restrictions apply to reproduction.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>English</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Latin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Some records are torn and frayed.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>File lists available.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Originals remain in department.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Provincial archives also has copies.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>See other fonds descriptions.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Local government</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Vancouver</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>City of Vancouver. Office of the City Clerk (Creator)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>City of Vancouver. Office of the City Clerk (Subject)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Title note: Title based on contents of fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Publication note: Not published.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Title note: Title formerly Selenium IDE test fonds.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>IDE 01</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No rules apply.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Final</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Minimal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Revised 2008.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>English</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Latin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>ISAD(G)</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

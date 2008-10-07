@@ -218,7 +218,7 @@
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_language_tag('language_code', null, array('include_blank' => true)) ?>
+      <?php echo select_language_tag('language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
      </div>
 
     <div class="form-item">
@@ -230,7 +230,7 @@
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_script_tag('script_code', null, array('include_blank' => true)) ?>
+      <?php echo select_script_tag('script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-item">
@@ -310,7 +310,7 @@
           <?php endforeach; ?>
         <?php endif; ?>
         <tr valign="top">
-          <td><?php echo object_textarea_tag($newNote, 'getContent', array('size' => '10x1')) ?></td>
+          <td><?php echo object_textarea_tag($newNote, 'getContent', array('size' => '10x1', 'class'=>'multiInstance')) ?></td>
           <td><?php echo object_select_tag($newNote, 'getTypeId', array('name' => 'note_type_id', 'id' => 'note_type_id', 'related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getNoteTypes', 'style' => 'width: 120px;')) ?></td>
         </tr>
       </table>
@@ -327,7 +327,7 @@
           <?php echo $subject->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$subject->getId()) ?><br/>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_select_tag($newSubjectAccessPoint, 'getTermId', array('name' => 'subject_id', 'id' => 'subject_id', 'include_blank' => true, 'peer_method' => 'getSubjects')) ?>
+      <?php echo object_select_tag($newSubjectAccessPoint, 'getTermId', array('name' => 'subject_id', 'id' => 'subject_id', 'include_blank' => true, 'peer_method' => 'getSubjects', 'class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-item">
@@ -337,7 +337,7 @@
           <?php echo $place->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$place->getId()) ?><br/>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_select_tag($newPlaceAccessPoint, 'getTermId', array('name' => 'place_id', 'id' => 'place_id', 'include_blank' => true, 'peer_method' => 'getPlaces')) ?>
+      <?php echo object_select_tag($newPlaceAccessPoint, 'getTermId', array('name' => 'place_id', 'id' => 'place_id', 'include_blank' => true, 'peer_method' => 'getPlaces', 'class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-item">
@@ -351,7 +351,7 @@
           <br/>
         <?php endforeach; ?>
        <?php endif; ?>
-       <?php echo select_tag('name_id', options_for_select($nameSelectList, null, array('include_blank' => true))) ?>
+       <?php echo select_tag('name_id', options_for_select($nameSelectList, null, array('include_blank' => true)), array('class'=>'multiInstance')) ?>
     </div>
   </fieldset>
 
@@ -406,7 +406,7 @@
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_language_tag('description_language_code', null, array('include_blank' => true)) ?>
+      <?php echo select_language_tag('description_language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-item">
@@ -418,7 +418,7 @@
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_script_tag('description_script_code', null, array('include_blank' => true)) ?>
+      <?php echo select_script_tag('description_script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-item">
@@ -463,7 +463,7 @@ EOF
       <?php else: ?>
       <?php $deleteWarning = __('Are you sure you want to delete this %1% permanently?', array('%1%' => sfConfig::get('app_ui_label_informationobject'))); ?>
       <?php if ($digitalObjectCount > 0): ?>
-        <?php $deleteWarning .= ' '.__('This will also delete %1% %2%.', array('%1%'=>$digitalObjectCount, '%2%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
+        <?php $deleteWarning .= ' '.__('This will also delete the related %1%.', array('%1%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
       <?php endif; ?>
       &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
       <?php endif; ?>

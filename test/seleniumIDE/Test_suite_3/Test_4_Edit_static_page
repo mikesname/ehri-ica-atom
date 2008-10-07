@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_4_Edit_static_page</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_4_Edit_static_page</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>/~evelyn/qubit/web/user/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=static pages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list static pages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>title</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>permalink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Welcome</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=About</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>permalink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//div[@id='content-two-column']/div/table/tbody/tr[2]/td[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Welcome</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content</td>
+	<td>This really is the default homepage for the Qubit open information management toolkit.<br /><br />Qubit is fully web-based, open-source software that allows individuals and institutions such as archives, libraries, museums, and art galleries to manage and host online collections of information resources (e.g. archival documents, photographs, videos, books, etc.). Qubit supports multi-lingual and multi-repository collections.<br /><br />See the &lt;a href='http://qubit-toolkit.org/wiki'&gt;online&nbsp;&nbsp;manual&lt;/a&gt; to learn how to customize Qubit and begin using it to enter and manage your data.<br /></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>This really is the default homepage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit this page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content</td>
+	<td>This is the default homepage for the Qubit open information management toolkit.<br /><br />Qubit is fully web-based, open-source software that allows individuals and institutions such as archives, libraries, museums, and art galleries to manage and host online collections of information resources (e.g. archival documents, photographs, videos, books, etc.). Qubit supports multi-lingual and multi-repository collections.<br /><br />See the &lt;a href='http://qubit-toolkit.org/wiki'&gt;online&nbsp;&nbsp;manual&lt;/a&gt; to learn how to customize Qubit and begin using it to enter and manage your data.<br /></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>Hi there!</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Hi there!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=static pages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Hi there!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Hi there!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>Welcome</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

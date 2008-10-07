@@ -20,7 +20,7 @@ propel:
   information_object_i18n:
     title: varchar(255)
     alternate_title: varchar(255)
-    version: varchar(255)
+    edition: varchar(255)
     extent_and_medium: longvarchar
     archival_history: longvarchar
     acquisition: longvarchar

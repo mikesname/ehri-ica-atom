@@ -1,0 +1,38 @@
+Index: plugins/sfWebBrowserPlugin/lib/sfWebBrowser.class.php
+===================================================================
+--- plugins/sfWebBrowserPlugin/lib/sfWebBrowser.class.php	(revision 11451)
++++ plugins/sfWebBrowserPlugin/lib/sfWebBrowser.class.php	(working copy)
+@@ -33,23 +33,8 @@
+     $fields                  = array(),
+     $urlInfo                 = array();
+ 
+-  public function __construct($defaultHeaders = array(), $adapterClass = null, $adapterOptions = array())
++  public function __construct($defaultHeaders = array(), $adapterClass = 'sfSocketsAdapter', $adapterOptions = array())
+   {
+-    if(!$adapterClass)
+-    {
+-      if (function_exists('curl_init'))
+-      {
+-        $adapterClass = 'sfCurlAdapter';
+-      }
+-      else if(ini_get('allow_url_fopen') == 1)
+-      {
+-        $adapterClass = 'sfFopenAdapter';
+-      }
+-      else
+-      {
+-        $adapterClass = 'sfSocketsAdapter';
+-      }
+-    }
+     $this->defaultHeaders = $this->fixHeaders($defaultHeaders);
+     $this->adapter = new $adapterClass($adapterOptions);
+   }
+@@ -631,7 +616,7 @@
+       {
+         $this->responseDom = new DomDocument('1.0', 'utf8');
+         $this->responseDom->validateOnParse = true;
+-        @$this->responseDom->loadHTML($this->getResponseText());
++        @$this->responseDom->loadXML($this->getResponseText());
+       }
+     }
+ 

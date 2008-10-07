@@ -135,6 +135,7 @@ background-color: #FF9933;
 color: #000000;
 border-top: 2px solid #999999;
 border-bottom: 2px solid #999999;
+font-size: 14px;
 }
 
 h2
@@ -825,4 +826,29 @@ div.digitalObjectRep
 div.digitalObjectDesc img
 {
   float: right;
+}
+
+/*********************************************************
+             PAGER
+**********************************************************/
+
+.result-count
+{
+  text-align:center; 
+  color: #999999; 
+  margin-top: 10px;
+}
+
+.pager
+{
+  margin-top: 20px;
+  text-align: center; 
+  font-size: 12px;
+  line-height: 20px;
+}
+
+.pager a
+{
+  border: 1px solid #CCCCCC;
+  padding: 2px 4px 2px 4px;
 }

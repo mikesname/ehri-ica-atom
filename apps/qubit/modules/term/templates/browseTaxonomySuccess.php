@@ -30,8 +30,8 @@
   </th>
 </tr></thead><tbody><?php foreach ($terms as $term): ?><tr>
   <td>
-    <?php echo link_to($term['termName'], 'term/browse?termId='.$term['termId']) ?>
+    <?php echo link_to($term->getName(array('cultureFallback'=>true)), 'term/browse?termId='.$term->getId()) ?>
   </td><td>
-    <?php echo $term['hits'] ?>
+    <?php echo $term->getRelatedObjectCount() ?>
   </td>
 </tr><?php endforeach; ?></tbody></table>

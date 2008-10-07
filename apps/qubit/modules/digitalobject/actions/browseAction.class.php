@@ -24,5 +24,6 @@ class DigitalObjectBrowseAction extends sfAction
   public function execute($request)
   {
     $this->mediaType = QubitTerm::getById($request->getParameter('mediatype'));
+    $this->page = $request->getParameter('page', 1);
   }
 }
