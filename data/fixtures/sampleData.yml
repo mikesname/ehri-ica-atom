@@ -2953,6 +2953,12 @@ QubitSetting:
     deleteable: '0'
     source_culture: en
     value: { en: '480' }
+  QubitSetting_hits_per_page:
+    name: hits_per_page
+    editable: '1'
+    deleteable: '0'
+    source_culture: en
+    value: { en: '10' }
   QubitSetting_4:
     name: informationobject_edit
     scope: default_template
