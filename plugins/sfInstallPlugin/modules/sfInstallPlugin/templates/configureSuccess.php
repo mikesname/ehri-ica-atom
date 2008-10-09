@@ -12,7 +12,7 @@
 <?php endif; ?>
 
 <p>
-  <?php echo link_to('A database must exist on your server before '.sfConfig::get('app_name', 'Qubit').' can be installed.', 'http://qubit-toolkit.org/wiki/index.php?title=Install#Create_database') ?>
+  <?php echo link_to('A database must exist on your server before '.sfConfig::get('app_name', 'Qubit').' can be installed.', 'http://qubit-toolkit.org/wiki/index.php?title=Installation#B._Create_your_MySQL_database') ?>
 </p>
 
 <form action="<?php echo url_for(array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?>" method="post">

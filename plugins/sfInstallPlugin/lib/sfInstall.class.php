@@ -307,6 +307,23 @@ EOF;
     return $htaccess;
   }
 
+  public static function setNoScriptName($noScriptName, $settingsYmlContents)
+  {
+    // TODO: Make this pattern more robust, or parse the YAML?
+    $pattern = '/^(prod:\v+  .settings:)(?:\v+    no_script_name:\h*[^\v]+)?/';
+
+    $replacement = '\1';
+    if ($noScriptName)
+    {
+      $replacement .= <<<EOF
+
+    no_script_name: true
+EOF;
+    }
+
+    return preg_replace($pattern, $replacement, $settingsYmlContents);
+  }
+
   public static function checkSettingsYml($noScriptName)
   {
     $settingsYml = array();
@@ -329,19 +346,7 @@ EOF;
       }
     }
 
-    // TODO: Make this pattern more robust, or parse the YAML?
-    $pattern = '/^(prod:\v+  .settings:)(?:\v+    no_script_name:\h*[^\v]+)?/';
-
-    $replacement = '\1';
-    if ($noScriptName)
-    {
-      $replacement .= <<<EOF
-
-    no_script_name: true
-EOF;
-    }
-
-    $settingsYmlContents = preg_replace($pattern, $replacement, $settingsYmlContents);
+    $settingsYmlContents = sfInstall::setNoScriptName($noScriptName, $settingsYmlContents);
 
     if (false === file_put_contents($settingsYmlPath, $settingsYmlContents))
     {
