@@ -861,7 +861,7 @@ QubitTerm:
     created_at: '2008-03-17 18:37:08'
     updated_at: '2008-08-14 09:53:17'
     source_culture: en
-    name: { en: 'Authority file', fr: 'Fichier d''autorité', nl: 'Geautoriseerd bestand', pt: 'Registro de autoridade' }
+    name: { en: 'Authority record', fr: 'Fichier d''autorité', nl: 'Geautoriseerd bestand', pt: 'Registro de autoridade' }
   QubitTerm_84:
     taxonomy_id: QubitTaxonomy_11
     class_name: QubitTerm
@@ -3035,7 +3035,7 @@ QubitSetting:
     editable: '1'
     deleteable: '0'
     source_culture: en
-    value: { en: 'authority file', fr: 'fichier d''autorité', nl: 'geautoriseerd bestand', pt: 'registro de autoridade' }
+    value: { en: 'authority record', fr: 'fichier d''autorité', nl: 'geautoriseerd bestand', pt: 'registro de autoridade' }
   QubitSetting_15:
     name: creator
     scope: ui_label
