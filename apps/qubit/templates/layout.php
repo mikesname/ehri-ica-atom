@@ -38,7 +38,7 @@
 
 <div id="header-middle">
 <div id="logo">
-  <?php echo link_to(image_tag('/images/logo.png', array('alt' => $sf_response->getTitle())), '/homepage/') ?>
+  <?php echo link_to(image_tag('logo', array('alt' => $sf_response->getTitle())), '/homepage/') ?>
 </div>
 </div> <!-- close header-middle -->
 
