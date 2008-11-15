@@ -36,14 +36,13 @@ class InformationObjectTreeViewComponent extends sfComponent
     $this->getResponse()->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
     $this->getResponse()->addJavaScript('/vendor/yui/treeview/treeview-min');
     $this->getResponse()->addJavaScript('treeView');
-
     $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin');
 
     $this->treeViewObjects = array();
     foreach ($this->informationObjects->orderBy('lft') as $informationObject)
     {
       $treeViewObject = array();
-      $treeViewObject['label'] = (string) $informationObject->getLabel(50);
+      $treeViewObject['label'] = (string) $informationObject->getLabel(array('truncate' => 50));
       $treeViewObject['href'] = $this->getController()->genUrl('informationobject/show?id='.$informationObject->getId());
       $treeViewObject['id'] = $informationObject->getId();
       $treeViewObject['parentId'] = $informationObject->getParentId();

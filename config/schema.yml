@@ -53,9 +53,11 @@ propel:
     object_id: { type: integer, required: true, foreignTable: object, foreignReference: id, onDelete: cascade }
     scope: varchar(255)
     name: varchar(255)
-    value: varchar(255)
     created_at:
     updated_at:
+
+  property_i18n:
+    value: varchar(255)
 
   relation:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
@@ -128,6 +130,7 @@ propel:
 
   actor_i18n:
     authorized_form_of_name: { type: varchar(255), required: true }
+    dates_of_existence: varchar(255)
     history: longvarchar
     places: longvarchar
     legal_status: longvarchar
@@ -258,7 +261,6 @@ propel:
     end_date: bu_date
     end_time: time
     type_id: { type: integer, foreignTable: term, foreignReference: id }
-    actor_role_id: { type: integer, foreignTable: term, foreignReference: id }
     information_object_id: { type: integer, foreignTable: information_object, foreignReference: id, onDelete: cascade }
     actor_id:
     created_at:

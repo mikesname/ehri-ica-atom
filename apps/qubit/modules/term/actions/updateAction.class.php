@@ -31,19 +31,6 @@ class TermUpdateAction extends sfAction
     {
       $term = QubitTerm::getById($this->getRequestParameter('id'));
       $this->forward404Unless($term);
-
-/*
-      //make sure a locked term value is not updated
-      $termRestriction = $term->getTaxonomy()->getTermUse();
-      if ($termRestriction == 'admin')
-        {
-        $this->forward('admin','TermPermission');
-        }
-      else if ($term->getLocked())
-        {
-        $this->forward('admin','TermPermission');
-        }
-*/
     }
 
     $term->setId($this->getRequestParameter('id'));
@@ -62,11 +49,21 @@ class TermUpdateAction extends sfAction
       $term->setNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('new_source_note'), QubitTerm::SOURCE_NOTE_ID);
     }
 
-    if ($this->getRequestParameter('content'))
-
-
+    if ($this->getRequestParameter('new_display_note'))
+    {
+      $term->setNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('new_display_note'), QubitTerm::DISPLAY_NOTE_ID);
+    }
 
     $taxonomyId = $term->getTaxonomyId();
+
+    // If requesting a json response object
+    if ($request->getParameter('responseFormat') == 'json')
+    {
+      $jsonObject = '({"id": "'.$term->getId().'", "name": "'.$term->getName().'"})';
+
+      // Return json object
+      return $this->renderText($jsonObject);
+    }
 
     return $this->redirect('term/list?taxonomyId='.$this->getRequestParameter('taxonomy_id'));
   }

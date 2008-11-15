@@ -33,35 +33,19 @@ class ActorUpdateContactInformationAction extends sfAction
     $this->forward404Unless($contactInformation);
     }
 
-    $contactInformation->setId($this->getRequestParameter('id'));
+  $contactInformation->setId($this->getRequestParameter('id'));
 
-    //save fields by template
-    switch ($this->getRequestParameter('template'))
-        {
-        case 'anotherTemplate' :
-          //save stuff
-          break;
-        //default template is 'ISIAH'
-        case 'isiah' :
-        default :
-          $this->updateContactInformation($contactInformation);
-          break;
-        }
+  $this->updateContactInformation($contactInformation);
 
-  //set redirect if contactInformation edit was called from another module
-    if ($this->getRequestParameter('repositoryReroute'))
-      {
-      return $this->redirect('repository/edit?id='.$this->getRequestParameter('repositoryReroute'));
-      }
-
-    //set view template
-    switch ($this->getRequestParameter('template'))
-      {
-      case 'anotherTemplate' :
-        return $this->redirect('actor/edit?id='.$contactInformation->getActorId().'&template=editAnotherTemplate');
-      default :
-        return $this->redirect('actor/edit?id='.$contactInformation->getActorId());
-      }
+  if ($this->getRequestParameter('repositoryReroute'))
+    {
+    //set redirect if contactInformation edit was called from the repository module
+    return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->getRequestParameter('repositoryReroute')));
+    }
+  else
+    {
+    return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $contactInformation->getActorId()));
+    }
   } //close execute()
 
   public function updateContactInformation($contactInformation)
@@ -78,7 +62,7 @@ class ActorUpdateContactInformationAction extends sfAction
   $contactInformation->setTelephone($this->getRequestParameter('telephone'));
   $contactInformation->setFax($this->getRequestParameter('fax'));
   $contactInformation->setLatitude($this->getRequestParameter('latitude'));
-    $contactInformation->setLongtitude($this->getRequestParameter('longtitude'));  
+  $contactInformation->setLongtitude($this->getRequestParameter('longtitude'));
   $contactInformation->setEmail($this->getRequestParameter('email'));
   $contactInformation->setWebsite($this->getRequestParameter('website'));
   $contactInformation->setNote($this->getRequestParameter('note'));

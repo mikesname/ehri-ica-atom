@@ -23,5 +23,23 @@ class BrowseSidebarComponent extends sfComponent
 {
   public function execute($request)
   {
+    $optionsForSelectArray = array(
+      'subject' => __(sfConfig::get('app_ui_label_subject')), 
+      'mediatype' => __(sfConfig::get('app_ui_label_mediatype')),
+      'name' => __(sfConfig::get('app_ui_label_name')), 
+      'materialtype' => __(sfConfig::get('app_ui_label_materialtype')), 
+      'informationobject' => __(sfConfig::get('app_ui_label_informationobject')), 
+      'place' => __(sfConfig::get('app_ui_label_place'))
+    );
+    
+    // Show repository as option only if system set to multi-repository
+    if (sfConfig::get('app_multi_repository') !== '0')
+    {
+      $optionsForSelectArray['repository'] = __(sfConfig::get('app_ui_label_repository'));
+    }
+    
+    $selectedOption = ($this->getUser()->hasAttribute('browse_list')) ? $this->getUser()->getAttribute('browse_list') : 'subject';
+    
+    $this->optionsForSelect = options_for_select($optionsForSelectArray, $selectedOption);
   }
 }

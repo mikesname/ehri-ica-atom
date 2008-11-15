@@ -1,15 +1,31 @@
 create:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
+createDc:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+createIsad:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+createMods:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+createRad:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
 
 delete:
   is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
-
 deleteActorRelation:
   is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
-
+deleteNote:
+  is_secure:  on
+  credentials: [[ contributor, editor, administrator ]]
+deleteProperty:
+  is_secure:  on
+  credentials: [[ contributor, editor, administrator ]]
 deleteTermRelation:
   is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
@@ -17,14 +33,39 @@ deleteTermRelation:
 edit:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
+editDc:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+editIsad:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+editMods:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+editRad:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
 
 list:
   is_secure:   off
 
-show:
-  is_secure:  off
+# not secure is default
+#show:
+#  is_secure:  off
 
 update:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+updateDc:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+updateIsad:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+updateMods:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+updateRad:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
 

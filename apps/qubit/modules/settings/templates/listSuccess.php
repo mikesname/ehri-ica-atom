@@ -1,69 +1,203 @@
 ﻿<div class="pageTitle"><?php echo __('site settings'); ?></div>
 
-<?php foreach ($settingsGroups as $scope => $settings): ?>
-  <?php echo form_tag('settings/update') ?>
-  <?php echo input_hidden_tag('fieldset', $scope) ?>
-
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo ($scope ? $scope : 'global') ?></div>
+<!-- Global settings table -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('global') ?></div>
 <fieldset class="collapsible collapsed">
-    <legend><?php echo ($scope ? $scope : 'global') ?></legend>
-<table class="list">
+  <legend><?php echo __('global') ?></legend>
+  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <table class="list">
   <thead>
     <tr>
       <th><?php echo __('name')?></th>
       <th><?php echo __('value')?></th>
-      <th/>
     </tr>
   </thead>
-
   <tbody>
-  <?php foreach ($settings as $setting): ?>
+    <?php echo $globalForm ?>
     <tr>
-    <td>
-    <?php if ($sf_user->getCulture() != $setting->getCulture() && $scope != 'i18n_languages'): ?>
-      <div class="default-translation"><?php echo $setting->getName() ?></div>
-    <?php else: ?>
-      <?php echo $setting->getName() ?>
-    <?php endif; ?>
-    </td>
-    <td>
-    <?php if ($scope == 'i18n_languages'): ?>
-      <?php echo format_language($setting->getName()) ?>
-    <?php elseif ($setting->isEditable()): ?>
-      <?php echo input_tag($setting->getId(), $setting->getValue()) ?>
-    <?php else: ?>
-      <?php echo $setting->getValue() ?>
-    <?php endif; ?>
-    </td>
-  <td>
-    <?php if ($setting->isDeleteable()): ?>
-      <?php echo link_to(image_tag('delete', 'valign=top'), 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
-    <?php endif; ?>
-  </td>
-    </tr>
-  <?php endforeach; ?>
-    <tr>
-    <?php if ($scope == 'i18n_languages'): ?>
-      <td colspan="2">
-      <?php echo select_tag('language_code', options_for_select($sf_data->getRaw('availableLanguages'))) ?>
-      </td>
-      <td>
-        <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo my_submit_tag(__('add'), array('style' => 'width: auto;')) ?>
-        </div>
-      </td>
-    <?php else: ?>
-      <td></td>
+      <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
           <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
         </div>
       </td>
-    <?php endif; ?>
     </tr>
   </tbody>
-</table>
+  </table>
+  </form>
 </fieldset>
-</form>
 
-<?php endforeach; ?>
+<!-- Site information form -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('site information') ?></div>
+<fieldset class="collapsible collapsed">
+  <legend><?php echo __('site information') ?></legend>
+  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <table class="list">
+  <thead>
+    <tr>
+      <th><?php echo __('name')?></th>
+      <th><?php echo __('value')?></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><?php echo $siteInformationForm['site_title']->renderLabel(null, 
+        array('title' => __('The name of the website for display in the header'))) ?></td>
+      <td>
+        <?php if (strlen($error = $siteInformationForm['site_title']->renderError())): ?>
+          <?php echo $error ?>
+        <?php elseif ($sourceCultureHelper = $siteTitle->getSourceCultureHelper($culture)): ?>
+          <div class="default-translation"><?php echo nl2br($sourceCultureHelper) ?></div>
+        <?php endif; ?>
+        <?php echo $siteInformationForm['site_title']->render() ?>
+      </td>
+    </tr>
+    <tr>
+      <td><?php echo $siteInformationForm['site_description']->renderLabel(null, 
+        array('title' => __('A brief site description or &quot;tagline&quot; for the header'))) ?></td>
+      <td>
+        <?php if (strlen($error = $siteInformationForm['site_description']->renderError())): ?>
+          <?php echo $error ?>
+        <?php elseif ($sourceCultureHelper = $siteDescription->getSourceCultureHelper($culture)): ?>
+          <div class="default-translation"><?php echo nl2br($sourceCultureHelper) ?></div>
+        <?php endif; ?>
+        <?php echo $siteInformationForm['site_description']->render() ?>
+      </td>
+    </tr>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <div style="float: right; margin: 3px 8px 0 0;">
+          <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+  </table>
+  </form>
+</fieldset>
+
+<!-- Default template form -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('default template') ?></div>
+<fieldset class="collapsible collapsed">
+  <legend><?php echo __('default template') ?></legend>
+  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><?php echo __('name')?></th>
+        <th><?php echo __('value')?></th>
+        <th/>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <?php echo $defaultTemplateForm ?>
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <div style="float: right; margin: 3px 8px 0 0;">
+            <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </form>
+</fieldset>
+
+<!-- UI Label Form -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('user interface label') ?></div>
+<fieldset class="collapsible collapsed">
+  <legend><?php echo __('user interface label') ?></legend>
+  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <table class="list">
+    <thead>
+      <tr>
+        <th><?php echo __('name')?></th>
+        <th><?php echo __('value')?></th>
+        <th/>
+      </tr>
+    </thead>
+    <tbody>
+    
+    <?php foreach ($uiLabelForm->getSettings() as $setting): ?>
+      <tr>
+        <td>
+          <?php if ($sf_user->getCulture() != $setting->getSourceCulture() && !strlen($setting->getValue())): ?>
+            <div class="default-translation"><?php echo $setting->getName() ?></div>
+          <?php else: ?>
+            <?php echo $setting->getName() ?>
+          <?php endif; ?>
+        </td>
+        <td>
+          <?php echo $uiLabelForm[$setting->getName()] ?>
+        </td>
+        <td>
+          <?php if ($setting->isDeleteable()): ?>
+            <?php echo link_to(image_tag('delete', 'valign=top'), 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
+          <?php endif; ?>
+        </td>
+      </tr>
+    <?php endforeach; ?>
+      
+      <tr>
+        <td>&nbsp;</td>
+        <td>
+          <div style="float: right; margin: 3px 8px 0 0;">
+            <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </form>
+</fieldset>
+
+
+<!-- I18n Languages Form -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('i18n languages') ?></div>
+<fieldset class="collapsible collapsed">
+  <legend><?php echo __('i18n languages') ?></legend>
+  <form action="<?php echo url_for('settings/update') ?>" method="POST">
+  
+  <table class="list">
+    <thead>
+      <tr>
+        <th><?php echo __('name')?></th>
+        <th><?php echo __('value')?></th>
+        <th/>
+      </tr>
+    </thead>
+
+    <tbody>
+    <?php foreach ($i18nLanguages as $setting): ?>
+      <tr>
+        <td>
+          <?php echo $setting->getName() ?>
+        </td>
+        <td>
+          <?php echo format_language($setting->getName()) ?>
+        </td>
+        <td>
+          <?php if ($setting->isDeleteable()): ?>
+            <?php echo link_to(image_tag('delete', 'valign=top'), 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
+          <?php endif; ?>
+        </td>
+      </tr>
+    <?php endforeach; ?>
+      
+      <tr>
+        <td colspan="2">
+          <?php echo select_tag('language_code', options_for_select($sf_data->getRaw('availableLanguages'))) ?>
+        </td>
+        <td>
+          <div style="float: right; margin: 3px 8px 0 0;">
+            <?php echo my_submit_tag(__('add'), array('style' => 'width: auto;')) ?>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </form>
+</fieldset>

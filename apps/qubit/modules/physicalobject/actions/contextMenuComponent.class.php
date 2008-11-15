@@ -24,40 +24,13 @@
  * 
  * @package qubit
  * @subpackage physicalobject
+ * @version svn: $Id$
  * @author david juhasz <david@artefactual.com>
- * @version svn:$id
  */
 class PhysicalObjectContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->currentInformationObject = $request->getAttribute('informationObject');
-    
-    $childInformationObjects = $this->currentInformationObject->getDescendants()->andSelf();
-    
-    $physicalObjects = array();
-    foreach($childInformationObjects as $informationObject)
-    {
-      $relatedPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId($informationObject->getId(),
-        array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
-      
-      foreach ($relatedPhysicalObjects as $physicalObject)
-      {
-        
-        // Check to make sure this object is not already in the array
-        if (!in_array($physicalObject, $physicalObjects))
-        {
-         $physicalObjects[] = $physicalObject;
-        }
-      }
-    }
-    
-    if (count($physicalObjects) < 1)
-    {
-      
-      return sfView::NONE;
-    }
-    
-    $this->physicalObjects = $physicalObjects;
+    //$this->physicalObjects = $physicalObjects;
   }
 }

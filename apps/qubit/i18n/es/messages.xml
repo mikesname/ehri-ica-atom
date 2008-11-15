@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2008-10-06T16:08:52Z" product-name="messages">
+  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2008-11-13T15:54:42Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -1498,6 +1498,318 @@
       </trans-unit>
       <trans-unit id="442">
         <source>view static page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="443">
+        <source>%1% of</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="444">
+        <source>display note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="445">
+        <source>view archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="446">
+        <source>Place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="447">
+        <source>name of creator</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="448">
+        <source>Administrative</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="449">
+        <source>Biographic</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="450">
+        <source>edit archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="451">
+        <source>add new archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="452">
+        <source>title and statement of responsibility area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="453">
+        <source>title proper</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="454">
+        <source>general material designation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="455">
+        <source>parallel title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="456">
+        <source>other title information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="457">
+        <source>statements of responsibility</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="458">
+        <source>title note type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="459">
+        <source>edition area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="460">
+        <source>edition statement</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="461">
+        <source>class of material specific details area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="462">
+        <source>statement of scale (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="463">
+        <source>statement of projection (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="464">
+        <source>statement of coordinates (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="465">
+        <source>statement of scale (architectural)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="466">
+        <source>issuing jurisdiction and denomination (philatelic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="467">
+        <source>dates of creation area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="468">
+        <source>Name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="469">
+        <source>Role</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="470">
+        <source>Event</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="471">
+        <source>Date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="472">
+        <source>new event</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="473">
+        <source>add new name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="474">
+        <source>event type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="475">
+        <source>end year</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="476">
+        <source>administrative history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="477">
+        <source>biographical sketch</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="478">
+        <source>physical description area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="479">
+        <source>physical description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="480">
+        <source>publisher's series area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="481">
+        <source>Title proper of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="482">
+        <source>Parallel titles of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="483">
+        <source>Other title information of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="484">
+        <source>Statement of responsibility relating to publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="485">
+        <source>Numbering within publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="486">
+        <source>Note on publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="487">
+        <source>archival description area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="488">
+        <source>custodial history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="489">
+        <source>physical condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="490">
+        <source>arrangement</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="491">
+        <source>script</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="492">
+        <source>availability of other formats</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="493">
+        <source>restrictions on access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="494">
+        <source>terms governing use, reproduction, and publication</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="495">
+        <source>associated / related material</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="496">
+        <source>other notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="497">
+        <source>standard number area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="498">
+        <source>standard number</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="499">
+        <source>enter term and scope</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="500">
+        <source>creator(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="501">
+        <source>title statements of responsibility</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="502">
+        <source>edition statement of responsibility</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="503">
+        <source>title proper of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="504">
+        <source>parallel titles of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="505">
+        <source>other title information of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="506">
+        <source>statement of responsibility relating to publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="507">
+        <source>numbering within publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="508">
+        <source>unknown</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="509">
+        <source>create (RAD)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="510">
+        <source>edit (RAD)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="511">
+        <source>view (RAD)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="512">
+        <source>global</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="513">
+        <source>site information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="514">
+        <source>The name of the website for display in the header</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="515">
+        <source>A brief site description or &amp;quot;tagline&amp;quot; for the header</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="516">
+        <source>default template</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="517">
+        <source>user interface label</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="518">
+        <source>i18n languages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="519">
+        <source>your email address was not found</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="520">
+        <source>your email and password do not match</source>
         <target/>
       </trans-unit>
     </body>

@@ -1,11 +1,11 @@
-editISAARSuccess:
+editIsaarSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
 listSuccess:
   components:
     sidebar: []
 
-editISIAHContactInformationSuccess:
+editContactInformationSuccess:
   components:
     sidebar: []
 

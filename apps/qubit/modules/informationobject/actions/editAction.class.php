@@ -21,7 +21,7 @@
 
 /**
  * Get current state data for information object edit form.
- * 
+ *
  * @package    qubit
  * @subpackage informationobject
  * @version    svn: $Id$
@@ -36,16 +36,19 @@ class InformationObjectEditAction extends sfAction
     $this->forward404Unless($this->informationObject);
 
     $request->setAttribute('informationObject', $this->informationObject);
-    
+
     // Add javascript libraries to allow selecting multiple access points
     $this->getResponse()->addJavaScript('jquery');
     $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('multiInstanceSelect');
 
     //Actor (Event) Relations
-    $this->creationEvents = $this->informationObject->getCreationEvents();
-    $this->newCreationEvent = new QubitEvent;
+    $this->actorEvents = $this->informationObject->getActorEvents();
+    $this->newActorEvent = new QubitEvent;
     $this->creators = $this->informationObject->getCreators();
+    $this->actorEventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
+    $this->defaultActorEventType = QubitTerm::CREATION_ID;
+    $this->actorEventPlaces = QubitTerm::getOptionsForSelectList(QubitTaxonomy::PLACE_ID, $options = array('include_blank' => true));
 
     //Properties
     $this->languageCodes = $this->informationObject->getProperties($name = 'information_object_language');
@@ -55,11 +58,9 @@ class InformationObjectEditAction extends sfAction
 
     //Notes
     $this->notes = $this->informationObject->getNotes();
-    $this->newNote = new QubitNote;
-    $this->titleNotes = $this->informationObject->getNotesByType($noteTypeId = QubitTerm::TITLE_NOTE_ID, $exclude = null);
-    $this->newTitleNote = new QubitNote;
-    $this->publicationNotes = $this->informationObject->getNotesByType($noteTypeId = QubitTerm::PUBLICATION_NOTE_ID, $exclude = null);
-    $this->newPublicationNote = new QubitNote;
+    $this->noteTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::NOTE_TYPE_ID);
+    $this->titleNotes = $this->informationObject->getNotesByType($options = array ('noteTypeId' => QubitTerm::TITLE_NOTE_ID));
+    $this->publicationNotes = $this->informationObject->getNotesByType($options = array ('noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
 
     //Access Points
     $this->newSubjectAccessPoint = new QubitObjectTermRelation;
@@ -76,7 +77,11 @@ class InformationObjectEditAction extends sfAction
         $this->nameAccessPoints[] = $event;
       }
     }
-    
+
+    // Material Type
+    $this->newMaterialType = new QubitObjectTermRelation;
+    $this->materialTypes = $this->informationObject->getMaterialTypes();
+
     // Count related digital objects for warning message when deleting info object
     // Note: This should only be 0 or 1 digital objects.
     $this->digitalObjectCount = 0;
@@ -84,24 +89,5 @@ class InformationObjectEditAction extends sfAction
     {
       $this->digitalObjectCount = 1;
     }
-
-    //set template
-    switch ($this->getRequestParameter('template'))
-      {
-      case 'dublincore' :
-        $this->setTemplate('editDublinCore');
-        break;
-      case 'isad' :
-        $this->setTemplate('editISAD');
-        break;
-      case 'mods' :
-        $this->setTemplate('editMODS');
-        break;
-      case 'edit' :
-        $this->setTemplate('edit');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
-      }
   }
 }

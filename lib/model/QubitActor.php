@@ -39,17 +39,24 @@ class QubitActor extends BaseActor
     return (string) $authorizedFormOfName;
   }
 
-  public static function getAllExceptUsers()
+  public static function getAllExceptUsers($options = array())
   {
     //returns all Actor objects except those that are
     //also an instance of the User class
     $criteria = new Criteria;
-    $criteria->addJoin(QubitActor::ID, QubitUser::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitUser::ID);
+    $criteria->add(QubitObject::CLASS_NAME, 'QubitActor');
 
-    return self::get($criteria);
+    // sort by name
+    $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+
+    // Do fallback
+    $context = sfContext::getInstance();
+    $culture = $context->getUser()->getCulture();
+    $criteria = $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $culture, $options);
+
+    return QubitActor::get($criteria);
   }
-  
+
   /**
    * Get a paginated hitlist of actors
    *
@@ -58,25 +65,27 @@ class QubitActor extends BaseActor
    * @param array    $options array of optional function parameters
    * @return QubitQuery collection of QubitInformationObject objects
    */
-  public static function getList($culture, $criteria, $options=array())
+  public static function getList($culture, $options=array())
   {
+    $criteria = new Criteria;
+
     $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
     $sort = (isset($options['sort'])) ? $options['sort'] : null;
     $page = (isset($options['page'])) ? $options['page'] : 1;
-    
+
     if (isset($options['repositoryId']))
     {
       $criteria->add(QubitInformationObject::REPOSITORY_ID,  $options['repositoryId']);
     }
-    
+
     if (isset($options['collectionType']))
     {
       $criteria->add(QubitInformationObject::COLLECTION_TYPE_ID, $options['collectionType']);
     }
-    
+
     // Add criteria to exclude actors that are users or repository objects
     $criteria = QubitActor::addGetOnlyActorsCriteria($criteria);
-    
+
     // Add sort criteria
     switch($sort)
     {
@@ -99,7 +108,7 @@ class QubitActor extends BaseActor
         $fallbackTable = 'QubitActor';
         $criteria->addAscendingOrderByColumn('authorized_form_of_name');
     }
-      
+
     // Do source culture fallback
     if ($cultureFallback === true)
     {
@@ -115,16 +124,16 @@ class QubitActor extends BaseActor
       $criteria->add(QubitActorI18n::CULTURE, $culture);
       $criteria->add(QubitTermI18n::CULTURE, $culture);
     }
-    
+
     // Page results
     $pager = new QubitPager('QubitActor');
     $pager->setCriteria($criteria);
     $pager->setPage($page);
     $pager->init();
-    
+
     return $pager;
   }
-  
+
   /**
    * Append criteria to get only Actor objects that are NOT
    * a users or repository.
@@ -135,13 +144,13 @@ class QubitActor extends BaseActor
   public static function addGetOnlyActorsCriteria($criteria)
   {
     $criteria->addJoin(QubitActor::ID, QubitUser::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitUser::ID, NULL);
+    $criteria->add(QubitUser::ID, null);
     $criteria->addJoin(QubitActor::ID, QubitRepository::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitRepository::ID, NULL);
-    
+    $criteria->add(QubitRepository::ID, null);
+
     return $criteria;
   }
-  
+
   /**
    * Returns only Actor objects, excluding those
    * that are an instance of the User or Repository class
@@ -154,9 +163,9 @@ class QubitActor extends BaseActor
     {
       $criteria = new Criteria;
     }
-    
-    $criteria = $this->addGetOnlyActorsCriteria($criteria);
-    
+
+    $criteria = QubitActor::addGetOnlyActorsCriteria($criteria);
+
     return self::get($criteria);
   }
 
@@ -172,16 +181,16 @@ class QubitActor extends BaseActor
         //use 'Family name, first name' format if available
         /*
         if ($actor->getEntityTypeId() == QubitTerm::PERSON_ID)
-          {
-            foreach ($actor->getOtherNames() as $name)
-              {
-                if ($name->getTypeId() == QubitTerm::FAMILY_NAME_FIRST_NAME_ID)
-                  {
-                    $actorName = $name;
-                    break;
-                  }
-              }
-          }
+        {
+        foreach ($actor->getOtherNames() as $name)
+        {
+        if ($name->getTypeId() == QubitTerm::FAMILY_NAME_FIRST_NAME_ID)
+        {
+        $actorName = $name;
+        break;
+        }
+        }
+        }
         */
         $selectList[$actor->getId()] = $actorName;
       }
@@ -227,47 +236,20 @@ class QubitActor extends BaseActor
     $newName->setNote($nameNote);
     $newName->save();
   }
-  
+
   /**
    * Add a related property to this actor.
-   * 
-   * @param string $name  name of property
-   * @param string $value value of property
-   * @param string $scope scope note (optional)
-   * @return QubitActor this object
-   */
-  public function addProperty($name, $value, $scope = null)
-  {
-    if ($this->getProperty($name, $value, $scope) === null)
-    {
-      $newCode = new QubitProperty;
-	    $newCode->setObjectId($this->getId());
-	    $newCode->setScope($scope);
-	    $newCode->setName($name);
-	    $newCode->setValue($value);
-	    $newCode->save();
-    }
-    
-    return $this;
-  }
-  
-  /**
-   * Get an existing property related to this actor.
    *
    * @param string $name  name of property
    * @param string $value value of property
-   * @param string $scope scope note (default: null)
-   * @return mixed QubitProperty if match found, null if no match
+   * @param string $options array of optional parameters
+   * @return QubitActor this object
    */
-  public function getProperty($name, $value, $scope = null)
+  public function addProperty($name, $value, $options = array())
   {
-    $criteria = new Criteria;
-    $criteria->add(QubitProperty::OBJECT_ID, $this->getId());
-    $criteria->add(QubitProperty::NAME, $name);
-    $criteria->add(QubitProperty::VALUE, $value);
-    $criteria->add(QubitProperty::SCOPE, $scope);
-    
-    return QubitProperty::getOne($criteria);
+    $property = QubitProperty::addUnique($this->getId(), $name, $value, $options);
+
+    return $this;
   }
 
   public function getProperties($name = null, $scope = null)
@@ -314,7 +296,7 @@ class QubitActor extends BaseActor
     $criteria->add(QubitContactInformation::ACTOR_ID, $this->getId());
     $criteria->addDescendingOrderByColumn(QubitContactInformation::PRIMARY_CONTACT);
     $contactInformation = QubitContactInformation::get($criteria);
-  
+
     return $contactInformation;
   }
 
@@ -324,7 +306,7 @@ class QubitActor extends BaseActor
     $criteria->add(QubitContactInformation::ACTOR_ID, $this->getId());
     $criteria->add(QubitContactInformation::PRIMARY_CONTACT, true);
     $primaryContact = QubitContactInformation::getOne($criteria);
-  
+
     if ($primaryContact)
     {
       return $primaryContact;
@@ -333,7 +315,7 @@ class QubitActor extends BaseActor
     {
       $criteria = new Criteria;
       $criteria->add(QubitContactInformation::ACTOR_ID, $this->getId());
-  
+
       return QubitContactInformation::getOne($criteria);
     }
   }
@@ -356,7 +338,7 @@ class QubitActor extends BaseActor
   {
     $newTermRelation = new QubitObjectTermRelation;
     $newTermRelation->setTermId($termId);
-    
+
     //TODO: move to QubitNote
     //  $newTermRelation->setRelationNote($relationNote);
     $newTermRelation->setObjectId($this->getId());
@@ -367,24 +349,14 @@ class QubitActor extends BaseActor
   {
     $criteria = new Criteria;
     $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->getId());
-  
+
     if ($taxonomyId != 'all')
     {
       $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTERM::ID);
       $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
     }
-  
-    return QubitObjectTermRelation::get($criteria);
-  }
 
-  public function getDatesOfExistence()
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitEvent::ACTOR_ID, $this->getId());
-    $criteria->add(QubitEvent::TYPE_ID, QubitTerm::EXISTENCE_ID);
-    $event = QubitEvent::getOne($criteria);
-  
-    return $event;
+    return QubitObjectTermRelation::get($criteria);
   }
 
   public function getDatesOfChanges()
@@ -401,21 +373,13 @@ class QubitActor extends BaseActor
     return null;
   }
 
-  public function getInformationObjectRelations($roleType = 'all')
+  public function getInformationObjectRelations()
   {
     $criteria = new Criteria;
     $criteria->add(QubitEvent::ACTOR_ID, $this->getId());
-    switch ($roleType)
-    {
-      case 'creator' :
-        $criteria->add(QubitEvent::ACTOR_ROLE_ID, 344);
-        break;
-    }
-    
     $criteria->addJoin(QubitEvent::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
-    $criteria->addGroupByColumn(QubitEvent::INFORMATION_OBJECT_ID);
-    //$criteria->addAscendingOrderByColumn(QubitInformationObject:: );
-  
+    $criteria->addAscendingOrderByColumn(QubitEvent::TYPE_ID);
+
     return QubitEvent::get($criteria);
   }
 }

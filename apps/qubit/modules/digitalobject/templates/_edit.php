@@ -16,14 +16,14 @@
     <label for="upload"><?php echo __('Add a new %1% representation', array('%1%'=>QubitTerm::getById($usageId))); ?></label>
     <table class="inline">
     <tr>
-      <td width="60%"><?php include_component('digitalobject', 'upload', array('usageId'=>$usageId)); ?></td>
-      <?php if ($digitalObject->canThumbnail()): ?>
-      <td width="40%">
-        <?php echo __('or'); ?>
-        <?php echo checkbox_tag('createDerivative', $usageId, false, array('style'=>'width: auto')); ?>
+      <td width="60%">
+        <?php include_component('digitalobject', 'upload', array('usageId'=>$usageId)); ?>
+        <?php if ($digitalObject->canThumbnail()): ?>
+        <br/><?php echo __('or'); ?>
+        <?php echo checkbox_tag('createDerivative', $usageId, false, array('class'=>'checkbox')); ?>
         <?php echo __('auto-generate'); ?>
+        <?php endif; ?>
       </td>
-      <?php endif; ?>
     </tr>
     </table>
   </div>

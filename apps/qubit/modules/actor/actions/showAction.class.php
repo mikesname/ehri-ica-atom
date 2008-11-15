@@ -23,43 +23,23 @@ class ActorShowAction extends sfAction
 {
   public function execute($request)
   {
-  $this->actor = QubitActor::getById($this->getRequestParameter('id'));
-  $this->forward404Unless($this->actor);
+    $this->actor = QubitActor::getById($this->getRequestParameter('id'));
+    $this->forward404Unless($this->actor);
 
-  $this->otherNames = $this->actor->getOtherNames();
-  $this->notes = $this->actor->getActorNotes();
+    $this->otherNames = $this->actor->getOtherNames();
+    $this->notes = $this->actor->getActorNotes();
 
-  $this->languageCodes = $this->actor->getProperties($name = 'language_of_actor_description');
-  $this->scriptCodes = $this->actor->getProperties($name= 'script_of_actor_description');
+    $this->languageCodes = $this->actor->getProperties($name = 'language_of_actor_description');
+    $this->scriptCodes = $this->actor->getProperties($name= 'script_of_actor_description');
 
-  if ($this->actor->getDatesOfExistence())
+    $this->datesOfChanges = $this->actor->getDatesOfChanges();
+    $this->relatedActors = $this->actor->getRelatedActors();
+
+    //determine if user has edit priviliges
+    $this->editCredentials = false;
+    if (SecurityPriviliges::editCredentials($this->getUser(), 'actor'))
     {
-    $this->datesOfExistence = $this->actor->getDatesOfExistence()->getDescription(array('cultureFallback' => true));
-    }
-  else
-    {
-    $this->datesOfExistence = null;
-    }
-
-  $this->datesOfChanges = $this->actor->getDatesOfChanges();
-  $this->relatedActors = $this->actor->getRelatedActors();
-  
-  //determine if user has edit priviliges
-  $this->editCredentials = false;
-  if (SecurityPriviliges::editCredentials($this->getUser(), 'actor'))
-  {
-    $this->editCredentials = true;
-  }
-  
-
-  //set view template
-  switch ($this->getRequestParameter('template'))
-    {
-    case 'isaar' :
-      $this->setTemplate('showISAAR');
-      break;
-    default :
-      $this->setTemplate(sfConfig::get('app_default_template_actor_show'));
+      $this->editCredentials = true;
     }
   }
 }

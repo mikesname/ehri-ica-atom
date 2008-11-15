@@ -27,7 +27,7 @@
  */
 class InformationObjectListAction extends sfAction
 {
-  
+
   /**
    * Display a paginated hitlist of information objects (top-level only)
    *
@@ -37,60 +37,53 @@ class InformationObjectListAction extends sfAction
   {
     $options = array();
     $this->repositoryId = 0;
-    
+
     // HACK: Get root information object for _contextMenu partial
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::PARENT_ID);
     $root = QubitInformationObject::getOne($criteria);
     $request->setAttribute('informationObject', $root);
-    
+
     // Set parent id to the root node id
     $options['parentId'] = $root->getId();
-    
+
     // Set culture and cultural fallback flag
     $this->culture = $this->getUser()->getCulture();
     $options['cultureFallback'] = true; // Do cultural fallback
-    
+
     // Set sort
     $this->sort = $this->getRequestParameter('sort', 'titleUp');
     $options['sort'] = $this->sort;
-    
+
     // Set current page
     $this->page = $this->getRequestParameter('page', 1);
     $options['page'] = $this->page;
-    
+
     // Filter by repository
     if ($this->getRequestParameter('repository'))
     {
       $this->repositoryId = $this->getRequestParameter('repository');
       $options['repositoryId'] = $this->repositoryId;
     }
-    
+
     // Filter by collection type
     if ($this->getRequestParameter('collectionType'))
     {
       $this->collectionType = $this->getRequestParameter('collectionType');
       $options['collectionType'] = $this->collectionType;
     }
-    
+
     // Get QubitQuery collection of information objects (with pagination, fallback and sorting)
-    $this->informationObjects = QubitInformationObject::getList($this->culture, new Criteria, $options);
-    
+    $this->informationObjects = QubitInformationObject::getList($this->culture, $options);
+
     //determine if user has edit priviliges
     $this->editCredentials = false;
     if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
     {
       $this->editCredentials = true;
     }
-  
-    //set view template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'isad' :
-        $this->setTemplate('listISAD');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_list'));
-    }
+
+    // determine if system is set to "multi-repository"
+    $this->multiRepository = (sfConfig::get('app_multi_repository') !== '0');
   }
 }

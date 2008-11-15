@@ -23,13 +23,12 @@ class RepositoryDeleteAction extends sfAction
 {
   public function execute($request)
   {
-
    $repository = QubitRepository::getById($this->getRequestParameter('id'));
 
    $this->forward404Unless($repository);
-    
-    // keep track of informationObjects that require a foreign key reset and 
-    // search index update due to the deletion of related repository 
+
+    // keep track of informationObjects that require a foreign key reset and
+    // search index update due to the deletion of related repository
     $informationObjects = array();
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::REPOSITORY_ID, $repository->getId());
@@ -41,11 +40,9 @@ class RepositoryDeleteAction extends sfAction
       $informationObject->save();
       SearchIndex::UpdateTranslatedLanguages($informationObject);
     }
-    
+
     $repository->delete();
 
-    return $this->redirect('repository/list');
-
-
+    return $this->redirect(array('module' => 'repository', 'action' => 'list'));
   }
 }

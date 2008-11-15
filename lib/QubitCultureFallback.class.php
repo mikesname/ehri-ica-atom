@@ -102,27 +102,10 @@ class QubitCultureFallback
     // Build fancy criteria to get fallback values
     $criteria->addAlias('current', $fallbackClassI18n->getConstant('TABLE_NAME'));
     $criteria->addAlias('source', $fallbackClassI18n->getConstant('TABLE_NAME'));
-    $criteria->addAlias('other', $fallbackClassI18n->getConstant('TABLE_NAME'));
     $criteria->addJoin($fallbackClass->getConstant('ID'), $currentJoinString, Criteria::LEFT_JOIN);
     $criteria->addJoin($fallbackClass->getConstant('ID'), $sourceJoinString, Criteria::LEFT_JOIN);
     
-    if (!isset($options['returnClass']))
-    {
-      return $criteria;
-    }
-    else 
-    {
-      // In order to return a QubitQuery object that is *not* the current class
-      // (e.g. QubitInformationObject instead of QubitActor)
-      // We need to:
-      // 1) Add a GroupBy column that won't eliminate unmatched values
-      // 2) Add the $returnClass select columns to the ResultSet
-      // 3) Call QubitQuery::createFromCriteria with the $returnClass
-      $returnClass = new ReflectionClass($options['returnClass']);
-      unset($options['returnClass']); // Remove 'returnClass' from options array
-      
-      return $criteria;
-    }
+    return $criteria;
   }
   
 }

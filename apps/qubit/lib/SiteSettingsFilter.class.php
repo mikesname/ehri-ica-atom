@@ -24,29 +24,51 @@ class siteSettingsFilter extends sfFilter
   /*
    * execute this filter on every request in case some params have changed since the last page load
    */
-  public function execute ($filterChain)
+  public function execute($filterChain)
   {
     // create a function cache object for the QubitSettings method call
-    $fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
+    //$fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
 
     // invalidate cache when user switches culture
     // FIXME: there must be a smarter way to detect this accurately; user culture is set very early after routing
     if ($this->getContext()->getRequest()->getParameter('sf_culture'))
     {
-      $fileCache->clean();
+      //$fileCache->clean();
     }
 
-    $functionCache = new sfFunctionCache($fileCache);
+    //$functionCache = new sfFunctionCache($fileCache);
 
     // get settings (from cache if it exists)
-    $settings = $functionCache->call(array(new QubitSetting, 'getSettingsArray'));
+    //$settings = $functionCache->call(array(new QubitSetting, 'getSettingsArray'));
+    $settings = QubitSetting::getSettingsArray();
 
     // overwrite/populate settings into sfConfig object
     sfConfig::add($settings);
 
+    $this->setSiteTitle();
+
+    // Set routing default parameters so that links to create, edit and show actions
+    // get routed to default actions
+    $this->context->getRouting()->setDefaultParameters(array('informationobject_template' => sfConfig::get('app_default_template_informationobject'), 'actor_template' => sfConfig::get('app_default_template_actor'), 'repository_template' => sfConfig::get('app_default_template_repository')));
+
     // execute next filter
     $filterChain->execute();
   }
-}
 
-?>
+  protected function setSiteTitle()
+  {
+    $title = strip_tags(sfConfig::get('app_site_information_site_title'));
+    $desc  = strip_tags(sfConfig::get('app_site_information_site_description'));
+
+    if (strlen($title) && strlen($desc))
+    {
+      $title = $title.' - '.$desc;
+    }
+    else
+    {
+      $title .= $desc;
+    }
+
+    $this->getContext()->getResponse()->setTitle($title);
+  }
+}

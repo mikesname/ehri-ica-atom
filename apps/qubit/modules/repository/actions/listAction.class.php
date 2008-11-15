@@ -27,7 +27,7 @@
  */
 class RepositoryListAction extends sfAction
 {
-  
+
   /**
    * Show hitlist of repositories
    *
@@ -37,44 +37,34 @@ class RepositoryListAction extends sfAction
   {
     $options = array();
     $this->country = 0;
-    
+
     // Set culture and cultural fallback flag
     $this->culture = $this->getUser()->getCulture();
     $options['cultureFallback'] = true; // Do cultural fallback
-    
+
     // Set sort
     $this->sort = $this->getRequestParameter('sort', 'nameUp');
     $options['sort'] = $this->sort;
-    
+
     // Set current page
     $this->page = $this->getRequestParameter('page', 1);
     $options['page'] = $this->page;
-    
+
     // Filter by country
     if ($this->getRequestParameter('country'))
     {
       $this->country = strtoupper($this->getRequestParameter('country'));
       $options['countryCode'] = $this->country;
     }
-    
+
     // Get repository hitlist
-    $this->repositories = QubitRepository::getList($this->culture, new Criteria, $options);
-    
+    $this->repositories = QubitRepository::getList($this->culture, $options);
+
     //determine if user has edit priviliges
     $this->editCredentials = false;
     if (SecurityPriviliges::editCredentials($this->getUser(), 'repository'))
     {
       $this->editCredentials = true;
-    }
-    
-    //set view template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'isiah' :
-        $this->setTemplate('listISIAH');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_repository_list'));
     }
   }
 }

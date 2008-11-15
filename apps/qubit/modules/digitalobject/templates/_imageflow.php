@@ -14,7 +14,7 @@
     <?php echo image_tag($thumbnail->getFullPath(), array(
       'class'=>'imageflow',
       'longdesc'=>url_for('informationobject/show?id='.$informationObjects[$i]->getId()), 
-      'alt'=>$informationObjects[$i]->getLabel(30)
+      'alt'=>$informationObjects[$i]->getLabel(array('truncate' => 30))
     )) ?>
     <?php endforeach; ?>
   </div>

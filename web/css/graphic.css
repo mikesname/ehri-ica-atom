@@ -1,217 +1,186 @@
 /*********************************************************
                 ABOUT: graphic.css
 **********************************************************/
-
-/* This stylesheet is used to assign styles to all graphic elements except for:
+  /* This stylesheet is used to assign styles to all graphic elements except for:
 - menu.css, which is used to structure and style menus
 - form.css, which is used to structure and style forms
 - layout.css,which is used to structure and style the physical page layout */
 
+
 /*********************************************************
                 WEBSITE NAME & LOGO
 **********************************************************/
-
-#website-name
-{
-font: bold 64px/78px verdana, georgia, garamond, serif;
-letter-spacing: 3px;
-color: #04025C;
-border: 0;
-margin-bottom: 3px;
-text-align: left;
-float: left;
-/*background-image: url(../images/background.gif);*/
+#website-name {
+  font: bold 64px/ 78px verdana, georgia, garamond, serif;
+  letter-spacing: -0.1ex;
+  color: #FC6E3C;
+  border: 0;
+  margin-bottom: 3px;
+  text-align: left;
+  float: left;
 }
 
-#website-name a:hover, #website-name a:link, #website-name a:visited, #website-name a:active
-{
-text-decoration: none;
-border: 0;
-color: #04025C;
-background-color: transparent;
+#website-name a:hover,#website-name a:link,#website-name a:visited,#website-name a:active
+  {
+  text-decoration: none;
+  border: 0;
+  color: #FC6E3C;
+  background-color: transparent;
 }
 
-#website-description
-{
-color: #04025C;
-font: bold 15px/16px georgia, garamond, serif;
-margin: 75px 0 0 0;
-padding: 0;
-text-align: left;
+#website-description {
+  color: #04025C;
+  font: bold 15px/ 16px georgia, garamond, serif;
+  margin: 75px 0 0 0;
+  padding: 0;
+  text-align: left;
+  float: right;
+}
+
+#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
+  border: 0;
+  color: #ffffff;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
 float: right;
 }
 
-#logo a:hover, #logo a:link, #logo a:visited, #logo a:active
-{
-border: 0;
-color: #ffffff;
-background-color: transparent;
-text-decoration: none;
-padding: 0;
-margin: 0;
-float: right;
-}
-
-#logo img
-{
-margin: 0 0 0 20px;
+#logo img {
+  margin: 0 0 0 20px;
 }
 
 /*********************************************************
                 APP VERSION NUMBER
 **********************************************************/
-
-.versionNumber
-{
-float: right;
-color: #999999;
-margin: 10px 5px 0 0;
-background: transparent;
-z-index: 1;
+.versionNumber {
+  float: right;
+  color: #999999;
+  margin: 10px 5px 0 0;
+  background: transparent;
+  z-index: 1;
 }
 
 /*********************************************************
                 GENERAL TEXT STYLING
 **********************************************************/
-
-body
-{
-font: normal 11px/14px verdana, lucida, sans-serif;
-color: #000000;
+body {
+  font: normal 11px/ 14px verdana, lucida, sans-serif;
+  color: #000000;
 }
+
 /* see also .staticPageContent below */
-
-p
-{
-margin: 15px 0 0 0;
-text-align: left;
+p {
+  margin: 15px 0 0 0;
+  text-align: left;
 }
 
-img
-{
-/* vertical-align: middle; */
-border: 0;
-background-color: transparent;
-text-decoration: none;
+img { /* vertical-align: middle; */
+  border: 0;
+  background-color: transparent;
+  text-decoration: none;
 }
 
-img.static_page
-{
-padding: 5px;
-border: 1px solid #000000;
-background-color: #ffffff;
+img.static_page {
+  padding: 5px;
+  border: 1px solid #000000;
+  background-color: #ffffff;
 }
 
 /*headers*/
-h1
-{
-font: bold 20px/20px georgia, garamond, serif;
-margin: 15px 0 0 0;
-padding: 2px 2px 2px 4px;
-color: #ffffff;
-background-color: #006699;
-border-bottom: 1px solid #000066;
-border-top: 1px solid #000066;
+h1 {
+  font: bold 20px/ 20px georgia, garamond, serif;
+  margin: 15px 0 0 0;
+  padding: 2px 2px 2px 4px;
+  color: #ffffff;
+  background-color: #006699;
+  border-bottom: 1px solid #000066;
+  border-top: 1px solid #000066;
 }
 
-h1#first
-{
-margin: 0;
+h1#first {
+  margin: 0;
 }
 
-h1#page-title
-{
-font: bold 22px/22px georgia, garamond, serif;
-margin: 0 0 10px 0;
-color: #000066;
-background-color: #ff9933;
-border-bottom: 2px solid #000066;
+h1#page-title {
+  font: bold 22px/ 22px georgia, garamond, serif;
+  margin: 0 0 10px 0;
+  color: #000066;
+  background-color: #ff9933;
+  border-bottom: 2px solid #000066;
 }
 
-h1.search
-{
-margin-top: 35px;
-padding: 3px 0 3px 5px;
-background-color: #FF9933;
-color: #000000;
-border-top: 2px solid #999999;
-border-bottom: 2px solid #999999;
-font-size: 14px;
+h1.search {
+  margin-top: 35px;
+  padding: 3px 0 3px 5px;
+  background-color: #FF9933;
+  color: #000000;
+  border-top: 2px solid #999999;
+  border-bottom: 2px solid #999999;
+  font-size: 14px;
 }
 
-h2
-{
-font: normal 16px/18px georgia, garamond, serif;
-font-weight: bold;
-margin: 15px 0 10px 0;
-color: #000066;
+h2 {
+  font: normal 16px/ 18px georgia, garamond, serif;
+  font-weight: bold;
+  margin: 15px 0 10px 0;
+  color: #000066;
 }
 
-h2.browseList
-{
-border-bottom: 2px solid #ff9933;
+h2.browseList {
+  border-bottom: 2px solid #ff9933;
 }
 
-h3
-{
-font: normal 14px/16px georgia, garamond, serif;
-font-weight: bold;
-margin: 5px 0 0 0;
-padding: 0;
-border: 0;
+h3 {
+  font: normal 14px/ 16px georgia, garamond, serif;
+  font-weight: bold;
+  margin: 5px 0 0 0;
+  padding: 0;
+  border: 0;
 }
 
-.heading-link
-{
-font: bold 16px/18px georgia, garamond, serif;
-margin: 3px 0 0 0;
-padding: 0 0 3px 0;
+.heading-link {
+  font: bold 16px/ 18px georgia, garamond, serif;
+  margin: 3px 0 0 0;
+  padding: 0 0 3px 0;
 }
 
-div.pageTitle
-{
-font: bold 25px/25px Lucida Sans Unicode, Lucida Grande, sans-serif;
-color: #cccccc;
-letter-spacing: -2px;
-padding: 3px 10px 2px 0;
-border: 0;
-margin: 0;
-text-align: right;
+div.pageTitle {
+  font: bold 25px/ 25px Lucida Sans Unicode, Lucida Grande, sans-serif;
+  color: #cccccc;
+  letter-spacing: -2px;
+  padding: 3px 10px 2px 0;
+  border: 0;
+  margin: 0;
+  text-align: right;
 }
 
-div.pageTitle:first-letter
-{
+div.pageTitle:first-letter {
   text-transform: capitalize;
 }
 
 /*lists*/
-
-ol li
-{
-margin: 5px 0 0 0;
+ol li {
+  margin: 5px 0 0 0;
 }
 
 /* sub-lists in the UI translation list */
-
-.translationList ul
-{
-padding: 0;
-margin: 0 0 10px 20px;
+.translationList ul {
+  padding: 0;
+  margin: 0 0 10px 20px;
 }
 
 /*links*/
-
-a:link, a:visited, a:active
-{
-text-decoration: none;
-color: #0066cc;
+a:link,a:visited,a:active {
+  text-decoration: none;
+  color: #0066cc;
 }
 
-a:hover
-{
-text-decoration: none;
-color: #ffffff;
-background: #000000;
+a:hover {
+  text-decoration: none;
+  color: #ffffff;
+  background: #000000;
 }
 
 /* Giving hovered-over anchors a solid background does not play nice with YUI's
@@ -219,190 +188,169 @@ background: #000000;
  * it styles a .yuimenuitem-selected class.  So make an exception for YUI menu
  * items.  Ideally we would make an exception in the above selector, but CSS
  * does not support a "parent" selector.  See discussion on css-discuss list. */
-
-.yuimenuitem a:hover
-{
+.yuimenuitem a:hover {
   background: transparent;
 }
 
 /*line*/
-.line
-{
-width: 100%;
-border-bottom: 2px solid #a5bcca;
+.line {
+  width: 100%;
+  border-bottom: 2px solid #a5bcca;
+}
+
+/*disabled element*/
+.disabled {
+  background-color: #CCC;
+  color: #666;
 }
 
 /*********************************************************
                 SEARCH/BROWSE RESULTS LIST
 **********************************************************/
-
-#search-info
-{
-font-weight: bold;
-margin: 20px 0 20px 0;
+#search-info {
+  font-weight: bold;
+  margin: 20px 0 20px 0;
 }
 
-#search-results
-{
-padding: 10px 3px 10px 3px;
+#search-results {
+  padding: 10px 3px 10px 3px;
 }
 
-#search-results table
-{
-width: 90%;
-border: 0;
-border-collapse: collapse;
-margin-bottom: 20px;
+#search-results table {
+  width: 90%;
+  border: 0;
+  border-collapse: collapse;
+  margin-bottom: 20px;
 }
 
-.search-result-number
-{
-width: 40px;
-text-align: right;
-padding: 5px 0 5px 0;
-background-color: transparent;
-border-bottom: solid 1px #999999;
+.search-result-number {
+  width: 40px;
+  text-align: right;
+  padding: 5px 0 5px 0;
+  background-color: transparent;
+  border-bottom: solid 1px #999999;
 }
 
-.search-result
-{
-text-align: left;
-padding-left: 5px;
-background-color: transparent;
-border-bottom: solid 1px #999999;
+.search-result {
+  text-align: left;
+  padding-left: 5px;
+  background-color: transparent;
+  border-bottom: solid 1px #999999;
 }
 
-.search-results-page-number
-{
-width: 10px;
-text-align: center;
-font: normal 14px/17px verdana, lucida, sans-serif;
-margin: 3px;
-float: left;
-border: 1px solid #999999;
-background: #ccccff;
+.search-results-page-number {
+  width: 10px;
+  text-align: center;
+  font: normal 14px/ 17px verdana, lucida, sans-serif;
+  margin: 3px;
+  float: left;
+  border: 1px solid #999999;
+  background: #ccccff;
 }
 
-.search-results-page-number a
-{
-text-decoration: none;
-color: #000000;
-background: #ccccff;
+.search-results-page-number a {
+  text-decoration: none;
+  color: #000000;
+  background: #ccccff;
 }
 
-.search-results-page-number a:visited
-{
-text-decoration: none;
-color: #000000;
-background: #ccccff;
+.search-results-page-number a:visited {
+  text-decoration: none;
+  color: #000000;
+  background: #ccccff;
 }
 
-.search-results-page-number a:hover
-{
-text-decoration: none;
-color: #ffffff;
-background: #000000;
+.search-results-page-number a:hover {
+  text-decoration: none;
+  color: #ffffff;
+  background: #000000;
 }
 
-.search-results-page-number-current
-{
-width: 10px;
-text-align: center;
-font: normal 14px/17px verdana, lucida, sans-serif;
-margin: 3px;
-float: left;
-border: 1px solid #999999;
-background: #dddddd;
+.search-results-page-number-current {
+  width: 10px;
+  text-align: center;
+  font: normal 14px/ 17px verdana, lucida, sans-serif;
+  margin: 3px;
+  float: left;
+  border: 1px solid #999999;
+  background: #dddddd;
 }
 
-.search-results-page-button
-{
-float: left;
-padding-top: 2px;
+.search-results-page-button {
+  float: left;
+  padding-top: 2px;
 }
 
-#search-results-summary
-{
-float: left;
-margin-left: 10px;
-padding-top: 3px;
+#search-results-summary {
+  float: left;
+  margin-left: 10px;
+  padding-top: 3px;
 }
 
 /*********************************************************
                 SEARCH FORM - ADVANCED
 **********************************************************/
-
-#search-form table
-{
-border: 0;
-border-collapse: collapse;
-margin: 0;
-padding: 0;
+#search-form table {
+  border: 0;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
 }
 
-#search-form td
-{
- border: 0;
- vertical-align: center;
+#search-form td {
+  border: 0;
+  vertical-align: center;
 }
 
-#search-form .textbox
-{
+#search-form .textbox {
   background-color: #FFFFFF;
   border: 2px solid #a3a3a3;
   width: 500px;
   padding: 0 3px 3px 3px;
   margin: 0 0 0 10px;
   font: bold 20px Verdana, Arial, Sans-Serif;
-    float: left;
+  float: left;
 }
 
-#search-form .submit
-{
-height: 30px;
-font: 15px Verdana, Arial, Sans-Serif;
-margin: 0 5px 0 5px;
-width: 100px;
+#search-form .submit {
+  height: 30px;
+  font: 15px Verdana, Arial, Sans-Serif;
+  margin: 0 5px 0 5px;
+  width: 100px;
 }
 
-#search-form .submithover
-{
-height: 30px;
-font: 15px Verdana, Arial, Sans-Serif;
-margin: 0 0 0 5px;
-width: 100px;
+#search-form .submithover {
+  height: 30px;
+  font: 15px Verdana, Arial, Sans-Serif;
+  margin: 0 0 0 5px;
+  width: 100px;
 }
 
 /*********************************************************
               DETAIL (SHOW/EDIT) TABLES
 **********************************************************/
-
-table.detail
-{
-width: 99%;
-margin: 0;
-/*border-collapse: collapse;*/
-overflow: hidden;
-border: 0x solid #999999;
-font: normal 11px/14px verdana, lucida, sans-serif;
-color: #000000;
+table.detail {
+  width: 99%;
+  margin: 0;
+  /*border-collapse: collapse;*/
+  overflow: hidden;
+  border: 0x solid #999999;
+  font: normal 11px/ 14px verdana, lucida, sans-serif;
+  color: #000000;
 }
 
-table.detail tr
-{
-vertical-align: top;
+table.detail tr {
+  vertical-align: top;
 }
 
-table.detail td
-{
+table.detail td {
   border: 0;
   border-bottom: 1px solid #cccccc;
   padding: 4px;
   font-weight: normal;
 }
 
-table.detail th
-{
+table.detail th {
   padding: 4px;
   font-weight: bold;
   vertical-align: top;
@@ -416,23 +364,19 @@ table.detail th
   color: #ffffff;
 }
 
-table.detail th:after
-{
-content: ":";
+table.detail th:after {
+  content: ":";
 }
 
-table.list th:first-letter,
-table.detail th:first-letter
-{
+table.list th:first-letter,table.detail th:first-letter {
   text-transform: capitalize;
 }
 
-table.detail td.headerCell
-{
+table.detail td.headerCell {
   padding: 4px;
   vertical-align: top;
   text-align: left;
-  font: bold 18px/18px georgia, verdana, sans-serif;
+  font: bold 18px/ 18px georgia, verdana, sans-serif;
   border: 0;
   border-bottom: 1px solid #999999;
   border-top: 2px solid #999999;
@@ -441,20 +385,17 @@ table.detail td.headerCell
   height: 20px;
 }
 
-table.detail td.headerCell a
-{
+table.detail td.headerCell a {
   color: #000000;
   background-color: #FF9D3C;
 }
 
-table.detail td.headerCell a:hover
-{
-color: #ffffff;
-background-color: #000000;
+table.detail td.headerCell a:hover {
+  color: #ffffff;
+  background-color: #000000;
 }
 
-table.detail td.headerCell-name
-{
+table.detail td.headerCell-name {
   border: 0;
   border-bottom: 1px solid #333333;
   background-color: #006699;
@@ -462,15 +403,14 @@ table.detail td.headerCell-name
   padding: 4px;
   vertical-align: top;
   text-align: center;
-  font: bold 16px/17px verdana, lucida, sans-serif;
+  font: bold 16px/ 17px verdana, lucida, sans-serif;
 }
 
-table.detail td.subHeaderCell
-{
+table.detail td.subHeaderCell {
   padding: 2px;
   vertical-align: top;
   text-align: right;
-  font: normal 14px/14px georgia, verdana, sans-serif;
+  font: normal 14px/ 14px georgia, verdana, sans-serif;
   border: 0;
   border-bottom: 1px solid #999999;
   border-top: 1px solid #999999;
@@ -481,15 +421,12 @@ table.detail td.subHeaderCell
 /*********************************************************
               INLINE TABLES
 **********************************************************/
-
-table.inline
-{
+table.inline {
   width: 100%;
   border: 0;
 }
 
-table.inline td.headerCell
-{
+table.inline td.headerCell,table.inline th {
   border: 0;
   background-color: #cccccc;
   color: #ffffff;
@@ -499,43 +436,37 @@ table.inline td.headerCell
   width: 15%;
 }
 
-table.inline tr
-{
-vertical-align: top;
+table.inline tr {
+  vertical-align: top;
 }
 
-table.inline td
-{
-border: 0;
-border-top: 1px solid #cccccc;
-text-align: left;
+table.inline td {
+  border: 0;
+  border-top: 1px solid #cccccc;
+  text-align: left;
 }
 
-table.inlineClear
-{
- width: 100%;
- border: 0;
- margin: 0;
- padding: 0;
+table.inlineClear {
+  width: 100%;
+  border: 0;
+  margin: 0;
+  padding: 0;
 }
 
-table.inlineClear tr
-{
-vertical-align: top;
- margin: 0;
- padding: 0;
+table.inlineClear tr {
+  vertical-align: top;
+  margin: 0;
+  padding: 0;
 }
 
-table.inlineClear th
-{
+table.inlineClear th {
   text-align: left;
   border: 0;
   width: 30%;
   background: transparent;
 }
 
-table.inlineClear td
-{
+table.inlineClear td {
   width: 70%;
   text-align: left;
   border: 0;
@@ -545,67 +476,66 @@ table.inlineClear td
 /*********************************************************
               NOTE SPAN
 **********************************************************/
-
-span.note
-{
-font-size: 9px;
-font-style: italic;
-margin-left: 10px;
+span.note {
+  font-size: 9px;
+  font-style: italic;
+  margin-left: 10px;
 }
 
 /*********************************************************
               LIST TABLES
 **********************************************************/
-
-table.list
-{
-width: 99%;
-margin: 0;
-/*border-collapse: collapse;*/
-overflow: hidden;
-border: 0x solid #000066;
-font: normal 11px/14px verdana, lucida, sans-serif;
-color: #000000;
+table.list {
+  width: 99%;
+  margin: 0;
+  /*border-collapse: collapse;*/
+  overflow: hidden;
+  border: 0x solid #000066;
+  font: normal 11px/ 14px verdana, lucida, sans-serif;
+  color: #000000;
 }
 
-table.list thead tr
-{
-border-left: 2px solid #999999;
+table.list thead tr {
+  border-left: 2px solid #999999;
 }
 
-table.list ul
-{
-padding: 0;
-margin: 0;
+table.list ul {
 }
 
-table.list tr
-{
+table.list tr {
 }
 
-table.list td
-{
+table.list td {
   padding: 4px 4px 4px 10px;
-    text-align: left;
-    border-spacing: 20px;
-    border: 0;
-    border-bottom: 1px solid #cccccc;
-    vertical-align: top;
+  text-align: left;
+  border-spacing: 20px;
+  border: 0;
+  border-bottom: 1px solid #cccccc;
+  vertical-align: top;
 }
 
-table.list th
-{
+table.list ul.nobullet {
+  padding: 0px;
+  margin: 0px;
+}
+
+table.list ul.nobullet li {
+  padding: 0px;
+  margin: 0px;
+  background-image: none;
+}
+
+table.list th {
   border: 1px solid #999999;
   background-color: #ff9933;
   color: #000000;
-    padding: 4px 4px 4px 10px;
-    font-weight: bold;
+  padding: 4px 4px 4px 10px;
+  font-weight: bold;
   vertical-align: top;
   text-align: left;
 }
 
-table.list th.header
-{
+table.list th.header {
   border: 1px solid #999999;
   background-color: #cccccc;
   color: #000000;
@@ -616,166 +546,138 @@ table.list th.header
   text-align: left;
 }
 
-.tableHeader
-{
-
-width: 99%;
-background: #6992AF;
-font-weight: bold;
-font-size: 110%;
-padding: 5px 0 5px 10px;
-border: 1px solid #999999;
-margin-top: 10px;
+.tableHeader {
+  width: 99%;
+  background: #6992AF;
+  font-weight: bold;
+  font-size: 110%;
+  padding: 5px 0 5px 10px;
+  border: 1px solid #999999;
+  margin-top: 10px;
 }
 
-.translationTableHeader
-{
-
-width: 97%;
-background: #FFD700;
-font-weight: bold;
-font-size: 110%;
-padding: 5px 0 5px 10px;
-border: 1px solid #999999;
-margin-top: 10px;
+.translationTableHeader {
+  width: 97%;
+  background: #FFD700;
+  font-weight: bold;
+  font-size: 110%;
+  padding: 5px 0 5px 10px;
+  border: 1px solid #999999;
+  margin-top: 10px;
 }
 
-table.list td.headerCell
-{
+table.list td.headerCell {
   border: 0;
   border-bottom: 1px solid #999999;
   background-color: #eeeeee;
   color: #000000;
 }
 
-table.list td.headerCell-name
-{
+table.list td.headerCell-name {
   border: 0;
   border-bottom: 1px solid #999999;
   background-color: #006699;
   color: #ffffff;
 }
 
-table.list th a
-{
-    color: #000000;
-    padding: 0;
-    margin: 0;
+table.list th a {
+  color: #000000;
+  padding: 0;
+  margin: 0;
 }
 
-table.list th a:visited
-{
-    color: #000000;
-    padding: 0;
-    margin: 0;
+table.list th a:visited {
+  color: #000000;
+  padding: 0;
+  margin: 0;
 }
 
-table.list th a:active
-{
-    color: #000000;
-    padding: 0;
-    margin: 0;
+table.list th a:active {
+  color: #000000;
+  padding: 0;
+  margin: 0;
 }
 
-table.list th a:hover
-{
-    color: #ffffff;
+table.list th a:hover {
+  color: #ffffff;
 }
 
-table.list td.headerCell
-{
+table.list td.headerCell {
   padding: 4px;
   vertical-align: top;
   text-align: center;
 }
 
-table.list td.headerCell-name
-{
+table.list td.headerCell-name {
   padding: 4px;
   vertical-align: top;
   text-align: center;
-  font: bold 16px/17px verdana, lucida, sans-serif;
+  font: bold 16px/ 17px verdana, lucida, sans-serif;
 }
 
-.th-link
-{
-font-weight: normal;
+.th-link {
+  font-weight: normal;
 }
 
-.th-link a:before
-{
-content: "(";
+.th-link a:before {
+  content: "(";
 }
 
-.th-link a:after
-{
-content: ")";
+.th-link a:after {
+  content: ")";
 }
 
-.th-link a:hover
-{
-color: #ffffff;
-background: #000000;
+.th-link a:hover {
+  color: #ffffff;
+  background: #000000;
 }
 
-.plus
-{
-background-image: url('../images/tree_plus.gif');
-background-repeat: no-repeat;
-background-position: top left;
+.plus {
+  background-image: url('../images/tree_plus.gif');
+  background-repeat: no-repeat;
+  background-position: top left;
 }
 
 /*********************************************************
                 STATIC PAGE
 **********************************************************/
-
-.staticPageContent
-{
-font: normal 14px/16px verdana, lucida, sans-serif;
-margin-top: 5px;
+.staticPageContent {
+  font: normal 14px/ 16px verdana, lucida, sans-serif;
+  margin-top: 5px;
 }
 
-.editLink
-{
-margin-top: 15px;
-color: #999999;
+.editLink {
+  margin-top: 15px;
+  color: #999999;
 }
 
-.editLink a
-{
-color: #999999;
+.editLink a {
+  color: #999999;
 }
 
-.editLink a:before
-{
-content: "[";
+.editLink a:before {
+  content: "[";
 }
 
-.editLink a:after
-{
-content: "]";
+.editLink a:after {
+  content: "]";
 }
 
 /*********************************************************
                 CAPITALIZATION
 **********************************************************/
-
-.firstLetter:first-letter
-{
+.firstLetter:first-letter {
   text-transform: uppercase;
 }
 
-.capitalize
-{
+.capitalize {
   text-transform: capitalize;
 }
 
 /*********************************************************
              DIGITAL OBJECT THUMBS
 **********************************************************/
-
-table.digitalObjectBrowse
-{
+table.digitalObjectBrowse {
   border: 1px solid black;
   background-color: #eee;
   height: 100%;
@@ -783,8 +685,7 @@ table.digitalObjectBrowse
   border-collapse: separate;
 }
 
-td.digitalObjectBrowse
-{
+td.digitalObjectBrowse {
   margin: 0px;
   padding: 0px;
   width: 102px;
@@ -795,8 +696,7 @@ td.digitalObjectBrowse
   border: 0px;
 }
 
-div.digitalObject
-{
+div.digitalObject {
   float: left;
   margin: 5px;
   padding: 5px;
@@ -808,8 +708,7 @@ div.digitalObject
   background-color: #eee;
 }
 
-div.digitalObjectRep
-{
+div.digitalObjectRep {
   height: 102px;
   width: 102px;
   vertical-align: middle;
@@ -819,37 +718,31 @@ div.digitalObjectRep
   display: table-cell;
 }
 
-.digitalObjectDesc
-{
+.digitalObjectDesc {
   height: auto;
 }
 
-div.digitalObjectDesc img
-{
+div.digitalObjectDesc img {
   float: right;
 }
 
 /*********************************************************
              PAGER
 **********************************************************/
-
-.result-count
-{
-  text-align:center; 
-  color: #999999; 
+.result-count {
+  text-align: center;
+  color: #999999;
   margin-top: 10px;
 }
 
-.pager
-{
+.pager {
   margin-top: 20px;
-  text-align: center; 
+  text-align: center;
   font-size: 12px;
   line-height: 20px;
 }
 
-.pager a
-{
+.pager a {
   border: 1px solid #CCCCCC;
   padding: 2px 4px 2px 4px;
 }

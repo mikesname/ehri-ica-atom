@@ -32,12 +32,15 @@ class TermEditAction extends sfAction
     {
     $this->forward('admin','termPermission');
     }
-    
+
   $this->scopeNotes = $term->getNotesByType($noteTypeId = QubitTerm::SCOPE_NOTE_ID, $exclude = null);
-  $this->newScopeNote = new QubitNote;  
-  
+  $this->newScopeNote = new QubitNote;
+
   $this->sourceNotes = $term->getNotesByType($noteTypeId = QubitTerm::SOURCE_NOTE_ID, $exclude = null);
-  $this->newSourceNote = new QubitNote;  
+  $this->newSourceNote = new QubitNote;
+
+  $this->displayNotes = $term->getNotesByType($noteTypeId = QubitTerm::DISPLAY_NOTE_ID, $exclude = null);
+  $this->newDisplayNote = new QubitNote;
 
   $this->term = $term;
   $this->taxonomy = QubitTaxonomy::getById($term->getTaxonomyId());

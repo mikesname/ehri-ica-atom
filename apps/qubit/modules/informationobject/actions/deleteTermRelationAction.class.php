@@ -23,17 +23,22 @@ class InformationObjectDeleteTermRelationAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteTermRelation = QubitObjectTermRelation::getById($this->getRequestParameter('TermRelationId'));
-  $this->forward404Unless($this->deleteTermRelation);
+    $this->deleteTermRelation = QubitObjectTermRelation::getById($this->getRequestParameter('TermRelationId'));
+    $this->forward404Unless($this->deleteTermRelation);
 
-  $this->informationObject = QubitInformationObject::getById($this->deleteTermRelation->getObjectId());
+    $this->informationObject = QubitInformationObject::getById($this->deleteTermRelation->getObjectId());
 
-  $this->deleteTermRelation->delete();
+    $this->deleteTermRelation->delete();
 
-  SearchIndex::updateTranslatedLanguages($this->informationObject);
+    SearchIndex::updateTranslatedLanguages($this->informationObject);
 
-  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-
-  return $this->redirect('informationobject/edit/?id='.$this->informationObject->getId().'&template='.$returnTemplate);
+    if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+    {
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => $template, 'id' => $this->informationObject->getId()));
+    }
+    else
+    {
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'id' => $this->informationObject->getId()));
+    }
   }
 }

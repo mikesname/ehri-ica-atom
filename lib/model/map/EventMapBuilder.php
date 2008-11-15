@@ -44,8 +44,6 @@ class EventMapBuilder {
 
 		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
 
-		$tMap->addForeignKey('ACTOR_ROLE_ID', 'ActorRoleId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
-
 		$tMap->addForeignKey('INFORMATION_OBJECT_ID', 'InformationObjectId', 'int', CreoleTypes::INTEGER, 'q_information_object', 'ID', false, null);
 
 		$tMap->addForeignKey('ACTOR_ID', 'ActorId', 'int', CreoleTypes::INTEGER, 'q_actor', 'ID', false, null);

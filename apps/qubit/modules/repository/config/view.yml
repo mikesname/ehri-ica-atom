@@ -1,7 +1,7 @@
 editSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
-editISIAHSuccess:
+editIsdiahSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
 listSuccess:

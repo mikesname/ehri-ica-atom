@@ -23,16 +23,21 @@ class RepositoryDeleteTermRelationAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteTermRelation = QubitObjectTermRelation::getById($this->getRequestParameter('TermRelationId'));
+    $this->deleteTermRelation = QubitObjectTermRelation::getById($this->getRequestParameter('TermRelationId'));
 
-  $this->forward404Unless($this->deleteTermRelation);
+    $this->forward404Unless($this->deleteTermRelation);
 
-  $repositoryId = $this->deleteTermRelation->getRepositoryId();
+    $this->repositoryId = $this->deleteTermRelation->getRepositoryId();
 
-  $this->deleteTermRelation->delete();
+    $this->deleteTermRelation->delete();
 
-  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-
-  return $this->redirect('repository/edit/?id='.$repositoryId.'&template='.$returnTemplate);
+    if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+    {
+      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->repositoryId));
+    }
+    else
+    {
+      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->repositoryId));
+    }
   }
 }

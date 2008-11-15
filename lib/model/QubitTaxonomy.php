@@ -40,6 +40,10 @@ class QubitTaxonomy extends BaseTaxonomy
   const DIGITAL_OBJECT_USAGE_ID = 17;
   const PHYSICAL_OBJECT_TYPE_ID = 18;
   const RELATION_TYPE_ID = 19;
+  const MATERIAL_TYPE_ID = 20;
+  //CCA Rules for Archival Description (RAD) taxonomies
+  const RAD_NOTE_ID = 21;
+  const RAD_TITLE_NOTE_ID = 22;
 
   public function __toString()
   {
@@ -47,15 +51,15 @@ class QubitTaxonomy extends BaseTaxonomy
       {
       return (string) $this->getName(array('sourceCulture' => true));
       }
-  
+
     return (string) $this->getName();
   }
-  
+
   public static function getEditableTaxonomies()
   {
     $criteria = new Criteria;
     $criteria->add(QubitTaxonomy::ID, array(QubitTaxonomy::QUBIT_SETTING_LABEL_ID), Criteria::NOT_IN);
-  
+
     return QubitTaxonomy::get($criteria);
   }
 

@@ -23,28 +23,16 @@ class ActorEditContactInformationAction extends sfAction
 {
   public function execute($request)
   {
-  $this->contactInformation = QubitContactInformation::getById($this->getRequestParameter('id'));
-  $this->forward404Unless($this->contactInformation);
+    $this->contactInformation = QubitContactInformation::getById($this->getRequestParameter('id'));
+    $this->forward404Unless($this->contactInformation);
 
-  if ($this->getRequestParameter('repositoryReroute'))
+    if ($this->getRequestParameter('repositoryReroute'))
     {
-    $this->repositoryReroute = $this->getRequestParameter('repositoryReroute');
+      $this->repositoryReroute = $this->getRequestParameter('repositoryReroute');
     }
-  else
+    else
     {
-    $this->repositoryReroute = null;
-    }
-
-  //set view template
-  switch ($this->getRequestParameter('template'))
-    {
-    case 'anotherTemplate' :
-      $this->setTemplate('editAnotherTemplate');
-      break;
-    //default template is ISIAH
-    case 'isiah' :
-    default :
-      $this->setTemplate('editISIAHContactInformation');
+      $this->repositoryReroute = null;
     }
   }
 }

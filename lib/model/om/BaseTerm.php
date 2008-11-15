@@ -1385,82 +1385,43 @@ abstract class BaseTerm extends QubitObject
     return $this->termI18ns;
   }
 
-  public static function addEventsRelatedByTypeIdCriteriaById(Criteria $criteria, $id)
+  public static function addEventsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitEvent::TYPE_ID, $id);
 
     return $criteria;
   }
 
-  public static function getEventsRelatedByTypeIdById($id, array $options = array())
+  public static function getEventsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addEventsRelatedByTypeIdCriteriaById($criteria, $id);
+    self::addEventsCriteriaById($criteria, $id);
 
     return QubitEvent::get($criteria, $options);
   }
 
-  public function addEventsRelatedByTypeIdCriteria(Criteria $criteria)
+  public function addEventsCriteria(Criteria $criteria)
   {
-    return self::addEventsRelatedByTypeIdCriteriaById($criteria, $this->id);
+    return self::addEventsCriteriaById($criteria, $this->id);
   }
 
-  protected $eventsRelatedByTypeId = null;
+  protected $events = null;
 
-  public function getEventsRelatedByTypeId(array $options = array())
+  public function getEvents(array $options = array())
   {
-    if (!isset($this->eventsRelatedByTypeId))
+    if (!isset($this->events))
     {
       if (!isset($this->id))
       {
-        $this->eventsRelatedByTypeId = QubitQuery::create();
+        $this->events = QubitQuery::create();
       }
       else
       {
-        $this->eventsRelatedByTypeId = self::getEventsRelatedByTypeIdById($this->id, array('self' => $this) + $options);
+        $this->events = self::getEventsById($this->id, array('self' => $this) + $options);
       }
     }
 
-    return $this->eventsRelatedByTypeId;
-  }
-
-  public static function addEventsRelatedByActorRoleIdCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitEvent::ACTOR_ROLE_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getEventsRelatedByActorRoleIdById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addEventsRelatedByActorRoleIdCriteriaById($criteria, $id);
-
-    return QubitEvent::get($criteria, $options);
-  }
-
-  public function addEventsRelatedByActorRoleIdCriteria(Criteria $criteria)
-  {
-    return self::addEventsRelatedByActorRoleIdCriteriaById($criteria, $this->id);
-  }
-
-  protected $eventsRelatedByActorRoleId = null;
-
-  public function getEventsRelatedByActorRoleId(array $options = array())
-  {
-    if (!isset($this->eventsRelatedByActorRoleId))
-    {
-      if (!isset($this->id))
-      {
-        $this->eventsRelatedByActorRoleId = QubitQuery::create();
-      }
-      else
-      {
-        $this->eventsRelatedByActorRoleId = self::getEventsRelatedByActorRoleIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->eventsRelatedByActorRoleId;
+    return $this->events;
   }
 
   public static function addSystemEventsCriteriaById(Criteria $criteria, $id)

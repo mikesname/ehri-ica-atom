@@ -27,64 +27,50 @@ class InformationObjectCreateAction extends sfAction
    $this->informationObject = new QubitInformationObject;
 
    $request->setAttribute('informationObject', $this->informationObject);
-   
+
    // Add javascript libraries to allow adding multiple instances of a select box
    $this->getResponse()->addJavaScript('jquery');
    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
    $this->getResponse()->addJavaScript('multiInstanceSelect');
 
-   //TermManyToManyRelations
+   // TermManyToManyRelations
    $this->subjectAccessPoints = null;
    $this->placeAccessPoints = null;
    $this->nameAccessPoints = null;
 
-   //Properties
+   // Properties
    $this->languageCodes = null;
    $this->scriptCodes = null;
    $this->descriptionLanguageCodes = null;
    $this->descriptionScriptCodes = null;
 
-   //Access Points
+   // Access Points
    $this->newSubjectAccessPoint = new QubitObjectTermRelation;
    $this->newPlaceAccessPoint = new QubitObjectTermRelation;
    $this->nameSelectList = QubitActor::getAccessPointSelectList();
 
-   //Notes
-   $this->notes = null;
-   $this->newNote = new QubitNote;
-   $this->titleNotes = null;
-   $this->newTitleNote = new QubitNote;
-   $this->publicationNotes = null;
-   $this->newPublicationNote = new QubitNote;
+   // Material Type
+   $this->newMaterialType = new QubitObjectTermRelation;
+   $this->materialTypes = null;
 
-   //Actor (Event) Relations
-   $this->creationEvents = null;
+   // Notes
+   $this->notes = null;
+   $this->noteTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::NOTE_TYPE_ID);
+   $this->titleNotes = null;
+   $this->publicationNotes = null;
+
+   // Actor (Event) Relations
+   $this->actorEvents = null;
    $this->creators = null;
-   $this->newCreationEvent = new QubitEvent;
+   $this->actorEventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
+   $this->defaultActorEventType = QubitTerm::CREATION_ID;
+   $this->actorEventPlaces = QubitTerm::getOptionsForSelectList(QubitTaxonomy::PLACE_ID, $options = array('include_blank' => true));
+   $this->newActorEvent = new QubitEvent;
 
    // Digital Object
    $this->digitalObject = null;
-   
+
    // Physical Object
    $this->physicalObject = null;
-   
-   //set template
-   switch ($this->getRequestParameter('template'))
-      {
-      case 'dublincore' :
-        $this->setTemplate('editDublinCore');
-        break;
-      case 'isad' :
-        $this->setTemplate('editISAD');
-        break;
-      case 'mods' :
-        $this->setTemplate('editMODS');
-        break;
-      case 'edit' :
-        $this->setTemplate('edit');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_edit'));
-      }
   }
 }

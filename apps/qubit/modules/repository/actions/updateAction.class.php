@@ -21,7 +21,7 @@
 
 /**
  * Controller for updating a Repository.
- * 
+ *
  * @package    qubit
  * @subpackage repository
  * @version    svn: $Id$
@@ -35,48 +35,44 @@ class RepositoryUpdateAction extends sfAction
   {
     if (!$this->getRequestParameter('id', 0))
     {
-      $repository = new QubitRepository;
+      $this->repository = new QubitRepository;
 
       //set the user navigation context to 'add'
       $this->getUser()->setAttribute('nav_context_module', 'add');
     }
     else
     {
-      $repository = QubitRepository::getById($this->getRequestParameter('id'));
-      $this->forward404Unless($repository);
+      $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
+      $this->forward404Unless($this->repository);
     }
 
-    $repository->setId($this->getRequestParameter('id'));
+    $this->repository->setId($this->getRequestParameter('id'));
 
-    //save fields by template
-    switch ($this->getRequestParameter('template'))
+    $this->updateActorAttributes($this->repository);
+    $this->updateRepositoryAttributes($this->repository);
+    $this->updateOtherNames($this->repository);
+    $this->updateTermOneToManyRelations($this->repository);
+    $this->updateProperties($this->repository);
+    $this->updateContactInformation($this->repository);
+    $this->updateRepositoryNotes($this->repository);
+
+    if (sfContext::getInstance()->getActionName() == 'update')
     {
-      case 'anotherTemplate' :
-        //save stuff
-        break;
-        //default template is 'ISAAR'
-      case 'isaar' :
-      default :
-        $this->updateActorAttributes($repository);
-        $this->updateRepositoryAttributes($repository);
-        $this->updateOtherNames($repository);
-        $this->updateTermOneToManyRelations($repository);
-        $this->updateProperties($repository);
-        $this->updateContactInformation($repository);
-        $this->updateRepositoryNotes($repository);
+      // update the search index and return user to the default edit template
+      // in case this is a generic 'update' action that is not associated with
+      // a specific template (e.g. updateISDIAH)
+      //
+      // update the search index for those informationObjects that are linked to this Repository
+      if (count($holdings = $this->repository->getRepositoryHoldings()) > 0)
+      {
+        foreach ($holdings as $informationObject)
+        {
+          SearchIndex::updateTranslatedLanguages($informationObject);
+        }
+      }
 
-        break;
-    }
-
-    //set view template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'anotherTemplate' :
-        return $this->redirect('repository/edit?id='.$repository->getId().'&template=editAnotherTemplate');
-        //default template is ISIAH)
-      case 'isiah' :
-      default :
-        return $this->redirect('repository/edit?id='.$repository->getId().'&template=editISIAH');
+      // return to edit template
+      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->repository->getId()));
     }
   }
 
@@ -151,10 +147,12 @@ class RepositoryUpdateAction extends sfAction
     {
       // If string, turn into single element array
       $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
-      
-      foreach ($language_codes as $language_code) {
-        if (strlen($language_code)) {
-          $repository->addProperty('language_of_repository_description', $language_code, $scope = 'languages');
+
+      foreach ($language_codes as $language_code)
+      {
+        if (strlen($language_code))
+        {
+          $repository->addProperty('language_of_repository_description', $language_code, array('scope' => 'languages'));
           $this->foreignKeyUpdate = true;
         }
       }
@@ -165,10 +163,12 @@ class RepositoryUpdateAction extends sfAction
     {
       // If string, turn into single element array
       $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
-      
-      foreach ($script_codes as $script_code) {
-        if (strlen($script_code)) {
-          $repository->addProperty('script_of_repository_description', $script_code, $scope = 'scripts');
+
+      foreach ($script_codes as $script_code)
+      {
+        if (strlen($script_code))
+        {
+          $repository->addProperty('script_of_repository_description', $script_code, array('scope' => 'languages'));
           $this->foreignKeyUpdate = true;
         }
       }
@@ -187,16 +187,16 @@ class RepositoryUpdateAction extends sfAction
   {
     if ($repository->getId())
     {
-      if (($this->getRequestParameter('contact_type')) or
-      ($this->getRequestParameter('contact_person')) or
-      ($this->getRequestParameter('street_address')) or
-      ($this->getRequestParameter('city')) or
-      ($this->getRequestParameter('region')) or
-      ($this->getRequestParameter('country_code')) or
-      ($this->getRequestParameter('postal_code')) or
-      ($this->getRequestParameter('telephone')) or
-      ($this->getRequestParameter('fax')) or
-      ($this->getRequestParameter('email')) or
+      if (($this->getRequestParameter('contact_type')) ||
+      ($this->getRequestParameter('contact_person')) ||
+      ($this->getRequestParameter('street_address')) ||
+      ($this->getRequestParameter('city')) ||
+      ($this->getRequestParameter('region')) ||
+      ($this->getRequestParameter('country_code')) ||
+      ($this->getRequestParameter('postal_code')) ||
+      ($this->getRequestParameter('telephone')) ||
+      ($this->getRequestParameter('fax')) ||
+      ($this->getRequestParameter('email')) ||
       ($this->getRequestParameter('website')))
       {
         $contactInformation = new QubitContactInformation;
@@ -227,9 +227,9 @@ class RepositoryUpdateAction extends sfAction
 
   public function updateRepositoryNotes($repository)
   {
-    if ($this->getRequestParameter('content'))
+    if ($this->getRequestParameter('note'))
     {
-      $repository->setRepositoryNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('content'), $this->getRequestParameter('note_type_id'));
+      $repository->setRepositoryNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('note'), $this->getRequestParameter('note_type_id'));
     }
   }
 }

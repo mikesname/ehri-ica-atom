@@ -110,21 +110,30 @@ EOF;
 
   protected function getPropsFromPath($path)
   {
-    $propsPath = dirname($path).'/.svn/props/'.basename($path).'.svn-work';
+    // TODO: Find a better way to parse this?
+    $pattern = '/K \d+\n(\V+)\nV \d+\n(\V+)\n/';
 
-    // SVN > 1.4 does not write .svn-work unless local property changes are made
-    if (!file_exists($propsPath))
+    $paths = array();
+    $paths[] = dirname($path).'/.svn/props/'.basename($path).'.svn-work';
+    $paths[] = dirname($path).'/.svn/prop-base/'.basename($path).'.svn-base';
+
+    foreach ($paths as $path)
     {
-      $propsPath = dirname($path).'/.svn/prop-base/'.basename($path).'.svn-base';
+      if (file_exists($path))
+      {
+        if (false === $contents = file_get_contents($path))
+        {
+          // TODO: Error handling
+        }
+
+        break;
+      }
     }
 
-    // No properties
-    if (!file_exists($propsPath))
+    if (false === preg_match_all($pattern, $contents, $matches, PREG_SET_ORDER))
     {
-      return array();
+      // TODO: Error handling
     }
-
-    preg_match_all('/K \d+\n(\V+)\nV \d+\n(\V+)\n/', file_get_contents($propsPath), $matches, PREG_SET_ORDER);
 
     $props = array();
     foreach ($matches as $match)

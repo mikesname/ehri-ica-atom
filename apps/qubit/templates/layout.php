@@ -12,8 +12,7 @@
 </head>
 <body class="yui-skin-sam">
 
-<div id="body-banner-top">
-</div>
+<div id="body-banner-top"></div>
 
 <div id="body-page">
 
@@ -28,18 +27,28 @@
 <?php echo link_to(__('log out'), 'user/logout') ?>
 <?php echo link_to(__('%1% profile', array('%1%' =>$sf_user->getUserName())), 'user/show?id='.$sf_user->getUserID()) ?>
 <?php else: ?>
-<?php echo link_to(__('log in'), 'login/') ?><?php endif; ?>
+<?php echo link_to(__('log in'), array('module' => 'user', 'action' => 'login')) ?><?php endif; ?>
 
 <?php echo link_to(__('help'), 'http://www.ica-atom.org/docs/index.php?title=User_manual', array('target' => '_blank')) ?>
-<?php echo link_to(__('about'), '/about/') ?>
-<?php echo link_to(__('home'), '/homepage/') ?>
+<?php echo link_to(__('about'), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'about')) ?>
+<?php echo link_to(__('home'), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
 </div>
 </div> <!--close header-top -->
 
 <div id="header-middle">
-<div id="logo">
-  <?php echo link_to(image_tag('logo', array('alt' => $sf_response->getTitle())), '/homepage/') ?>
+<?php if (strlen(sfConfig::get('app_site_information_site_title'))): ?>
+<div id="website-name">
+  <?php echo link_to(__(sfConfig::get('app_site_information_site_title')), '/homepage/') ?>
 </div>
+<?php endif; ?>
+
+<?php if (strlen(sfConfig::get('app_site_information_site_description'))): ?>
+<div id="website-description">
+  <?php echo __(sfConfig::get('app_site_information_site_description')); ?>
+</div>
+<?php endif; ?>
+
+<div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_name', 'ICA-AtoM'))), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
 </div> <!-- close header-middle -->
 
 <div id="header-bottom">

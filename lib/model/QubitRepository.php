@@ -157,7 +157,7 @@ class QubitRepository extends BaseRepository
   }
   
   
-  public static function getList($culture, $criteria, $options=array())
+  public static function getList($culture, $options=array())
   {
     $criteria = new Criteria;
     

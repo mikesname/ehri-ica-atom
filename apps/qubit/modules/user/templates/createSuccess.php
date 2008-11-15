@@ -31,14 +31,7 @@
 </tr>
 
 <tr><th><?php echo __('user roles'); ?></th><td style="font: normal 12px/12px Verdana, Arial, Sans-Serif;">
-     <table width="100%" style="margin-top: 15px;"><tr>
-     <td style="border: 0; background-color: #999999; color: #ffffff; font-weight: bold; font-size: 10px;"><?php echo __('role'); ?></td>
-     <td style="border: 0; background-color: #999999; color: #ffffff; font-weight: bold; font-size: 10px;"><?php echo __('permissions scope'); ?> </td></tr>
-      <tr><td style="border: 0;">
-      <?php echo object_select_tag($newRoleRelation, 'getRoleId', array('related_class' => 'QubitRole', 'include_blank' => true, 'peer_method' => 'getAll')) ?>
-</td>
-  <td style="border: 0;"></td></tr>
-  </table>
+        <?php echo object_select_tag($newRoleRelation, 'getRoleId', array('related_class' => 'QubitRole', 'include_blank' => true, 'peer_method' => 'getAll')) ?>
   </td></tr>
 
 </tbody>

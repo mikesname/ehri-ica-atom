@@ -23,16 +23,21 @@ class ActorDeleteTermRelationAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteTermRelation = QubitObjectTermRelation::getById($this->getRequestParameter('TermRelationId'));
+    $this->deleteTermRelation = QubitObjectTermRelation::getById($this->getRequestParameter('TermRelationId'));
 
-  $this->forward404Unless($this->deleteTermRelation);
+    $this->forward404Unless($this->deleteTermRelation);
 
-  $actorId = $this->deleteTermRelation->getActorId();
+    $this->actorId = $this->deleteTermRelation->getActorId();
 
-  $this->deleteTermRelation->delete();
+    $this->deleteTermRelation->delete();
 
-  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-
-  return $this->redirect('actor/edit/?id='.$actorId.'&template='.$returnTemplate);
+    if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+    {
+      return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
+    }
+    else
+    {
+      return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
+    }
   }
 }

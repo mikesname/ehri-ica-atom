@@ -1,13 +1,16 @@
 editSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
-editISADSuccess:
+editIsadSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
-editMODSSuccess:
+editRadSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
-editDublinCoreSuccess:
+editModsSuccess:
+  javascripts: [/vendor/drupal/misc/collapse]
+
+editDcSuccess:
   javascripts: [/vendor/drupal/misc/collapse]
 
 all:

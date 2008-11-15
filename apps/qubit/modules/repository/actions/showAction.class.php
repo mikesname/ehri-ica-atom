@@ -23,34 +23,24 @@ class RepositoryShowAction extends sfAction
 {
   public function execute($request)
   {
-  $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
-  $this->forward404Unless($this->repository);
+    $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
+    $this->forward404Unless($this->repository);
 
-  $this->languageCodes = $this->repository->getProperties($name = 'language_of_repository_description');
-  $this->scriptCodes = $this->repository->getProperties($name= 'script_of_repository_description');
+    $this->languageCodes = $this->repository->getProperties($name = 'language_of_repository_description');
+    $this->scriptCodes = $this->repository->getProperties($name= 'script_of_repository_description');
 
-  $this->otherNames = $this->repository->getOtherNames();
+    $this->otherNames = $this->repository->getOtherNames();
 
-  //Notes
-  $this->notes = $this->repository->getRepositoryNotes();
+    //Notes
+    $this->notes = $this->repository->getRepositoryNotes();
 
-  $this->contactInformation = $this->repository->getContactInformation();
+    $this->contactInformation = $this->repository->getContactInformation();
 
-  //determine if user has edit priviliges
-  $this->editCredentials = false;
-  if ($this->getUser()->hasCredential('administrator'))
+    //determine if user has edit priviliges
+    $this->editCredentials = false;
+    if ($this->getUser()->hasCredential('administrator'))
     {
-    $this->editCredentials = true;
-    }
-
-  //set view template
-  switch ($this->getRequestParameter('template'))
-    {
-    case 'isiah' :
-      $this->setTemplate('showISIAH');
-      break;
-    default :
-      $this->setTemplate(sfConfig::get('app_default_template_repository_show'));
+      $this->editCredentials = true;
     }
   }
 }

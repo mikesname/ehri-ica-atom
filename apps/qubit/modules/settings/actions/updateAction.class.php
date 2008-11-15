@@ -19,6 +19,14 @@
  * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
 
+/**
+ * Settings update controller.
+ * 
+ * @package    qubit
+ * @subpackage settings
+ * @version    svn: $Id$
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class SettingsUpdateAction extends sfAction
 {
   public function execute($request)
@@ -80,8 +88,9 @@ class SettingsUpdateAction extends sfAction
 
   private function refreshSettings()
   {
-  // clear the file cache containing the settings
-  $fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
-  $fileCache->clean();
+    // clear the file cache containing the settings
+    $fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
+    $fileCache->clean();
   }
+    
 }

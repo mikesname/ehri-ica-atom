@@ -29,17 +29,20 @@ class InformationObjectShowAction extends sfAction
     // HACK: populate information object from ORM
     $request->setAttribute('informationObject', $this->informationObject);
 
+    // Events
+    $this->actorEvents = $this->informationObject->getActorEvents();
     $this->creators = $this->informationObject->getCreators();
 
-    //Properties
+    // Properties
     $this->languageCodes = $this->informationObject->getProperties($name = 'information_object_language');
     $this->scriptCodes = $this->informationObject->getProperties($name = 'information_object_script');
     $this->descriptionLanguageCodes = $this->informationObject->getProperties($name = 'language_of_information_object_description');
     $this->descriptionScriptCodes = $this->informationObject->getProperties($name = 'script_of_information_object_description');
 
+    // Notes
     $this->notes = $this->informationObject->getNotes();
-    $this->datesOfDescription = $this->informationObject->getDatesOfDescription();
 
+    // Access points
     $this->subjectAccessPoints = $this->informationObject->getSubjectAccessPoints();
     $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
     $this->nameAccessPoints = array();
@@ -51,30 +54,19 @@ class InformationObjectShowAction extends sfAction
         $this->nameAccessPoints[] = $event;
       }
     }
+
+    // Material types
+    $this->materialTypes = $this->informationObject->getMaterialTypes();
+
+    // Physical objects
     $this->physicalObjects = QubitRelation::getRelatedSubjectsByObjectId($this->informationObject->getId(),
       array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
-    //determine if user has edit priviliges
+    // Determine if user has edit priviliges
     $this->editCredentials = false;
     if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
     {
       $this->editCredentials = true;
-    }
-
-    //set template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'dublincore' :
-        $this->setTemplate('showDublinCore');
-        break;
-      case 'isad' :
-        $this->setTemplate('showISAD');
-        break;
-      case 'mods' :
-        $this->setTemplate('showMODS');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_informationobject_show'));
     }
   }
 }

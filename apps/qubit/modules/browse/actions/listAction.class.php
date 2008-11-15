@@ -34,6 +34,12 @@ class BrowseListAction extends sfAction
       $this->redirect('term/browse?taxonomyId='.QubitTaxonomy::SUBJECT_ID);
       break;
       }
+    case 'materialtype':
+      {
+      $this->getUser()->setAttribute('browse_list', 'materialtype');
+      $this->redirect('term/browse?taxonomyId='.QubitTaxonomy::MATERIAL_TYPE_ID);
+      break;
+      }
     case 'place':
       {
       $this->getUser()->setAttribute('browse_list', 'place');

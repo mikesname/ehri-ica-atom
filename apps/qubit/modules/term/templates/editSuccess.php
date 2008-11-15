@@ -21,7 +21,7 @@
       <?php endif; ?>
       <?php echo object_input_tag($term, 'getName', array ('size' => 80)) ?>
     </div>
-    
+
     <div class="form-item">
      <label for="taxonomy"><?php echo __('taxonomy'); ?></label>
     <?php echo object_select_tag($term, 'getTaxonomyId', array ('related_class' => 'QubitTaxonomy', 'peer_method' => 'getEditableTaxonomies', 'include_blank' => true)) ?>
@@ -55,6 +55,16 @@
 
       <?php echo input_tag('new_source_note') ?>
 
+    <div class="form-item">
+      <label for="display note"><?php echo __('display note'); ?></label>
+       <?php if ($displayNotes): ?>
+        <?php foreach ($displayNotes as $displayNote): ?>
+          <?php echo $displayNote->getContent(array('cultureFallback' => 'true')) ?>
+          <?php echo link_to(image_tag('delete', 'align=top'), 'term/deleteNote?noteId='.$displayNote->getId()) ?><br />
+        <?php endforeach; ?>
+      <?php endif; ?>
+
+      <?php echo input_tag('new_display_note') ?>
     </div>
 
 

@@ -34,6 +34,8 @@ class ActorI18nMapBuilder {
 
 		$tMap->addColumn('AUTHORIZED_FORM_OF_NAME', 'AuthorizedFormOfName', 'string', CreoleTypes::VARCHAR, true, 255);
 
+		$tMap->addColumn('DATES_OF_EXISTENCE', 'DatesOfExistence', 'string', CreoleTypes::VARCHAR, false, 255);
+
 		$tMap->addColumn('HISTORY', 'History', 'string', CreoleTypes::LONGVARCHAR, false, null);
 
 		$tMap->addColumn('PLACES', 'Places', 'string', CreoleTypes::LONGVARCHAR, false, null);

@@ -1,4 +1,5 @@
-<div class="contextMenu">
+<div class="context-column-box">
+  <div class="contextMenu">
   <?php if ($repository): ?>
     <div class="label">
       <?php echo __('%1% information', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?>
@@ -6,14 +7,17 @@
     <?php echo link_to($repository, 'repository/show?id='.$repository->getId()) ?>
   <?php endif; ?>
 
-  <?php if ($informationObjectRelations): ?>
-    <?php foreach ($informationObjectRelations as $relation): ?>
+  <?php if ($relatedInfoObjects): ?>
+    <?php foreach ($relatedInfoObjects as $role => $relations): ?>
       <div class="label">
-        <?php echo $relation->getActorRole() ?>
+        <?php echo __('%1% of', array('%1%' => $role)) ?>
       </div>
-      <div>
-        <?php echo link_to($relation->getInformationObject(), 'informationobject/show?id='.$relation->getInformationObjectId()) ?>
-      </div>
+      <ul>
+      <?php foreach($relations as $relation): ?>
+        <li><?php echo link_to($relation->getInformationObject(), 'informationobject/show?id='.$relation->getInformationObjectId()) ?></li>
+      <?php endforeach;  ?>
+      </ul>
     <?php endforeach; ?>
   <?php endif; ?>
+  </div>
 </div>

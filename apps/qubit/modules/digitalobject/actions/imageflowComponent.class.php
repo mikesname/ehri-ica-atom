@@ -24,8 +24,8 @@
  *
  * @package    qubit
  * @subpackage digitalobject
+ * @version    SVN: $Id$
  * @author     david juhasz <david@artefactual.com>
- * @version    SVN: $Id
  */
 class DigitalObjectImageflowComponent extends sfComponent
 {
@@ -34,15 +34,8 @@ class DigitalObjectImageflowComponent extends sfComponent
     $this->getResponse()->addStylesheet('imageflow');
     $this->getResponse()->addJavaScript('imageflow');
 
-    $this->thumbnails = $this->informationObject->getDescendantThumbnails();
-    if (count($this->thumbnails) < 1)
-    {
-
-      return sfView::NONE;
-    }
-    
     // Hack to get parent info object for generic thumbnails. Required because
-    // getTopAncestorOrSelf() method queries database and generic thumbnail 
+    // getTopAncestorOrSelf() method queries database and generic thumbnail
     // objects are not represented in the database.
     foreach ($this->thumbnails as $thumbnail)
     {
@@ -50,10 +43,10 @@ class DigitalObjectImageflowComponent extends sfComponent
       {
         $parentInfoObject = $thumbnail->getParent()->getTopAncestorOrSelf()->getInformationObject();
       }
-      
+
       $informationObjects[] = $parentInfoObject;
     }
-    
+
     $this->informationObjects = $informationObjects;
   }
 }

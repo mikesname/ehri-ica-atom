@@ -21,7 +21,7 @@
 
 /**
  * Controller for creating a repository.
- * 
+ *
  * @package    qubit
  * @subpackage repository
  * @version    svn: $Id$
@@ -53,21 +53,11 @@ class RepositoryCreateAction extends sfAction
 
     // Notes
     $this->notes = null;
-    $this->newNote = new QubitNote;
-    
+    $this->noteTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::NOTE_TYPE_ID);
+
     // Add javascript libraries to allow multiple instance select boxes
     $this->getResponse()->addJavaScript('jquery');
     $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('multiInstanceSelect');
-
-    // set view template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'isiah' :
-        $this->setTemplate('editISIAH');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_repository_edit'));
-    }
   }
 }

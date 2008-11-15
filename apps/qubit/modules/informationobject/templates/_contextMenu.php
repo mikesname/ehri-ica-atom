@@ -1,65 +1,41 @@
 <?php use_helper('Javascript') ?>
 
+<?php $sf_response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event') ?>
+<?php $sf_response->addJavaScript('/vendor/yui/container/container-min') ?>
+<?php $sf_response->addStylesheet('/vendor/yui/container/assets/skins/sam/container') ?>
+
 <div class="context-column-box">
   <div class="contextMenu">
-    <?php $options = array() ?>
-    <?php if (null === $repository = $informationObject->getRepository()): ?>
-      <?php foreach ($informationObject->getAncestors() as $ancestor): ?>
-        <?php if (null === $repository = $ancestor->getRepository()): ?>
-          <?php continue ?>
-        <?php endif; ?>
-        <?php $sf_response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event') ?>
-        <?php $sf_response->addJavaScript('/vendor/yui/container/container-min') ?>
-        <?php $sf_response->addStylesheet('/vendor/yui/container/assets/skins/sam/container') ?>
-        <?php echo javascript_tag(<<<EOF
+    <?php if (isset($repository)): ?>
+      <?php echo javascript_tag(<<<EOF
 var repositoryTooltip = new YAHOO.widget.Tooltip('repositoryTooltip', {
   context: 'repositoryLink'});
 EOF
 ) ?>
-        <?php $options['id'] = 'repositoryLink' ?>
-        <?php $options['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor)) ?>
-        <?php break ?>
-      <?php endforeach; ?>
-    <?php endif; ?>
-    <?php if (isset($repository)): ?>
       <div class="label">
         <?php echo sfConfig::get('app_ui_label_repository') ?>
       </div>
-      <?php echo link_to($repository, 'repository/show?id='.$repository->getId(), $options) ?>
+      <?php echo link_to($repository, 'repository/show?id='.$repository->getId(), $sf_data->getRaw('repositoryOptions')) ?>
     <?php endif; ?>
 
-    <?php $options = array() ?>
-    <?php if (count($creators = $informationObject->getCreators()) < 1): ?>
-      <?php foreach ($informationObject->getAncestors() as $ancestor): ?>
-        <?php if (count($creators = $ancestor->getCreators()) < 1): ?>
-          <?php continue ?>
-        <?php endif; ?>
-        <?php $sf_response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event') ?>
-        <?php $sf_response->addJavaScript('/vendor/yui/container/container-min') ?>
-        <?php $sf_response->addStylesheet('/vendor/yui/container/assets/skins/sam/container') ?>
-        <?php echo javascript_tag(<<<EOF
+    <?php if (count($creators) > 0): ?>
+      <?php echo javascript_tag(<<<EOF
 var repositoryTooltip = new YAHOO.widget.Tooltip('creatorsTooltip', {
   context: 'creatorsLink'});
 EOF
 ) ?>
-        <?php $options['id'] = 'creatorsLink' ?>
-        <?php $options['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor)) ?>
-        <?php break ?>
-      <?php endforeach; ?>
-    <?php endif; ?>
-    <?php if (count($creators) > 0): ?>
       <div class="label">
         <?php echo sfConfig::get('app_ui_label_creator') ?>
       </div>
       <ul>
         <?php foreach ($creators as $creator): ?>
-          <li><?php echo link_to($creator, 'actor/show?id='.$creator->getId(), $options) ?></li>
+          <li><?php echo link_to($creator, 'actor/show?id='.$creator->getId(), $sf_data->getRaw('creatorOptions')) ?></li>
         <?php endforeach; ?>
       </ul>
     <?php endif; ?>
 
-    <?php if (count($informationObjects) > 1): ?>
-      <?php include_component('digitalobject', 'imageflow', array('informationObject' => $informationObject)) ?>
+    <?php if (count($thumbnails) > 1): ?>
+      <?php include_component('digitalobject', 'imageflow', array('thumbnails' => $thumbnails)) ?>
     <?php endif; ?>
 
     <?php if (count($informationObjects) > 1): ?>
@@ -69,9 +45,8 @@ EOF
       <?php include_component('informationobject', 'treeView', array('informationObjects' => $informationObjects)) ?>
     <?php endif; ?>
     
-    <?php if (count($informationObjects) > 1 && $editCredentials == true): ?>
-      <?php include_component('physicalobject', 'contextMenu', array('informationObjects' => $informationObjects)) ?>
+    <?php if (count($physicalObjects)): ?>
+      <?php include_component('physicalobject', 'contextMenu', array('physicalObjects' => $physicalObjects, 'informationObject' => $informationObject)) ?>
     <?php endif; ?>
-    
   </div>
 </div>

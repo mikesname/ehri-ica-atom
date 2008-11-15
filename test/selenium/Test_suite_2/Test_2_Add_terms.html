@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_2_Add_terms</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_2_Add_terms</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=log in</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login_email</td>
+	<td>admin@qubit-toolkit.org</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='log in']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>login_password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='log in']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=term</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Biciycles</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=list all taxonomies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Note types</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Note types</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Selenium test note</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=list all taxonomies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>New Westminster</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>query</td>
+	<td>&quot;famous cloak&quot;</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>commit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Famous Cloak and Suit Company, Ltd.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=notes area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>note_type_id</td>
+	<td>label=Selenium test note</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>note</td>
+	<td>Test note</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Selenium test note: Test note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=access points</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>subject_id</td>
+	<td>label=Biciycles</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Biciycles</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=access points</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>place_id</td>
+	<td>label=New Westminster</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>New Westminster</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=notes area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/fieldset[6]/div/div/table/tbody/tr[2]/td[3]/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=access points</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/fieldset[7]/div/div[1]/a[2]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=access points</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/fieldset[7]/div/div[2]/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Businesses</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

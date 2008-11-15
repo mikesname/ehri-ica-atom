@@ -23,18 +23,23 @@ class InformationObjectDeleteNoteAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteNote = QubitNote::getById($this->getRequestParameter('noteId'));
+    $this->deleteNote = QubitNote::getById($this->getRequestParameter('noteId'));
 
-  $this->forward404Unless($this->deleteNote);
+    $this->forward404Unless($this->deleteNote);
 
-  $informationObject = $this->deleteNote->getObject();
+    $this->informationObject = $this->deleteNote->getObject();
 
-  $this->deleteNote->delete();
+    $this->deleteNote->delete();
 
-  SearchIndex::updateTranslatedLanguages($informationObject);
+    SearchIndex::updateTranslatedLanguages($this->informationObject);
 
-  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-
-  return $this->redirect('informationobject/edit/?id='.$informationObject->getId().'&template='.$returnTemplate);
+    if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+    {
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => $template, 'id' => $this->informationObject->getId()));
+    }
+    else
+    {
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'id' => $this->informationObject->getId()));
+    }
   }
 }

@@ -38,11 +38,11 @@ class PropertyMapBuilder {
 
 		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
 
-		$tMap->addColumn('VALUE', 'Value', 'string', CreoleTypes::VARCHAR, false, 255);
-
 		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
 
 		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+
+		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
 
 		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
 

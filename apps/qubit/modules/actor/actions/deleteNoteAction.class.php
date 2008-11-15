@@ -23,26 +23,31 @@ class ActorDeleteNoteAction extends sfAction
 {
   public function execute($request)
   {
-	  $this->deleteNote = QubitNote::getById($this->getRequestParameter('noteId'));
-	  $this->forward404Unless($this->deleteNote);
-	  $actorId = $this->deleteNote->getObjectId();
-	   
-	  // Do delete
-	  $this->deleteNote->delete();
-	  
-	  if ($this->getRequestParameter('next'))
+    $this->deleteNote = QubitNote::getById($this->getRequestParameter('noteId'));
+    $this->forward404Unless($this->deleteNote);
+    $this->actorId = $this->deleteNote->getObjectId();
+
+    // Do delete
+    $this->deleteNote->delete();
+
+    if ($this->getRequestParameter('next'))
     {
       // Make the $next parameter into an absolute URL because redirect() expects
       // an absolute URL or an array containing module and action
-      // (Pre-pend code copied from sfWebController->genUrl() method)  
+      // (Pre-pend code copied from sfWebController->genUrl() method)
       $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
       return $this->redirect($next);
-    } 
-    else 
+    }
+    else
     {
-      // Default redirect to actor/edit page
-		  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-		  return $this->redirect('actor/edit/?id='.$actorId.'&template='.$returnTemplate);
+      if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+      {
+        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
+      }
+      else
+      {
+        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
+      }
     }
   }
 }

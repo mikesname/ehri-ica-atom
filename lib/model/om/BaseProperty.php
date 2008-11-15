@@ -9,9 +9,9 @@ abstract class BaseProperty
   const OBJECT_ID = 'q_property.OBJECT_ID';
   const SCOPE = 'q_property.SCOPE';
   const NAME = 'q_property.NAME';
-  const VALUE = 'q_property.VALUE';
   const CREATED_AT = 'q_property.CREATED_AT';
   const UPDATED_AT = 'q_property.UPDATED_AT';
+  const SOURCE_CULTURE = 'q_property.SOURCE_CULTURE';
   const ID = 'q_property.ID';
 
   public static function addSelectColumns(Criteria $criteria)
@@ -19,9 +19,9 @@ abstract class BaseProperty
     $criteria->addSelectColumn(QubitProperty::OBJECT_ID);
     $criteria->addSelectColumn(QubitProperty::SCOPE);
     $criteria->addSelectColumn(QubitProperty::NAME);
-    $criteria->addSelectColumn(QubitProperty::VALUE);
     $criteria->addSelectColumn(QubitProperty::CREATED_AT);
     $criteria->addSelectColumn(QubitProperty::UPDATED_AT);
+    $criteria->addSelectColumn(QubitProperty::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitProperty::ID);
 
     return $criteria;
@@ -130,20 +130,6 @@ abstract class BaseProperty
     return $this;
   }
 
-  protected $value = null;
-
-  public function getValue()
-  {
-    return $this->value;
-  }
-
-  public function setValue($value)
-  {
-    $this->value = $value;
-
-    return $this;
-  }
-
   protected $createdAt = null;
 
   public function getCreatedAt(array $options = array())
@@ -194,6 +180,20 @@ abstract class BaseProperty
     return $this;
   }
 
+  protected $sourceCulture = null;
+
+  public function getSourceCulture()
+  {
+    return $this->sourceCulture;
+  }
+
+  public function setSourceCulture($sourceCulture)
+  {
+    $this->sourceCulture = $sourceCulture;
+
+    return $this;
+  }
+
   protected $id = null;
 
   public function getId()
@@ -224,9 +224,9 @@ abstract class BaseProperty
     $this->columnValues['objectId'] = $this->objectId;
     $this->columnValues['scope'] = $this->scope;
     $this->columnValues['name'] = $this->name;
-    $this->columnValues['value'] = $this->value;
     $this->columnValues['createdAt'] = $this->createdAt;
     $this->columnValues['updatedAt'] = $this->updatedAt;
+    $this->columnValues['sourceCulture'] = $this->sourceCulture;
     $this->columnValues['id'] = $this->id;
 
     return $this;
@@ -237,9 +237,9 @@ abstract class BaseProperty
     $this->objectId = $results->getInt($columnOffset++);
     $this->scope = $results->getString($columnOffset++);
     $this->name = $results->getString($columnOffset++);
-    $this->value = $results->getString($columnOffset++);
     $this->createdAt = $results->getTimestamp($columnOffset++, null);
     $this->updatedAt = $results->getTimestamp($columnOffset++, null);
+    $this->sourceCulture = $results->getString($columnOffset++);
     $this->id = $results->getInt($columnOffset++);
 
     $this->new = false;
@@ -287,6 +287,13 @@ abstract class BaseProperty
     $this->new = false;
     $this->resetModified();
 
+    foreach ($this->propertyI18ns as $propertyI18n)
+    {
+      $propertyI18n->setId($this->id);
+
+      $affectedRows += $propertyI18n->save($connection);
+    }
+
     return $affectedRows;
   }
 
@@ -311,11 +318,6 @@ abstract class BaseProperty
       $criteria->add(QubitProperty::NAME, $this->name);
     }
 
-    if ($this->isColumnModified('value'))
-    {
-      $criteria->add(QubitProperty::VALUE, $this->value);
-    }
-
     if (!$this->isColumnModified('createdAt'))
     {
       $this->createdAt = time();
@@ -327,6 +329,12 @@ abstract class BaseProperty
       $this->updatedAt = time();
     }
     $criteria->add(QubitProperty::UPDATED_AT, $this->updatedAt);
+
+    if (!$this->isColumnModified('sourceCulture'))
+    {
+      $this->sourceCulture = sfPropel::getDefaultCulture();
+    }
+    $criteria->add(QubitProperty::SOURCE_CULTURE, $this->sourceCulture);
 
     if ($this->isColumnModified('id'))
     {
@@ -366,11 +374,6 @@ abstract class BaseProperty
       $criteria->add(QubitProperty::NAME, $this->name);
     }
 
-    if ($this->isColumnModified('value'))
-    {
-      $criteria->add(QubitProperty::VALUE, $this->value);
-    }
-
     if ($this->isColumnModified('createdAt'))
     {
       $criteria->add(QubitProperty::CREATED_AT, $this->createdAt);
@@ -381,6 +384,11 @@ abstract class BaseProperty
       $this->updatedAt = time();
     }
     $criteria->add(QubitProperty::UPDATED_AT, $this->updatedAt);
+
+    if ($this->isColumnModified('sourceCulture'))
+    {
+      $criteria->add(QubitProperty::SOURCE_CULTURE, $this->sourceCulture);
+    }
 
     if ($this->isColumnModified('id'))
     {
@@ -451,6 +459,88 @@ abstract class BaseProperty
     $this->objectId = $object->getId();
 
     return $this;
+  }
+
+  public static function addPropertyI18nsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitPropertyI18n::ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getPropertyI18nsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addPropertyI18nsCriteriaById($criteria, $id);
+
+    return QubitPropertyI18n::get($criteria, $options);
+  }
+
+  public function addPropertyI18nsCriteria(Criteria $criteria)
+  {
+    return self::addPropertyI18nsCriteriaById($criteria, $this->id);
+  }
+
+  protected $propertyI18ns = null;
+
+  public function getPropertyI18ns(array $options = array())
+  {
+    if (!isset($this->propertyI18ns))
+    {
+      if (!isset($this->id))
+      {
+        $this->propertyI18ns = QubitQuery::create();
+      }
+      else
+      {
+        $this->propertyI18ns = self::getPropertyI18nsById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->propertyI18ns;
+  }
+
+  public function getValue(array $options = array())
+  {
+    $value = $this->getCurrentPropertyI18n($options)->getValue();
+    if (!empty($options['cultureFallback']) && strlen($value) < 1)
+    {
+      $value = $this->getCurrentPropertyI18n(array('sourceCulture' => true) + $options)->getValue();
+    }
+
+    return $value;
+  }
+
+  public function setValue($value, array $options = array())
+  {
+    $this->getCurrentPropertyI18n($options)->setValue($value);
+
+    return $this;
+  }
+
+  public function getCurrentPropertyI18n(array $options = array())
+  {
+    if (!empty($options['sourceCulture']))
+    {
+      $options['culture'] = $this->sourceCulture;
+    }
+
+    if (!isset($options['culture']))
+    {
+      $options['culture'] = sfPropel::getDefaultCulture();
+    }
+
+    if (!isset($this->propertyI18ns[$options['culture']]))
+    {
+      if (null === $propertyI18n = QubitPropertyI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      {
+        $propertyI18n = new QubitPropertyI18n;
+        $propertyI18n->setCulture($options['culture']);
+      }
+      $this->propertyI18ns[$options['culture']] = $propertyI18n;
+    }
+
+    return $this->propertyI18ns[$options['culture']];
   }
 }
 

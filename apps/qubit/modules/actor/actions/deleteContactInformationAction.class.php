@@ -27,18 +27,19 @@ class ActorDeleteContactInformationAction extends sfAction
 
   $this->forward404Unless($this->deleteContactInformation);
 
-  $actorId = $this->deleteContactInformation->getActorId();
+  $this->actorId = $this->deleteContactInformation->getActorId();
 
   $this->deleteContactInformation->delete();
 
-  $returnTemplate = $this->getRequestParameter('returnTemplate');
-  switch($returnTemplate)
+  //TODO: check to see if this delete call is made from within the Actor module and redirect accordingly
+  //right now contact information is only created and deleted via the repository module
+  if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
     {
-    case 'isiah':
-      return $this->redirect('repository/edit?id='.$this->getRequestParameter('repositoryReroute').'&template='.$returnTemplate);
-    case 'isaar':
-    default:
-      return $this->redirect('actor/edit?id='.$actorId.'&template='.$returnTemplate);
+      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->actorId));
+    }
+  else
+    {
+      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->actorId));
     }
   }
 }

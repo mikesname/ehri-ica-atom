@@ -44,7 +44,8 @@ body,
   border: 0;
 }
 
-.ygtvitem td, th
+.ygtvitem td,
+.ygtvitem th
 {
   padding: 0;
 }

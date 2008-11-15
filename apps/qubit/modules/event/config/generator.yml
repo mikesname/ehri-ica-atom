@@ -1,5 +1,0 @@
-generator:
-  class:              QubitGenerator
-  param:
-    model_class:      Event
-    theme:            default

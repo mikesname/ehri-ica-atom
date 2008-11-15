@@ -3,9 +3,9 @@ default:
     content-type: text/html
 
   metas:
-    title:        ICA-AtoM - open source archival description software
-    #description:  ICA-AtoM
-    #keywords:     ICA-AtoM
+    #title:        Qubit - open information management toolkit
+    #description:  Qubit
+    #keywords:     Qubit
     #language:     en
     robots:       index, follow
 

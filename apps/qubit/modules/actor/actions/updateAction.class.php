@@ -21,7 +21,7 @@
 
 /**
  * Controller for updating an Actor.
- * 
+ *
  * @package    qubit
  * @subpackage actor
  * @version    svn: $Id$
@@ -35,18 +35,18 @@ class ActorUpdateAction extends sfAction
   {
     if (!$this->getRequestParameter('id', 0))
     {
-      $actor = new QubitActor;
+      $this->actor = new QubitActor;
 
       //set the user navigation context to 'add'
       $this->getUser()->setAttribute('nav_context_module', 'add');
     }
     else
     {
-      $actor = QubitActor::getById($this->getRequestParameter('id'));
-      $this->forward404Unless($actor);
+      $this->actor = QubitActor::getById($this->getRequestParameter('id'));
+      $this->forward404Unless($this->actor);
     }
 
-    $actor->setId($this->getRequestParameter('id'));
+    $this->actor->setId($this->getRequestParameter('id'));
 
     if ($this->getRequestParameter('dateId'))
     {
@@ -57,28 +57,16 @@ class ActorUpdateAction extends sfAction
       $date = new QubitEvent;
     }
 
-    //save fields by template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'anotherTemplate' :
-        //save stuff
-        break;
-        //default template is 'ISAAR'
-      case 'isaar' :
-      default :
-        $this->updateActorAttributes($actor);
-        $this->updateOtherNames($actor);
-        $this->updateTermOneToManyRelations($actor);
-        $this->updateProperties($actor);
-        //          $this->updateObjectTermRelations($actor);
-        $this->updateDates($actor, $date);
-        $this->updateActorNotes($actor);
-        //$this->updateInformationObjectRelations($actor);
-        //$this->updateRecursiveRelations($actor);
-        //$this->updateContactInformation($actor);
-
-        break;
-    }
+    $this->updateActorAttributes($this->actor);
+    $this->updateOtherNames($this->actor);
+    $this->updateTermOneToManyRelations($this->actor);
+    $this->updateProperties($this->actor);
+    //$this->updateObjectTermRelations($actor);
+    $this->updateDates($this->actor, $date);
+    $this->updateActorNotes($this->actor);
+    //$this->updateInformationObjectRelations($actor);
+    //$this->updateRecursiveRelations($actor);
+    //$this->updateContactInformation($actor);
 
     //set redirect if actor edit was called from another module
     if ($this->getRequestParameter('repositoryReroute'))
@@ -91,22 +79,29 @@ class ActorUpdateAction extends sfAction
       return $this->redirect('informationobject/edit?id='.$this->getRequestParameter('informationObjectReroute'));
     }
 
-    //set view template
-    switch ($this->getRequestParameter('template'))
+    if (sfContext::getInstance()->getActionName() == 'update')
     {
-      case 'anotherTemplate' :
-        return $this->redirect('actor/edit?id='.$actor->getId().'&template=editAnotherTemplate');
-        //default template is ISAAR)
-      case 'isaar' :
-        return $this->redirect('actor/edit?id='.$actor->getId().'&template=isaar');
-      default :
-        return $this->redirect('actor/edit?id='.$actor->getId());
+    // update the search index and return user to the default edit template
+    // in case this is a generic 'update' action that is not associated with
+    // a specific template (e.g. updateISAAR)
+    //
+    // update the search index for those informationObjects that are linked to this Actor
+    if (count($informationObjectRelations = $this->actor->getInformationObjectRelations()) > 0)
+    {
+      foreach ($informationObjectRelations as $event)
+      {
+        SearchIndex::updateTranslatedLanguages($event->getInformationObject());
+      }
+    }
+    // return to default edit template
+    return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actor->getId()));
     }
   } //close execute()
 
   public function updateActorAttributes($actor)
   {
     $actor->setAuthorizedFormOfName($this->getRequestParameter('authorized_form_of_name'));
+    $actor->setDatesOfExistence($this->getRequestParameter('dates_of_existence'));
     $actor->setCorporateBodyIdentifiers($this->getRequestParameter('corporate_body_identifiers'));
     $actor->setHistory($this->getRequestParameter('history'));
     $actor->setPlaces($this->getRequestParameter('places'));
@@ -126,17 +121,17 @@ class ActorUpdateAction extends sfAction
 
   public function updateOtherNames($actor)
   {
-    if ($this->getRequestParameter('name'))
+    if ($this->getRequestParameter('new_name'))
     {
-      $actor->setOtherNames($this->getRequestParameter('name'), $this->getRequestParameter('type_id'), $this->getRequestParameter('note'));
+      $actor->setOtherNames($this->getRequestParameter('new_name'), $this->getRequestParameter('new_name_type_id'), $this->getRequestParameter('new_name_note'));
     }
   }
 
   public function updateActorNotes($actor)
   {
-    if ($this->getRequestParameter('content'))
+    if ($this->getRequestParameter('note'))
     {
-      $actor->setActorNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('content'), $this->getRequestParameter('note_type_id'));
+      $actor->setActorNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('note'), $this->getRequestParameter('note_type_id'));
     }
   }
 
@@ -173,30 +168,34 @@ class ActorUpdateAction extends sfAction
   }
 
   public function updateProperties($actor)
-  { 
+  {
     // Add multiple languages of actor description
     if ($language_codes = $this->getRequestParameter('language_code'))
     {
       // If string, turn into single element array
       $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
-      
-      foreach ($language_codes as $language_code) {
-        if (strlen($language_code)) {
-          $actor->addProperty('language_of_actor_description', $language_code, $scope = 'languages');
+
+      foreach ($language_codes as $language_code)
+      {
+        if (strlen($language_code))
+        {
+          $actor->addProperty('language_of_actor_description', $language_code, array('source_culture'=>true, 'scope' => 'languages'));
           $this->foreignKeyUpdate = true;
         }
       }
     }
-  
+
     // Add multiple scripts of actor description
     if ($script_codes = $this->getRequestParameter('script_code'))
     {
       // If string, turn into single element array
       $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
-      
-      foreach ($script_codes as $script_code) {
-        if (strlen($script_code)) {
-          $actor->addProperty($name = 'script_of_actor_description', $script_code, $scope = 'scripts');
+
+      foreach ($script_codes as $script_code)
+      {
+        if (strlen($script_code))
+        {
+          $actor->addProperty($name = 'script_of_actor_description', $script_code, array('source_culture'=>true, 'scope' => 'scripts'));
           $this->foreignKeyUpdate = true;
         }
       }
@@ -231,7 +230,7 @@ class ActorUpdateAction extends sfAction
 
   public function updateDates($actor, $date)
   {
-    if (($this->getRequestParameter('start_date')) or ($this->getRequestParameter('description')))
+    if (($this->getRequestParameter('start_date')) || ($this->getRequestParameter('description')))
     {
       $date->setTypeId(QubitTerm::EXISTENCE_ID);
       $date->setActorId($actor->getId());

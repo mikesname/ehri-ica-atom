@@ -27,7 +27,7 @@ all:
 #    class: sfWebRequest
 #
 #  response:
-#    class: sfWebResponse
+#    class: QubitWebResponse
 #
 #  user:
 #    class: myUser

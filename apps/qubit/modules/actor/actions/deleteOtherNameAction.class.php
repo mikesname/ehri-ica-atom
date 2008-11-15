@@ -23,27 +23,32 @@ class ActorDeleteOtherNameAction extends sfAction
 {
   public function execute($request)
   {
-	  $this->deleteOtherName = QubitActorName::getById($this->getRequestParameter('otherNameId'));	
-	  $this->forward404Unless($this->deleteOtherName);	
-	  $actorId = $this->deleteOtherName->getActorId();
-	   
-	  // Do delete
-	  $this->deleteOtherName->delete();
-	  
-	  if ($this->getRequestParameter('next'))
-	  {
-		  // Make the $next parameter into an absolute URL because redirect() expects
-		  // an absolute URL or an array containing module and action
-		  // (Pre-pend code copied from sfWebController->genUrl() method)  
-		  $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
-	    
-		  return $this->redirect($next);
-	  } 
-	  else 
-	  {
-	    // Default redirect to actor/edit page
-	    $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-	    return $this->redirect('actor/edit/?id='.$actorId.'&template='.$returnTemplate);
-	  }
+    $this->deleteOtherName = QubitActorName::getById($this->getRequestParameter('otherNameId'));
+    $this->forward404Unless($this->deleteOtherName);
+    $this->actorId = $this->deleteOtherName->getActorId();
+
+    // Do delete
+    $this->deleteOtherName->delete();
+
+    if ($this->getRequestParameter('next'))
+    {
+      // Make the $next parameter into an absolute URL because redirect() expects
+      // an absolute URL or an array containing module and action
+      // (Pre-pend code copied from sfWebController->genUrl() method)
+      $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
+
+      return $this->redirect($next);
+    }
+    else
+    {
+      if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+      {
+        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
+      }
+      else
+      {
+        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
+      }
+    }
   }
 }

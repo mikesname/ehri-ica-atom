@@ -24,12 +24,14 @@ class TermCreateAction extends sfAction
   public function execute($request)
   {
   $this->term = new QubitTerm;
-  
+
   $this->scopeNotes = null;
   $this->newScopeNote = new QubitNote;
   $this->sourceNotes = null;
   $this->newSourceNote = new QubitNote;
-  
+  $this->displayNotes = null;
+  $this->newDisplayNote = new QubitNote;
+
   //set view template
   if ($this->getRequestParameter('taxonomyId'))
     {

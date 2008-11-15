@@ -21,7 +21,7 @@
 
 /**
  * Controller for Actor creation.
- * 
+ *
  * @package    qubit
  * @subpackage actor
  * @version    svn: $Id$
@@ -33,40 +33,26 @@ class ActorCreateAction extends sfAction
 {
   public function execute($request)
   {
-	  $this->actor = new QubitActor;
-	  
-	  //Other Forms of Name
-	  $this->otherNames = null;
-	  $this->newName = new QubitActorName;
-	
-	  //Properties
-	  $this->languageCodes = null;
-	  $this->scriptCodes = null;
-	
-	  //Notes
-	  $this->notes = null;
-	  $this->newNote = new QubitNote;
-	
-	  //Events
-	  $this->date = new QubitEvent;
-	
-	  $this->repositoryReroute = null;
-	  $this->informationObjectReroute = null;
-	  
-	  // Add javascript libraries to allow multiple instance select boxes
+    $this->actor = new QubitActor;
+
+    //Other Forms of Name
+    $this->otherNames = null;
+    $this->newName = new QubitActorName;
+
+    //Properties
+    $this->languageCodes = null;
+    $this->scriptCodes = null;
+
+    //Notes
+    $this->notes = null;
+    $this->noteTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::NOTE_TYPE_ID);
+
+    $this->repositoryReroute = null;
+    $this->informationObjectReroute = null;
+
+    // Add javascript libraries to allow multiple instance select boxes
     $this->getResponse()->addJavaScript('jquery');
     $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('multiInstanceSelect');
-	
-	  // set view template
-	  switch ($this->getRequestParameter('template'))
-	  {
-	    case 'isaar' :
-	      $this->setTemplate('editISAAR');
-	      break;
-	    default :
-	      $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
-	      break;
-	  }
   }
 }

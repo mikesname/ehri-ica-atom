@@ -149,10 +149,10 @@ class SearchIndex
     $doc->addField($creatorField);
     $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', strtolower($informationObject->getCreatorsHistoryString($language)), $encoding));
 
-    //CREATION DATES
-    if (count($dates = $informationObject->getDates($eventType = 'creation')) > 0)
+    //DATES
+    if (count($dates = $informationObject->getDatesString()) > 0)
     {
-      $doc->addField(Zend_Search_Lucene_Field::Text('dates', strtolower(implode(' ', $dates))));
+      $doc->addField(Zend_Search_Lucene_Field::Text('dates', strtolower($dates)));
     }
 
     // SCOPE AND CONTENT

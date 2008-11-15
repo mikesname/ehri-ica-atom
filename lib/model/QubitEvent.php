@@ -48,4 +48,24 @@ class QubitEvent extends BaseEvent
       SearchIndex::updateTranslatedLanguages($this->getInformationObject());
     }
   }
+
+  public function getPlace(array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->getId());
+    $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID);
+    $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
+    $relation = QubitObjectTermRelation::get($criteria);
+
+    if (count($relation) > 0)
+    {
+
+      return $relation[0]->getTerm();
+    }
+    else
+    {
+
+      return null;
+    }
+  }
 }

@@ -2,6 +2,10 @@ create:
   is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
 
+createIsdiah:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator ]]
+
 delete:
   is_secure:   on
   credentials: [[ administrator ]]
@@ -14,6 +18,10 @@ edit:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
 
+editIsdiah:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+
 list:
   is_secure:   off
 
@@ -21,6 +29,10 @@ show:
   is_secure:  off
 
 update:
+  is_secure:   on
+  credentials: [[ contributor, editor, administrator, translator ]]
+
+updateIsdiah:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
 

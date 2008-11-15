@@ -1,36 +1,87 @@
+createDc:
+  url: /:module/create/dc/*
+  param: { action: createDc }
+
+editDc:
+  url: /:module/edit/dc/*
+  param: { action: editDc }
+
+showDc:
+  url: /:module/show/dc/*
+  param: { action: showDc }
+
+createIsad:
+  url: /:module/create/isad/*
+  param: { action: createIsad }
+
+editIsad:
+  url: /:module/edit/isad/*
+  param: { action: editIsad }
+
+showIsad:
+  url: /:module/show/isad/*
+  param: { action: showIsad }
+
+createRad:
+  url: /:module/create/rad/*
+  param: { action: createRad }
+
+editRad:
+  url: /:module/edit/rad/*
+  param: { action: editRad }
+
+showRad:
+  url: /:module/show/rad/*
+  param: { action: showRad }
+
+createIsaar:
+  url: /:module/create/isaar/*
+  param: { action: createIsaar }
+
+editIsaar:
+  url: /:module/edit/isaar/*
+  param: { action: editIsaar }
+
+showIsaar:
+  url: /:module/show/isaar/*
+  param: { action: showIsaar }
+
+editContactInformation:
+  url: /:module/editContactInformation/*
+  param: { action: editContactInformation }
+
+createIsdiah:
+  url: /:module/create/isdiah/*
+  param: { action: createIsdiah }
+
+editIsdiah:
+  url: /:module/edit/isdiah/*
+  param: { action: editIsdiah }
+
+showIsdiah:
+  url: /:module/show/isdiah/*
+  param: { action: showIsdiah }
+
+informationobject_template:
+  url: /informationobject/:action/:informationobject_template/*
+  param: { module: informationobject }
+  requirements: { action: create|edit|show }
+
+actor_template:
+  url: /actor/:action/:actor_template/*
+  param: { module: actor }
+  requirements: { action: create|edit|show }
+
+repository_template:
+  url: /repository/:action/:repository_template/*
+  param: { module: repository }
+  requirements: { action: create|edit|show }
+
 homepage:
   url:   /
   param: { module: staticpage, action: static, permalink: homepage }
 
-login:
-  url:   /login
-  param: { module: user, action: login }
-
-search:
-  url:   /search
-  param: { module: search, action: keyword }
-
-browse:
-  url:   /browse
-  param: { module: term, action: browse }
-  
-repository:
-  url:   /repository
-  param: { module: repository, action: list }
-  
-informationobject:
-  url:   /informationobject
-  param: { module: informationobject, action: list }
-  
-actor:
-  url:   /actor
-  param: { module: actor, action: list }
-
-digitalObject:
-  url:   /digitalObject
-  param: { module: digitalObject, action: list }
-
-default_module:
+permalink:
   url:   /:permalink
   param: { module: staticpage, action: static }
 

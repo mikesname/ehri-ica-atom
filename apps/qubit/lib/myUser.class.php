@@ -26,9 +26,9 @@ class myUser extends sfBasicSecurityUser
     $this->setAuthenticated(true);
 
     foreach ($user->getRoles() as $role)
-      {
+    {
       $this->addCredential((string) $role);
-      }
+    }
 
     $this->setAttribute('user_id', $user->getId());
     $this->setAttribute('user_name', $user->getUserName());
@@ -49,13 +49,36 @@ class myUser extends sfBasicSecurityUser
     $this->getAttributeHolder()->remove('nav_context_module');
   }
 
-public function getUserID()
-{
-  return $this->getAttribute('user_id');
-}
+  public function getUserID()
+  {
+    return $this->getAttribute('user_id');
+  }
 
-public function getUserName()
-{
-  return $this->getAttribute('user_name');
-}
+  public function getUserName()
+  {
+    return $this->getAttribute('user_name');
+  }
+
+  public function authenticate($username, $password, &$error)
+  {
+    $authenticated = false;
+    $error = null;
+    
+    // anonymous is not a real user
+    if ($username == 'anonymous')
+    {
+      $error = 'invalid username';
+    }
+    
+    $user = QubitUser::checkCredentials($username, $password, &$error);
+
+    // user account exists?
+    if ($user !== null)
+    {
+      $authenticated = true;
+      $this->signIn($user);
+    }
+    
+    return $authenticated;
+  }
 }

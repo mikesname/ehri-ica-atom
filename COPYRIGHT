@@ -16,8 +16,8 @@ URL:       http://commons.wikimedia.org/wiki/Image:Blochsphere.svg
 Copyright: MuncherOfSpleens at en.wikipedia.org (http://en.wikipedia.org/wiki/User:MuncherOfSpleens)
 License:   GNU Free Documentation License
 
-Qubit Installer
----------------
+Installer
+----------------
 Url: http://www.carl-abrc.ca/
 Copyright: Canadian Association of Research Libraries
 Author: Mark Jordan
@@ -34,7 +34,7 @@ License:   MIT - see lib/vendor/symfony/LICENSE
 symfony contains additional software.  See lib/vendor/symfony/COPYRIGHT and
 lib/vendor/symfony/licenses/
 
-In addtion to the core symfony framework, Qubit also uses the following symfony plugins:
+In addition to the core symfony framework, Qubit also uses the following symfony plugins:
 
 sfAuditPlugin
 -------------
@@ -45,6 +45,11 @@ sfHistoryPlugin
 ---------------
 Copyright: Jack Bates
 License: MIT
+
+sfInstallPlugin
+---------------
+Copyright: Jack Bates
+License: GPL version 2
 
 sfThumbnailPlugin
 -----------------
@@ -60,6 +65,17 @@ sfUJSPlugin
 -----------
 Copyright: Francois Zaninotto
 License: MIT
+
+sfLucenePlugin
+--------------
+Copyright: Carl Vondrick
+License: MIT
+
+sfSearchPlugin
+--------------
+Copyright: Carl Vondrick
+License: MIT
+
 
 In addition to symfony and its external libraries and plugins, Qubit Toolkit also uses:
 
@@ -122,4 +138,6 @@ License:   GPL3 - http://www.gnu.org/licenses/gpl-3.0.html
 
 SAMPLE DATA
 ===========
-All sample metadata and image files used with permission from the City of Vancouver Archives, Simon Fraser University Archives and Gemeentearchief Rotterdam. Some archival descriptions were abbreviated or altered for demonstration purposes. Sample video file(s) made available by the Open Video Project and the Library of Congress under a Creative Commons Attribution-NonCommercial-NoDerivs 2.5 License.
+All sample metadata and image files used with permission from the City of Vancouver Archives and Simon Fraser University Archives.
+Some archival descriptions were abbreviated or altered for demonstration purposes.
+Sample video file(s) made available by the Open Video Project and the Library of Congress under a Creative Commons Attribution-NonCommercial-NoDerivs 2.5 License.

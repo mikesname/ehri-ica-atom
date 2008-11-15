@@ -821,6 +821,24 @@ abstract class BaseActor extends QubitObject
     return $this;
   }
 
+  public function getDatesOfExistence(array $options = array())
+  {
+    $datesOfExistence = $this->getCurrentActorI18n($options)->getDatesOfExistence();
+    if (!empty($options['cultureFallback']) && strlen($datesOfExistence) < 1)
+    {
+      $datesOfExistence = $this->getCurrentActorI18n(array('sourceCulture' => true) + $options)->getDatesOfExistence();
+    }
+
+    return $datesOfExistence;
+  }
+
+  public function setDatesOfExistence($value, array $options = array())
+  {
+    $this->getCurrentActorI18n($options)->setDatesOfExistence($value);
+
+    return $this;
+  }
+
   public function getHistory(array $options = array())
   {
     $history = $this->getCurrentActorI18n($options)->getHistory();

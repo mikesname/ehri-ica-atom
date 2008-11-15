@@ -12,7 +12,6 @@ abstract class BaseEvent extends QubitObject
   const END_DATE = 'q_event.END_DATE';
   const END_TIME = 'q_event.END_TIME';
   const TYPE_ID = 'q_event.TYPE_ID';
-  const ACTOR_ROLE_ID = 'q_event.ACTOR_ROLE_ID';
   const INFORMATION_OBJECT_ID = 'q_event.INFORMATION_OBJECT_ID';
   const ACTOR_ID = 'q_event.ACTOR_ID';
   const CREATED_AT = 'q_event.CREATED_AT';
@@ -31,7 +30,6 @@ abstract class BaseEvent extends QubitObject
     $criteria->addSelectColumn(QubitEvent::END_DATE);
     $criteria->addSelectColumn(QubitEvent::END_TIME);
     $criteria->addSelectColumn(QubitEvent::TYPE_ID);
-    $criteria->addSelectColumn(QubitEvent::ACTOR_ROLE_ID);
     $criteria->addSelectColumn(QubitEvent::INFORMATION_OBJECT_ID);
     $criteria->addSelectColumn(QubitEvent::ACTOR_ID);
     $criteria->addSelectColumn(QubitEvent::CREATED_AT);
@@ -165,20 +163,6 @@ abstract class BaseEvent extends QubitObject
     return $this;
   }
 
-  protected $actorRoleId = null;
-
-  public function getActorRoleId()
-  {
-    return $this->actorRoleId;
-  }
-
-  public function setActorRoleId($actorRoleId)
-  {
-    $this->actorRoleId = $actorRoleId;
-
-    return $this;
-  }
-
   protected $informationObjectId = null;
 
   public function getInformationObjectId()
@@ -281,7 +265,6 @@ abstract class BaseEvent extends QubitObject
     $this->columnValues['endDate'] = $this->endDate;
     $this->columnValues['endTime'] = $this->endTime;
     $this->columnValues['typeId'] = $this->typeId;
-    $this->columnValues['actorRoleId'] = $this->actorRoleId;
     $this->columnValues['informationObjectId'] = $this->informationObjectId;
     $this->columnValues['actorId'] = $this->actorId;
     $this->columnValues['createdAt'] = $this->createdAt;
@@ -301,7 +284,6 @@ abstract class BaseEvent extends QubitObject
     $this->endDate = $results->getString($columnOffset++);
     $this->endTime = $results->getTime($columnOffset++);
     $this->typeId = $results->getInt($columnOffset++);
-    $this->actorRoleId = $results->getInt($columnOffset++);
     $this->informationObjectId = $results->getInt($columnOffset++);
     $this->actorId = $results->getInt($columnOffset++);
     $this->createdAt = $results->getTimestamp($columnOffset++, null);
@@ -386,11 +368,6 @@ abstract class BaseEvent extends QubitObject
       $criteria->add(QubitEvent::TYPE_ID, $this->typeId);
     }
 
-    if ($this->isColumnModified('actorRoleId'))
-    {
-      $criteria->add(QubitEvent::ACTOR_ROLE_ID, $this->actorRoleId);
-    }
-
     if ($this->isColumnModified('informationObjectId'))
     {
       $criteria->add(QubitEvent::INFORMATION_OBJECT_ID, $this->informationObjectId);
@@ -468,11 +445,6 @@ abstract class BaseEvent extends QubitObject
       $criteria->add(QubitEvent::TYPE_ID, $this->typeId);
     }
 
-    if ($this->isColumnModified('actorRoleId'))
-    {
-      $criteria->add(QubitEvent::ACTOR_ROLE_ID, $this->actorRoleId);
-    }
-
     if ($this->isColumnModified('informationObjectId'))
     {
       $criteria->add(QubitEvent::INFORMATION_OBJECT_ID, $this->informationObjectId);
@@ -530,25 +502,6 @@ abstract class BaseEvent extends QubitObject
   public function setType(QubitTerm $term)
   {
     $this->typeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinActorRoleCriteria(Criteria $criteria)
-  {
-    $criteria->addJoin(QubitEvent::ACTOR_ROLE_ID, QubitTerm::ID);
-
-    return $criteria;
-  }
-
-  public function getActorRole(array $options = array())
-  {
-    return $this->actorRole = QubitTerm::getById($this->actorRoleId, $options);
-  }
-
-  public function setActorRole(QubitTerm $term)
-  {
-    $this->actorRoleId = $term->getId();
 
     return $this;
   }

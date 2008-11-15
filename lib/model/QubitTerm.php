@@ -24,70 +24,64 @@ class QubitTerm extends BaseTerm
   //The following Term Ids are assigned constant values because they are used
   //in application code and can't rely on database id values, since these could be changed
 
-  //ActorRole taxonomy
-  const CREATOR_ID = 5;
-  const CUSTODIAN_ID = 6;
-  const PUBLISHER_ID = 7;
-  const CONTRIBUTOR_ID = 8;
-  const SUBJECT_ID = 9;
-  const COLLECTOR_ID = 10;
   //EventType taxonomy
-  const CREATION_ID = 11;
-  const EXISTENCE_ID = 12;
-  const CUSTODY_ID = 13;
-  const PUBLICATION_ID = 14;
-  const CONTRIBUTION_ID = 15;
-  const SUBJECT_ACCESS_POINT_ID = 16;
-  const COLLECTION_ID = 17;
+  const CREATION_ID = 111;
+  const SUBJECT_ID = 112;
+  const CUSTODY_ID = 113;
+  const PUBLICATION_ID = 114;
+  const CONTRIBUTION_ID = 115;
+  const COLLECTION_ID = 117;
+  const ACCUMULATION_ID = 118;
   //NoteType taxonomy
-  const TITLE_NOTE_ID = 25;
-  const PUBLICATION_NOTE_ID = 26;
-  const SOURCE_NOTE_ID = 27;
-  const SCOPE_NOTE_ID = 28;
+  const TITLE_NOTE_ID = 119;
+  const PUBLICATION_NOTE_ID = 120;
+  const SOURCE_NOTE_ID = 121;
+  const SCOPE_NOTE_ID = 122;
+  const DISPLAY_NOTE_ID = 123;
   //CollectionType taxonomy
-  const ARCHIVAL_MATERIAL_ID = 29;
-  const FINDING_AIDS_ID = 30;
-  const PUBLISHED_MATERIAL_ID = 31;
-  const ARTEFACT_MATERIAL_ID = 32;
+  const ARCHIVAL_MATERIAL_ID = 124;
+  const FINDING_AIDS_ID = 125;
+  const PUBLISHED_MATERIAL_ID = 126;
+  const ARTEFACT_MATERIAL_ID = 127;
   //ActorEntityType taxonomy
-  const CORPORATE_BODY_ID = 33;
-  const PERSON_ID = 34;
-  const FAMILY_ID = 35;
+  const CORPORATE_BODY_ID = 128;
+  const PERSON_ID = 129;
+  const FAMILY_ID = 130;
   //OtherNameType taxonomy
-  const FAMILY_NAME_FIRST_NAME_ID = 36;
+  const FAMILY_NAME_FIRST_NAME_ID = 131;
   //MediaType taxonomy
-  const AUDIO_ID = 37;
-  const IMAGE_ID = 38;
-  const TEXT_ID = 39;
-  const VIDEO_ID = 40;
-  const OTHER_ID = 41;
+  const AUDIO_ID = 132;
+  const IMAGE_ID = 133;
+  const TEXT_ID = 134;
+  const VIDEO_ID = 135;
+  const OTHER_ID = 136;
   //Digital Object Usage taxonomy
-  const MASTER_ID = 42;
-  const REFERENCE_ID = 43;
-  const THUMBNAIL_ID = 44;
+  const MASTER_ID = 137;
+  const REFERENCE_ID = 138;
+  const THUMBNAIL_ID = 139;
   //Physical Object Type taxonomy
-  const LOCATION_ID = 45;
-  const CONTAINER_ID = 46;
-  const ARTEFACT_ID = 47;
+  const LOCATION_ID = 140;
+  const CONTAINER_ID = 141;
+  const ARTEFACT_ID = 142;
   //Relation Type taxonomy
-  const HAS_PHYSICAL_OBJECT_ID = 48;
+  const HAS_PHYSICAL_OBJECT_ID = 143;
+
 
   public function isProtected()
   {
     //The following terms cannot be edited by users because their values are used in application logic
-    return $this->getId() == QubitTerm::CREATOR_ID ||
-           $this->getId() == QubitTerm::CUSTODIAN_ID ||
-           $this->getId() == QubitTerm::PUBLISHER_ID ||
-           $this->getId() == QubitTerm::CONTRIBUTOR_ID ||
-           $this->getId() == QubitTerm::CREATION_ID ||
-           $this->getId() == QubitTerm::EXISTENCE_ID ||
+    return $this->getId() == QubitTerm::CREATION_ID ||
+           $this->getId() == QubitTerm::SUBJECT_ID ||
            $this->getId() == QubitTerm::CUSTODY_ID ||
            $this->getId() == QubitTerm::PUBLICATION_ID ||
            $this->getId() == QubitTerm::CONTRIBUTION_ID ||
+           $this->getId() == QubitTerm::COLLECTION_ID ||
+           $this->getId() == QubitTerm::ACCUMULATION_ID ||
            $this->getId() == QubitTerm::TITLE_NOTE_ID ||
            $this->getId() == QubitTerm::PUBLICATION_NOTE_ID ||
            $this->getId() == QubitTerm::SOURCE_NOTE_ID ||
            $this->getId() == QubitTerm::SCOPE_NOTE_ID ||
+           $this->getId() == QubitTerm::DISPLAY_NOTE_ID ||
            $this->getId() == QubitTerm::ARCHIVAL_MATERIAL_ID ||
            $this->getId() == QubitTerm::FINDING_AIDS_ID ||
            $this->getId() == QubitTerm::PUBLISHED_MATERIAL_ID ||
@@ -109,19 +103,19 @@ class QubitTerm extends BaseTerm
            $this->getId() == QubitTerm::ARTEFACT_ID ||
            $this->getId() == QubitTerm::HAS_PHYSICAL_OBJECT_ID;
   }
-  
-  
+
+
   public function __toString()
   {
     if (!$this->getName())
       {
       return (string) $this->getName(array('sourceCulture' => true));
       }
-  
+
     return (string) $this->getName();
   }
-  
-  
+
+
   public function setNote($userId, $note, $noteTypeId)
   {
     $newNote = new QubitNote;
@@ -149,8 +143,22 @@ class QubitTerm extends BaseTerm
 
     return QubitNote::get($criteria);
   }
-  
-  
+
+  public function getRole()
+  {
+    $notes = $this->getNotesByType($noteTypeId = QubitTerm::DISPLAY_NOTE_ID);
+
+    if (count($notes) > 0)
+    {
+
+      return $notes[0]->getContent($options = array('cultureFallback' => true));
+    }
+    else
+    {
+
+      return $this->getName();
+    }
+  }
 
   public static function getLevelsOfDescription($options = array())
   {
@@ -216,8 +224,22 @@ class QubitTerm extends BaseTerm
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID, $options);
   }
-  
-  
+
+  public static function getMaterialTypes($options = array())
+  {
+    return QubitTaxonomy::getTermsById(QubitTaxonomy::MATERIAL_TYPE_ID, $options);
+  }
+
+  public static function getRADNotes($options = array())
+  {
+    return QubitTaxonomy::getTermsById(QubitTaxonomy::RAD_NOTE_ID, $options);
+  }
+
+  public static function getRADTitleNotes($options = array())
+  {
+    return QubitTaxonomy::getTermsById(QubitTaxonomy::RAD_TITLE_NOTE_ID, $options);
+  }
+
   /**
    * Return a list of all Physical Object terms
    *
@@ -228,8 +250,8 @@ class QubitTerm extends BaseTerm
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID, $options);
   }
-  
-  
+
+
   /**
    * Return a list of all Relation Type terms
    *
@@ -240,8 +262,8 @@ class QubitTerm extends BaseTerm
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::RELATION_TYPE_ID, $options);
   }
-  
-  
+
+
   /**
    * Return a list of all Physical object container types
    *
@@ -252,71 +274,71 @@ class QubitTerm extends BaseTerm
     $containerTerm = QubitTerm::getById(QubitTerm::CONTAINER_ID);
     return $containerTerm->getDescendants();
   }
-  
-  
+
+
   /**
    * Get a list of child terms of $parentTermId. Prefix $indentStr * depth of child
    * relative to parent
    *
    * @param integer $parentTermId  Primary key of parent term
    * @param string  $indentStr     String to prefix to each sub-level for indenting
-   * 
+   *
    * @return mixed  false on failure, else array of children formatted for select box
    */
-  public static function getIndentedChildTree($parentTermId, $indentStr="&nbsp;")
+  public static function getIndentedChildTree($parentTermId, $indentStr='&nbsp;')
   {
-    if (!$parentTerm = QubitTerm::getById($parentTermId)) 
+    if (!$parentTerm = QubitTerm::getById($parentTermId))
     {
 
       return false;
     }
-    
+
     $parentDepth = count($parentTerm->getAncestors());
-    
+
     foreach ($parentTerm->getDescendants()->orderBy('lft') as $i => $node)
     {
       $relativeDepth = intval(count($node->getAncestors()) - $parentDepth - 1);
       $tree[$node->getId()] = str_repeat($indentStr, $relativeDepth).$node->getName(array('cultureFallback' => 'true'));
     }
-    
+
     return $tree;
   }
-  
-   
+
+
   protected $CountryHitCount = null;
   protected $LanguageHitCount = null;
   protected $SubjectHitCount = null;
-  
+
   public function setCountryHitCount($count)
   {
     $this->CountryHitCount = $count;
   }
-  
+
   public function getCountryHitCount()
   {
     return $this->CountryHitCount;
   }
-  
+
   public function setLanguageHitCount($count)
   {
     $this->LanguageHitCount = $count;
   }
-  
+
   public function getLanguageHitCount()
   {
     return $this->LanguageHitCount;
   }
-  
+
   public function setSubjectHitCount($count)
   {
     $this->SubjectHitCount = $count;
   }
-  
+
   public function getSubjectHitCount()
   {
     return $this->SubjectHitCount;
   }
-  
+
   /**
    * Get a sorted, localized list of terms for the"term/browse" action
    * with an option for culture fallback values in list.
@@ -330,17 +352,17 @@ class QubitTerm extends BaseTerm
   {
     $sort = (isset($options['sort'])) ? $options['sort'] : 'termNameUp';
     $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
-    
+
     if (isset($options['taxonomyId']))
     {
       $criteria->add(QubitTerm::TAXONOMY_ID, $options['taxonomyId']);
     }
-    
+
     // Add join to get count of related objects
     $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::LEFT_JOIN);
     $criteria->addAsColumn('hits', 'COUNT('.QubitObjectTermRelation::OBJECT_ID.')');
     $criteria->addGroupByColumn(QubitObjectTermRelation::TERM_ID);
-    
+
     switch($sort)
     {
       case 'hitsUp' :
@@ -356,7 +378,7 @@ class QubitTerm extends BaseTerm
       default :
         $criteria->addAscendingOrderByColumn('name');
     }
-    
+
     // Do source culture fallback
     if ($cultureFallback === true)
     {
@@ -370,10 +392,10 @@ class QubitTerm extends BaseTerm
       $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
       $criteria->add(QubitTermI18n::CULTURE, $culture);
     }
-    
+
     return QubitTerm::get($criteria);
   }
-  
+
   /**
    * Get a count of objects related to this term
    *
@@ -383,14 +405,43 @@ class QubitTerm extends BaseTerm
   {
     $sql = 'SELECT COUNT(*) FROM '.QubitObjectTermRelation::TABLE_NAME.'
       WHERE '.QubitObjectTermRelation::TERM_ID.' = '.$this->getId().';';
-    
+
     $conn = Propel::getConnection();
     $stmt = $conn->prepareStatement($sql);
     $rs = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
     $rs->next();
-    
+
     return $rs->getInt(1);
-  }  
+  }
+
+  /** Get a basic key['id']/value['name'] array for use as options in form select lists
+   *
+   */
+
+  public static function getOptionsForSelectList($taxonomyId, $options = array())
+  {
+    $context = sfContext::getInstance();
+    $culture = $context->getUser()->getCulture();
+
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
+    $criteria->addAscendingOrderByColumn('name');
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $culture, $options);
+    $terms = QubitTerm::get($criteria);
+
+    $selectList = array();
+    if (isset($options['include_blank']))
+    {
+      $selectList[null] = '';
+    }
+    foreach ($terms as $term)
+    {
+      $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
+    }
+
+    return $selectList;
+  }
+
 }
 
 

@@ -21,7 +21,7 @@
 
 /**
  * Controller for editing actor information.
- * 
+ *
  * @package    qubit
  * @subpackage actor
  * @version    svn: $Id$
@@ -46,17 +46,7 @@ class ActorEditAction extends sfAction
 
     //Notes
     $this->notes = $this->actor->getActorNotes();
-    $this->newNote = new QubitNote;
-
-    //Event
-    if ($this->actor->getDatesOfExistence())
-    {
-      $this->date = $this->actor->getDatesOfExistence();
-    }
-    else
-    {
-      $this->date = new QubitEvent;
-    }
+    $this->noteTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::NOTE_TYPE_ID);
 
     if ($this->getRequestParameter('repositoryReroute'))
     {
@@ -75,21 +65,10 @@ class ActorEditAction extends sfAction
     {
       $this->informationObjectReroute = null;
     }
-    
+
     // Add javascript libraries to allow multiple instance select boxes
     $this->getResponse()->addJavaScript('jquery');
     $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('multiInstanceSelect');
-
-    //set view template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'isaar' :
-        $this->setTemplate('editISAAR');
-        break;
-      default :
-        $this->setTemplate(sfConfig::get('app_default_template_actor_edit'));
-        break;
-    }
   }
 }

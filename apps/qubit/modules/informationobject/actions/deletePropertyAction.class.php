@@ -23,14 +23,20 @@ class InformationObjectDeletePropertyAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteProperty = QubitProperty::getById($this->getRequestParameter('Id'));
+    $this->deleteProperty = QubitProperty::getById($this->getRequestParameter('Id'));
+    $this->forward404Unless($this->deleteProperty);
+    $this->informationObject = $this->deleteProperty->getObject();
+    $this->deleteProperty->delete();
 
-  $this->forward404Unless($this->deleteProperty);
+    SearchIndex::updateTranslatedLanguages($this->informationObject);
 
-  $this->deleteProperty->delete();
-
-  $returnTemplate = $this->getRequestParameter('ReturnTemplate');
-
-  return $this->redirect('informationobject/edit/?id='.$this->deleteProperty->getObjectId().'&template='.$returnTemplate);
+    if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+    {
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => $template, 'id' => $this->informationObject->getId()));
+    }
+    else
+    {
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'id' => $this->informationObject->getId()));
+    }
   }
 }

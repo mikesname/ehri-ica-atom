@@ -1,4 +1,4 @@
-﻿/*********************************************************
+/*********************************************************
                 ABOUT: form.css
 **********************************************************/
 
@@ -28,6 +28,18 @@ form input
   border: 1px solid #a3a3a3;
 }
 
+form 
+  input[type="radio"], input.radio, 
+  input[type="checkbox"], input.checkbox
+{
+  padding: 0;
+  margin: 0;
+  border: none;
+  background-color: none;
+  font: none;
+  width: auto;
+}
+
 form textarea
 {
   width: 95%;
@@ -38,11 +50,12 @@ form textarea
   border: 1px solid #a3a3a3;
 }
 
-form radio
+form ul.radio_list li
 {
-  padding: 0;
-  margin: 0 0 0 20px;
-  vertical-align: top;
+	background: none;
+	display: inline;
+  padding: 0 5px 0 0;
+  list-style-type: none;
 }
 
 form select
@@ -296,72 +309,73 @@ width: 70px;
 
 .login-form
 {
-border: 0;
-width: 450px;
-margin: 0 0 0 20px;
-font: bold 18px/19px georgia, serif;
+	border: 0;
+	width: 450px;
+	margin: 0 0 0 20px;
+	font: bold 18px/19px georgia, serif;
 }
 
 .login-form legend
 {
-font: bold 18px/20px georgia, serif;
-color: #000000;
-margin: 0;
+	font: bold 18px/20px georgia, serif;
+	color: #000000;
+	margin: 0;
 }
 
 .login-form input
 {
-width: 400px;
-font: bold 27px/27px georgia, serif;
-border: 1px solid #999999;
+	width: 400px;
+	font: bold 27px/27px georgia, serif;
+	border: 1px solid #999999;
 }
 
 .login-form input.submit
 {
-text-decoration: none;
-padding: 0 6px 1px 6px;
-margin: 16px 15px 0 5px;
-font: normal 15px/15px georgia, serif;
-width: 60px;
-height: 25px;
-float: right;
-color: #ffffff;
-background-color: #000000;
-border-right: 3px solid #999999;
-border-bottom: 3px solid #999999;
+	text-decoration: none;
+	padding: 0 6px 1px 6px;
+	margin: 16px 15px 0 5px;
+	font: normal 15px/15px georgia, serif;
+	width: 60px;
+	height: 25px;
+	float: right;
+	color: #ffffff;
+	background-color: #000000;
+	border-right: 3px solid #999999;
+	border-bottom: 3px solid #999999;
 }
 
 .login-form input.submithover
 {
-text-decoration: none;
-padding: 0 6px 1px 6px;
-margin: 16px 15px 0 5px;
-font: normal 15px/15px georgia, serif;
-width: 60px;
-height: 25px;
-float: right;
-color: #000000;
-background-color: #ffffff;
-border-right: 3px solid #999999;
-border-bottom: 3px solid #999999;
+	text-decoration: none;
+	padding: 0 6px 1px 6px;
+	margin: 16px 15px 0 5px;
+	font: normal 15px/15px georgia, serif;
+	width: 60px;
+	height: 25px;
+	float: right;
+	color: #000000;
+	background-color: #ffffff;
+	border-right: 3px solid #999999;
+	border-bottom: 3px solid #999999;
 }
 
 .login-form table
 {
-margin-top: 15px;
+  margin-top: 15px;
 }
 
 .login-form table th
 {
-border: 0;
-vertical-align: center;
-text-align: right;
+	border: 0;
+	vertical-align: center;
+	text-align: right;
 }
 
 .login-form table tr
 {
-margin-top: 20px;
+  margin-top: 20px;
 }
+
 
 /*********************************************************
                 FORM ERROR
@@ -369,13 +383,28 @@ margin-top: 20px;
 
 .form_error
 {
-  padding: 1px 1px 1px 20px;
+  padding: 0.1em 0.1em 0.1em 20px;
   margin: 2px;
-  color: #ff0000;
-  border: 1px solid #ff0000;
-  background-color: #FF9797;
-  background-image: url(../images/exclamation.png);
-  background-repeat: no-repeat;
+  color: #a30000;
+  border: 1px solid #c52020;
+  background: #FFCCCC url(../images/exclamation.png) no-repeat 1px;
+}
+
+ul.validation_error
+{
+  padding: 1px;
+  margin: 2px 6px 0.1em 0;
+  background: none;
+  color: #a30000;
+  background-color: #FFCCCC;
+  border: 1px solid #c52020;
+}
+
+ul.validation_error li
+{
+	background: url(../images/exclamation.png) no-repeat 1px;
+	padding: 0.1em 0.1em 0.1em 20px;
+	margin: 0;
 }
 
 /* see also app/config/settings.yml

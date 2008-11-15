@@ -155,15 +155,34 @@ CREATE TABLE `q_property`
 	`object_id` INTEGER  NOT NULL,
 	`scope` VARCHAR(255),
 	`name` VARCHAR(255),
-	`value` VARCHAR(255),
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
+	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	PRIMARY KEY (`id`),
 	INDEX `q_property_FI_1` (`object_id`),
 	CONSTRAINT `q_property_FK_1`
 		FOREIGN KEY (`object_id`)
 		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_property_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_property_i18n`;
+
+
+CREATE TABLE `q_property_i18n`
+(
+	`value` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `q_property_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `q_property` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
@@ -421,6 +440,7 @@ DROP TABLE IF EXISTS `q_actor_i18n`;
 CREATE TABLE `q_actor_i18n`
 (
 	`authorized_form_of_name` VARCHAR(255)  NOT NULL,
+	`dates_of_existence` VARCHAR(255),
 	`history` TEXT,
 	`places` TEXT,
 	`legal_status` TEXT,
@@ -847,7 +867,6 @@ CREATE TABLE `q_event`
 	`end_date` DATE,
 	`end_time` TIME,
 	`type_id` INTEGER,
-	`actor_role_id` INTEGER,
 	`information_object_id` INTEGER,
 	`actor_id` INTEGER,
 	`created_at` DATETIME  NOT NULL,
@@ -862,17 +881,13 @@ CREATE TABLE `q_event`
 	CONSTRAINT `q_event_FK_2`
 		FOREIGN KEY (`type_id`)
 		REFERENCES `q_term` (`id`),
-	INDEX `q_event_FI_3` (`actor_role_id`),
+	INDEX `q_event_FI_3` (`information_object_id`),
 	CONSTRAINT `q_event_FK_3`
-		FOREIGN KEY (`actor_role_id`)
-		REFERENCES `q_term` (`id`),
-	INDEX `q_event_FI_4` (`information_object_id`),
-	CONSTRAINT `q_event_FK_4`
 		FOREIGN KEY (`information_object_id`)
 		REFERENCES `q_information_object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_event_FI_5` (`actor_id`),
-	CONSTRAINT `q_event_FK_5`
+	INDEX `q_event_FI_4` (`actor_id`),
+	CONSTRAINT `q_event_FK_4`
 		FOREIGN KEY (`actor_id`)
 		REFERENCES `q_actor` (`id`)
 )Type=InnoDB;

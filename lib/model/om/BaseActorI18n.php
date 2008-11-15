@@ -7,6 +7,7 @@ abstract class BaseActorI18n
   const TABLE_NAME = 'q_actor_i18n';
 
   const AUTHORIZED_FORM_OF_NAME = 'q_actor_i18n.AUTHORIZED_FORM_OF_NAME';
+  const DATES_OF_EXISTENCE = 'q_actor_i18n.DATES_OF_EXISTENCE';
   const HISTORY = 'q_actor_i18n.HISTORY';
   const PLACES = 'q_actor_i18n.PLACES';
   const LEGAL_STATUS = 'q_actor_i18n.LEGAL_STATUS';
@@ -24,6 +25,7 @@ abstract class BaseActorI18n
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitActorI18n::AUTHORIZED_FORM_OF_NAME);
+    $criteria->addSelectColumn(QubitActorI18n::DATES_OF_EXISTENCE);
     $criteria->addSelectColumn(QubitActorI18n::HISTORY);
     $criteria->addSelectColumn(QubitActorI18n::PLACES);
     $criteria->addSelectColumn(QubitActorI18n::LEGAL_STATUS);
@@ -45,7 +47,7 @@ abstract class BaseActorI18n
 
   public static function getFromResultSet(ResultSet $resultSet)
   {
-    if (!isset(self::$actorI18ns[$key = serialize(array($resultSet->getInt(13), $resultSet->getString(14)))]))
+    if (!isset(self::$actorI18ns[$key = serialize(array($resultSet->getInt(14), $resultSet->getString(15)))]))
     {
       $actorI18n = new QubitActorI18n;
       $actorI18n->hydrate($resultSet);
@@ -113,6 +115,20 @@ abstract class BaseActorI18n
   public function setAuthorizedFormOfName($authorizedFormOfName)
   {
     $this->authorizedFormOfName = $authorizedFormOfName;
+
+    return $this;
+  }
+
+  protected $datesOfExistence = null;
+
+  public function getDatesOfExistence()
+  {
+    return $this->datesOfExistence;
+  }
+
+  public function setDatesOfExistence($datesOfExistence)
+  {
+    $this->datesOfExistence = $datesOfExistence;
 
     return $this;
   }
@@ -313,6 +329,7 @@ abstract class BaseActorI18n
   protected function resetModified()
   {
     $this->columnValues['authorizedFormOfName'] = $this->authorizedFormOfName;
+    $this->columnValues['datesOfExistence'] = $this->datesOfExistence;
     $this->columnValues['history'] = $this->history;
     $this->columnValues['places'] = $this->places;
     $this->columnValues['legalStatus'] = $this->legalStatus;
@@ -333,6 +350,7 @@ abstract class BaseActorI18n
   public function hydrate(ResultSet $results, $columnOffset = 1)
   {
     $this->authorizedFormOfName = $results->getString($columnOffset++);
+    $this->datesOfExistence = $results->getString($columnOffset++);
     $this->history = $results->getString($columnOffset++);
     $this->places = $results->getString($columnOffset++);
     $this->legalStatus = $results->getString($columnOffset++);
@@ -405,6 +423,11 @@ abstract class BaseActorI18n
     if ($this->isColumnModified('authorizedFormOfName'))
     {
       $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $this->authorizedFormOfName);
+    }
+
+    if ($this->isColumnModified('datesOfExistence'))
+    {
+      $criteria->add(QubitActorI18n::DATES_OF_EXISTENCE, $this->datesOfExistence);
     }
 
     if ($this->isColumnModified('history'))
@@ -492,6 +515,11 @@ abstract class BaseActorI18n
     if ($this->isColumnModified('authorizedFormOfName'))
     {
       $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $this->authorizedFormOfName);
+    }
+
+    if ($this->isColumnModified('datesOfExistence'))
+    {
+      $criteria->add(QubitActorI18n::DATES_OF_EXISTENCE, $this->datesOfExistence);
     }
 
     if ($this->isColumnModified('history'))

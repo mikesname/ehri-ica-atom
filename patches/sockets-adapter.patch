@@ -1,8 +1,61 @@
 Index: plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php
 ===================================================================
---- plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php	(revision 11451)
+--- plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php	(revision 12148)
 +++ plugins/sfWebBrowserPlugin/lib/sfSocketsAdapter.class.php	(working copy)
-@@ -91,7 +91,7 @@
+@@ -47,27 +47,48 @@
+     $url_info = parse_url($uri);
+ 
+     // initialize default values
++    $host = $url_info['host'];
++    $port = 80;
++
++    if ($url_info['scheme'] == 'https')
++    {
++      $host = 'ssl://'.$host;
++      $port = 443;
++    }
++
++    if (isset($url_info['port']))
++    {
++      $port = $url_info['port'];
++    }
++
+     isset($url_info['path']) ? $path = $url_info['path'] : $path = '/';
+     isset($url_info['query']) ? $qstring = '?'.$url_info['query'] : $qstring = null;
+-    isset($url_info['port']) ? null : $url_info['port'] = 80;
+ 
+-    if (!$socket = @fsockopen($url_info['host'], $url_info['port'], $errno, $errstr, 15))
++    if (!$socket = @fsockopen($host, $port, $errno, $errstr, 15))
+     {
+       throw new Exception("Could not connect ($errno): $errstr");
+     }
+ 
+     // build request
+     $request = "$method $path$qstring HTTP/1.1\r\n";
+-    $request .= 'Host: '.$url_info['host'].':'.$url_info['port']."\r\n";
++
++    $request .= 'Host: '.$url_info['host'];
++    if (isset($url_info['port']))
++    {
++      $request .= ':'.$url_info['port'];
++    }
++    $request .= "\r\n";
++
+     $request .= $request_headers;
+     $request .= "Connection: Close\r\n";
+ 
+     if ($method == 'POST')
+     {
++      $body = http_build_query($parameters);
+       $request .= 'Content-Length: '.strlen($body)."\r\n";
+       $request .= "Content-type: application/x-www-form-urlencoded\r\n";
+       $request .= "\r\n";
+-      $request .= http_build_query($parameters, '', '&');
++      $request .= $body;
+     }
+     else if ($method == 'PUT')
+     {
+@@ -91,7 +112,7 @@
        fclose($fp);
      }
  

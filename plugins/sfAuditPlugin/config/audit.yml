@@ -50,6 +50,9 @@ apps/qubit/lib/xslt/*.xml:
 apps/qubit/lib/xslt/*.xsl:
   code:
 
+config/package.xml:
+  code:
+
 lib/drupal//*:
   code:
 
@@ -62,10 +65,11 @@ lib/model/map//*:
 lib/model/om//*:
   code:
 
-lib/xhtml-to-xslfo.xsl:
+lib/vendor//*:
   code:
+  props:
 
-package.xml.tmpl:
+lib/xhtml-to-xslfo.xsl:
   code:
 
 plugins/*/modules/*/templates//*:
@@ -81,5 +85,8 @@ plugins/sfAuditPlugin/lib/vendor/PHP//*.php:
   props:
     'svn:keywords':
 
-web/js/yui//*:
+test/selenium//*:
+  code:
+
+web/vendor//*:
   code:
