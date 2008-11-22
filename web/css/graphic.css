@@ -10,45 +10,51 @@
 /*********************************************************
                 WEBSITE NAME & LOGO
 **********************************************************/
+
+
 #website-name {
-  font: bold 64px/ 78px verdana, georgia, garamond, serif;
+  font: bold 64px/78px verdana, georgia, garamond, serif;
   letter-spacing: -0.1ex;
   color: #FC6E3C;
-  border: 0;
-  margin-bottom: 3px;
-  text-align: left;
-  float: left;
+  background-color: white;
+  border: none;
+  margin: 0px;
 }
 
-#website-name a:hover,#website-name a:link,#website-name a:visited,#website-name a:active
-  {
+#website-name a:hover,
+#website-name a:link,
+#website-name a:visited,
+#website-name a:active
+{
   text-decoration: none;
-  border: 0;
   color: #FC6E3C;
-  background-color: transparent;
 }
 
 #website-description {
   color: #04025C;
   font: bold 15px/ 16px georgia, garamond, serif;
-  margin: 75px 0 0 0;
-  padding: 0;
+  margin-top: 0px;
+  margin-bottom: 3px;
+  clear: both;
+  padding: 0px 3px;
   text-align: left;
-  float: right;
 }
 
-#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
+#logo,
+#logo a:hover,
+#logo a:link,
+#logo a:visited,
+#logo a:active {
   border: 0;
   color: #ffffff;
   background-color: transparent;
   text-decoration: none;
   padding: 0;
   margin: 0;
-float: right;
+  float: right;
 }
 
 #logo img {
-  margin: 0 0 0 20px;
 }
 
 /*********************************************************

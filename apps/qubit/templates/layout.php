@@ -36,19 +36,18 @@
 </div> <!--close header-top -->
 
 <div id="header-middle">
+
+<div id="logo"><?php echo link_to(image_tag('logo', 
+  array('alt' => sfConfig::get('app_name', 'ICA-AtoM'))), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
+
 <?php if (strlen(sfConfig::get('app_site_information_site_title'))): ?>
-<div id="website-name">
-  <?php echo link_to(__(sfConfig::get('app_site_information_site_title')), '/homepage/') ?>
-</div>
+<h1 id="website-name"><?php echo link_to(__(sfConfig::get('app_site_information_site_title')), '/homepage/') ?></h1>
 <?php endif; ?>
 
 <?php if (strlen(sfConfig::get('app_site_information_site_description'))): ?>
-<div id="website-description">
-  <?php echo __(sfConfig::get('app_site_information_site_description')); ?>
-</div>
+<h2 id="website-description"><?php echo __(sfConfig::get('app_site_information_site_description')); ?></h2>
 <?php endif; ?>
 
-<div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_name', 'ICA-AtoM'))), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
 </div> <!-- close header-middle -->
 
 <div id="header-bottom">

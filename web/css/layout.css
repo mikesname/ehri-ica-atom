@@ -121,14 +121,13 @@ border-bottom: 0;
 padding: 0;
 margin: 0;
 padding: 0;
-border-bottom: 1px solid #999999;
-height: 110px;
 }
 
 #header-bottom {
 clear: both;
 background-color: #ffffff;
 border: 0;
+border-top: 1px solid #999999;
 padding: 0;
 margin: 0;
 }
