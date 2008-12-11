@@ -28,6 +28,8 @@
 {
   text-decoration: none;
   color: #FC6E3C;
+  border: 0;
+  background-color: transparent;
 }
 
 #website-description {
