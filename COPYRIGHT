@@ -1,8 +1,16 @@
 ﻿COPYRIGHTS
 ==========
 
+ICA-AtoM
+--------
+URL: http://ica-atom.org
+Copyright: International Council on Archives <ica@ica.org>
+LICENSE: GPL version 2 - see LICENSE file
+
 Qubit Toolkit
 -------------
+ICA-AtoM is based on the Qubit Toolkit
+
 Url:       http://www.qubit-toolkit.org/
 Copyright: Peter Van Garderen <peter@artefactual.com>
 Authors:   Peter Van Garderen, Jack Bates, MJ Suhonos, David Juhasz
