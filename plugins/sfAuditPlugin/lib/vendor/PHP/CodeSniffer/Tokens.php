@@ -11,7 +11,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: Tokens.php,v 1.16 2008/02/22 00:59:56 squiz Exp $
+ * @version   CVS: $Id: Tokens.php,v 1.25 2008/12/03 04:42:07 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -50,6 +50,14 @@ define('T_HEREDOC', 1031);
 define('T_PROTOTYPE', 1032);
 define('T_THIS', 1033);
 define('T_REGULAR_EXPRESSION', 1034);
+define('T_PROPERTY', 1035);
+define('T_LABEL', 1036);
+define('T_OBJECT', 1037);
+define('T_COLOUR', 1038);
+define('T_HASH', 1039);
+define('T_URL', 1040);
+define('T_STYLE', 1041);
+define('T_ASPERAND', 1042);
 
 /**
  * The Tokens class contains weightings for tokens based on their
@@ -136,8 +144,6 @@ final class PHP_CodeSniffer_Tokens
                                  T_IS_NOT_IDENTICAL    => 5,
                                  T_IS_SMALLER_OR_EQUAL => 5,
                                  T_IS_GREATER_OR_EQUAL => 5,
-
-                                 T_WHITESPACE          => 0,
                                 );
 
     /**
@@ -283,6 +289,18 @@ final class PHP_CodeSniffer_Tokens
                                );
 
     /**
+     * Tokens that perform boolean operations.
+     *
+     * @var array(int)
+     */
+    public static $booleanOperators = array(
+                                       T_BOOLEAN_AND,
+                                       T_BOOLEAN_OR,
+                                       T_LOGICAL_AND,
+                                       T_LOGICAL_OR,
+                                      );
+
+    /**
      * Tokens that perform operations.
      *
      * @var array(int)
@@ -338,6 +356,17 @@ final class PHP_CodeSniffer_Tokens
                                     T_INCLUDE,
                                    );
 
+    /**
+     * Tokens that make up a heredoc string.
+     *
+     * @var array(int)
+     */
+    public static $heredocTokens = array(
+                                    T_START_HEREDOC,
+                                    T_END_HEREDOC,
+                                    T_HEREDOC,
+                                   );
+
 
     /**
      * A PHP_CodeSniffer_Tokens class cannot be constructed.
@@ -373,8 +402,14 @@ final class PHP_CodeSniffer_Tokens
         $weights = self::$weightings;
 
         foreach ($tokens as $token) {
-            if (isset($weights[$token]) === true && $weights[$token] > $highest) {
-                $highest     = $weights[$token];
+            if (isset($weights[$token]) === true) {
+                $weight = $weights[$token];
+            } else {
+                $weight = 0;
+            }
+
+            if ($weight > $highest) {
+                $highest     = $weight;
                 $highestType = $token;
             }
         }

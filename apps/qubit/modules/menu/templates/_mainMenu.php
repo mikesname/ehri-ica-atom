@@ -1,13 +1,13 @@
-<div id='menu-main'>
-<?php echo $sf_data->getRaw('mainmenu') ?>
+<div id="menu-main">
+  <?php echo QubitMenu::displayHierarchyAsList($mainMenu, 0, $sf_data->getRaw('options')) ?>
 </div>
+  
+<?php if($showSecondaryMenu): ?>
+<div class="menu-secondary">
+  <?php echo QubitMenu::displayHierarchyAsList($mainMenu, 0, $sf_data->getRaw('options')) ?>
 
-<?php if ($secondary_menu): ?>
-<div class="menu-secondary" style='visibility:<?php echo $secondaryMenuVisibility ?>;'>
-<?php echo $sf_data->getRaw('secondary_menu') ?>
-
-<div class='versionNumber' style='visibility:<?php echo $versionNumberVisibility ?>;'>
-<?php echo $versionNumber ?></div>
-
+  <div class='versionNumber' style='visibility:<?php echo $versionNumberVisibility ?>;'>
+    <?php echo $versionNumber ?>
+  </div>
 </div>
 <?php endif; ?>

@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorAnd.class.php 9411 2008-06-02 17:02:26Z nicolas $
+ * @version    SVN: $Id: sfValidatorAnd.class.php 13127 2008-11-18 15:35:59Z nicolas $
  */
 class sfValidatorAnd extends sfValidatorBase
 {
@@ -54,19 +54,25 @@ class sfValidatorAnd extends sfValidatorBase
       throw new InvalidArgumentException('sfValidatorAnd constructor takes a sfValidatorBase object, or a sfValidatorBase array.');
     }
     
-    if (!isset($options['required']))
-    {
-      $options['required'] = false;
-    }
-
     parent::__construct($options, $messages);
   }
 
   /**
+   * Configures the current validator.
+   *
+   * Available options:
+   *
+   *  * halt_on_error: Whether to halt on the first error or not (false by default)
+   *
+   * @param array $options   An array of options
+   * @param array $messages  An array of error messages
+   *
    * @see sfValidatorBase
    */
   protected function configure($options = array(), $messages = array())
   {
+    $this->addOption('halt_on_error', false);
+
     $this->setMessage('invalid', null);
   }
 
@@ -106,6 +112,11 @@ class sfValidatorAnd extends sfValidatorBase
       catch (sfValidatorError $e)
       {
         $errors[] = $e;
+
+        if ($this->getOption('halt_on_error'))
+        {
+          break;
+        }
       }
     }
 

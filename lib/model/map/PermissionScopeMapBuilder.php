@@ -2,7 +2,7 @@
 
 
 
-class PermissionScopeMapBuilder {
+class PermissionScopeMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.PermissionScopeMapBuilder';
@@ -25,24 +25,25 @@ class PermissionScopeMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitPermissionScope::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_permission_scope');
-		$tMap->setPhpName('PermissionScope');
+		$tMap = $this->dbMap->addTable(QubitPermissionScope::TABLE_NAME);
+		$tMap->setPhpName('permissionScope');
+		$tMap->setClassname('QubitPermissionScope');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('PARAMETERS', 'Parameters', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('PARAMETERS', 'parameters', 'VARCHAR', false, 255);
 
-		$tMap->addForeignKey('PERMISSION_ID', 'PermissionId', 'int', CreoleTypes::INTEGER, 'q_permission', 'ID', true, null);
+		$tMap->addForeignKey('PERMISSION_ID', 'permissionId', 'INTEGER', 'q_permission', 'ID', true, null);
 
-		$tMap->addForeignKey('ROLE_ID', 'RoleId', 'int', CreoleTypes::INTEGER, 'q_role', 'ID', false, null);
+		$tMap->addForeignKey('ROLE_ID', 'roleId', 'INTEGER', 'q_role', 'ID', false, null);
 
-		$tMap->addForeignKey('USER_ID', 'UserId', 'int', CreoleTypes::INTEGER, 'q_user', 'ID', false, null);
+		$tMap->addForeignKey('USER_ID', 'userId', 'INTEGER', 'q_user', 'ID', false, null);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

@@ -26,7 +26,7 @@
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfRichTextEditorTinyMCE.class.php 8820 2008-05-06 22:11:22Z FabianLange $
+ * @version    SVN: $Id: sfRichTextEditorTinyMCE.class.php 11783 2008-09-25 16:21:27Z fabien $
  */
 class sfRichTextEditorTinyMCE extends sfRichTextEditor
 {
@@ -55,7 +55,7 @@ class sfRichTextEditorTinyMCE extends sfRichTextEditor
 
     sfContext::getInstance()->getResponse()->addJavascript($js_path);
 
-    use_helper('Javascript');
+    require_once dirname(__FILE__).'/JavascriptBaseHelper.php';
 
     $tinymce_options = '';
     $style_selector  = '';

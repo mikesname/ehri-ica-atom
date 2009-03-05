@@ -1,6 +1,6 @@
 <?php
 /**
- * Ensures that strings are not joined using the + operator.
+ * Ensures that strings are not joined using array.join().
  *
  * PHP version 5
  *
@@ -9,12 +9,12 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: JoinStringsSniff.php,v 1.1 2008/02/20 03:34:03 squiz Exp $
+ * @version   CVS: $Id: JoinStringsSniff.php,v 1.2 2008/10/23 03:13:59 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
 /**
- * Ensures that strings are not joined using the + operator.
+ * Ensures that strings are not joined using array.join().
  *
  * @category  PHP
  * @package   PHP_CodeSniffer_MySource
@@ -42,10 +42,7 @@ class MySource_Sniffs_Strings_JoinStringsSniff implements PHP_CodeSniffer_Sniff
      */
     public function register()
     {
-        return array(
-                T_PLUS,
-                T_STRING,
-               );
+        return array(T_STRING);
 
     }//end register()
 
@@ -63,38 +60,20 @@ class MySource_Sniffs_Strings_JoinStringsSniff implements PHP_CodeSniffer_Sniff
     {
         $tokens = $phpcsFile->getTokens();
 
-        if ($tokens[$stackPtr]['code'] === T_PLUS) {
-            $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-            $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-            if ($tokens[$prev]['code'] === T_CONSTANT_ENCAPSED_STRING || $tokens[$next]['code'] === T_CONSTANT_ENCAPSED_STRING) {
-                $error = 'Strings must not be joined using the + operator; use [\'string\', str].join(\'\') instead';
-                $phpcsFile->addError($error, $stackPtr);
-            }
-        } else if ($tokens[$stackPtr]['content'] === 'join') {
-            $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr + 1), null, true);
-            if ($tokens[$next]['code'] !== T_OPEN_PARENTHESIS) {
-                return;
-            }
+        if ($tokens[$stackPtr]['content'] !== 'join') {
+            return;
+        }
 
-            $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true);
-            if ($tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
-                return;
-            }
+        $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true);
+        if ($tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
+            return;
+        }
 
-            $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($prev - 1), null, true);
-            if ($tokens[$prev]['code'] !== T_CLOSE_SQUARE_BRACKET) {
-                return;
-            }
-
-            // If we get to here, we know we are looking at code like:
-            // ...].join(...
-            // So make sure a delimiter was passed to the join() function.
-            $next = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$emptyTokens, ($next + 1), null, true);
-            if ($tokens[$next]['code'] === T_CLOSE_PARENTHESIS) {
-                $error = 'A delimiter must be provided when joining arrays';
-                $phpcsFile->addError($error, $stackPtr);
-            }
-        }//end if
+        $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($prev - 1), null, true);
+        if ($tokens[$prev]['code'] === T_CLOSE_SQUARE_BRACKET) {
+            $error = 'Joining strings using inline arrays is not allowed; use the + operator instead';
+            $phpcsFile->addError($error, $stackPtr);
+        }
 
     }//end process()
 

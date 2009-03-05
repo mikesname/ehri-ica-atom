@@ -1,10 +1,10 @@
 create:
   is_secure:   on
-  credentials: [[ contributor, editor, administrator ]]
+  credentials: [[ contributor, editor, administrator, translator ]]
 
 createIsaar:
   is_secure:   on
-  credentials: [[ contributor, editor, administrator ]]
+  credentials: [[ contributor, editor, administrator, translator ]]
 
 delete:
   is_secure:   on

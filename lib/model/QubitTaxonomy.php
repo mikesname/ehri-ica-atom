@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class QubitTaxonomy extends BaseTaxonomy
@@ -48,9 +46,9 @@ class QubitTaxonomy extends BaseTaxonomy
   public function __toString()
   {
     if (!$this->getName())
-      {
+    {
       return (string) $this->getName(array('sourceCulture' => true));
-      }
+    }
 
     return (string) $this->getName();
   }
@@ -60,7 +58,28 @@ class QubitTaxonomy extends BaseTaxonomy
     $criteria = new Criteria;
     $criteria->add(QubitTaxonomy::ID, array(QubitTaxonomy::QUBIT_SETTING_LABEL_ID), Criteria::NOT_IN);
 
+    // Add criteria to sort by name with culture fallback
+    $criteria->addAscendingOrderByColumn('name');
+    $options = array('returnClass'=>'QubitTaxonomy');
+    $culture = sfContext::getInstance()->getUser()->getCulture();
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTaxonomy', $culture, $options);
+
     return QubitTaxonomy::get($criteria);
+  }
+
+  /**
+   * Get the terms in this taxonomy and sort them by name
+   *
+   * @param string $sortColumn name of the sort column
+   * @param string $options optional parameters
+   * @return QubitQuery object
+   */
+  public function getTermsSorted($sortColumn = 'name', $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::TAXONOMY_ID, $this->getId(), Criteria::EQUAL);
+
+    return QubitTerm::getSorted($criteria, $sortColumn, $options);
   }
 
 }

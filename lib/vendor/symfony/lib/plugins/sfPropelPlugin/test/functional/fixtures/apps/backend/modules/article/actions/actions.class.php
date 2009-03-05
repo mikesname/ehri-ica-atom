@@ -6,7 +6,7 @@
  * @package    project
  * @subpackage article
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: actions.class.php 5102 2007-09-15 07:47:25Z fabien $
+ * @version    SVN: $Id: actions.class.php 5125 2007-09-16 00:53:55Z dwhittle $
  */
 class articleActions extends autoarticleActions
 {

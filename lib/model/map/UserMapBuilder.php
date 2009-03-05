@@ -2,7 +2,7 @@
 
 
 
-class UserMapBuilder {
+class UserMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.UserMapBuilder';
@@ -25,22 +25,23 @@ class UserMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitUser::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_user');
-		$tMap->setPhpName('User');
+		$tMap = $this->dbMap->addTable(QubitUser::TABLE_NAME);
+		$tMap->setPhpName('user');
+		$tMap->setClassname('QubitUser');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_actor', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_actor', 'ID', true, null);
 
-		$tMap->addColumn('USERNAME', 'Username', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('USERNAME', 'username', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('EMAIL', 'Email', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('EMAIL', 'email', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('SHA1_PASSWORD', 'Sha1Password', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('SHA1_PASSWORD', 'sha1Password', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('SALT', 'Salt', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('SALT', 'salt', 'VARCHAR', false, 255);
 
 	} 
 } 

@@ -2,7 +2,7 @@
 
 
 
-class RightsActorRelationMapBuilder {
+class RightsActorRelationMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.RightsActorRelationMapBuilder';
@@ -25,24 +25,25 @@ class RightsActorRelationMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitRightsActorRelation::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_rights_actor_relation');
-		$tMap->setPhpName('RightsActorRelation');
+		$tMap = $this->dbMap->addTable(QubitRightsActorRelation::TABLE_NAME);
+		$tMap->setPhpName('rightsActorRelation');
+		$tMap->setClassname('QubitRightsActorRelation');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('RIGHTS_ID', 'RightsId', 'int', CreoleTypes::INTEGER, 'q_rights', 'ID', true, null);
+		$tMap->addForeignKey('RIGHTS_ID', 'rightsId', 'INTEGER', 'q_rights', 'ID', true, null);
 
-		$tMap->addForeignKey('ACTOR_ID', 'ActorId', 'int', CreoleTypes::INTEGER, 'q_actor', 'ID', true, null);
+		$tMap->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'q_actor', 'ID', true, null);
 
-		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
 	} 
 } 

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: DisallowShortOpenTagSniff.php,v 1.7 2007/07/23 01:47:52 squiz Exp $
+ * @version   CVS: $Id: DisallowShortOpenTagSniff.php,v 1.8 2008/12/03 04:42:41 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -51,8 +51,8 @@ class Generic_Sniffs_PHP_DisallowShortOpenTagSniff implements PHP_CodeSniffer_Sn
      * Processes this test, when one of its tokens is encountered.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param int                  $stackPtr  The position of the current token
+     *                                        in the stack passed in $tokens.
      *
      * @return void
      */

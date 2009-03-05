@@ -1,24 +1,27 @@
 <?php
 
-abstract class BaseMenu
+abstract class BaseMenu implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_menu';
+    TABLE_NAME = 'q_menu',
 
-  const URL = 'q_menu.URL';
-  const PARENT_ID = 'q_menu.PARENT_ID';
-  const LFT = 'q_menu.LFT';
-  const RGT = 'q_menu.RGT';
-  const CREATED_AT = 'q_menu.CREATED_AT';
-  const UPDATED_AT = 'q_menu.UPDATED_AT';
-  const SOURCE_CULTURE = 'q_menu.SOURCE_CULTURE';
-  const ID = 'q_menu.ID';
+    PARENT_ID = 'q_menu.PARENT_ID',
+    NAME = 'q_menu.NAME',
+    PATH = 'q_menu.PATH',
+    LFT = 'q_menu.LFT',
+    RGT = 'q_menu.RGT',
+    CREATED_AT = 'q_menu.CREATED_AT',
+    UPDATED_AT = 'q_menu.UPDATED_AT',
+    SOURCE_CULTURE = 'q_menu.SOURCE_CULTURE',
+    ID = 'q_menu.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
-    $criteria->addSelectColumn(QubitMenu::URL);
     $criteria->addSelectColumn(QubitMenu::PARENT_ID);
+    $criteria->addSelectColumn(QubitMenu::NAME);
+    $criteria->addSelectColumn(QubitMenu::PATH);
     $criteria->addSelectColumn(QubitMenu::LFT);
     $criteria->addSelectColumn(QubitMenu::RGT);
     $criteria->addSelectColumn(QubitMenu::CREATED_AT);
@@ -29,14 +32,19 @@ abstract class BaseMenu
     return $criteria;
   }
 
-  protected static $menus = array();
+  protected static
+    $menus = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$menus[$id = $resultSet->getInt(8)]))
+    if (!isset(self::$menus[$id = (int) $row[8]]))
     {
       $menu = new QubitMenu;
-      $menu->hydrate($resultSet);
+      $menu->new = false;
+      $menu->row = $row;
 
       self::$menus[$id] = $menu;
     }
@@ -90,181 +98,256 @@ abstract class BaseMenu
     return $affectedRows;
   }
 
-  protected $url = null;
-
-  public function getUrl()
+  public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
   {
-    return $this->url;
-  }
-
-  public function setUrl($url)
-  {
-    $this->url = $url;
-
-    return $this;
-  }
-
-  protected $parentId = null;
-
-  public function getParentId()
-  {
-    return $this->parentId;
-  }
-
-  public function setParentId($parentId)
-  {
-    $this->parentId = $parentId;
-
-    return $this;
-  }
-
-  protected $lft = null;
-
-  public function getLft()
-  {
-    return $this->lft;
-  }
-
-  public function setLft($lft)
-  {
-    $this->lft = $lft;
-
-    return $this;
-  }
-
-  protected $rgt = null;
-
-  public function getRgt()
-  {
-    return $this->rgt;
-  }
-
-  public function setRgt($rgt)
-  {
-    $this->rgt = $rgt;
-
-    return $this;
-  }
-
-  protected $createdAt = null;
-
-  public function getCreatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if ($order == Criteria::DESC)
     {
-      return date($options['format'], $this->createdAt);
+      return $criteria->addDescendingOrderByColumn(QubitMenu::LFT);
     }
 
-    return $this->createdAt;
+    return $criteria->addAscendingOrderByColumn(QubitMenu::LFT);
   }
 
-  public function setCreatedAt($createdAt)
+  public static function addRootsCriteria(Criteria $criteria)
   {
-    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    $criteria->add(QubitMenu::PARENT_ID);
+
+    return $criteria;
+  }
+
+  protected
+    $tables = array();
+
+  public function __construct()
+  {
+    $this->tables[] = Propel::getDatabaseMap(QubitMenu::DATABASE_NAME)->getTable(QubitMenu::TABLE_NAME);
+  }
+
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
+  {
+    if (array_key_exists($offset, $this->values))
     {
-      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+      return $this->values[$offset];
     }
 
-    $this->createdAt = $createdAt;
-
-    return $this;
-  }
-
-  protected $updatedAt = null;
-
-  public function getUpdatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if (!array_key_exists($rowOffset, $this->row))
     {
-      return date($options['format'], $this->updatedAt);
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
     }
 
-    return $this->updatedAt;
+    return $this->row[$rowOffset];
   }
 
-  public function setUpdatedAt($updatedAt)
+  public function offsetExists($offset, array $options = array())
   {
-    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
     }
 
-    $this->updatedAt = $updatedAt;
+    if ($this->getCurrentmenuI18n($options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
+
+    if (!empty($options['cultureFallback']) && $this->getCurrentmenuI18n(array('sourceCulture' => true) + $options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
+
+    if ('ancestors' == $offset)
+    {
+      return true;
+    }
+
+    if ('descendants' == $offset)
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    if (null !== $value = $this->getCurrentmenuI18n($options)->offsetGet($offset, $options))
+    {
+      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      {
+        $value = $this->getCurrentmenuI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options);
+      }
+
+      return $value;
+    }
+
+    if (!empty($options['cultureFallback']) && null !== $value = $this->getCurrentmenuI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options))
+    {
+      return $value;
+    }
+
+    if ('ancestors' == $offset)
+    {
+      if (!isset($this->ancestors))
+      {
+        if ($this->new)
+        {
+          $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addAncestorsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->ancestors = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->ancestors;
+    }
+
+    if ('descendants' == $offset)
+    {
+      if (!isset($this->descendants))
+      {
+        if ($this->new)
+        {
+          $this->descendants = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addDescendantsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->descendants = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->descendants;
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    $this->getCurrentmenuI18n($options)->offsetSet($offset, $value, $options);
 
     return $this;
   }
 
-  protected $sourceCulture = null;
-
-  public function getSourceCulture()
+  public function __set($name, $value)
   {
-    return $this->sourceCulture;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setSourceCulture($sourceCulture)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->sourceCulture = $sourceCulture;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    $this->getCurrentmenuI18n($options)->offsetUnset($offset, $options);
 
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __unset($name)
   {
-    return $this->id;
+    return $this->offsetUnset($name);
   }
 
-  public function setId($id)
-  {
-    $this->id = $id;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['url'] = $this->url;
-    $this->columnValues['parentId'] = $this->parentId;
-    $this->columnValues['lft'] = $this->lft;
-    $this->columnValues['rgt'] = $this->rgt;
-    $this->columnValues['createdAt'] = $this->createdAt;
-    $this->columnValues['updatedAt'] = $this->updatedAt;
-    $this->columnValues['sourceCulture'] = $this->sourceCulture;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->url = $results->getString($columnOffset++);
-    $this->parentId = $results->getInt($columnOffset++);
-    $this->lft = $results->getInt($columnOffset++);
-    $this->rgt = $results->getInt($columnOffset++);
-    $this->createdAt = $results->getTimestamp($columnOffset++, null);
-    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
-    $this->sourceCulture = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -276,12 +359,12 @@ abstract class BaseMenu
     $criteria = new Criteria;
     $criteria->add(QubitMenu::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -302,12 +385,26 @@ abstract class BaseMenu
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     foreach ($this->menuI18ns as $menuI18n)
     {
-      $menuI18n->setId($this->id);
+      $menuI18n->setid($this->id);
 
       $affectedRows += $menuI18n->save($connection);
     }
@@ -319,59 +416,51 @@ abstract class BaseMenu
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('url'))
-    {
-      $criteria->add(QubitMenu::URL, $this->url);
-    }
-
-    if ($this->isColumnModified('parentId'))
-    {
-      $criteria->add(QubitMenu::PARENT_ID, $this->parentId);
-    }
-
-    if ($this->isColumnModified('lft'))
-    {
-      $criteria->add(QubitMenu::LFT, $this->lft);
-    }
-
-    if ($this->isColumnModified('rgt'))
-    {
-      $criteria->add(QubitMenu::RGT, $this->rgt);
-    }
-
-    if (!$this->isColumnModified('createdAt'))
-    {
-      $this->createdAt = time();
-    }
-    $criteria->add(QubitMenu::CREATED_AT, $this->createdAt);
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitMenu::UPDATED_AT, $this->updatedAt);
-
-    if (!$this->isColumnModified('sourceCulture'))
-    {
-      $this->sourceCulture = sfPropel::getDefaultCulture();
-    }
-    $criteria->add(QubitMenu::SOURCE_CULTURE, $this->sourceCulture);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitMenu::ID, $this->id);
-    }
+    $this->updateNestedSet($connection);
 
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -380,60 +469,70 @@ abstract class BaseMenu
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('url'))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-      $criteria->add(QubitMenu::URL, $this->url);
-    }
-
-    if ($this->isColumnModified('parentId'))
-    {
-      $criteria->add(QubitMenu::PARENT_ID, $this->parentId);
-    }
-
-    if ($this->isColumnModified('lft'))
-    {
-      $criteria->add(QubitMenu::LFT, $this->lft);
-    }
-
-    if ($this->isColumnModified('rgt'))
-    {
-      $criteria->add(QubitMenu::RGT, $this->rgt);
-    }
-
-    if ($this->isColumnModified('createdAt'))
-    {
-      $criteria->add(QubitMenu::CREATED_AT, $this->createdAt);
-    }
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitMenu::UPDATED_AT, $this->updatedAt);
-
-    if ($this->isColumnModified('sourceCulture'))
-    {
-      $criteria->add(QubitMenu::SOURCE_CULTURE, $this->sourceCulture);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitMenu::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
-      $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitMenu::ID, $this->id);
-
-      if (!isset($connection))
+      // Get the "original" parentId before any updates
+      $rowOffset = 0; 
+      $originalParentId = null;
+      foreach ($this->tables as $table)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
+        foreach ($table->getColumns() as $column)
+        {
+          if ('parentId' == $column->getPhpName())
+          {
+            $originalParentId = $this->row[$rowOffset];
+            break;
+          }
+          $rowOffset++;
+        }
+      }
+      
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
+      {
+        $this->updateNestedSet($connection);
+      }
+    }
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      $selectCriteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -448,6 +547,9 @@ abstract class BaseMenu
 
     $affectedRows = 0;
 
+    $this->refresh(array('connection' => $connection));
+    $this->deleteFromNestedSet($connection);
+
     $criteria = new Criteria;
     $criteria->add(QubitMenu::ID, $this->id);
 
@@ -461,38 +563,86 @@ abstract class BaseMenu
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addMenuI18nsCriteriaById(Criteria $criteria, $id)
+  public static function addJoinparentCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitMenu::PARENT_ID, QubitMenu::ID);
+
+    return $criteria;
+  }
+
+  public static function addmenusRelatedByparentIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitMenu::PARENT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getmenusRelatedByparentIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addmenusRelatedByparentIdCriteriaById($criteria, $id);
+
+    return QubitMenu::get($criteria, $options);
+  }
+
+  public function addmenusRelatedByparentIdCriteria(Criteria $criteria)
+  {
+    return self::addmenusRelatedByparentIdCriteriaById($criteria, $this->id);
+  }
+
+  protected
+    $menusRelatedByparentId = null;
+
+  public function getmenusRelatedByparentId(array $options = array())
+  {
+    if (!isset($this->menusRelatedByparentId))
+    {
+      if (!isset($this->id))
+      {
+        $this->menusRelatedByparentId = QubitQuery::create();
+      }
+      else
+      {
+        $this->menusRelatedByparentId = self::getmenusRelatedByparentIdById($this->id, array('self' => $this) + $options);
+      }
+    }
+
+    return $this->menusRelatedByparentId;
+  }
+
+  public static function addmenuI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitMenuI18n::ID, $id);
 
     return $criteria;
   }
 
-  public static function getMenuI18nsById($id, array $options = array())
+  public static function getmenuI18nsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addMenuI18nsCriteriaById($criteria, $id);
+    self::addmenuI18nsCriteriaById($criteria, $id);
 
     return QubitMenuI18n::get($criteria, $options);
   }
 
-  public function addMenuI18nsCriteria(Criteria $criteria)
+  public function addmenuI18nsCriteria(Criteria $criteria)
   {
-    return self::addMenuI18nsCriteriaById($criteria, $this->id);
+    return self::addmenuI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected $menuI18ns = null;
+  protected
+    $menuI18ns = null;
 
-  public function getMenuI18ns(array $options = array())
+  public function getmenuI18ns(array $options = array())
   {
     if (!isset($this->menuI18ns))
     {
@@ -502,32 +652,14 @@ abstract class BaseMenu
       }
       else
       {
-        $this->menuI18ns = self::getMenuI18nsById($this->id, array('self' => $this) + $options);
+        $this->menuI18ns = self::getmenuI18nsById($this->id, array('self' => $this) + $options);
       }
     }
 
     return $this->menuI18ns;
   }
 
-  public function getName(array $options = array())
-  {
-    $name = $this->getCurrentMenuI18n($options)->getName();
-    if (!empty($options['cultureFallback']) && strlen($name) < 1)
-    {
-      $name = $this->getCurrentMenuI18n(array('sourceCulture' => true) + $options)->getName();
-    }
-
-    return $name;
-  }
-
-  public function setName($value, array $options = array())
-  {
-    $this->getCurrentMenuI18n($options)->setName($value);
-
-    return $this;
-  }
-
-  public function getCurrentMenuI18n(array $options = array())
+  public function getCurrentmenuI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
     {
@@ -541,16 +673,162 @@ abstract class BaseMenu
 
     if (!isset($this->menuI18ns[$options['culture']]))
     {
-      if (null === $menuI18n = QubitMenuI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      if (!isset($this->id) || null === $menuI18n = QubitMenuI18n::getByIdAndCulture($this->id, $options['culture'], $options))
       {
         $menuI18n = new QubitMenuI18n;
-        $menuI18n->setCulture($options['culture']);
+        $menuI18n->setculture($options['culture']);
       }
       $this->menuI18ns[$options['culture']] = $menuI18n;
     }
 
     return $this->menuI18ns[$options['culture']];
   }
-}
 
-BasePeer::getMapBuilder('lib.model.map.MenuMapBuilder');
+  public function addAncestorsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitMenu::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitMenu::RGT, $this->rgt, Criteria::GREATER_THAN);
+  }
+
+  protected
+    $ancestors = null;
+
+  public function addDescendantsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitMenu::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitMenu::RGT, $this->rgt, Criteria::LESS_THAN);
+  }
+
+  protected
+    $descendants = null;
+
+  protected function updateNestedSet($connection = null)
+  {
+unset($this->values['lft']);
+unset($this->values['rgt']);
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    if (!isset($this->lft) || !isset($this->rgt))
+    {
+      $delta = 2;
+    }
+    else
+    {
+      $delta = $this->rgt - $this->lft + 1;
+    }
+
+    if (null === $parent = $this->offsetGet('parent', array('connection' => $connection)))
+    {
+      $statement = $connection->prepare('
+        SELECT MAX('.QubitMenu::RGT.')
+        FROM '.QubitMenu::TABLE_NAME);
+      $statement->execute();
+      $row = $statement->fetch();
+      $max = $row[0];
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $max + 1;
+        $this->rgt = $max + 2;
+
+        return $this;
+      }
+
+      $shift = $max + 1 - $this->lft;
+    }
+    else
+    {
+      $parent->refresh(array('connection' => $connection));
+
+      if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
+      {
+        throw new PropelException('An object cannot be a descendant of itself.');
+      }
+
+      $statement = $connection->prepare('
+        UPDATE '.QubitMenu::TABLE_NAME.'
+        SET '.QubitMenu::LFT.' = '.QubitMenu::LFT.' + ?
+        WHERE '.QubitMenu::LFT.' >= ?');
+      $statement->execute(array($delta, $parent->rgt));
+
+      $statement = $connection->prepare('
+        UPDATE '.QubitMenu::TABLE_NAME.'
+        SET '.QubitMenu::RGT.' = '.QubitMenu::RGT.' + ?
+        WHERE '.QubitMenu::RGT.' >= ?');
+      $statement->execute(array($delta, $parent->rgt));
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $parent->rgt;
+        $this->rgt = $parent->rgt + 1;
+
+        return $this;
+      }
+
+      if ($this->lft > $parent->rgt)
+      {
+        $this->lft += $delta;
+        $this->rgt += $delta;
+      }
+
+      $shift = $parent->rgt - $this->lft;
+    }
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitMenu::TABLE_NAME.'
+      SET '.QubitMenu::LFT.' = '.QubitMenu::LFT.' + ?, '.QubitMenu::RGT.' = '.QubitMenu::RGT.' + ?
+      WHERE '.QubitMenu::LFT.' >= ?
+      AND '.QubitMenu::RGT.' <= ?');
+    $statement->execute(array($shift, $shift, $this->lft, $this->rgt));
+
+    $this->deleteFromNestedSet($connection);
+
+    if ($shift > 0)
+    {
+      $this->lft -= $delta;
+      $this->rgt -= $delta;
+    }
+
+    $this->lft += $shift;
+    $this->rgt += $shift;
+
+    return $this;
+  }
+
+  protected function deleteFromNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitMenu::DATABASE_NAME);
+    }
+
+    $delta = $this->rgt - $this->lft + 1;
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitMenu::TABLE_NAME.'
+      SET '.QubitMenu::LFT.' = '.QubitMenu::LFT.' - ?
+      WHERE '.QubitMenu::LFT.' >= ?');
+    $statement->execute(array($delta, $this->rgt));
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitMenu::TABLE_NAME.'
+      SET '.QubitMenu::RGT.' = '.QubitMenu::RGT.' - ?
+      WHERE '.QubitMenu::RGT.' >= ?');
+    $statement->execute(array($delta, $this->rgt));
+
+    return $this;
+  }
+
+  public function __call($name, $args)
+  {
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
+
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
+
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+  }
+}

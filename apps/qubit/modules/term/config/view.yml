@@ -1,2 +1,2 @@
 listSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]

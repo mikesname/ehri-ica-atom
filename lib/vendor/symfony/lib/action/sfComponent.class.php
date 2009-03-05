@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage action
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfComponent.class.php 9044 2008-05-19 06:18:41Z Carl.Vondrick $
+ * @version    SVN: $Id: sfComponent.class.php 11599 2008-09-16 15:49:15Z fabien $
  */
 abstract class sfComponent
 {
@@ -221,6 +221,24 @@ abstract class sfComponent
   public function getController()
   {
     return $this->context->getController();
+  }
+
+  /**
+   * Generates a URL for the given route and arguments.
+   *
+   * This is a proxy method equivalent to:
+   *
+   * <code>$this->getContext()->getRouting()->generate(...)</code>
+   *
+   * @param  string  The route name
+   * @param  array   An array of parameters for the route
+   * @param  Boolean Whether to generate an absolute URL or not
+   *
+   * @return string  The URL
+   */
+  public function generateUrl($route, $params = array(), $absolute = false)
+  {
+    return $this->context->getRouting()->generate($route, $params, $absolute);
   }
 
   /**

@@ -2,7 +2,7 @@
 
 
 
-class EventMapBuilder {
+class EventMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.EventMapBuilder';
@@ -25,34 +25,35 @@ class EventMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitEvent::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_event');
-		$tMap->setPhpName('Event');
+		$tMap = $this->dbMap->addTable(QubitEvent::TABLE_NAME);
+		$tMap->setPhpName('event');
+		$tMap->setClassname('QubitEvent');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null);
 
-		$tMap->addColumn('START_DATE', 'StartDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('START_DATE', 'startDate', 'DATE', false, null);
 
-		$tMap->addColumn('START_TIME', 'StartTime', 'int', CreoleTypes::TIME, false, null);
+		$tMap->addColumn('START_TIME', 'startTime', 'TIME', false, null);
 
-		$tMap->addColumn('END_DATE', 'EndDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('END_DATE', 'endDate', 'DATE', false, null);
 
-		$tMap->addColumn('END_TIME', 'EndTime', 'int', CreoleTypes::TIME, false, null);
+		$tMap->addColumn('END_TIME', 'endTime', 'TIME', false, null);
 
-		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', true, null);
 
-		$tMap->addForeignKey('INFORMATION_OBJECT_ID', 'InformationObjectId', 'int', CreoleTypes::INTEGER, 'q_information_object', 'ID', false, null);
+		$tMap->addForeignKey('INFORMATION_OBJECT_ID', 'informationObjectId', 'INTEGER', 'q_information_object', 'ID', false, null);
 
-		$tMap->addForeignKey('ACTOR_ID', 'ActorId', 'int', CreoleTypes::INTEGER, 'q_actor', 'ID', false, null);
+		$tMap->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'q_actor', 'ID', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
 	} 
 } 

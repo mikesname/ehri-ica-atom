@@ -1,8 +1,5 @@
-editSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
-
 editIsdiahSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
 
 listSuccess:
   components:

@@ -14,10 +14,12 @@
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: HelperHelper.php 7757 2008-03-07 10:55:22Z fabien $
+ * @version    SVN: $Id: HelperHelper.php 11783 2008-09-25 16:21:27Z fabien $
  */
 
 function use_helper()
 {
-  sfLoader::loadHelpers(func_get_args(), sfContext::getInstance()->getModuleName());
+  $context = sfContext::getInstance();
+
+  $context->getConfiguration()->loadHelpers(func_get_args(), $context->getModuleName());
 }

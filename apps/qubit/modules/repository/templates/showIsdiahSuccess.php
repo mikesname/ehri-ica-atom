@@ -5,7 +5,7 @@
 
 <?php if ($editCredentials): ?>
   <tr><td colspan="2" class="headerCell">
-  <?php echo link_to($repository, 'repository/editIsdiah/?id='.$repository->getId())?>
+  <?php echo link_to(render_title($repository), 'repository/editIsdiah/?id='.$repository->getId())?>
   </td></tr>
 <?php else: ?>
   <tr><td colspan="2" class="headerCell">
@@ -19,7 +19,9 @@
   </td></tr>
 <?php endif; ?>
 
-<tr><th><?php echo __('authorized form of name')?></th><td><?php echo $repository ?></td></th>
+<?php if ($repository->getAuthorizedFormOfName(array('cultureFallback' => true))): ?>
+  <tr><th><?php echo __('authorized form of name')?></th><td><?php echo $repository ?></td></tr>
+<?php endif; ?>
 
 <?php if (count($otherNames) > 0): ?>
   <tr><th><?php echo __('other names') ?></th><td>
@@ -39,7 +41,7 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if (!empty($contactInformation)): ?>
+<?php if (0 < count($contactInformation)): ?>
   <tr><th><?php echo __('Contact information') ?></th><td>
   <?php foreach ($contactInformation as $contact): ?>
       <table class="inline" style="margin-bottom: 5px;"><tr>
@@ -213,7 +215,7 @@
   <tr><th><?php echo __('language of description')?>:
   </th><td>
   <?php foreach ($languageCodes as $languageCode): ?>
-    <?php echo format_language($languageCode->getValue()) ?><br />
+    <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?><br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
@@ -222,7 +224,7 @@
   <tr><th><?php echo __('script of description')?>:
   </th><td>
   <?php foreach ($scriptCodes as $scriptCode): ?>
-    <?php echo format_script($scriptCode->getValue()) ?><br />
+    <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?><br />
   <?php endforeach; ?>
   </td></tr>
 <?php endif; ?>
@@ -246,13 +248,13 @@
 </tbody>
 </table>
 
-<div class="menu-action">
 <?php if ($editCredentials): ?>
+<div class="menu-action">
 <?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), 'repository/editIsdiah?id='.$repository->getId()) ?>
-<?php endif; ?>
 </div>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), 'repository/createIsdiah'); ?>
+  <?php echo link_to(__('add new'), 'repository/createIsdiah'); ?>
   <?php echo link_to(__('list all'), 'repository/list'); ?>
 </div>
+<?php endif; ?>

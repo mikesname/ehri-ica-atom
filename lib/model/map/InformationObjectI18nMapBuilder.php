@@ -2,7 +2,7 @@
 
 
 
-class InformationObjectI18nMapBuilder {
+class InformationObjectI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.InformationObjectI18nMapBuilder';
@@ -25,58 +25,59 @@ class InformationObjectI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitInformationObjectI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_information_object_i18n');
-		$tMap->setPhpName('InformationObjectI18n');
+		$tMap = $this->dbMap->addTable(QubitInformationObjectI18n::TABLE_NAME);
+		$tMap->setPhpName('informationObjectI18n');
+		$tMap->setClassname('QubitInformationObjectI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('TITLE', 'Title', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('TITLE', 'title', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('ALTERNATE_TITLE', 'AlternateTitle', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('ALTERNATE_TITLE', 'alternateTitle', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('EDITION', 'Edition', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('EDITION', 'edition', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('EXTENT_AND_MEDIUM', 'ExtentAndMedium', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('EXTENT_AND_MEDIUM', 'extentAndMedium', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('ARCHIVAL_HISTORY', 'ArchivalHistory', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('ARCHIVAL_HISTORY', 'archivalHistory', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('ACQUISITION', 'Acquisition', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('ACQUISITION', 'acquisition', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('SCOPE_AND_CONTENT', 'ScopeAndContent', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('SCOPE_AND_CONTENT', 'scopeAndContent', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('APPRAISAL', 'Appraisal', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('APPRAISAL', 'appraisal', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('ACCRUALS', 'Accruals', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('ACCRUALS', 'accruals', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('ARRANGEMENT', 'Arrangement', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('ARRANGEMENT', 'arrangement', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('ACCESS_CONDITIONS', 'AccessConditions', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('ACCESS_CONDITIONS', 'accessConditions', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('REPRODUCTION_CONDITIONS', 'ReproductionConditions', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('REPRODUCTION_CONDITIONS', 'reproductionConditions', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('PHYSICAL_CHARACTERISTICS', 'PhysicalCharacteristics', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('PHYSICAL_CHARACTERISTICS', 'physicalCharacteristics', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('FINDING_AIDS', 'FindingAids', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('FINDING_AIDS', 'findingAids', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('LOCATION_OF_ORIGINALS', 'LocationOfOriginals', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('LOCATION_OF_ORIGINALS', 'locationOfOriginals', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('LOCATION_OF_COPIES', 'LocationOfCopies', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('LOCATION_OF_COPIES', 'locationOfCopies', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('RELATED_UNITS_OF_DESCRIPTION', 'RelatedUnitsOfDescription', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('RELATED_UNITS_OF_DESCRIPTION', 'relatedUnitsOfDescription', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('INSTITUTION_RESPONSIBLE_IDENTIFIER', 'InstitutionResponsibleIdentifier', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('INSTITUTION_RESPONSIBLE_IDENTIFIER', 'institutionResponsibleIdentifier', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('RULES', 'Rules', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('RULES', 'rules', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('SOURCES', 'Sources', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('SOURCES', 'sources', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('REVISION_HISTORY', 'RevisionHistory', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('REVISION_HISTORY', 'revisionHistory', 'LONGVARCHAR', false, null);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_information_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_information_object', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

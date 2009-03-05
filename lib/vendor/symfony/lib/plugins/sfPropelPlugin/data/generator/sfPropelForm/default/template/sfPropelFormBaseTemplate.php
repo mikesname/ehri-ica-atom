@@ -3,8 +3,10 @@
 /**
  * Project form base class.
  *
- * @package    form
- * @version    SVN: $Id: sfPropelFormBaseTemplate.php 6174 2007-11-27 06:22:40Z fabien $
+ * @package    ##PROJECT_NAME##
+ * @subpackage form
+ * @author     ##AUTHOR_NAME##
+ * @version    SVN: $Id: sfPropelFormBaseTemplate.php 9304 2008-05-27 03:49:32Z dwhittle $
  */
 abstract class BaseFormPropel extends sfFormPropel
 {

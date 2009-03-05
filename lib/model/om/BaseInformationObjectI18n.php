@@ -1,34 +1,35 @@
 <?php
 
-abstract class BaseInformationObjectI18n
+abstract class BaseInformationObjectI18n implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_information_object_i18n';
+    TABLE_NAME = 'q_information_object_i18n',
 
-  const TITLE = 'q_information_object_i18n.TITLE';
-  const ALTERNATE_TITLE = 'q_information_object_i18n.ALTERNATE_TITLE';
-  const EDITION = 'q_information_object_i18n.EDITION';
-  const EXTENT_AND_MEDIUM = 'q_information_object_i18n.EXTENT_AND_MEDIUM';
-  const ARCHIVAL_HISTORY = 'q_information_object_i18n.ARCHIVAL_HISTORY';
-  const ACQUISITION = 'q_information_object_i18n.ACQUISITION';
-  const SCOPE_AND_CONTENT = 'q_information_object_i18n.SCOPE_AND_CONTENT';
-  const APPRAISAL = 'q_information_object_i18n.APPRAISAL';
-  const ACCRUALS = 'q_information_object_i18n.ACCRUALS';
-  const ARRANGEMENT = 'q_information_object_i18n.ARRANGEMENT';
-  const ACCESS_CONDITIONS = 'q_information_object_i18n.ACCESS_CONDITIONS';
-  const REPRODUCTION_CONDITIONS = 'q_information_object_i18n.REPRODUCTION_CONDITIONS';
-  const PHYSICAL_CHARACTERISTICS = 'q_information_object_i18n.PHYSICAL_CHARACTERISTICS';
-  const FINDING_AIDS = 'q_information_object_i18n.FINDING_AIDS';
-  const LOCATION_OF_ORIGINALS = 'q_information_object_i18n.LOCATION_OF_ORIGINALS';
-  const LOCATION_OF_COPIES = 'q_information_object_i18n.LOCATION_OF_COPIES';
-  const RELATED_UNITS_OF_DESCRIPTION = 'q_information_object_i18n.RELATED_UNITS_OF_DESCRIPTION';
-  const INSTITUTION_RESPONSIBLE_IDENTIFIER = 'q_information_object_i18n.INSTITUTION_RESPONSIBLE_IDENTIFIER';
-  const RULES = 'q_information_object_i18n.RULES';
-  const SOURCES = 'q_information_object_i18n.SOURCES';
-  const REVISION_HISTORY = 'q_information_object_i18n.REVISION_HISTORY';
-  const ID = 'q_information_object_i18n.ID';
-  const CULTURE = 'q_information_object_i18n.CULTURE';
+    TITLE = 'q_information_object_i18n.TITLE',
+    ALTERNATE_TITLE = 'q_information_object_i18n.ALTERNATE_TITLE',
+    EDITION = 'q_information_object_i18n.EDITION',
+    EXTENT_AND_MEDIUM = 'q_information_object_i18n.EXTENT_AND_MEDIUM',
+    ARCHIVAL_HISTORY = 'q_information_object_i18n.ARCHIVAL_HISTORY',
+    ACQUISITION = 'q_information_object_i18n.ACQUISITION',
+    SCOPE_AND_CONTENT = 'q_information_object_i18n.SCOPE_AND_CONTENT',
+    APPRAISAL = 'q_information_object_i18n.APPRAISAL',
+    ACCRUALS = 'q_information_object_i18n.ACCRUALS',
+    ARRANGEMENT = 'q_information_object_i18n.ARRANGEMENT',
+    ACCESS_CONDITIONS = 'q_information_object_i18n.ACCESS_CONDITIONS',
+    REPRODUCTION_CONDITIONS = 'q_information_object_i18n.REPRODUCTION_CONDITIONS',
+    PHYSICAL_CHARACTERISTICS = 'q_information_object_i18n.PHYSICAL_CHARACTERISTICS',
+    FINDING_AIDS = 'q_information_object_i18n.FINDING_AIDS',
+    LOCATION_OF_ORIGINALS = 'q_information_object_i18n.LOCATION_OF_ORIGINALS',
+    LOCATION_OF_COPIES = 'q_information_object_i18n.LOCATION_OF_COPIES',
+    RELATED_UNITS_OF_DESCRIPTION = 'q_information_object_i18n.RELATED_UNITS_OF_DESCRIPTION',
+    INSTITUTION_RESPONSIBLE_IDENTIFIER = 'q_information_object_i18n.INSTITUTION_RESPONSIBLE_IDENTIFIER',
+    RULES = 'q_information_object_i18n.RULES',
+    SOURCES = 'q_information_object_i18n.SOURCES',
+    REVISION_HISTORY = 'q_information_object_i18n.REVISION_HISTORY',
+    ID = 'q_information_object_i18n.ID',
+    CULTURE = 'q_information_object_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -59,14 +60,19 @@ abstract class BaseInformationObjectI18n
     return $criteria;
   }
 
-  protected static $informationObjectI18ns = array();
+  protected static
+    $informationObjectI18ns = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$informationObjectI18ns[$key = serialize(array($resultSet->getInt(22), $resultSet->getString(23)))]))
+    if (!isset(self::$informationObjectI18ns[$key = serialize(array((int) $row[21], (string) $row[22]))]))
     {
       $informationObjectI18n = new QubitInformationObjectI18n;
-      $informationObjectI18n->hydrate($resultSet);
+      $informationObjectI18n->new = false;
+      $informationObjectI18n->row = $row;
 
       self::$informationObjectI18ns[$key] = $informationObjectI18n;
     }
@@ -121,399 +127,160 @@ abstract class BaseInformationObjectI18n
     return $affectedRows;
   }
 
-  protected $title = null;
+  protected
+    $tables = array();
 
-  public function getTitle()
+  public function __construct()
   {
-    return $this->title;
+    $this->tables[] = Propel::getDatabaseMap(QubitInformationObjectI18n::DATABASE_NAME)->getTable(QubitInformationObjectI18n::TABLE_NAME);
   }
 
-  public function setTitle($title)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->title = $title;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $alternateTitle = null;
-
-  public function getAlternateTitle()
+  public function __set($name, $value)
   {
-    return $this->alternateTitle;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setAlternateTitle($alternateTitle)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->alternateTitle = $alternateTitle;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $edition = null;
-
-  public function getEdition()
+  public function __unset($name)
   {
-    return $this->edition;
+    return $this->offsetUnset($name);
   }
 
-  public function setEdition($edition)
-  {
-    $this->edition = $edition;
-
-    return $this;
-  }
-
-  protected $extentAndMedium = null;
-
-  public function getExtentAndMedium()
-  {
-    return $this->extentAndMedium;
-  }
-
-  public function setExtentAndMedium($extentAndMedium)
-  {
-    $this->extentAndMedium = $extentAndMedium;
-
-    return $this;
-  }
-
-  protected $archivalHistory = null;
-
-  public function getArchivalHistory()
-  {
-    return $this->archivalHistory;
-  }
-
-  public function setArchivalHistory($archivalHistory)
-  {
-    $this->archivalHistory = $archivalHistory;
-
-    return $this;
-  }
-
-  protected $acquisition = null;
-
-  public function getAcquisition()
-  {
-    return $this->acquisition;
-  }
-
-  public function setAcquisition($acquisition)
-  {
-    $this->acquisition = $acquisition;
-
-    return $this;
-  }
-
-  protected $scopeAndContent = null;
-
-  public function getScopeAndContent()
-  {
-    return $this->scopeAndContent;
-  }
-
-  public function setScopeAndContent($scopeAndContent)
-  {
-    $this->scopeAndContent = $scopeAndContent;
-
-    return $this;
-  }
-
-  protected $appraisal = null;
-
-  public function getAppraisal()
-  {
-    return $this->appraisal;
-  }
-
-  public function setAppraisal($appraisal)
-  {
-    $this->appraisal = $appraisal;
-
-    return $this;
-  }
-
-  protected $accruals = null;
-
-  public function getAccruals()
-  {
-    return $this->accruals;
-  }
-
-  public function setAccruals($accruals)
-  {
-    $this->accruals = $accruals;
-
-    return $this;
-  }
-
-  protected $arrangement = null;
-
-  public function getArrangement()
-  {
-    return $this->arrangement;
-  }
-
-  public function setArrangement($arrangement)
-  {
-    $this->arrangement = $arrangement;
-
-    return $this;
-  }
-
-  protected $accessConditions = null;
-
-  public function getAccessConditions()
-  {
-    return $this->accessConditions;
-  }
-
-  public function setAccessConditions($accessConditions)
-  {
-    $this->accessConditions = $accessConditions;
-
-    return $this;
-  }
-
-  protected $reproductionConditions = null;
-
-  public function getReproductionConditions()
-  {
-    return $this->reproductionConditions;
-  }
-
-  public function setReproductionConditions($reproductionConditions)
-  {
-    $this->reproductionConditions = $reproductionConditions;
-
-    return $this;
-  }
-
-  protected $physicalCharacteristics = null;
-
-  public function getPhysicalCharacteristics()
-  {
-    return $this->physicalCharacteristics;
-  }
-
-  public function setPhysicalCharacteristics($physicalCharacteristics)
-  {
-    $this->physicalCharacteristics = $physicalCharacteristics;
-
-    return $this;
-  }
-
-  protected $findingAids = null;
-
-  public function getFindingAids()
-  {
-    return $this->findingAids;
-  }
-
-  public function setFindingAids($findingAids)
-  {
-    $this->findingAids = $findingAids;
-
-    return $this;
-  }
-
-  protected $locationOfOriginals = null;
-
-  public function getLocationOfOriginals()
-  {
-    return $this->locationOfOriginals;
-  }
-
-  public function setLocationOfOriginals($locationOfOriginals)
-  {
-    $this->locationOfOriginals = $locationOfOriginals;
-
-    return $this;
-  }
-
-  protected $locationOfCopies = null;
-
-  public function getLocationOfCopies()
-  {
-    return $this->locationOfCopies;
-  }
-
-  public function setLocationOfCopies($locationOfCopies)
-  {
-    $this->locationOfCopies = $locationOfCopies;
-
-    return $this;
-  }
-
-  protected $relatedUnitsOfDescription = null;
-
-  public function getRelatedUnitsOfDescription()
-  {
-    return $this->relatedUnitsOfDescription;
-  }
-
-  public function setRelatedUnitsOfDescription($relatedUnitsOfDescription)
-  {
-    $this->relatedUnitsOfDescription = $relatedUnitsOfDescription;
-
-    return $this;
-  }
-
-  protected $institutionResponsibleIdentifier = null;
-
-  public function getInstitutionResponsibleIdentifier()
-  {
-    return $this->institutionResponsibleIdentifier;
-  }
-
-  public function setInstitutionResponsibleIdentifier($institutionResponsibleIdentifier)
-  {
-    $this->institutionResponsibleIdentifier = $institutionResponsibleIdentifier;
-
-    return $this;
-  }
-
-  protected $rules = null;
-
-  public function getRules()
-  {
-    return $this->rules;
-  }
-
-  public function setRules($rules)
-  {
-    $this->rules = $rules;
-
-    return $this;
-  }
-
-  protected $sources = null;
-
-  public function getSources()
-  {
-    return $this->sources;
-  }
-
-  public function setSources($sources)
-  {
-    $this->sources = $sources;
-
-    return $this;
-  }
-
-  protected $revisionHistory = null;
-
-  public function getRevisionHistory()
-  {
-    return $this->revisionHistory;
-  }
-
-  public function setRevisionHistory($revisionHistory)
-  {
-    $this->revisionHistory = $revisionHistory;
-
-    return $this;
-  }
-
-  protected $id = null;
-
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  public function setId($id)
-  {
-    $this->id = $id;
-
-    return $this;
-  }
-
-  protected $culture = null;
-
-  public function getCulture()
-  {
-    return $this->culture;
-  }
-
-  public function setCulture($culture)
-  {
-    $this->culture = $culture;
-
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['title'] = $this->title;
-    $this->columnValues['alternateTitle'] = $this->alternateTitle;
-    $this->columnValues['edition'] = $this->edition;
-    $this->columnValues['extentAndMedium'] = $this->extentAndMedium;
-    $this->columnValues['archivalHistory'] = $this->archivalHistory;
-    $this->columnValues['acquisition'] = $this->acquisition;
-    $this->columnValues['scopeAndContent'] = $this->scopeAndContent;
-    $this->columnValues['appraisal'] = $this->appraisal;
-    $this->columnValues['accruals'] = $this->accruals;
-    $this->columnValues['arrangement'] = $this->arrangement;
-    $this->columnValues['accessConditions'] = $this->accessConditions;
-    $this->columnValues['reproductionConditions'] = $this->reproductionConditions;
-    $this->columnValues['physicalCharacteristics'] = $this->physicalCharacteristics;
-    $this->columnValues['findingAids'] = $this->findingAids;
-    $this->columnValues['locationOfOriginals'] = $this->locationOfOriginals;
-    $this->columnValues['locationOfCopies'] = $this->locationOfCopies;
-    $this->columnValues['relatedUnitsOfDescription'] = $this->relatedUnitsOfDescription;
-    $this->columnValues['institutionResponsibleIdentifier'] = $this->institutionResponsibleIdentifier;
-    $this->columnValues['rules'] = $this->rules;
-    $this->columnValues['sources'] = $this->sources;
-    $this->columnValues['revisionHistory'] = $this->revisionHistory;
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['culture'] = $this->culture;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->title = $results->getString($columnOffset++);
-    $this->alternateTitle = $results->getString($columnOffset++);
-    $this->edition = $results->getString($columnOffset++);
-    $this->extentAndMedium = $results->getString($columnOffset++);
-    $this->archivalHistory = $results->getString($columnOffset++);
-    $this->acquisition = $results->getString($columnOffset++);
-    $this->scopeAndContent = $results->getString($columnOffset++);
-    $this->appraisal = $results->getString($columnOffset++);
-    $this->accruals = $results->getString($columnOffset++);
-    $this->arrangement = $results->getString($columnOffset++);
-    $this->accessConditions = $results->getString($columnOffset++);
-    $this->reproductionConditions = $results->getString($columnOffset++);
-    $this->physicalCharacteristics = $results->getString($columnOffset++);
-    $this->findingAids = $results->getString($columnOffset++);
-    $this->locationOfOriginals = $results->getString($columnOffset++);
-    $this->locationOfCopies = $results->getString($columnOffset++);
-    $this->relatedUnitsOfDescription = $results->getString($columnOffset++);
-    $this->institutionResponsibleIdentifier = $results->getString($columnOffset++);
-    $this->rules = $results->getString($columnOffset++);
-    $this->sources = $results->getString($columnOffset++);
-    $this->revisionHistory = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-    $this->culture = $results->getString($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $new = true;
+
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -526,12 +293,12 @@ abstract class BaseInformationObjectI18n
     $criteria->add(QubitInformationObjectI18n::ID, $this->id);
     $criteria->add(QubitInformationObjectI18n::CULTURE, $this->culture);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -552,8 +319,22 @@ abstract class BaseInformationObjectI18n
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -562,130 +343,49 @@ abstract class BaseInformationObjectI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('title'))
-    {
-      $criteria->add(QubitInformationObjectI18n::TITLE, $this->title);
-    }
-
-    if ($this->isColumnModified('alternateTitle'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ALTERNATE_TITLE, $this->alternateTitle);
-    }
-
-    if ($this->isColumnModified('edition'))
-    {
-      $criteria->add(QubitInformationObjectI18n::EDITION, $this->edition);
-    }
-
-    if ($this->isColumnModified('extentAndMedium'))
-    {
-      $criteria->add(QubitInformationObjectI18n::EXTENT_AND_MEDIUM, $this->extentAndMedium);
-    }
-
-    if ($this->isColumnModified('archivalHistory'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ARCHIVAL_HISTORY, $this->archivalHistory);
-    }
-
-    if ($this->isColumnModified('acquisition'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ACQUISITION, $this->acquisition);
-    }
-
-    if ($this->isColumnModified('scopeAndContent'))
-    {
-      $criteria->add(QubitInformationObjectI18n::SCOPE_AND_CONTENT, $this->scopeAndContent);
-    }
-
-    if ($this->isColumnModified('appraisal'))
-    {
-      $criteria->add(QubitInformationObjectI18n::APPRAISAL, $this->appraisal);
-    }
-
-    if ($this->isColumnModified('accruals'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ACCRUALS, $this->accruals);
-    }
-
-    if ($this->isColumnModified('arrangement'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ARRANGEMENT, $this->arrangement);
-    }
-
-    if ($this->isColumnModified('accessConditions'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ACCESS_CONDITIONS, $this->accessConditions);
-    }
-
-    if ($this->isColumnModified('reproductionConditions'))
-    {
-      $criteria->add(QubitInformationObjectI18n::REPRODUCTION_CONDITIONS, $this->reproductionConditions);
-    }
-
-    if ($this->isColumnModified('physicalCharacteristics'))
-    {
-      $criteria->add(QubitInformationObjectI18n::PHYSICAL_CHARACTERISTICS, $this->physicalCharacteristics);
-    }
-
-    if ($this->isColumnModified('findingAids'))
-    {
-      $criteria->add(QubitInformationObjectI18n::FINDING_AIDS, $this->findingAids);
-    }
-
-    if ($this->isColumnModified('locationOfOriginals'))
-    {
-      $criteria->add(QubitInformationObjectI18n::LOCATION_OF_ORIGINALS, $this->locationOfOriginals);
-    }
-
-    if ($this->isColumnModified('locationOfCopies'))
-    {
-      $criteria->add(QubitInformationObjectI18n::LOCATION_OF_COPIES, $this->locationOfCopies);
-    }
-
-    if ($this->isColumnModified('relatedUnitsOfDescription'))
-    {
-      $criteria->add(QubitInformationObjectI18n::RELATED_UNITS_OF_DESCRIPTION, $this->relatedUnitsOfDescription);
-    }
-
-    if ($this->isColumnModified('institutionResponsibleIdentifier'))
-    {
-      $criteria->add(QubitInformationObjectI18n::INSTITUTION_RESPONSIBLE_IDENTIFIER, $this->institutionResponsibleIdentifier);
-    }
-
-    if ($this->isColumnModified('rules'))
-    {
-      $criteria->add(QubitInformationObjectI18n::RULES, $this->rules);
-    }
-
-    if ($this->isColumnModified('sources'))
-    {
-      $criteria->add(QubitInformationObjectI18n::SOURCES, $this->sources);
-    }
-
-    if ($this->isColumnModified('revisionHistory'))
-    {
-      $criteria->add(QubitInformationObjectI18n::REVISION_HISTORY, $this->revisionHistory);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitInformationObjectI18n::CULTURE, $this->culture);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitInformationObjectI18n::DATABASE_NAME);
     }
 
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -694,135 +394,43 @@ abstract class BaseInformationObjectI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('title'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitInformationObjectI18n::TITLE, $this->title);
+      $connection = QubitTransactionFilter::getConnection(QubitInformationObjectI18n::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('alternateTitle'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitInformationObjectI18n::ALTERNATE_TITLE, $this->alternateTitle);
-    }
-
-    if ($this->isColumnModified('edition'))
-    {
-      $criteria->add(QubitInformationObjectI18n::EDITION, $this->edition);
-    }
-
-    if ($this->isColumnModified('extentAndMedium'))
-    {
-      $criteria->add(QubitInformationObjectI18n::EXTENT_AND_MEDIUM, $this->extentAndMedium);
-    }
-
-    if ($this->isColumnModified('archivalHistory'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ARCHIVAL_HISTORY, $this->archivalHistory);
-    }
-
-    if ($this->isColumnModified('acquisition'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ACQUISITION, $this->acquisition);
-    }
-
-    if ($this->isColumnModified('scopeAndContent'))
-    {
-      $criteria->add(QubitInformationObjectI18n::SCOPE_AND_CONTENT, $this->scopeAndContent);
-    }
-
-    if ($this->isColumnModified('appraisal'))
-    {
-      $criteria->add(QubitInformationObjectI18n::APPRAISAL, $this->appraisal);
-    }
-
-    if ($this->isColumnModified('accruals'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ACCRUALS, $this->accruals);
-    }
-
-    if ($this->isColumnModified('arrangement'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ARRANGEMENT, $this->arrangement);
-    }
-
-    if ($this->isColumnModified('accessConditions'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ACCESS_CONDITIONS, $this->accessConditions);
-    }
-
-    if ($this->isColumnModified('reproductionConditions'))
-    {
-      $criteria->add(QubitInformationObjectI18n::REPRODUCTION_CONDITIONS, $this->reproductionConditions);
-    }
-
-    if ($this->isColumnModified('physicalCharacteristics'))
-    {
-      $criteria->add(QubitInformationObjectI18n::PHYSICAL_CHARACTERISTICS, $this->physicalCharacteristics);
-    }
-
-    if ($this->isColumnModified('findingAids'))
-    {
-      $criteria->add(QubitInformationObjectI18n::FINDING_AIDS, $this->findingAids);
-    }
-
-    if ($this->isColumnModified('locationOfOriginals'))
-    {
-      $criteria->add(QubitInformationObjectI18n::LOCATION_OF_ORIGINALS, $this->locationOfOriginals);
-    }
-
-    if ($this->isColumnModified('locationOfCopies'))
-    {
-      $criteria->add(QubitInformationObjectI18n::LOCATION_OF_COPIES, $this->locationOfCopies);
-    }
-
-    if ($this->isColumnModified('relatedUnitsOfDescription'))
-    {
-      $criteria->add(QubitInformationObjectI18n::RELATED_UNITS_OF_DESCRIPTION, $this->relatedUnitsOfDescription);
-    }
-
-    if ($this->isColumnModified('institutionResponsibleIdentifier'))
-    {
-      $criteria->add(QubitInformationObjectI18n::INSTITUTION_RESPONSIBLE_IDENTIFIER, $this->institutionResponsibleIdentifier);
-    }
-
-    if ($this->isColumnModified('rules'))
-    {
-      $criteria->add(QubitInformationObjectI18n::RULES, $this->rules);
-    }
-
-    if ($this->isColumnModified('sources'))
-    {
-      $criteria->add(QubitInformationObjectI18n::SOURCES, $this->sources);
-    }
-
-    if ($this->isColumnModified('revisionHistory'))
-    {
-      $criteria->add(QubitInformationObjectI18n::REVISION_HISTORY, $this->revisionHistory);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitInformationObjectI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitInformationObjectI18n::CULTURE, $this->culture);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitInformationObjectI18n::ID, $this->id);
-      $selectCriteria->add(QubitInformationObjectI18n::CULTURE, $this->culture);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitInformationObjectI18n::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -853,9 +461,9 @@ abstract class BaseInformationObjectI18n
 	{
 		$pks = array();
 
-		$pks[0] = $this->getId();
+		$pks[0] = $this->getid();
 
-		$pks[1] = $this->getCulture();
+		$pks[1] = $this->getculture();
 
 		return $pks;
 	}
@@ -864,30 +472,28 @@ abstract class BaseInformationObjectI18n
 	public function setPrimaryKey($keys)
 	{
 
-		$this->setId($keys[0]);
+		$this->setid($keys[0]);
 
-		$this->setCulture($keys[1]);
+		$this->setculture($keys[1]);
 
 	}
 
-  public static function addJoinInformationObjectCriteria(Criteria $criteria)
+  public static function addJoininformationObjectCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitInformationObjectI18n::ID, QubitInformationObject::ID);
 
     return $criteria;
   }
 
-  public function getInformationObject(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->informationObject = QubitInformationObject::getById($this->id, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setInformationObject(QubitInformationObject $informationObject)
-  {
-    $this->id = $informationObject->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.InformationObjectI18nMapBuilder');

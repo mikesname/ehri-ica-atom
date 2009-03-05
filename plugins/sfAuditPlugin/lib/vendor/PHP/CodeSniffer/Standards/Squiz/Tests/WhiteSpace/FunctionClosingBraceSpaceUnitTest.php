@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: FunctionClosingBraceSpaceUnitTest.php,v 1.1 2006/12/22 03:17:00 squiz Exp $
+ * @version   CVS: $Id: FunctionClosingBraceSpaceUnitTest.php,v 1.4 2008/10/27 02:16:59 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -39,14 +39,34 @@ class Squiz_Tests_WhiteSpace_FunctionClosingBraceSpaceUnitTest extends AbstractS
      * The key of the array should represent the line number and the value
      * should represent the number of errors that should occur on that line.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile='FunctionClosingBraceSpaceUnitTest.inc')
     {
-        return array(
-                10 => 1,
-                21 => 1,
-               );
+        switch ($testFile) {
+        case 'FunctionClosingBraceSpaceUnitTest.inc':
+            return array(
+                    10 => 1,
+                    21 => 1,
+                   );
+            break;
+        case 'FunctionClosingBraceSpaceUnitTest.js':
+            return array(
+                    13 => 1,
+                    25 => 1,
+                    32 => 1,
+                    53 => 1,
+                    59 => 1,
+                    67 => 1,
+                    84 => 1,
+                   );
+            break;
+        default:
+            return array();
+            break;
+        }//end switch
 
     }//end getErrorList()
 

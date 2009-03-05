@@ -19,7 +19,7 @@
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfParameterHolder.class.php 9051 2008-05-19 11:43:00Z FabianLange $
+ * @version    SVN: $Id: sfParameterHolder.class.php 10835 2008-08-13 11:58:38Z fabien $
  */
 class sfParameterHolder implements Serializable
 {
@@ -50,7 +50,7 @@ class sfParameterHolder implements Serializable
    */
   public function & get($name, $default = null)
   {
-    if (isset($this->parameters[$name]))
+    if (array_key_exists($name, $this->parameters))
     {
       $value = & $this->parameters[$name];
     }
@@ -91,7 +91,7 @@ class sfParameterHolder implements Serializable
    */
   public function has($name)
   {
-    if (isset($this->parameters[$name]))
+    if (array_key_exists($name, $this->parameters))
     {
       return true;
     }

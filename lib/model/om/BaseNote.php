@@ -1,22 +1,23 @@
 <?php
 
-abstract class BaseNote
+abstract class BaseNote implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_note';
+    TABLE_NAME = 'q_note',
 
-  const OBJECT_ID = 'q_note.OBJECT_ID';
-  const TYPE_ID = 'q_note.TYPE_ID';
-  const SCOPE = 'q_note.SCOPE';
-  const USER_ID = 'q_note.USER_ID';
-  const PARENT_ID = 'q_note.PARENT_ID';
-  const LFT = 'q_note.LFT';
-  const RGT = 'q_note.RGT';
-  const CREATED_AT = 'q_note.CREATED_AT';
-  const UPDATED_AT = 'q_note.UPDATED_AT';
-  const SOURCE_CULTURE = 'q_note.SOURCE_CULTURE';
-  const ID = 'q_note.ID';
+    OBJECT_ID = 'q_note.OBJECT_ID',
+    TYPE_ID = 'q_note.TYPE_ID',
+    SCOPE = 'q_note.SCOPE',
+    USER_ID = 'q_note.USER_ID',
+    PARENT_ID = 'q_note.PARENT_ID',
+    LFT = 'q_note.LFT',
+    RGT = 'q_note.RGT',
+    CREATED_AT = 'q_note.CREATED_AT',
+    UPDATED_AT = 'q_note.UPDATED_AT',
+    SOURCE_CULTURE = 'q_note.SOURCE_CULTURE',
+    ID = 'q_note.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -35,14 +36,19 @@ abstract class BaseNote
     return $criteria;
   }
 
-  protected static $notes = array();
+  protected static
+    $notes = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$notes[$id = $resultSet->getInt(11)]))
+    if (!isset(self::$notes[$id = (int) $row[10]]))
     {
       $note = new QubitNote;
-      $note->hydrate($resultSet);
+      $note->new = false;
+      $note->row = $row;
 
       self::$notes[$id] = $note;
     }
@@ -113,229 +119,239 @@ abstract class BaseNote
     return $criteria;
   }
 
-  protected $objectId = null;
+  protected
+    $tables = array();
 
-  public function getObjectId()
+  public function __construct()
   {
-    return $this->objectId;
+    $this->tables[] = Propel::getDatabaseMap(QubitNote::DATABASE_NAME)->getTable(QubitNote::TABLE_NAME);
   }
 
-  public function setObjectId($objectId)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->objectId = $objectId;
-
-    return $this;
-  }
-
-  protected $typeId = null;
-
-  public function getTypeId()
-  {
-    return $this->typeId;
-  }
-
-  public function setTypeId($typeId)
-  {
-    $this->typeId = $typeId;
-
-    return $this;
-  }
-
-  protected $scope = null;
-
-  public function getScope()
-  {
-    return $this->scope;
-  }
-
-  public function setScope($scope)
-  {
-    $this->scope = $scope;
-
-    return $this;
-  }
-
-  protected $userId = null;
-
-  public function getUserId()
-  {
-    return $this->userId;
-  }
-
-  public function setUserId($userId)
-  {
-    $this->userId = $userId;
-
-    return $this;
-  }
-
-  protected $parentId = null;
-
-  public function getParentId()
-  {
-    return $this->parentId;
-  }
-
-  public function setParentId($parentId)
-  {
-    $this->parentId = $parentId;
-
-    return $this;
-  }
-
-  protected $lft = null;
-
-  public function getLft()
-  {
-    return $this->lft;
-  }
-
-  protected function setLft($lft)
-  {
-    $this->lft = $lft;
-
-    return $this;
-  }
-
-  protected $rgt = null;
-
-  public function getRgt()
-  {
-    return $this->rgt;
-  }
-
-  protected function setRgt($rgt)
-  {
-    $this->rgt = $rgt;
-
-    return $this;
-  }
-
-  protected $createdAt = null;
-
-  public function getCreatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if (array_key_exists($offset, $this->values))
     {
-      return date($options['format'], $this->createdAt);
+      return $this->values[$offset];
     }
 
-    return $this->createdAt;
-  }
-
-  public function setCreatedAt($createdAt)
-  {
-    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    if (!array_key_exists($rowOffset, $this->row))
     {
-      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
     }
 
-    $this->createdAt = $createdAt;
-
-    return $this;
+    return $this->row[$rowOffset];
   }
 
-  protected $updatedAt = null;
-
-  public function getUpdatedAt(array $options = array())
+  public function offsetExists($offset, array $options = array())
   {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      return date($options['format'], $this->updatedAt);
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
     }
 
-    return $this->updatedAt;
-  }
-
-  public function setUpdatedAt($updatedAt)
-  {
-    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    if ($this->getCurrentnoteI18n($options)->offsetExists($offset, $options))
     {
-      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+      return true;
     }
 
-    $this->updatedAt = $updatedAt;
+    if (!empty($options['cultureFallback']) && $this->getCurrentnoteI18n(array('sourceCulture' => true) + $options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
+
+    if ('ancestors' == $offset)
+    {
+      return true;
+    }
+
+    if ('descendants' == $offset)
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    if (null !== $value = $this->getCurrentnoteI18n($options)->offsetGet($offset, $options))
+    {
+      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      {
+        $value = $this->getCurrentnoteI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options);
+      }
+
+      return $value;
+    }
+
+    if (!empty($options['cultureFallback']) && null !== $value = $this->getCurrentnoteI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options))
+    {
+      return $value;
+    }
+
+    if ('ancestors' == $offset)
+    {
+      if (!isset($this->ancestors))
+      {
+        if ($this->new)
+        {
+          $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addAncestorsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->ancestors = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->ancestors;
+    }
+
+    if ('descendants' == $offset)
+    {
+      if (!isset($this->descendants))
+      {
+        if ($this->new)
+        {
+          $this->descendants = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addDescendantsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->descendants = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->descendants;
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    $this->getCurrentnoteI18n($options)->offsetSet($offset, $value, $options);
 
     return $this;
   }
 
-  protected $sourceCulture = null;
-
-  public function getSourceCulture()
+  public function __set($name, $value)
   {
-    return $this->sourceCulture;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setSourceCulture($sourceCulture)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->sourceCulture = $sourceCulture;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    $this->getCurrentnoteI18n($options)->offsetUnset($offset, $options);
 
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __unset($name)
   {
-    return $this->id;
+    return $this->offsetUnset($name);
   }
 
-  public function setId($id)
-  {
-    $this->id = $id;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['objectId'] = $this->objectId;
-    $this->columnValues['typeId'] = $this->typeId;
-    $this->columnValues['scope'] = $this->scope;
-    $this->columnValues['userId'] = $this->userId;
-    $this->columnValues['parentId'] = $this->parentId;
-    $this->columnValues['lft'] = $this->lft;
-    $this->columnValues['rgt'] = $this->rgt;
-    $this->columnValues['createdAt'] = $this->createdAt;
-    $this->columnValues['updatedAt'] = $this->updatedAt;
-    $this->columnValues['sourceCulture'] = $this->sourceCulture;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->objectId = $results->getInt($columnOffset++);
-    $this->typeId = $results->getInt($columnOffset++);
-    $this->scope = $results->getString($columnOffset++);
-    $this->userId = $results->getInt($columnOffset++);
-    $this->parentId = $results->getInt($columnOffset++);
-    $this->lft = $results->getInt($columnOffset++);
-    $this->rgt = $results->getInt($columnOffset++);
-    $this->createdAt = $results->getTimestamp($columnOffset++, null);
-    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
-    $this->sourceCulture = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -347,12 +363,12 @@ abstract class BaseNote
     $criteria = new Criteria;
     $criteria->add(QubitNote::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -373,12 +389,26 @@ abstract class BaseNote
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     foreach ($this->noteI18ns as $noteI18n)
     {
-      $noteI18n->setId($this->id);
+      $noteI18n->setid($this->id);
 
       $affectedRows += $noteI18n->save($connection);
     }
@@ -392,74 +422,49 @@ abstract class BaseNote
 
     $this->updateNestedSet($connection);
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('objectId'))
-    {
-      $criteria->add(QubitNote::OBJECT_ID, $this->objectId);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitNote::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('scope'))
-    {
-      $criteria->add(QubitNote::SCOPE, $this->scope);
-    }
-
-    if ($this->isColumnModified('userId'))
-    {
-      $criteria->add(QubitNote::USER_ID, $this->userId);
-    }
-
-    if ($this->isColumnModified('parentId'))
-    {
-      $criteria->add(QubitNote::PARENT_ID, $this->parentId);
-    }
-
-    if ($this->isColumnModified('lft'))
-    {
-      $criteria->add(QubitNote::LFT, $this->lft);
-    }
-
-    if ($this->isColumnModified('rgt'))
-    {
-      $criteria->add(QubitNote::RGT, $this->rgt);
-    }
-
-    if (!$this->isColumnModified('createdAt'))
-    {
-      $this->createdAt = time();
-    }
-    $criteria->add(QubitNote::CREATED_AT, $this->createdAt);
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitNote::UPDATED_AT, $this->updatedAt);
-
-    if (!$this->isColumnModified('sourceCulture'))
-    {
-      $this->sourceCulture = sfPropel::getDefaultCulture();
-    }
-    $criteria->add(QubitNote::SOURCE_CULTURE, $this->sourceCulture);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitNote::ID, $this->id);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -468,80 +473,70 @@ abstract class BaseNote
   {
     $affectedRows = 0;
 
-    if ($this->isColumnModified('parentId'))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-      $this->updateNestedSet($connection);
-    }
-
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('objectId'))
-    {
-      $criteria->add(QubitNote::OBJECT_ID, $this->objectId);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitNote::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('scope'))
-    {
-      $criteria->add(QubitNote::SCOPE, $this->scope);
-    }
-
-    if ($this->isColumnModified('userId'))
-    {
-      $criteria->add(QubitNote::USER_ID, $this->userId);
-    }
-
-    if ($this->isColumnModified('parentId'))
-    {
-      $criteria->add(QubitNote::PARENT_ID, $this->parentId);
-    }
-
-    if ($this->isColumnModified('lft'))
-    {
-      $criteria->add(QubitNote::LFT, $this->lft);
-    }
-
-    if ($this->isColumnModified('rgt'))
-    {
-      $criteria->add(QubitNote::RGT, $this->rgt);
-    }
-
-    if ($this->isColumnModified('createdAt'))
-    {
-      $criteria->add(QubitNote::CREATED_AT, $this->createdAt);
-    }
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitNote::UPDATED_AT, $this->updatedAt);
-
-    if ($this->isColumnModified('sourceCulture'))
-    {
-      $criteria->add(QubitNote::SOURCE_CULTURE, $this->sourceCulture);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitNote::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
-      $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitNote::ID, $this->id);
-
-      if (!isset($connection))
+      // Get the "original" parentId before any updates
+      $rowOffset = 0; 
+      $originalParentId = null;
+      foreach ($this->tables as $table)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
+        foreach ($table->getColumns() as $column)
+        {
+          if ('parentId' == $column->getPhpName())
+          {
+            $originalParentId = $this->row[$rowOffset];
+            break;
+          }
+          $rowOffset++;
+        }
+      }
+      
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
+      {
+        $this->updateNestedSet($connection);
+      }
+    }
+
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
+    }
+
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      $selectCriteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -572,153 +567,107 @@ abstract class BaseNote
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addJoinObjectCriteria(Criteria $criteria)
+  public static function addJoinobjectCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitNote::OBJECT_ID, QubitObject::ID);
 
     return $criteria;
   }
 
-  public function getObject(array $options = array())
-  {
-    return $this->object = QubitObject::getById($this->objectId, $options);
-  }
-
-  public function setObject(QubitObject $object)
-  {
-    $this->objectId = $object->getId();
-
-    return $this;
-  }
-
-  public static function addJoinTypeCriteria(Criteria $criteria)
+  public static function addJointypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getType(array $options = array())
-  {
-    return $this->type = QubitTerm::getById($this->typeId, $options);
-  }
-
-  public function setType(QubitTerm $term)
-  {
-    $this->typeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinUserCriteria(Criteria $criteria)
+  public static function addJoinuserCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitNote::USER_ID, QubitUser::ID);
 
     return $criteria;
   }
 
-  public function getUser(array $options = array())
-  {
-    return $this->user = QubitUser::getById($this->userId, $options);
-  }
-
-  public function setUser(QubitUser $user)
-  {
-    $this->userId = $user->getId();
-
-    return $this;
-  }
-
-  public static function addJoinParentCriteria(Criteria $criteria)
+  public static function addJoinparentCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitNote::PARENT_ID, QubitNote::ID);
 
     return $criteria;
   }
 
-  public function getParent(array $options = array())
-  {
-    return $this->parent = QubitNote::getById($this->parentId, $options);
-  }
-
-  public function setParent(QubitNote $note)
-  {
-    $this->parentId = $note->getId();
-
-    return $this;
-  }
-
-  public static function addNotesRelatedByParentIdCriteriaById(Criteria $criteria, $id)
+  public static function addnotesRelatedByparentIdCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitNote::PARENT_ID, $id);
 
     return $criteria;
   }
 
-  public static function getNotesRelatedByParentIdById($id, array $options = array())
+  public static function getnotesRelatedByparentIdById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addNotesRelatedByParentIdCriteriaById($criteria, $id);
+    self::addnotesRelatedByparentIdCriteriaById($criteria, $id);
 
     return QubitNote::get($criteria, $options);
   }
 
-  public function addNotesRelatedByParentIdCriteria(Criteria $criteria)
+  public function addnotesRelatedByparentIdCriteria(Criteria $criteria)
   {
-    return self::addNotesRelatedByParentIdCriteriaById($criteria, $this->id);
+    return self::addnotesRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
-  protected $notesRelatedByParentId = null;
+  protected
+    $notesRelatedByparentId = null;
 
-  public function getNotesRelatedByParentId(array $options = array())
+  public function getnotesRelatedByparentId(array $options = array())
   {
-    if (!isset($this->notesRelatedByParentId))
+    if (!isset($this->notesRelatedByparentId))
     {
       if (!isset($this->id))
       {
-        $this->notesRelatedByParentId = QubitQuery::create();
+        $this->notesRelatedByparentId = QubitQuery::create();
       }
       else
       {
-        $this->notesRelatedByParentId = self::getNotesRelatedByParentIdById($this->id, array('self' => $this) + $options);
+        $this->notesRelatedByparentId = self::getnotesRelatedByparentIdById($this->id, array('self' => $this) + $options);
       }
     }
 
-    return $this->notesRelatedByParentId;
+    return $this->notesRelatedByparentId;
   }
 
-  public static function addNoteI18nsCriteriaById(Criteria $criteria, $id)
+  public static function addnoteI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitNoteI18n::ID, $id);
 
     return $criteria;
   }
 
-  public static function getNoteI18nsById($id, array $options = array())
+  public static function getnoteI18nsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addNoteI18nsCriteriaById($criteria, $id);
+    self::addnoteI18nsCriteriaById($criteria, $id);
 
     return QubitNoteI18n::get($criteria, $options);
   }
 
-  public function addNoteI18nsCriteria(Criteria $criteria)
+  public function addnoteI18nsCriteria(Criteria $criteria)
   {
-    return self::addNoteI18nsCriteriaById($criteria, $this->id);
+    return self::addnoteI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected $noteI18ns = null;
+  protected
+    $noteI18ns = null;
 
-  public function getNoteI18ns(array $options = array())
+  public function getnoteI18ns(array $options = array())
   {
     if (!isset($this->noteI18ns))
     {
@@ -728,32 +677,14 @@ abstract class BaseNote
       }
       else
       {
-        $this->noteI18ns = self::getNoteI18nsById($this->id, array('self' => $this) + $options);
+        $this->noteI18ns = self::getnoteI18nsById($this->id, array('self' => $this) + $options);
       }
     }
 
     return $this->noteI18ns;
   }
 
-  public function getContent(array $options = array())
-  {
-    $content = $this->getCurrentNoteI18n($options)->getContent();
-    if (!empty($options['cultureFallback']) && strlen($content) < 1)
-    {
-      $content = $this->getCurrentNoteI18n(array('sourceCulture' => true) + $options)->getContent();
-    }
-
-    return $content;
-  }
-
-  public function setContent($value, array $options = array())
-  {
-    $this->getCurrentNoteI18n($options)->setContent($value);
-
-    return $this;
-  }
-
-  public function getCurrentNoteI18n(array $options = array())
+  public function getCurrentnoteI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
     {
@@ -767,10 +698,10 @@ abstract class BaseNote
 
     if (!isset($this->noteI18ns[$options['culture']]))
     {
-      if (null === $noteI18n = QubitNoteI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      if (!isset($this->id) || null === $noteI18n = QubitNoteI18n::getByIdAndCulture($this->id, $options['culture'], $options))
       {
         $noteI18n = new QubitNoteI18n;
-        $noteI18n->setCulture($options['culture']);
+        $noteI18n->setculture($options['culture']);
       }
       $this->noteI18ns[$options['culture']] = $noteI18n;
     }
@@ -783,70 +714,43 @@ abstract class BaseNote
     return $criteria->add(QubitNote::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitNote::RGT, $this->rgt, Criteria::GREATER_THAN);
   }
 
-  protected $ancestors = null;
-
-  public function getAncestors(array $options = array())
-  {
-    if (!isset($this->ancestors))
-    {
-      if ($this->new)
-      {
-        $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
-      }
-      else
-      {
-        $criteria = new Criteria;
-        $this->addAncestorsCriteria($criteria);
-        $this->addOrderByPreorder($criteria);
-        $this->ancestors = self::get($criteria, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->ancestors;
-  }
+  protected
+    $ancestors = null;
 
   public function addDescendantsCriteria(Criteria $criteria)
   {
     return $criteria->add(QubitNote::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitNote::RGT, $this->rgt, Criteria::LESS_THAN);
   }
 
-  protected $descendants = null;
-
-  public function getDescendants(array $options = array())
-  {
-    if (!isset($this->descendants))
-    {
-      if ($this->new)
-      {
-        $this->descendants = QubitQuery::create(array('self' => $this) + $options);
-      }
-      else
-      {
-        $criteria = new Criteria;
-        $this->addDescendantsCriteria($criteria);
-        $this->addOrderByPreorder($criteria);
-        $this->descendants = self::get($criteria, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->descendants;
-  }
+  protected
+    $descendants = null;
 
   protected function updateNestedSet($connection = null)
   {
+unset($this->values['lft']);
+unset($this->values['rgt']);
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
     }
 
-    if (null === $parent = $this->getParent(array('connection' => $connection)))
+    if (!isset($this->lft) || !isset($this->rgt))
     {
-      $stmt = $connection->prepareStatement('
+      $delta = 2;
+    }
+    else
+    {
+      $delta = $this->rgt - $this->lft + 1;
+    }
+
+    if (null === $parent = $this->offsetGet('parent', array('connection' => $connection)))
+    {
+      $statement = $connection->prepare('
         SELECT MAX('.QubitNote::RGT.')
         FROM '.QubitNote::TABLE_NAME);
-      $results = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
-      $results->next();
-      $max = $results->getInt(1);
+      $statement->execute();
+      $row = $statement->fetch();
+      $max = $row[0];
 
       if (!isset($this->lft) || !isset($this->rgt))
       {
@@ -862,35 +766,22 @@ abstract class BaseNote
     {
       $parent->refresh(array('connection' => $connection));
 
-      if (!isset($this->lft) || !isset($this->rgt))
+      if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
       {
-        $delta = 2;
-      }
-      else
-      {
-        if ($this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
-        {
-          throw new PropelException('An object cannot be a descendant of itself.');
-        }
-
-        $delta = $this->rgt - $this->lft + 1;
+        throw new PropelException('An object cannot be a descendant of itself.');
       }
 
-      $stmt = $connection->prepareStatement('
+      $statement = $connection->prepare('
         UPDATE '.QubitNote::TABLE_NAME.'
         SET '.QubitNote::LFT.' = '.QubitNote::LFT.' + ?
         WHERE '.QubitNote::LFT.' >= ?');
-      $stmt->setInt(1, $delta);
-      $stmt->setInt(2, $parent->rgt);
-      $stmt->executeUpdate();
+      $statement->execute(array($delta, $parent->rgt));
 
-      $stmt = $connection->prepareStatement('
+      $statement = $connection->prepare('
         UPDATE '.QubitNote::TABLE_NAME.'
         SET '.QubitNote::RGT.' = '.QubitNote::RGT.' + ?
         WHERE '.QubitNote::RGT.' >= ?');
-      $stmt->setInt(1, $delta);
-      $stmt->setInt(2, $parent->rgt);
-      $stmt->executeUpdate();
+      $statement->execute(array($delta, $parent->rgt));
 
       if (!isset($this->lft) || !isset($this->rgt))
       {
@@ -909,21 +800,23 @@ abstract class BaseNote
       $shift = $parent->rgt - $this->lft;
     }
 
-    $stmt = $connection->prepareStatement('
+    $statement = $connection->prepare('
       UPDATE '.QubitNote::TABLE_NAME.'
       SET '.QubitNote::LFT.' = '.QubitNote::LFT.' + ?, '.QubitNote::RGT.' = '.QubitNote::RGT.' + ?
       WHERE '.QubitNote::LFT.' >= ?
       AND '.QubitNote::RGT.' <= ?');
-    $stmt->setInt(1, $shift);
-    $stmt->setInt(2, $shift);
-    $stmt->setInt(3, $this->lft);
-    $stmt->setInt(4, $this->rgt);
-    $stmt->executeUpdate();
+    $statement->execute(array($shift, $shift, $this->lft, $this->rgt));
 
     $this->deleteFromNestedSet($connection);
 
-    $this->columnValues['lft'] = $this->lft += $shift;
-    $this->columnValues['rgt'] = $this->rgt += $shift;
+    if ($shift > 0)
+    {
+      $this->lft -= $delta;
+      $this->rgt -= $delta;
+    }
+
+    $this->lft += $shift;
+    $this->rgt += $shift;
 
     return $this;
   }
@@ -937,24 +830,30 @@ abstract class BaseNote
 
     $delta = $this->rgt - $this->lft + 1;
 
-    $stmt = $connection->prepareStatement('
+    $statement = $connection->prepare('
       UPDATE '.QubitNote::TABLE_NAME.'
       SET '.QubitNote::LFT.' = '.QubitNote::LFT.' - ?
       WHERE '.QubitNote::LFT.' >= ?');
-    $stmt->setInt(1, $delta);
-    $stmt->setInt(2, $this->rgt);
-    $stmt->executeUpdate();
+    $statement->execute(array($delta, $this->rgt));
 
-    $stmt = $connection->prepareStatement('
+    $statement = $connection->prepare('
       UPDATE '.QubitNote::TABLE_NAME.'
       SET '.QubitNote::RGT.' = '.QubitNote::RGT.' - ?
       WHERE '.QubitNote::RGT.' >= ?');
-    $stmt->setInt(1, $delta);
-    $stmt->setInt(2, $this->rgt);
-    $stmt->executeUpdate();
+    $statement->execute(array($delta, $this->rgt));
 
     return $this;
   }
-}
 
-BasePeer::getMapBuilder('lib.model.map.NoteMapBuilder');
+  public function __call($name, $args)
+  {
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
+
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
+
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+  }
+}

@@ -10,7 +10,7 @@
 
 class sfTranslatePluginTranslateComponent extends sfComponent
 {
-  function execute($request)
+  public function execute($request)
   {
     $actionInstance = $this->getController()->getAction($this->getModuleName(), $this->getActionName());
     if ($actionInstance->isSecure())
@@ -35,10 +35,9 @@ class sfTranslatePluginTranslateComponent extends sfComponent
 
     ksort($this->messages);
 
-
-    $this->getResponse()->addJavaScript('jquery');
-    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
-    $this->getResponse()->addJavaScript('/vendor/drupal/misc/textarea');
+    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
+    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/textarea');
     $this->getResponse()->addJavaScript('/sfTranslatePlugin/js/l10n_client');
 
     $this->getResponse()->addStylesheet('/sfTranslatePlugin/css/l10n_client');

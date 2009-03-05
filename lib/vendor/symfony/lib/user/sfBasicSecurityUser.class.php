@@ -16,7 +16,7 @@
  * @subpackage user
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfBasicSecurityUser.class.php 10040 2008-07-01 11:09:27Z fabien $
+ * @version    SVN: $Id: sfBasicSecurityUser.class.php 11694 2008-09-21 08:26:37Z fabien $
  */
 class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 {
@@ -196,6 +196,8 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
         $this->authenticated = false;
         $this->clearCredentials();
       }
+
+      $this->dispatcher->notify(new sfEvent($this, 'user.change_authentication', array('authenticated' => $this->authenticated)));
 
       $this->storage->regenerate(false);
     }

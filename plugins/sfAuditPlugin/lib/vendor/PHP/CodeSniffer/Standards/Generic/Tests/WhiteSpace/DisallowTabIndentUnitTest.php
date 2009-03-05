@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: DisallowTabIndentUnitTest.php,v 1.2 2008/02/20 05:25:34 squiz Exp $
+ * @version   CVS: $Id: DisallowTabIndentUnitTest.php,v 1.4 2008/10/28 04:43:57 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -55,8 +55,13 @@ class Generic_Tests_WhiteSpace_DisallowTabIndentUnitTest extends AbstractSniffUn
             break;
         case 'DisallowTabIndentUnitTest.js':
             return array(
-                    5  => 1,
-                    10 => 1,
+                    3 => 1,
+                    6 => 1,
+                   );
+            break;
+        case 'DisallowTabIndentUnitTest.css':
+            return array(
+                    2 => 1,
                    );
             break;
         default:

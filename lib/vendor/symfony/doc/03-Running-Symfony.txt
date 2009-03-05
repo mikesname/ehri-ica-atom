@@ -3,7 +3,7 @@ Chapter 3 - Running Symfony
 
 As you've learned in previous chapters, the symfony framework is a set of files written in PHP. A symfony project uses these files, so installing symfony means getting these files and making them available for the project.
 
-Symfony requires at least PHP 5.1. Make sure you have it installed by opening a command line and typing this command:
+Symfony requires at least PHP 5.2. Make sure you have it installed by opening a command line and typing this command:
 
     > php -v
 
@@ -11,16 +11,16 @@ Symfony requires at least PHP 5.1. Make sure you have it installed by opening a 
     Copyright (c) 1997-2007 The PHP Group
     Zend Engine v2.2.0, Copyright (c) 1998-2007 Zend Technologies
 
-If the version number is 5.1 or higher, then you're ready for the installation, as described in this chapter.
+If the version number is 5.2 or higher, then you're ready for the installation, as described in this chapter.
 
 Installing the Sandbox
 ----------------------
 
 If you just want to see what symfony is capable of, you'll probably go for the fast installation. In that case, you need the sandbox.
 
-The sandbox is a simple archive of files. It contains an empty symfony project including all the required libraries (symfony, lime, Creole, Propel, and Phing), a default application, and basic configuration. It will work out of the box, without specific server configuration or any additional packages.
+The sandbox is a simple archive of files. It contains an empty symfony project including all the required libraries (symfony, lime, Prototype with Scriptaculous, Doctrine and Propel with Phing), a default application, and basic configuration. It will work out of the box, without specific server configuration or any additional packages.
 
-To install it, download the sandbox archive from [http://www.symfony-project.org/get/sf_sandbox_1_1.tgz](http://www.symfony-project.org/get/sf_sandbox_1_1.tgz). Unpack it under the root web directory configured for your server (usually `web/` or `www/`). For the purposes of uniformity, this chapter will assume you unpacked it to the directory `sf_sandbox/`.
+To install it, download the sandbox archive from [http://www.symfony-project.org/get/sf_sandbox_1_2.tgz](http://www.symfony-project.org/get/sf_sandbox_1_2.tgz). Unpack it under the root web directory configured for your server (usually `web/` or `www/`). For the purposes of uniformity, this chapter will assume you unpacked it to the directory `sf_sandbox/`.
 
 >**CAUTION**
 >Having all the files under the root web directory is fine for your own tests in a local host, but is a bad practice in a production server. It makes all the internals of your application visible to end users.
@@ -31,7 +31,7 @@ Test your installation by executing the symfony CLI. Go to the new `sf_sandbox/`
 
 You should see the sandbox version number:
 
-    symfony version 1.1.0 (/path/to/the/symfony/lib/dir/used/by/the/sandbox)
+    symfony version 1.2.0 (/path/to/the/symfony/lib/dir/used/by/the/sandbox)
 
 Now make sure that your web server can browse the sandbox by requesting this URL:
 
@@ -62,11 +62,10 @@ When it comes to installing the libraries for a real application development, yo
 Symfony integrates a few other packages:
 
   * lime is a unit testing utility.
-  * Creole is a database abstraction engine. Just like PHP Data Objects (PDO), it provides an interface between your code and the database SQL code, and makes it possible to switch to another engine.
   * Propel is for ORM. It provides object persistence and query service.
   * Phing is a build system used by Propel to generate the model classes.
 
-Lime is developed by the symfony team. Creole, Propel, and Phing come from another team and are released under the GNU Lesser Public General License (LGPL). All these packages are bundled with symfony.
+Lime is developed by the symfony team. Propel, and Phing come from another team and are released under the GNU Lesser Public General License (LGPL). All these packages are bundled with symfony.
 
 >**TIP**
 >The symfony framework is licensed under a MIT license. All the copyrights for the bundled third party libraries can be found in the `COPYRIGHT` file and the associated licenses are stored in the `licenses/` directory.
@@ -87,18 +86,18 @@ Now you are ready to install the latest stable version of symfony. Issue this co
 
     > pear install symfony/symfony
 
-    downloading symfony-1.1.0.tgz ...
-    Starting to download symfony-1.1.0.tgz (1,283,270 bytes)
+    downloading symfony-1.2.0.tgz ...
+    Starting to download symfony-1.2.0.tgz (1,283,270 bytes)
     .................................................................
     .................................................................
     .............done: 1,283,270 bytes
-    install ok: channel://pear.symfony-project.com/symfony-1.1.0
+    install ok: channel://pear.symfony-project.com/symfony-1.2.0
 
 That's it. The symfony files and CLI are installed. Check that the installation succeeded by calling the new `symfony` command line, asking for the version number:
 
     > symfony -V
 
-    symfony version 1.1.0 (/path/to/the/pear/symfony/lib/dir)
+    symfony version 1.2.0 (/path/to/the/pear/symfony/lib/dir)
 
 The symfony libraries are now installed in directories as follows:
 
@@ -117,15 +116,15 @@ For production servers, or when PEAR is not an option, you can download the late
 
     > mkdir /path/to/symfony
     > cd /path/to/symfony
-    > svn checkout http://svn.symfony-project.com/tags/RELEASE_1_1_0/ .
+    > svn checkout http://svn.symfony-project.com/tags/RELEASE_1_2_0/ .
 
 The `symfony` command, available only for PEAR installations, is a call to the `/path/to/symfony/data/bin/symfony` script. So the following would be the equivalent to the `symfony -V` command for an SVN installation:
 
     > php /path/to/symfony/data/bin/symfony -V
 
-    symfony version 1.1.0 (/path/to/the/svn/symfony/lib/dir)
+    symfony version 1.2.0 (/path/to/the/svn/symfony/lib/dir)
 
-If you chose an SVN installation, you probably already have an existing symfony project. For this project to make use of the symfony files, you need to change the path defined in the project's `lib/ProjectConfiguration.class.php` file, as follows:
+If you chose an SVN installation, you probably already have an existing symfony project. For this project to make use of the symfony files, you need to change the path defined in the project's `config/ProjectConfiguration.class.php` file, as follows:
 
     [php]
     <?php
@@ -141,7 +140,7 @@ If you chose an SVN installation, you probably already have an existing symfony 
 Chapter 19 proposes other ways to link a project with a symfony installation (including symbolic links and relative paths).
 
 >**TIP**
->Alternatively, you can also download the PEAR package ([http://pear.symfony-project.com/get/symfony-1.1.0.tgz](http://pear.symfony-project.com/get/symfony-1.1.0.tgz)) and unpack it somewhere. You will have the same result as with a checkout.
+>Alternatively, you can also download the PEAR package ([http://pear.symfony-project.com/get/symfony-1.2.0.tgz](http://pear.symfony-project.com/get/symfony-1.2.0.tgz)) and unpack it somewhere. You will have the same result as with a checkout.
 
 Setting Up an Application
 -------------------------

@@ -24,7 +24,7 @@
 
     <div class="form-item">
      <label for="taxonomy"><?php echo __('taxonomy'); ?></label>
-    <?php echo object_select_tag($term, 'getTaxonomyId', array ('related_class' => 'QubitTaxonomy', 'peer_method' => 'getEditableTaxonomies', 'include_blank' => true)) ?>
+    <?php echo object_select_tag($term, 'getTaxonomyId', array ('related_class' => 'QubitTaxonomy', 'peer_method' => 'getEditableTaxonomies')) ?>
     </div>
 
     <div class="form-item">
@@ -75,7 +75,14 @@
 
 <div class="menu-action">
 <?php if ($term->getId()): ?>
-  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId(), 'post=true&confirm='.__('are you sure?')) ?>
+  <?php if($relatedEventCount > 0): ?>
+  <?php $confirmString = __('WARNING: Deleting this term will DELETE %1% events. Are you sure you want to delete these related events forever?', array('%1%' => $relatedEventCount)) ?>
+  <?php elseif ($relatedObjectCount > 0): ?>
+  <?php $confirmString = __('This term is linked to %1% other objects, are you sure you want to remove this term from *all* of these objects?', array('%1%' => $relatedObjectCount)) ?>
+  <?php else: ?>
+  <?php $confirmString = __('Are you sure?') ?>
+  <?php endif; ?>
+  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId(), 'post=true&confirm='.$confirmString) ?>
   &nbsp;<?php echo link_to(__('cancel'), 'term/list') ?>
 <?php else: ?>
   &nbsp;<?php echo link_to(__('cancel'), 'term/list') ?>

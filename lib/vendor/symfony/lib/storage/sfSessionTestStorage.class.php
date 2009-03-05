@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage storage
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfSessionTestStorage.class.php 9942 2008-06-27 18:00:49Z fabien $
+ * @version    SVN: $Id: sfSessionTestStorage.class.php 11002 2008-08-20 16:34:30Z fabien $
  */
 class sfSessionTestStorage extends sfStorage
 {
@@ -25,7 +25,7 @@ class sfSessionTestStorage extends sfStorage
   /**
    * Available options:
    *
-   *  * session_path: The path to store the session files (%SF_TEST_CACHE_DIR%/sessions by default)
+   *  * session_path: The path to store the session files
    *  * session_id:   The session identifier
    *
    * @param array $options  An associative array of options
@@ -34,8 +34,12 @@ class sfSessionTestStorage extends sfStorage
    */
   public function initialize($options = null)
   {
+    if (!isset($options['session_path']))
+    {
+      throw new InvalidArgumentException('The "session_path" option is mandatory for the sfSessionTestStorage class.');
+    }
+
     $options = array_merge(array(
-      'session_path' => sfConfig::get('sf_test_cache_dir').'/sessions',
       'session_id'   => null,
     ), $options);
 

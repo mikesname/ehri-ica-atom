@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -37,13 +35,16 @@ class InformationObjectEditAction extends sfAction
 
     $request->setAttribute('informationObject', $this->informationObject);
 
+    $this->warnings = array();
+
     // Add javascript libraries to allow selecting multiple access points
-    $this->getResponse()->addJavaScript('jquery');
-    $this->getResponse()->addJavaScript('/vendor/drupal/misc/drupal');
+    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('multiInstanceSelect');
+    $this->getResponse()->addJavaScript('multiDelete');
 
     //Actor (Event) Relations
-    $this->actorEvents = $this->informationObject->getActorEvents();
+    $this->actorEvents = $this->informationObject->getEvents();
     $this->newActorEvent = new QubitEvent;
     $this->creators = $this->informationObject->getCreators();
     $this->actorEventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
@@ -69,7 +70,7 @@ class InformationObjectEditAction extends sfAction
     $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
     $this->nameSelectList = QubitActor::getAccessPointSelectList();
     $this->nameAccessPoints = array();
-    $actorEvents =  $this->informationObject->getActorEvents();
+    $actorEvents = $this->informationObject->getActorEvents();
     foreach ($actorEvents as $event)
     {
       if ($event->getActorId())
@@ -88,6 +89,30 @@ class InformationObjectEditAction extends sfAction
     if (null !== $digitalObject = $this->informationObject->getDigitalObject())
     {
       $this->digitalObjectCount = 1;
+    }
+
+    // Check for file upload errors
+    $uploadFiles = $this->getRequest()->getFileName('upload_file');
+    $fileErrors  = $this->getRequest()->getFileError('upload_file');
+    if (count($uploadFiles))
+    {
+      foreach ($uploadFiles as $usageId => $filename)
+      {
+        if (strlen($filename) && $fileErrors[$usageId])
+        {
+          $uploadWarnings[] = 'The file "'.$filename.'" exceeded the maximum upload size of '.ini_get('upload_max_filesize').'.';
+        }
+      }
+
+      if (isset($uploadWarnings))
+      {
+        $this->warnings['upload_file'] = $uploadWarnings;
+      }
+    }
+
+    if ($request->hasParameter('error'))
+    {
+      $this->error = $request->getParameter('error');
     }
   }
 }

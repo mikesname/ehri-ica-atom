@@ -6,7 +6,7 @@
  * @package    ##PROJECT_NAME##
  * @subpackage ##MODULE_NAME##
  * @author     ##AUTHOR_NAME##
- * @version    SVN: $Id: actions.class.php 9301 2008-05-27 01:08:46Z dwhittle $
+ * @version    SVN: $Id: actions.class.php 12479 2008-10-31 10:54:40Z fabien $
  */
 class ##MODULE_NAME##Actions extends sfActions
 {
@@ -15,7 +15,7 @@ class ##MODULE_NAME##Actions extends sfActions
   *
   * @param sfRequest $request A request object
   */
-  public function executeIndex($request)
+  public function executeIndex(sfWebRequest $request)
   {
     $this->forward('default', 'module');
   }

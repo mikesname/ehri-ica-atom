@@ -1,6 +1,8 @@
 <?php
 
-use_helper('Form', 'Javascript', 'Helper', 'I18N');
+require_once dirname(__FILE__).'/FormHelper.php';
+require_once dirname(__FILE__).'/JavascriptBaseHelper.php';
+require_once dirname(__FILE__).'/I18NHelper.php';
 
 /*
  * This file is part of the symfony package.
@@ -16,7 +18,7 @@ use_helper('Form', 'Javascript', 'Helper', 'I18N');
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: ObjectAdminHelper.php 8832 2008-05-07 09:43:46Z noel $
+ * @version    SVN: $Id: ObjectAdminHelper.php 11783 2008-09-25 16:21:27Z fabien $
  */
 
 function object_admin_input_file_tag($object, $method, $options = array())

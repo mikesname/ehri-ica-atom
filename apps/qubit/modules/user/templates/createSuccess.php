@@ -12,7 +12,7 @@
 <tr>
   <th><?php echo __('user name'); ?></th>
   <td>
-      <?php echo object_input_tag($user, 'getUserName', array ('size' => 20,)) ?>
+      <?php echo object_input_tag($user, 'getUsername', array ('size' => 20)) ?>
    </td>
 </tr>
 

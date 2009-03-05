@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -26,7 +24,7 @@ class QubitUser extends BaseUser
 {
   public function __toString()
   {
-    return (string) $this->getUserName();
+    return (string) $this->username;
   }
 
   public function setPassword($password)
@@ -40,9 +38,9 @@ class QubitUser extends BaseUser
   {
     $roles = array();
     foreach ($this->getUserRoleRelations() as $relation)
-      {
+    {
       $roles[] = $relation->getRole();
-      }
+    }
 
     return $roles;
   }
@@ -51,31 +49,33 @@ class QubitUser extends BaseUser
   {
     return $this->getRoles();
   }
-  
+
   public static function getList($culture, $options=array())
-  {	
-  	$criteria = new Criteria;
-  	$page = (isset($options['page'])) ? $options['page'] : 1;
-  	
-  	// Page results
+  {
+    $criteria = new Criteria;
+
+    $criteria->add(QubitUser::ID, null, Criteria::ISNOTNULL);
+    $page = (isset($options['page'])) ? $options['page'] : 1;
+
+    // Page results
     $pager = new QubitPager('QubitUser');
     $pager->setCriteria($criteria);
     $pager->setPage($page);
     $pager->init();
-    
+
     return $pager;
   }
-  
+
   public static function checkCredentials($username, $password, &$error)
   {
     $validCreds = false;
     $error = null;
-    
+
     // anonymous is not a real user
     if ($username == 'anonymous')
     {
       $error = 'invalid username';
-      
+
       return null;
     }
 
@@ -98,9 +98,9 @@ class QubitUser extends BaseUser
     }
     else
     {
-      $error = 'invalid username'; 
+      $error = 'invalid username';
     }
-    
+
     return ($validCreds) ? $user : null;
   }
 } // User

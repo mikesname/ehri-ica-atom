@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -30,24 +28,53 @@
 
 class InformationObjectUpdateIsadAction extends InformationObjectUpdateAction
 {
+  public function validate()
+  {
+    // If $_POST array is empty, then show error
+    if ($_POST === array())
+    {
+      $this->getRequest()->setError('form', 'no_form_data');
+
+      return false;
+    }
+
+    return true;
+  }
+
+  public function handleError()
+  {
+    if ($id = $this->getRequestParameter('id'))
+    {
+      $this->editPage = array('module' => 'informationobject', 'action' => 'editIsad', 'id' => $id);
+    }
+    else
+    {
+      $this->editPage = array('module' => 'informationobject', 'action' => 'createIsad');
+    }
+
+    return sfView::ERROR;
+  }
+
   public function execute($request)
   {
     // run the core informationObject update action commands
     parent::execute($request);
 
-    // add ISAD specific commands
-
-    // update informationObject in the search index
-    if (!$this->foreignKeyUpdate)
+    // return to ISAD edit template
+    if ($this->hasWarning)
     {
-      SearchIndex::updateIndexDocument($this->informationObject, $this->getUser()->getCulture());
+      // Set id parameter if this is a new information object
+      if (!$request->getParameter('id'))
+      {
+        $request->setParameter('id', $this->informationObject->getId());
+      }
+
+      $this->forward('informationobject', 'editIsad');
     }
     else
     {
-      SearchIndex::updateTranslatedLanguages($this->informationObject);
-    }
 
-   // return to ISAD edit template
-   return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => 'isad', 'id' => $this->informationObject->getId()));
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => 'isad', 'id' => $this->informationObject->getId()));
+    }
   }
 }

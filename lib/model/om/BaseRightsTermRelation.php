@@ -1,18 +1,19 @@
 <?php
 
-abstract class BaseRightsTermRelation
+abstract class BaseRightsTermRelation implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_rights_term_relation';
+    TABLE_NAME = 'q_rights_term_relation',
 
-  const RIGHTS_ID = 'q_rights_term_relation.RIGHTS_ID';
-  const TERM_ID = 'q_rights_term_relation.TERM_ID';
-  const TYPE_ID = 'q_rights_term_relation.TYPE_ID';
-  const DESCRIPTION = 'q_rights_term_relation.DESCRIPTION';
-  const CREATED_AT = 'q_rights_term_relation.CREATED_AT';
-  const UPDATED_AT = 'q_rights_term_relation.UPDATED_AT';
-  const ID = 'q_rights_term_relation.ID';
+    RIGHTS_ID = 'q_rights_term_relation.RIGHTS_ID',
+    TERM_ID = 'q_rights_term_relation.TERM_ID',
+    TYPE_ID = 'q_rights_term_relation.TYPE_ID',
+    DESCRIPTION = 'q_rights_term_relation.DESCRIPTION',
+    CREATED_AT = 'q_rights_term_relation.CREATED_AT',
+    UPDATED_AT = 'q_rights_term_relation.UPDATED_AT',
+    ID = 'q_rights_term_relation.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -27,14 +28,19 @@ abstract class BaseRightsTermRelation
     return $criteria;
   }
 
-  protected static $rightsTermRelations = array();
+  protected static
+    $rightsTermRelations = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$rightsTermRelations[$id = $resultSet->getInt(7)]))
+    if (!isset(self::$rightsTermRelations[$id = (int) $row[6]]))
     {
       $rightsTermRelation = new QubitRightsTermRelation;
-      $rightsTermRelation->hydrate($resultSet);
+      $rightsTermRelation->new = false;
+      $rightsTermRelation->row = $row;
 
       self::$rightsTermRelations[$id] = $rightsTermRelation;
     }
@@ -88,165 +94,160 @@ abstract class BaseRightsTermRelation
     return $affectedRows;
   }
 
-  protected $rightsId = null;
+  protected
+    $tables = array();
 
-  public function getRightsId()
+  public function __construct()
   {
-    return $this->rightsId;
+    $this->tables[] = Propel::getDatabaseMap(QubitRightsTermRelation::DATABASE_NAME)->getTable(QubitRightsTermRelation::TABLE_NAME);
   }
 
-  public function setRightsId($rightsId)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->rightsId = $rightsId;
-
-    return $this;
-  }
-
-  protected $termId = null;
-
-  public function getTermId()
-  {
-    return $this->termId;
-  }
-
-  public function setTermId($termId)
-  {
-    $this->termId = $termId;
-
-    return $this;
-  }
-
-  protected $typeId = null;
-
-  public function getTypeId()
-  {
-    return $this->typeId;
-  }
-
-  public function setTypeId($typeId)
-  {
-    $this->typeId = $typeId;
-
-    return $this;
-  }
-
-  protected $description = null;
-
-  public function getDescription()
-  {
-    return $this->description;
-  }
-
-  public function setDescription($description)
-  {
-    $this->description = $description;
-
-    return $this;
-  }
-
-  protected $createdAt = null;
-
-  public function getCreatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if (array_key_exists($offset, $this->values))
     {
-      return date($options['format'], $this->createdAt);
+      return $this->values[$offset];
     }
 
-    return $this->createdAt;
-  }
-
-  public function setCreatedAt($createdAt)
-  {
-    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    if (!array_key_exists($rowOffset, $this->row))
     {
-      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
     }
 
-    $this->createdAt = $createdAt;
-
-    return $this;
+    return $this->row[$rowOffset];
   }
 
-  protected $updatedAt = null;
-
-  public function getUpdatedAt(array $options = array())
+  public function offsetExists($offset, array $options = array())
   {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      return date($options['format'], $this->updatedAt);
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
     }
 
-    return $this->updatedAt;
+    return false;
   }
 
-  public function setUpdatedAt($updatedAt)
+  public function __isset($name)
   {
-    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
     }
 
-    $this->updatedAt = $updatedAt;
+    return $this;
+  }
+
+  public function __set($name, $value)
+  {
+    return $this->offsetSet($name, $value);
+  }
+
+  public function offsetUnset($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __unset($name)
   {
-    return $this->id;
+    return $this->offsetUnset($name);
   }
 
-  public function setId($id)
-  {
-    $this->id = $id;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['rightsId'] = $this->rightsId;
-    $this->columnValues['termId'] = $this->termId;
-    $this->columnValues['typeId'] = $this->typeId;
-    $this->columnValues['description'] = $this->description;
-    $this->columnValues['createdAt'] = $this->createdAt;
-    $this->columnValues['updatedAt'] = $this->updatedAt;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->rightsId = $results->getInt($columnOffset++);
-    $this->termId = $results->getInt($columnOffset++);
-    $this->typeId = $results->getInt($columnOffset++);
-    $this->description = $results->getString($columnOffset++);
-    $this->createdAt = $results->getTimestamp($columnOffset++, null);
-    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -258,12 +259,12 @@ abstract class BaseRightsTermRelation
     $criteria = new Criteria;
     $criteria->add(QubitRightsTermRelation::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -284,8 +285,22 @@ abstract class BaseRightsTermRelation
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -294,53 +309,49 @@ abstract class BaseRightsTermRelation
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('rightsId'))
-    {
-      $criteria->add(QubitRightsTermRelation::RIGHTS_ID, $this->rightsId);
-    }
-
-    if ($this->isColumnModified('termId'))
-    {
-      $criteria->add(QubitRightsTermRelation::TERM_ID, $this->termId);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitRightsTermRelation::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('description'))
-    {
-      $criteria->add(QubitRightsTermRelation::DESCRIPTION, $this->description);
-    }
-
-    if (!$this->isColumnModified('createdAt'))
-    {
-      $this->createdAt = time();
-    }
-    $criteria->add(QubitRightsTermRelation::CREATED_AT, $this->createdAt);
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitRightsTermRelation::UPDATED_AT, $this->updatedAt);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitRightsTermRelation::ID, $this->id);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitRightsTermRelation::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -349,55 +360,43 @@ abstract class BaseRightsTermRelation
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('rightsId'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitRightsTermRelation::RIGHTS_ID, $this->rightsId);
+      $connection = QubitTransactionFilter::getConnection(QubitRightsTermRelation::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('termId'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitRightsTermRelation::TERM_ID, $this->termId);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitRightsTermRelation::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('description'))
-    {
-      $criteria->add(QubitRightsTermRelation::DESCRIPTION, $this->description);
-    }
-
-    if ($this->isColumnModified('createdAt'))
-    {
-      $criteria->add(QubitRightsTermRelation::CREATED_AT, $this->createdAt);
-    }
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitRightsTermRelation::UPDATED_AT, $this->updatedAt);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitRightsTermRelation::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitRightsTermRelation::ID, $this->id);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitRightsTermRelation::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -425,71 +424,45 @@ abstract class BaseRightsTermRelation
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addJoinRightsCriteria(Criteria $criteria)
+  public static function addJoinrightsCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitRightsTermRelation::RIGHTS_ID, QubitRights::ID);
 
     return $criteria;
   }
 
-  public function getRights(array $options = array())
-  {
-    return $this->rights = QubitRights::getById($this->rightsId, $options);
-  }
-
-  public function setRights(QubitRights $rights)
-  {
-    $this->rightsId = $rights->getId();
-
-    return $this;
-  }
-
-  public static function addJoinTermCriteria(Criteria $criteria)
+  public static function addJointermCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitRightsTermRelation::TERM_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getTerm(array $options = array())
-  {
-    return $this->term = QubitTerm::getById($this->termId, $options);
-  }
-
-  public function setTerm(QubitTerm $term)
-  {
-    $this->termId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinTypeCriteria(Criteria $criteria)
+  public static function addJointypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitRightsTermRelation::TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getType(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->type = QubitTerm::getById($this->typeId, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setType(QubitTerm $term)
-  {
-    $this->typeId = $term->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.RightsTermRelationMapBuilder');

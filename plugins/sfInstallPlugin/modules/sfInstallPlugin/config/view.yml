@@ -1,0 +1,2 @@
+configureSuccess:
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]

@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -14,13 +14,13 @@
  * @package    symfony
  * @subpackage form
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfFormField.class.php 10439 2008-07-23 12:36:55Z nicolas $
+ * @version    SVN: $Id: sfFormField.class.php 12351 2008-10-23 17:06:55Z fabien $
  */
 class sfFormField
 {
   protected static
     $toStringException = null;
-  
+
   protected
     $widget = null,
     $parent = null,
@@ -65,7 +65,7 @@ class sfFormField
       return 'Exception: '.$e->getMessage();
     }
   }
-  
+
   /**
    * Returns true if a form thrown an exception in the __toString() method
    *
@@ -89,7 +89,7 @@ class sfFormField
   {
     return self::$toStringException;
   }
-  
+
   /**
    * Sets an exception thrown by the __toString() method.
    *
@@ -166,6 +166,21 @@ class sfFormField
   }
 
   /**
+   * Returns the help text.
+   *
+   * @return string The help text
+   */
+  public function renderHelp()
+  {
+    if (is_null($this->parent))
+    {
+      throw new LogicException(sprintf('Unable to render the label for "%s".', $this->name));
+    }
+
+    return $this->parent->getWidget()->getHelp($this->name);
+  }
+
+  /**
    * Returns the label tag.
    *
    * @param  string $label       The label name (not null to override the current value)
@@ -219,6 +234,16 @@ class sfFormField
   public function isHidden()
   {
     return $this->widget->isHidden();
+  }
+
+  /**
+   * Returns the widget name.
+   *
+   * @return mixed The widget name
+   */
+  public function getName()
+  {
+    return $this->name;
   }
 
   /**

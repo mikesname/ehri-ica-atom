@@ -10,23 +10,22 @@
  * @author    Manuel Pichler <mapi@manuel-pichler.de>
  * @copyright 2007-2008 Manuel Pichler. All rights reserved.
  * @license   http://www.opensource.org/licenses/bsd-license.php BSD License
- * @version   CVS: $Id: UselessOverridingMethodSniff.php,v 1.1 2008/02/06 02:38:36 squiz Exp $
+ * @version   CVS: $Id: UselessOverridingMethodSniff.php,v 1.2 2008/10/01 06:08:49 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
 /**
- * Detects unnecessary final modifiers inside of final classes.
+ * Detects unnecessary overriden methods that simply call their parent.
  *
- * This rule is based on the PMD rule catalog. The Unnecessary Final Modifier
- * sniff detects the use of the final modifier inside of a final class which
- * is unnecessary.
+ * This rule is based on the PMD rule catalog. The Useless Overriding Method
+ * sniff detects the use of methods that only call their parent classes's method
+ * with the same name and arguments. These methods are not required.
  *
  * <code>
- * final class Foo
- * {
- *     public final function bar()
- *     {
- *     }
+ * class FooBar {
+ *   public function __construct($a, $b) {
+ *     parent::__construct($a, $b);
+ *   }
  * }
  * </code>
  *

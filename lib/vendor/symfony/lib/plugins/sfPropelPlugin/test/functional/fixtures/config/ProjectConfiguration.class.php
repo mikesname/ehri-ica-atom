@@ -9,7 +9,7 @@ class ProjectConfiguration extends sfProjectConfiguration
   {
   }
 
-  public function initializePropel()
+  public function initializePropel($app)
   {
     // build Propel om/map/sql/forms
     $files = glob(sfConfig::get('sf_lib_dir').'/model/om/*.php');
@@ -37,7 +37,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     {
       chdir(sfConfig::get('sf_root_dir'));
       $task = new sfPropelBuildFormsTask($this->dispatcher, new sfFormatter());
-      $task->run();
+      $task->run(array(), array('application' => $app));
     }
   }
 
@@ -67,7 +67,7 @@ class ProjectConfiguration extends sfProjectConfiguration
         continue;
       }
 
-      $con->executeQuery('CREATE TABLE '.$table);
+      $con->query('CREATE TABLE '.$table);
     }
 
     // load fixtures

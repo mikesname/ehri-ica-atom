@@ -2,7 +2,7 @@
 
 
 
-class PropertyI18nMapBuilder {
+class PropertyI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.PropertyI18nMapBuilder';
@@ -25,18 +25,19 @@ class PropertyI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitPropertyI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_property_i18n');
-		$tMap->setPhpName('PropertyI18n');
+		$tMap = $this->dbMap->addTable(QubitPropertyI18n::TABLE_NAME);
+		$tMap->setPhpName('propertyI18n');
+		$tMap->setClassname('QubitPropertyI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('VALUE', 'Value', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('VALUE', 'value', 'VARCHAR', false, 255);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_property', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_property', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class ObjectExportAction extends sfAction
@@ -27,7 +25,7 @@ class ObjectExportAction extends sfAction
     $this->forward404Unless($this->getRequestParameter('format'));
 
     // load the export config for this schema if it exists
-    $exportConfig = sfConfig::get('sf_app_lib_dir').DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.$this->getRequestParameter('format').'.yml';
+    $exportConfig = sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.$this->getRequestParameter('format').'.yml';
     if (file_exists($exportConfig))
     {
       $this->schemaConfig = sfYaml::load($exportConfig);
@@ -36,11 +34,11 @@ class ObjectExportAction extends sfAction
     // use Symfony templates to render the export XML
     $this->setLayout(false);
     $xmlView = $this->getController()->getView($this->getModuleName(), $this->getActionName(), sfView::SUCCESS);
-    $xmlView->setDirectory(sfConfig::get('sf_app_lib_dir').DIRECTORY_SEPARATOR.'export');
+    $xmlView->setDirectory(sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'export');
 
     // create the base object(s) we're exporting for the schema
     $this->baseObject = QubitObject::getById($this->getRequestParameter('id'));
-    $xmlView->baseObject = eval("return ".$this->baseObject->getClassName()."::getById(\$this->getRequestParameter('id'));");
+    $xmlView->baseObject = eval('return '.$this->baseObject->getClassName()."::getById(\$this->getRequestParameter('id'));");
 
     // check that we have a valid base object with the given ID
     $this->forward404Unless($xmlView->baseObject);
@@ -87,7 +85,7 @@ class ObjectExportAction extends sfAction
     // post-filter through XSLs in order
     foreach ($this->schemaConfig['processXSLT'] as $exportXSL)
     {
-      $exportXSL = sfConfig::get('sf_app_lib_dir').DIRECTORY_SEPARATOR.'xslt'.DIRECTORY_SEPARATOR.$exportXSL;
+      $exportXSL = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'xslt'.DIRECTORY_SEPARATOR.$exportXSL;
 
       if (file_exists($exportXSL))
       {
@@ -118,5 +116,3 @@ class ObjectExportAction extends sfAction
     exit;
   }
 }
-
-?>

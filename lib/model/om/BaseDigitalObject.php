@@ -1,27 +1,28 @@
 <?php
 
-abstract class BaseDigitalObject extends QubitObject
+abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_digital_object';
+    TABLE_NAME = 'q_digital_object',
 
-  const ID = 'q_digital_object.ID';
-  const INFORMATION_OBJECT_ID = 'q_digital_object.INFORMATION_OBJECT_ID';
-  const USAGE_ID = 'q_digital_object.USAGE_ID';
-  const MIME_TYPE = 'q_digital_object.MIME_TYPE';
-  const MEDIA_TYPE_ID = 'q_digital_object.MEDIA_TYPE_ID';
-  const NAME = 'q_digital_object.NAME';
-  const PATH = 'q_digital_object.PATH';
-  const SEQUENCE = 'q_digital_object.SEQUENCE';
-  const BYTE_SIZE = 'q_digital_object.BYTE_SIZE';
-  const CHECKSUM = 'q_digital_object.CHECKSUM';
-  const CHECKSUM_TYPE_ID = 'q_digital_object.CHECKSUM_TYPE_ID';
-  const PARENT_ID = 'q_digital_object.PARENT_ID';
-  const LFT = 'q_digital_object.LFT';
-  const RGT = 'q_digital_object.RGT';
-  const CREATED_AT = 'q_digital_object.CREATED_AT';
-  const UPDATED_AT = 'q_digital_object.UPDATED_AT';
+    ID = 'q_digital_object.ID',
+    INFORMATION_OBJECT_ID = 'q_digital_object.INFORMATION_OBJECT_ID',
+    USAGE_ID = 'q_digital_object.USAGE_ID',
+    MIME_TYPE = 'q_digital_object.MIME_TYPE',
+    MEDIA_TYPE_ID = 'q_digital_object.MEDIA_TYPE_ID',
+    NAME = 'q_digital_object.NAME',
+    PATH = 'q_digital_object.PATH',
+    SEQUENCE = 'q_digital_object.SEQUENCE',
+    BYTE_SIZE = 'q_digital_object.BYTE_SIZE',
+    CHECKSUM = 'q_digital_object.CHECKSUM',
+    CHECKSUM_TYPE_ID = 'q_digital_object.CHECKSUM_TYPE_ID',
+    PARENT_ID = 'q_digital_object.PARENT_ID',
+    LFT = 'q_digital_object.LFT',
+    RGT = 'q_digital_object.RGT',
+    CREATED_AT = 'q_digital_object.CREATED_AT',
+    UPDATED_AT = 'q_digital_object.UPDATED_AT';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -98,406 +99,88 @@ abstract class BaseDigitalObject extends QubitObject
     return $criteria;
   }
 
-  protected $informationObjectId = null;
-
-  public function getInformationObjectId()
+  public function __construct()
   {
-    return $this->informationObjectId;
+    parent::__construct();
+
+    $this->tables[] = Propel::getDatabaseMap(QubitDigitalObject::DATABASE_NAME)->getTable(QubitDigitalObject::TABLE_NAME);
   }
 
-  public function setInformationObjectId($informationObjectId)
+  public function offsetExists($offset, array $options = array())
   {
-    $this->informationObjectId = $informationObjectId;
-
-    return $this;
-  }
-
-  protected $usageId = null;
-
-  public function getUsageId()
-  {
-    return $this->usageId;
-  }
-
-  public function setUsageId($usageId)
-  {
-    $this->usageId = $usageId;
-
-    return $this;
-  }
-
-  protected $mimeType = null;
-
-  public function getMimeType()
-  {
-    return $this->mimeType;
-  }
-
-  public function setMimeType($mimeType)
-  {
-    $this->mimeType = $mimeType;
-
-    return $this;
-  }
-
-  protected $mediaTypeId = null;
-
-  public function getMediaTypeId()
-  {
-    return $this->mediaTypeId;
-  }
-
-  public function setMediaTypeId($mediaTypeId)
-  {
-    $this->mediaTypeId = $mediaTypeId;
-
-    return $this;
-  }
-
-  protected $name = null;
-
-  public function getName()
-  {
-    return $this->name;
-  }
-
-  public function setName($name)
-  {
-    $this->name = $name;
-
-    return $this;
-  }
-
-  protected $path = null;
-
-  public function getPath()
-  {
-    return $this->path;
-  }
-
-  public function setPath($path)
-  {
-    $this->path = $path;
-
-    return $this;
-  }
-
-  protected $sequence = null;
-
-  public function getSequence()
-  {
-    return $this->sequence;
-  }
-
-  public function setSequence($sequence)
-  {
-    $this->sequence = $sequence;
-
-    return $this;
-  }
-
-  protected $byteSize = null;
-
-  public function getByteSize()
-  {
-    return $this->byteSize;
-  }
-
-  public function setByteSize($byteSize)
-  {
-    $this->byteSize = $byteSize;
-
-    return $this;
-  }
-
-  protected $checksum = null;
-
-  public function getChecksum()
-  {
-    return $this->checksum;
-  }
-
-  public function setChecksum($checksum)
-  {
-    $this->checksum = $checksum;
-
-    return $this;
-  }
-
-  protected $checksumTypeId = null;
-
-  public function getChecksumTypeId()
-  {
-    return $this->checksumTypeId;
-  }
-
-  public function setChecksumTypeId($checksumTypeId)
-  {
-    $this->checksumTypeId = $checksumTypeId;
-
-    return $this;
-  }
-
-  protected $parentId = null;
-
-  public function getParentId()
-  {
-    return $this->parentId;
-  }
-
-  public function setParentId($parentId)
-  {
-    $this->parentId = $parentId;
-
-    return $this;
-  }
-
-  protected $lft = null;
-
-  public function getLft()
-  {
-    return $this->lft;
-  }
-
-  protected function setLft($lft)
-  {
-    $this->lft = $lft;
-
-    return $this;
-  }
-
-  protected $rgt = null;
-
-  public function getRgt()
-  {
-    return $this->rgt;
-  }
-
-  protected function setRgt($rgt)
-  {
-    $this->rgt = $rgt;
-
-    return $this;
-  }
-
-  protected $createdAt = null;
-
-  public function getCreatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if (parent::offsetExists($offset, $options))
     {
-      return date($options['format'], $this->createdAt);
+      return true;
     }
 
-    return $this->createdAt;
-  }
-
-  public function setCreatedAt($createdAt)
-  {
-    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    if ('ancestors' == $offset)
     {
-      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+      return true;
     }
 
-    $this->createdAt = $createdAt;
-
-    return $this;
-  }
-
-  protected $updatedAt = null;
-
-  public function getUpdatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if ('descendants' == $offset)
     {
-      return date($options['format'], $this->updatedAt);
+      return true;
     }
 
-    return $this->updatedAt;
+    return false;
   }
 
-  public function setUpdatedAt($updatedAt)
+  public function offsetGet($offset, array $options = array())
   {
-    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
+    if (null !== $value = parent::offsetGet($offset, $options))
     {
-      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
+      return $value;
     }
 
-    $this->updatedAt = $updatedAt;
-
-    return $this;
-  }
-
-  protected function resetModified()
-  {
-    parent::resetModified();
-
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['informationObjectId'] = $this->informationObjectId;
-    $this->columnValues['usageId'] = $this->usageId;
-    $this->columnValues['mimeType'] = $this->mimeType;
-    $this->columnValues['mediaTypeId'] = $this->mediaTypeId;
-    $this->columnValues['name'] = $this->name;
-    $this->columnValues['path'] = $this->path;
-    $this->columnValues['sequence'] = $this->sequence;
-    $this->columnValues['byteSize'] = $this->byteSize;
-    $this->columnValues['checksum'] = $this->checksum;
-    $this->columnValues['checksumTypeId'] = $this->checksumTypeId;
-    $this->columnValues['parentId'] = $this->parentId;
-    $this->columnValues['lft'] = $this->lft;
-    $this->columnValues['rgt'] = $this->rgt;
-    $this->columnValues['createdAt'] = $this->createdAt;
-    $this->columnValues['updatedAt'] = $this->updatedAt;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $columnOffset = parent::hydrate($results, $columnOffset);
-
-    $this->id = $results->getInt($columnOffset++);
-    $this->informationObjectId = $results->getInt($columnOffset++);
-    $this->usageId = $results->getInt($columnOffset++);
-    $this->mimeType = $results->getString($columnOffset++);
-    $this->mediaTypeId = $results->getInt($columnOffset++);
-    $this->name = $results->getString($columnOffset++);
-    $this->path = $results->getString($columnOffset++);
-    $this->sequence = $results->getInt($columnOffset++);
-    $this->byteSize = $results->getInt($columnOffset++);
-    $this->checksum = $results->getString($columnOffset++);
-    $this->checksumTypeId = $results->getInt($columnOffset++);
-    $this->parentId = $results->getInt($columnOffset++);
-    $this->lft = $results->getInt($columnOffset++);
-    $this->rgt = $results->getInt($columnOffset++);
-    $this->createdAt = $results->getTimestamp($columnOffset++, null);
-    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
+    if ('ancestors' == $offset)
     {
-      $options['connection'] = Propel::getConnection(QubitDigitalObject::DATABASE_NAME);
+      if (!isset($this->ancestors))
+      {
+        if ($this->new)
+        {
+          $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addAncestorsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->ancestors = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->ancestors;
     }
 
-    $criteria = new Criteria;
-    $criteria->add(QubitDigitalObject::ID, $this->id);
+    if ('descendants' == $offset)
+    {
+      if (!isset($this->descendants))
+      {
+        if ($this->new)
+        {
+          $this->descendants = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addDescendantsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->descendants = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
 
-    self::addSelectColumns($criteria);
-
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
-
-    return $this->hydrate($resultSet);
+      return $this->descendants;
+    }
   }
 
   protected function insert($connection = null)
   {
     $affectedRows = 0;
 
-    $affectedRows += parent::insert($connection);
-
     $this->updateNestedSet($connection);
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitDigitalObject::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('informationObjectId'))
-    {
-      $criteria->add(QubitDigitalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
-    }
-
-    if ($this->isColumnModified('usageId'))
-    {
-      $criteria->add(QubitDigitalObject::USAGE_ID, $this->usageId);
-    }
-
-    if ($this->isColumnModified('mimeType'))
-    {
-      $criteria->add(QubitDigitalObject::MIME_TYPE, $this->mimeType);
-    }
-
-    if ($this->isColumnModified('mediaTypeId'))
-    {
-      $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $this->mediaTypeId);
-    }
-
-    if ($this->isColumnModified('name'))
-    {
-      $criteria->add(QubitDigitalObject::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('path'))
-    {
-      $criteria->add(QubitDigitalObject::PATH, $this->path);
-    }
-
-    if ($this->isColumnModified('sequence'))
-    {
-      $criteria->add(QubitDigitalObject::SEQUENCE, $this->sequence);
-    }
-
-    if ($this->isColumnModified('byteSize'))
-    {
-      $criteria->add(QubitDigitalObject::BYTE_SIZE, $this->byteSize);
-    }
-
-    if ($this->isColumnModified('checksum'))
-    {
-      $criteria->add(QubitDigitalObject::CHECKSUM, $this->checksum);
-    }
-
-    if ($this->isColumnModified('checksumTypeId'))
-    {
-      $criteria->add(QubitDigitalObject::CHECKSUM_TYPE_ID, $this->checksumTypeId);
-    }
-
-    if ($this->isColumnModified('parentId'))
-    {
-      $criteria->add(QubitDigitalObject::PARENT_ID, $this->parentId);
-    }
-
-    if ($this->isColumnModified('lft'))
-    {
-      $criteria->add(QubitDigitalObject::LFT, $this->lft);
-    }
-
-    if ($this->isColumnModified('rgt'))
-    {
-      $criteria->add(QubitDigitalObject::RGT, $this->rgt);
-    }
-
-    if (!$this->isColumnModified('createdAt'))
-    {
-      $this->createdAt = time();
-    }
-    $criteria->add(QubitDigitalObject::CREATED_AT, $this->createdAt);
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitDigitalObject::UPDATED_AT, $this->updatedAt);
-
-    if (!isset($connection))
-    {
-      $connection = QubitTransactionFilter::getConnection(QubitDigitalObject::DATABASE_NAME);
-    }
-
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
+    $affectedRows += parent::insert($connection);
 
     return $affectedRows;
   }
@@ -506,108 +189,34 @@ abstract class BaseDigitalObject extends QubitObject
   {
     $affectedRows = 0;
 
-    $affectedRows += parent::update($connection);
-
-    if ($this->isColumnModified('parentId'))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-      $this->updateNestedSet($connection);
-    }
-
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitDigitalObject::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('informationObjectId'))
-    {
-      $criteria->add(QubitDigitalObject::INFORMATION_OBJECT_ID, $this->informationObjectId);
-    }
-
-    if ($this->isColumnModified('usageId'))
-    {
-      $criteria->add(QubitDigitalObject::USAGE_ID, $this->usageId);
-    }
-
-    if ($this->isColumnModified('mimeType'))
-    {
-      $criteria->add(QubitDigitalObject::MIME_TYPE, $this->mimeType);
-    }
-
-    if ($this->isColumnModified('mediaTypeId'))
-    {
-      $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $this->mediaTypeId);
-    }
-
-    if ($this->isColumnModified('name'))
-    {
-      $criteria->add(QubitDigitalObject::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('path'))
-    {
-      $criteria->add(QubitDigitalObject::PATH, $this->path);
-    }
-
-    if ($this->isColumnModified('sequence'))
-    {
-      $criteria->add(QubitDigitalObject::SEQUENCE, $this->sequence);
-    }
-
-    if ($this->isColumnModified('byteSize'))
-    {
-      $criteria->add(QubitDigitalObject::BYTE_SIZE, $this->byteSize);
-    }
-
-    if ($this->isColumnModified('checksum'))
-    {
-      $criteria->add(QubitDigitalObject::CHECKSUM, $this->checksum);
-    }
-
-    if ($this->isColumnModified('checksumTypeId'))
-    {
-      $criteria->add(QubitDigitalObject::CHECKSUM_TYPE_ID, $this->checksumTypeId);
-    }
-
-    if ($this->isColumnModified('parentId'))
-    {
-      $criteria->add(QubitDigitalObject::PARENT_ID, $this->parentId);
-    }
-
-    if ($this->isColumnModified('lft'))
-    {
-      $criteria->add(QubitDigitalObject::LFT, $this->lft);
-    }
-
-    if ($this->isColumnModified('rgt'))
-    {
-      $criteria->add(QubitDigitalObject::RGT, $this->rgt);
-    }
-
-    if ($this->isColumnModified('createdAt'))
-    {
-      $criteria->add(QubitDigitalObject::CREATED_AT, $this->createdAt);
-    }
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitDigitalObject::UPDATED_AT, $this->updatedAt);
-
-    if ($criteria->size() > 0)
-    {
-      $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitDigitalObject::ID, $this->id);
-
-      if (!isset($connection))
+      // Get the "original" parentId before any updates
+      $rowOffset = 0; 
+      $originalParentId = null;
+      foreach ($this->tables as $table)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitDigitalObject::DATABASE_NAME);
+        foreach ($table->getColumns() as $column)
+        {
+          if ('parentId' == $column->getPhpName())
+          {
+            $originalParentId = $this->row[$rowOffset];
+            break;
+          }
+          $rowOffset++;
+        }
       }
-
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
+      {
+        $this->updateNestedSet($connection);
+      }
     }
+
+    $affectedRows += parent::update($connection);
 
     return $affectedRows;
   }
@@ -629,163 +238,105 @@ abstract class BaseDigitalObject extends QubitObject
     return $affectedRows;
   }
 
-  public static function addJoinInformationObjectCriteria(Criteria $criteria)
+  public static function addJoininformationObjectCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
 
     return $criteria;
   }
 
-  public function getInformationObject(array $options = array())
-  {
-    return $this->informationObject = QubitInformationObject::getById($this->informationObjectId, $options);
-  }
-
-  public function setInformationObject(QubitInformationObject $informationObject)
-  {
-    $this->informationObjectId = $informationObject->getId();
-
-    return $this;
-  }
-
-  public static function addJoinUsageCriteria(Criteria $criteria)
+  public static function addJoinusageCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitDigitalObject::USAGE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getUsage(array $options = array())
-  {
-    return $this->usage = QubitTerm::getById($this->usageId, $options);
-  }
-
-  public function setUsage(QubitTerm $term)
-  {
-    $this->usageId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinMediaTypeCriteria(Criteria $criteria)
+  public static function addJoinmediaTypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitDigitalObject::MEDIA_TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getMediaType(array $options = array())
-  {
-    return $this->mediaType = QubitTerm::getById($this->mediaTypeId, $options);
-  }
-
-  public function setMediaType(QubitTerm $term)
-  {
-    $this->mediaTypeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinChecksumTypeCriteria(Criteria $criteria)
+  public static function addJoinchecksumTypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitDigitalObject::CHECKSUM_TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getChecksumType(array $options = array())
-  {
-    return $this->checksumType = QubitTerm::getById($this->checksumTypeId, $options);
-  }
-
-  public function setChecksumType(QubitTerm $term)
-  {
-    $this->checksumTypeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinParentCriteria(Criteria $criteria)
+  public static function addJoinparentCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitDigitalObject::PARENT_ID, QubitDigitalObject::ID);
 
     return $criteria;
   }
 
-  public function getParent(array $options = array())
-  {
-    return $this->parent = QubitDigitalObject::getById($this->parentId, $options);
-  }
-
-  public function setParent(QubitDigitalObject $digitalObject)
-  {
-    $this->parentId = $digitalObject->getId();
-
-    return $this;
-  }
-
-  public static function addDigitalObjectsRelatedByParentIdCriteriaById(Criteria $criteria, $id)
+  public static function adddigitalObjectsRelatedByparentIdCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitDigitalObject::PARENT_ID, $id);
 
     return $criteria;
   }
 
-  public static function getDigitalObjectsRelatedByParentIdById($id, array $options = array())
+  public static function getdigitalObjectsRelatedByparentIdById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addDigitalObjectsRelatedByParentIdCriteriaById($criteria, $id);
+    self::adddigitalObjectsRelatedByparentIdCriteriaById($criteria, $id);
 
     return QubitDigitalObject::get($criteria, $options);
   }
 
-  public function addDigitalObjectsRelatedByParentIdCriteria(Criteria $criteria)
+  public function adddigitalObjectsRelatedByparentIdCriteria(Criteria $criteria)
   {
-    return self::addDigitalObjectsRelatedByParentIdCriteriaById($criteria, $this->id);
+    return self::adddigitalObjectsRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
-  protected $digitalObjectsRelatedByParentId = null;
+  protected
+    $digitalObjectsRelatedByparentId = null;
 
-  public function getDigitalObjectsRelatedByParentId(array $options = array())
+  public function getdigitalObjectsRelatedByparentId(array $options = array())
   {
-    if (!isset($this->digitalObjectsRelatedByParentId))
+    if (!isset($this->digitalObjectsRelatedByparentId))
     {
       if (!isset($this->id))
       {
-        $this->digitalObjectsRelatedByParentId = QubitQuery::create();
+        $this->digitalObjectsRelatedByparentId = QubitQuery::create();
       }
       else
       {
-        $this->digitalObjectsRelatedByParentId = self::getDigitalObjectsRelatedByParentIdById($this->id, array('self' => $this) + $options);
+        $this->digitalObjectsRelatedByparentId = self::getdigitalObjectsRelatedByparentIdById($this->id, array('self' => $this) + $options);
       }
     }
 
-    return $this->digitalObjectsRelatedByParentId;
+    return $this->digitalObjectsRelatedByparentId;
   }
 
-  public static function addPlaceMapRelationsCriteriaById(Criteria $criteria, $id)
+  public static function addplaceMapRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitPlaceMapRelation::MAP_ICON_IMAGE_ID, $id);
 
     return $criteria;
   }
 
-  public static function getPlaceMapRelationsById($id, array $options = array())
+  public static function getplaceMapRelationsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addPlaceMapRelationsCriteriaById($criteria, $id);
+    self::addplaceMapRelationsCriteriaById($criteria, $id);
 
     return QubitPlaceMapRelation::get($criteria, $options);
   }
 
-  public function addPlaceMapRelationsCriteria(Criteria $criteria)
+  public function addplaceMapRelationsCriteria(Criteria $criteria)
   {
-    return self::addPlaceMapRelationsCriteriaById($criteria, $this->id);
+    return self::addplaceMapRelationsCriteriaById($criteria, $this->id);
   }
 
-  protected $placeMapRelations = null;
+  protected
+    $placeMapRelations = null;
 
-  public function getPlaceMapRelations(array $options = array())
+  public function getplaceMapRelations(array $options = array())
   {
     if (!isset($this->placeMapRelations))
     {
@@ -795,7 +346,7 @@ abstract class BaseDigitalObject extends QubitObject
       }
       else
       {
-        $this->placeMapRelations = self::getPlaceMapRelationsById($this->id, array('self' => $this) + $options);
+        $this->placeMapRelations = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
       }
     }
 
@@ -807,70 +358,43 @@ abstract class BaseDigitalObject extends QubitObject
     return $criteria->add(QubitDigitalObject::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitDigitalObject::RGT, $this->rgt, Criteria::GREATER_THAN);
   }
 
-  protected $ancestors = null;
-
-  public function getAncestors(array $options = array())
-  {
-    if (!isset($this->ancestors))
-    {
-      if ($this->new)
-      {
-        $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
-      }
-      else
-      {
-        $criteria = new Criteria;
-        $this->addAncestorsCriteria($criteria);
-        $this->addOrderByPreorder($criteria);
-        $this->ancestors = self::get($criteria, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->ancestors;
-  }
+  protected
+    $ancestors = null;
 
   public function addDescendantsCriteria(Criteria $criteria)
   {
     return $criteria->add(QubitDigitalObject::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitDigitalObject::RGT, $this->rgt, Criteria::LESS_THAN);
   }
 
-  protected $descendants = null;
-
-  public function getDescendants(array $options = array())
-  {
-    if (!isset($this->descendants))
-    {
-      if ($this->new)
-      {
-        $this->descendants = QubitQuery::create(array('self' => $this) + $options);
-      }
-      else
-      {
-        $criteria = new Criteria;
-        $this->addDescendantsCriteria($criteria);
-        $this->addOrderByPreorder($criteria);
-        $this->descendants = self::get($criteria, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->descendants;
-  }
+  protected
+    $descendants = null;
 
   protected function updateNestedSet($connection = null)
   {
+unset($this->values['lft']);
+unset($this->values['rgt']);
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitDigitalObject::DATABASE_NAME);
     }
 
-    if (null === $parent = $this->getParent(array('connection' => $connection)))
+    if (!isset($this->lft) || !isset($this->rgt))
     {
-      $stmt = $connection->prepareStatement('
+      $delta = 2;
+    }
+    else
+    {
+      $delta = $this->rgt - $this->lft + 1;
+    }
+
+    if (null === $parent = $this->offsetGet('parent', array('connection' => $connection)))
+    {
+      $statement = $connection->prepare('
         SELECT MAX('.QubitDigitalObject::RGT.')
         FROM '.QubitDigitalObject::TABLE_NAME);
-      $results = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
-      $results->next();
-      $max = $results->getInt(1);
+      $statement->execute();
+      $row = $statement->fetch();
+      $max = $row[0];
 
       if (!isset($this->lft) || !isset($this->rgt))
       {
@@ -886,35 +410,22 @@ abstract class BaseDigitalObject extends QubitObject
     {
       $parent->refresh(array('connection' => $connection));
 
-      if (!isset($this->lft) || !isset($this->rgt))
+      if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
       {
-        $delta = 2;
-      }
-      else
-      {
-        if ($this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
-        {
-          throw new PropelException('An object cannot be a descendant of itself.');
-        }
-
-        $delta = $this->rgt - $this->lft + 1;
+        throw new PropelException('An object cannot be a descendant of itself.');
       }
 
-      $stmt = $connection->prepareStatement('
+      $statement = $connection->prepare('
         UPDATE '.QubitDigitalObject::TABLE_NAME.'
         SET '.QubitDigitalObject::LFT.' = '.QubitDigitalObject::LFT.' + ?
         WHERE '.QubitDigitalObject::LFT.' >= ?');
-      $stmt->setInt(1, $delta);
-      $stmt->setInt(2, $parent->rgt);
-      $stmt->executeUpdate();
+      $statement->execute(array($delta, $parent->rgt));
 
-      $stmt = $connection->prepareStatement('
+      $statement = $connection->prepare('
         UPDATE '.QubitDigitalObject::TABLE_NAME.'
         SET '.QubitDigitalObject::RGT.' = '.QubitDigitalObject::RGT.' + ?
         WHERE '.QubitDigitalObject::RGT.' >= ?');
-      $stmt->setInt(1, $delta);
-      $stmt->setInt(2, $parent->rgt);
-      $stmt->executeUpdate();
+      $statement->execute(array($delta, $parent->rgt));
 
       if (!isset($this->lft) || !isset($this->rgt))
       {
@@ -933,21 +444,23 @@ abstract class BaseDigitalObject extends QubitObject
       $shift = $parent->rgt - $this->lft;
     }
 
-    $stmt = $connection->prepareStatement('
+    $statement = $connection->prepare('
       UPDATE '.QubitDigitalObject::TABLE_NAME.'
       SET '.QubitDigitalObject::LFT.' = '.QubitDigitalObject::LFT.' + ?, '.QubitDigitalObject::RGT.' = '.QubitDigitalObject::RGT.' + ?
       WHERE '.QubitDigitalObject::LFT.' >= ?
       AND '.QubitDigitalObject::RGT.' <= ?');
-    $stmt->setInt(1, $shift);
-    $stmt->setInt(2, $shift);
-    $stmt->setInt(3, $this->lft);
-    $stmt->setInt(4, $this->rgt);
-    $stmt->executeUpdate();
+    $statement->execute(array($shift, $shift, $this->lft, $this->rgt));
 
     $this->deleteFromNestedSet($connection);
 
-    $this->columnValues['lft'] = $this->lft += $shift;
-    $this->columnValues['rgt'] = $this->rgt += $shift;
+    if ($shift > 0)
+    {
+      $this->lft -= $delta;
+      $this->rgt -= $delta;
+    }
+
+    $this->lft += $shift;
+    $this->rgt += $shift;
 
     return $this;
   }
@@ -961,24 +474,18 @@ abstract class BaseDigitalObject extends QubitObject
 
     $delta = $this->rgt - $this->lft + 1;
 
-    $stmt = $connection->prepareStatement('
+    $statement = $connection->prepare('
       UPDATE '.QubitDigitalObject::TABLE_NAME.'
       SET '.QubitDigitalObject::LFT.' = '.QubitDigitalObject::LFT.' - ?
       WHERE '.QubitDigitalObject::LFT.' >= ?');
-    $stmt->setInt(1, $delta);
-    $stmt->setInt(2, $this->rgt);
-    $stmt->executeUpdate();
+    $statement->execute(array($delta, $this->rgt));
 
-    $stmt = $connection->prepareStatement('
+    $statement = $connection->prepare('
       UPDATE '.QubitDigitalObject::TABLE_NAME.'
       SET '.QubitDigitalObject::RGT.' = '.QubitDigitalObject::RGT.' - ?
       WHERE '.QubitDigitalObject::RGT.' >= ?');
-    $stmt->setInt(1, $delta);
-    $stmt->setInt(2, $this->rgt);
-    $stmt->executeUpdate();
+    $statement->execute(array($delta, $this->rgt));
 
     return $this;
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.DigitalObjectMapBuilder');

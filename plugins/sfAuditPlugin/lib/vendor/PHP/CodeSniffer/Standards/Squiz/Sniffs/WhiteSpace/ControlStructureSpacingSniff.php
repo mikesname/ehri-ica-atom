@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ControlStructureSpacingSniff.php,v 1.7 2008/02/20 22:35:16 squiz Exp $
+ * @version   CVS: $Id: ControlStructureSpacingSniff.php,v 1.9 2008/08/22 00:43:45 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -30,6 +30,16 @@
  */
 class Squiz_Sniffs_WhiteSpace_ControlStructureSpacingSniff implements PHP_CodeSniffer_Sniff
 {
+
+    /**
+     * A list of tokenizers this sniff supports.
+     *
+     * @var array
+     */
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'JS',
+                                  );
 
 
     /**
@@ -77,6 +87,20 @@ class Squiz_Sniffs_WhiteSpace_ControlStructureSpacingSniff implements PHP_CodeSn
         if ($tokens[$firstContent]['line'] !== ($tokens[$stackPtr]['line'] + 1)) {
             $error = 'Blank line found at start of control structure';
             $phpcsFile->addError($error, $scopeOpener);
+        }
+
+        $lastContent = $phpcsFile->findPrevious(T_WHITESPACE, ($scopeCloser - 1), null, true);
+        if ($tokens[$lastContent]['line'] !== ($tokens[$scopeCloser]['line'] - 1)) {
+            $errorToken = $scopeCloser;
+            for ($i = ($scopeCloser - 1); $i > $lastContent; $i--) {
+                if ($tokens[$i]['line'] < $tokens[$scopeCloser]['line']) {
+                    $errorToken = $i;
+                    break;
+                }
+            }
+
+            $error = 'Blank line found at end of control structure';
+            $phpcsFile->addError($error, $errorToken);
         }
 
         $trailingContent = $phpcsFile->findNext(T_WHITESPACE, ($scopeCloser + 1), null, true);

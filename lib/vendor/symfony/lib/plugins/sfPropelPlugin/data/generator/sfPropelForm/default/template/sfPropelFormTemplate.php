@@ -1,14 +1,14 @@
 [?php
 
 /**
- * <?php echo $this->table->getPhpName() ?> form.
+ * <?php echo $this->table->getClassname() ?> form.
  *
- * @package    form
- * @subpackage <?php echo $this->table->getName() ?>
-
- * @version    SVN: $Id: sfPropelFormTemplate.php 6174 2007-11-27 06:22:40Z fabien $
+ * @package    ##PROJECT_NAME##
+ * @subpackage form
+ * @author     ##AUTHOR_NAME##
+ * @version    SVN: $Id: sfPropelFormTemplate.php 10377 2008-07-21 07:10:32Z dwhittle $
  */
-class <?php echo $this->table->getPhpName() ?>Form extends Base<?php echo $this->table->getPhpName() ?>Form
+class <?php echo $this->table->getClassname() ?>Form extends Base<?php echo $this->table->getClassname() ?>Form
 {
   public function configure()
   {

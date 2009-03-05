@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: CommentedOutCodeUnitTest.php,v 1.1 2007/10/22 23:00:08 squiz Exp $
+ * @version   CVS: $Id: CommentedOutCodeUnitTest.php,v 1.2 2008/10/28 04:45:58 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -56,14 +56,27 @@ class Squiz_Tests_PHP_CommentedOutCodeUnitTest extends AbstractSniffUnitTest
      *
      * @return array(int => int)
      */
-    public function getWarningList()
+    public function getWarningList($testFile='CommentedOutCodeUnitTest.inc')
     {
-        return array(
-                6  => 1,
-                8  => 1,
-                15 => 1,
-                19 => 1,
-               );
+        switch ($testFile) {
+        case 'CommentedOutCodeUnitTest.inc':
+            return array(
+                    6  => 1,
+                    8  => 1,
+                    15 => 1,
+                    19 => 1,
+                   );
+            break;
+        case 'CommentedOutCodeUnitTest.css':
+            return array(
+                    7  => 1,
+                    16 => 1,
+                   );
+            break;
+        default:
+            return array();
+            break;
+        }//end switch
 
     }//end getWarningList()
 

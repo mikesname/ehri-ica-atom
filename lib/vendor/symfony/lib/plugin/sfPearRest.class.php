@@ -16,7 +16,7 @@ require_once 'PEAR/REST.php';
  * @package    symfony
  * @subpackage plugin
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPearRest.class.php 5250 2007-09-24 08:11:50Z fabien $
+ * @version    SVN: $Id: sfPearRest.class.php 10677 2008-08-05 19:11:48Z fabien $
  */
 class sfPearRest extends PEAR_REST
 {
@@ -25,6 +25,6 @@ class sfPearRest extends PEAR_REST
    */
   public function downloadHttp($url, $lastmodified = null, $accept = false)
   {
-    return parent::downloadHttp($url, $lastmodified, $accept);
+    return parent::downloadHttp($url, $lastmodified, array_merge(false !== $accept ? $accept : array(), array("\r\nX-SYMFONY-VERSION: ".SYMFONY_VERSION)));
   }
 }

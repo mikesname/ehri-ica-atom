@@ -2,7 +2,7 @@
 
 
 
-class TermI18nMapBuilder {
+class TermI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.TermI18nMapBuilder';
@@ -25,18 +25,19 @@ class TermI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitTermI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_term_i18n');
-		$tMap->setPhpName('TermI18n');
+		$tMap = $this->dbMap->addTable(QubitTermI18n::TABLE_NAME);
+		$tMap->setPhpName('termI18n');
+		$tMap->setClassname('QubitTermI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_term', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_term', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

@@ -12,9 +12,8 @@ Qubit Toolkit
 ICA-AtoM is based on the Qubit Toolkit
 
 Url:       http://www.qubit-toolkit.org/
-Copyright: Peter Van Garderen <peter@artefactual.com>
-Authors:   Peter Van Garderen, Jack Bates, MJ Suhonos, David Juhasz
-License:   GPL version 2 - see LICENSE file
+Copyright: 2006 - 2009, Peter Van Garderen <peter@artefactual.com> and other original authors as attributed in each file
+License:   GPL version 2 or any later version - see LICENSE file
 
 Qubit Logo
 ----------
@@ -146,6 +145,6 @@ License:   GPL3 - http://www.gnu.org/licenses/gpl-3.0.html
 
 SAMPLE DATA
 ===========
-All sample metadata and image files used with permission from the City of Vancouver Archives and Simon Fraser University Archives.
-Some archival descriptions were abbreviated or altered for demonstration purposes.
+All sample metadata and image files used with permission from the City of Vancouver Archives, Simon Fraser University Archives and Library and Archives of Canada.
+Some archival descriptions were abbreviated, altered or translated for demonstration purposes.
 Sample video file(s) made available by the Open Video Project and the Library of Congress under a Creative Commons Attribution-NonCommercial-NoDerivs 2.5 License.

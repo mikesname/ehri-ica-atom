@@ -9,7 +9,7 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: FirebugConsoleSniff.php,v 1.3 2008/02/25 03:10:33 squiz Exp $
+ * @version   CVS: $Id: FirebugConsoleSniff.php,v 1.5 2008/08/29 06:46:03 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -42,7 +42,12 @@ class MySource_Sniffs_Debug_FirebugConsoleSniff implements PHP_CodeSniffer_Sniff
      */
     public function register()
     {
-        return array(T_STRING);
+        return array(
+                T_STRING,
+                T_PROPERTY,
+                T_LABEL,
+                T_OBJECT,
+               );
 
     }//end register()
 
@@ -61,7 +66,7 @@ class MySource_Sniffs_Debug_FirebugConsoleSniff implements PHP_CodeSniffer_Sniff
         $tokens = $phpcsFile->getTokens();
 
         if (strtolower($tokens[$stackPtr]['content']) === 'console') {
-            $error = 'Variables and functions must not be named "console"; name may conflict with Firebug internal variable';
+            $error = 'Variables, functions and labels must not be named "console"; name may conflict with Firebug internal variable';
             $phpcsFile->addError($error, $stackPtr);
         }
 

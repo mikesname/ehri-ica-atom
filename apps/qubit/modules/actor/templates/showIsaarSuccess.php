@@ -1,18 +1,17 @@
-﻿<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
+﻿<div class="pageTitle"><?php echo __('view authority record') ?></div>
 
 <table class="detail">
 <tbody>
 
-<?php if (strlen($value = $actor->getAuthorizedFormOfName(array('cultureFallback' => true))) > 0): ?>
-  <?php if ($editCredentials): ?>
-    <tr><td colspan="2" class="headerCell">
-    <?php echo link_to($value, array('module' => 'actor', 'action' => 'editIsaar', 'id' => $actor->getId())) ?>
-    </td></tr>
-  <?php else: ?>
-    <tr><td colspan="2" class="headerCell">
-    <?php echo $value ?>
-    </td></tr>
-  <?php endif; ?>
+<?php $name = render_title($actor->getAuthorizedFormOfName(array('cultureFallback' => true))) ?>
+<?php if ($editCredentials): ?>
+  <tr><td colspan="2" class="headerCell">
+  <?php echo link_to($name, array('module' => 'actor', 'action' => 'editIsaar', 'id' => $actor->getId())) ?>
+  </td></tr>
+<?php else: ?>
+  <tr><td colspan="2" class="headerCell">
+  <?php echo $name ?>
+  </td></tr>
 <?php endif; ?>
 
 <?php if ($actor->getEntityTypeId()): ?>
@@ -156,12 +155,12 @@
 </table>
 
 <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'actor', 'action' => 'update'))): ?>
-  <div class="menu-action">
-  <?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/editIsaar?id='.$actor->getId()) ?>
-  </div>
-<?php endif; ?>
+<div class="menu-action">
+<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/editIsaar?id='.$actor->getId()) ?>
+</div>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/createIsaar'); ?>
+  <?php echo link_to(__('add new'), 'actor/createIsaar'); ?>
   <?php echo link_to(__('list all'), 'actor/list'); ?>
 </div>
+<?php endif; ?>

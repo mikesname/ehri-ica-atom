@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: PEARCodingStandard.php,v 1.6 2007/08/02 23:18:31 squiz Exp $
+ * @version   CVS: $Id: PEARCodingStandard.php,v 1.8 2008/11/17 05:04:07 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -44,8 +44,6 @@ class PHP_CodeSniffer_Standards_PEAR_PEARCodingStandard extends PHP_CodeSniffer_
     public function getIncludedSniffs()
     {
         return array(
-                'Generic/Sniffs/Formatting/MultipleStatementAlignmentSniff.php',
-                'Generic/Sniffs/Functions/OpeningFunctionBraceBsdAllmanSniff.php',
                 'Generic/Sniffs/NamingConventions/UpperCaseConstantNameSniff.php',
                 'Generic/Sniffs/PHP/LowerCaseConstantSniff.php',
                 'Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_07_delete_elements</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_07_delete_elements</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>collection_type_id</td>
+	<td>label=Published material</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>extent_and_medium</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Published material</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>6 m of cartographic records</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>scope_and_content</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>value</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>relation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>location_of_originals</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>access_conditions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Title based on provenance of fonds.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>rights</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=resource metadata</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=digital object</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='editForm']/fieldset[2]/div/table[1]/tbody/tr[1]/th/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Delete this digital object? This cannot be undone!</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>digital object metadata</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 
 
-class SettingMapBuilder {
+class SettingMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.SettingMapBuilder';
@@ -25,24 +25,25 @@ class SettingMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitSetting::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_setting');
-		$tMap->setPhpName('Setting');
+		$tMap = $this->dbMap->addTable(QubitSetting::TABLE_NAME);
+		$tMap->setPhpName('setting');
+		$tMap->setClassname('QubitSetting');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('SCOPE', 'Scope', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('SCOPE', 'scope', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('EDITABLE', 'Editable', 'boolean', CreoleTypes::BOOLEAN, false, null);
+		$tMap->addColumn('EDITABLE', 'editable', 'BOOLEAN', false, null);
 
-		$tMap->addColumn('DELETEABLE', 'Deleteable', 'boolean', CreoleTypes::BOOLEAN, false, null);
+		$tMap->addColumn('DELETEABLE', 'deleteable', 'BOOLEAN', false, null);
 
-		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

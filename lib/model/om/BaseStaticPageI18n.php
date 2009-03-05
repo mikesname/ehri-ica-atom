@@ -1,15 +1,16 @@
 <?php
 
-abstract class BaseStaticPageI18n
+abstract class BaseStaticPageI18n implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_static_page_i18n';
+    TABLE_NAME = 'q_static_page_i18n',
 
-  const TITLE = 'q_static_page_i18n.TITLE';
-  const CONTENT = 'q_static_page_i18n.CONTENT';
-  const ID = 'q_static_page_i18n.ID';
-  const CULTURE = 'q_static_page_i18n.CULTURE';
+    TITLE = 'q_static_page_i18n.TITLE',
+    CONTENT = 'q_static_page_i18n.CONTENT',
+    ID = 'q_static_page_i18n.ID',
+    CULTURE = 'q_static_page_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -21,14 +22,19 @@ abstract class BaseStaticPageI18n
     return $criteria;
   }
 
-  protected static $staticPageI18ns = array();
+  protected static
+    $staticPageI18ns = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$staticPageI18ns[$key = serialize(array($resultSet->getInt(3), $resultSet->getString(4)))]))
+    if (!isset(self::$staticPageI18ns[$key = serialize(array((int) $row[2], (string) $row[3]))]))
     {
       $staticPageI18n = new QubitStaticPageI18n;
-      $staticPageI18n->hydrate($resultSet);
+      $staticPageI18n->new = false;
+      $staticPageI18n->row = $row;
 
       self::$staticPageI18ns[$key] = $staticPageI18n;
     }
@@ -83,95 +89,160 @@ abstract class BaseStaticPageI18n
     return $affectedRows;
   }
 
-  protected $title = null;
+  protected
+    $tables = array();
 
-  public function getTitle()
+  public function __construct()
   {
-    return $this->title;
+    $this->tables[] = Propel::getDatabaseMap(QubitStaticPageI18n::DATABASE_NAME)->getTable(QubitStaticPageI18n::TABLE_NAME);
   }
 
-  public function setTitle($title)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->title = $title;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $content = null;
-
-  public function getContent()
+  public function __set($name, $value)
   {
-    return $this->content;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setContent($content)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->content = $content;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __unset($name)
   {
-    return $this->id;
+    return $this->offsetUnset($name);
   }
 
-  public function setId($id)
-  {
-    $this->id = $id;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $culture = null;
-
-  public function getCulture()
-  {
-    return $this->culture;
-  }
-
-  public function setCulture($culture)
-  {
-    $this->culture = $culture;
-
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['title'] = $this->title;
-    $this->columnValues['content'] = $this->content;
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['culture'] = $this->culture;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->title = $results->getString($columnOffset++);
-    $this->content = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-    $this->culture = $results->getString($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -184,12 +255,12 @@ abstract class BaseStaticPageI18n
     $criteria->add(QubitStaticPageI18n::ID, $this->id);
     $criteria->add(QubitStaticPageI18n::CULTURE, $this->culture);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -210,8 +281,22 @@ abstract class BaseStaticPageI18n
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -220,35 +305,49 @@ abstract class BaseStaticPageI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('title'))
-    {
-      $criteria->add(QubitStaticPageI18n::TITLE, $this->title);
-    }
-
-    if ($this->isColumnModified('content'))
-    {
-      $criteria->add(QubitStaticPageI18n::CONTENT, $this->content);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitStaticPageI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitStaticPageI18n::CULTURE, $this->culture);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitStaticPageI18n::DATABASE_NAME);
     }
 
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -257,40 +356,43 @@ abstract class BaseStaticPageI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('title'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitStaticPageI18n::TITLE, $this->title);
+      $connection = QubitTransactionFilter::getConnection(QubitStaticPageI18n::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('content'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitStaticPageI18n::CONTENT, $this->content);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitStaticPageI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitStaticPageI18n::CULTURE, $this->culture);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitStaticPageI18n::ID, $this->id);
-      $selectCriteria->add(QubitStaticPageI18n::CULTURE, $this->culture);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitStaticPageI18n::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -321,9 +423,9 @@ abstract class BaseStaticPageI18n
 	{
 		$pks = array();
 
-		$pks[0] = $this->getId();
+		$pks[0] = $this->getid();
 
-		$pks[1] = $this->getCulture();
+		$pks[1] = $this->getculture();
 
 		return $pks;
 	}
@@ -332,30 +434,28 @@ abstract class BaseStaticPageI18n
 	public function setPrimaryKey($keys)
 	{
 
-		$this->setId($keys[0]);
+		$this->setid($keys[0]);
 
-		$this->setCulture($keys[1]);
+		$this->setculture($keys[1]);
 
 	}
 
-  public static function addJoinStaticPageCriteria(Criteria $criteria)
+  public static function addJoinstaticPageCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitStaticPageI18n::ID, QubitStaticPage::ID);
 
     return $criteria;
   }
 
-  public function getStaticPage(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->staticPage = QubitStaticPage::getById($this->id, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setStaticPage(QubitStaticPage $staticPage)
-  {
-    $this->id = $staticPage->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.StaticPageI18nMapBuilder');

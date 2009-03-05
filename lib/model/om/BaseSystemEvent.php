@@ -1,21 +1,22 @@
 <?php
 
-abstract class BaseSystemEvent
+abstract class BaseSystemEvent implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_system_event';
+    TABLE_NAME = 'q_system_event',
 
-  const TYPE_ID = 'q_system_event.TYPE_ID';
-  const OBJECT_CLASS = 'q_system_event.OBJECT_CLASS';
-  const OBJECT_ID = 'q_system_event.OBJECT_ID';
-  const PRE_EVENT_SNAPSHOT = 'q_system_event.PRE_EVENT_SNAPSHOT';
-  const POST_EVENT_SNAPSHOT = 'q_system_event.POST_EVENT_SNAPSHOT';
-  const DATE = 'q_system_event.DATE';
-  const USER_ID = 'q_system_event.USER_ID';
-  const CREATED_AT = 'q_system_event.CREATED_AT';
-  const UPDATED_AT = 'q_system_event.UPDATED_AT';
-  const ID = 'q_system_event.ID';
+    TYPE_ID = 'q_system_event.TYPE_ID',
+    OBJECT_CLASS = 'q_system_event.OBJECT_CLASS',
+    OBJECT_ID = 'q_system_event.OBJECT_ID',
+    PRE_EVENT_SNAPSHOT = 'q_system_event.PRE_EVENT_SNAPSHOT',
+    POST_EVENT_SNAPSHOT = 'q_system_event.POST_EVENT_SNAPSHOT',
+    DATE = 'q_system_event.DATE',
+    USER_ID = 'q_system_event.USER_ID',
+    CREATED_AT = 'q_system_event.CREATED_AT',
+    UPDATED_AT = 'q_system_event.UPDATED_AT',
+    ID = 'q_system_event.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -33,14 +34,19 @@ abstract class BaseSystemEvent
     return $criteria;
   }
 
-  protected static $systemEvents = array();
+  protected static
+    $systemEvents = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$systemEvents[$id = $resultSet->getInt(10)]))
+    if (!isset(self::$systemEvents[$id = (int) $row[9]]))
     {
       $systemEvent = new QubitSystemEvent;
-      $systemEvent->hydrate($resultSet);
+      $systemEvent->new = false;
+      $systemEvent->row = $row;
 
       self::$systemEvents[$id] = $systemEvent;
     }
@@ -94,224 +100,160 @@ abstract class BaseSystemEvent
     return $affectedRows;
   }
 
-  protected $typeId = null;
+  protected
+    $tables = array();
 
-  public function getTypeId()
+  public function __construct()
   {
-    return $this->typeId;
+    $this->tables[] = Propel::getDatabaseMap(QubitSystemEvent::DATABASE_NAME)->getTable(QubitSystemEvent::TABLE_NAME);
   }
 
-  public function setTypeId($typeId)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->typeId = $typeId;
-
-    return $this;
-  }
-
-  protected $objectClass = null;
-
-  public function getObjectClass()
-  {
-    return $this->objectClass;
-  }
-
-  public function setObjectClass($objectClass)
-  {
-    $this->objectClass = $objectClass;
-
-    return $this;
-  }
-
-  protected $objectId = null;
-
-  public function getObjectId()
-  {
-    return $this->objectId;
-  }
-
-  public function setObjectId($objectId)
-  {
-    $this->objectId = $objectId;
-
-    return $this;
-  }
-
-  protected $preEventSnapshot = null;
-
-  public function getPreEventSnapshot()
-  {
-    return $this->preEventSnapshot;
-  }
-
-  public function setPreEventSnapshot($preEventSnapshot)
-  {
-    $this->preEventSnapshot = $preEventSnapshot;
-
-    return $this;
-  }
-
-  protected $postEventSnapshot = null;
-
-  public function getPostEventSnapshot()
-  {
-    return $this->postEventSnapshot;
-  }
-
-  public function setPostEventSnapshot($postEventSnapshot)
-  {
-    $this->postEventSnapshot = $postEventSnapshot;
-
-    return $this;
-  }
-
-  protected $date = null;
-
-  public function getDate(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    if (array_key_exists($offset, $this->values))
     {
-      return date($options['format'], $this->date);
+      return $this->values[$offset];
     }
 
-    return $this->date;
-  }
-
-  public function setDate($date)
-  {
-    if (is_string($date) && false === $date = strtotime($date))
+    if (!array_key_exists($rowOffset, $this->row))
     {
-      throw new PropelException('Unable to parse date / time value for [date] from input: '.var_export($date, true));
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
     }
 
-    $this->date = $date;
-
-    return $this;
+    return $this->row[$rowOffset];
   }
 
-  protected $userId = null;
-
-  public function getUserId()
+  public function offsetExists($offset, array $options = array())
   {
-    return $this->userId;
-  }
-
-  public function setUserId($userId)
-  {
-    $this->userId = $userId;
-
-    return $this;
-  }
-
-  protected $createdAt = null;
-
-  public function getCreatedAt(array $options = array())
-  {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      return date($options['format'], $this->createdAt);
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
     }
 
-    return $this->createdAt;
+    return false;
   }
 
-  public function setCreatedAt($createdAt)
+  public function __isset($name)
   {
-    if (is_string($createdAt) && false === $createdAt = strtotime($createdAt))
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      throw new PropelException('Unable to parse date / time value for [createdAt] from input: '.var_export($createdAt, true));
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
     }
 
-    $this->createdAt = $createdAt;
-
     return $this;
   }
 
-  protected $updatedAt = null;
-
-  public function getUpdatedAt(array $options = array())
+  public function __set($name, $value)
   {
-    $options += array('format' => 'Y-m-d H:i:s');
-    if (isset($options['format']))
+    return $this->offsetSet($name, $value);
+  }
+
+  public function offsetUnset($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      return date($options['format'], $this->updatedAt);
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
     }
 
-    return $this->updatedAt;
-  }
-
-  public function setUpdatedAt($updatedAt)
-  {
-    if (is_string($updatedAt) && false === $updatedAt = strtotime($updatedAt))
-    {
-      throw new PropelException('Unable to parse date / time value for [updatedAt] from input: '.var_export($updatedAt, true));
-    }
-
-    $this->updatedAt = $updatedAt;
-
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __unset($name)
   {
-    return $this->id;
+    return $this->offsetUnset($name);
   }
 
-  public function setId($id)
-  {
-    $this->id = $id;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['typeId'] = $this->typeId;
-    $this->columnValues['objectClass'] = $this->objectClass;
-    $this->columnValues['objectId'] = $this->objectId;
-    $this->columnValues['preEventSnapshot'] = $this->preEventSnapshot;
-    $this->columnValues['postEventSnapshot'] = $this->postEventSnapshot;
-    $this->columnValues['date'] = $this->date;
-    $this->columnValues['userId'] = $this->userId;
-    $this->columnValues['createdAt'] = $this->createdAt;
-    $this->columnValues['updatedAt'] = $this->updatedAt;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->typeId = $results->getInt($columnOffset++);
-    $this->objectClass = $results->getString($columnOffset++);
-    $this->objectId = $results->getInt($columnOffset++);
-    $this->preEventSnapshot = $results->getString($columnOffset++);
-    $this->postEventSnapshot = $results->getString($columnOffset++);
-    $this->date = $results->getTimestamp($columnOffset++, null);
-    $this->userId = $results->getInt($columnOffset++);
-    $this->createdAt = $results->getTimestamp($columnOffset++, null);
-    $this->updatedAt = $results->getTimestamp($columnOffset++, null);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -323,12 +265,12 @@ abstract class BaseSystemEvent
     $criteria = new Criteria;
     $criteria->add(QubitSystemEvent::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -349,8 +291,22 @@ abstract class BaseSystemEvent
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -359,68 +315,49 @@ abstract class BaseSystemEvent
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitSystemEvent::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('objectClass'))
-    {
-      $criteria->add(QubitSystemEvent::OBJECT_CLASS, $this->objectClass);
-    }
-
-    if ($this->isColumnModified('objectId'))
-    {
-      $criteria->add(QubitSystemEvent::OBJECT_ID, $this->objectId);
-    }
-
-    if ($this->isColumnModified('preEventSnapshot'))
-    {
-      $criteria->add(QubitSystemEvent::PRE_EVENT_SNAPSHOT, $this->preEventSnapshot);
-    }
-
-    if ($this->isColumnModified('postEventSnapshot'))
-    {
-      $criteria->add(QubitSystemEvent::POST_EVENT_SNAPSHOT, $this->postEventSnapshot);
-    }
-
-    if ($this->isColumnModified('date'))
-    {
-      $criteria->add(QubitSystemEvent::DATE, $this->date);
-    }
-
-    if ($this->isColumnModified('userId'))
-    {
-      $criteria->add(QubitSystemEvent::USER_ID, $this->userId);
-    }
-
-    if (!$this->isColumnModified('createdAt'))
-    {
-      $this->createdAt = time();
-    }
-    $criteria->add(QubitSystemEvent::CREATED_AT, $this->createdAt);
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitSystemEvent::UPDATED_AT, $this->updatedAt);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitSystemEvent::ID, $this->id);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitSystemEvent::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -429,70 +366,43 @@ abstract class BaseSystemEvent
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('typeId'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitSystemEvent::TYPE_ID, $this->typeId);
+      $connection = QubitTransactionFilter::getConnection(QubitSystemEvent::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('objectClass'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitSystemEvent::OBJECT_CLASS, $this->objectClass);
-    }
-
-    if ($this->isColumnModified('objectId'))
-    {
-      $criteria->add(QubitSystemEvent::OBJECT_ID, $this->objectId);
-    }
-
-    if ($this->isColumnModified('preEventSnapshot'))
-    {
-      $criteria->add(QubitSystemEvent::PRE_EVENT_SNAPSHOT, $this->preEventSnapshot);
-    }
-
-    if ($this->isColumnModified('postEventSnapshot'))
-    {
-      $criteria->add(QubitSystemEvent::POST_EVENT_SNAPSHOT, $this->postEventSnapshot);
-    }
-
-    if ($this->isColumnModified('date'))
-    {
-      $criteria->add(QubitSystemEvent::DATE, $this->date);
-    }
-
-    if ($this->isColumnModified('userId'))
-    {
-      $criteria->add(QubitSystemEvent::USER_ID, $this->userId);
-    }
-
-    if ($this->isColumnModified('createdAt'))
-    {
-      $criteria->add(QubitSystemEvent::CREATED_AT, $this->createdAt);
-    }
-
-    if (!$this->isColumnModified('updatedAt'))
-    {
-      $this->updatedAt = time();
-    }
-    $criteria->add(QubitSystemEvent::UPDATED_AT, $this->updatedAt);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitSystemEvent::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitSystemEvent::ID, $this->id);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitSystemEvent::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -520,52 +430,38 @@ abstract class BaseSystemEvent
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addJoinTypeCriteria(Criteria $criteria)
+  public static function addJointypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitSystemEvent::TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getType(array $options = array())
-  {
-    return $this->type = QubitTerm::getById($this->typeId, $options);
-  }
-
-  public function setType(QubitTerm $term)
-  {
-    $this->typeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinUserCriteria(Criteria $criteria)
+  public static function addJoinuserCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitSystemEvent::USER_ID, QubitUser::ID);
 
     return $criteria;
   }
 
-  public function getUser(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->user = QubitUser::getById($this->userId, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setUser(QubitUser $user)
-  {
-    $this->userId = $user->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.SystemEventMapBuilder');

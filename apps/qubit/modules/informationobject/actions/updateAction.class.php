@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -44,6 +42,7 @@ class InformationObjectUpdateAction extends sfAction
       $this->forward404Unless($this->informationObject);
     }
 
+    $this->hasWarning = false;
     $this->foreignKeyUpdate = false;
 
     // set the informationObject's attributes
@@ -61,30 +60,16 @@ class InformationObjectUpdateAction extends sfAction
     $this->updateProperties($this->informationObject);
     $this->updateObjectTermRelations($this->informationObject);
     $this->addActorEvents($this->informationObject);
-    $this->updateDigitalObjects($request,$this->informationObject);
+    $this->updateDigitalObjects($request, $this->informationObject);
     $this->updatePhysicalObjects($this->informationObject);
     //$this->updateRecursiveRelations($informationObject);
 
-    if (sfContext::getInstance()->getActionName() == 'update')
-    {
-      // update the search index and return user to the default edit template
-      // in case this is a generic 'update' action that is not associated with
-      // a specific template (e.g. updateIsad, updateRad)
-
-      // update informationObject in the search index
-      if (!$this->foreignKeyUpdate)
-      {
-        SearchIndex::updateIndexDocument($this->informationObject, $this->getUser()->getCulture());
-      }
-      else
-      {
-        SearchIndex::updateTranslatedLanguages($this->informationObject);
-      }
-
-      // return to edit template
-      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'id' => $this->informationObject->getId()));
-    }
-
+    // delete related objects marked for deletion
+    $this->deleteNotes($request);
+    $this->deleteActorEvents($request);
+    $this->deleteProperties($request);
+    $this->deleteObjectTermRelations($request);
+    $this->deleteRelations($request);
   }
 
   public function updateInformationObjectAttributes($informationObject)
@@ -190,11 +175,12 @@ class InformationObjectUpdateAction extends sfAction
       // Empty form values must be converted to null
       if (0 == $parentId = $this->getRequestParameter('parent_id'))
       {
-        $criteria = new Criteria;
-        $criteria = QubitInformationObject::addRootsCriteria($criteria);
-        $parentId = QubitInformationObject::getOne($criteria)->getId();
+        $informationObject->setRoot();
       }
-      $informationObject->setParentId($parentId);
+      else
+      {
+        $informationObject->setParentId($parentId);
+      }
     }
   }
 
@@ -274,6 +260,25 @@ class InformationObjectUpdateAction extends sfAction
     }
   }
 
+  /**
+   * Delete related notes marked for deletion.
+   *
+   * @param sfRequest request object
+   */
+  public function deleteNotes($request)
+  {
+    if (is_array($deleteNotes = $request->getParameter('delete_notes')) && count($deleteNotes))
+    {
+      foreach ($deleteNotes as $noteId => $doDelete)
+      {
+        if ($doDelete == 'delete' && !is_null($deleteNote = QubitNote::getById($noteId)))
+        {
+          $deleteNote->delete();
+        }
+      }
+    }
+  }
+
   public function updateProperties($informationObject)
   {
     // Add multiple languages of access
@@ -336,6 +341,25 @@ class InformationObjectUpdateAction extends sfAction
         {
           $informationObject->addProperty($name = 'script_of_information_object_description', $script_code, array('scope'=>'scripts', 'sourceCulture'=>true));
           $this->foreignKeyUpdate = true;
+        }
+      }
+    }
+  }
+
+  /**
+   * Delete related properties marked for deletion.
+   *
+   * @param sfRequest request object
+   */
+  public function deleteProperties($request)
+  {
+    if (is_array($deleteProperties = $request->getParameter('delete_properties')) && count($deleteProperties))
+    {
+      foreach ($deleteProperties as $thisId => $doDelete)
+      {
+        if ($doDelete == 'delete' && !is_null($property = QubitProperty::getById($thisId)))
+        {
+          $property->delete();
         }
       }
     }
@@ -416,6 +440,25 @@ class InformationObjectUpdateAction extends sfAction
   }
 
   /**
+   * Delete object->term relations marked for deletion.
+   *
+   * @param sfRequest request object
+   */
+  public function deleteObjectTermRelations($request)
+  {
+    if (is_array($deleteRelations = $request->getParameter('delete_object_term_relations')) && count($deleteRelations))
+    {
+      foreach ($deleteRelations as $thisId => $doDelete)
+      {
+        if ($doDelete == 'delete' && !is_null($relation = QubitObjectTermRelation::getById($thisId)))
+        {
+          $relation->delete();
+        }
+      }
+    }
+  }
+
+  /**
    * Add new actor events for this info object.
    *
    * @param QubitInformationObject $informationObject
@@ -454,17 +497,15 @@ class InformationObjectUpdateAction extends sfAction
         $saveEvent = true;
       }
 
-      // add actor event date/date range
+      // add event start and end date
       if (($thisEvent['year']) || ($thisEvent['endYear']))
       {
         $newActorEvent->setStartDate($thisEvent['year'].'-01-01');
         $newActorEvent->setEndDate($thisEvent['endYear'].'-01-01');
 
-        if ($thisEvent['dateDisplay'])
-        {
-          $newActorEvent->setDateDisplay($thisEvent['dateDisplay']);
-        }
-        else
+        // If no display format specified, then concatenate start & end year
+        // with hyphen
+        if (!$thisEvent['dateDisplay'])
         {
           $dateString = $thisEvent['year'];
           if ($thisEvent['endYear'])
@@ -473,6 +514,14 @@ class InformationObjectUpdateAction extends sfAction
           }
           $newActorEvent->setDateDisplay($dateString);
         }
+
+        $saveEvent = true;
+      }
+
+      // Save the formatted date display
+      if ($thisEvent['dateDisplay'])
+      {
+        $newActorEvent->setDateDisplay($thisEvent['dateDisplay']);
 
         $saveEvent = true;
       }
@@ -500,39 +549,76 @@ class InformationObjectUpdateAction extends sfAction
   }
 
   /**
+   * Delete related actor events marked for deletion.
+   *
+   * @param sfRequest request object
+   */
+  public function deleteActorEvents($request)
+  {
+    if (is_array($deleteActorEvents = $request->getParameter('delete_actor_events')) && count($deleteActorEvents))
+    {
+      foreach ($deleteActorEvents as $thisId => $doDelete)
+      {
+        if ($doDelete == 'delete' && !is_null($actorEvent = QubitEvent::getById($thisId)))
+        {
+          $actorEvent->delete();
+        }
+      }
+    }
+  }
+
+  /**
    * Add a new digital object to $informationObject, upload a digital asset,
    * and create a representation (thumbnail, icon) of asset.
    *
    * @param  sfRequest         The current sfRequest object
    * @param  informationObject The associated informationObject
-   *
-   * @todo address filename clashes when multiple files with the same name are added to a digital object (e.g. a thumbnail and reference image)
-   *
    * @return mixed  array of file metadata on sucess, false on failure
    */
   public function updateDigitalObjects($request, $informationObject)
   {
-    $uploadFiles = $request->getFileName('upload_file');
+    // Set property 'display_as_compound_object'
+    if ($request->hasParameter('display_as_compound_object'))
+    {
+      $informationObject->setDisplayAsCompoundObject($request->getParameter('display_as_compound_object'));
+    }
 
+    // Update media type
+    if ($request->hasParameter('media_type_id'))
+    {
+      $digitalObject = $informationObject->getDigitalObject();
+      $digitalObject->setMediaTypeId($request->getParameter('media_type_id'));
+      $digitalObject->save();
+    }
+
+    // Do digital object upload
+    $uploadFiles = $request->getFileName('upload_file');
+    $fileErrors  = $request->getFileError('upload_file');
     if (count($uploadFiles))
     {
-
       foreach ($uploadFiles as $usageId => $filename)
       {
+        if ($fileErrors[$usageId] && strlen($filename))
+        {
+          $this->hasWarning = true;
+
+          continue;
+        }
+
         if (strlen(!$filename))
         {
           continue; // Skip to next $uploadFile if no valid filename
         }
 
         // Upload file and return meta-data about it
-        if (!$uploadFile = DigitalObjectUploadComponent::uploadAsset($request, $informationObject, $usageId))
+        if (!$uploadFile = QubitDigitalObject::uploadAsset($request, $informationObject, $usageId))
         {
+
           return sfView::ERROR;  // exit loop if upload fails
         }
 
         // Create digital object in database
         $newDigitalObject = new QubitDigitalObject;
-
         $newDigitalObject->setName($uploadFile['name']);
         $newDigitalObject->setPath($uploadFile['path']);
         $newDigitalObject->setByteSize($uploadFile['size']);
@@ -555,33 +641,20 @@ class InformationObjectUpdateAction extends sfAction
         $newDigitalObject->setMimeAndMediaType();
         $newDigitalObject->save();
 
-        // Scale images (and pdfs) and create derivatives
-        if ($newDigitalObject->canThumbnail())
+        $newDigitalObject->setPageCount();
+        if ($newDigitalObject->getPageCount() > 1)
         {
-          if ($usageId == QubitTerm::MASTER_ID)
-          {
-            $newDigitalObject->createReferenceImage();
-            $newDigitalObject->createThumbnail();
-          }
-          else if ($usageId == QubitTerm::REFERENCE_ID)
-          {
-            $newDigitalObject->resizeByUsageId(QubitTerm::REFERENCE_ID);
-            $newDigitalObject->createThumbnail();
-          }
-          else if ($usageId == QubitTerm::THUMBNAIL_ID)
-          {
-            $newDigitalObject->resizeByUsageId(QubitTerm::THUMBNAIL_ID);
-          }
+          // If DO is a compound object, then create child objects and set to
+          // display as compound object (with pager)
+          $newDigitalObject->createCompoundChildren();
+          $informationObject->setDisplayAsCompoundObject(1);
+          $newDigitalObject->createThumbnail();
         }
-
-        if ($newDigitalObject->getMediaType() == 'video')
+        else
         {
-          if ($usageId == QubitTerm::MASTER_ID)
-          {
-            $newDigitalObject->createVideoDerivative(QubitTerm::REFERENCE_ID);
-            $newDigitalObject->createVideoDerivative(QubitTerm::THUMBNAIL_ID);
-          }
-
+          // If DO is a single object, create various representations based on
+          // intended usage
+          $newDigitalObject->createRepresentations($usageId);
         }
 
         // If this is a new information object with no title, set title to name
@@ -621,7 +694,7 @@ class InformationObjectUpdateAction extends sfAction
    */
   public function updatePhysicalObjects($informationObject)
   {
-    $oldPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId($informationObject->getId(),
+    $oldPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $informationObject->getId(),
     array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
     // Preferentially use "new container" input data over the selector so that
@@ -666,4 +739,23 @@ class InformationObjectUpdateAction extends sfAction
     }
 
   } // end method: updatePhysicalObjects
+
+  /**
+   * Delete related physical objects marked for deletion.
+   *
+   * @param sfRequest request object
+   */
+  public function deleteRelations($request)
+  {
+    if (is_array($deleteRelations = $request->getParameter('delete_relations')) && count($deleteRelations))
+    {
+      foreach ($deleteRelations as $thisId => $doDelete)
+      {
+        if ($doDelete == 'delete' && !is_null($relation = QubitRelation::getById($thisId)))
+        {
+          $relation->delete();
+        }
+      }
+    }
+  }
 }

@@ -16,7 +16,7 @@
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
- * @version    SVN: $Id: FormHelper.php 11700 2008-09-21 10:53:44Z fabien $
+ * @version    SVN: $Id: FormHelper.php 12201 2008-10-15 14:26:29Z fabien $
  */
 
 /**
@@ -76,7 +76,7 @@ function options_for_select($options = array(), $selected = '', $html_options = 
 
   foreach ($options as $key => $value)
   {
-    if (is_array($value))
+    if (is_array($value) || $value instanceof sfOutputEscaperArrayDecorator)
     {
       $html .= content_tag('optgroup', options_for_select($value, $selected, $html_options), array('label' => $key))."\n";
     }
@@ -124,10 +124,8 @@ function form_tag($url_for_options = '', $options = array())
   $options = _parse_attributes($options);
 
   $html_options = $options;
-  if (!isset($html_options['method']))
-  {
-    $html_options['method'] = 'post';
-  }
+
+  $html_options['method'] = isset($html_options['method']) ? strtolower($html_options['method']) : 'post';
 
   if (_get_option($html_options, 'multipart'))
   {
@@ -136,7 +134,14 @@ function form_tag($url_for_options = '', $options = array())
 
   $html_options['action'] = url_for($url_for_options);
 
-  return tag('form', $html_options, true);
+  $html = '';
+  if (!in_array($html_options['method'], array('get', 'post')))
+  {
+    $html = tag('input', array('type' => 'hidden', 'name' => 'sf_method', 'value' => $html_options['method']));
+    $html_options['method'] = 'post';
+  }
+
+  return tag('form', $html_options, true).$html;
 }
 
 /**
@@ -323,7 +328,7 @@ function select_language_tag($name, $selected = null, $options = array())
 function select_currency_tag($name, $selected = null, $options = array())
 {
   $c = sfCultureInfo::getInstance(sfContext::getInstance()->getUser()->getCulture());
-  $currencies = $c->getCurrencies();
+  $currencies = $c->getCurrencies(null, true);
 
   $currency_option = _get_option($options, 'currencies');
   $display_option = _get_option($options, 'display');
@@ -709,7 +714,7 @@ function input_date_tag($name, $value = null, $options = array())
   // rich control?
   if (!_get_option($options, 'rich', false))
   {
-    use_helper('DateForm');
+    require_once dirname(__FILE__).'/DateFormHelper.php';
 
     // set culture for month tag
     $options['culture'] = $culture;

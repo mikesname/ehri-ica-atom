@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfProjectFreezeTask.class.php 8809 2008-05-06 14:27:30Z fabien $
+ * @version    SVN: $Id: sfProjectFreezeTask.class.php 13212 2008-11-21 19:53:12Z FabianLange $
  */
 class sfProjectFreezeTask extends sfBaseTask
 {
@@ -77,7 +77,7 @@ EOF;
       throw new sfCommandException(sprintf('The symfony data dir does not seem to be located at "%s".', $symfonyDataDir));
     }
 
-    $this->logSection('freeze', sprintf('freezing lib found in "%s', $symfonyLibDir));
+    $this->logSection('freeze', sprintf('freezing lib found in "%s"', $symfonyLibDir));
     $this->logSection('freeze', sprintf('freezing data found in "%s"', $symfonyDataDir));
 
     $this->getFilesystem()->mkdirs('lib'.DIRECTORY_SEPARATOR.'symfony');
@@ -88,12 +88,18 @@ EOF;
     $this->getFilesystem()->mirror($symfonyDataDir, sfConfig::get('sf_data_dir').'/symfony', $finder);
     $this->getFilesystem()->rename(sfConfig::get('sf_data_dir').'/symfony/web/sf', sfConfig::get('sf_web_dir').'/sf');
 
+    $publishAssets = new sfPluginPublishAssetsTask($this->dispatcher, $this->formatter);
+    $publishAssets->setCommandApplication($this->commandApplication);
+
     // change symfony path in ProjectConfiguration.class.php
     $config = sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php';
     $content = file_get_contents($config);
     $content = str_replace('<?php', "<?php\n\n# FROZEN_SF_LIB_DIR: $symfonyLibDir", $content);
     $content = preg_replace('#(\'|")'.preg_quote($symfonyLibDir, '#').'#', "dirname(__FILE__).$1/../lib/symfony", $content);
     file_put_contents($config, $content);
+
+    // re-publish assets
+    $publishAssets->run(array(), array('--symfony-lib-dir='.sfConfig::get('sf_lib_dir').'/symfony'));
   }
 
   public function excludeTests($dir, $entry)

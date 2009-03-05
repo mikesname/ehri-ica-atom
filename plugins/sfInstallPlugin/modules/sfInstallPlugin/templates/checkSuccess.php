@@ -1,14 +1,44 @@
+<?php use_helper('Javascript') ?>
+
 <h2>System checks</h2>
 
+<div id="progress" />
+<?php use_javascript('/sfDrupalPlugin/vendor/drupal/misc/progress') ?>
+<?php $checkHtaccessUrl = json_encode(url_for(array('module' => 'sfInstallPlugin', 'action' =>  'checkHtaccess'))) ?>
+<?php $checkSearchIndexUrl = json_encode(url_for(array('module' => 'sfInstallPlugin', 'action' =>  'checkSearchIndex'))) ?>
+<?php echo javascript_tag(<<<EOF
+progress = new Drupal.progressBar('checkSystem');
+progress.setProgress(-1, 'Check system');
+$('#progress').append(progress.element);
+progress.setProgress(0, 'Check .htaccess');
+jQuery.ajax({
+  url: $checkHtaccessUrl,
+  complete: function (request)
+    {
+      $('#progress').after(request.responseText);
+      progress.setProgress(50, 'Check search index');
+      jQuery.ajax({
+        url: $checkSearchIndexUrl,
+        complete: function (request)
+          {
+            $('#progress').after(request.responseText);
+            progress.setProgress(100, 'Check system');
+          } });
+    } });
+EOF
+) ?>
 <!-- FIXME: We currently do this logic in the template instead of the action to give the user more immediate feedback, but symfony apparently buffers output and does not start sending it to the user until it is finished being generated : ( -->
-<!-- TODO: Considder using array keys for wiki anchors -->
+
+<?php sfInstall::publishAssets() ?>
+
+<!-- TODO: Consider using array keys for wiki anchors -->
 <?php $error = false ?>
 
 <?php $error |= count($dependencies = sfInstall::checkDependencies()) > 0 ?>
 <?php if (isset($dependencies['php']['min'])): ?>
   <div class="messages error">
     <p>
-      <?php echo link_to('Minimum PHP version', $qubitWikiIndexUrl.'?title=Installer_Warnings#Minimum_PHP_version') ?>: <?php echo $dependencies['php']['min'] ?>
+      <?php echo link_to('Minimum PHP version', array('module' => 'sfInstallPlugin', 'action' => 'help'), array('anchor' => 'Minimum_PHP_version')) ?>: <?php echo $dependencies['php']['min'] ?>
     </p>
     <p>
       Current version is <?php echo PHP_VERSION ?>
@@ -19,7 +49,7 @@
   <?php foreach ($dependencies['extensions'] as $extension): ?>
     <div class="messages error">
       <p>
-        <?php echo link_to($extension.' extension', $qubitWikiIndexUrl.'?title=Installer_Warnings#'.$extension.'_extension') ?>
+        <?php echo link_to($extension.' extension', array('module' => 'sfInstallPlugin', 'action' => 'help'), array('anchor' => $extension.'_extension')) ?>
       </p>
     </div>
   <?php endforeach; ?>
@@ -29,7 +59,7 @@
 <?php if (count($writablePaths) > 0): ?>
   <div class="messages error">
     <p>
-      <?php echo link_to('Writable paths', $qubitWikiIndexUrl.'?title=Installer_Warnings#Writable_paths') ?>
+      <?php echo link_to('Writable paths', array('module' => 'sfInstallPlugin', 'action' => 'help'), array('anchor' => 'Writable_paths')) ?>
     </p>
     <ul>
       <?php foreach ($writablePaths as $path): ?>
@@ -43,7 +73,7 @@
 <?php if (isset($databasesYml['notWritable'])): ?>
   <div class="messages error">
     <p>
-      <?php echo link_to('databases.yml not writable', $qubitWikiIndexUrl.'?title=Installer_Warnings#databases.yml_not_writable') ?>
+      <?php echo link_to('databases.yml not writable', array('module' => 'sfInstallPlugin', 'action' => 'help'), array('anchor' => 'databases.yml_not_writable')) ?>
     </p>
   </div>
 <?php endif; ?>
@@ -52,64 +82,8 @@
 <?php if (isset($propelIni['notWritable'])): ?>
   <div class="messages error">
     <p>
-      <?php echo link_to('propel.ini not writable', $qubitWikiIndexUrl.'?title=Installer_Warnings#propel.ini_not_writable') ?>
+      <?php echo link_to('propel.ini not writable', array('module' => 'sfInstallPlugin', 'action' => 'help'), array('anchor' => 'propel.ini_not_writable')) ?>
     </p>
-  </div>
-<?php endif; ?>
-
-<!-- HACK: This checkSettingsYml() was meant to get called after checkHtaccess() but without settings.yml, sfInstallPlugin is disabled, breaking the checkHtaccess() callbacks : ( -->
-<?php sfInstall::checkSettingsYml(false) ?>
-
-<?php $error |= count($htaccess = sfInstall::checkHtaccess()) > 0 ?>
-<?php if (isset($htaccess['notWritable'])): ?>
-  <div class="messages error">
-    <p>
-      <?php echo link_to('.htaccess not writable', $qubitWikiIndexUrl.'?title=Installer_Warnings#.htaccess_not_writable') ?>
-    </p>
-  </div>
-<?php endif; ?>
-<?php if (isset($htaccess['ignored'])): ?>
-  <div class="messages error">
-    <p>
-      <?php echo link_to('.htaccess files are completely ignored', $qubitWikiIndexUrl.'?title=Installer_Warnings#.htaccess_files_are_completely_ignored') ?>
-    </p>
-  </div>
-<?php endif; ?>
-<?php if (isset($htaccess['optionsNotAllowed'])): ?>
-  <div class="messages error">
-    <p>
-      <?php echo link_to('Options not allowed in .htaccess files', $qubitWikiIndexUrl.'?title=Installer_Warnings#Options_not_allowed_in_.htaccess_files') ?>
-    </p>
-  </div>
-<?php endif; ?>
-<?php if (isset($htaccess['modRewriteNotConfigured'])): ?>
-  <div class="messages error">
-    <p>
-      <?php echo link_to('mod_rewrite not configured', $qubitWikiIndexUrl.'?title=Installer_Warnings#mod_rewrite_not_configured') ?>
-    </p>
-  </div>
-<?php endif; ?>
-
-<?php $error |= count($settingsYml = sfInstall::checkSettingsYml(count($htaccess) < 1)) > 0 ?>
-<?php if (isset($settingsYml['notWritable'])): ?>
-  <div class="messages error">
-    <p>
-      <?php echo link_to('settings.yml not writable', $qubitWikiIndexUrl.'?title=Installer_Warnings#settings.yml_not_writable') ?>
-    </p>
-  </div>
-<?php endif; ?>
-
-<?php $error |= count($searchIndex = sfInstall::checkSearchIndex()) > 0 ?>
-<?php if (count($searchIndex) > 0): ?>
-  <div class="messages error">
-    <p>
-      <?php echo link_to('Search index', $qubitWikiIndexUrl.'?title=Installer_Warnings#Search_index') ?>
-    </p>
-    <ul>
-      <?php foreach ($searchIndex as $e): ?>
-        <li><?php echo $e->getMessage() ?></li>
-      <?php endforeach; ?>
-    </ul>
   </div>
 <?php endif; ?>
 
@@ -118,7 +92,7 @@
   <div class="messages error">
     <p>
       <?php echo link_to('Your current PHP memory limit is '.$memoryLimit.' MB which is less than the minimum limit of '.sfInstall::$MINIMUM_MEMORY_LIMIT_MB.' MB.',
-        $qubitWikiIndexUrl.'?title=Installer_Warnings#PHP_memory_limit') ?>
+        array('module' => 'sfInstallPlugin', 'action' => 'help'), array('anchor' => 'PHP_memory_limit')) ?>
     </p>
   </div>
 <?php endif; ?>
@@ -133,5 +107,4 @@
   <ul>
     <li><?php echo link_to('Continue', array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?></li>
   </ul>
-  <?php $sf_context->getController()->redirect(array('module' => 'sfInstallPlugin', 'action' => 'configure')) ?>
 <?php endif; ?>

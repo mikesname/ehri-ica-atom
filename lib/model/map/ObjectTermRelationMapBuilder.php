@@ -2,7 +2,7 @@
 
 
 
-class ObjectTermRelationMapBuilder {
+class ObjectTermRelationMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.ObjectTermRelationMapBuilder';
@@ -25,26 +25,27 @@ class ObjectTermRelationMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitObjectTermRelation::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_object_term_relation');
-		$tMap->setPhpName('ObjectTermRelation');
+		$tMap = $this->dbMap->addTable(QubitObjectTermRelation::TABLE_NAME);
+		$tMap->setPhpName('objectTermRelation');
+		$tMap->setClassname('QubitObjectTermRelation');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('OBJECT_ID', 'ObjectId', 'int', CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('TERM_ID', 'TermId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', true, null);
+		$tMap->addForeignKey('TERM_ID', 'termId', 'INTEGER', 'q_term', 'ID', true, null);
 
-		$tMap->addColumn('START_DATE', 'StartDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('START_DATE', 'startDate', 'DATE', false, null);
 
-		$tMap->addColumn('END_DATE', 'EndDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('END_DATE', 'endDate', 'DATE', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
 	} 
 } 

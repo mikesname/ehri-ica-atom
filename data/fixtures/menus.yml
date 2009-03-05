@@ -1,0 +1,142 @@
+QubitMenu:
+  QubitMenu_root:
+    id: <?php echo QubitMenu::ROOT_ID."\n" ?>
+  QubitMenu_mainmenu:
+    id: <?php echo QubitMenu::MAIN_MENU_ID."\n" ?>
+    parent_id: QubitMenu_root
+    source_culture: en
+    name: 'Main menu'
+  QubitMenu_quicklinks:
+    id: <?php echo QubitMenu::QUICK_LINKS_ID."\n" ?>
+    parent_id: QubitMenu_root
+    source_culture: en
+    name: 'Quick links'
+  QubitMenu_mainmenu_addedit:
+    id: <?php echo QubitMenu::ADD_EDIT_ID."\n" ?>
+    parent_id: QubitMenu_mainmenu
+    source_culture: en
+    name: 'add/edit'
+    label: { de: 'Hinzufügen/Bearbeiten', en: 'add/edit', es: 'agregar/editar', fa: 'افزودن/ويرايش', fr: 'ajouter/modifier', it: 'aggiungi/modifica', nl: 'toevoegen/wijzigen', pt: 'adicionar/editar', sl: 'uporabniški vmesnik' }
+    path: 'informationobject/list'
+  QubitMenu_mainmenu_importexport:
+    id: <?php echo QubitMenu::IMPORT_EXPORT_ID."\n" ?>
+    parent_id: QubitMenu_mainmenu
+    source_culture: en
+    name: 'import/export'
+    label: { en: 'import/export', es: 'importar/exportar', fa: 'وارد كردن/صادر كردن', fr: 'importer/exporter', it: 'importa/esporta', nl: 'import/export', pt: 'importar/exportar', sl: 'uvoz/izvoz' }
+    path: 'object/importexport'
+  QubitMenu_mainmenu_translate:
+    id: <?php echo QubitMenu::TRANSLATE_ID."\n" ?>
+    parent_id: QubitMenu_mainmenu
+    source_culture: en
+    name: 'translate'
+    label: { de: 'Übersetzen', en: 'translate', es: traducir, fa: ترجمه, fr: traduire, it: traduci, nl: vertalen, pt: traduzir, sl: prevedi}
+    path: 'i18n/listUserInterfaceTranslation'
+  QubitMenu_mainmenu_admin:
+    id: <?php echo QubitMenu::ADMIN_ID."\n" ?>
+    parent_id: QubitMenu_mainmenu
+    source_culture: en
+    name: 'admin'
+    label: { de: 'Administrator', en: admin, es: administrador, fa: مدير, fr: administrer, it: amministra,  sl: administrator }
+    path: 'user/list'
+  QubitMenu_mainmenu_addedit_informationobject:
+    parent_id: QubitMenu_mainmenu_addedit
+    source_culture: en
+    name: 'archival description'
+    label: { en: 'archival description', es: 'Descripción archivística', fr: 'description archivistique', it: 'descrizione archivistica', nl: 'archivistische beschrijving', pt: 'descrição arquivística', sl: 'arhivski opisi' }
+    path: 'informationobject/list'
+  QubitMenu_mainmenu_addedit_actor:
+    parent_id: QubitMenu_mainmenu_addedit
+    source_culture: en
+    name: 'authority record'
+    label: { en: 'authority record', es: 'Registro de autoridad', fr: 'fichier d''autorité', it: 'record di autorità', nl: 'geautoriseerd bestand', pt: 'registro de autoridade', sl: 'normativni zapisi' }
+    path: 'actor/list'
+  QubitMenu_mainmenu_addedit_repository:
+    parent_id: QubitMenu_mainmenu_addedit
+    source_culture: en
+    name: 'archival institution'
+    label: { en: 'archival institution', es: 'Institución archivística ', fr: 'institution de conservation', it: 'istituzione archivistica', nl: archiefinstelling, pt: 'instituição arquivística', sl: 'arhivske ustanove' }
+    path: 'repository/list'
+  QubitMenu_mainmenu_addedit_term:
+    parent_id: QubitMenu_mainmenu_addedit
+    source_culture: en
+    name: 'term'
+    label: { en: 'term', fr: terme, it: termine, nl: term, pt: termo, sl: izraz }
+    path: 'term/list'
+  QubitMenu_mainmenu_importexport_importexport:
+    parent_id: QubitMenu_mainmenu_importexport
+    source_culture: en
+    name: 'import/export'
+    label: { en: 'import/export', es: 'importar/exportar', fa: 'وارد كردن/صادر كردن', fr: 'importer/exporter', it: 'importa/esporta', nl: 'import/export', pt: 'importar/exportar', sl: 'uvoz/izvoz' }
+    path: 'object/importexport'
+  QubitMenu_mainmenu_translate_userinterface:
+    parent_id: QubitMenu_mainmenu_translate
+    source_culture: en
+    name: 'user interface'
+    label: { en: 'user interface', es: 'interfaz del usuario', fa: 'رابط كاربر', fr: 'interface utilisateur', it: 'interfaccia utente', nl: gebruikersinterface, pt: 'interface de usuário', sl: 'uporabniški vmesnik'  }
+    path: 'i18n/listUserInterfaceTranslation'
+  QubitMenu_mainmenu_translate_defaultcontent:
+    parent_id: QubitMenu_mainmenu_translate
+    source_culture: en
+    name: 'default content'
+    label: { de: 'Vorgegebener Inhalt', en: 'default content', es: 'contenidos por defecto', fa: 'محتواي پيش فرض', fr: 'contenu par défaut', it: 'contenuto predefinito', nl: 'standaard inhoud', pt: 'conteúdo padrão', sl: 'prednastavljena vsebina' }
+    path: 'i18n/listDefaultContentTranslation'
+  QubitMenu_mainmenu_admin_users:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: 'users'
+    label: { en: users, es: usuarios, fa: كاربران, fr: utilisateurs, it: utenti, nl: gebruikers, pt: usuários, sl: uporabniki }
+    path: 'user/list'
+  QubitMenu_mainmenu_admin_staticpages:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: 'static pages'
+    label: { en: 'static pages', es: 'páginas estáticas', fa: 'صفحات ايستا', fr: 'pages statiques', it: 'pagine statiche', nl: 'statische pagina''s', pt: 'páginas estáticas', sl: 'statična stran' }
+    path: 'staticpage/list'
+  QubitMenu_mainmenu_admin_settings:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: 'settings'
+    label: { de: 'Einstellungen', en: settings, es: configuración, fa: تنظيمات, fr: paramètres, it: impostazioni, nl: instellingen, pt: configurações, sl: nastavitve }
+    path: 'settings/list'
+  QubitMenu_mainmenu_admin_menu:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: 'menu'
+    label: { en: menu }
+    path: 'menu/list'
+  QubitMenu_quicklinks_home:
+    parent_id: QubitMenu_quicklinks
+    source_culture: en
+    name: home
+    label: { en: home, es: inicio, fa: 'صفحه اصلي', fr: accueil, it: pagina iniziale, nl: home, pt: inicio, sl: domov }
+  QubitMenu_quicklinks_about:
+    parent_id: QubitMenu_quicklinks
+    source_culture: en
+    name: about
+    label: { de: 'Über', en: about, es: acerca, fa: 'درباره ما', fr: 'à propos', it: 'informazioni su', nl: over, pt: sobre, sl: 'o tem' }
+    path: 'staticpage/static?permalink=about'
+  QubitMenu_quicklinks_help:
+    parent_id: QubitMenu_quicklinks
+    source_culture: en
+    name: 'help'
+    label: { de: 'Hilfe', en: help, es: ayuda, fa: راهنما, fr: aide, it: aiuto, nl: help, pt: ajuda, sl: pomoč }
+    path: 'http://qubit-toolkit.org'
+  QubitMenu_quicklinks_myProfile:
+    parent_id: QubitMenu_quicklinks
+    source_culture: en
+    name: 'my profile'
+    label: { en: 'my profile' }
+    path: '%profile%'
+  QubitMenu_quicklinks_login:
+    parent_id: QubitMenu_quicklinks
+    source_culture: en
+    name: 'log in'
+    label: { en: 'log in', es: 'iniciar sesión', fa: 'ورود به سيستم', fr: 'ouverture de session', it: accesso, nl: inloggen, pt: entrar, sl: prijava }
+    path: 'user/login'
+  QubitMenu_quicklinks_logout:
+    parent_id: QubitMenu_quicklinks
+    source_culture: en
+    name: logout
+    label: { en: 'log out', es: 'cerrar sesión', fa: خروج, fr: 'fermeture de session', it: esci, nl: uitloggen, pt: sair, sl: izhod }
+    path: 'user/logout'

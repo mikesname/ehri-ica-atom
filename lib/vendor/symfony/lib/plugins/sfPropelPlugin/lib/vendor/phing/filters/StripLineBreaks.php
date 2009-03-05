@@ -1,7 +1,7 @@
 <?php
 
 /*
- *  $Id: StripLineBreaks.php 3076 2006-12-18 08:52:12Z fabien $  
+ *  $Id: StripLineBreaks.php 325 2007-12-20 15:44:58Z hans $  
  * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -36,7 +36,7 @@ include_once 'phing/filters/ChainableReader.php';
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
  * @author    hans lellelid, hans@velum.net
- * @version   $Revision: 1.8 $ $Date: 2004/03/15 14:45:06 $
+ * @version   $Revision: 1.8 $ $Date: 2007-12-20 07:44:58 -0800 (Thu, 20 Dec 2007) $
  * @access    public
  * @see       BaseParamFilterReader
  * @package   phing.filters
@@ -145,4 +145,4 @@ class StripLineBreaks extends BaseParamFilterReader implements ChainableReader {
     }
 }
 
-?>
+

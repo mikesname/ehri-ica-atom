@@ -11,7 +11,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: AbstractScopeSniff.php,v 1.9 2008/02/27 00:05:18 squiz Exp $
+ * @version   CVS: $Id: AbstractScopeSniff.php,v 1.11 2008/12/01 05:41:28 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -70,6 +70,13 @@ abstract class PHP_CodeSniffer_Standards_AbstractScopeSniff implements PHP_CodeS
     protected $currScope = null;
 
     /**
+     * The current file being checked.
+     *
+     * @var string
+     */
+    protected $currFile = '';
+
+    /**
      * True if this test should fire on tokens outside of the scope.
      *
      * @var boolean
@@ -91,8 +98,11 @@ abstract class PHP_CodeSniffer_Standards_AbstractScopeSniff implements PHP_CodeS
      * @see PHP_CodeSniffer.getValidScopeTokeners()
      * @throws PHP_CodeSniffer_Test_Exception If the specified tokens array is empty.
      */
-    public function __construct(array $scopeTokens, array $tokens, $listenOutside=false)
-    {
+    public function __construct(
+        array $scopeTokens,
+        array $tokens,
+        $listenOutside=false
+    ) {
         if (empty($scopeTokens) === true) {
             $error = 'The scope tokens list cannot be empty';
             throw new PHP_CodeSniffer_Test_Exception($error);
@@ -150,12 +160,22 @@ abstract class PHP_CodeSniffer_Standards_AbstractScopeSniff implements PHP_CodeS
      */
     public final function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
+        $file = $phpcsFile->getFilename();
+        if ($this->currFile !== $file) {
+            // We have changed files, so clean up.
+            $this->currScope = null;
+            $this->currFile  = $file;
+        }
+
         $tokens = $phpcsFile->getTokens();
 
         if (in_array($tokens[$stackPtr]['code'], $this->_scopeTokens) === true) {
             $this->currScope = $stackPtr;
             $phpcsFile->addTokenListener($this, $this->_tokens);
-        } else if ($this->currScope !== null && isset($tokens[$this->currScope]['scope_closer']) === true && $stackPtr > $tokens[$this->currScope]['scope_closer']) {
+        } else if ($this->currScope !== null
+            && isset($tokens[$this->currScope]['scope_closer']) === true
+            && $stackPtr > $tokens[$this->currScope]['scope_closer']
+        ) {
             $this->currScope = null;
             if ($this->_listenOutside === true) {
                 // This is a token outside the current scope, so notify the
@@ -188,7 +208,11 @@ abstract class PHP_CodeSniffer_Standards_AbstractScopeSniff implements PHP_CodeS
      *
      * @return void
      */
-    protected abstract function processTokenWithinScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $currScope);
+    protected abstract function processTokenWithinScope(
+        PHP_CodeSniffer_File $phpcsFile,
+        $stackPtr,
+        $currScope
+    );
 
 
     /**
@@ -201,8 +225,10 @@ abstract class PHP_CodeSniffer_Standards_AbstractScopeSniff implements PHP_CodeS
      *
      * @return void
      */
-    protected function processTokenOutsideScope(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
-    {
+    protected function processTokenOutsideScope(
+        PHP_CodeSniffer_File $phpcsFile,
+        $stackPtr
+    ) {
         return;
 
     }//end processTokenOutsideScope()

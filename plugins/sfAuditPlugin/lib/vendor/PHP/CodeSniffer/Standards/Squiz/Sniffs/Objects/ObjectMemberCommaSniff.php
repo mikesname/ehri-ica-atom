@@ -9,7 +9,7 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ObjectMemberCommaSniff.php,v 1.1 2008/02/15 04:22:27 squiz Exp $
+ * @version   CVS: $Id: ObjectMemberCommaSniff.php,v 1.2 2008/08/29 06:46:03 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -62,9 +62,13 @@ class Squiz_Sniffs_Objects_ObjectMemberCommaSniff implements PHP_CodeSniffer_Sni
     {
         $tokens = $phpcsFile->getTokens();
 
-        // Only interested in orphaned braces, which are objects.
+        // Only interested in orphaned braces (which are objects)
+        // and object definitions.
         if (isset($tokens[$stackPtr]['scope_condition']) === true) {
-            return;
+            $condition = $tokens[$stackPtr]['scope_condition'];
+            if ($tokens[$condition]['code'] !== T_OBJECT) {
+                return;
+            }
         }
 
         $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($stackPtr - 1), null, true);

@@ -9,7 +9,7 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: DisallowSizeFunctionsInLoopsSniff.php,v 1.1 2008/04/07 01:14:00 squiz Exp $
+ * @version   CVS: $Id: DisallowSizeFunctionsInLoopsSniff.php,v 1.4 2008/12/02 02:38:34 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -30,14 +30,29 @@ class Squiz_Sniffs_PHP_DisallowSizeFunctionsInLoopsSniff implements PHP_CodeSnif
 {
 
     /**
+     * A list of tokenizers this sniff supports.
+     *
+     * @var array
+     */
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'JS',
+                                  );
+
+    /**
      * An array of functions we don't want in the condition of loops.
      *
      * @return array
      */
     protected $forbiddenFunctions = array(
-                                     'sizeof',
-                                     'strlen',
-                                     'count',
+                                     'PHP' => array(
+                                               'sizeof',
+                                               'strlen',
+                                               'count',
+                                              ),
+                                     'JS'  => array(
+                                               'length',
+                                              ),
                                     );
 
 
@@ -65,15 +80,38 @@ class Squiz_Sniffs_PHP_DisallowSizeFunctionsInLoopsSniff implements PHP_CodeSnif
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens       = $phpcsFile->getTokens();
+        $tokenizer    = $phpcsFile->tokenizerType;
         $openBracket  = $tokens[$stackPtr]['parenthesis_opener'];
         $closeBracket = $tokens[$stackPtr]['parenthesis_closer'];
 
-        for ($i = ($openBracket + 1); $i < $closeBracket; $i++) {
-            if ($tokens[$i]['code'] === T_STRING && in_array($tokens[$i]['content'], $this->forbiddenFunctions)) {
-                $error = 'The use of '.$tokens[$i]['content'].'() inside a loop condition is not allowed. Assign the return value of '.$tokens[$i]['content'].'() to a variable and use the variable in the loop condition instead.';
-                $phpcsFile->addError($error, $i);
-            }
+        if ($tokens[$stackPtr]['code'] === T_FOR) {
+            // We only want to check the condition in FOR loops.
+            $start = $phpcsFile->findNext(T_SEMICOLON, ($openBracket + 1));
+            $end   = $phpcsFile->findPrevious(T_SEMICOLON, ($closeBracket - 1));
+        } else {
+            $start = $openBracket;
+            $end   = $closeBracket;
         }
+
+        for ($i = ($start + 1); $i < $end; $i++) {
+            if ($tokens[$i]['code'] === T_STRING && in_array($tokens[$i]['content'], $this->forbiddenFunctions[$tokenizer])) {
+                $functionName = $tokens[$i]['content'];
+                if ($tokenizer === 'JS') {
+                    // Needs to be in the form object.function to be valid.
+                    $prev = $phpcsFile->findPrevious(T_WHITESPACE, ($i - 1), null, true);
+                    if ($prev === false || $tokens[$prev]['code'] !== T_OBJECT_OPERATOR) {
+                        continue;
+                    }
+
+                    $functionName = 'object.'.$functionName;
+                } else {
+                    $functionName .= '()';
+                }
+
+                $error = 'The use of '.$functionName.' inside a loop condition is not allowed. Assign the return value of '.$functionName.' to a variable and use the variable in the loop condition instead.';
+                $phpcsFile->addError($error, $i);
+            }//end if
+        }//end for
 
     }//end process()
 

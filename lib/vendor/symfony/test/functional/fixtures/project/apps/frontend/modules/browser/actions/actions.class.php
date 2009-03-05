@@ -6,7 +6,7 @@
  * @package    project
  * @subpackage browser
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: actions.class.php 4405 2007-06-26 12:27:09Z fabien $
+ * @version    SVN: $Id: actions.class.php 12215 2008-10-16 12:11:16Z fabien $
  */
 class browserActions extends sfActions
 {
@@ -31,5 +31,13 @@ class browserActions extends sfActions
     $response->setHttpHeader('foo', 'foobar', false);
 
     return $this->renderText('ok');
+  }
+
+  public function executeTemplateCustom($request)
+  {
+    if ($request->getParameter('custom'))
+    {
+      $this->setTemplate('templateCustomCustom');
+    }
   }
 }

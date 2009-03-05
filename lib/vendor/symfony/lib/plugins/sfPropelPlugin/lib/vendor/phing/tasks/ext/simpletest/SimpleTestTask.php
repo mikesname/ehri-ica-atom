@@ -1,6 +1,6 @@
 <?php
 /**
- * $Id: SimpleTestTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * $Id: SimpleTestTask.php 325 2007-12-20 15:44:58Z hans $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,7 +28,7 @@ require_once 'phing/util/LogWriter.php';
  * Runs SimpleTest tests.
  *
  * @author Michiel Rook <michiel.rook@gmail.com>
- * @version $Id: SimpleTestTask.php 3076 2006-12-18 08:52:12Z fabien $
+ * @version $Id: SimpleTestTask.php 325 2007-12-20 15:44:58Z hans $
  * @package phing.tasks.ext.simpletest
  * @since 2.2.0
  */
@@ -235,4 +235,3 @@ class SimpleTestTask extends Task
 		return new LogWriter($this);
 	}
 }
-?>

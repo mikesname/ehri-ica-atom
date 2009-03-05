@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2008-11-13T15:55:06Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2009-03-02T13:11:30Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -1808,6 +1808,474 @@
       </trans-unit>
       <trans-unit id="452">
         <source>your email and password do not match</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="453">
+        <source>change language</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="454">
+        <source>site title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="455">
+        <source>site description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="456">
+        <source>top</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="457">
+        <source>label</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="458">
+        <source>path</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="459">
+        <source>parent menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="460">
+        <source>The menu must have a name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="461">
+        <source>application version</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="462">
+        <source>upload directory</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="463">
+        <source>maximum image width (pixels)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="464">
+        <source>results per page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="465">
+        <source>inherit reference code (information object)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="466">
+        <source>multiple repositories</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="467">
+        <source>The current version of the application</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="468">
+        <source>The destination directory for uploaded digital object files</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="469">
+        <source>The maximum width for derived reference images</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="470">
+        <source>The number of records shown per page on list pages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="471">
+        <source>When set to &amp;quot;yes&amp;quot;, the reference code string will be built using the information object identifier plus the identifiers of all its ancestors</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="472">
+        <source>When set to &amp;quot;no&amp;quot;, the repository name is excluded from certain displays because it will be too repetitive</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="473">
+        <source>This field is required</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="474">
+        <source>This value must be at least %min% pixels</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="475">
+        <source>This value can not be greater than %max% pixels</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="476">
+        <source>You must show at least %min% hits per page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="477">
+        <source>You cannot show more than %max% hits per page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="478">
+        <source>enable OAI</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="479">
+        <source>OAI repository code</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="480">
+        <source>OAI repository identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="481">
+        <source>sample OAI identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="482">
+        <source>resumption token limit</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="483">
+        <source>When set to &amp;quot;yes&amp;quot;, this system will respond to OAI harvesting requests</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="484">
+        <source>add an alpha-numeric code to uniquely identify this particular OAI repository within its network domain to create a unique, OAI-compliant identifier, e.g. oai:foo.org:repositorycode_10001</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="485">
+        <source>The number of entities to include in a single OAI response list before inserting a resumption token</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="486">
+        <source>This value must be at least %min%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="487">
+        <source>This value cannot be more than %max%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="488">
+        <source>the code can only contain letters and numbers</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="489">
+        <source>ISAD(G), 2nd ed. International Council on Archives</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="490">
+        <source>RAD, July 2008 version. Canadian Council of Archives</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="491">
+        <source>Dublin Core, Version 1.1. Dublin Core Metadata Initiative</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="492">
+        <source>ISAAR(CPF), 2nd ed. International Council on Archives</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="493">
+        <source>ISDIAH, 1st ed. International Council on Archives</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="494">
+        <source>your email address is not a valid format</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="495">
+        <source>you must provide a password</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="496">
+        <source>max. size ~%1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="497">
+        <source>view full size</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="498">
+        <source>download %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="499">
+        <source>displaying %1% to %2% of %3%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="500">
+        <source>displaying %1% of %3%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="501">
+        <source>%1% representation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="502">
+        <source>view children as a compound digital object?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="503">
+        <source>yes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="504">
+        <source>no</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="505">
+        <source>&lt;i&gt;or&lt;/i&gt; Auto-generate a new representation from master image</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="506">
+        <source>unable to load import XSL filter: "%importXSL%"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="507">
+        <source>non-existent class defined in import mapping: "%class%"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="508">
+        <source>non-existent method defined in import mapping: "%method%"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="509">
+        <source>view authority record</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="510">
+        <source>edit %1% - ISAAR</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="511">
+        <source>WARNING: Deleting this term will also delete %1% related event(s)! Are you sure you want to delete these related events forever?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="512">
+        <source>This term is linked to %1% other objects, are you sure you want to remove this term from *all* of these objects?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="513">
+        <source>Are you sure?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="514">
+        <source>WARNING: Deleting this term will DELETE %1% events. Are you sure you want to delete these related events forever?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="515">
+        <source>digital object metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="516">
+        <source>Update Error</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="517">
+        <source>Error! The update form contained no post data.  This error may be a result of attempting to upload a file that exceeds the max POST size of %1%.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="518">
+        <source>Please chose one of the links below, or click the "back" button on your browser to return to the previous page.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="519">
+        <source>Return to the create/edit form</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="520">
+        <source>Go to the homepage</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="521">
+        <source>view MODS record</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="522">
+        <source>edit MODS record</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="523">
+        <source>edit archival description - RAD</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="524">
+        <source>Warning: this archival description has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this archival description?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="525">
+        <source>Are you sure you want to delete this archival description permanently?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="526">
+        <source>edit archival description - ISAD(G)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="527">
+        <source>title note(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="528">
+        <source>view resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="529">
+        <source>relation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="530">
+        <source>is part of</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="531">
+        <source>source</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="532">
+        <source>edit resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="533">
+        <source>Error! The update form contained no post data.  This error may be a result of attempting to upload a file that exceeds the max upload filesize of %1%.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="534">
+        <source>edit resource metadata - Dublin Core</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="535">
+        <source>resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="536">
+        <source>Language</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="537">
+        <source>Subject</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="538">
+        <source>Coverage</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="539">
+        <source>spatial</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="540">
+        <source>Warning: this resource has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this resource?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="541">
+        <source>Are you sure you want to delete this resource permanently?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="542">
+        <source>Warning: this MODS record has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this MODS record?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="543">
+        <source>Are you sure you want to delete this MODS record permanently?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="544">
+        <source>import/export module</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="545">
+        <source>menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="546">
+        <source>edit menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="547">
+        <source>site menu list</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="548">
+        <source>OAI harvesting</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="549">
+        <source>%1% menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="550">
+        <source>"%1%" menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="551">
+        <source>protected</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="552">
+        <source>New menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="553">
+        <source>The name of this menu. The menu name is used internally and is not visible to users.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="554">
+        <source>This is the button or link label that users see.  For menu items that are not visible (i.e. are organizational only) this should be left blank.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="555">
+        <source>source text</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="556">
+        <source>This can be an external URL (starts with http(s)://) or an internal, symfony path (e.g. module/action).</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="557">
+        <source>A brief description of the menu and it's purpose.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="558">
+        <source>Move before</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="559">
+        <source>* This field is required.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="560">
+        <source>this action will delete this menu and all it's descendants. Are you sure?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="561">
+        <source>Hierarchical list of menus for the site, first column</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="562">
+        <source>move up</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="563">
+        <source>move item up in list</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="564">
+        <source>move down</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="565">
+        <source>move item down in list</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="566">
+        <source>click to edit item</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="567">
+        <source>add new menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="568">
+        <source>Sorry, OAI harvesting is disabled for this system.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="569">
+        <source>edit %1% - ISDIAH</source>
         <target/>
       </trans-unit>
     </body>

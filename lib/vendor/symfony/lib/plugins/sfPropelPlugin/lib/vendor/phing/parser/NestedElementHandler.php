@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: NestedElementHandler.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: NestedElementHandler.php 123 2006-09-14 20:19:08Z mrook $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,7 +31,7 @@ include_once 'phing/TaskContainer.php';
  *
  * @author      Andreas Aderhold <andi@binarycloud.com>
  * @copyright © 2001,2002 THYRELL. All rights reserved
- * @version   $Revision: 1.10 $ $Date: 2005/10/04 19:13:44 $
+ * @version   $Revision: 1.10 $ $Date: 2006-09-14 13:19:08 -0700 (Thu, 14 Sep 2006) $
  * @access    public
  * @package   phing.parser
  */

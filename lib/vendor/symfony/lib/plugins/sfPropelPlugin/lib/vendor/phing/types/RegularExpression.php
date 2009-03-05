@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: RegularExpression.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: RegularExpression.php 325 2007-12-20 15:44:58Z hans $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -31,7 +31,7 @@ include_once 'phing/util/regexp/Regexp.php';
  * regular expression type you are using.
  *
  * @author    <a href="mailto:yl@seasonfive.com">Yannick Lecaillez</a>
- * @version   $Revision: 1.6 $ $Date: 2003/12/24 12:38:42 $
+ * @version   $Revision: 1.6 $ $Date: 2007-12-20 07:44:58 -0800 (Thu, 20 Dec 2007) $
  * @access    public
  * @see       phing.util.regex.RegexMatcher
  * @package   phing.types
@@ -102,4 +102,4 @@ class RegularExpression extends DataType {
     }
 }
 
-?>
+

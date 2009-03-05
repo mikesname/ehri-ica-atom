@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: CommentElement.php,v 1.13 2007/11/30 01:18:41 squiz Exp $
+ * @version   CVS: $Id: CommentElement.php,v 1.14 2008/12/02 02:38:33 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -66,8 +66,11 @@ class PHP_CodeSniffer_CommentParser_CommentElement extends PHP_CodeSniffer_Comme
      *                                                                    element is
      *                                                                    in.
      */
-    public function __construct($previousElement, $tokens, PHP_CodeSniffer_File $phpcsFile)
-    {
+    public function __construct(
+        $previousElement,
+        $tokens,
+        PHP_CodeSniffer_File $phpcsFile
+    ) {
         parent::__construct($previousElement, $tokens, 'comment', $phpcsFile);
 
     }//end __construct()
@@ -194,7 +197,10 @@ class PHP_CodeSniffer_CommentParser_CommentElement extends PHP_CodeSniffer_Comme
             return '';
         }
 
-        return implode('', array_slice($this->tokens, $endShort, ($startLong - $endShort)));
+        return implode(
+            '',
+            array_slice($this->tokens, $endShort, ($startLong - $endShort))
+        );
 
     }//end getWhiteSpaceBetween()
 

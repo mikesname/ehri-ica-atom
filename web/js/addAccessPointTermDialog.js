@@ -1,9 +1,18 @@
-// $Id$
+/**
+ * Provide modal dialog to allow adding new terms to database without requiring
+ * a form submit via AJAX request.
+ * 
+ * @package    qubit
+ * @subpackage ECMAScript
+ * @version    svn: $Id$
+ * @author     David Juhasz <david@artefactual.com>
+ * @author     Jamil Atta Junior <jamil.atta@bireme.org>
+ */
 
 function removeRow(index)
 {
-  $('tr#newRow'+index+' div').hide('normal', function() { $('tr#newRow'+index).remove() });
-  $('input.addedHidden'+index).remove();
+  $('tr#newRow' + index + ' div').hide('normal', function() { $('tr#newRow' + index).remove() });
+  $('input.addedHidden' + index).remove();
 }
 
 function renderAccessPointTermDialog(context)
@@ -16,27 +25,31 @@ function renderAccessPointTermDialog(context)
   };
 
   var handleCancel = function() {
+    // Clear the Dialog fields
+    $('div#addAccessPointTermDialog input#addSubjectTermName').val('');
+    $('div#addAccessPointTermDialog input#addSubjectTermScope').val('');
+
     this.cancel();
   };
 
   // Instantiate the Dialog
   Qubit.addAccessPointTermDialog = new YAHOO.widget.Dialog("addAccessPointTermDialog",
   {
-    width : "300px",
-    fixedcenter : true,
-    visible : false,
-    modal : true,
-    constraintoviewport : true,
-    postmethod : 'async',
-    buttons : [ { text:"Submit", handler:handleSubmit, isDefault:true },
-                { text:"Cancel", handler:handleCancel } ],
-    effect : { effect:YAHOO.widget.ContainerEffect.FADE,duration:0.25 }
+    width: "300px",
+    fixedcenter: true,
+    visible: false,
+    modal: true,
+    constraintoviewport: true,
+    postmethod: 'async',
+    buttons: [ { text: "Submit", handler: handleSubmit, isDefault: true },
+                { text: "Cancel", handler: handleCancel } ],
+    effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.25 }
   } );
 
   var onSuccess = function(o) {
     var data = eval(o.responseText);
     var target = $('#addAccessPointTermDialog').data('target');
-    var thisSelector = $('div#'+target+' select:last');
+    var thisSelector = $('div#' + target + ' select:last');
 
     if (thisSelector.length > 0)
     {

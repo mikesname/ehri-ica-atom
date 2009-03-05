@@ -5,11 +5,12 @@
  *
  * @package    form
  * @subpackage movie
- * @version    SVN: $Id: MovieForm.class.php 8409 2008-04-11 07:41:48Z fabien $
+ * @version    SVN: $Id: MovieForm.class.php 12854 2008-11-09 20:08:32Z fabien $
  */
 class MovieForm extends BaseMovieForm
 {
   public function configure()
   {
+    $this->embedI18n(array('en', 'fr'));
   }
 }

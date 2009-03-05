@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage cache
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfFileCache.class.php 9084 2008-05-20 01:29:54Z Carl.Vondrick $
+ * @version    SVN: $Id: sfFileCache.class.php 12625 2008-11-04 09:05:23Z dwhittle $
  */
 class sfFileCache extends sfCache
 {
@@ -215,8 +215,6 @@ class sfFileCache extends sfCache
     @flock($fp, LOCK_SH);
     clearstatcache(); // because the filesize can be cached by PHP itself...
     $length = @filesize($path);
-    $mqr = get_magic_quotes_runtime();
-    set_magic_quotes_runtime(0);
     switch ($type)
     {
       case self::READ_TIMEOUT:
@@ -240,7 +238,6 @@ class sfFileCache extends sfCache
       default:
         throw new sfConfigurationException(sprintf('Unknown type "%s".', $type));
     }
-    set_magic_quotes_runtime($mqr);
     @flock($fp, LOCK_UN);
     @fclose($fp);
 

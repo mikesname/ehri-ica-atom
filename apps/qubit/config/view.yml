@@ -3,18 +3,18 @@ default:
     content-type: text/html
 
   metas:
-    #title:        Qubit - open information management toolkit
-    #description:  Qubit
-    #keywords:     Qubit
+    #title:        symfony project
+    #description:  symfony project
+    #keywords:     symfony, project
     #language:     en
-    robots:       index, follow
+    #robots:       index, follow
 
   stylesheets:
-    /vendor/drupal/modules/system/defaults: { media: all }
-    /vendor/drupal/modules/system/system: { media: all }
-    /vendor/drupal/themes/garland/style: { media: all }
-    /vendor/drupal/themes/garland/minnelli/minnelli: { media: all }
-    /vendor/drupal/themes/garland/print: { media: print }
+    /sfDrupalPlugin/vendor/drupal/modules/system/defaults: { media: all }
+    /sfDrupalPlugin/vendor/drupal/modules/system/system: { media: all }
+    /sfDrupalPlugin/vendor/drupal/themes/garland/style: { media: all }
+    /sfDrupalPlugin/vendor/drupal/themes/garland/minnelli/minnelli: { media: all }
+    /sfDrupalPlugin/vendor/drupal/themes/garland/print: { media: print }
     /vendor/yui/button/assets/skins/sam/button: {}
     /vendor/yui/menu/assets/skins/sam/menu: {}
     form: {}
@@ -23,7 +23,7 @@ default:
     main: { position: last }
     menu: {}
 
-  javascripts:    [jquery, /vendor/drupal/misc/drupal, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-beta-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
+  javascripts:    [/vendor/jquery/jquery, /sfDrupalPlugin/vendor/drupal/misc/drupal, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-beta-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
 
   has_layout:     on
   layout:         layout
@@ -35,5 +35,4 @@ default:
     MainMenu:     [menu, mainMenu]
     SearchSidebar: [search, sidebar]
     BrowseSidebar: [browse, sidebar]
-    ChangeLanguageList: [i18n, changeLanguageList]
-    ChangeLanguageSelectbox: [i18n, changeLanguageSelectbox]
+    ChangeLanguage: [i18n, changeLanguageList]

@@ -1,18 +1,19 @@
 <?php
 
-abstract class BasePlace extends QubitTerm
+abstract class BasePlace extends QubitTerm implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_place';
+    TABLE_NAME = 'q_place',
 
-  const ID = 'q_place.ID';
-  const COUNTRY_ID = 'q_place.COUNTRY_ID';
-  const TYPE_ID = 'q_place.TYPE_ID';
-  const LONGTITUDE = 'q_place.LONGTITUDE';
-  const LATITUDE = 'q_place.LATITUDE';
-  const ALTITUDE = 'q_place.ALTITUDE';
-  const SOURCE_CULTURE = 'q_place.SOURCE_CULTURE';
+    ID = 'q_place.ID',
+    COUNTRY_ID = 'q_place.COUNTRY_ID',
+    TYPE_ID = 'q_place.TYPE_ID',
+    LONGTITUDE = 'q_place.LONGTITUDE',
+    LATITUDE = 'q_place.LATITUDE',
+    ALTITUDE = 'q_place.ALTITUDE',
+    SOURCE_CULTURE = 'q_place.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -63,139 +64,72 @@ abstract class BasePlace extends QubitTerm
     return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
   }
 
-  protected $countryId = null;
-
-  public function getCountryId()
+  public function __construct()
   {
-    return $this->countryId;
+    parent::__construct();
+
+    $this->tables[] = Propel::getDatabaseMap(QubitPlace::DATABASE_NAME)->getTable(QubitPlace::TABLE_NAME);
   }
 
-  public function setCountryId($countryId)
+  public function offsetExists($offset, array $options = array())
   {
-    $this->countryId = $countryId;
-
-    return $this;
-  }
-
-  protected $typeId = null;
-
-  public function getTypeId()
-  {
-    return $this->typeId;
-  }
-
-  public function setTypeId($typeId)
-  {
-    $this->typeId = $typeId;
-
-    return $this;
-  }
-
-  protected $longtitude = null;
-
-  public function getLongtitude()
-  {
-    return $this->longtitude;
-  }
-
-  public function setLongtitude($longtitude)
-  {
-    $this->longtitude = $longtitude;
-
-    return $this;
-  }
-
-  protected $latitude = null;
-
-  public function getLatitude()
-  {
-    return $this->latitude;
-  }
-
-  public function setLatitude($latitude)
-  {
-    $this->latitude = $latitude;
-
-    return $this;
-  }
-
-  protected $altitude = null;
-
-  public function getAltitude()
-  {
-    return $this->altitude;
-  }
-
-  public function setAltitude($altitude)
-  {
-    $this->altitude = $altitude;
-
-    return $this;
-  }
-
-  protected $sourceCulture = null;
-
-  public function getSourceCulture()
-  {
-    return $this->sourceCulture;
-  }
-
-  public function setSourceCulture($sourceCulture)
-  {
-    $this->sourceCulture = $sourceCulture;
-
-    return $this;
-  }
-
-  protected function resetModified()
-  {
-    parent::resetModified();
-
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['countryId'] = $this->countryId;
-    $this->columnValues['typeId'] = $this->typeId;
-    $this->columnValues['longtitude'] = $this->longtitude;
-    $this->columnValues['latitude'] = $this->latitude;
-    $this->columnValues['altitude'] = $this->altitude;
-    $this->columnValues['sourceCulture'] = $this->sourceCulture;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $columnOffset = parent::hydrate($results, $columnOffset);
-
-    $this->id = $results->getInt($columnOffset++);
-    $this->countryId = $results->getInt($columnOffset++);
-    $this->typeId = $results->getInt($columnOffset++);
-    $this->longtitude = $results->getFloat($columnOffset++);
-    $this->latitude = $results->getFloat($columnOffset++);
-    $this->altitude = $results->getFloat($columnOffset++);
-    $this->sourceCulture = $results->getString($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
+    if (parent::offsetExists($offset, $options))
     {
-      $options['connection'] = Propel::getConnection(QubitPlace::DATABASE_NAME);
+      return true;
     }
 
-    $criteria = new Criteria;
-    $criteria->add(QubitPlace::ID, $this->id);
+    if ($this->getCurrentplaceI18n($options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
 
-    self::addSelectColumns($criteria);
+    if (!empty($options['cultureFallback']) && $this->getCurrentplaceI18n(array('sourceCulture' => true) + $options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    return false;
+  }
 
-    return $this->hydrate($resultSet);
+  public function offsetGet($offset, array $options = array())
+  {
+    if (null !== $value = parent::offsetGet($offset, $options))
+    {
+      return $value;
+    }
+
+    if (null !== $value = $this->getCurrentplaceI18n($options)->offsetGet($offset, $options))
+    {
+      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      {
+        $value = $this->getCurrentplaceI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options);
+      }
+
+      return $value;
+    }
+
+    if (!empty($options['cultureFallback']) && null !== $value = $this->getCurrentplaceI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options))
+    {
+      return $value;
+    }
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    parent::offsetSet($offset, $value, $options);
+
+    $this->getCurrentplaceI18n($options)->offsetSet($offset, $value, $options);
+
+    return $this;
+  }
+
+  public function offsetUnset($offset, array $options = array())
+  {
+    parent::offsetUnset($offset, $options);
+
+    $this->getCurrentplaceI18n($options)->offsetUnset($offset, $options);
+
+    return $this;
   }
 
   public function save($connection = null)
@@ -206,7 +140,7 @@ abstract class BasePlace extends QubitTerm
 
     foreach ($this->placeI18ns as $placeI18n)
     {
-      $placeI18n->setId($this->id);
+      $placeI18n->setid($this->id);
 
       $affectedRows += $placeI18n->save($connection);
     }
@@ -214,181 +148,44 @@ abstract class BasePlace extends QubitTerm
     return $affectedRows;
   }
 
-  protected function insert($connection = null)
-  {
-    $affectedRows = 0;
-
-    $affectedRows += parent::insert($connection);
-
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitPlace::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('countryId'))
-    {
-      $criteria->add(QubitPlace::COUNTRY_ID, $this->countryId);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitPlace::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('longtitude'))
-    {
-      $criteria->add(QubitPlace::LONGTITUDE, $this->longtitude);
-    }
-
-    if ($this->isColumnModified('latitude'))
-    {
-      $criteria->add(QubitPlace::LATITUDE, $this->latitude);
-    }
-
-    if ($this->isColumnModified('altitude'))
-    {
-      $criteria->add(QubitPlace::ALTITUDE, $this->altitude);
-    }
-
-    if (!$this->isColumnModified('sourceCulture'))
-    {
-      $this->sourceCulture = sfPropel::getDefaultCulture();
-    }
-    $criteria->add(QubitPlace::SOURCE_CULTURE, $this->sourceCulture);
-
-    if (!isset($connection))
-    {
-      $connection = QubitTransactionFilter::getConnection(QubitPlace::DATABASE_NAME);
-    }
-
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
-
-    return $affectedRows;
-  }
-
-  protected function update($connection = null)
-  {
-    $affectedRows = 0;
-
-    $affectedRows += parent::update($connection);
-
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitPlace::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('countryId'))
-    {
-      $criteria->add(QubitPlace::COUNTRY_ID, $this->countryId);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitPlace::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('longtitude'))
-    {
-      $criteria->add(QubitPlace::LONGTITUDE, $this->longtitude);
-    }
-
-    if ($this->isColumnModified('latitude'))
-    {
-      $criteria->add(QubitPlace::LATITUDE, $this->latitude);
-    }
-
-    if ($this->isColumnModified('altitude'))
-    {
-      $criteria->add(QubitPlace::ALTITUDE, $this->altitude);
-    }
-
-    if ($this->isColumnModified('sourceCulture'))
-    {
-      $criteria->add(QubitPlace::SOURCE_CULTURE, $this->sourceCulture);
-    }
-
-    if ($criteria->size() > 0)
-    {
-      $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitPlace::ID, $this->id);
-
-      if (!isset($connection))
-      {
-        $connection = QubitTransactionFilter::getConnection(QubitPlace::DATABASE_NAME);
-      }
-
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
-    }
-
-    return $affectedRows;
-  }
-
-  public static function addJoinCountryCriteria(Criteria $criteria)
+  public static function addJoincountryCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitPlace::COUNTRY_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getCountry(array $options = array())
-  {
-    return $this->country = QubitTerm::getById($this->countryId, $options);
-  }
-
-  public function setCountry(QubitTerm $term)
-  {
-    $this->countryId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinTypeCriteria(Criteria $criteria)
+  public static function addJointypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitPlace::TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getType(array $options = array())
-  {
-    return $this->type = QubitTerm::getById($this->typeId, $options);
-  }
-
-  public function setType(QubitTerm $term)
-  {
-    $this->typeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addPlaceI18nsCriteriaById(Criteria $criteria, $id)
+  public static function addplaceI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitPlaceI18n::ID, $id);
 
     return $criteria;
   }
 
-  public static function getPlaceI18nsById($id, array $options = array())
+  public static function getplaceI18nsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addPlaceI18nsCriteriaById($criteria, $id);
+    self::addplaceI18nsCriteriaById($criteria, $id);
 
     return QubitPlaceI18n::get($criteria, $options);
   }
 
-  public function addPlaceI18nsCriteria(Criteria $criteria)
+  public function addplaceI18nsCriteria(Criteria $criteria)
   {
-    return self::addPlaceI18nsCriteriaById($criteria, $this->id);
+    return self::addplaceI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected $placeI18ns = null;
+  protected
+    $placeI18ns = null;
 
-  public function getPlaceI18ns(array $options = array())
+  public function getplaceI18ns(array $options = array())
   {
     if (!isset($this->placeI18ns))
     {
@@ -398,36 +195,37 @@ abstract class BasePlace extends QubitTerm
       }
       else
       {
-        $this->placeI18ns = self::getPlaceI18nsById($this->id, array('self' => $this) + $options);
+        $this->placeI18ns = self::getplaceI18nsById($this->id, array('self' => $this) + $options);
       }
     }
 
     return $this->placeI18ns;
   }
 
-  public static function addPlaceMapRelationsCriteriaById(Criteria $criteria, $id)
+  public static function addplaceMapRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitPlaceMapRelation::PLACE_ID, $id);
 
     return $criteria;
   }
 
-  public static function getPlaceMapRelationsById($id, array $options = array())
+  public static function getplaceMapRelationsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addPlaceMapRelationsCriteriaById($criteria, $id);
+    self::addplaceMapRelationsCriteriaById($criteria, $id);
 
     return QubitPlaceMapRelation::get($criteria, $options);
   }
 
-  public function addPlaceMapRelationsCriteria(Criteria $criteria)
+  public function addplaceMapRelationsCriteria(Criteria $criteria)
   {
-    return self::addPlaceMapRelationsCriteriaById($criteria, $this->id);
+    return self::addplaceMapRelationsCriteriaById($criteria, $this->id);
   }
 
-  protected $placeMapRelations = null;
+  protected
+    $placeMapRelations = null;
 
-  public function getPlaceMapRelations(array $options = array())
+  public function getplaceMapRelations(array $options = array())
   {
     if (!isset($this->placeMapRelations))
     {
@@ -437,86 +235,14 @@ abstract class BasePlace extends QubitTerm
       }
       else
       {
-        $this->placeMapRelations = self::getPlaceMapRelationsById($this->id, array('self' => $this) + $options);
+        $this->placeMapRelations = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
       }
     }
 
     return $this->placeMapRelations;
   }
 
-  public function getStreetAddress(array $options = array())
-  {
-    $streetAddress = $this->getCurrentPlaceI18n($options)->getStreetAddress();
-    if (!empty($options['cultureFallback']) && strlen($streetAddress) < 1)
-    {
-      $streetAddress = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getStreetAddress();
-    }
-
-    return $streetAddress;
-  }
-
-  public function setStreetAddress($value, array $options = array())
-  {
-    $this->getCurrentPlaceI18n($options)->setStreetAddress($value);
-
-    return $this;
-  }
-
-  public function getCity(array $options = array())
-  {
-    $city = $this->getCurrentPlaceI18n($options)->getCity();
-    if (!empty($options['cultureFallback']) && strlen($city) < 1)
-    {
-      $city = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getCity();
-    }
-
-    return $city;
-  }
-
-  public function setCity($value, array $options = array())
-  {
-    $this->getCurrentPlaceI18n($options)->setCity($value);
-
-    return $this;
-  }
-
-  public function getRegion(array $options = array())
-  {
-    $region = $this->getCurrentPlaceI18n($options)->getRegion();
-    if (!empty($options['cultureFallback']) && strlen($region) < 1)
-    {
-      $region = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getRegion();
-    }
-
-    return $region;
-  }
-
-  public function setRegion($value, array $options = array())
-  {
-    $this->getCurrentPlaceI18n($options)->setRegion($value);
-
-    return $this;
-  }
-
-  public function getPostalCode(array $options = array())
-  {
-    $postalCode = $this->getCurrentPlaceI18n($options)->getPostalCode();
-    if (!empty($options['cultureFallback']) && strlen($postalCode) < 1)
-    {
-      $postalCode = $this->getCurrentPlaceI18n(array('sourceCulture' => true) + $options)->getPostalCode();
-    }
-
-    return $postalCode;
-  }
-
-  public function setPostalCode($value, array $options = array())
-  {
-    $this->getCurrentPlaceI18n($options)->setPostalCode($value);
-
-    return $this;
-  }
-
-  public function getCurrentPlaceI18n(array $options = array())
+  public function getCurrentplaceI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
     {
@@ -530,10 +256,10 @@ abstract class BasePlace extends QubitTerm
 
     if (!isset($this->placeI18ns[$options['culture']]))
     {
-      if (null === $placeI18n = QubitPlaceI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      if (!isset($this->id) || null === $placeI18n = QubitPlaceI18n::getByIdAndCulture($this->id, $options['culture'], $options))
       {
         $placeI18n = new QubitPlaceI18n;
-        $placeI18n->setCulture($options['culture']);
+        $placeI18n->setculture($options['culture']);
       }
       $this->placeI18ns[$options['culture']] = $placeI18n;
     }
@@ -541,5 +267,3 @@ abstract class BasePlace extends QubitTerm
     return $this->placeI18ns[$options['culture']];
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.PlaceMapBuilder');

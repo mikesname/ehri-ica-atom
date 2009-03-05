@@ -1,0 +1,89 @@
+<?php echo '<?' ?>xml version="1.0" encoding="utf-8" ?>
+
+<dc xmlns:dc="http://purl.org/dc/elements/1.1/"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://purl.org/dc/elements/1.1/">
+
+<dc:title><?php echo htmlentities($this->baseObject->getTitle()) ?></dc:title>
+
+<?php foreach ($this->baseObject->getCreators() as $creator): ?>
+          <dc:creator><?php echo htmlentities($creator) ?></dc:creator>
+<?php endforeach; ?>
+
+<?php if (count($dcSubjects = QubitDc::getSubjects($this->baseObject)) > 0): ?>
+  <?php foreach ($dcSubjects as $dcSubject): ?>
+        <dc:subject><?php echo htmlentities($dcSubject) ?></dc:subject>
+  <?php endforeach; ?>
+<?php endif; ?>
+
+<?php if ($this->baseObject->getScopeAndContent()): ?>
+          <dc:description><?php echo htmlentities($this->baseObject->getScopeAndContent()) ?></dc:description>
+<?php endif; ?>
+
+<?php foreach ($this->baseObject->getPublishers() as $publisher): ?>
+          <dc:publisher><?php echo htmlentities($publisher) ?></dc:publisher>
+<?php endforeach; ?>
+
+<?php foreach ($this->baseObject->getContributors() as $contributor): ?>
+          <dc:contributor><?php echo htmlentities($contributor) ?></dc:contributor>
+<?php endforeach; ?>
+
+<?php foreach (QubitDc::getDates($this->baseObject) as $dcDate): ?>
+          <dc:date><?php echo htmlentities($dcDate) ?></dc:date>
+<?php endforeach; ?>
+
+<?php if (count($dcTypes = QubitDc::getTypes($this->baseObject)) > 0): ?>
+  <?php foreach ($dcTypes as $dcType): ?>
+        <dc:type><?php echo htmlentities($dcType) ?></dc:type>
+  <?php endforeach; ?>
+<?php endif; ?>
+
+<?php if (count($dcFormats = QubitDc::getFormats($this->baseObject)) > 0): ?>
+  <?php foreach ($dcFormats as $dcFormat): ?>
+        <dc:format><?php echo htmlentities($dcFormat) ?></dc:format>
+  <?php endforeach; ?>
+<?php endif; ?>
+
+<?php if ($this->baseObject->getIdentifier()): ?>
+          <dc:identifier><?php echo htmlentities(QubitDc::getIdentifier($this->baseObject)) ?></dc:identifier>
+<?php endif; ?>
+
+<?php if ($source = $this->baseObject->getLocationOfOriginals()): ?>
+          <dc:source><?php echo htmlentities($source) ?></dc:source>
+<?php endif; ?>
+
+<?php if (count($languages = $this->baseObject->getProperties($name = 'information_object_language')) > 0): ?>
+  <?php foreach ($languages as $languageCode): ?>
+          <dc:language><?php echo htmlentities($languageCode->getValue()) ?></dc:language>
+  <?php endforeach; ?>
+<?php endif; ?>
+
+<?php if ($dcRelation = QubitDc::getRelation($this->baseObject)): ?>
+
+<?php if ($dcRelation['text'] !== ''): ?>
+          <dc:relation><?php echo htmlentities($dcRelation['text']) ?></dc:relation>
+<?php endif; ?>
+
+<?php if ($dcRelation['property']): ?>
+          <dc:relation><?php echo htmlentities($dcRelation['property']) ?></dc:relation>
+<?php endif; ?>
+
+<?php endif; ?>
+
+<?php foreach (QubitDc::getCoverage($this->baseObject, array('temporal' => true)) as $coverageTemporal): ?>
+          <dc:coverage><?php echo htmlentities($coverageTemporal) ?></dc:coverage>
+<?php endforeach; ?>
+<?php foreach (QubitDc::getCoverage($this->baseObject, array('spatial' => true)) as $coverageSpatial): ?>
+          <dc:coverage><?php echo htmlentities($coverageSpatial) ?></dc:coverage>
+<?php endforeach; ?>
+
+<?php if ($accessConditions = $this->baseObject->getAccessConditions()): ?>
+          <dc:rights><?php echo htmlentities($accessConditions) ?></dc:rights>
+<?php endif; ?>
+
+<?php if ($reproductionConditions = $this->baseObject->getReproductionConditions()): ?>
+          <dc:rights><?php echo htmlentities($reproductionConditions) ?></dc:rights>
+<?php endif; ?>
+
+</dc>
+

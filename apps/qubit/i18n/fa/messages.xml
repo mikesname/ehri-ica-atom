@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2008-11-13T15:54:46Z" product-name="messages">
+  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2009-01-13T11:04:48Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
-        <target/>
+        <target>&#x62E;&#x631;&#x648;&#x62C;</target>
       </trans-unit>
       <trans-unit id="2">
         <source>%1% profile</source>
@@ -12,35 +12,35 @@
       </trans-unit>
       <trans-unit id="3">
         <source>log in</source>
-        <target/>
+        <target>&#x648;&#x631;&#x648;&#x62F; &#x628;&#x647; &#x633;&#x64A;&#x633;&#x62A;&#x645;</target>
       </trans-unit>
       <trans-unit id="4">
         <source>help</source>
-        <target/>
+        <target>&#x631;&#x627;&#x647;&#x646;&#x645;&#x627;</target>
       </trans-unit>
       <trans-unit id="5">
         <source>about</source>
-        <target/>
+        <target>&#x62F;&#x631;&#x628;&#x627;&#x631;&#x647; &#x645;&#x627;</target>
       </trans-unit>
       <trans-unit id="6">
         <source>home</source>
-        <target/>
+        <target>&#x635;&#x641;&#x62D;&#x647; &#x627;&#x635;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="7">
         <source>open information management toolkit</source>
-        <target/>
+        <target>&#x627;&#x62C;&#x631;&#x627;&#x64A; &#x627;&#x628;&#x632;&#x627;&#x631; &#x645;&#x62F;&#x64A;&#x631;&#x64A;&#x62A; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="8">
         <source>list %1%</source>
-        <target/>
+        <target> &#x644;&#x64A;&#x633;&#x62A; %1%</target>
       </trans-unit>
       <trans-unit id="9">
         <source>Browse for '%1%' in '%2%' returned %3% results</source>
-        <target/>
+        <target>&#x62C;&#x633;&#x62A;&#x62C;&#x648; &#x62F;&#x631;&#x628;&#x627;&#x631;&#x647; '%1%' &#x62F;&#x631; '%2%' &#x634;&#x627;&#x645;&#x644; %3% &#x646;&#x62A;&#x64A;&#x62C;&#x647; &#x628;&#x648;&#x62F;</target>
       </trans-unit>
       <trans-unit id="10">
         <source>Part of: </source>
-        <target/>
+        <target>&#x642;&#x633;&#x645;&#x62A;&#x650;</target>
       </trans-unit>
       <trans-unit id="11">
         <source>previous</source>
@@ -52,343 +52,343 @@
       </trans-unit>
       <trans-unit id="13">
         <source>displaying %1% to %2% of %3% results</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; &#x646;&#x62A;&#x627;&#x64A;&#x62C; %1% &#x62A;&#x627; %2% &#x627;&#x632; &#x645;&#x64A;&#x627;&#x646; %3% &#x646;&#x62A;&#x64A;&#x62C;&#x647; &#x64A;&#x627;&#x641;&#x62A; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="14">
         <source>browse all %1%</source>
-        <target/>
+        <target>&#x645;&#x631;&#x648;&#x631; &#x647;&#x645;&#x647; %1%</target>
       </trans-unit>
       <trans-unit id="15">
         <source>add/edit %1% term</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; / &#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D; %1%</target>
       </trans-unit>
       <trans-unit id="16">
         <source>term name</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;</target>
       </trans-unit>
       <trans-unit id="17">
         <source>taxonomy</source>
-        <target/>
+        <target>&#x637;&#x628;&#x642;&#x647; &#x628;&#x646;&#x62F;&#x64A;</target>
       </trans-unit>
       <trans-unit id="18">
         <source>code</source>
-        <target/>
+        <target>&#x643;&#x62F;</target>
       </trans-unit>
       <trans-unit id="19">
         <source>scope note</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x62F;&#x648;&#x62F;&#x647; &#x646;&#x643;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="20">
         <source>source note</source>
-        <target/>
+        <target>&#x645;&#x646;&#x628;&#x639; &#x646;&#x643;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="21">
         <source>delete</source>
-        <target/>
+        <target>&#x62D;&#x630;&#x641;</target>
       </trans-unit>
       <trans-unit id="22">
         <source>are you sure?</source>
-        <target/>
+        <target>&#x622;&#x64A;&#x627; &#x648;&#x627;&#x642;&#x639;&#x627; &#x645;&#x637;&#x645;&#x626;&#x646; &#x647;&#x633;&#x62A;&#x64A;&#x62F;&#x61F;</target>
       </trans-unit>
       <trans-unit id="23">
         <source>cancel</source>
-        <target/>
+        <target>&#x644;&#x63A;&#x648;</target>
       </trans-unit>
       <trans-unit id="24">
         <source>save</source>
-        <target/>
+        <target>&#x630;&#x62E;&#x64A;&#x631;&#x647;</target>
       </trans-unit>
       <trans-unit id="25">
         <source>create</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="26">
         <source>add new %1%</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; %1%</target>
       </trans-unit>
       <trans-unit id="27">
         <source>list all taxonomies</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644; &#x637;&#x628;&#x642;&#x647; &#x628;&#x646;&#x62F;&#x64A;&#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="28">
         <source>list only %1%</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x641;&#x642;&#x637; %1%</target>
       </trans-unit>
       <trans-unit id="29">
         <source>view term</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;</target>
       </trans-unit>
       <trans-unit id="30">
         <source>edit</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="31">
         <source>list all</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644;</target>
       </trans-unit>
       <trans-unit id="32">
         <source>list taxonomy terms</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;&#x627;&#x62A; &#x637;&#x628;&#x642;&#x647; &#x628;&#x646;&#x62F;&#x64A; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="33">
         <source>term</source>
-        <target/>
+        <target>&#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;</target>
       </trans-unit>
       <trans-unit id="34">
         <source>add new %1% term</source>
-        <target/>
+        <target>&#x627;&#x636;&#x627;&#x641;&#x647; &#x643;&#x631;&#x62F;&#x646; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D; &#x62C;&#x62F;&#x64A;&#x62F; %1%</target>
       </trans-unit>
       <trans-unit id="35">
         <source>list %taxonomy%</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634;  %taxonomy%</target>
       </trans-unit>
       <trans-unit id="36">
         <source>add/edit</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646;/&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="37">
         <source>results</source>
-        <target/>
+        <target>&#x646;&#x62A;&#x627;&#x64A;&#x62C;</target>
       </trans-unit>
       <trans-unit id="38">
         <source>%1% term</source>
-        <target/>
+        <target>%1% &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;</target>
       </trans-unit>
       <trans-unit id="39">
         <source>add new</source>
-        <target/>
+        <target> &#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x622;&#x64A;&#x62A;&#x645; &#x62C;&#x62F;&#x64A;&#x62F; </target>
       </trans-unit>
       <trans-unit id="40">
         <source>add/edit term</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646;/&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;</target>
       </trans-unit>
       <trans-unit id="41">
         <source>add new term</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="42">
         <source>edit %1%</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; %1%</target>
       </trans-unit>
       <trans-unit id="43">
         <source>identity area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x634;&#x646;&#x627;&#x633;&#x627;&#x64A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="44">
         <source>reference code</source>
-        <target/>
+        <target>&#x634;&#x645;&#x627;&#x631;&#x647; &#x631;&#x645;&#x632; &#x645;&#x631;&#x62C;&#x639;</target>
       </trans-unit>
       <trans-unit id="45">
         <source>identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647;</target>
       </trans-unit>
       <trans-unit id="46">
         <source>title</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="47">
         <source>title note</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x646;&#x643;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="48">
         <source>level of description</source>
-        <target/>
+        <target>&#x631;&#x62F;&#x647; &#x62A;&#x648;&#x635;&#x64A;&#x641;</target>
       </trans-unit>
       <trans-unit id="49">
         <source>parent level</source>
-        <target/>
+        <target>&#x645;&#x631;&#x62A;&#x628;&#x647; &#x64A; &#x627;&#x635;&#x644;&#x64A; &#x648; &#x645;&#x627;&#x62F;&#x631;</target>
       </trans-unit>
       <trans-unit id="50">
         <source>extent and medium</source>
-        <target/>
+        <target>&#x6AF;&#x633;&#x62A;&#x631;&#x647; &#x648; &#x634;&#x643;&#x644; &#x648;&#x627;&#x62D;&#x62F; &#x62A;&#x648;&#x635;&#x64A;&#x641; (&#x643;&#x645;&#x64A;&#x62A;&#x60C; &#x62D;&#x62C;&#x645; &#x628;&#x627; &#x627;&#x646;&#x62F;&#x627;&#x632;&#x647;)</target>
       </trans-unit>
       <trans-unit id="51">
         <source>context area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x645;&#x62D;&#x644; &#x62A;&#x648;&#x644;&#x62F;</target>
       </trans-unit>
       <trans-unit id="52">
         <source>creation context</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x645;&#x62D;&#x62A;&#x648;&#x627;</target>
       </trans-unit>
       <trans-unit id="53">
         <source>creator</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x643;&#x646;&#x646;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="54">
         <source>or</source>
-        <target/>
+        <target>&#x64A;&#x627;</target>
       </trans-unit>
       <trans-unit id="55">
         <source>add new creator name</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x643;&#x646;&#x646;&#x62F;&#x647; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="56">
         <source>creation year</source>
-        <target/>
+        <target>&#x633;&#x627;&#x644; &#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="57">
         <source>end year (if range)</source>
-        <target/>
+        <target>&#x633;&#x627;&#x644; &#x67E;&#x627;&#x64A;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="58">
         <source>date display (defaults to date range)</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; &#x62A;&#x627;&#x631;&#x64A;&#x62E;</target>
       </trans-unit>
       <trans-unit id="59">
         <source>Creator</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x643;&#x646;&#x646;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="60">
         <source>Creation date(s)</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="61">
         <source>administrative/biographical history</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E;&#x686;&#x647; &#x627;&#x62F;&#x627;&#x631;&#x64A; &#x64A;&#x627; &#x634;&#x631;&#x62D; &#x62D;&#x627;&#x644;</target>
       </trans-unit>
       <trans-unit id="62">
         <source>repository</source>
-        <target/>
+        <target>&#x645;&#x646;&#x628;&#x639;</target>
       </trans-unit>
       <trans-unit id="63">
         <source>immediate source of acquisition</source>
-        <target/>
+        <target>&#x645;&#x646;&#x628;&#x639; &#x645;&#x633;&#x62A;&#x642;&#x64A;&#x645; &#x62F;&#x631;&#x64A;&#x627;&#x641;&#x62A; &#x64A;&#x627; &#x627;&#x646;&#x62A;&#x642;&#x627;&#x644; &#x633;&#x646;&#x62F;</target>
       </trans-unit>
       <trans-unit id="64">
         <source>archival history</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E;&#x686;&#x647; &#x622;&#x631;&#x634;&#x64A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="65">
         <source>content and structure area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x645;&#x62D;&#x62A;&#x648;&#x627; &#x648; &#x633;&#x627;&#x62E;&#x62A;&#x627;&#x631;</target>
       </trans-unit>
       <trans-unit id="66">
         <source>scope and content</source>
-        <target/>
+        <target>&#x62F;&#x627;&#x645;&#x646;&#x647; &#x648; &#x645;&#x62D;&#x62A;&#x648;&#x627;</target>
       </trans-unit>
       <trans-unit id="67">
         <source>appraisal, destruction and scheduling</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x645;&#x631;&#x628;&#x648;&#x637; &#x628;&#x647; &#x627;&#x631;&#x632;&#x634;&#x64A;&#x627;&#x628;&#x64A;&#x60C; &#x627;&#x645;&#x62D;&#x627;&#x621; &#x648; &#x628;&#x631;&#x646;&#x627;&#x645;&#x647; &#x631;&#x64A;&#x632;&#x64A;</target>
       </trans-unit>
       <trans-unit id="68">
         <source>accruals</source>
-        <target/>
+        <target>&#x67E;&#x64A;&#x648;&#x633;&#x62A; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="69">
         <source>system of arrangement</source>
-        <target/>
+        <target>&#x646;&#x638;&#x627;&#x645; &#x62A;&#x646;&#x638;&#x64A;&#x645; &#x627;&#x633;&#x646;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="70">
         <source>conditions of access and use area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x634;&#x631;&#x627;&#x64A;&#x637; &#x62F;&#x633;&#x62A;&#x64A;&#x627;&#x628;&#x64A; &#x648; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="71">
         <source>conditions governing access</source>
-        <target/>
+        <target>&#x634;&#x631;&#x627;&#x64A;&#x637; &#x62F;&#x633;&#x62A;&#x64A;&#x627;&#x628;&#x64A;</target>
       </trans-unit>
       <trans-unit id="72">
         <source>conditions governing reproduction</source>
-        <target/>
+        <target>&#x634;&#x631;&#x627;&#x64A;&#x637; &#x62A;&#x643;&#x62B;&#x64A;&#x631;</target>
       </trans-unit>
       <trans-unit id="73">
         <source>language of material</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646; &#x627;&#x633;&#x646;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="74">
         <source>script of material</source>
-        <target/>
+        <target>&#x62E;&#x637; &#x627;&#x633;&#x646;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="75">
         <source>physical characteristics</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x698;&#x6AF;&#x64A; &#x647;&#x627;&#x64A; &#x638;&#x627;&#x647;&#x631;&#x64A; &#x648; &#x646;&#x64A;&#x627;&#x632;&#x647;&#x627;&#x64A; &#x641;&#x646;&#x64A;</target>
       </trans-unit>
       <trans-unit id="76">
         <source>finding aids</source>
-        <target/>
+        <target>&#x641;&#x647;&#x631;&#x633;&#x62A; &#x647;&#x627;&#x64A; &#x631;&#x627;&#x647;&#x646;&#x645;&#x627;</target>
       </trans-unit>
       <trans-unit id="77">
         <source>allied materials area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x627;&#x633;&#x646;&#x627;&#x62F; &#x645;&#x631;&#x62A;&#x628;&#x637;</target>
       </trans-unit>
       <trans-unit id="78">
         <source>location of originals</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644; &#x646;&#x6AF;&#x647;&#x62F;&#x627;&#x631;&#x64A; &#x627;&#x635;&#x644; &#x627;&#x633;&#x646;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="79">
         <source>location of copies</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644; &#x646;&#x6AF;&#x647;&#x62F;&#x627;&#x631;&#x64A; &#x646;&#x633;&#x62E;&#x647; &#x647;&#x627;&#x64A; &#x62F;&#x648;&#x645;</target>
       </trans-unit>
       <trans-unit id="80">
         <source>related units of description</source>
-        <target/>
+        <target>&#x648;&#x627;&#x62D;&#x62F; &#x647;&#x627;&#x64A; &#x62A;&#x648;&#x635;&#x64A;&#x641; &#x648;&#x627;&#x628;&#x633;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="81">
         <source>publication note</source>
-        <target/>
+        <target>&#x646;&#x643;&#x627;&#x62A; &#x627;&#x646;&#x62A;&#x634;&#x627;&#x631;</target>
       </trans-unit>
       <trans-unit id="82">
         <source>notes area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x646;&#x643;&#x627;&#x62A; &#x62E;&#x627;&#x635; </target>
       </trans-unit>
       <trans-unit id="83">
         <source>notes</source>
-        <target/>
+        <target>&#x646;&#x643;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="84">
         <source>note</source>
-        <target/>
+        <target>&#x646;&#x643;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="85">
         <source>note type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x646;&#x643;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="86">
         <source>access points</source>
-        <target/>
+        <target>&#x641;&#x64A;&#x644;&#x62F;&#x647;&#x627;&#x64A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="87">
         <source>subject access points</source>
-        <target/>
+        <target>&#x62C;&#x647;&#x62A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A; &#x628;&#x627; &#x645;&#x648;&#x636;&#x648;&#x639;</target>
       </trans-unit>
       <trans-unit id="88">
         <source>place access points</source>
-        <target/>
+        <target>&#x62C;&#x647;&#x62A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A; &#x628;&#x627; &#x645;&#x643;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="89">
         <source>name access points</source>
-        <target/>
+        <target>&#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A; &#x627;&#x632; &#x637;&#x631;&#x64A;&#x642; &#x646;&#x627;&#x645;</target>
       </trans-unit>
       <trans-unit id="90">
         <source>control area</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x643;&#x646;&#x62A;&#x631;&#x644;</target>
       </trans-unit>
       <trans-unit id="91">
         <source>description record identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x62A;&#x648;&#x636;&#x64A;&#x62D; &#x631;&#x643;&#x648;&#x62F;&#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="92">
         <source>institution identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x645;&#x648;&#x633;&#x633;&#x647;</target>
       </trans-unit>
       <trans-unit id="93">
         <source>rules or conventions</source>
-        <target/>
+        <target>&#x642;&#x648;&#x627;&#x646;&#x64A;&#x646; &#x64A;&#x627; &#x642;&#x631;&#x627;&#x631;&#x62F;&#x627;&#x62F;&#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="94">
         <source>status</source>
-        <target/>
+        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="95">
         <source>level of detail</source>
-        <target/>
+        <target>&#x633;&#x637;&#x62D; &#x62C;&#x632;&#x64A;&#x64A;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="96">
         <source>dates of creation, revision and deletion</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F;/&#x628;&#x627;&#x632;&#x646;&#x6AF;&#x631;&#x64A;/&#x62D;&#x630;&#x641;</target>
       </trans-unit>
       <trans-unit id="97">
         <source>languages of archival description</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647; &#x634;&#x62F;&#x647; &#x62F;&#x631; &#x62A;&#x648;&#x636;&#x64A;&#x62D; &#x633;&#x646;&#x62F;</target>
       </trans-unit>
       <trans-unit id="98">
         <source>scripts of archival description</source>
@@ -396,167 +396,167 @@
       </trans-unit>
       <trans-unit id="99">
         <source>sources</source>
-        <target/>
+        <target>&#x645;&#x646;&#x627;&#x628;&#x639;</target>
       </trans-unit>
       <trans-unit id="100">
         <source>Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?</source>
-        <target/>
+        <target>&#x627;&#x62E;&#x637;&#x627;&#x631; : &#x627;&#x64A;&#x646; %1% &#x62F;&#x627;&#x631;&#x627;&#x64A; %2% &#x632;&#x64A;&#x631; &#x634;&#x627;&#x62E;&#x647; &#x627;&#x633;&#x62A; &#x648; &#x62F;&#x631; &#x635;&#x648;&#x631;&#x62A; &#x627;&#x62F;&#x627;&#x645;&#x647; &#x64A;&#x631; &#x634;&#x627;&#x62E;&#x647; &#x647;&#x627;&#x64A; &#x622;&#x646; &#x646;&#x64A;&#x632; &#x62D;&#x630;&#x641; &#x62E;&#x648;&#x627;&#x647;&#x62F; &#x634;&#x62F; &#x622;&#x64A;&#x627; &#x627;&#x632; &#x62D;&#x630;&#x641; %1% &#x627;&#x637;&#x645;&#x64A;&#x646;&#x627;&#x646; &#x62F;&#x627;&#x631;&#x64A;&#x62F; &#x61F;</target>
       </trans-unit>
       <trans-unit id="101">
         <source>Are you sure you want to delete this %1% permanently?</source>
-        <target/>
+        <target>&#x622;&#x64A;&#x627; &#x627;&#x632; &#x62D;&#x630;&#x641; &#x643;&#x627;&#x645;&#x644; &#x627;&#x64A;&#x646;  %1% &#x627;&#x637;&#x645;&#x64A;&#x646;&#x627;&#x646; &#x643;&#x627;&#x645;&#x644; &#x62F;&#x627;&#x631;&#x64A;&#x62F;&#x61F;</target>
       </trans-unit>
       <trans-unit id="102">
         <source>This will also delete the related %1%.</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x646; &#x639;&#x645;&#x644;&#x64A;&#x627;&#x62A; &#x647;&#x645;&#x686;&#x646;&#x64A;&#x646; &#x645;&#x648;&#x62C;&#x628; &#x62D;&#x630;&#x641; &#x645;&#x648;&#x631;&#x62F; &#x648;&#x627;&#x628;&#x633;&#x62A;&#x647; %1% &#x645;&#x64A;&#x634;&#x648;&#x62F;</target>
       </trans-unit>
       <trans-unit id="103">
         <source>list all %1%</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644; %1%</target>
       </trans-unit>
       <trans-unit id="104">
         <source>alternate title</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x62C;&#x627;&#x64A;&#x6AF;&#x632;&#x64A;&#x646;</target>
       </trans-unit>
       <trans-unit id="105">
         <source>bibliographic citation</source>
-        <target/>
+        <target>&#x630;&#x643;&#x631; &#x645;&#x631;&#x628;&#x648;&#x637; &#x628;&#x647; &#x641;&#x647;&#x631;&#x633;&#x62A; &#x643;&#x62A;&#x627;&#x628;</target>
       </trans-unit>
       <trans-unit id="106">
         <source>date</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E;</target>
       </trans-unit>
       <trans-unit id="107">
         <source>coverage</source>
-        <target/>
+        <target>&#x67E;&#x648;&#x634;&#x634;</target>
       </trans-unit>
       <trans-unit id="108">
         <source>extent</source>
-        <target/>
+        <target>&#x648;&#x633;&#x639;&#x62A;</target>
       </trans-unit>
       <trans-unit id="109">
         <source>medium</source>
-        <target/>
+        <target>&#x645;&#x62A;&#x648;&#x633;&#x637;</target>
       </trans-unit>
       <trans-unit id="110">
         <source>format</source>
-        <target/>
+        <target>&#x642;&#x627;&#x644;&#x628;</target>
       </trans-unit>
       <trans-unit id="111">
         <source>type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639;</target>
       </trans-unit>
       <trans-unit id="112">
         <source>contributor</source>
-        <target/>
+        <target>&#x643;&#x645;&#x643; &#x643;&#x646;&#x646;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="113">
         <source>publisher</source>
-        <target/>
+        <target>&#x646;&#x648;&#x64A;&#x633;&#x646;&#x62F;&#x647; &#x64A; &#x627;&#x635;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="114">
         <source>provenance</source>
-        <target/>
+        <target>&#x632;&#x627;&#x62F;&#x6AF;&#x627;&#x647;</target>
       </trans-unit>
       <trans-unit id="115">
         <source>description</source>
-        <target/>
+        <target>&#x62A;&#x648;&#x636;&#x64A;&#x62D;</target>
       </trans-unit>
       <trans-unit id="116">
         <source>accrual method</source>
-        <target/>
+        <target>&#x627;&#x633;&#x644;&#x648;&#x628; &#x62A;&#x62C;&#x645;&#x64A;&#x639;</target>
       </trans-unit>
       <trans-unit id="117">
         <source>accrual periodicity</source>
-        <target/>
+        <target>&#x62A;&#x62C;&#x645;&#x64A;&#x639; &#x62F;&#x648;&#x631;&#x647; &#x627;&#x64A;</target>
       </trans-unit>
       <trans-unit id="118">
         <source>accrual policy</source>
-        <target/>
+        <target>&#x633;&#x64A;&#x627;&#x633;&#x62A; &#x62A;&#x62C;&#x645;&#x64A;&#x639;</target>
       </trans-unit>
       <trans-unit id="119">
         <source>rights</source>
-        <target/>
+        <target>&#x642;&#x648;&#x627;&#x646;&#x64A;&#x646;</target>
       </trans-unit>
       <trans-unit id="120">
         <source>language</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="121">
         <source>subject</source>
-        <target/>
+        <target>&#x645;&#x648;&#x636;&#x648;&#x639;</target>
       </trans-unit>
       <trans-unit id="122">
         <source>subject - spatial</source>
-        <target/>
+        <target>&#x645;&#x648;&#x636;&#x648;&#x639; - &#x641;&#x627;&#x635;&#x644;&#x647; &#x627;&#x64A;</target>
       </trans-unit>
       <trans-unit id="123">
         <source>Inherited from %ancestor%</source>
-        <target/>
+        <target>%ancestor%&#x627;&#x631;&#x62B; &#x628;&#x631;&#x62F;&#x647; &#x634;&#x62F;&#x647; &#x627;&#x632; </target>
       </trans-unit>
       <trans-unit id="124">
         <source>edit information object</source>
-        <target/>
+        <target>&#x627;&#x635;&#x644;&#x627;&#x62D; &#x627;&#x628;&#x62C;&#x643;&#x62A; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="125">
         <source>title notes</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x646;&#x643;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="126">
         <source>version</source>
-        <target/>
+        <target>&#x646;&#x633;&#x62E;&#x647;</target>
       </trans-unit>
       <trans-unit id="127">
         <source>next upper level of description</source>
-        <target/>
+        <target>&#x633;&#x637;&#x62D; &#x628;&#x627;&#x644;&#x627;&#x64A;&#x64A; &#x62A;&#x648;&#x636;&#x64A;&#x62D; &#x628;&#x639;&#x62F;&#x64A;</target>
       </trans-unit>
       <trans-unit id="128">
         <source>add new information object</source>
-        <target/>
+        <target>&#x627;&#x636;&#x627;&#x641;&#x647; &#x643;&#x631;&#x62F;&#x646; &#x627;&#x628;&#x62C;&#x643;&#x62A; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="129">
         <source>list all information objects</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644; &#x627;&#x628;&#x62C;&#x643;&#x62A; &#x647;&#x627;&#x64A; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="130">
         <source>view %1%</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; %1%</target>
       </trans-unit>
       <trans-unit id="131">
         <source>edition</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="132">
         <source>dates</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="133">
         <source>description identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x627;&#x6AF;&#x631; &#x62A;&#x648;&#x635;&#x64A;&#x641;&#x64A;</target>
       </trans-unit>
       <trans-unit id="134">
         <source>rules</source>
-        <target/>
+        <target>&#x642;&#x648;&#x627;&#x646;&#x64A;&#x646;</target>
       </trans-unit>
       <trans-unit id="135">
         <source>detail</source>
-        <target/>
+        <target>&#x62C;&#x632;&#x626;&#x64A;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="136">
         <source>dates of creation revision deletion</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x622;&#x62E;&#x631;&#x64A;&#x646; &#x628;&#x627;&#x632; &#x628;&#x64A;&#x646;&#x64A;</target>
       </trans-unit>
       <trans-unit id="137">
         <source>language of description</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646; &#x62A;&#x648;&#x635;&#x64A;&#x641;</target>
       </trans-unit>
       <trans-unit id="138">
         <source>script of description</source>
-        <target/>
+        <target>&#x62A;&#x62D;&#x631;&#x64A;&#x631; &#x62A;&#x648;&#x635;&#x64A;&#x641;</target>
       </trans-unit>
       <trans-unit id="139">
         <source>unable to parse XML file: malformed or unresolvable entities</source>
-        <target/>
+        <target>&#x627;&#x645;&#x643;&#x627;&#x646; &#x62A;&#x62C;&#x632;&#x64A;&#x647; &#x641;&#x627;&#x64A;&#x644; XML &#x648;&#x62C;&#x648;&#x62F; &#x646;&#x62F;&#x627;&#x631;&#x62F;</target>
       </trans-unit>
       <trans-unit id="140">
         <source>libxml error %code% on line %line% in input file: %message%</source>
@@ -564,23 +564,23 @@
       </trans-unit>
       <trans-unit id="141">
         <source>unknown schema or import format: "%format%"</source>
-        <target/>
+        <target>&#x627;&#x634;&#x643;&#x627;&#x644; &#x634;&#x646;&#x627;&#x62E;&#x62A;&#x647; &#x634;&#x62F;&#x647; &#x628;&#x631;&#x627;&#x64A; &#x648;&#x627;&#x631;&#x62F; &#x643;&#x631;&#x62F;&#x646; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; : "%format%"</target>
       </trans-unit>
       <trans-unit id="142">
         <source>unknown schema or export format: "%format%"</source>
-        <target/>
+        <target>&#x627;&#x634;&#x643;&#x627;&#x644; &#x634;&#x646;&#x627;&#x62E;&#x62A;&#x647; &#x634;&#x62F;&#x647; &#x628;&#x631;&#x627;&#x64A; &#x6AF;&#x632;&#x627;&#x631;&#x634; &#x6AF;&#x64A;&#x631;&#x64A; : "%format%"</target>
       </trans-unit>
       <trans-unit id="143">
         <source>import an XML file</source>
-        <target/>
+        <target>&#x648;&#x627;&#x631;&#x62F; &#x643;&#x631;&#x62F;&#x646; &#x641;&#x627;&#x64A;&#x644; XML</target>
       </trans-unit>
       <trans-unit id="144">
         <source>select a file to import</source>
-        <target/>
+        <target>&#x627;&#x646;&#x62A;&#x62E;&#x627;&#x628; &#x64A;&#x643; &#x641;&#x627;&#x64A;&#x644; &#x628;&#x631;&#x627;&#x64A; &#x648;&#x627;&#x631;&#x62F; &#x643;&#x631;&#x62F;&#x646;</target>
       </trans-unit>
       <trans-unit id="145">
         <source>file</source>
-        <target/>
+        <target>&#x641;&#x627;&#x64A;&#x644;</target>
       </trans-unit>
       <trans-unit id="146">
         <source>upload</source>
@@ -588,11 +588,11 @@
       </trans-unit>
       <trans-unit id="147">
         <source>export an XML file</source>
-        <target/>
+        <target>&#x6AF;&#x632;&#x627;&#x631;&#x634; &#x6AF;&#x64A;&#x631;&#x64A; &#x628;&#x647; &#x635;&#x648;&#x631;&#x62A; XML</target>
       </trans-unit>
       <trans-unit id="148">
         <source>export</source>
-        <target/>
+        <target>&#x6AF;&#x632;&#x627;&#x631;&#x634; &#x6AF;&#x64A;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="149">
         <source>&lt;span class=""&gt;No %1% found&lt;/span&gt;</source>
@@ -600,583 +600,583 @@
       </trans-unit>
       <trans-unit id="150">
         <source>download movie</source>
-        <target/>
+        <target>&#x62F;&#x631;&#x64A;&#x627;&#x641;&#x62A; &#x648; &#x62F;&#x627;&#x646;&#x644;&#x648;&#x62F; &#x641;&#x64A;&#x644;&#x645;</target>
       </trans-unit>
       <trans-unit id="151">
         <source>mime-type</source>
-        <target/>
+        <target>&#x645;&#x62F;&#x644; &#x647;&#x627;&#x64A; Mime-type</target>
       </trans-unit>
       <trans-unit id="152">
         <source>media type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x631;&#x633;&#x627;&#x646;&#x647;</target>
       </trans-unit>
       <trans-unit id="153">
         <source>filesize</source>
-        <target/>
+        <target>&#x62D;&#x62C;&#x645; &#x641;&#x627;&#x64A;&#x644;</target>
       </trans-unit>
       <trans-unit id="154">
         <source>uploaded</source>
-        <target/>
+        <target>&#x622;&#x67E;&#x644;&#x648;&#x62F; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="155">
         <source>derivatives</source>
-        <target/>
+        <target>&#x645;&#x648;&#x627;&#x631;&#x62F; &#x641;&#x631;&#x639;&#x64A;</target>
       </trans-unit>
       <trans-unit id="156">
         <source>usage</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647; </target>
       </trans-unit>
       <trans-unit id="157">
         <source>name</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645;</target>
       </trans-unit>
       <trans-unit id="158">
         <source>Add a new %1% representation</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; %1% &#x628;&#x647; &#x639;&#x646;&#x648;&#x627;&#x646; &#x64A;&#x643; &#x646;&#x645;&#x627;&#x64A;&#x646;&#x62F;&#x647; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="159">
         <source>auto-generate</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; - &#x62E;&#x648;&#x62F;&#x643;&#x627;&#x631;</target>
       </trans-unit>
       <trans-unit id="160">
         <source>back</source>
-        <target/>
+        <target>&#x628;&#x627;&#x632;&#x6AF;&#x634;&#x62A;</target>
       </trans-unit>
       <trans-unit id="161">
         <source>usage type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="162">
         <source>browse %1%s</source>
-        <target/>
+        <target>&#x627;&#x646;&#x62A;&#x62E;&#x627;&#x628; %1%&#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="163">
         <source>Select a %1% to upload</source>
-        <target/>
+        <target>&#x627;&#x646;&#x62A;&#x62E;&#x627;&#x628; &#x64A;&#x643; %1% &#x631;&#x627; &#x628;&#x631;&#x627;&#x64A; &#x622;&#x67E;&#x644;&#x648;&#x62F;</target>
       </trans-unit>
       <trans-unit id="164">
         <source>Part of</source>
-        <target/>
+        <target>&#x642;&#x633;&#x645;&#x62A;&#x64A; &#x627;&#x632;</target>
       </trans-unit>
       <trans-unit id="165">
         <source>Delete this %1%? This cannot be undone!</source>
-        <target/>
+        <target>&#x62D;&#x630;&#x641; %1% &#x61F; &#x627;&#x64A;&#x646; &#x643;&#x627;&#x631; &#x628;&#x627;&#x632;&#x6AF;&#x634;&#x62A; &#x67E;&#x630;&#x64A;&#x631; &#x646;&#x64A;&#x633;&#x62A;</target>
       </trans-unit>
       <trans-unit id="166">
         <source>filename</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x641;&#x627;&#x64A;&#x644;</target>
       </trans-unit>
       <trans-unit id="167">
         <source>place</source>
-        <target/>
+        <target>&#x645;&#x643;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="168">
         <source>address</source>
-        <target/>
+        <target>&#x627;&#x62F;&#x631;&#x633;</target>
       </trans-unit>
       <trans-unit id="169">
         <source>country</source>
-        <target/>
+        <target>&#x643;&#x634;&#x648;&#x631;</target>
       </trans-unit>
       <trans-unit id="170">
         <source>latitude</source>
-        <target/>
+        <target>&#x639;&#x631;&#x636; &#x62C;&#x63A;&#x631;&#x627;&#x641;&#x64A;&#x627;&#x64A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="171">
         <source>longitude</source>
-        <target/>
+        <target>&#x637;&#x648;&#x644; &#x62C;&#x63A;&#x631;&#x627;&#x641;&#x64A;&#x627;&#x64A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="172">
         <source>maps</source>
-        <target/>
+        <target>&#x646;&#x642;&#x634;&#x647; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="173">
         <source>list places</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x645;&#x643;&#x627;&#x646; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="174">
         <source>id</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647;</target>
       </trans-unit>
       <trans-unit id="175">
         <source>place name</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x645;&#x62D;&#x644;</target>
       </trans-unit>
       <trans-unit id="176">
         <source>add new place</source>
-        <target/>
+        <target>&#x627;&#x636;&#x627;&#x641;&#x647; &#x643;&#x631;&#x62F;&#x646; &#x645;&#x62D;&#x644; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="177">
         <source>add/edit place</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646;/&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x645;&#x62D;&#x644;</target>
       </trans-unit>
       <trans-unit id="178">
         <source>map relations</source>
-        <target/>
+        <target>&#x627;&#x631;&#x62A;&#x628;&#x627;&#x637;&#x627;&#x62A; &#x646;&#x642;&#x634;&#x647;</target>
       </trans-unit>
       <trans-unit id="179">
         <source>list all places</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x647;&#x645;&#x647; &#x645;&#x643;&#x627;&#x646; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="180">
         <source>new content translation</source>
-        <target/>
+        <target>&#x62A;&#x631;&#x62C;&#x645;&#x647; &#x645;&#x62D;&#x62A;&#x648;&#x627;&#x64A; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="181">
         <source>In an upcoming version of the software this page will list all newly added or revised content that requires translation.</source>
-        <target/>
+        <target>&#x62F;&#x631; &#x646;&#x633;&#x62E;&#x647; &#x647;&#x627;&#x64A; &#x628;&#x639;&#x62F;&#x64A; &#x646;&#x631;&#x645; &#x627;&#x641;&#x632;&#x627;&#x631; &#x627;&#x64A;&#x646; &#x648;&#x64A;&#x698;&#x6AF;&#x64A; &#x627;&#x636;&#x627;&#x641;&#x647; &#x62E;&#x648;&#x627;&#x647;&#x62F; &#x634;&#x62F;.</target>
       </trans-unit>
       <trans-unit id="182">
         <source>change</source>
-        <target/>
+        <target>&#x62A;&#x63A;&#x64A;&#x64A;&#x631;</target>
       </trans-unit>
       <trans-unit id="183">
         <source>user interface translation</source>
-        <target/>
+        <target>&#x62A;&#x631;&#x62C;&#x645;&#x647; &#x648;&#x627;&#x633;&#x637; &#x643;&#x627;&#x631;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="184">
         <source>%1% module</source>
-        <target/>
+        <target>&#x645;&#x627;&#x698;&#x648;&#x644; %1%</target>
       </trans-unit>
       <trans-unit id="185">
         <source>create (ISAD)</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; ISAD</target>
       </trans-unit>
       <trans-unit id="186">
         <source>edit (ISAD)</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; ISAD</target>
       </trans-unit>
       <trans-unit id="187">
         <source>edit (Dublin Core)</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; (Dublin Core)</target>
       </trans-unit>
       <trans-unit id="188">
         <source>list</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A;</target>
       </trans-unit>
       <trans-unit id="189">
         <source>view (ISAD)</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; ISAD</target>
       </trans-unit>
       <trans-unit id="190">
         <source>view digital object</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x64A; &#x633;&#x646;&#x62F; &#x62F;&#x64A;&#x62C;&#x64A;&#x62A;&#x627;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="191">
         <source>view digital object master</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x64A; &#x633;&#x646;&#x62F; &#x62F;&#x64A;&#x62C;&#x64A;&#x62A;&#x627;&#x644;&#x64A; &#x627;&#x635;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="192">
         <source>edit physical object</source>
-        <target/>
+        <target>&#x628;&#x647; &#x631;&#x648;&#x632;&#x631;&#x633;&#x627;&#x646;&#x64A; &#x634;&#x626; &#x641;&#x64A;&#x632;&#x64A;&#x643;&#x64A;</target>
       </trans-unit>
       <trans-unit id="193">
         <source>edit (ISAAR)</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; ISAAR</target>
       </trans-unit>
       <trans-unit id="194">
         <source>view (ISAAR)</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; ISAAR</target>
       </trans-unit>
       <trans-unit id="195">
         <source>edit (ISDIAH)</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="196">
         <source>edit contact information</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62A;&#x645;&#x627;&#x633;</target>
       </trans-unit>
       <trans-unit id="197">
         <source>view (ISDIAH)</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="198">
         <source>term module</source>
-        <target/>
+        <target>&#x645;&#x627;&#x698;&#x648;&#x644; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="199">
         <source>search</source>
-        <target/>
+        <target>&#x62C;&#x633;&#x62A;&#x62C;&#x648;</target>
       </trans-unit>
       <trans-unit id="200">
         <source>search results</source>
-        <target/>
+        <target>&#x646;&#x62A;&#x627;&#x64A;&#x62C; &#x62C;&#x633;&#x62A;&#x62C;&#x648;</target>
       </trans-unit>
       <trans-unit id="201">
         <source>admin module</source>
-        <target/>
+        <target>&#x645;&#x627;&#x698;&#x648;&#x644; &#x645;&#x62F;&#x64A;&#x631;</target>
       </trans-unit>
       <trans-unit id="202">
         <source>users</source>
-        <target/>
+        <target>&#x643;&#x627;&#x631;&#x628;&#x631;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="203">
         <source>login</source>
-        <target/>
+        <target>&#x648;&#x631;&#x648;&#x62F;</target>
       </trans-unit>
       <trans-unit id="204">
         <source>view user profile</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x67E;&#x631;&#x648;&#x641;&#x627;&#x64A;&#x644; &#x643;&#x627;&#x631;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="205">
         <source>edit user profile</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x67E;&#x631;&#x648;&#x641;&#x627;&#x64A;&#x644; &#x643;&#x627;&#x631;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="206">
         <source>reset password</source>
-        <target/>
+        <target>&#x62A;&#x63A;&#x64A;&#x64A;&#x631; &#x631;&#x645;&#x632;</target>
       </trans-unit>
       <trans-unit id="207">
         <source> (warning: this form is active, click 'cancel' after translating)</source>
-        <target/>
+        <target>&#x647;&#x634;&#x62F;&#x627;&#x631; : &#x627;&#x64A;&#x646; &#x641;&#x631;&#x645; &#x62F;&#x631; &#x62D;&#x627;&#x644;&#x62A; &#x641;&#x639;&#x627;&#x644; &#x642;&#x631;&#x627;&#x631; &#x62F;&#x627;&#x631;&#x62F;&#x60C; &#x67E;&#x633; &#x627;&#x632; &#x62A;&#x631;&#x62C;&#x645;&#x647; &#x643;&#x644;&#x64A;&#x62F; "&#x644;&#x63A;&#x648;" &#x631;&#x627; &#x628;&#x632;&#x646;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="208">
         <source>static pages</source>
-        <target/>
+        <target>&#x635;&#x641;&#x62D;&#x627;&#x62A; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="209">
         <source>list staticpage</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x635;&#x641;&#x62D;&#x627;&#x62A; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="210">
         <source>edit staticpage</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x635;&#x641;&#x62D;&#x627;&#x62A; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="211">
         <source>view staticpage</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; &#x635;&#x641;&#x62D;&#x627;&#x62A; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="212">
         <source>settings</source>
-        <target/>
+        <target>&#x62A;&#x646;&#x638;&#x64A;&#x645;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="213">
         <source>site settings</source>
-        <target/>
+        <target>&#x62A;&#x646;&#x638;&#x64A;&#x645;&#x627;&#x62A; &#x633;&#x627;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="214">
         <source>import/export</source>
-        <target/>
+        <target>&#x648;&#x627;&#x631;&#x62F; &#x643;&#x631;&#x62F;&#x646;/&#x635;&#x627;&#x62F;&#x631; &#x643;&#x631;&#x62F;&#x646;</target>
       </trans-unit>
       <trans-unit id="215">
         <source>error messages</source>
-        <target/>
+        <target>&#x645;&#x62A;&#x646; &#x62E;&#x637;&#x627;</target>
       </trans-unit>
       <trans-unit id="216">
         <source>not found message</source>
-        <target/>
+        <target>&#x631;&#x643;&#x648;&#x631;&#x62F;&#x64A; &#x64A;&#x627;&#x641;&#x62A; &#x646;&#x634;&#x62F;</target>
       </trans-unit>
       <trans-unit id="217">
         <source>permission message</source>
-        <target/>
+        <target>&#x645;&#x62A;&#x646; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="218">
         <source>locked term message</source>
-        <target/>
+        <target>&#x645;&#x62A;&#x646; &#x644;&#x63A;&#x627;&#x62A; &#x642;&#x641;&#x644; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="219">
         <source>translation permission</source>
-        <target/>
+        <target>&#x645;&#x62C;&#x648;&#x632; &#x62A;&#x631;&#x62C;&#x645;&#x647;</target>
       </trans-unit>
       <trans-unit id="220">
         <source>internationalization module</source>
-        <target/>
+        <target>&#x645;&#x627;&#x698;&#x648;&#x644; &#x628;&#x64A;&#x646; &#x627;&#x644;&#x645;&#x644;&#x644;&#x64A; &#x643;&#x631;&#x62F;&#x646;</target>
       </trans-unit>
       <trans-unit id="221">
         <source>user interface translation list</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x648;&#x627;&#x633;&#x637; &#x643;&#x627;&#x631;&#x628;&#x631;&#x64A; &#x62A;&#x631;&#x62C;&#x645;&#x647; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="222">
         <source>this page</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x646; &#x635;&#x641;&#x62D;&#x647;</target>
       </trans-unit>
       <trans-unit id="223">
         <source>default content translation list</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x645;&#x62D;&#x62A;&#x648;&#x627;&#x64A; &#x62A;&#x631;&#x62C;&#x645;&#x647; &#x634;&#x62F;&#x647; &#x67E;&#x64A;&#x634; &#x641;&#x631;&#x636;</target>
       </trans-unit>
       <trans-unit id="224">
         <source>default content translation</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x62A;&#x648;&#x627;&#x64A; &#x645;&#x646;&#x628;&#x639; &#x62A;&#x631;&#x62C;&#x645;&#x647; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="225">
         <source>source content</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x62A;&#x648;&#x627;&#x64A; &#x645;&#x646;&#x628;&#x639;</target>
       </trans-unit>
       <trans-unit id="226">
         <source>translated content</source>
-        <target/>
+        <target>&#x645;&#x62A;&#x646; &#x62A;&#x631;&#x62C;&#x645;&#x647; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="227">
         <source>taxonomies</source>
-        <target/>
+        <target>&#x637;&#x628;&#x642;&#x647; &#x628;&#x646;&#x62F;&#x64A; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="228">
         <source>terms</source>
-        <target/>
+        <target>&#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="229">
         <source>index build completed</source>
-        <target/>
+        <target>&#x641;&#x627;&#x64A;&#x644; &#x627;&#x646;&#x62F;&#x64A;&#x633; &#x628;&#x627; &#x645;&#x648;&#x641;&#x642;&#x64A;&#x62A; &#x633;&#x627;&#x62E;&#x62A;&#x647; &#x634;&#x62F;</target>
       </trans-unit>
       <trans-unit id="230">
         <source>advanced search</source>
-        <target/>
+        <target>&#x62C;&#x633;&#x62A;&#x62C;&#x648;&#x64A; &#x67E;&#x64A;&#x634;&#x631;&#x641;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="231">
         <source>search for '%1%' resulted in %2% results</source>
-        <target/>
+        <target>&#x62C;&#x633;&#x62A;&#x62C;&#x648; &#x62F;&#x631;&#x628;&#x627;&#x631;&#x647; '%1%'&#x62A;&#x639;&#x62F;&#x627;&#x62F; %2% &#x646;&#x62A;&#x64A;&#x62C;&#x647; &#x631;&#x627; &#x62F;&#x631; &#x628;&#x631; &#x62F;&#x627;&#x634;&#x62A;</target>
       </trans-unit>
       <trans-unit id="232">
         <source>Search for '%1%' returned %2% results</source>
-        <target/>
+        <target>&#x62F;&#x631;&#x628;&#x627;&#x631;&#x647; '%1%' &#x62A;&#x639;&#x62F;&#x627;&#x62F; %2% &#x645;&#x648;&#x631;&#x62F; &#x64A;&#x627;&#x641;&#x62A; &#x634;&#x62F;</target>
       </trans-unit>
       <trans-unit id="233">
         <source>browse</source>
-        <target/>
+        <target>&#x645;&#x631;&#x648;&#x631;</target>
       </trans-unit>
       <trans-unit id="234">
         <source>user interface</source>
-        <target/>
+        <target>&#x631;&#x627;&#x628;&#x637; &#x643;&#x627;&#x631;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="235">
         <source>default content</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x62A;&#x648;&#x627;&#x64A; &#x67E;&#x64A;&#x634; &#x641;&#x631;&#x636;</target>
       </trans-unit>
       <trans-unit id="236">
         <source>new content</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x62A;&#x648;&#x627;&#x64A; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="237">
         <source>translate</source>
-        <target/>
+        <target>&#x62A;&#x631;&#x62C;&#x645;&#x647;</target>
       </trans-unit>
       <trans-unit id="238">
         <source>admin</source>
-        <target/>
+        <target>&#x645;&#x62F;&#x64A;&#x631;</target>
       </trans-unit>
       <trans-unit id="239">
         <source>type of entity</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x62F;&#x627;&#x62F;&#x647; &#x648;&#x631;&#x648;&#x62F;&#x64A;</target>
       </trans-unit>
       <trans-unit id="240">
         <source>other names</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x647;&#x627;&#x64A; &#x62F;&#x64A;&#x6AF;&#x631;</target>
       </trans-unit>
       <trans-unit id="241">
         <source>identifiers</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="242">
         <source>dates of existence</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="243">
         <source>history</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E;&#x686;&#x647;</target>
       </trans-unit>
       <trans-unit id="244">
         <source>places</source>
-        <target/>
+        <target>&#x645;&#x643;&#x627;&#x646; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="245">
         <source>legal status</source>
-        <target/>
+        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A; &#x642;&#x627;&#x646;&#x648;&#x646;&#x64A;</target>
       </trans-unit>
       <trans-unit id="246">
         <source>functions occupations activities</source>
-        <target/>
+        <target>&#x62A;&#x648;&#x627;&#x628;&#x639;   &#x67E;&#x64A;&#x634;&#x647; &#x647;&#x627;  &#x641;&#x639;&#x627;&#x644;&#x64A;&#x62A; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="247">
         <source>mandates or sources of authority</source>
-        <target/>
+        <target>&#x648;&#x643;&#x627;&#x644;&#x62A; &#x646;&#x627;&#x645;&#x647; &#x64A;&#x627; &#x645;&#x631;&#x627;&#x62C;&#x639; &#x62A;&#x635;&#x648;&#x64A;&#x628;</target>
       </trans-unit>
       <trans-unit id="248">
         <source>internal structures or genealogy</source>
-        <target/>
+        <target>&#x633;&#x627;&#x62E;&#x62A;&#x627;&#x631; &#x62F;&#x631;&#x648;&#x646;&#x64A; &#x64A;&#x627; &#x633;&#x644;&#x633;&#x644;&#x647; &#x645;&#x631;&#x627;&#x62A;&#x628;</target>
       </trans-unit>
       <trans-unit id="249">
         <source>general context</source>
-        <target/>
+        <target>&#x632;&#x645;&#x64A;&#x646;&#x647; &#x648; &#x645;&#x641;&#x647;&#x648;&#x645; &#x643;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="250">
         <source>authority record identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x631;&#x643;&#x648;&#x631;&#x62F; &#x645;&#x633;&#x62A;&#x646;&#x62F;</target>
       </trans-unit>
       <trans-unit id="251">
         <source>language of authority record</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646; &#x631;&#x643;&#x648;&#x631;&#x62F; &#x645;&#x633;&#x62A;&#x646;&#x62F;</target>
       </trans-unit>
       <trans-unit id="252">
         <source>script of authority record</source>
-        <target/>
+        <target>&#x62F;&#x633;&#x62A; &#x62E;&#x637; &#x631;&#x643;&#x648;&#x631;&#x62F; &#x645;&#x633;&#x62A;&#x646;&#x62F;</target>
       </trans-unit>
       <trans-unit id="253">
         <source>edit Contact Information</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62A;&#x645;&#x627;&#x633;</target>
       </trans-unit>
       <trans-unit id="254">
         <source>Contact type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x631;&#x627;&#x628;&#x637;</target>
       </trans-unit>
       <trans-unit id="255">
         <source>Primary contact?</source>
-        <target/>
+        <target>&#x631;&#x627;&#x628;&#x637; &#x627;&#x635;&#x644;&#x64A; &#x61F;</target>
       </trans-unit>
       <trans-unit id="256">
         <source>Contact Person</source>
-        <target/>
+        <target>&#x634;&#x62E;&#x635; &#x645;&#x631;&#x62A;&#x628;&#x637;</target>
       </trans-unit>
       <trans-unit id="257">
         <source>Street address</source>
-        <target/>
+        <target>&#x62E;&#x64A;&#x627;&#x628;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="258">
         <source>City</source>
-        <target/>
+        <target>&#x634;&#x647;&#x631;</target>
       </trans-unit>
       <trans-unit id="259">
         <source>Region/Province</source>
-        <target/>
+        <target>&#x627;&#x633;&#x62A;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="260">
         <source>Country</source>
-        <target/>
+        <target>&#x643;&#x634;&#x648;&#x631;</target>
       </trans-unit>
       <trans-unit id="261">
         <source>Postal Code</source>
-        <target/>
+        <target>&#x643;&#x62F; &#x67E;&#x633;&#x62A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="262">
         <source>Latitude</source>
-        <target/>
+        <target>&#x639;&#x631;&#x636; &#x62C;&#x63A;&#x631;&#x627;&#x641;&#x64A;&#x627;&#x64A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="263">
         <source>Longtitude</source>
-        <target/>
+        <target>&#x637;&#x648;&#x644; &#x62C;&#x63A;&#x631;&#x627;&#x641;&#x64A;&#x627;&#x64A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="264">
         <source>Telephone</source>
-        <target/>
+        <target>&#x62A;&#x644;&#x641;&#x646;</target>
       </trans-unit>
       <trans-unit id="265">
         <source>Fax</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="266">
         <source>Email</source>
-        <target/>
+        <target>&#x67E;&#x633;&#x62A; &#x627;&#x644;&#x643;&#x62A;&#x631;&#x648;&#x646;&#x64A;&#x643;</target>
       </trans-unit>
       <trans-unit id="267">
         <source>Website</source>
-        <target/>
+        <target>&#x648;&#x628; &#x633;&#x627;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="268">
         <source>Note</source>
-        <target/>
+        <target>&#x646;&#x643;&#x62A;&#x647;</target>
       </trans-unit>
       <trans-unit id="269">
         <source>authorized form of name</source>
-        <target/>
+        <target>&#x634;&#x643;&#x644; &#x645;&#x635;&#x648;&#x628; &#x639;&#x646;&#x648;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="270">
         <source>identifiers for corporate bodies</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x627;&#x6AF;&#x631;&#x647;&#x627;&#x64A;&#x64A; &#x628;&#x631;&#x627;&#x64A; &#x62A;&#x634;&#x643;&#x644; &#x647;&#x627;&#x64A; &#x633;&#x627;&#x632;&#x645;&#x627;&#x646;&#x64A;</target>
       </trans-unit>
       <trans-unit id="271">
         <source>description area</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644; &#x62A;&#x648;&#x636;&#x64A;&#x62D;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="272">
         <source>year</source>
-        <target/>
+        <target>&#x633;&#x627;&#x644;</target>
       </trans-unit>
       <trans-unit id="273">
         <source>end year &lt;br /&gt;(if range)</source>
-        <target/>
+        <target>&#x633;&#x627;&#x644; &#x67E;&#x627;&#x64A;&#x627;&#x646; &lt;br /&gt;(if range)</target>
       </trans-unit>
       <trans-unit id="274">
         <source>date display &lt;br /&gt;(defaults to date range)</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; &#x62A;&#x627;&#x631;&#x64A;&#x62E; &lt;br /&gt;(&#x67E;&#x64A;&#x634;&#x641;&#x631;&#x636; &#x647;&#x627; &#x628;&#x631;&#x627;&#x64A; &#x62A;&#x627;&#x631;&#x64A;&#x62E;)</target>
       </trans-unit>
       <trans-unit id="275">
         <source>functions, occupations and activities</source>
-        <target/>
+        <target>&#x62A;&#x648;&#x627;&#x628;&#x639;  &#x61B; &#x67E;&#x64A;&#x634;&#x647; &#x647;&#x627; &#x648; &#x641;&#x639;&#x627;&#x644;&#x64A;&#x62A; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="276">
         <source>relationships area</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644; &#x627;&#x631;&#x62A;&#x628;&#x627;&#x637; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="277">
         <source>languages of authority record</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646; &#x62B;&#x628;&#x62A; &#x645;&#x623; &#x62E;&#x630;</target>
       </trans-unit>
       <trans-unit id="278">
         <source>scripts of authority record</source>
-        <target/>
+        <target>&#x62A;&#x62D;&#x631;&#x64A;&#x631; &#x62B;&#x628;&#x62A; &#x645;&#x623;&#x62E;&#x630;</target>
       </trans-unit>
       <trans-unit id="279">
         <source>%1% information</source>
-        <target/>
+        <target>%1% &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="280">
         <source>permalink</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x646;&#x643; &#x647;&#x645;&#x64A;&#x634;&#x6AF;&#x64A;</target>
       </trans-unit>
       <trans-unit id="281">
         <source>content</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x62A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="282">
         <source>created</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="283">
         <source>updated</source>
-        <target/>
+        <target>&#x628;&#x647; &#x631;&#x648;&#x632; &#x634;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="284">
         <source>add new static page</source>
-        <target/>
+        <target>&#x627;&#x636;&#x627;&#x641;&#x647; &#x643;&#x631;&#x62F;&#x646; &#x64A;&#x643; &#x635;&#x641;&#x62D;&#x647; &#x64A; &#x627;&#x633;&#x62A;&#x627;&#x62A;&#x64A;&#x643; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="285">
         <source>edit this page</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x627;&#x64A;&#x646; &#x635;&#x641;&#x62D;&#x647;</target>
       </trans-unit>
       <trans-unit id="286">
         <source>add/edit static page</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646;/&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x635;&#x641;&#x62D;&#x627;&#x62A; &#x627;&#x633;&#x62A;&#x627;&#x62A;&#x64A;&#x643;</target>
       </trans-unit>
       <trans-unit id="287">
         <source>containers</source>
-        <target/>
+        <target>&#x638;&#x631;&#x648;&#x641; &#x645;&#x62D;&#x62A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="288">
         <source>add container links (duplicate links will be ignored)</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x644;&#x64A;&#x646;&#x643;&#x647;&#x627;&#x64A; &#x645;&#x62D;&#x62A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="289">
         <source>or, create a new container</source>
-        <target/>
+        <target>&#x64A;&#x627; &#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x645;&#x62D;&#x644; &#x646;&#x6AF;&#x647;&#x62F;&#x627;&#x631;&#x64A; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="290">
         <source>location</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644;</target>
       </trans-unit>
       <trans-unit id="291">
         <source>container type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x645;&#x62D;&#x644; &#x646;&#x6AF;&#x647;&#x62F;&#x627;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="292">
         <source>container</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644; &#x646;&#x6AF;&#x647;&#x62F;&#x627;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="293">
         <source>contains</source>
-        <target/>
+        <target>&#x634;&#x627;&#x645;&#x644;</target>
       </trans-unit>
       <trans-unit id="294">
         <source>There is 1 %1% related to this item.  Are you sure you wish proceed with delete?</source>
-        <target/>
+        <target>&#x64A;&#x643; %1% &#x645;&#x631;&#x628;&#x648;&#x637; &#x628;&#x647; &#x627;&#x64A;&#x646; &#x622;&#x64A;&#x62A;&#x645; &#x64A;&#x627;&#x641;&#x62A; &#x634;&#x62F; . &#x622;&#x64A;&#x627; &#x627;&#x632; &#x627;&#x646;&#x62C;&#x627;&#x645; &#x639;&#x645;&#x644; &#x62D;&#x630;&#x641; &#x627;&#x637;&#x645;&#x64A;&#x646;&#x627;&#x646; &#x62F;&#x627;&#x631;&#x64A;&#x62F; &#x61F;</target>
       </trans-unit>
       <trans-unit id="295">
         <source>There are %1% %2%s related to this item.  Are you sure you wish to proceed with delete?</source>
@@ -1184,91 +1184,91 @@
       </trans-unit>
       <trans-unit id="296">
         <source>value</source>
-        <target/>
+        <target>&#x645;&#x642;&#x62F;&#x627;&#x631;</target>
       </trans-unit>
       <trans-unit id="297">
         <source>add</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646;</target>
       </trans-unit>
       <trans-unit id="298">
         <source>please log-in to access that page</source>
-        <target/>
+        <target>&#x628;&#x631;&#x627;&#x64A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A; &#x628;&#x647; &#x635;&#x641;&#x62D;&#x647; &#x64A; &#x645;&#x648;&#x631;&#x62F; &#x646;&#x638;&#x631; &#x644;&#x637;&#x641;&#x627; &#x628;&#x647; &#x633;&#x627;&#x64A;&#x62A; &#x648;&#x627;&#x631;&#x62F; &#x634;&#x648;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="299">
         <source>user name</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x643;&#x627;&#x631;&#x628;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="300">
         <source>email</source>
-        <target/>
+        <target>&#x67E;&#x633;&#x62A; &#x627;&#x644;&#x643;&#x62A;&#x631;&#x648;&#x646;&#x64A;&#x643;</target>
       </trans-unit>
       <trans-unit id="301">
         <source>password</source>
-        <target/>
+        <target>&#x631;&#x645;&#x632; &#x639;&#x628;&#x648;&#x631;</target>
       </trans-unit>
       <trans-unit id="302">
         <source>user roles</source>
-        <target/>
+        <target>&#x648;&#x638;&#x627;&#x64A;&#x641; &#x643;&#x627;&#x631;&#x628;&#x631; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="303">
         <source>list all users</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x6AF;&#x631;&#x641;&#x62A;&#x646; &#x627;&#x632; &#x62A;&#x645;&#x627;&#x645;&#x64A; &#x643;&#x627;&#x631;&#x628;&#x631; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="304">
         <source>list users</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x631;&#x628;&#x631; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="305">
         <source>add new user</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x643;&#x627;&#x631;&#x628;&#x631; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="306">
         <source>role</source>
-        <target/>
+        <target>&#x648;&#x638;&#x64A;&#x641;&#x647;</target>
       </trans-unit>
       <trans-unit id="307">
         <source>permissions scope</source>
-        <target/>
+        <target>&#x62D;&#x648;&#x632;&#x647; &#x64A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="308">
         <source>reset password: %1%</source>
-        <target/>
+        <target>&#x628;&#x627;&#x632;&#x646;&#x634;&#x627;&#x646;&#x62F; &#x67E;&#x633;&#x648;&#x631;&#x62F; : %1%</target>
       </trans-unit>
       <trans-unit id="309">
         <source>new password</source>
-        <target/>
+        <target>&#x67E;&#x633;&#x648;&#x631;&#x62F; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="310">
         <source>edit user</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x643;&#x627;&#x631;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="311">
         <source>you must provide an email address</source>
-        <target/>
+        <target>&#x634;&#x645;&#x627; &#x628;&#x627;&#x64A;&#x62F; &#x64A;&#x643; &#x622;&#x62F;&#x631;&#x633; &#x67E;&#x633;&#x62A; &#x627;&#x644;&#x643;&#x62A;&#x631;&#x648;&#x646;&#x64A;&#x643; &#x631;&#x627; &#x648;&#x627;&#x631;&#x62F; &#x643;&#x646;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="312">
         <source>your password is required</source>
-        <target/>
+        <target>&#x631;&#x645;&#x632; &#x639;&#x628;&#x648;&#x631; &#x645;&#x648;&#x631;&#x62F; &#x646;&#x64A;&#x627;&#x632; &#x627;&#x633;&#x62A;</target>
       </trans-unit>
       <trans-unit id="313">
         <source>you must provide a valid email address</source>
-        <target/>
+        <target>&#x634;&#x645;&#x627; &#x628;&#x627;&#x64A;&#x62F; &#x627;&#x632; &#x622;&#x62F;&#x631;&#x633; &#x627;&#x64A;&#x645;&#x64A;&#x644; &#x62F;&#x631;&#x633;&#x62A; &#x648; &#x627;&#x633;&#x62A;&#x627;&#x646;&#x62F;&#x627;&#x631;&#x62F; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647; &#x643;&#x646;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="314">
         <source>this account does not exist or you entered a wrong password</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x646; &#x646;&#x627;&#x645; &#x643;&#x627;&#x631;&#x628;&#x631;&#x64A; &#x645;&#x648;&#x62C;&#x648;&#x62F; &#x646;&#x64A;&#x633;&#x62A; &#x64A;&#x627; &#x634;&#x645;&#x627; &#x627;&#x632; &#x631;&#x645;&#x632; &#x639;&#x628;&#x648;&#x631; &#x627;&#x634;&#x62A;&#x628;&#x627;&#x647; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647; &#x645;&#x64A; &#x643;&#x646;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="315">
         <source>map</source>
-        <target/>
+        <target>&#x646;&#x642;&#x634;&#x647;</target>
       </trans-unit>
       <trans-unit id="316">
         <source>list maps</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x646;&#x642;&#x634;&#x647; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="317">
         <source>add new map</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x646;&#x642;&#x634;&#x647; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="318">
         <source>edit place -&gt; map relation</source>
@@ -1276,199 +1276,199 @@
       </trans-unit>
       <trans-unit id="319">
         <source>map marker</source>
-        <target/>
+        <target>&#x639;&#x644;&#x627;&#x645;&#x62A; &#x6AF;&#x630;&#x627;&#x631; &#x646;&#x642;&#x634;&#x647;</target>
       </trans-unit>
       <trans-unit id="320">
         <source>icon image</source>
-        <target/>
+        <target>&#x62A;&#x635;&#x648;&#x64A;&#x631; &#x622;&#x64A;&#x643;&#x648;&#x646;</target>
       </trans-unit>
       <trans-unit id="321">
         <source>icon description</source>
-        <target/>
+        <target>&#x62A;&#x648;&#x636;&#x64A;&#x62D;&#x627;&#x62A; &#x622;&#x64A;&#x643;&#x648;&#x646;</target>
       </trans-unit>
       <trans-unit id="322">
         <source>add/edit map</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646;/&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x646;&#x642;&#x634;&#x647;</target>
       </trans-unit>
       <trans-unit id="323">
         <source>list all maps</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; &#x62A;&#x645;&#x627;&#x645; &#x646;&#x642;&#x634;&#x647; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="324">
         <source>view map</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x64A; &#x646;&#x642;&#x634;&#x647;</target>
       </trans-unit>
       <trans-unit id="325">
         <source>Contact information</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x645;&#x637;&#x644;&#x628;</target>
       </trans-unit>
       <trans-unit id="326">
         <source>primary contact</source>
-        <target/>
+        <target>&#x631;&#x627;&#x628;&#x637; &#x627;&#x635;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="327">
         <source>geographical and cultural context</source>
-        <target/>
+        <target>&#x645;&#x641;&#x627;&#x647;&#x64A;&#x645; &#x62C;&#x63A;&#x631;&#x627;&#x641;&#x64A;&#x627;&#x64A;&#x64A; &#x648; &#x641;&#x631;&#x647;&#x646;&#x6AF;&#x64A;</target>
       </trans-unit>
       <trans-unit id="328">
         <source>structure</source>
-        <target/>
+        <target>&#x633;&#x627;&#x62E;&#x62A;&#x627;&#x631;</target>
       </trans-unit>
       <trans-unit id="329">
         <source>records management and collecting policies</source>
-        <target/>
+        <target>&#x645;&#x62F;&#x64A;&#x631;&#x64A;&#x62A; &#x631;&#x643;&#x648;&#x631;&#x62F; &#x647;&#x627; &#x648; &#x628;&#x647; &#x62F;&#x633;&#x62A; &#x622;&#x648;&#x631;&#x62F;&#x646; &#x642;&#x648;&#x627;&#x646;&#x64A;&#x646;</target>
       </trans-unit>
       <trans-unit id="330">
         <source>buildings</source>
-        <target/>
+        <target>&#x633;&#x627;&#x62E;&#x62A;&#x645;&#x627;&#x646; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="331">
         <source>holdings</source>
-        <target/>
+        <target>&#x62F;&#x631;&#x628;&#x631;&#x6AF;&#x64A;&#x631;&#x646;&#x62F;&#x6AF;&#x64A;</target>
       </trans-unit>
       <trans-unit id="332">
         <source>finding aids, guides, publications</source>
-        <target/>
+        <target>&#x67E;&#x64A;&#x62F;&#x627; &#x643;&#x631;&#x62F;&#x646; &#x643;&#x645;&#x643; , &#x631;&#x627;&#x647;&#x646;&#x645;&#x627; , &#x645;&#x642;&#x627;&#x644;&#x647;</target>
       </trans-unit>
       <trans-unit id="333">
         <source>opening times</source>
-        <target/>
+        <target>&#x632;&#x645;&#x627;&#x646; &#x647;&#x627;&#x64A; &#x642;&#x627;&#x628;&#x644; &#x62F;&#x633;&#x62A;&#x631;&#x633; &#x628;&#x648;&#x62F;&#x646;</target>
       </trans-unit>
       <trans-unit id="334">
         <source>access conditions and requirements</source>
-        <target/>
+        <target>&#x637;&#x631;&#x64A;&#x642;&#x647; &#x64A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="335">
         <source>accessibility</source>
-        <target/>
+        <target>&#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="336">
         <source>research services</source>
-        <target/>
+        <target>&#x62E;&#x62F;&#x645;&#x627;&#x62A; &#x62A;&#x62D;&#x642;&#x64A;&#x642;&#x627;&#x62A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="337">
         <source>reproduction services</source>
-        <target/>
+        <target>&#x62E;&#x62F;&#x645;&#x627;&#x62A; &#x686;&#x627;&#x67E;</target>
       </trans-unit>
       <trans-unit id="338">
         <source>public areas</source>
-        <target/>
+        <target>&#x645;&#x643;&#x627;&#x646; &#x647;&#x627;&#x64A; &#x639;&#x645;&#x648;&#x645;&#x64A;</target>
       </trans-unit>
       <trans-unit id="339">
         <source>contact area</source>
-        <target/>
+        <target>&#x645;&#x62D;&#x644; &#x627;&#x631;&#x62A;&#x628;&#x627;&#x637;</target>
       </trans-unit>
       <trans-unit id="340">
         <source>contact information</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62A;&#x645;&#x627;&#x633;</target>
       </trans-unit>
       <trans-unit id="341">
         <source>new contact information</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62C;&#x62F;&#x64A;&#x62F; &#x62A;&#x645;&#x627;&#x633;</target>
       </trans-unit>
       <trans-unit id="342">
         <source>contact type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x645;&#x637;&#x644;&#x628;</target>
       </trans-unit>
       <trans-unit id="343">
         <source>contact person</source>
-        <target/>
+        <target>&#x634;&#x62E;&#x635; &#x645;&#x631;&#x62A;&#x628;&#x637;</target>
       </trans-unit>
       <trans-unit id="344">
         <source>street address</source>
-        <target/>
+        <target>&#x622;&#x62F;&#x631;&#x633; &#x62E;&#x64A;&#x627;&#x628;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="345">
         <source>city</source>
-        <target/>
+        <target>&#x634;&#x647;&#x631;</target>
       </trans-unit>
       <trans-unit id="346">
         <source>region/province</source>
-        <target/>
+        <target>&#x627;&#x633;&#x62A;&#x627;&#x646;/&#x627;&#x64A;&#x627;&#x644;&#x62A;</target>
       </trans-unit>
       <trans-unit id="347">
         <source>postal code</source>
-        <target/>
+        <target>&#x643;&#x62F; &#x67E;&#x633;&#x62A;&#x64A;</target>
       </trans-unit>
       <trans-unit id="348">
         <source>telephone</source>
-        <target/>
+        <target>&#x62A;&#x644;&#x641;&#x646;</target>
       </trans-unit>
       <trans-unit id="349">
         <source>fax</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="350">
         <source>website</source>
-        <target/>
+        <target>&#x648;&#x628; &#x633;&#x627;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="351">
         <source>administrative structure</source>
-        <target/>
+        <target>&#x633;&#x627;&#x62E;&#x62A;&#x627;&#x631; &#x645;&#x62F;&#x64A;&#x631;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="352">
         <source>archival and other holdings</source>
-        <target/>
+        <target>&#x622;&#x631;&#x634;&#x64A;&#x648; &#x648; &#x62F;&#x64A;&#x6AF;&#x631; &#x645;&#x648;&#x627;&#x631;&#x62F; &#x646;&#x6AF;&#x647;&#x62F;&#x627;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="353">
         <source>access area</source>
-        <target/>
+        <target>&#x645;&#x643;&#x627;&#x646; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="354">
         <source>conditions and requirements</source>
-        <target/>
+        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A; &#x648; &#x645;&#x648;&#x627;&#x631;&#x62F; &#x645;&#x648;&#x631;&#x62F; &#x646;&#x64A;&#x627;&#x632;</target>
       </trans-unit>
       <trans-unit id="355">
         <source>services area</source>
-        <target/>
+        <target>&#x645;&#x643;&#x627;&#x646; &#x633;&#x631;&#x648;&#x64A;&#x633; &#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="356">
         <source>institution responsible identifier</source>
-        <target/>
+        <target>&#x646;&#x647;&#x627;&#x62F; &#x64A;&#x627; &#x645;&#x648;&#x633;&#x633;&#x647; &#x64A; &#x67E;&#x627;&#x633;&#x62E; &#x6AF;&#x648;</target>
       </trans-unit>
       <trans-unit id="357">
         <source>languages of institution description</source>
-        <target/>
+        <target>&#x632;&#x628;&#x627;&#x646; &#x62A;&#x648;&#x636;&#x64A;&#x62D; &#x646;&#x647;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="358">
         <source>scripts of institution description</source>
-        <target/>
+        <target>&#x62F;&#x633;&#x62A; &#x62E;&#x637; &#x62A;&#x648;&#x636;&#x64A;&#x62D; &#x646;&#x647;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="359">
         <source>Sorry, you do not have permission to make %1% language translations</source>
-        <target/>
+        <target>&#x628;&#x627; &#x639;&#x631;&#x636; &#x67E;&#x648;&#x632;&#x634; &#x634;&#x645;&#x627; &#x627;&#x62C;&#x627;&#x632;&#x647; &#x64A; &#x62A;&#x631;&#x62C;&#x645;&#x647; &#x64A;  %1% &#x631;&#x627; &#x646;&#x62F;&#x627;&#x631;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="360">
         <source>back to previous page</source>
-        <target/>
+        <target>&#x628;&#x627;&#x632; &#x6AF;&#x634;&#x62A; &#x628;&#x647; &#x635;&#x641;&#x62D;&#x647; &#x64A; &#x642;&#x628;&#x644;</target>
       </trans-unit>
       <trans-unit id="361">
         <source>go to homepage</source>
-        <target/>
+        <target>&#x628;&#x627;&#x632;&#x6AF;&#x634;&#x62A; &#x628;&#x647; &#x635;&#x641;&#x62D;&#x647; &#x64A; &#x627;&#x635;&#x644;&#x64A;</target>
       </trans-unit>
       <trans-unit id="362">
         <source>sorry, you do not have permission to access that page</source>
-        <target/>
+        <target>&#x628;&#x627; &#x639;&#x631;&#x636; &#x67E;&#x648;&#x632;&#x634; &#x634;&#x645;&#x627; &#x627;&#x62C;&#x627;&#x632;&#x647; &#x64A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A; &#x628;&#x647; &#x635;&#x641;&#x62D;&#x647; &#x64A; &#x645;&#x648;&#x631;&#x62F; &#x646;&#x638;&#x631; &#x631;&#x627; &#x646;&#x62F;&#x627;&#x631;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="363">
         <source>sorry, page not found</source>
-        <target/>
+        <target>&#x628;&#x627; &#x639;&#x631;&#x636; &#x67E;&#x648;&#x632;&#x634; &#x635;&#x641;&#x62D;&#x647; &#x64A; &#x645;&#x648;&#x631;&#x62F; &#x646;&#x638;&#x631; &#x64A;&#x627;&#x641;&#x62A; &#x646;&#x634;&#x62F;</target>
       </trans-unit>
       <trans-unit id="364">
         <source>the server returned a 404 response</source>
-        <target/>
+        <target>&#x627;&#x639;&#x644;&#x627;&#x645; &#x62E;&#x637;&#x627;&#x64A; 404</target>
       </trans-unit>
       <trans-unit id="365">
         <source>did you type the URL correctly?</source>
-        <target/>
+        <target>&#x622;&#x64A;&#x627; &#x622;&#x62F;&#x631;&#x633; &#x631;&#x627; &#x628;&#x647; &#x62F;&#x631;&#x633;&#x62A;&#x64A; &#x62A;&#x627;&#x64A;&#x67E; &#x643;&#x631;&#x62F;&#x647; &#x627;&#x64A;&#x62F;&#x61F;</target>
       </trans-unit>
       <trans-unit id="366">
         <source>did you follow a broken link?</source>
-        <target/>
+        <target>&#x622;&#x64A;&#x627; &#x627;&#x632; &#x644;&#x64A;&#x646;&#x643; &#x63A;&#x644;&#x637; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647; &#x643;&#x631;&#x62F;&#x647; &#x627;&#x64A;&#x62F; &#x61F;</target>
       </trans-unit>
       <trans-unit id="367">
         <source>sorry, this Term is locked and cannot be edited</source>
-        <target/>
+        <target>&#x628;&#x627; &#x639;&#x631;&#x636; &#x67E;&#x648;&#x632;&#x634; , &#x627;&#x64A;&#x646; &#x645;&#x648;&#x631;&#x62F; &#x642;&#x641;&#x644; &#x634;&#x62F;&#x647; &#x648; &#x634;&#x645;&#x627; &#x627;&#x62C;&#x627;&#x632;&#x647; &#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x622;&#x646; &#x631;&#x627; &#x646;&#x62F;&#x627;&#x631;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="368">
         <source>the existing term values are required by the application to operate correctly</source>
@@ -1476,327 +1476,327 @@
       </trans-unit>
       <trans-unit id="369">
         <source>edit physical storage</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x627;&#x646;&#x628;&#x627;&#x631; &#x641;&#x64A;&#x632;&#x64A;&#x643;&#x64A;</target>
       </trans-unit>
       <trans-unit id="370">
         <source>create (ISAAR)</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; (ISAAR)</target>
       </trans-unit>
       <trans-unit id="371">
         <source>create (ISDIAH)</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="372">
         <source>list static page</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x635;&#x641;&#x62D;&#x647; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="373">
         <source>edit static page</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x635;&#x641;&#x62D;&#x647; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="374">
         <source>view static page</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x635;&#x641;&#x62D;&#x647; &#x627;&#x64A;&#x633;&#x62A;&#x627;</target>
       </trans-unit>
       <trans-unit id="375">
         <source>%1% of</source>
-        <target/>
+        <target>%1% &#x628;&#x631;&#x627;&#x64A;</target>
       </trans-unit>
       <trans-unit id="376">
         <source>display note</source>
-        <target/>
+        <target>&#x646;&#x645;&#x627;&#x64A;&#x634; &#x64A;&#x627;&#x62F;&#x62F;&#x627;&#x634;&#x62A;</target>
       </trans-unit>
       <trans-unit id="377">
         <source>view archival description</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; &#x633;&#x646;&#x62F; &#x62A;&#x648;&#x635;&#x64A;&#x641; &#x622;&#x631;&#x634;&#x64A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="378">
         <source>Place</source>
-        <target/>
+        <target>&#x645;&#x643;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="379">
         <source>name of creator</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x627;&#x64A;&#x62C;&#x627;&#x62F;  &#x643;&#x646;&#x646;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="380">
         <source>Administrative</source>
-        <target/>
+        <target>&#x645;&#x62C;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="381">
         <source>Biographic</source>
-        <target/>
+        <target>&#x632;&#x646;&#x62F;&#x6AF;&#x64A; &#x646;&#x627;&#x645;&#x647;</target>
       </trans-unit>
       <trans-unit id="382">
         <source>edit archival description</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x633;&#x646;&#x62F; &#x62A;&#x648;&#x635;&#x64A;&#x641; &#x622;&#x631;&#x634;&#x64A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="383">
         <source>add new archival description</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x633;&#x646;&#x62F; &#x62A;&#x648;&#x635;&#x64A;&#x641; &#x622;&#x631;&#x634;&#x64A;&#x648;&#x64A; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="384">
         <source>title and statement of responsibility area</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x648; &#x639;&#x628;&#x627;&#x631;&#x62A; &#x633;&#x637;&#x62D; &#x645;&#x633;&#x648;&#x644;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="385">
         <source>title proper</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x635;&#x62D;&#x64A;&#x62D;</target>
       </trans-unit>
       <trans-unit id="386">
         <source>general material designation</source>
-        <target/>
+        <target>&#x62A;&#x639;&#x64A;&#x64A;&#x646; &#x639;&#x627;&#x645; &#x646;&#x648;&#x639; &#x645;&#x627;&#x62F;&#x647;</target>
       </trans-unit>
       <trans-unit id="387">
         <source>parallel title</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x647;&#x645;&#x633;&#x648;</target>
       </trans-unit>
       <trans-unit id="388">
         <source>other title information</source>
-        <target/>
+        <target>&#x633;&#x627;&#x64A;&#x631; &#x639;&#x646;&#x648;&#x627;&#x646; &#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="389">
         <source>statements of responsibility</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x647;&#x627;&#x64A; &#x645;&#x633;&#x626;&#x648;&#x648;&#x644;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="390">
         <source>title note type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x64A;&#x627;&#x62F;&#x62F;&#x627;&#x634;&#x62A; &#x639;&#x646;&#x648;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="391">
         <source>edition area</source>
-        <target/>
+        <target>&#x646;&#x627;&#x62D;&#x64A;&#x647; &#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="392">
         <source>edition statement</source>
-        <target/>
+        <target>&#x639;&#x628;&#x627;&#x631;&#x62A; &#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="393">
         <source>class of material specific details area</source>
-        <target/>
+        <target>&#x631;&#x62F;&#x647; &#x645;&#x634;&#x62E;&#x635; &#x646;&#x648;&#x627;&#x62D;&#x64A; &#x62C;&#x632;&#x626;&#x64A;</target>
       </trans-unit>
       <trans-unit id="394">
         <source>statement of scale (cartographic)</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x645;&#x642;&#x64A;&#x627;&#x633;(&#x648;&#x627;&#x628;&#x633;&#x62A;&#x647; &#x628;&#x647; &#x646;&#x642;&#x634;&#x647; &#x643;&#x634;&#x64A;)</target>
       </trans-unit>
       <trans-unit id="395">
         <source>statement of projection (cartographic)</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x67E;&#x631;&#x62A;&#x648;&#x627;&#x641;&#x643;&#x646;&#x64A;(&#x648;&#x627;&#x628;&#x633;&#x62A;&#x647; &#x628;&#x647; &#x646;&#x642;&#x634;&#x647; &#x643;&#x634;&#x64A;)</target>
       </trans-unit>
       <trans-unit id="396">
         <source>statement of coordinates (cartographic)</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x645;&#x62E;&#x62A;&#x635;&#x627;&#x62A; (&#x648;&#x627;&#x628;&#x633;&#x62A;&#x647; &#x628;&#x647; &#x646;&#x642;&#x634;&#x647; &#x643;&#x634;&#x64A;)</target>
       </trans-unit>
       <trans-unit id="397">
         <source>statement of scale (architectural)</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x645;&#x642;&#x64A;&#x627; &#x633;(&#x648;&#x627;&#x628;&#x633;&#x62A;&#x647; &#x628;&#x647; &#x645;&#x639;&#x645;&#x627;&#x631;&#x64A;)</target>
       </trans-unit>
       <trans-unit id="398">
         <source>issuing jurisdiction and denomination (philatelic)</source>
-        <target/>
+        <target>&#x645;&#x648;&#x636;&#x648;&#x639; &#x62C;&#x628;&#x631; &#x648; &#x627;&#x62E;&#x62A;&#x64A;&#x627;&#x631;(&#x641;&#x644;&#x633;&#x641;&#x64A;)</target>
       </trans-unit>
       <trans-unit id="399">
         <source>dates of creation area</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x646;&#x627;&#x62D;&#x64A;&#x647;</target>
       </trans-unit>
       <trans-unit id="400">
         <source>Name</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645;</target>
       </trans-unit>
       <trans-unit id="401">
         <source>Role</source>
-        <target/>
+        <target>&#x646;&#x642;&#x634;</target>
       </trans-unit>
       <trans-unit id="402">
         <source>Event</source>
-        <target/>
+        <target>&#x631;&#x648;&#x64A;&#x62F;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="403">
         <source>Date(s)</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; (&#x647;&#x627;)</target>
       </trans-unit>
       <trans-unit id="404">
         <source>new event</source>
-        <target/>
+        <target>&#x631;&#x648;&#x64A;&#x62F;&#x627;&#x62F; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="405">
         <source>add new name</source>
-        <target/>
+        <target>&#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x646;&#x627;&#x645; &#x62C;&#x62F;&#x64A;&#x62F;</target>
       </trans-unit>
       <trans-unit id="406">
         <source>event type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639; &#x631;&#x648;&#x64A;&#x62F;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="407">
         <source>end year</source>
-        <target/>
+        <target>&#x633;&#x627;&#x644; &#x67E;&#x627;&#x64A;&#x627;&#x646;</target>
       </trans-unit>
       <trans-unit id="408">
         <source>administrative history</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x62F;&#x627;&#x631;&#x64A;</target>
       </trans-unit>
       <trans-unit id="409">
         <source>biographical sketch</source>
-        <target/>
+        <target>&#x634;&#x631;&#x62D; &#x632;&#x646;&#x62F;&#x6AF;&#x64A; &#x646;&#x627;&#x645;&#x647;</target>
       </trans-unit>
       <trans-unit id="410">
         <source>physical description area</source>
-        <target/>
+        <target>&#x646;&#x627;&#x62D;&#x64A;&#x647; &#x634;&#x631;&#x62D; &#x641;&#x64A;&#x632;&#x64A;&#x643;&#x64A;</target>
       </trans-unit>
       <trans-unit id="411">
         <source>physical description</source>
-        <target/>
+        <target>&#x634;&#x631;&#x62D; &#x641;&#x64A;&#x632;&#x64A;&#x643;&#x64A;</target>
       </trans-unit>
       <trans-unit id="412">
         <source>publisher's series area</source>
-        <target/>
+        <target>&#x646;&#x627; &#x62D;&#x64A;&#x647; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="413">
         <source>Title proper of publisher's series</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x633;&#x631;&#x647; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="414">
         <source>Parallel titles of publisher's series</source>
-        <target/>
+        <target>&#x639;&#x646;&#x627;&#x648;&#x64A;&#x646; &#x645;&#x648;&#x627;&#x632;&#x64A; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="415">
         <source>Other title information of publisher's series</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62F;&#x64A;&#x6AF;&#x631; &#x639;&#x646;&#x648;&#x627;&#x646; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="416">
-        <source>Statement of responsibility relating to publisher's series</source>
-        <target/>
+        <source>&#x645;&#x633;&#x626;&#x648;&#x648;&#x644;</source>
+        <target>&#x62D;&#x643;&#x645; &#x645;&#x633;&#x626;&#x648;&#x648;&#x644;&#x64A;&#x62A; &#x645;&#x631;&#x628;&#x648;&#x637; &#x628;&#x647; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="417">
         <source>Numbering within publisher's series</source>
-        <target/>
+        <target>&#x634;&#x645;&#x627;&#x631;&#x647; &#x6AF;&#x630;&#x627;&#x631;&#x64A; &#x62F;&#x631; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="418">
         <source>Note on publisher's series</source>
-        <target/>
+        <target>&#x64A;&#x627;&#x62F;&#x62F;&#x627;&#x634;&#x62A; &#x628;&#x631; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="419">
         <source>archival description area</source>
-        <target/>
+        <target>&#x646;&#x627;&#x62D;&#x64A;&#x647; &#x62A;&#x648;&#x635;&#x64A;&#x641; &#x622;&#x631;&#x634;&#x64A;&#x648;&#x64A;</target>
       </trans-unit>
       <trans-unit id="420">
         <source>custodial history</source>
-        <target/>
+        <target>&#x645;&#x62A;&#x648;&#x644;&#x64A; &#x62A;&#x627;&#x631;&#x64A;&#x62E;</target>
       </trans-unit>
       <trans-unit id="421">
         <source>physical condition</source>
-        <target/>
+        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A; &#x641;&#x64A;&#x632;&#x64A;&#x643;&#x64A;</target>
       </trans-unit>
       <trans-unit id="422">
         <source>arrangement</source>
-        <target/>
+        <target>&#x62A;&#x631;&#x62A;&#x64A;&#x628;</target>
       </trans-unit>
       <trans-unit id="423">
         <source>script</source>
-        <target/>
+        <target>&#x62F;&#x633;&#x62A;&#x62E;&#x637;</target>
       </trans-unit>
       <trans-unit id="424">
         <source>availability of other formats</source>
-        <target/>
+        <target>&#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A; &#x62F;&#x631; &#x62F;&#x64A;&#x6AF;&#x631; &#x642;&#x627;&#x644;&#x628;&#x647;&#x627;</target>
       </trans-unit>
       <trans-unit id="425">
         <source>restrictions on access</source>
-        <target/>
+        <target>&#x645;&#x645;&#x646;&#x648;&#x639;&#x64A;&#x62A; &#x62F;&#x633;&#x62A;&#x631;&#x633;&#x64A;</target>
       </trans-unit>
       <trans-unit id="426">
         <source>terms governing use, reproduction, and publication</source>
-        <target/>
+        <target>&#x627;&#x635;&#x637;&#x644;&#x627;&#x62D;&#x627;&#x62A; &#x631;&#x627;&#x647;&#x646;&#x645;&#x627;&#x64A;&#x64A; &#x627;&#x633;&#x62A;&#x641;&#x627;&#x62F;&#x647;&#x61B;&#x62A;&#x648;&#x644;&#x64A;&#x62F; &#x648; &#x627;&#x646;&#x62A;&#x634;&#x627;&#x631;</target>
       </trans-unit>
       <trans-unit id="427">
         <source>associated / related material</source>
-        <target/>
+        <target>&#x62C;&#x646;&#x633; &#x645;&#x631;&#x628;&#x648;&#x637;/&#x645;&#x62A;&#x635;&#x644;</target>
       </trans-unit>
       <trans-unit id="428">
         <source>other notes</source>
-        <target/>
+        <target>&#x633;&#x627;&#x64A;&#x631; &#x646;&#x643;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="429">
         <source>standard number area</source>
-        <target/>
+        <target>&#x646;&#x627;&#x62D;&#x64A;&#x647; &#x634;&#x645;&#x627;&#x631;&#x647; &#x627;&#x633;&#x62A;&#x627;&#x646;&#x62F;&#x627;&#x631;&#x62F;</target>
       </trans-unit>
       <trans-unit id="430">
         <source>standard number</source>
-        <target/>
+        <target>&#x634;&#x645;&#x627;&#x631;&#x647; &#x627;&#x633;&#x62A;&#x627;&#x646;&#x62F;&#x627;&#x631;&#x62F;</target>
       </trans-unit>
       <trans-unit id="431">
         <source>enter term and scope</source>
-        <target/>
+        <target>&#x648;&#x631;&#x648;&#x62F; &#x627;&#x635;&#x637;&#x644;&#x627;&#x62D; &#x648; &#x62D;&#x62F;&#x648;&#x62F;</target>
       </trans-unit>
       <trans-unit id="432">
         <source>creator(s)</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; &#x643;&#x646;&#x646;&#x62F;&#x647; (&#x647;&#x627;)</target>
       </trans-unit>
       <trans-unit id="433">
         <source>title statements of responsibility</source>
-        <target/>
+        <target>&#x627;&#x62D;&#x643;&#x627;&#x645; &#x639;&#x646;&#x648;&#x627;&#x646; &#x645;&#x633;&#x626;&#x648;&#x648;&#x644;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="434">
         <source>edition statement of responsibility</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; &#x645;&#x634;&#x626;&#x648;&#x644;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="435">
         <source>title proper of publisher's series</source>
-        <target/>
+        <target>&#x639;&#x646;&#x648;&#x627;&#x646; &#x633;&#x631;&#x647; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="436">
         <source>parallel titles of publisher's series</source>
-        <target/>
+        <target>&#x639;&#x646;&#x627;&#x648;&#x64A;&#x646; &#x645;&#x648;&#x627;&#x632;&#x64A; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="437">
         <source>other title information of publisher's series</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62F;&#x64A;&#x6AF;&#x631; &#x639;&#x646;&#x648;&#x627;&#x646; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="438">
         <source>statement of responsibility relating to publisher's series</source>
-        <target/>
+        <target>&#x62D;&#x643;&#x645; &#x645;&#x633;&#x626;&#x648;&#x648;&#x644;&#x64A;&#x62A; &#x645;&#x631;&#x628;&#x648;&#x637; &#x628;&#x647; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="439">
         <source>numbering within publisher's series</source>
-        <target/>
+        <target>&#x634;&#x645;&#x627;&#x631;&#x647; &#x6AF;&#x630;&#x627;&#x631;&#x64A; &#x62F;&#x631; &#x633;&#x644;&#x633;&#x644;&#x647; &#x646;&#x627;&#x634;&#x631;</target>
       </trans-unit>
       <trans-unit id="440">
         <source>unknown</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645;&#x639;&#x644;&#x648;&#x645;</target>
       </trans-unit>
       <trans-unit id="441">
         <source>create (RAD)</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F; (RAD)</target>
       </trans-unit>
       <trans-unit id="442">
         <source>edit (RAD)</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;(RAD)</target>
       </trans-unit>
       <trans-unit id="443">
         <source>view (RAD)</source>
-        <target/>
+        <target>&#x645;&#x634;&#x627;&#x647;&#x62F;&#x647; (RAD)</target>
       </trans-unit>
       <trans-unit id="444">
         <source>global</source>
-        <target/>
+        <target>&#x639;&#x645;&#x648;&#x645;&#x64A;</target>
       </trans-unit>
       <trans-unit id="445">
         <source>site information</source>
-        <target/>
+        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x633;&#x627;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="446">
         <source>The name of the website for display in the header</source>
-        <target/>
+        <target>&#x646;&#x627;&#x645; &#x633;&#x627;&#x64A;&#x62A; &#x628;&#x647; &#x645;&#x646;&#x638;&#x648;&#x631; &#x646;&#x645;&#x627;&#x64A;&#x634; &#x62F;&#x631; &#x647;&#x62F;&#x631;</target>
       </trans-unit>
       <trans-unit id="447">
         <source>A brief site description or &amp;quot;tagline&amp;quot; for the header</source>
-        <target/>
+        <target>&#x62E;&#x644;&#x627;&#x635;&#x647; &#x62A;&#x648;&#x636;&#x64A;&#x62D;&#x627;&#x62A; &#x633;&#x627;&#x64A;&#x62A; &#x628;&#x631;&#x627;&#x64A; &#x647;&#x62F;&#x631;</target>
       </trans-unit>
       <trans-unit id="448">
         <source>default template</source>
-        <target/>
+        <target>&#x642;&#x627;&#x644;&#x628; &#x67E;&#x64A;&#x634;&#x641;&#x631;&#x636;</target>
       </trans-unit>
       <trans-unit id="449">
         <source>user interface label</source>
-        <target/>
+        <target>&#x628;&#x631;&#x686;&#x633;&#x628; &#x631;&#x627;&#x628;&#x637; &#x643;&#x627;&#x631;&#x628;&#x631;</target>
       </trans-unit>
       <trans-unit id="450">
         <source>i18n languages</source>
@@ -1804,10 +1804,18 @@
       </trans-unit>
       <trans-unit id="451">
         <source>your email address was not found</source>
-        <target/>
+        <target>&#x622;&#x62F;&#x631;&#x633; &#x67E;&#x633;&#x62A; &#x627;&#x644;&#x643;&#x62A;&#x631;&#x648;&#x646;&#x64A;&#x643; &#x634;&#x645;&#x627; &#x64A;&#x627;&#x641;&#x62A; &#x646;&#x634;&#x62F;</target>
       </trans-unit>
       <trans-unit id="452">
         <source>your email and password do not match</source>
+        <target>&#x67E;&#x633;&#x62A; &#x627;&#x644;&#x643;&#x62A;&#x631;&#x648;&#x646;&#x64A;&#x643; &#x634;&#x645;&#x627; &#x628;&#x627; &#x643;&#x644;&#x645;&#x647; &#x639;&#x628;&#x648;&#x631; &#x645;&#x637;&#x627;&#x628;&#x642;&#x62A; &#x646;&#x62F;&#x627;&#x631;&#x62F;</target>
+      </trans-unit>
+      <trans-unit id="453">
+        <source>Statement of responsibility relating to publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="454">
+        <source>change language</source>
         <target/>
       </trans-unit>
     </body>

@@ -2,7 +2,7 @@
 
 
 
-class UserRoleRelationMapBuilder {
+class UserRoleRelationMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.UserRoleRelationMapBuilder';
@@ -25,18 +25,19 @@ class UserRoleRelationMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitUserRoleRelation::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_user_role_relation');
-		$tMap->setPhpName('UserRoleRelation');
+		$tMap = $this->dbMap->addTable(QubitUserRoleRelation::TABLE_NAME);
+		$tMap->setPhpName('userRoleRelation');
+		$tMap->setClassname('QubitUserRoleRelation');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addForeignKey('USER_ID', 'UserId', 'int', CreoleTypes::INTEGER, 'q_user', 'ID', true, null);
+		$tMap->addForeignKey('USER_ID', 'userId', 'INTEGER', 'q_user', 'ID', true, null);
 
-		$tMap->addForeignKey('ROLE_ID', 'RoleId', 'int', CreoleTypes::INTEGER, 'q_role', 'ID', true, null);
+		$tMap->addForeignKey('ROLE_ID', 'roleId', 'INTEGER', 'q_role', 'ID', true, null);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

@@ -14,34 +14,19 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorChoiceMany.class.php 11612 2008-09-17 15:28:38Z nicolas $
+ * @version    SVN: $Id: sfValidatorChoiceMany.class.php 11668 2008-09-19 14:02:36Z fabien $
  */
 class sfValidatorChoiceMany extends sfValidatorChoice
 {
   /**
-   * @see sfValidatorBase
+   * Configures the current validator.
+   *
+   * @see sfValidatorChoice
    */
-  protected function doClean($values)
+  protected function configure($options = array(), $messages = array())
   {
-    if (!is_array($values))
-    {
-      $values = array($values);
-    }
+    parent::configure($options, $messages);
 
-    $choices = $this->getOption('choices');
-    if ($choices instanceof sfCallable)
-    {
-      $choices = $choices->call();
-    }
-
-    foreach ($values as $value)
-    {
-      if (!parent::inChoices($value, $choices))
-      {
-        throw new sfValidatorError($this, 'invalid', array('value' => $value));
-      }
-    }
-
-    return $values;
+    $this->setOption('multiple', true);
   }
 }

@@ -8,7 +8,7 @@
 <tbody>
 
 <tr><td colspan="2" class="headerCell">
-    <?php echo __('reset password: %1%', array('%1%' =>$user->getUserName())) ?>
+    <?php echo __('reset password: %1%', array('%1%' => $user)) ?>
 </td></tr>
 
 <th><?php echo __('new password'); ?></th>

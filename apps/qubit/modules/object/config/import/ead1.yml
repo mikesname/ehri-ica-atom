@@ -1,0 +1,146 @@
+#
+# EAD 1.0 XML IMPORT FILTER MAPPINGS
+#
+# This file is part of the Qubit Toolkit.
+# Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+#
+
+# XSLT filters are applied to the XML mapping (eg. for crosswalks)
+processXSLT:
+  - EAD1toEAD.xsl
+
+#
+# This is copied directly from the EAD2.0 filter
+#
+information_object:
+  XPath:  "//archdesc | //c | //c01 | //c02 | //c03 | //c04 | //c05 | //c06 | //c07 | //c08 | //c09 | //c10 | //c11 | //c12"
+  Object:  InformationObject
+  # define an axis for the parent object; if no node is matched here, the object is rooted if possible
+  Parent:  "ancestor::archdesc | ancestor::c | ancestor::c01 | ancestor::c02 | ancestor::c03 | ancestor::c04 | ancestor::c05 | ancestor::c06 | ancestor::c07 | ancestor::c08 | ancestor::c09 | ancestor::c10 | ancestor::c11 | ancestor::c12"
+  Methods:
+    # each of these XPath expressions is relative to the current matched node
+    title:
+      XPath:   "did/unittitle"
+      Method:  setTitle
+
+    dates:
+      XPath:   "did/unitdate"
+      Method:  setDates
+
+    collection_type:
+      XPath:   "."    # not really a match, just use self
+      Method:  setCollectionTypeId
+      Parameters: [QubitTerm::ARCHIVAL_MATERIAL_ID]
+
+    # sourceCulture is not required in this call, it's an example
+    # of enclosing paramters in quotes to prevent the YAML parser
+    # from breaking them incorrectly
+    languages:
+      XPath:   "did/langmaterial/language/@langcode"
+      Method:  addProperty
+      Parameters: [$name = 'information_object_language', $nodeValue, "$options = array('scope' => 'languages', 'sourceCulture' => true)"]
+
+    repository:
+      XPath:   "(did/repository/corpname | did/repository/name | did/repository)[1]"
+      Method:  setRepositoryByName
+
+    # TODO: add actor type as parameter for creator, should all go in a $options array
+    creator:
+      XPath:  "did/origination/name"
+      Method:  setCreatorByName
+
+    creator_person:
+      XPath:   "did/origination/persname"
+      Method:  setCreatorByName
+
+    creator_corporate_body:
+      XPath:   "did/origination/corpname"
+      Method:  setCreatorByName
+
+    creator_family:
+      XPath:   "did/origination/famname"
+      Method:  setCreatorByName
+
+    alternateTitle:
+      XPath:   "/ead/filedesc/titlestmt/subtitle"
+      Method:  setAlternateTitle
+
+    institutionResponsibleIdentifier:
+      XPath:   "/ead/filedesc/publicationstmt/publisher"
+      Method:  setInstitutionResponsibleIdentifier
+
+    identifier:
+      XPath:   "did/unitid"
+      Method:  setIdentifier
+
+    extentAndMedium:
+      XPath:   "(did/physdesc/extent | did/physdesc)[1]"
+      Method:  setExtentAndMedium
+
+    accessConditions:
+      XPath:   "/ead/archdesc/descgrp/accessrestrict"
+      Method:  setAccessConditions
+
+    appraisal:
+      XPath:   "did/appraisal | /ead/archdesc/descgrp/appraisal"
+      Method:  setAppraisal
+
+    accruals:
+      XPath:   "did/accruals | /ead/archdesc/descgrp/accruals"
+      Method:  setAccruals
+
+    acquisition:
+      XPath:   "did/acqinfo | /ead/archdesc/descgrp/acqinfo"
+      Method:  setAcquisition
+
+    arrangement:
+      XPath:   "did/arrangement | /ead/archdesc/descgrp/arrangement"
+      Method:  setArrangement
+
+    archivalHistory:
+      XPath:   "did/custodhist | /ead/archdesc/descgrp/custodhist"
+      Method:  setArchivalHistory
+
+    findingAids:
+      XPath:   "did/otherfindaid | /ead/archdesc/descgrp/otherfindaid"
+      Method:  setFindingAids
+
+    revisionHistory:
+      XPath:   "/ead/archdesc/processinfo"
+      Method:  setFindingAids
+
+    relatedUnitsOfDescription:
+      XPath:   "/ead/archdesc/descgrp/relatedmaterial | did/relatedmaterial | /ead/archdesc/descgrp/separatedmaterial | did/separatedmaterial"
+      Method:  setRelatedUnitsOfDescription
+
+    # this is just temporary for demo purposes. need to decide what to do with abstract (likely a property)
+    # for now, it populates ScopeandContent if there isn't already a value for that
+    abstract:
+      XPath:   "did/abstract"
+      Method:  setScopeAndContent
+
+    scopeAndContent:
+      XPath:   "/ead/archdesc/descgrp/scopecontent"
+      Method:  setScopeAndContent
+
+    reproductionConditions:
+      XPath:   "did/userestrict | /ead/archdesc/descgrp/userestrict"
+      Method:  setReproductionConditions
+
+    #controlaccess -- ?
+    #
+    # this should probably map to creators, above
+    #createdAt:
+    #  XPath:   unitdate
+    #  Method:  setCreatedAt
+    #notes:
+    #  XPath:   /ead/archdesc/note
+    #  Method:  setInformationObjectNote
+    #  Parameters:  [$this->getUser()->getAttribute('user_id'), $nodeValue, 1134]    # FIXME: 1134 is a hardcoded general note
+    #
+    # bioghist
+    # TODO: need to link this to matching <origination> tag, can we indicate this relation within EAD?
+    #
+    #    levelofdescription:
+    #      XPath:   archdesc/@level
+    #      Method:  addLevelofDescription    # use the taxonomy for this

@@ -2,7 +2,7 @@
 
 
 
-class SettingI18nMapBuilder {
+class SettingI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.SettingI18nMapBuilder';
@@ -25,18 +25,19 @@ class SettingI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitSettingI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_setting_i18n');
-		$tMap->setPhpName('SettingI18n');
+		$tMap = $this->dbMap->addTable(QubitSettingI18n::TABLE_NAME);
+		$tMap->setPhpName('settingI18n');
+		$tMap->setClassname('QubitSettingI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('VALUE', 'Value', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('VALUE', 'value', 'LONGVARCHAR', false, null);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_setting', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_setting', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

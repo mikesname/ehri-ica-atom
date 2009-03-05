@@ -5,7 +5,7 @@
  *
  * @package    form
  * @subpackage movie_i18n
- * @version    SVN: $Id: MovieI18nForm.class.php 8409 2008-04-11 07:41:48Z fabien $
+ * @version    SVN: $Id: MovieI18nForm.class.php 8424 2008-04-11 18:23:01Z dwhittle $
  */
 class MovieI18nForm extends BaseMovieI18nForm
 {

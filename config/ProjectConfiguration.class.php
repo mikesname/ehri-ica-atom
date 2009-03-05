@@ -7,5 +7,15 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
   public function setup()
   {
+    $this->enablePlugins(array(
+      'sfAuditPlugin',
+      'sfCompat10Plugin',
+      'sfDrupalPlugin',
+      'sfHistoryPlugin',
+      'sfInstallPlugin',
+      'sfLucenePlugin',
+      'sfSearchPlugin',
+      'sfThumbnailPlugin',
+      'sfTranslatePlugin'));
   }
 }

@@ -2,7 +2,7 @@
 
 
 
-class ObjectMapBuilder {
+class ObjectMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.ObjectMapBuilder';
@@ -25,16 +25,17 @@ class ObjectMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitObject::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_object');
-		$tMap->setPhpName('Object');
+		$tMap = $this->dbMap->addTable(QubitObject::TABLE_NAME);
+		$tMap->setPhpName('object');
+		$tMap->setClassname('QubitObject');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addColumn('CLASS_NAME', 'ClassName', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('CLASS_NAME', 'className', 'VARCHAR', false, 255);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

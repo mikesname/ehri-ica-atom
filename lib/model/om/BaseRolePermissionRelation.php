@@ -1,14 +1,15 @@
 <?php
 
-abstract class BaseRolePermissionRelation
+abstract class BaseRolePermissionRelation implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_role_permission_relation';
+    TABLE_NAME = 'q_role_permission_relation',
 
-  const ROLE_ID = 'q_role_permission_relation.ROLE_ID';
-  const PERMISSION_ID = 'q_role_permission_relation.PERMISSION_ID';
-  const ID = 'q_role_permission_relation.ID';
+    ROLE_ID = 'q_role_permission_relation.ROLE_ID',
+    PERMISSION_ID = 'q_role_permission_relation.PERMISSION_ID',
+    ID = 'q_role_permission_relation.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -19,14 +20,19 @@ abstract class BaseRolePermissionRelation
     return $criteria;
   }
 
-  protected static $rolePermissionRelations = array();
+  protected static
+    $rolePermissionRelations = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$rolePermissionRelations[$id = $resultSet->getInt(3)]))
+    if (!isset(self::$rolePermissionRelations[$id = (int) $row[2]]))
     {
       $rolePermissionRelation = new QubitRolePermissionRelation;
-      $rolePermissionRelation->hydrate($resultSet);
+      $rolePermissionRelation->new = false;
+      $rolePermissionRelation->row = $row;
 
       self::$rolePermissionRelations[$id] = $rolePermissionRelation;
     }
@@ -80,79 +86,160 @@ abstract class BaseRolePermissionRelation
     return $affectedRows;
   }
 
-  protected $roleId = null;
+  protected
+    $tables = array();
 
-  public function getRoleId()
+  public function __construct()
   {
-    return $this->roleId;
+    $this->tables[] = Propel::getDatabaseMap(QubitRolePermissionRelation::DATABASE_NAME)->getTable(QubitRolePermissionRelation::TABLE_NAME);
   }
 
-  public function setRoleId($roleId)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->roleId = $roleId;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $permissionId = null;
-
-  public function getPermissionId()
+  public function __set($name, $value)
   {
-    return $this->permissionId;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setPermissionId($permissionId)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->permissionId = $permissionId;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __unset($name)
   {
-    return $this->id;
+    return $this->offsetUnset($name);
   }
 
-  public function setId($id)
-  {
-    $this->id = $id;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['roleId'] = $this->roleId;
-    $this->columnValues['permissionId'] = $this->permissionId;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->roleId = $results->getInt($columnOffset++);
-    $this->permissionId = $results->getInt($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -164,12 +251,12 @@ abstract class BaseRolePermissionRelation
     $criteria = new Criteria;
     $criteria->add(QubitRolePermissionRelation::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -190,8 +277,22 @@ abstract class BaseRolePermissionRelation
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -200,31 +301,49 @@ abstract class BaseRolePermissionRelation
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('roleId'))
-    {
-      $criteria->add(QubitRolePermissionRelation::ROLE_ID, $this->roleId);
-    }
-
-    if ($this->isColumnModified('permissionId'))
-    {
-      $criteria->add(QubitRolePermissionRelation::PERMISSION_ID, $this->permissionId);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitRolePermissionRelation::ID, $this->id);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitRolePermissionRelation::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -233,34 +352,43 @@ abstract class BaseRolePermissionRelation
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('roleId'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitRolePermissionRelation::ROLE_ID, $this->roleId);
+      $connection = QubitTransactionFilter::getConnection(QubitRolePermissionRelation::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('permissionId'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitRolePermissionRelation::PERMISSION_ID, $this->permissionId);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitRolePermissionRelation::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitRolePermissionRelation::ID, $this->id);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitRolePermissionRelation::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -288,52 +416,38 @@ abstract class BaseRolePermissionRelation
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addJoinRoleCriteria(Criteria $criteria)
+  public static function addJoinroleCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitRolePermissionRelation::ROLE_ID, QubitRole::ID);
 
     return $criteria;
   }
 
-  public function getRole(array $options = array())
-  {
-    return $this->role = QubitRole::getById($this->roleId, $options);
-  }
-
-  public function setRole(QubitRole $role)
-  {
-    $this->roleId = $role->getId();
-
-    return $this;
-  }
-
-  public static function addJoinPermissionCriteria(Criteria $criteria)
+  public static function addJoinpermissionCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitRolePermissionRelation::PERMISSION_ID, QubitPermission::ID);
 
     return $criteria;
   }
 
-  public function getPermission(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->permission = QubitPermission::getById($this->permissionId, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setPermission(QubitPermission $permission)
-  {
-    $this->permissionId = $permission->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.RolePermissionRelationMapBuilder');

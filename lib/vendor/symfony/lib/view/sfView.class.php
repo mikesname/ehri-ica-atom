@@ -18,7 +18,7 @@
  * @subpackage view
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfView.class.php 9047 2008-05-19 08:43:05Z FabianLange $
+ * @version    SVN: $Id: sfView.class.php 13379 2008-11-26 21:30:25Z fabien $
  */
 abstract class sfView
 {
@@ -112,12 +112,7 @@ abstract class sfView
     $this->context    = $context;
     $this->dispatcher = $context->getEventDispatcher();
 
-    if (sfConfig::get('sf_logging_enabled'))
-    {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array(sprintf('Initialize view for "%s/%s"', $moduleName, $actionName))));
-    }
-
-    sfOutputEscaper::markClassAsSafe('sfForm');
+    sfOutputEscaper::markClassesAsSafe(array('sfForm', 'sfModelGeneratorHelper'));
 
     $this->attributeHolder = $this->initializeAttributeHolder();
 
@@ -360,7 +355,20 @@ abstract class sfView
 
     if (!is_readable($this->directory.'/'.$this->template))
     {
-      throw new sfRenderException(sprintf('The template "%s" does not exist or is unreadable in "%s".', $this->template, $this->directory));
+      // 404?
+      if ('404' == $this->context->getResponse()->getStatusCode())
+      {
+        // use default exception templates
+        $this->template = sfException::getTemplatePathForError($this->context->getRequest()->getRequestFormat(), false);
+        $this->directory = dirname($this->template);
+        $this->template = basename($this->template);
+        $this->setAttribute('code', '404');
+        $this->setAttribute('text', 'Not Found');
+      }
+      else
+      {
+        throw new sfRenderException(sprintf('The template "%s" does not exist or is unreadable in "%s".', $this->template, $this->directory));
+      }
     }
 
     // check to see if this is a decorator template

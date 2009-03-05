@@ -2,14 +2,31 @@ propel.targetPackage       = lib.model
 propel.packageObjectModel  = true
 propel.project             = qubit
 propel.database            = mysql
-propel.database.createUrl  = mysql://root@localhost/
-propel.database.url        = mysql://root@localhost/qubit
+propel.database.driver     = mysql
+propel.database.url        = mysql:dbname=qubit;host=localhost
+propel.database.creole.url = ${propel.database.url}
+propel.database.user       = root
+propel.database.password   =
+propel.database.encoding   = utf8
 
+; mysql options
+propel.mysql.tableType     = InnoDB
+
+propel.addVendorInfo       = true
 propel.addGenericAccessors = false
 propel.addGenericMutators  = false
 propel.addTimeStamp        = false
+propel.addValidators       = false
 
-propel.schema.validate     = false
+propel.useDateTimeClass       = true
+propel.defaultTimeStampFormat = Y-m-d H:i:s
+propel.defaultTimeFormat      = H:i:s
+propel.defaultDateFormat      = Y-m-d
+
+propel.schema.validate        = false
+propel.samePhpName            = false
+propel.disableIdentifierQuoting     = false
+propel.emulateForeignKeyConstraints = true
 
 ; directories
 propel.home                    = .
@@ -17,7 +34,6 @@ propel.schema.dir              = ${propel.output.dir}/config
 propel.conf.dir                = ${propel.output.dir}/config
 propel.phpconf.dir             = ${propel.output.dir}/config
 propel.sql.dir                 = ${propel.output.dir}/data/sql
-propel.graph.dir               = ${propel.output.dir}/data/graph
 propel.runtime.conf.file       = runtime-conf.xml
 propel.php.dir                 = ${propel.output.dir}
 propel.default.schema.basename = schema
@@ -29,21 +45,9 @@ propel.builder.peer.class              = lib.propel.builder.QubitObjectBuilder
 propel.builder.object.class            = lib.propel.builder.QubitObjectBuilder
 propel.builder.objectstub.class        = lib.propel.builder.QubitExtensionObjectBuilder
 propel.builder.peerstub.class          = lib.propel.builder.QubitExtensionObjectBuilder
-propel.builder.objectmultiextend.class = plugins.sfPropelPlugin.lib.propel.builder.SfMultiExtendObjectBuilder
-propel.builder.mapbuilder.class        = plugins.sfPropelPlugin.lib.propel.builder.SfMapBuilderBuilder
-propel.builder.interface.class         = propel.engine.builder.om.php5.PHP5InterfaceBuilder
-propel.builder.node.class              = propel.engine.builder.om.php5.PHP5NodeBuilder
-propel.builder.nodepeer.class          = propel.engine.builder.om.php5.PHP5NodePeerBuilder
-propel.builder.nodestub.class          = propel.engine.builder.om.php5.PHP5ExtensionNodeBuilder
-propel.builder.nodepeerstub.class      = propel.engine.builder.om.php5.PHP5ExtensionNodePeerBuilder
+propel.builder.objectmultiextend.class = plugins.sfPropelPlugin.lib.builder.SfMultiExtendObjectBuilder
+propel.builder.mapbuilder.class        = lib.propel.builder.QubitMapBuilderBuilder
 
-propel.builder.addIncludes = false
-propel.builder.addComments = false
-
+propel.builder.addIncludes  = false
+propel.builder.addComments  = false
 propel.builder.addBehaviors = false
-
-propel.mysql.tableType = InnoDB
-
-propel.defaultTimeStampFormat = Y-m-d H:i:s
-propel.defaultTimeFormat = H:i:s
-propel.defaultDateFormat = Y-m-d

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ComparisonOperatorUsageUnitTest.php,v 1.8 2008/02/18 00:03:25 squiz Exp $
+ * @version   CVS: $Id: ComparisonOperatorUsageUnitTest.php,v 1.10 2008/10/27 04:29:28 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -71,15 +71,9 @@ class Squiz_Tests_Operators_ComparisonOperatorUsageUnitTest extends AbstractSnif
             return array(
                     5  => 1,
                     6  => 1,
-                    9  => 1,
-                    10 => 1,
                     17 => 1,
                     18 => 1,
-                    21 => 1,
-                    22 => 1,
                     28 => 2,
-                    31 => 1,
-                    37 => 1,
                    );
             break;
         default:

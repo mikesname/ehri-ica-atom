@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: DoubleQuoteUsageSniff.php,v 1.5 2008/03/20 03:42:35 squiz Exp $
+ * @version   CVS: $Id: DoubleQuoteUsageSniff.php,v 1.7 2008/10/01 23:46:47 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -41,6 +41,7 @@ class Squiz_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Snif
     {
         return array(
                 T_CONSTANT_ENCAPSED_STRING,
+                T_DOUBLE_QUOTED_STRING,
                );
 
     }//end register()
@@ -50,14 +51,27 @@ class Squiz_Sniffs_Strings_DoubleQuoteUsageSniff implements PHP_CodeSniffer_Snif
      * Processes this test, when one of its tokens is encountered.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param int                  $stackPtr  The position of the current token
+     *                                        in the stack passed in $tokens.
      *
      * @return void
      */
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+
+        // The use of variables in double quoted strings is not allowed.
+        if ($tokens[$stackPtr]['code'] === T_DOUBLE_QUOTED_STRING) {
+            $stringTokens = token_get_all('<?php '.$tokens[$stackPtr]['content']);
+            foreach ($stringTokens as $token) {
+                if (is_array($token) === true && $token[0] === T_VARIABLE) {
+                    $error = 'Variable "'.$token[1].'" not allowed in double quoted string; use concatenation instead';
+                    $phpcsFile->addError($error, $stackPtr);
+                }
+            }
+
+            return;
+        }//end if
 
         $workingString = $tokens[$stackPtr]['content'];
 

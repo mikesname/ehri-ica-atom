@@ -11,7 +11,7 @@
 /**
  * The current symfony version.
  */
-define('SYMFONY_VERSION', '1.1.4-DEV');
+define('SYMFONY_VERSION', '1.2.0-DEV');
 
 /**
  * sfCoreAutoload class.
@@ -22,12 +22,13 @@ define('SYMFONY_VERSION', '1.1.4-DEV');
  * @package    symfony
  * @subpackage autoload
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCoreAutoload.class.php 11849 2008-09-29 14:07:43Z nicolas $
+ * @version    SVN: $Id: sfCoreAutoload.class.php 13363 2008-11-26 20:28:26Z FabianLange $
  */
 class sfCoreAutoload
 {
   static protected
-    $instance = null;
+    $registered = false,
+    $instance   = null;
 
   protected
     $baseDir = '';
@@ -59,11 +60,18 @@ class sfCoreAutoload
    */
   static public function register()
   {
+    if (self::$registered)
+    {
+      return;
+    }
+
     ini_set('unserialize_callback_func', 'spl_autoload_call');
-    if (!spl_autoload_register(array(self::getInstance(), 'autoload')))
+    if (false === spl_autoload_register(array(self::getInstance(), 'autoload')))
     {
       throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
     }
+
+    self::$registered = true;
   }
 
   /**
@@ -94,6 +102,16 @@ class sfCoreAutoload
 
     return true;
   }
+
+  /**
+   * Returns the base directory this autoloader is working on.
+   *
+   * @return base directory
+   */
+   public function getBaseDir()
+   {
+     return $this->baseDir;
+   }
 
   /**
    * Rebuilds the association array between class names and paths.
@@ -175,6 +193,8 @@ class sfCoreAutoload
   'sfFilterConfigHandler' => 'config',
   'sfGeneratorConfigHandler' => 'config',
   'sfLoader' => 'config',
+  'sfPluginConfiguration' => 'config',
+  'sfPluginConfigurationGeneric' => 'config',
   'sfProjectConfiguration' => 'config',
   'sfRootConfigHandler' => 'config',
   'sfRoutingConfigHandler' => 'config',
@@ -196,6 +216,13 @@ class sfCoreAutoload
   'sfTimer' => 'debug',
   'sfTimerManager' => 'debug',
   'sfWebDebug' => 'debug',
+  'sfWebDebugPanel' => 'debug',
+  'sfWebDebugPanelCache' => 'debug',
+  'sfWebDebugPanelConfig' => 'debug',
+  'sfWebDebugPanelLogs' => 'debug',
+  'sfWebDebugPanelMemory' => 'debug',
+  'sfWebDebugPanelSymfonyVersion' => 'debug',
+  'sfWebDebugPanelTimer' => 'debug',
   'sfEvent' => 'event',
   'sfEventDispatcher' => 'event',
   'sfCacheException' => 'exception',
@@ -225,10 +252,15 @@ class sfCoreAutoload
   'sfForm' => 'form',
   'sfFormField' => 'form',
   'sfFormFieldSchema' => 'form',
+  'sfFormFilter' => 'form',
   'sfAdminGenerator' => 'generator',
   'sfCrudGenerator' => 'generator',
   'sfGenerator' => 'generator',
   'sfGeneratorManager' => 'generator',
+  'sfModelGenerator' => 'generator',
+  'sfModelGeneratorConfiguration' => 'generator',
+  'sfModelGeneratorConfigurationField' => 'generator',
+  'sfModelGeneratorHelper' => 'generator',
   'sfRichTextEditor' => 'helper',
   'sfRichTextEditorFCK' => 'helper',
   'sfRichTextEditorTinyMCE' => 'helper',
@@ -266,6 +298,7 @@ class sfCoreAutoload
   'sfLoggerWrapper' => 'log',
   'sfNoLogger' => 'log',
   'sfStreamLogger' => 'log',
+  'sfVarLogger' => 'log',
   'sfWebDebugLogger' => 'log',
   'sfPearDownloader' => 'plugin',
   'sfPearEnvironment' => 'plugin',
@@ -287,9 +320,15 @@ class sfCoreAutoload
   'sfResponse' => 'response',
   'sfWebResponse' => 'response',
   'sfNoRouting' => 'routing',
+  'sfObjectRoute' => 'routing',
+  'sfObjectRouteCollection' => 'routing',
   'sfPathInfoRouting' => 'routing',
   'sfPatternRouting' => 'routing',
+  'sfRequestRoute' => 'routing',
+  'sfRoute' => 'routing',
+  'sfRouteCollection' => 'routing',
   'sfRouting' => 'routing',
+  'sfCacheSessionStorage' => 'storage',
   'sfDatabaseSessionStorage' => 'storage',
   'sfMySQLSessionStorage' => 'storage',
   'sfMySQLiSessionStorage' => 'storage',
@@ -299,6 +338,7 @@ class sfCoreAutoload
   'sfSessionStorage' => 'storage',
   'sfSessionTestStorage' => 'storage',
   'sfStorage' => 'storage',
+  'sfAppRoutesTask' => 'task/app',
   'sfCacheClearTask' => 'task/cache',
   'sfConfigureAuthorTask' => 'task/configure',
   'sfConfigureDatabaseTask' => 'task/configure',
@@ -317,6 +357,7 @@ class sfCoreAutoload
   'sfPluginBaseTask' => 'task/plugin',
   'sfPluginInstallTask' => 'task/plugin',
   'sfPluginListTask' => 'task/plugin',
+  'sfPluginPublishAssetsTask' => 'task/plugin',
   'sfPluginUninstallTask' => 'task/plugin',
   'sfPluginUpgradeTask' => 'task/plugin',
   'sfProjectClearControllersTask' => 'task/project',
@@ -327,6 +368,7 @@ class sfCoreAutoload
   'sfProjectPermissionsTask' => 'task/project',
   'sfProjectUnfreezeTask' => 'task/project',
   'sfUpgradeTo11Task' => 'task/project',
+  'sfUpgradeTo12Task' => 'task/project',
   'sfComponentUpgrade' => 'task/project/upgrade1.1',
   'sfConfigFileUpgrade' => 'task/project/upgrade1.1',
   'sfConfigUpgrade' => 'task/project/upgrade1.1',
@@ -342,18 +384,33 @@ class sfCoreAutoload
   'sfUpgrade' => 'task/project/upgrade1.1',
   'sfViewCacheManagerUpgrade' => 'task/project/upgrade1.1',
   'sfWebDebugUpgrade' => 'task/project/upgrade1.1',
+  'sfConfigurationUpgrade' => 'task/project/upgrade1.2',
+  'sfFactories12Upgrade' => 'task/project/upgrade1.2',
+  'sfPluginAssetsUpgrade' => 'task/project/upgrade1.2',
+  'sfPropel13Upgrade' => 'task/project/upgrade1.2',
+  'sfPropelIniUpgrade' => 'task/project/upgrade1.2',
   'sfBaseTask' => 'task',
   'sfCommandApplicationTask' => 'task',
   'sfFilesystem' => 'task',
   'sfTask' => 'task',
   'sfTestAllTask' => 'task/test',
+  'sfTestCoverageTask' => 'task/test',
   'sfTestFunctionalTask' => 'task/test',
   'sfTestUnitTask' => 'task/test',
   'sfTestBrowser' => 'test',
+  'sfTestFunctional' => 'test',
+  'sfTestFunctionalBase' => 'test',
+  'sfTester' => 'test',
+  'sfTesterForm' => 'test',
+  'sfTesterRequest' => 'test',
+  'sfTesterResponse' => 'test',
+  'sfTesterUser' => 'test',
+  'sfTesterViewCache' => 'test',
   'sfBasicSecurityUser' => 'user',
   'sfSecurityUser' => 'user',
   'sfUser' => 'user',
   'sfBrowser' => 'util',
+  'sfBrowserBase' => 'util',
   'sfCallable' => 'util',
   'sfContext' => 'util',
   'sfDomCssSelector' => 'util',
@@ -372,6 +429,7 @@ class sfCoreAutoload
   'sfValidatorChoice' => 'validator',
   'sfValidatorChoiceMany' => 'validator',
   'sfValidatorDate' => 'validator',
+  'sfValidatorDateRange' => 'validator',
   'sfValidatorDateTime' => 'validator',
   'sfValidatorDecorator' => 'validator',
   'sfValidatorEmail' => 'validator',
@@ -405,15 +463,22 @@ class sfCoreAutoload
   'sfWidgetFormI18nDate' => 'widget/i18n',
   'sfWidgetFormI18nDateTime' => 'widget/i18n',
   'sfWidgetFormI18nSelectCountry' => 'widget/i18n',
+  'sfWidgetFormI18nSelectCurrency' => 'widget/i18n',
   'sfWidgetFormI18nSelectLanguage' => 'widget/i18n',
   'sfWidgetFormI18nTime' => 'widget/i18n',
   'sfWidget' => 'widget',
   'sfWidgetForm' => 'widget',
+  'sfWidgetFormChoice' => 'widget',
+  'sfWidgetFormChoiceMany' => 'widget',
   'sfWidgetFormDate' => 'widget',
+  'sfWidgetFormDateRange' => 'widget',
   'sfWidgetFormDateTime' => 'widget',
+  'sfWidgetFormFilterDate' => 'widget',
+  'sfWidgetFormFilterInput' => 'widget',
   'sfWidgetFormInput' => 'widget',
   'sfWidgetFormInputCheckbox' => 'widget',
   'sfWidgetFormInputFile' => 'widget',
+  'sfWidgetFormInputFileEditable' => 'widget',
   'sfWidgetFormInputHidden' => 'widget',
   'sfWidgetFormInputPassword' => 'widget',
   'sfWidgetFormSchema' => 'widget',
@@ -423,6 +488,7 @@ class sfCoreAutoload
   'sfWidgetFormSchemaFormatterList' => 'widget',
   'sfWidgetFormSchemaFormatterTable' => 'widget',
   'sfWidgetFormSelect' => 'widget',
+  'sfWidgetFormSelectCheckbox' => 'widget',
   'sfWidgetFormSelectMany' => 'widget',
   'sfWidgetFormSelectRadio' => 'widget',
   'sfWidgetFormTextarea' => 'widget',

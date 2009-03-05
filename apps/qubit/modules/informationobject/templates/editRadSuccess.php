@@ -1,9 +1,8 @@
 ﻿<?php use_helper('DateForm') ?>
 <?php use_helper('Javascript') ?>
 
-<div class="pageTitle"><?php echo __('edit archival description'); ?></div>
-
-<form method="post" action="<?php echo url_for('informationobject/updateRad') ?>" enctype="multipart/form-data">
+<div class="pageTitle"><?php echo __('edit archival description - RAD'); ?></div>
+<form method="post" action="<?php echo url_for($sf_data->getRaw('postAction')) ?>" enctype="multipart/form-data" id="editForm">
   <?php echo object_input_hidden_tag($informationObject, 'getId') ?>
   <?php echo input_hidden_tag('collection_type_id', QubitTerm::ARCHIVAL_MATERIAL_ID) ?>
 
@@ -15,12 +14,12 @@
   <table class="list" style="height: 25px;"><thead><tr><th>&nbsp;</th></tr></table>
 <?php endif; ?>
 
-<?php if ($sf_context->getActionName() == 'create'): ?>
+<?php if ($sf_context->getActionName() == 'createRad'): ?>
   <fieldset class="collapsible">
 <?php else : ?>
   <fieldset class="collapsible collapsed">
 <?php endif; ?>
-  
+
     <!-- title and statement of responsibility area -->
     <legend><?php echo __('title and statement of responsibility area'); ?></legend>
     <div class="form-item">
@@ -111,7 +110,8 @@
 
     <div class="form-item">
       <label for="repository_id"><?php echo __('repository'); ?></label>
-      <?php echo object_select_tag($informationObject, 'getRepositoryId', array('include_blank' => true,)) ?>
+      <?php echo select_tag('repository_id', QubitRepository::getOptionsForSelectList($informationObject->getRepositoryId(),
+        array('include_blank' => true, 'cultureFallback' => true))) ?>
     </div>
 
     <div class="form-item">
@@ -127,7 +127,7 @@
     <?php endif; ?>
   </fieldset>
   <!-- End title and statement of responsibility area -->
-  
+
   <!-- Edition area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo __('edition area'); ?></legend>
@@ -195,7 +195,7 @@
     </div>
   </fieldset>
   <!-- End class of material specific details area -->
-  
+
   <!-- Dates of creation area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo __('dates of creation area'); ?></legend>
@@ -212,7 +212,7 @@
       <tr>
         <?php if ($actorEvent->getActor()): ?>
           <td>
-            <?php echo $actorEvent->getActor() ?>
+            <?php echo render_title($actorEvent->getActor()) ?>
           </td>
         <?php else: ?>
           <td></td>
@@ -251,12 +251,11 @@
           <td class="headerCell" style="width: 40%;"><i><?php echo __('or'); ?> </i><?php echo __('add new name'); ?></td>
         </tr>
         <tr>
-          <td colspan ="2"><?php echo object_select_tag($newActorEvent, 'getActorId',
-            array('related_class' => 'QubitActor',
-              'name' => 'newActorEvent[actorId]',
-              'include_blank' => true,
-              'peer_method' => 'getAllExceptUsers')) ?></td>
-          <td><?php echo input_tag('newActorEvent[newActorAuthorizedName]') ?></td>
+          <td colspan ="2">
+            <?php echo select_tag('newActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
+              array('include_blank' => true, 'cultureFallback' => true))) ?>
+          </td>
+          <td class="noline"><?php echo input_tag('newActorEvent[newActorAuthorizedName]') ?></td>
         </tr>
         <tr>
           <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
@@ -308,7 +307,7 @@
     <?php endif; ?>
    </fieldset>
    <!-- End dates of creation area -->
-  
+
    <!-- Physical description area -->
    <fieldset class="collapsible collapsed">
     <legend><?php echo __('physical description area'); ?></legend>
@@ -318,12 +317,12 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getExtentAndMedium(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getExtentAndMedium', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getExtentAndMedium', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
   </fieldset>
   <!-- End physical description area -->
-  
+
   <!-- Publisher's series area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo __("publisher's series area"); ?></legend>
@@ -373,7 +372,7 @@
       <?php if ($sourceCultureValue = $radNoteOnPublishersSeries->getSourceTextForTranslation($sf_user->getCulture())): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($radNoteOnPublishersSeries, 'getValue', array('name' => 'rad_note_on_publishers_series', 'size' => '30x3')) ?>
+      <?php echo object_textarea_tag($radNoteOnPublishersSeries, 'getValue', array('class' => 'resizable', 'name' => 'rad_note_on_publishers_series', 'size' => '30x3')) ?>
     </div>
   </fieldset>
   <!-- End publisher's series area -->
@@ -406,21 +405,21 @@
       </div>
       <?php endforeach; ?>
       <?php endif; ?>
-  
+
       <div class="form-item">
         <label for="Archival history"><?php echo __('custodial history'); ?></label>
         <?php if (strlen($sourceCultureValue = $informationObject->getArchivalHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
         <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
         <?php endif; ?>
-         <?php echo object_textarea_tag($informationObject, 'getArchivalHistory', array('size' => '30x3')) ?>
+         <?php echo object_textarea_tag($informationObject, 'getArchivalHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
       </div>
-  
+
       <div class="form-item">
         <label for="scope_and_content"><?php echo __('scope and content'); ?></label>
         <?php if (strlen($sourceCultureValue = $informationObject->getScopeAndContent(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
         <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
         <?php endif; ?>
-        <?php echo object_textarea_tag($informationObject, 'getScopeAndContent', array('size' => '30x3')) ?>
+        <?php echo object_textarea_tag($informationObject, 'getScopeAndContent', array('class' => 'resizable', 'size' => '30x3')) ?>
       </div>
     </div>
   </fieldset>
@@ -435,7 +434,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getPhysicalCharacteristics(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getPhysicalCharacteristics', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getPhysicalCharacteristics', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -443,7 +442,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAcquisition(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAcquisition', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAcquisition', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -451,7 +450,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getArrangement(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getArrangement', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getArrangement', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -459,7 +458,7 @@
       <?php if ($languageCodes): ?>
         <?php foreach ($languageCodes as $languageCode): ?>
           <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_language($languageCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=rad') ?><br/>
+          <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=rad') ?><br/>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
@@ -471,7 +470,7 @@
       <?php if ($scriptCodes): ?>
         <?php foreach ($scriptCodes as $scriptCode): ?>
           <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_script($scriptCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=rad') ?><br/>
+          <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=rad') ?><br/>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
@@ -483,7 +482,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getLocationOfOriginals(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getLocationOfOriginals', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getLocationOfOriginals', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -491,7 +490,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getLocationOfCopies(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getLocationOfCopies', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getLocationOfCopies', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
 
@@ -500,7 +499,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAccessConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAccessConditions', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAccessConditions', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -508,7 +507,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getReproductionConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getReproductionConditions', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getReproductionConditions', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -516,7 +515,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getFindingAids(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getFindingAids', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getFindingAids', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -524,7 +523,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getRelatedUnitsOfDescription(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getRelatedUnitsOfDescription', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getRelatedUnitsOfDescription', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -532,7 +531,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAccruals(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAccruals', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAccruals', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -560,7 +559,7 @@
     </div>
   </fieldset>
   <!-- End notes area -->
-  
+
   <!-- Standard number area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo __('standard number area'); ?></legend>
@@ -604,7 +603,7 @@
       <label for="name_id"><?php echo __('name access points'); ?></label>
       <?php if ($nameAccessPoints): ?>
         <?php foreach ($nameAccessPoints as $name): ?>
-          <?php echo $name->getActor().' ('.$name->getType()->getRole().')' ?>
+          <?php echo render_title($name->getActor()).' ('.$name->getType()->getRole().')' ?>
           <?php if ($name->getTypeId() == QubitTerm::SUBJECT_ID): ?>
             <?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteEvent?eventId='.$name->getId().'&returnTemplate=rad') ?>
           <?php endif; ?>
@@ -615,7 +614,7 @@
     </div>
   </fieldset>
   <!-- End Access Points-->
-  
+
   <!-- Control Area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo __('control area'); ?></legend>
@@ -638,7 +637,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getRules', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getRules', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -656,7 +655,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getRevisionHistory', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getRevisionHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -664,7 +663,7 @@
       <?php if ($descriptionLanguageCodes): ?>
         <?php foreach ($descriptionLanguageCodes as $languageCode): ?>
           <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_language($languageCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=rad') ?><br/>
+          <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=rad') ?><br/>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
@@ -676,7 +675,7 @@
       <?php if ($descriptionScriptCodes): ?>
         <?php foreach ($descriptionScriptCodes as $scriptCode): ?>
           <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_script($scriptCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=rad') ?><br/>
+          <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=rad') ?><br/>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>
@@ -688,19 +687,26 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getSources', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getSources', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
   <!-- End Control Area -->
-  
+
   <!-- Digital Object Area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo sfConfig::get('app_ui_label_digitalobject'); ?></legend>
+    <?php if(isset($warnings['upload_file'])): ?>
+      <ul class="validation_error">
+      <?php foreach($warnings['upload_file'] as $message): ?>
+        <li><?php echo $message ?></li>
+      <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
     <?php include_component('digitalobject', 'edit', array('informationObject'=>$informationObject)); ?>
   </fieldset>
   <!-- End Digital Object Area -->
 
-  <!-- Physical Object Area -->  
+  <!-- Physical Object Area -->
   <fieldset class="collapsible collapsed">
     <legend><?php echo sfConfig::get('app_ui_label_physicalobject'); ?></legend>
     <?php include_component('physicalobject', 'edit', array('informationObject'=>$informationObject)); ?>
@@ -721,32 +727,36 @@ EOF
   <div id="button-block">
     <div class="menu-action">
       <?php if ($informationObject->getId()): ?>
-  
+
       <?php if (($descendantCount = count($informationObject->getDescendants())) > 0): ?>
-           <?php $deleteWarning = __('Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?', array ('%1%' =>sfConfig::get('app_ui_label_informationobject'), '%2%' => $descendantCount)) ?>
+           <?php $deleteWarning = __('Warning: this archival description has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this archival description?', array ('%1%' => $descendantCount)) ?>
            &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
         <?php else: ?>
-        <?php $deleteWarning = __('Are you sure you want to delete this %1% permanently?', array('%1%' => sfConfig::get('app_ui_label_informationobject'))); ?>
+        <?php $deleteWarning = __('Are you sure you want to delete this archival description permanently?'); ?>
         <?php if ($digitalObjectCount > 0): ?>
           <?php $deleteWarning .= ' '.__('This will also delete the related %1%.', array('%1%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
         <?php endif; ?>
         &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
         <?php endif; ?>
-  
+
          &nbsp;<?php echo link_to(__('cancel'), 'informationobject/show?id='.$informationObject->getId()) ?>
       <?php else: ?>
         &nbsp;<?php echo link_to(__('cancel'), 'informationobject/list') ?>
       <?php endif; ?>
-  
+
       <?php if ($informationObject->getId()): ?>
         <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
       <?php else: ?>
         <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
       <?php endif; ?>
     </div>
+
+    <?php // Don't show add/list buttons for new info objects ?>
+    <?php if ($informationObject->getId()): ?>
     <div class="menu-extra">
-      <?php echo link_to(__('add new archival description'), 'informationobject/createRad'); ?>
+      <?php echo link_to(__('add new'), 'informationobject/createRad'); ?>
       <?php echo link_to(__('list all'), 'informationobject/list'); ?>
     </div>
+    <?php endif; ?>
   </div>
 </form>

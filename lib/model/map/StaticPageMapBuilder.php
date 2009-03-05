@@ -2,7 +2,7 @@
 
 
 
-class StaticPageMapBuilder {
+class StaticPageMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.StaticPageMapBuilder';
@@ -25,22 +25,23 @@ class StaticPageMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitStaticPage::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_static_page');
-		$tMap->setPhpName('StaticPage');
+		$tMap = $this->dbMap->addTable(QubitStaticPage::TABLE_NAME);
+		$tMap->setPhpName('staticPage');
+		$tMap->setClassname('QubitStaticPage');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null);
 
-		$tMap->addColumn('PERMALINK', 'Permalink', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('PERMALINK', 'permalink', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
 	} 
 } 

@@ -2,7 +2,7 @@
 
 
 
-class ActorNameI18nMapBuilder {
+class ActorNameI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.ActorNameI18nMapBuilder';
@@ -25,20 +25,21 @@ class ActorNameI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitActorNameI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_actor_name_i18n');
-		$tMap->setPhpName('ActorNameI18n');
+		$tMap = $this->dbMap->addTable(QubitActorNameI18n::TABLE_NAME);
+		$tMap->setPhpName('actorNameI18n');
+		$tMap->setClassname('QubitActorNameI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('NOTE', 'Note', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NOTE', 'note', 'VARCHAR', false, 255);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_actor_name', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_actor_name', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

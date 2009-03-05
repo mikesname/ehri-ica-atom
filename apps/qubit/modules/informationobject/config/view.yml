@@ -1,22 +1,29 @@
-editSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+editDcSuccess:
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
 
 editIsadSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
 
 editRadSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
 
 editModsSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
 
-editDcSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+listSuccess:
+  components:
+    sidebar: []
 
 all:
   components:
     sidebar: [informationobject, contextMenu]
 
-listSuccess:
+updateIsadError:
   components:
     sidebar: []
+    MainMenu: []
+
+updateRadError:
+  components:
+    sidebar: []
+    MainMenu: []

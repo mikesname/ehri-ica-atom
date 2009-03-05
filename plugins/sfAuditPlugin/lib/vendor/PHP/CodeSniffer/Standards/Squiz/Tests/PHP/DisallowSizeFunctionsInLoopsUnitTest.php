@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: DisallowSizeFunctionsInLoopsUnitTest.php,v 1.1 2008/04/07 01:14:00 squiz Exp $
+ * @version   CVS: $Id: DisallowSizeFunctionsInLoopsUnitTest.php,v 1.2 2008/08/15 00:37:30 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -39,24 +39,38 @@ class Squiz_Tests_PHP_DisallowSizeFunctionsInLoopsUnitTest extends AbstractSniff
      * The key of the array should represent the line number and the value
      * should represent the number of errors that should occur on that line.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile='DisallowSizeFunctionsInLoopsUnitTest.inc')
     {
-        return array(
-                2  => 1,
-                7  => 1,
-                11 => 1,
-                13 => 1,
-                18 => 1,
-                23 => 1,
-                27 => 1,
-                29 => 1,
-                35 => 1,
-                40 => 1,
-                44 => 1,
-                46 => 1,
-               );
+        switch ($testFile) {
+        case 'DisallowSizeFunctionsInLoopsUnitTest.inc':
+            return array(
+                    2  => 1,
+                    7  => 1,
+                    11 => 1,
+                    13 => 1,
+                    18 => 1,
+                    23 => 1,
+                    27 => 1,
+                    29 => 1,
+                    35 => 1,
+                    40 => 1,
+                    44 => 1,
+                    46 => 1,
+                   );
+            break;
+        case 'DisallowSizeFunctionsInLoopsUnitTest.js':
+            return array(
+                    1 => 1,
+                   );
+            break;
+        default:
+            return array();
+            break;
+        }//end switch
 
     }//end getErrorList()
 

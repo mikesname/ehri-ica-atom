@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: AbstractParser.php,v 1.19 2008/01/12 08:45:13 squiz Exp $
+ * @version   CVS: $Id: AbstractParser.php,v 1.22 2008/12/04 00:35:14 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -215,7 +215,7 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
     private function _parse($comment)
     {
         // Firstly, remove the comment tags and any stars from the left side.
-        $lines = split($this->phpcsFile->eolChar, $comment);
+        $lines = explode($this->phpcsFile->eolChar, $comment);
         foreach ($lines as &$line) {
             $line = trim($line);
 
@@ -231,8 +231,14 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
                 // Add the words to the stack, preserving newlines. Other parsers
                 // might be interested in the spaces between words, so tokenize
                 // spaces as well as separate tokens.
-                $flags       = (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
-                $words       = preg_split('|(\s+)|', $line.$this->phpcsFile->eolChar, -1, $flags);
+                $flags = (PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
+                $words = preg_split(
+                    '|(\s+)|',
+                    $line.$this->phpcsFile->eolChar,
+                    -1,
+                    $flags
+                );
+
                 $this->words = array_merge($this->words, $words);
             }
         }//end foreach
@@ -271,11 +277,15 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
 
                 // Filter out @ tags in the comment description.
                 // A real comment tag should have whitespace and a newline before it.
-                if (isset($this->words[($wordPos - 1)]) === false || trim($this->words[($wordPos - 1)]) !== '') {
+                if (isset($this->words[($wordPos - 1)]) === false
+                    || trim($this->words[($wordPos - 1)]) !== ''
+                ) {
                     continue;
                 }
 
-                if (isset($this->words[($wordPos - 2)]) === false || $this->words[($wordPos - 2)] !== $this->phpcsFile->eolChar) {
+                if (isset($this->words[($wordPos - 2)]) === false
+                    || $this->words[($wordPos - 2)] !== $this->phpcsFile->eolChar
+                ) {
                     continue;
                 }
 
@@ -333,10 +343,32 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
                 $this->parseTag('comment', 0, count($this->words));
             } else {
                 // Process the last tag element.
-                $prevTag = substr($this->words[$prevTagPos], 1);
-                $this->parseTag($prevTag, $prevTagPos, count($this->words));
-            }
-        }
+                $prevTag  = substr($this->words[$prevTagPos], 1);
+                $numWords = count($this->words);
+                $endPos   = $numWords;
+
+                if ($prevTag === 'package' || $prevTag === 'subpaackage') {
+                    // These are single-word tags, so anything after a newline
+                    // is really a comment.
+                    for ($endPos = $prevTagPos; $endPos < $numWords; $endPos++) {
+                        if (strpos($this->words[$endPos], $this->phpcsFile->eolChar) !== false) {
+                            break;
+                        }
+                    }
+                }
+
+                $this->parseTag($prevTag, $prevTagPos, $endPos);
+
+                if ($endPos !== $numWords) {
+                    // Process the final comment, if it is not empty.
+                    $tokens  = array_slice($this->words, ($endPos + 1), $numWords);
+                    $content = implode('', $tokens);
+                    if (trim($content) !== '') {
+                        $this->parseTag('comment', ($endPos + 1), $numWords);
+                    }
+                }
+            }//end if
+        }//end if
 
     }//end _parseWords()
 
@@ -370,7 +402,13 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
      */
     protected function parseSee($tokens)
     {
-        $see          = new PHP_CodeSniffer_CommentParser_SingleElement($this->previousElement, $tokens, 'see', $this->phpcsFile);
+        $see = new PHP_CodeSniffer_CommentParser_SingleElement(
+            $this->previousElement,
+            $tokens,
+            'see',
+            $this->phpcsFile
+        );
+
         $this->sees[] = $see;
         return $see;
 
@@ -386,7 +424,12 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
      */
     protected function parseComment($tokens)
     {
-        $this->comment = new PHP_CodeSniffer_CommentParser_CommentElement($this->previousElement, $tokens, $this->phpcsFile);
+        $this->comment = new PHP_CodeSniffer_CommentParser_CommentElement(
+            $this->previousElement,
+            $tokens,
+            $this->phpcsFile
+        );
+
         return $this->comment;
 
     }//end parseComment()
@@ -401,7 +444,13 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
      */
     protected function parseDeprecated($tokens)
     {
-        $this->deprecated = new PHP_CodeSniffer_CommentParser_SingleElement($this->previousElement, $tokens, 'deprecated', $this->phpcsFile);
+        $this->deprecated = new PHP_CodeSniffer_CommentParser_SingleElement(
+            $this->previousElement,
+            $tokens,
+            'deprecated',
+            $this->phpcsFile
+        );
+
         return $this->deprecated;
 
     }//end parseDeprecated()
@@ -416,7 +465,13 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
      */
     protected function parseSince($tokens)
     {
-        $this->since = new PHP_CodeSniffer_CommentParser_SingleElement($this->previousElement, $tokens, 'since', $this->phpcsFile);
+        $this->since = new PHP_CodeSniffer_CommentParser_SingleElement(
+            $this->previousElement,
+            $tokens,
+            'since',
+            $this->phpcsFile
+        );
+
         return $this->since;
 
     }//end parseSince()
@@ -431,7 +486,13 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
      */
     protected function parseLink($tokens)
     {
-        $link          = new PHP_CodeSniffer_CommentParser_SingleElement($this->previousElement, $tokens, 'link', $this->phpcsFile);
+        $link = new PHP_CodeSniffer_CommentParser_SingleElement(
+            $this->previousElement,
+            $tokens,
+            'link',
+            $this->phpcsFile
+        );
+
         $this->links[] = $link;
         return $link;
 
@@ -532,12 +593,19 @@ abstract class PHP_CodeSniffer_CommentParser_AbstractParser
 
             $this->previousElement = $this->$method($tokens);
         } else {
-            $this->previousElement = new PHP_CodeSniffer_CommentParser_SingleElement($this->previousElement, $tokens, $tag, $this->phpcsFile);
+            $this->previousElement = new PHP_CodeSniffer_CommentParser_SingleElement(
+                $this->previousElement,
+                $tokens,
+                $tag,
+                $this->phpcsFile
+            );
         }
 
         $this->orders[] = $tag;
 
-        if ($this->previousElement === null || ($this->previousElement instanceof PHP_CodeSniffer_CommentParser_DocElement) === false) {
+        if ($this->previousElement === null
+            || ($this->previousElement instanceof PHP_CodeSniffer_CommentParser_DocElement) === false
+        ) {
             throw new Exception('Parse method must return a DocElement');
         }
 

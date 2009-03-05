@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -52,9 +50,32 @@ class QubitActor extends BaseActor
     // Do fallback
     $context = sfContext::getInstance();
     $culture = $context->getUser()->getCulture();
-    $criteria = $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $culture, $options);
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $culture, $options);
 
     return QubitActor::get($criteria);
+  }
+
+  /**
+   * Return an options_for_select array
+   *
+   * @param mixed $default current selected value for select list
+   * @param array $options optional parameters
+   * @return array options_for_select compatible array
+   */
+  public static function getOptionsForSelectList($default, $options = array())
+  {
+    $actors = self::getAllExceptUsers($options);
+
+    foreach ($actors as $actor)
+    {
+      // Don't display actors with no name
+      if ($name = $actor->getAuthorizedFormOfName($options))
+      {
+        $selectOptions[$actor->getId()] = $name;
+      }
+    }
+
+    return options_for_select($selectOptions, $default, $options);
   }
 
   /**
@@ -75,7 +96,7 @@ class QubitActor extends BaseActor
 
     if (isset($options['repositoryId']))
     {
-      $criteria->add(QubitInformationObject::REPOSITORY_ID,  $options['repositoryId']);
+      $criteria->add(QubitInformationObject::REPOSITORY_ID, $options['repositoryId']);
     }
 
     if (isset($options['collectionType']))
@@ -143,10 +164,8 @@ class QubitActor extends BaseActor
    */
   public static function addGetOnlyActorsCriteria($criteria)
   {
-    $criteria->addJoin(QubitActor::ID, QubitUser::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitUser::ID, null);
-    $criteria->addJoin(QubitActor::ID, QubitRepository::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitRepository::ID, null);
+    $criteria->addJoin(QubitActor::ID, QubitObject::ID);
+    $criteria->add(QubitObject::CLASS_NAME, 'QubitActor');
 
     return $criteria;
   }

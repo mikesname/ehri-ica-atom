@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: LongConditionClosingCommentUnitTest.php,v 1.2 2007/01/10 05:20:52 squiz Exp $
+ * @version   CVS: $Id: LongConditionClosingCommentUnitTest.php,v 1.4 2008/12/04 05:43:22 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -39,24 +39,49 @@ class Squiz_Tests_Commenting_LongConditionClosingCommentUnitTest extends Abstrac
      * The key of the array should represent the line number and the value
      * should represent the number of errors that should occur on that line.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile='LongConditionClosingCommentUnitTest.inc')
     {
-        return array(
-                49  => 1,
-                99  => 1,
-                146 => 1,
-                192 => 1,
-                238 => 1,
-                261 => 1,
-                286 => 1,
-                309 => 1,
-                332 => 1,
-                355 => 1,
-                378 => 1,
-                493 => 1,
-               );
+        switch ($testFile) {
+        case 'LongConditionClosingCommentUnitTest.inc':
+            return array(
+                    49  => 1,
+                    99  => 1,
+                    146 => 1,
+                    192 => 1,
+                    238 => 1,
+                    261 => 1,
+                    286 => 1,
+                    309 => 1,
+                    332 => 1,
+                    355 => 1,
+                    378 => 1,
+                    493 => 1,
+                    531 => 1,
+                   );
+            break;
+        case 'LongConditionClosingCommentUnitTest.js':
+            return array(
+                    47  => 1,
+                    97  => 1,
+                    144 => 1,
+                    190 => 1,
+                    213 => 1,
+                    238 => 1,
+                    261 => 1,
+                    284 => 1,
+                    307 => 1,
+                    401 => 1,
+                    439 => 1,
+                   );
+            break;
+        default:
+            return array();
+            break;
+        }//end switch
 
     }//end getErrorList()
 

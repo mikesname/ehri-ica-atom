@@ -41,7 +41,7 @@
   </thead>
   <tbody>
     <tr>
-      <td><?php echo $siteInformationForm['site_title']->renderLabel(null, 
+      <td><?php echo $siteInformationForm['site_title']->renderLabel(null,
         array('title' => __('The name of the website for display in the header'))) ?></td>
       <td>
         <?php if (strlen($error = $siteInformationForm['site_title']->renderError())): ?>
@@ -53,7 +53,7 @@
       </td>
     </tr>
     <tr>
-      <td><?php echo $siteInformationForm['site_description']->renderLabel(null, 
+      <td><?php echo $siteInformationForm['site_description']->renderLabel(null,
         array('title' => __('A brief site description or &quot;tagline&quot; for the header'))) ?></td>
       <td>
         <?php if (strlen($error = $siteInformationForm['site_description']->renderError())): ?>
@@ -90,7 +90,7 @@
         <th/>
       </tr>
     </thead>
-  
+
     <tbody>
       <?php echo $defaultTemplateForm ?>
       <tr>
@@ -120,7 +120,7 @@
       </tr>
     </thead>
     <tbody>
-    
+
     <?php foreach ($uiLabelForm->getSettings() as $setting): ?>
       <tr>
         <td>
@@ -140,7 +140,7 @@
         </td>
       </tr>
     <?php endforeach; ?>
-      
+
       <tr>
         <td>&nbsp;</td>
         <td>
@@ -160,7 +160,7 @@
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('i18n languages') ?></legend>
   <form action="<?php echo url_for('settings/update') ?>" method="POST">
-  
+
   <table class="list">
     <thead>
       <tr>
@@ -186,7 +186,7 @@
         </td>
       </tr>
     <?php endforeach; ?>
-      
+
       <tr>
         <td colspan="2">
           <?php echo select_tag('language_code', options_for_select($sf_data->getRaw('availableLanguages'))) ?>
@@ -198,6 +198,33 @@
         </td>
       </tr>
     </tbody>
+  </table>
+  </form>
+</fieldset>
+
+<!-- OAI Harvesting settings -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('OAI harvesting') ?></div>
+<fieldset class="collapsible collapsed">
+  <legend><?php echo __('OAI harvesting') ?></legend>
+  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <table class="list">
+  <thead>
+    <tr>
+      <th width="30%"><?php echo __('name')?></th>
+      <th><?php echo __('value')?></th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php echo $oaiHarvestingForm ?>
+    <tr>
+      <td>&nbsp;</td>
+      <td>
+        <div style="float: right; margin: 3px 8px 0 0;">
+          <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+        </div>
+      </td>
+    </tr>
+  </tbody>
   </table>
   </form>
 </fieldset>

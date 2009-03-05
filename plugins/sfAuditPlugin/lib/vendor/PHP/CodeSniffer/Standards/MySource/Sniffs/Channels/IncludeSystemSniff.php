@@ -9,7 +9,7 @@
  * @author    Greg Sherwood <gsherwood@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: IncludeSystemSniff.php,v 1.16 2008/05/05 23:54:47 squiz Exp $
+ * @version   CVS: $Id: IncludeSystemSniff.php,v 1.17 2008/07/25 04:18:04 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -46,7 +46,7 @@ class MySource_Sniffs_Channels_IncludeSystemSniff extends PHP_CodeSniffer_Standa
                         'init',
                         'pdo',
                         'util',
-			'ziparchive',
+                        'ziparchive',
                        );
 
 

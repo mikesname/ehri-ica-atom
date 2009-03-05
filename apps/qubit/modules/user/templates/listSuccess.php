@@ -38,6 +38,10 @@
 </div>
 <?php endif ?>
 
+<div class="result-count">
+<?php echo __('displaying %1% to %2% of %3% results', array('%1%' => $users->getFirstIndice(), '%2%' => $users->getLastIndice(), '%3%' => $users->getNbResults())) ?>
+</div>
+
 <div class="menu-action" style="padding-top: 10px;">
 <?php echo link_to (__('add new user'), 'user/create') ?>
 </div>

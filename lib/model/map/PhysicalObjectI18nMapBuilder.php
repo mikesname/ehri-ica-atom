@@ -2,7 +2,7 @@
 
 
 
-class PhysicalObjectI18nMapBuilder {
+class PhysicalObjectI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.PhysicalObjectI18nMapBuilder';
@@ -25,22 +25,23 @@ class PhysicalObjectI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitPhysicalObjectI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_physical_object_i18n');
-		$tMap->setPhpName('PhysicalObjectI18n');
+		$tMap = $this->dbMap->addTable(QubitPhysicalObjectI18n::TABLE_NAME);
+		$tMap->setPhpName('physicalObjectI18n');
+		$tMap->setClassname('QubitPhysicalObjectI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('DESCRIPTION', 'Description', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('LOCATION', 'Location', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('LOCATION', 'location', 'LONGVARCHAR', false, null);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_physical_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_physical_object', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

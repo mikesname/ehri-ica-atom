@@ -1,17 +1,18 @@
 <?php
 
-abstract class BaseFunction extends QubitTerm
+abstract class BaseFunction extends QubitTerm implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_function';
+    TABLE_NAME = 'q_function',
 
-  const ID = 'q_function.ID';
-  const TYPE_ID = 'q_function.TYPE_ID';
-  const DESCRIPTION_STATUS_ID = 'q_function.DESCRIPTION_STATUS_ID';
-  const DESCRIPTION_LEVEL_ID = 'q_function.DESCRIPTION_LEVEL_ID';
-  const DESCRIPTION_IDENTIFIER = 'q_function.DESCRIPTION_IDENTIFIER';
-  const SOURCE_CULTURE = 'q_function.SOURCE_CULTURE';
+    ID = 'q_function.ID',
+    TYPE_ID = 'q_function.TYPE_ID',
+    DESCRIPTION_STATUS_ID = 'q_function.DESCRIPTION_STATUS_ID',
+    DESCRIPTION_LEVEL_ID = 'q_function.DESCRIPTION_LEVEL_ID',
+    DESCRIPTION_IDENTIFIER = 'q_function.DESCRIPTION_IDENTIFIER',
+    SOURCE_CULTURE = 'q_function.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -61,123 +62,72 @@ abstract class BaseFunction extends QubitTerm
     return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
   }
 
-  protected $typeId = null;
-
-  public function getTypeId()
+  public function __construct()
   {
-    return $this->typeId;
+    parent::__construct();
+
+    $this->tables[] = Propel::getDatabaseMap(QubitFunction::DATABASE_NAME)->getTable(QubitFunction::TABLE_NAME);
   }
 
-  public function setTypeId($typeId)
+  public function offsetExists($offset, array $options = array())
   {
-    $this->typeId = $typeId;
-
-    return $this;
-  }
-
-  protected $descriptionStatusId = null;
-
-  public function getDescriptionStatusId()
-  {
-    return $this->descriptionStatusId;
-  }
-
-  public function setDescriptionStatusId($descriptionStatusId)
-  {
-    $this->descriptionStatusId = $descriptionStatusId;
-
-    return $this;
-  }
-
-  protected $descriptionLevelId = null;
-
-  public function getDescriptionLevelId()
-  {
-    return $this->descriptionLevelId;
-  }
-
-  public function setDescriptionLevelId($descriptionLevelId)
-  {
-    $this->descriptionLevelId = $descriptionLevelId;
-
-    return $this;
-  }
-
-  protected $descriptionIdentifier = null;
-
-  public function getDescriptionIdentifier()
-  {
-    return $this->descriptionIdentifier;
-  }
-
-  public function setDescriptionIdentifier($descriptionIdentifier)
-  {
-    $this->descriptionIdentifier = $descriptionIdentifier;
-
-    return $this;
-  }
-
-  protected $sourceCulture = null;
-
-  public function getSourceCulture()
-  {
-    return $this->sourceCulture;
-  }
-
-  public function setSourceCulture($sourceCulture)
-  {
-    $this->sourceCulture = $sourceCulture;
-
-    return $this;
-  }
-
-  protected function resetModified()
-  {
-    parent::resetModified();
-
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['typeId'] = $this->typeId;
-    $this->columnValues['descriptionStatusId'] = $this->descriptionStatusId;
-    $this->columnValues['descriptionLevelId'] = $this->descriptionLevelId;
-    $this->columnValues['descriptionIdentifier'] = $this->descriptionIdentifier;
-    $this->columnValues['sourceCulture'] = $this->sourceCulture;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $columnOffset = parent::hydrate($results, $columnOffset);
-
-    $this->id = $results->getInt($columnOffset++);
-    $this->typeId = $results->getInt($columnOffset++);
-    $this->descriptionStatusId = $results->getInt($columnOffset++);
-    $this->descriptionLevelId = $results->getInt($columnOffset++);
-    $this->descriptionIdentifier = $results->getString($columnOffset++);
-    $this->sourceCulture = $results->getString($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
+    if (parent::offsetExists($offset, $options))
     {
-      $options['connection'] = Propel::getConnection(QubitFunction::DATABASE_NAME);
+      return true;
     }
 
-    $criteria = new Criteria;
-    $criteria->add(QubitFunction::ID, $this->id);
+    if ($this->getCurrentfunctionI18n($options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
 
-    self::addSelectColumns($criteria);
+    if (!empty($options['cultureFallback']) && $this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    return false;
+  }
 
-    return $this->hydrate($resultSet);
+  public function offsetGet($offset, array $options = array())
+  {
+    if (null !== $value = parent::offsetGet($offset, $options))
+    {
+      return $value;
+    }
+
+    if (null !== $value = $this->getCurrentfunctionI18n($options)->offsetGet($offset, $options))
+    {
+      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      {
+        $value = $this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options);
+      }
+
+      return $value;
+    }
+
+    if (!empty($options['cultureFallback']) && null !== $value = $this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options))
+    {
+      return $value;
+    }
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    parent::offsetSet($offset, $value, $options);
+
+    $this->getCurrentfunctionI18n($options)->offsetSet($offset, $value, $options);
+
+    return $this;
+  }
+
+  public function offsetUnset($offset, array $options = array())
+  {
+    parent::offsetUnset($offset, $options);
+
+    $this->getCurrentfunctionI18n($options)->offsetUnset($offset, $options);
+
+    return $this;
   }
 
   public function save($connection = null)
@@ -188,7 +138,7 @@ abstract class BaseFunction extends QubitTerm
 
     foreach ($this->functionI18ns as $functionI18n)
     {
-      $functionI18n->setId($this->id);
+      $functionI18n->setid($this->id);
 
       $affectedRows += $functionI18n->save($connection);
     }
@@ -196,190 +146,51 @@ abstract class BaseFunction extends QubitTerm
     return $affectedRows;
   }
 
-  protected function insert($connection = null)
-  {
-    $affectedRows = 0;
-
-    $affectedRows += parent::insert($connection);
-
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitFunction::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitFunction::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('descriptionStatusId'))
-    {
-      $criteria->add(QubitFunction::DESCRIPTION_STATUS_ID, $this->descriptionStatusId);
-    }
-
-    if ($this->isColumnModified('descriptionLevelId'))
-    {
-      $criteria->add(QubitFunction::DESCRIPTION_LEVEL_ID, $this->descriptionLevelId);
-    }
-
-    if ($this->isColumnModified('descriptionIdentifier'))
-    {
-      $criteria->add(QubitFunction::DESCRIPTION_IDENTIFIER, $this->descriptionIdentifier);
-    }
-
-    if (!$this->isColumnModified('sourceCulture'))
-    {
-      $this->sourceCulture = sfPropel::getDefaultCulture();
-    }
-    $criteria->add(QubitFunction::SOURCE_CULTURE, $this->sourceCulture);
-
-    if (!isset($connection))
-    {
-      $connection = QubitTransactionFilter::getConnection(QubitFunction::DATABASE_NAME);
-    }
-
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
-
-    return $affectedRows;
-  }
-
-  protected function update($connection = null)
-  {
-    $affectedRows = 0;
-
-    $affectedRows += parent::update($connection);
-
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitFunction::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('typeId'))
-    {
-      $criteria->add(QubitFunction::TYPE_ID, $this->typeId);
-    }
-
-    if ($this->isColumnModified('descriptionStatusId'))
-    {
-      $criteria->add(QubitFunction::DESCRIPTION_STATUS_ID, $this->descriptionStatusId);
-    }
-
-    if ($this->isColumnModified('descriptionLevelId'))
-    {
-      $criteria->add(QubitFunction::DESCRIPTION_LEVEL_ID, $this->descriptionLevelId);
-    }
-
-    if ($this->isColumnModified('descriptionIdentifier'))
-    {
-      $criteria->add(QubitFunction::DESCRIPTION_IDENTIFIER, $this->descriptionIdentifier);
-    }
-
-    if ($this->isColumnModified('sourceCulture'))
-    {
-      $criteria->add(QubitFunction::SOURCE_CULTURE, $this->sourceCulture);
-    }
-
-    if ($criteria->size() > 0)
-    {
-      $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitFunction::ID, $this->id);
-
-      if (!isset($connection))
-      {
-        $connection = QubitTransactionFilter::getConnection(QubitFunction::DATABASE_NAME);
-      }
-
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
-    }
-
-    return $affectedRows;
-  }
-
-  public static function addJoinTypeCriteria(Criteria $criteria)
+  public static function addJointypeCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitFunction::TYPE_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getType(array $options = array())
-  {
-    return $this->type = QubitTerm::getById($this->typeId, $options);
-  }
-
-  public function setType(QubitTerm $term)
-  {
-    $this->typeId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinDescriptionStatusCriteria(Criteria $criteria)
+  public static function addJoindescriptionStatusCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitFunction::DESCRIPTION_STATUS_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getDescriptionStatus(array $options = array())
-  {
-    return $this->descriptionStatus = QubitTerm::getById($this->descriptionStatusId, $options);
-  }
-
-  public function setDescriptionStatus(QubitTerm $term)
-  {
-    $this->descriptionStatusId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addJoinDescriptionLevelCriteria(Criteria $criteria)
+  public static function addJoindescriptionLevelCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitFunction::DESCRIPTION_LEVEL_ID, QubitTerm::ID);
 
     return $criteria;
   }
 
-  public function getDescriptionLevel(array $options = array())
-  {
-    return $this->descriptionLevel = QubitTerm::getById($this->descriptionLevelId, $options);
-  }
-
-  public function setDescriptionLevel(QubitTerm $term)
-  {
-    $this->descriptionLevelId = $term->getId();
-
-    return $this;
-  }
-
-  public static function addFunctionI18nsCriteriaById(Criteria $criteria, $id)
+  public static function addfunctionI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitFunctionI18n::ID, $id);
 
     return $criteria;
   }
 
-  public static function getFunctionI18nsById($id, array $options = array())
+  public static function getfunctionI18nsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addFunctionI18nsCriteriaById($criteria, $id);
+    self::addfunctionI18nsCriteriaById($criteria, $id);
 
     return QubitFunctionI18n::get($criteria, $options);
   }
 
-  public function addFunctionI18nsCriteria(Criteria $criteria)
+  public function addfunctionI18nsCriteria(Criteria $criteria)
   {
-    return self::addFunctionI18nsCriteriaById($criteria, $this->id);
+    return self::addfunctionI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected $functionI18ns = null;
+  protected
+    $functionI18ns = null;
 
-  public function getFunctionI18ns(array $options = array())
+  public function getfunctionI18ns(array $options = array())
   {
     if (!isset($this->functionI18ns))
     {
@@ -389,194 +200,14 @@ abstract class BaseFunction extends QubitTerm
       }
       else
       {
-        $this->functionI18ns = self::getFunctionI18nsById($this->id, array('self' => $this) + $options);
+        $this->functionI18ns = self::getfunctionI18nsById($this->id, array('self' => $this) + $options);
       }
     }
 
     return $this->functionI18ns;
   }
 
-  public function getClassification(array $options = array())
-  {
-    $classification = $this->getCurrentFunctionI18n($options)->getClassification();
-    if (!empty($options['cultureFallback']) && strlen($classification) < 1)
-    {
-      $classification = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getClassification();
-    }
-
-    return $classification;
-  }
-
-  public function setClassification($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setClassification($value);
-
-    return $this;
-  }
-
-  public function getDomain(array $options = array())
-  {
-    $domain = $this->getCurrentFunctionI18n($options)->getDomain();
-    if (!empty($options['cultureFallback']) && strlen($domain) < 1)
-    {
-      $domain = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getDomain();
-    }
-
-    return $domain;
-  }
-
-  public function setDomain($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setDomain($value);
-
-    return $this;
-  }
-
-  public function getDates(array $options = array())
-  {
-    $dates = $this->getCurrentFunctionI18n($options)->getDates();
-    if (!empty($options['cultureFallback']) && strlen($dates) < 1)
-    {
-      $dates = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getDates();
-    }
-
-    return $dates;
-  }
-
-  public function setDates($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setDates($value);
-
-    return $this;
-  }
-
-  public function getHistory(array $options = array())
-  {
-    $history = $this->getCurrentFunctionI18n($options)->getHistory();
-    if (!empty($options['cultureFallback']) && strlen($history) < 1)
-    {
-      $history = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getHistory();
-    }
-
-    return $history;
-  }
-
-  public function setHistory($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setHistory($value);
-
-    return $this;
-  }
-
-  public function getLegislation(array $options = array())
-  {
-    $legislation = $this->getCurrentFunctionI18n($options)->getLegislation();
-    if (!empty($options['cultureFallback']) && strlen($legislation) < 1)
-    {
-      $legislation = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getLegislation();
-    }
-
-    return $legislation;
-  }
-
-  public function setLegislation($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setLegislation($value);
-
-    return $this;
-  }
-
-  public function getGeneralContext(array $options = array())
-  {
-    $generalContext = $this->getCurrentFunctionI18n($options)->getGeneralContext();
-    if (!empty($options['cultureFallback']) && strlen($generalContext) < 1)
-    {
-      $generalContext = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getGeneralContext();
-    }
-
-    return $generalContext;
-  }
-
-  public function setGeneralContext($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setGeneralContext($value);
-
-    return $this;
-  }
-
-  public function getInstitutionResponsibleIdentifier(array $options = array())
-  {
-    $institutionResponsibleIdentifier = $this->getCurrentFunctionI18n($options)->getInstitutionResponsibleIdentifier();
-    if (!empty($options['cultureFallback']) && strlen($institutionResponsibleIdentifier) < 1)
-    {
-      $institutionResponsibleIdentifier = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getInstitutionResponsibleIdentifier();
-    }
-
-    return $institutionResponsibleIdentifier;
-  }
-
-  public function setInstitutionResponsibleIdentifier($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setInstitutionResponsibleIdentifier($value);
-
-    return $this;
-  }
-
-  public function getRules(array $options = array())
-  {
-    $rules = $this->getCurrentFunctionI18n($options)->getRules();
-    if (!empty($options['cultureFallback']) && strlen($rules) < 1)
-    {
-      $rules = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getRules();
-    }
-
-    return $rules;
-  }
-
-  public function setRules($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setRules($value);
-
-    return $this;
-  }
-
-  public function getSources(array $options = array())
-  {
-    $sources = $this->getCurrentFunctionI18n($options)->getSources();
-    if (!empty($options['cultureFallback']) && strlen($sources) < 1)
-    {
-      $sources = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getSources();
-    }
-
-    return $sources;
-  }
-
-  public function setSources($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setSources($value);
-
-    return $this;
-  }
-
-  public function getRevisionHistory(array $options = array())
-  {
-    $revisionHistory = $this->getCurrentFunctionI18n($options)->getRevisionHistory();
-    if (!empty($options['cultureFallback']) && strlen($revisionHistory) < 1)
-    {
-      $revisionHistory = $this->getCurrentFunctionI18n(array('sourceCulture' => true) + $options)->getRevisionHistory();
-    }
-
-    return $revisionHistory;
-  }
-
-  public function setRevisionHistory($value, array $options = array())
-  {
-    $this->getCurrentFunctionI18n($options)->setRevisionHistory($value);
-
-    return $this;
-  }
-
-  public function getCurrentFunctionI18n(array $options = array())
+  public function getCurrentfunctionI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
     {
@@ -590,10 +221,10 @@ abstract class BaseFunction extends QubitTerm
 
     if (!isset($this->functionI18ns[$options['culture']]))
     {
-      if (null === $functionI18n = QubitFunctionI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      if (!isset($this->id) || null === $functionI18n = QubitFunctionI18n::getByIdAndCulture($this->id, $options['culture'], $options))
       {
         $functionI18n = new QubitFunctionI18n;
-        $functionI18n->setCulture($options['culture']);
+        $functionI18n->setculture($options['culture']);
       }
       $this->functionI18ns[$options['culture']] = $functionI18n;
     }
@@ -601,5 +232,3 @@ abstract class BaseFunction extends QubitTerm
     return $this->functionI18ns[$options['culture']];
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.FunctionMapBuilder');

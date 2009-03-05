@@ -33,7 +33,7 @@
  * @subpackage database
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfMySQLDatabase.class.php 9144 2008-05-21 11:56:58Z FabianLange $
+ * @version    SVN: $Id: sfMySQLDatabase.class.php 12763 2008-11-08 11:27:24Z FabianLange $
  */
 class sfMySQLDatabase extends sfDatabase
 {
@@ -55,6 +55,7 @@ class sfMySQLDatabase extends sfDatabase
         $host     = $this->getParameter('host', 'localhost');
         $password = $this->getParameter('password');
         $username = $this->getParameter('username');
+        $encoding = $this->getParameter('encoding');
 
         break;
 
@@ -109,6 +110,12 @@ class sfMySQLDatabase extends sfDatabase
     {
       // can't select the database
       throw new sfDatabaseException(sprintf('Failed to select MySQLDatabase "%s".', $database));
+    }
+
+    // set encoding if specified
+    if($encoding)
+    {
+      @mysql_query("SET NAMES '".$encoding."'", $this->connection);
     }
 
     // since we're not an abstraction layer, we copy the connection

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: FunctionCallSignatureUnitTest.php,v 1.3 2007/01/10 03:14:43 squiz Exp $
+ * @version   CVS: $Id: FunctionCallSignatureUnitTest.php,v 1.4 2008/12/05 02:45:08 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -54,6 +54,10 @@ class PEAR_Tests_Functions_FunctionCallSignatureUnitTest extends AbstractSniffUn
                 18 => 1,
                 31 => 1,
                 34 => 1,
+                57 => 1,
+                59 => 1,
+                63 => 1,
+                64 => 1,
                );
 
     }//end getErrorList()

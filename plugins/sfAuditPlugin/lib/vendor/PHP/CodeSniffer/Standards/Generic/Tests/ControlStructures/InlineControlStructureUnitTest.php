@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: InlineControlStructureUnitTest.php,v 1.1 2008/05/01 00:49:31 squiz Exp $
+ * @version   CVS: $Id: InlineControlStructureUnitTest.php,v 1.2 2008/07/01 01:25:08 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -54,6 +54,7 @@ class Generic_Tests_ControlStructures_InlineControlStructureUnitTest extends Abs
                     13 => 1,
                     15 => 1,
                     17 => 1,
+                    23 => 1,
                    );
             break;
         case 'InlineControlStructureUnitTest.js':

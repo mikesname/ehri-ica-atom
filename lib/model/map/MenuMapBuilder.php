@@ -2,7 +2,7 @@
 
 
 
-class MenuMapBuilder {
+class MenuMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.MenuMapBuilder';
@@ -25,28 +25,31 @@ class MenuMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitMenu::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_menu');
-		$tMap->setPhpName('Menu');
+		$tMap = $this->dbMap->addTable(QubitMenu::TABLE_NAME);
+		$tMap->setPhpName('menu');
+		$tMap->setClassname('QubitMenu');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addColumn('URL', 'Url', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_menu', 'ID', false, null);
 
-		$tMap->addColumn('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('PATH', 'path', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, false, null);
+		$tMap->addColumn('LFT', 'lft', 'INTEGER', true, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('RGT', 'rgt', 'INTEGER', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
+
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

@@ -12,6 +12,12 @@ ICA-AtoM is web-based archival description software that is based on Internation
     <email>ms419@freezone.co.uk</email>
     <active>yes</active>
   </lead>
+  <lead>
+    <name>David Juhasz</name>
+    <user>david</user>
+    <email>david@artefactual.com</email>
+    <active>yes</active>
+  </lead>
   <version>
     <api>1.0.0</api>
   </version>

@@ -18,7 +18,7 @@
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfContext.class.php 9618 2008-06-17 17:29:00Z dwhittle $
+ * @version    SVN: $Id: sfContext.class.php 11286 2008-09-02 10:27:36Z fabien $
  */
 class sfContext
 {
@@ -82,11 +82,6 @@ class sfContext
     catch (Exception $e)
     {
       sfException::createFromException($e)->printStackTrace();
-    }
-
-    if (sfConfig::get('sf_logging_enabled'))
-    {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Initialization')));
     }
 
     $this->dispatcher->connect('template.filter_parameters', array($this, 'filterTemplateParameters'));
@@ -275,7 +270,7 @@ class sfContext
 
   public function retrieveObjects($class, $peerMethod)
   {
-    $retrievingClass = ucfirst(sfConfig::get('sf_orm', 'propel')).'DataRetriever';
+    $retrievingClass = 'QubitDataRetriever';
 
     return call_user_func(array($retrievingClass, 'retrieveObjects'), $class, $peerMethod);
   }

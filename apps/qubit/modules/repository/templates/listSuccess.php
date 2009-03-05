@@ -34,7 +34,7 @@
   <th>
   <?php if ($sort == 'countryDown'): ?>
     <?php echo __('country') ?>
-    
+
     <!-- hide sort option until it is working...
     <?php echo link_to(__('country'), 'repository/list?country='.$country.'&sort=countryUp&page='.$page) ?>
     <?php echo image_tag('down.gif', 'style="padding-bottom: 3px;"', 'sort down') ?>
@@ -59,11 +59,11 @@
 <?php foreach ($repositories->getResults() as $repository): ?>
 <tr>
   <td>
-  <?php if (strlen($repositoryName = $repository->getAuthorizedFormOfName(array('cultureFallback' => true))) > 0); ?>
+  <?php $repositoryName = $repository->getAuthorizedFormOfName(array('cultureFallback' => true)); ?>
   <?php if ($editCredentials): ?>
-    <?php echo link_to($repositoryName, 'repository/show?id='.$repository->getId()) ?>
+    <?php echo link_to(render_title($repositoryName), 'repository/show?id='.$repository->getId()) ?>
   <?php else: ?>
-    <?php echo link_to($repositoryName, 'repository/show?id='.$repository->getId()) ?>
+    <?php echo link_to(render_title($repositoryName), 'repository/show?id='.$repository->getId()) ?>
   <?php endif; ?>
   </td>
   <td>
@@ -81,14 +81,14 @@
 <div class="pager">
   <?php $links = $repositories->getLinks(); ?>
   <?php if ($repositories->getPage() != $repositories->getFirstPage()): ?>
- <?php echo link_to('< '.__('previous'), 'actor/list?sort='.$sort.'&page='.($repositories->getPage()-1)) ?>
+ <?php echo link_to('< '.__('previous'), 'repository/list?sort='.$sort.'&page='.($repositories->getPage()-1)) ?>
   <?php endif; ?>
   <?php foreach ($links as $page): ?>
     <?php echo ($page == $repositories->getPage()) ? '<strong>'.$page.'</strong>' : link_to($page, 'repository/list?sort='.$sort.'&page='.$page) ?>
     <?php if ($page != $repositories->getCurrentMaxLink()): ?> <?php endif ?>
   <?php endforeach ?>
   <?php if ($repositories->getPage() != $repositories->getLastPage()): ?>
- <?php echo link_to(__('next').' >', 'actor/list?sort='.$sort.'&page='.($repositories->getPage()+1)) ?>
+ <?php echo link_to(__('next').' >', 'repository/list?sort='.$sort.'&page='.($repositories->getPage()+1)) ?>
   <?php endif; ?>
 </div>
 <?php endif ?>

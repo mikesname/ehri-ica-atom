@@ -3,34 +3,26 @@
 <div class="form-item">
 <table class="inline" style="width: 98%;">
   <tr>
-    <td colspan="3" class="headerCell" style="width: 98%">
-      <?php echo __('containers'); ?>
-    </td>
+    <th colspan="2" style="width: 90%;"><?php echo __('containers'); ?></th>
+    <th style="width: 5%;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
   </tr>
 <?php foreach($relations as $relation): ?>
-  <?php $physicalObject = $relation->getSubject(); ?>
-  <tr>
-    <td style="width: 90%">
+  <?php $physicalObject = QubitPhysicalObject::getById($relation->getSubjectId()); ?>
+  <tr class="<?php echo 'related_obj_'.$relation->getId() ?>">
+    <td style="width: 90%"><div class="animateNicely">
       <?php if (strlen($type = $physicalObject->getType())) echo $type.': '; ?>
       <b><?php echo $physicalObject->getName(array('cultureFallback' => 'true')); ?></b>
       <?php if ($location = $physicalObject->getLocation(array('cultureFallback' => 'true'))) echo ' - '.$location; ?>     
-    </td>
-    <?php if ($physicalObject): ?>
-    <td style="width: 20px; border-top: 1px solid #cccccc;">
+    </div></td>
+    <td style="width: 20px;"><div class="animateNicely">
       <?php echo link_to(image_tag('pencil', 'align=top'), 
         array('module' => 'physicalobject', 'action' => 'edit', 'id' => $physicalObject->getId()), 
         array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())))
       ) ?>
-    </td>
-    <td style="width: 20px; border-top: 1px solid #cccccc;">
-      <?php echo link_to(image_tag('delete', 'align=top'),
-        array('module' => 'relation', 'action' => 'delete', 'id' => $relation->getId()), 
-        array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())))
-      ) ?>
-    </td>
-    <?php else: ?>
-    <td colspan="2">&nbsp;</td>
-    <?php endif; ?>
+    </div></td>
+    <td style="width: 20px;"><div class="animateNicely">
+      <input type="checkbox" name="delete_relations[<?php echo $relation->getId() ?>]" value="delete" class="multiDelete" />
+    </div></td>
   </tr>
 <?php endforeach; ?>
 </table>

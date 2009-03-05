@@ -2,7 +2,7 @@
 
 
 
-class RolePermissionRelationMapBuilder {
+class RolePermissionRelationMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.RolePermissionRelationMapBuilder';
@@ -25,18 +25,19 @@ class RolePermissionRelationMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitRolePermissionRelation::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_role_permission_relation');
-		$tMap->setPhpName('RolePermissionRelation');
+		$tMap = $this->dbMap->addTable(QubitRolePermissionRelation::TABLE_NAME);
+		$tMap->setPhpName('rolePermissionRelation');
+		$tMap->setClassname('QubitRolePermissionRelation');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addForeignKey('ROLE_ID', 'RoleId', 'int', CreoleTypes::INTEGER, 'q_role', 'ID', true, null);
+		$tMap->addForeignKey('ROLE_ID', 'roleId', 'INTEGER', 'q_role', 'ID', true, null);
 
-		$tMap->addForeignKey('PERMISSION_ID', 'PermissionId', 'int', CreoleTypes::INTEGER, 'q_permission', 'ID', true, null);
+		$tMap->addForeignKey('PERMISSION_ID', 'permissionId', 'INTEGER', 'q_permission', 'ID', true, null);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

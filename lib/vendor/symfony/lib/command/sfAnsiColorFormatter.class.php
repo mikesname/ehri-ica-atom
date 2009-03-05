@@ -14,15 +14,16 @@
  * @package    symfony
  * @subpackage command
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfAnsiColorFormatter.class.php 9652 2008-06-18 21:38:48Z nicolas $
+ * @version    SVN: $Id: sfAnsiColorFormatter.class.php 11301 2008-09-03 05:55:42Z fabien $
  */
 class sfAnsiColorFormatter extends sfFormatter
 {
   protected
     $styles = array(
-      'ERROR'   => array('bg' => 'red', 'fg' => 'white', 'bold' => true),
-      'INFO'    => array('fg' => 'green', 'bold' => true),
-      'COMMENT' => array('fg' => 'yellow'),
+      'ERROR'    => array('bg' => 'red', 'fg' => 'white', 'bold' => true),
+      'INFO'     => array('fg' => 'green', 'bold' => true),
+      'COMMENT'  => array('fg' => 'yellow'),
+      'QUESTION' => array('bg' => 'cyan', 'fg' => 'black', 'bold' => false),
     ),
     $options    = array('bold' => 1, 'underscore' => 4, 'blink' => 5, 'reverse' => 7, 'conceal' => 8),
     $foreground = array('black' => 30, 'red' => 31, 'green' => 32, 'yellow' => 33, 'blue' => 34, 'magenta' => 35, 'cyan' => 36, 'white' => 37),
@@ -48,8 +49,10 @@ class sfAnsiColorFormatter extends sfFormatter
    *
    * @return string The styled text
    */
-  public function format($text = '', $parameters = array(), $stream = STDOUT)
+  public function format($text = '', $parameters = array())
   {
+    $stream = defined('STDOUT') ? STDOUT : fopen('php://stdout', 'w');
+
     if (!$this->supportsColors($stream))
     {
       return $text;
@@ -96,7 +99,7 @@ class sfAnsiColorFormatter extends sfFormatter
   public function formatSection($section, $text, $size = null, $style = 'INFO')
   {
     $style = !array_key_exists($style, $this->styles) ? 'INFO' : $style;
-    
+
     $width = 9 + strlen($this->format('', $style));
 
     return sprintf(">> %-${width}s %s", $this->format($section, $style), $this->excerpt($text, $size));

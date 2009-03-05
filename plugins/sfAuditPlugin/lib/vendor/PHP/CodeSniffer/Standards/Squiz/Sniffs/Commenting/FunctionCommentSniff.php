@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: FunctionCommentSniff.php,v 1.29 2008/02/28 22:58:23 squiz Exp $
+ * @version   CVS: $Id: FunctionCommentSniff.php,v 1.30 2008/12/17 22:36:41 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -164,6 +164,7 @@ class Squiz_Sniffs_Commenting_FunctionCommentSniff implements PHP_CodeSniffer_Sn
 
         $this->_functionToken = $stackPtr;
 
+        $this->_classToken = null;
         foreach ($tokens[$stackPtr]['conditions'] as $condPtr => $condition) {
             if ($condition === T_CLASS || $condition === T_INTERFACE) {
                 $this->_classToken = $condPtr;

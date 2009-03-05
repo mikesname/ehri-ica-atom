@@ -49,12 +49,6 @@ class AuditTask extends sfBaseTask
   {
     parent::initialize($dispatcher, $formatter);
 
-    // Register this plugin's lib directory with the autoloader, for
-    // autoloading SvnFinder and PHP_CodeSniffer
-    $autoloader = sfSimpleAutoload::getInstance();
-    $autoloader->addDirectory(dirname(__FILE__).'/..');
-    $autoloader->register();
-
     $globConfigs = sfYaml::load(dirname(__FILE__).'/../../config/audit.yml');
 
     $this->patternConfigs = array();
@@ -110,8 +104,7 @@ EOF;
 
   protected function getPropsFromPath($path)
   {
-    // TODO: Find a better way to parse this?
-    $pattern = '/K \d+\n(\V+)\nV \d+\n(\V+)\n/';
+    $props = array();
 
     $paths = array();
     $paths[] = dirname($path).'/.svn/props/'.basename($path).'.svn-work';
@@ -121,24 +114,73 @@ EOF;
     {
       if (file_exists($path))
       {
-        if (false === $contents = file_get_contents($path))
+        if (false === $handle = fopen($path, 'r'))
         {
           // TODO: Error handling
         }
 
-        break;
+        while (!feof($handle))
+        {
+          // Read a key length line.  Might be END, though.
+          if (false === $buffer = fgets($handle))
+          {
+            // TODO: Error handling
+          }
+
+          // Check for the end of the hash
+          if ("END\n" == $buffer)
+          {
+            break;
+          }
+
+          if ('K ' != substr($buffer, 0, 2))
+          {
+            // TODO: Error handling
+          }
+
+          // Now read that much into a buffer
+          if (false === $key = fread($handle, substr($buffer, 2)))
+          {
+            // TODO: Error handling
+          }
+
+          // Suck up extra newline after key data
+          if ("\n" != fgetc($handle))
+          {
+            // TODO: Error handling
+          }
+
+          // Read a value length line
+          if (false === $buffer = fgets($handle))
+          {
+            // TODO: Error handling
+          }
+
+          if ('V ' != substr($buffer, 0, 2))
+          {
+            // TODO: Error handling
+          }
+
+          // Now read that much into a buffer
+          if (false === $value = fread($handle, substr($buffer, 2)))
+          {
+            // TODO: Error handling
+          }
+
+          // Suck up extra newline after value data
+          if ("\n" != fgetc($handle))
+          {
+            // TODO: Error handling
+          }
+
+          $props[$key] = $value;
+        }
+
+        if (false === fclose($handle))
+        {
+          // TODO: Error handling
+        }
       }
-    }
-
-    if (false === preg_match_all($pattern, $contents, $matches, PREG_SET_ORDER))
-    {
-      // TODO: Error handling
-    }
-
-    $props = array();
-    foreach ($matches as $match)
-    {
-      $props[$match[1]] = $match[2];
     }
 
     return $props;
@@ -171,8 +213,14 @@ EOF;
       // defined, and an empty file otherwise
       if (isset($config['code']['standard']))
       {
-        $listeners = $phpcs->getTokenListeners($config['code']['standard']);
-        $phpcsFile = new PHP_CodeSniffer_File($path, $listeners, $phpcs->allowedFileExtensions);
+        // HACK: PHP_CodeSniffer_File now expects an array of
+        // PHP_CodeSniffer_Sniff instances, which
+        // PHP_CodeSniffer::getTokenListeners() does not return
+        $processPhpcs = new PHP_CodeSniffer;
+        $processPhpcs->process(array(), $config['code']['standard']);
+        $listeners = $processPhpcs->getTokenSniffs();
+
+        $phpcsFile = new PHP_CodeSniffer_File($path, $listeners['file'], $phpcs->allowedFileExtensions);
 
         $phpcsFile->start();
       }
@@ -188,7 +236,7 @@ EOF;
       if (isset($config['props']))
       {
         $props = $this->getPropsFromPath($path);
-        foreach (array_merge($props, $config['props']) as $key => $value)
+        foreach ($props + $config['props'] as $key => $value)
         {
           if (isset($props[$key]) && !isset($config['props'][$key]))
           {

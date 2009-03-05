@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorChoice.class.php 11612 2008-09-17 15:28:38Z nicolas $
+ * @version    SVN: $Id: sfValidatorChoice.class.php 11970 2008-10-06 06:28:40Z dwhittle $
  */
 class sfValidatorChoice extends sfValidatorBase
 {
@@ -23,7 +23,8 @@ class sfValidatorChoice extends sfValidatorBase
    *
    * Available options:
    *
-   *  * choices: An array of expected values (required)
+   *  * choices:  An array of expected values (required)
+   *  * multiple: true if the select tag must allow multiple selections
    *
    * @param array $options    An array of options
    * @param array $messages   An array of error messages
@@ -33,6 +34,7 @@ class sfValidatorChoice extends sfValidatorBase
   protected function configure($options = array(), $messages = array())
   {
     $this->addRequiredOption('choices');
+    $this->addOption('multiple', false);
   }
 
   /**
@@ -46,9 +48,27 @@ class sfValidatorChoice extends sfValidatorBase
       $choices = $choices->call();
     }
 
-    if (!self::inChoices($value, $choices))
+    if ($this->getOption('multiple'))
     {
-      throw new sfValidatorError($this, 'invalid', array('value' => $value));
+      if (!is_array($value))
+      {
+        $value = array($value);
+      }
+
+      foreach ($value as $v)
+      {
+        if (!self::inChoices($v, $choices))
+        {
+          throw new sfValidatorError($this, 'invalid', array('value' => $v));
+        }
+      }
+    }
+    else
+    {
+      if (!self::inChoices($value, $choices))
+      {
+        throw new sfValidatorError($this, 'invalid', array('value' => $value));
+      }
     }
 
     return $value;

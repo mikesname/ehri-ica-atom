@@ -2,7 +2,7 @@
 
 
 
-class EventI18nMapBuilder {
+class EventI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.EventI18nMapBuilder';
@@ -25,22 +25,23 @@ class EventI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitEventI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_event_i18n');
-		$tMap->setPhpName('EventI18n');
+		$tMap = $this->dbMap->addTable(QubitEventI18n::TABLE_NAME);
+		$tMap->setPhpName('eventI18n');
+		$tMap->setClassname('QubitEventI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('DESCRIPTION', 'Description', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('DATE_DISPLAY', 'DateDisplay', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('DATE_DISPLAY', 'dateDisplay', 'VARCHAR', false, 255);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_event', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_event', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

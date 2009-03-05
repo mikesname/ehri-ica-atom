@@ -16,7 +16,7 @@
  * @subpackage controller
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfController.class.php 9756 2008-06-23 01:19:30Z dwhittle $
+ * @version    SVN: $Id: sfController.class.php 11286 2008-09-02 10:27:36Z fabien $
  */
 abstract class sfController
 {
@@ -46,11 +46,6 @@ abstract class sfController
   {
     $this->context    = $context;
     $this->dispatcher = $context->getEventDispatcher();
-
-    if (sfConfig::get('sf_logging_enabled'))
-    {
-      $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Initialization')));
-    }
 
     // set max forwards
     $this->maxForwards = sfConfig::get('sf_max_forwards');

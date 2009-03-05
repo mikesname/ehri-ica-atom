@@ -16,7 +16,7 @@ require_once(dirname(__FILE__).'/sfGeneratorBaseTask.class.php');
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfGenerateProjectTask.class.php 8148 2008-03-29 07:58:59Z fabien $
+ * @version    SVN: $Id: sfGenerateProjectTask.class.php 12728 2008-11-07 19:56:17Z Kris.Wallsmith $
  */
 class sfGenerateProjectTask extends sfGeneratorBaseTask
 {
@@ -71,14 +71,20 @@ EOF;
     $this->getFilesystem()->mirror(dirname(__FILE__).'/skeleton/project', sfConfig::get('sf_root_dir'), $finder);
 
     // update project name and directory
-    $finder = sfFinder::type('file')->name('properties.ini', 'apache.conf', 'propel.ini');
+    $finder = sfFinder::type('file')->name('properties.ini', 'apache.conf', 'propel.ini', 'databases.yml');
     $this->getFileSystem()->replaceTokens($finder->in(sfConfig::get('sf_config_dir')), '##', '##', array('PROJECT_NAME' => $arguments['name'], 'PROJECT_DIR' => sfConfig::get('sf_root_dir')));
 
     // update ProjectConfiguration class
     $this->getFileSystem()->replaceTokens(sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php', '##', '##', array('SYMFONY_LIB_DIR'  => sfConfig::get('sf_symfony_lib_dir')));
 
+    // fix permission for common directories
     $fixPerms = new sfProjectPermissionsTask($this->dispatcher, $this->formatter);
     $fixPerms->setCommandApplication($this->commandApplication);
     $fixPerms->run();
+
+    // publish assets for core plugins
+    $publishAssets = new sfPluginPublishAssetsTask($this->dispatcher, $this->formatter);
+    $publishAssets->setCommandApplication($this->commandApplication);
+    $publishAssets->run(array(), array('--core-only'));
   }
 }

@@ -1,14 +1,15 @@
 <?php
 
-abstract class BaseNoteI18n
+abstract class BaseNoteI18n implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_note_i18n';
+    TABLE_NAME = 'q_note_i18n',
 
-  const CONTENT = 'q_note_i18n.CONTENT';
-  const ID = 'q_note_i18n.ID';
-  const CULTURE = 'q_note_i18n.CULTURE';
+    CONTENT = 'q_note_i18n.CONTENT',
+    ID = 'q_note_i18n.ID',
+    CULTURE = 'q_note_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -19,14 +20,19 @@ abstract class BaseNoteI18n
     return $criteria;
   }
 
-  protected static $noteI18ns = array();
+  protected static
+    $noteI18ns = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$noteI18ns[$key = serialize(array($resultSet->getInt(2), $resultSet->getString(3)))]))
+    if (!isset(self::$noteI18ns[$key = serialize(array((int) $row[1], (string) $row[2]))]))
     {
       $noteI18n = new QubitNoteI18n;
-      $noteI18n->hydrate($resultSet);
+      $noteI18n->new = false;
+      $noteI18n->row = $row;
 
       self::$noteI18ns[$key] = $noteI18n;
     }
@@ -81,79 +87,160 @@ abstract class BaseNoteI18n
     return $affectedRows;
   }
 
-  protected $content = null;
+  protected
+    $tables = array();
 
-  public function getContent()
+  public function __construct()
   {
-    return $this->content;
+    $this->tables[] = Propel::getDatabaseMap(QubitNoteI18n::DATABASE_NAME)->getTable(QubitNoteI18n::TABLE_NAME);
   }
 
-  public function setContent($content)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->content = $content;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $id = null;
-
-  public function getId()
+  public function __set($name, $value)
   {
-    return $this->id;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setId($id)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->id = $id;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $culture = null;
-
-  public function getCulture()
+  public function __unset($name)
   {
-    return $this->culture;
+    return $this->offsetUnset($name);
   }
 
-  public function setCulture($culture)
-  {
-    $this->culture = $culture;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['content'] = $this->content;
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['culture'] = $this->culture;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->content = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-    $this->culture = $results->getString($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -166,12 +253,12 @@ abstract class BaseNoteI18n
     $criteria->add(QubitNoteI18n::ID, $this->id);
     $criteria->add(QubitNoteI18n::CULTURE, $this->culture);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -192,8 +279,22 @@ abstract class BaseNoteI18n
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -202,30 +303,49 @@ abstract class BaseNoteI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('content'))
-    {
-      $criteria->add(QubitNoteI18n::CONTENT, $this->content);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitNoteI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitNoteI18n::CULTURE, $this->culture);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitNoteI18n::DATABASE_NAME);
     }
 
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -234,35 +354,43 @@ abstract class BaseNoteI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('content'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitNoteI18n::CONTENT, $this->content);
+      $connection = QubitTransactionFilter::getConnection(QubitNoteI18n::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('id'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitNoteI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitNoteI18n::CULTURE, $this->culture);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitNoteI18n::ID, $this->id);
-      $selectCriteria->add(QubitNoteI18n::CULTURE, $this->culture);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitNoteI18n::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -293,9 +421,9 @@ abstract class BaseNoteI18n
 	{
 		$pks = array();
 
-		$pks[0] = $this->getId();
+		$pks[0] = $this->getid();
 
-		$pks[1] = $this->getCulture();
+		$pks[1] = $this->getculture();
 
 		return $pks;
 	}
@@ -304,30 +432,28 @@ abstract class BaseNoteI18n
 	public function setPrimaryKey($keys)
 	{
 
-		$this->setId($keys[0]);
+		$this->setid($keys[0]);
 
-		$this->setCulture($keys[1]);
+		$this->setculture($keys[1]);
 
 	}
 
-  public static function addJoinNoteCriteria(Criteria $criteria)
+  public static function addJoinnoteCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitNoteI18n::ID, QubitNote::ID);
 
     return $criteria;
   }
 
-  public function getNote(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->note = QubitNote::getById($this->id, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setNote(QubitNote $note)
-  {
-    $this->id = $note->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.NoteI18nMapBuilder');

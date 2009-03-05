@@ -46,7 +46,10 @@ echo 'hi';
  * Comments contining CVS IDs can be long, but should be ignored because
  * they cannot be changed by the developer. Same with license URLs.
  *
- * @version CVS: $Id$
+ * @version CVS: $Id: LineLengthUnitTest.inc,v 1.6 2008/06/27 01:58:38 squiz Exp $
  * @license http://www.freebsd.org/copyright/freebsd-license.html BSD License (2 Clause)
  */
  ?>
+
+<?php
+// This is another really long comment that is going to go well over 100 characters, with no closing php tag after it.

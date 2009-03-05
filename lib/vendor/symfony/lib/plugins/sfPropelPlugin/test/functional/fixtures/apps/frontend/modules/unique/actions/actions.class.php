@@ -6,7 +6,7 @@
  * @package    test
  * @subpackage unique
  * @author     Your name here
- * @version    SVN: $Id: actions.class.php 9666 2008-06-19 12:57:42Z fabien $
+ * @version    SVN: $Id: actions.class.php 12637 2008-11-04 17:48:38Z fabien $
  */
 class uniqueActions extends sfActions
 {
@@ -23,6 +23,23 @@ class uniqueActions extends sfActions
         $this->form->save();
 
         $this->redirect('unique/ok');
+      }
+    }
+  }
+
+  public function executeEdit($request)
+  {
+    $this->form = new ArticleForm(ArticlePeer::doSelectOne(new Criteria()));
+
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getParameter('article'));
+
+      if ($this->form->isValid())
+      {
+        $this->form->save();
+
+        $this->redirect('unique/edit');
       }
     }
   }

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_02_create_fonds_1</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_02_create_fonds_1</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>edit resource metadata - Dublin Core</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>055</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>Dublin Core fonds</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newActorEvent_actorId</td>
+	<td>label=TeleLearning Network Inc</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>newActorEvent_placeId</td>
+	<td>label=Vancouver</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newActorEvent_year</td>
+	<td>1977</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newActorEvent_endYear</td>
+	<td>1988</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newActorEvent_dateDisplay</td>
+	<td>[ca. 1977] - 1988</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newActorEvent_description</td>
+	<td>Here is a creation note.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//span[@id='yui-gen2']/span/button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>material_type_id</td>
+	<td>label=Cartographic material</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//option[@value='219']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=055 - Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=055 - Dublin Core fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>title</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>creator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>date</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=TeleLearning Network Inc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>[ca. 1977] - 1988 (Creation)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archival material</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Cartographic material</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

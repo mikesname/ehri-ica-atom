@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: LineLengthUnitTest.php,v 1.4 2007/07/24 05:46:57 squiz Exp $
+ * @version   CVS: $Id: LineLengthUnitTest.php,v 1.5 2008/06/27 01:58:38 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -46,6 +46,7 @@ class Generic_Tests_Files_LineLengthUnitTest extends AbstractSniffUnitTest
         return array(
                 31 => 1,
                 34 => 1,
+                55 => 1,
                );
 
     }//end getErrorList()

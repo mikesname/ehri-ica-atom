@@ -6,7 +6,7 @@
  * @package    test
  * @subpackage i18n
  * @author     Your name here
- * @version    SVN: $Id: actions.class.php 8296 2008-04-04 16:16:30Z fabien $
+ * @version    SVN: $Id: actions.class.php 12854 2008-11-09 20:08:32Z fabien $
  */
 class i18nActions extends sfActions
 {
@@ -22,5 +22,22 @@ class i18nActions extends sfActions
     $this->movies = MoviePeer::doSelect(new Criteria());
 
     $this->setTemplate('index');
+  }
+
+  public function executeMovie($request)
+  {
+    $this->form = new MovieForm(MoviePeer::retrieveByPk($request->getParameter('id')));
+
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getParameter('movie'));
+
+      if ($this->form->isValid())
+      {
+        $movie = $this->form->save();
+
+        $this->redirect('i18n/movie?id='.$movie->getId());
+      }
+    }
   }
 }

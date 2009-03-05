@@ -50,6 +50,9 @@ class sfI18nApplicationExtract extends sfI18nExtract
 
     // Add global librairies
     $this->extractFromPhpFiles(sfConfig::get('sf_app_lib_dir'));
+    
+    // Add forms
+    $this->extractFromPhpFiles(sfConfig::get('sf_lib_dir').'/form');
   }
 
   /**

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: FileCommentSniff.php,v 1.25 2007/11/26 22:11:18 squiz Exp $
+ * @version   CVS: $Id: FileCommentSniff.php,v 1.30 2008/12/02 05:59:23 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -60,6 +60,69 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
      */
     protected $currentFile = null;
 
+    /**
+     * Tags in correct order and related info.
+     *
+     * @var array
+     */
+    protected $tags = array(
+                       'category'   => array(
+                                        'required'       => true,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'precedes @package',
+                                       ),
+                       'package'    => array(
+                                        'required'       => true,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'follows @category',
+                                       ),
+                       'subpackage' => array(
+                                        'required'       => false,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'follows @package',
+                                       ),
+                       'author'     => array(
+                                        'required'       => true,
+                                        'allow_multiple' => true,
+                                        'order_text'     => 'follows @subpackage (if used) or @package',
+                                       ),
+                       'copyright'  => array(
+                                        'required'       => false,
+                                        'allow_multiple' => true,
+                                        'order_text'     => 'follows @author',
+                                       ),
+                       'license'    => array(
+                                        'required'       => true,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'follows @copyright (if used) or @author',
+                                       ),
+                       'version'    => array(
+                                        'required'       => false,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'follows @license',
+                                       ),
+                       'link'       => array(
+                                        'required'       => true,
+                                        'allow_multiple' => true,
+                                        'order_text'     => 'follows @version',
+                                       ),
+                       'see'        => array(
+                                        'required'       => false,
+                                        'allow_multiple' => true,
+                                        'order_text'     => 'follows @link',
+                                       ),
+                       'since'      => array(
+                                        'required'       => false,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'follows @see (if used) or @link',
+                                       ),
+                       'deprecated' => array(
+                                        'required'       => false,
+                                        'allow_multiple' => false,
+                                        'order_text'     => 'follows @since (if used) or @see (if used) or @link',
+                                       ),
+                );
+
 
     /**
      * Returns an array of tokens this test wants to listen for.
@@ -96,51 +159,95 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
         $tokens = $phpcsFile->getTokens();
 
         // Find the next non whitespace token.
-        $commentStart = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+        $commentStart
+            = $phpcsFile->findNext(T_WHITESPACE, ($stackPtr + 1), null, true);
+
         // Ignore vim header.
         if ($tokens[$commentStart]['code'] === T_COMMENT) {
             if (strstr($tokens[$commentStart]['content'], 'vim:') !== false) {
-                $commentStart = $phpcsFile->findNext(T_WHITESPACE, ($commentStart + 1), null, true);
+                $commentStart = $phpcsFile->findNext(
+                    T_WHITESPACE,
+                    ($commentStart + 1),
+                    null,
+                    true
+                );
             }
+        }
+
+        $errorToken = ($stackPtr + 1);
+        if (isset($tokens[$errorToken]) === false) {
+            $errorToken--;
         }
 
         if ($tokens[$commentStart]['code'] === T_CLOSE_TAG) {
             // We are only interested if this is the first open tag.
             return;
         } else if ($tokens[$commentStart]['code'] === T_COMMENT) {
-            $phpcsFile->addError('You must use "/**" style comments for a file comment', ($stackPtr + 1));
+            $error = 'You must use "/**" style comments for a file comment';
+            $phpcsFile->addError($error, $errorToken);
             return;
-        } else if ($commentStart === false || $tokens[$commentStart]['code'] !== T_DOC_COMMENT) {
-            $phpcsFile->addError('Missing file doc comment', ($stackPtr + 1));
+        } else if ($commentStart === false
+            || $tokens[$commentStart]['code'] !== T_DOC_COMMENT
+        ) {
+            $phpcsFile->addError('Missing file doc comment', $errorToken);
             return;
         } else {
 
             // Extract the header comment docblock.
-            $commentEnd = ($phpcsFile->findNext(T_DOC_COMMENT, ($commentStart + 1), null, true) - 1);
+            $commentEnd = $phpcsFile->findNext(
+                T_DOC_COMMENT,
+                ($commentStart + 1),
+                null,
+                true
+            );
 
-            // Check if there is only 1 doc comment between the open tag and class token.
+            $commentEnd--;
+
+            // Check if there is only 1 doc comment between the
+            // open tag and class token.
             $nextToken   = array(
                             T_ABSTRACT,
                             T_CLASS,
                             T_FUNCTION,
                             T_DOC_COMMENT,
                            );
+
             $commentNext = $phpcsFile->findNext($nextToken, ($commentEnd + 1));
-            if ($commentNext !== false && $tokens[$commentNext]['code'] !== T_DOC_COMMENT) {
+            if ($commentNext !== false
+                && $tokens[$commentNext]['code'] !== T_DOC_COMMENT
+            ) {
                 // Found a class token right after comment doc block.
-                $newlineToken = $phpcsFile->findNext(T_WHITESPACE, ($commentEnd + 1), $commentNext, false, $phpcsFile->eolChar);
+                $newlineToken = $phpcsFile->findNext(
+                    T_WHITESPACE,
+                    ($commentEnd + 1),
+                    $commentNext,
+                    false,
+                    $phpcsFile->eolChar
+                );
+
                 if ($newlineToken !== false) {
-                    $newlineToken = $phpcsFile->findNext(T_WHITESPACE, ($newlineToken + 1), $commentNext, false, $phpcsFile->eolChar);
+                    $newlineToken = $phpcsFile->findNext(
+                        T_WHITESPACE,
+                        ($newlineToken + 1),
+                        $commentNext,
+                        false,
+                        $phpcsFile->eolChar
+                    );
+
                     if ($newlineToken === false) {
                         // No blank line between the class token and the doc block.
                         // The doc block is most likely a class comment.
-                        $phpcsFile->addError('Missing file doc comment', ($stackPtr + 1));
+                        $error = 'Missing file doc comment';
+                        $phpcsFile->addError($error, $errorToken);
                         return;
                     }
                 }
-            }
+            }//end if
 
-            $comment = $phpcsFile->getTokensAsString($commentStart, ($commentEnd - $commentStart + 1));
+            $comment = $phpcsFile->getTokensAsString(
+                $commentStart,
+                ($commentEnd - $commentStart + 1)
+            );
 
             // Parse the header comment docblock.
             try {
@@ -222,65 +329,6 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
      */
     protected function processTags($commentStart, $commentEnd)
     {
-        // Tags in correct order and related info.
-        $tags = array(
-                 'category'   => array(
-                                  'required'       => true,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'precedes @package',
-                                 ),
-                 'package'    => array(
-                                  'required'       => true,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'follows @category',
-                                 ),
-                 'subpackage' => array(
-                                  'required'       => false,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'follows @package',
-                                 ),
-                 'author'     => array(
-                                  'required'       => true,
-                                  'allow_multiple' => true,
-                                  'order_text'     => 'follows @subpackage (if used) or @package',
-                                 ),
-                 'copyright'  => array(
-                                  'required'       => false,
-                                  'allow_multiple' => true,
-                                  'order_text'     => 'follows @author',
-                                 ),
-                 'license'    => array(
-                                  'required'       => true,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'follows @copyright (if used) or @author',
-                                 ),
-                 'version'    => array(
-                                  'required'       => false,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'follows @licence',
-                                 ),
-                 'link'       => array(
-                                  'required'       => true,
-                                  'allow_multiple' => true,
-                                  'order_text'     => 'follows @version',
-                                 ),
-                 'see'        => array(
-                                  'required'       => false,
-                                  'allow_multiple' => true,
-                                  'order_text'     => 'follows @link',
-                                 ),
-                 'since'      => array(
-                                  'required'       => false,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'follows @see (if used) or @link',
-                                 ),
-                 'deprecated' => array(
-                                  'required'       => false,
-                                  'allow_multiple' => false,
-                                  'order_text'     => 'follows @since (if used) or @see (if used) or @link',
-                                 ),
-                );
-
         $docBlock    = (get_class($this) === 'PEAR_Sniffs_Commenting_FileCommentSniff') ? 'file' : 'class';
         $foundTags   = $this->commentParser->getTagOrders();
         $orderIndex  = 0;
@@ -288,7 +336,7 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
         $longestTag  = 0;
         $errorPos    = 0;
 
-        foreach ($tags as $tag => $info) {
+        foreach ($this->tags as $tag => $info) {
 
             // Required tag missing.
             if ($info['required'] === true && in_array($tag, $foundTags) === false) {
@@ -328,8 +376,9 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
                     $count = $foundIndexes[0];
                     foreach ($foundIndexes as $index) {
                         if ($index !== $count) {
-                            $errorPosIndex = ($errorPos + $tagElement[$i]->getLine());
-                            $error         = "@$tag tags must be grouped together";
+                            $errorPosIndex
+                                = ($errorPos + $tagElement[$i]->getLine());
+                            $error = "@$tag tags must be grouped together";
                             $this->currentFile->addError($error, $errorPosIndex);
                         }
 
@@ -348,7 +397,7 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
                 }
 
                 $orderText = $info['order_text'];
-                $error     = "The @$tag tag is in the wrong order; the tag $orderText";
+                $error = "The @$tag tag is in the wrong order; the tag $orderText";
                 $this->currentFile->addError($error, $errorPos);
             }
 
@@ -380,22 +429,34 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
             } else {
                 if (is_array($tagElement) === true) {
                     foreach ($tagElement as $key => $element) {
-                        $element->process($this->currentFile, $commentStart, $docBlock);
+                        $element->process(
+                            $this->currentFile,
+                            $commentStart,
+                            $docBlock
+                        );
                     }
                 } else {
-                     $tagElement->process($this->currentFile, $commentStart, $docBlock);
+                     $tagElement->process(
+                         $this->currentFile,
+                         $commentStart,
+                         $docBlock
+                     );
                 }
             }
         }//end foreach
 
         foreach ($indentation as $indentInfo) {
-            if ($indentInfo['space'] !== 0 && $indentInfo['space'] !== ($longestTag + 1)) {
-                $expected     = (($longestTag - strlen($indentInfo['tag'])) + 1);
-                $space        = ($indentInfo['space'] - strlen($indentInfo['tag']));
-                $error        = "@$indentInfo[tag] tag comment indented incorrectly. ";
-                $error       .= "Expected $expected spaces but found $space.";
+            if ($indentInfo['space'] !== 0
+                && $indentInfo['space'] !== ($longestTag + 1)
+            ) {
+                $expected = (($longestTag - strlen($indentInfo['tag'])) + 1);
+                $space    = ($indentInfo['space'] - strlen($indentInfo['tag']));
+                $error    = "@$indentInfo[tag] tag comment indented incorrectly. ";
+                $error   .= "Expected $expected spaces but found $space.";
+
                 $getTagMethod = 'get'.ucfirst($indentInfo['tag']);
-                if ($tags[$indentInfo['tag']]['allow_multiple'] === true) {
+
+                if ($this->tags[$indentInfo['tag']]['allow_multiple'] === true) {
                     $line = $indentInfo['line'];
                 } else {
                     $tagElem = $this->commentParser->$getTagMethod();
@@ -412,8 +473,11 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
     /**
      * Get the indentation information of each tag.
      *
-     * @param string                                   $tagName    The name of the doc comment element.
-     * @param PHP_CodeSniffer_CommentParser_DocElement $tagElement The doc comment element.
+     * @param string                                   $tagName    The name of the
+     *                                                             doc comment
+     *                                                             element.
+     * @param PHP_CodeSniffer_CommentParser_DocElement $tagElement The doc comment
+     *                                                             element.
      *
      * @return void
      */
@@ -561,7 +625,8 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
                 $content  = $author->getContent();
                 if ($content !== '') {
                     $local = '\da-zA-Z-_+';
-                    // Dot character cannot be the first or last character in the local-part.
+                    // Dot character cannot be the first or last character
+                    // in the local-part.
                     $localMiddle = $local.'.\w';
                     if (preg_match('/^([^<]*)\s+<(['.$local.']['.$localMiddle.']*['.$local.']@[\da-zA-Z][-.\w]*[\da-zA-Z]\.[a-zA-Z]{2,7})>$/', $content) === 0) {
                         $error = 'Content of the @author tag must be in the form "Display Name <username@example.com>"';
@@ -569,7 +634,7 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
                     }
                 } else {
                     $docBlock = (get_class($this) === 'PEAR_Sniffs_Commenting_FileCommentSniff') ? 'file' : 'class';
-                    $error    = "Content missing for @author tag in $docBlock comment";
+                    $error = "Content missing for @author tag in $docBlock comment";
                     $this->currentFile->addError($error, $errorPos);
                 }
             }
@@ -658,7 +723,9 @@ class PEAR_Sniffs_Commenting_FileCommentSniff implements PHP_CodeSniffer_Sniff
             if (empty($content) === true) {
                 $error = 'Content missing for @version tag in file comment';
                 $this->currentFile->addError($error, $errorPos);
-            } else if (strstr($content, 'CVS:') === false && strstr($content, 'SVN:') === false) {
+            } else if (strstr($content, 'CVS:') === false
+                && strstr($content, 'SVN:') === false
+            ) {
                 $error = "Invalid version \"$content\" in file comment; consider \"CVS: <cvs_id>\" or \"SVN: <svn_id>\" instead";
                 $this->currentFile->addWarning($error, $errorPos);
             }

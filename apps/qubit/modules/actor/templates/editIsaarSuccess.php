@@ -1,6 +1,6 @@
 ﻿<?php use_helper('Javascript') ?>
 
-<div class="pageTitle"><?php echo __('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
+<div class="pageTitle"><?php echo __('edit %1% - ISAAR', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
 
 <?php echo form_tag('actor/updateIsaar') ?>
   <?php echo object_input_hidden_tag($actor, 'getId') ?>
@@ -15,7 +15,7 @@
     <table class="list" style="height: 25px;"><thead><tr><th></th></tr></table>
   <?php endif; ?>
 
-  <?php if ($sf_context->getActionName() == 'create'): ?>
+  <?php if ($sf_context->getActionName() == 'createIsaar'): ?>
   <fieldset class="collapsible">
   <?php else : ?>
   <fieldset class="collapsible collapsed">
@@ -89,7 +89,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getHistory', array('size' => '30x10')) ?>
+      <?php echo object_textarea_tag($actor, 'getHistory', array('class' => 'resizable', 'size' => '30x10')) ?>
     </div>
 
     <div class="form-item">
@@ -97,7 +97,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getPlaces(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getPlaces', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getPlaces', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -105,7 +105,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getLegalStatus(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getLegalStatus', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getLegalStatus', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -113,7 +113,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getFunctions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getFunctions', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getFunctions', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -121,7 +121,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getMandates(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getMandates', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getMandates', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -129,7 +129,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getInternalStructures(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getInternalStructures', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getInternalStructures', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -137,7 +137,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getGeneralContext(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getGeneralContext', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getGeneralContext', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
   </fieldset>
@@ -168,7 +168,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getRules', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getRules', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -183,10 +183,10 @@
 
     <div class="form-item">
       <label for="dates"><?php echo __('dates of creation, revision and deletion'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getRevisionHistory()): ?>
+      <?php if (strlen($sourceCultureValue = $actor->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getRevisionHistory', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getRevisionHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
     <div>
 
     <div class="form-item">
@@ -195,7 +195,7 @@
       <?php if (count($languageCodes) > 0): ?>
       <?php foreach ($languageCodes as $languageCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_language($languageCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=isaar') ?><br/>
+        <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=isaar') ?><br/>
         </div>
       <?php endforeach; ?>
       <?php endif; ?>
@@ -209,7 +209,7 @@
       <?php if (count($scriptCodes) > 0): ?>
       <?php foreach ($scriptCodes as $scriptCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_script($scriptCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=isaar') ?><br/>
+        <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'actor/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=isaar') ?><br/>
         </div>
       <?php endforeach; ?>
       <?php endif; ?>
@@ -222,7 +222,7 @@
       <?php if (strlen($sourceCultureValue = $actor->getSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getSources', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($actor, 'getSources', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -282,7 +282,7 @@ EOF
 </form>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/createIsaar'); ?>
+  <?php echo link_to(__('add new'), 'actor/createIsaar'); ?>
   <?php echo link_to(__('list all'), 'actor/list'); ?>
 </div>
 

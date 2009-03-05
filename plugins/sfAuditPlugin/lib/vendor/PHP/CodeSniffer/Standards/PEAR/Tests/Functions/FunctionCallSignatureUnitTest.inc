@@ -41,4 +41,25 @@ throw new Exception(
 
 // Or here.
 $obj = new TestClass( );
+
+// Heredocs dont need to be indented.
+method_call(
+<<<EOH
+Anyone want to recomment parse errors?
+
+EOH
+);
+
+fputs(
+    STDOUT,
+    'Examples:
+    $ {$app} --all
+    $ {$app} --all');
+
+fputs(STDOUT,
+    "Examples:
+    $ {$app} --all
+    $ {$app} --all",
+$something
+    );
 ?>

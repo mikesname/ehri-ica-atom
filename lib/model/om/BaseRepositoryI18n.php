@@ -1,28 +1,29 @@
 <?php
 
-abstract class BaseRepositoryI18n
+abstract class BaseRepositoryI18n implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_repository_i18n';
+    TABLE_NAME = 'q_repository_i18n',
 
-  const GEOCULTURAL_CONTEXT = 'q_repository_i18n.GEOCULTURAL_CONTEXT';
-  const COLLECTING_POLICIES = 'q_repository_i18n.COLLECTING_POLICIES';
-  const BUILDINGS = 'q_repository_i18n.BUILDINGS';
-  const HOLDINGS = 'q_repository_i18n.HOLDINGS';
-  const FINDING_AIDS = 'q_repository_i18n.FINDING_AIDS';
-  const OPENING_TIMES = 'q_repository_i18n.OPENING_TIMES';
-  const ACCESS_CONDITIONS = 'q_repository_i18n.ACCESS_CONDITIONS';
-  const DISABLED_ACCESS = 'q_repository_i18n.DISABLED_ACCESS';
-  const RESEARCH_SERVICES = 'q_repository_i18n.RESEARCH_SERVICES';
-  const REPRODUCTION_SERVICES = 'q_repository_i18n.REPRODUCTION_SERVICES';
-  const PUBLIC_FACILITIES = 'q_repository_i18n.PUBLIC_FACILITIES';
-  const DESC_INSTITUTION_IDENTIFIER = 'q_repository_i18n.DESC_INSTITUTION_IDENTIFIER';
-  const DESC_RULES = 'q_repository_i18n.DESC_RULES';
-  const DESC_SOURCES = 'q_repository_i18n.DESC_SOURCES';
-  const DESC_REVISION_HISTORY = 'q_repository_i18n.DESC_REVISION_HISTORY';
-  const ID = 'q_repository_i18n.ID';
-  const CULTURE = 'q_repository_i18n.CULTURE';
+    GEOCULTURAL_CONTEXT = 'q_repository_i18n.GEOCULTURAL_CONTEXT',
+    COLLECTING_POLICIES = 'q_repository_i18n.COLLECTING_POLICIES',
+    BUILDINGS = 'q_repository_i18n.BUILDINGS',
+    HOLDINGS = 'q_repository_i18n.HOLDINGS',
+    FINDING_AIDS = 'q_repository_i18n.FINDING_AIDS',
+    OPENING_TIMES = 'q_repository_i18n.OPENING_TIMES',
+    ACCESS_CONDITIONS = 'q_repository_i18n.ACCESS_CONDITIONS',
+    DISABLED_ACCESS = 'q_repository_i18n.DISABLED_ACCESS',
+    RESEARCH_SERVICES = 'q_repository_i18n.RESEARCH_SERVICES',
+    REPRODUCTION_SERVICES = 'q_repository_i18n.REPRODUCTION_SERVICES',
+    PUBLIC_FACILITIES = 'q_repository_i18n.PUBLIC_FACILITIES',
+    DESC_INSTITUTION_IDENTIFIER = 'q_repository_i18n.DESC_INSTITUTION_IDENTIFIER',
+    DESC_RULES = 'q_repository_i18n.DESC_RULES',
+    DESC_SOURCES = 'q_repository_i18n.DESC_SOURCES',
+    DESC_REVISION_HISTORY = 'q_repository_i18n.DESC_REVISION_HISTORY',
+    ID = 'q_repository_i18n.ID',
+    CULTURE = 'q_repository_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -47,14 +48,19 @@ abstract class BaseRepositoryI18n
     return $criteria;
   }
 
-  protected static $repositoryI18ns = array();
+  protected static
+    $repositoryI18ns = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$repositoryI18ns[$key = serialize(array($resultSet->getInt(16), $resultSet->getString(17)))]))
+    if (!isset(self::$repositoryI18ns[$key = serialize(array((int) $row[15], (string) $row[16]))]))
     {
       $repositoryI18n = new QubitRepositoryI18n;
-      $repositoryI18n->hydrate($resultSet);
+      $repositoryI18n->new = false;
+      $repositoryI18n->row = $row;
 
       self::$repositoryI18ns[$key] = $repositoryI18n;
     }
@@ -109,303 +115,160 @@ abstract class BaseRepositoryI18n
     return $affectedRows;
   }
 
-  protected $geoculturalContext = null;
+  protected
+    $tables = array();
 
-  public function getGeoculturalContext()
+  public function __construct()
   {
-    return $this->geoculturalContext;
+    $this->tables[] = Propel::getDatabaseMap(QubitRepositoryI18n::DATABASE_NAME)->getTable(QubitRepositoryI18n::TABLE_NAME);
   }
 
-  public function setGeoculturalContext($geoculturalContext)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->geoculturalContext = $geoculturalContext;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $collectingPolicies = null;
-
-  public function getCollectingPolicies()
+  public function __set($name, $value)
   {
-    return $this->collectingPolicies;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setCollectingPolicies($collectingPolicies)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->collectingPolicies = $collectingPolicies;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $buildings = null;
-
-  public function getBuildings()
+  public function __unset($name)
   {
-    return $this->buildings;
+    return $this->offsetUnset($name);
   }
 
-  public function setBuildings($buildings)
-  {
-    $this->buildings = $buildings;
-
-    return $this;
-  }
-
-  protected $holdings = null;
-
-  public function getHoldings()
-  {
-    return $this->holdings;
-  }
-
-  public function setHoldings($holdings)
-  {
-    $this->holdings = $holdings;
-
-    return $this;
-  }
-
-  protected $findingAids = null;
-
-  public function getFindingAids()
-  {
-    return $this->findingAids;
-  }
-
-  public function setFindingAids($findingAids)
-  {
-    $this->findingAids = $findingAids;
-
-    return $this;
-  }
-
-  protected $openingTimes = null;
-
-  public function getOpeningTimes()
-  {
-    return $this->openingTimes;
-  }
-
-  public function setOpeningTimes($openingTimes)
-  {
-    $this->openingTimes = $openingTimes;
-
-    return $this;
-  }
-
-  protected $accessConditions = null;
-
-  public function getAccessConditions()
-  {
-    return $this->accessConditions;
-  }
-
-  public function setAccessConditions($accessConditions)
-  {
-    $this->accessConditions = $accessConditions;
-
-    return $this;
-  }
-
-  protected $disabledAccess = null;
-
-  public function getDisabledAccess()
-  {
-    return $this->disabledAccess;
-  }
-
-  public function setDisabledAccess($disabledAccess)
-  {
-    $this->disabledAccess = $disabledAccess;
-
-    return $this;
-  }
-
-  protected $researchServices = null;
-
-  public function getResearchServices()
-  {
-    return $this->researchServices;
-  }
-
-  public function setResearchServices($researchServices)
-  {
-    $this->researchServices = $researchServices;
-
-    return $this;
-  }
-
-  protected $reproductionServices = null;
-
-  public function getReproductionServices()
-  {
-    return $this->reproductionServices;
-  }
-
-  public function setReproductionServices($reproductionServices)
-  {
-    $this->reproductionServices = $reproductionServices;
-
-    return $this;
-  }
-
-  protected $publicFacilities = null;
-
-  public function getPublicFacilities()
-  {
-    return $this->publicFacilities;
-  }
-
-  public function setPublicFacilities($publicFacilities)
-  {
-    $this->publicFacilities = $publicFacilities;
-
-    return $this;
-  }
-
-  protected $descInstitutionIdentifier = null;
-
-  public function getDescInstitutionIdentifier()
-  {
-    return $this->descInstitutionIdentifier;
-  }
-
-  public function setDescInstitutionIdentifier($descInstitutionIdentifier)
-  {
-    $this->descInstitutionIdentifier = $descInstitutionIdentifier;
-
-    return $this;
-  }
-
-  protected $descRules = null;
-
-  public function getDescRules()
-  {
-    return $this->descRules;
-  }
-
-  public function setDescRules($descRules)
-  {
-    $this->descRules = $descRules;
-
-    return $this;
-  }
-
-  protected $descSources = null;
-
-  public function getDescSources()
-  {
-    return $this->descSources;
-  }
-
-  public function setDescSources($descSources)
-  {
-    $this->descSources = $descSources;
-
-    return $this;
-  }
-
-  protected $descRevisionHistory = null;
-
-  public function getDescRevisionHistory()
-  {
-    return $this->descRevisionHistory;
-  }
-
-  public function setDescRevisionHistory($descRevisionHistory)
-  {
-    $this->descRevisionHistory = $descRevisionHistory;
-
-    return $this;
-  }
-
-  protected $id = null;
-
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  public function setId($id)
-  {
-    $this->id = $id;
-
-    return $this;
-  }
-
-  protected $culture = null;
-
-  public function getCulture()
-  {
-    return $this->culture;
-  }
-
-  public function setCulture($culture)
-  {
-    $this->culture = $culture;
-
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['geoculturalContext'] = $this->geoculturalContext;
-    $this->columnValues['collectingPolicies'] = $this->collectingPolicies;
-    $this->columnValues['buildings'] = $this->buildings;
-    $this->columnValues['holdings'] = $this->holdings;
-    $this->columnValues['findingAids'] = $this->findingAids;
-    $this->columnValues['openingTimes'] = $this->openingTimes;
-    $this->columnValues['accessConditions'] = $this->accessConditions;
-    $this->columnValues['disabledAccess'] = $this->disabledAccess;
-    $this->columnValues['researchServices'] = $this->researchServices;
-    $this->columnValues['reproductionServices'] = $this->reproductionServices;
-    $this->columnValues['publicFacilities'] = $this->publicFacilities;
-    $this->columnValues['descInstitutionIdentifier'] = $this->descInstitutionIdentifier;
-    $this->columnValues['descRules'] = $this->descRules;
-    $this->columnValues['descSources'] = $this->descSources;
-    $this->columnValues['descRevisionHistory'] = $this->descRevisionHistory;
-    $this->columnValues['id'] = $this->id;
-    $this->columnValues['culture'] = $this->culture;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->geoculturalContext = $results->getString($columnOffset++);
-    $this->collectingPolicies = $results->getString($columnOffset++);
-    $this->buildings = $results->getString($columnOffset++);
-    $this->holdings = $results->getString($columnOffset++);
-    $this->findingAids = $results->getString($columnOffset++);
-    $this->openingTimes = $results->getString($columnOffset++);
-    $this->accessConditions = $results->getString($columnOffset++);
-    $this->disabledAccess = $results->getString($columnOffset++);
-    $this->researchServices = $results->getString($columnOffset++);
-    $this->reproductionServices = $results->getString($columnOffset++);
-    $this->publicFacilities = $results->getString($columnOffset++);
-    $this->descInstitutionIdentifier = $results->getString($columnOffset++);
-    $this->descRules = $results->getString($columnOffset++);
-    $this->descSources = $results->getString($columnOffset++);
-    $this->descRevisionHistory = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-    $this->culture = $results->getString($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $new = true;
+
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -418,12 +281,12 @@ abstract class BaseRepositoryI18n
     $criteria->add(QubitRepositoryI18n::ID, $this->id);
     $criteria->add(QubitRepositoryI18n::CULTURE, $this->culture);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -444,8 +307,22 @@ abstract class BaseRepositoryI18n
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -454,100 +331,49 @@ abstract class BaseRepositoryI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('geoculturalContext'))
-    {
-      $criteria->add(QubitRepositoryI18n::GEOCULTURAL_CONTEXT, $this->geoculturalContext);
-    }
-
-    if ($this->isColumnModified('collectingPolicies'))
-    {
-      $criteria->add(QubitRepositoryI18n::COLLECTING_POLICIES, $this->collectingPolicies);
-    }
-
-    if ($this->isColumnModified('buildings'))
-    {
-      $criteria->add(QubitRepositoryI18n::BUILDINGS, $this->buildings);
-    }
-
-    if ($this->isColumnModified('holdings'))
-    {
-      $criteria->add(QubitRepositoryI18n::HOLDINGS, $this->holdings);
-    }
-
-    if ($this->isColumnModified('findingAids'))
-    {
-      $criteria->add(QubitRepositoryI18n::FINDING_AIDS, $this->findingAids);
-    }
-
-    if ($this->isColumnModified('openingTimes'))
-    {
-      $criteria->add(QubitRepositoryI18n::OPENING_TIMES, $this->openingTimes);
-    }
-
-    if ($this->isColumnModified('accessConditions'))
-    {
-      $criteria->add(QubitRepositoryI18n::ACCESS_CONDITIONS, $this->accessConditions);
-    }
-
-    if ($this->isColumnModified('disabledAccess'))
-    {
-      $criteria->add(QubitRepositoryI18n::DISABLED_ACCESS, $this->disabledAccess);
-    }
-
-    if ($this->isColumnModified('researchServices'))
-    {
-      $criteria->add(QubitRepositoryI18n::RESEARCH_SERVICES, $this->researchServices);
-    }
-
-    if ($this->isColumnModified('reproductionServices'))
-    {
-      $criteria->add(QubitRepositoryI18n::REPRODUCTION_SERVICES, $this->reproductionServices);
-    }
-
-    if ($this->isColumnModified('publicFacilities'))
-    {
-      $criteria->add(QubitRepositoryI18n::PUBLIC_FACILITIES, $this->publicFacilities);
-    }
-
-    if ($this->isColumnModified('descInstitutionIdentifier'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_INSTITUTION_IDENTIFIER, $this->descInstitutionIdentifier);
-    }
-
-    if ($this->isColumnModified('descRules'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_RULES, $this->descRules);
-    }
-
-    if ($this->isColumnModified('descSources'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_SOURCES, $this->descSources);
-    }
-
-    if ($this->isColumnModified('descRevisionHistory'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_REVISION_HISTORY, $this->descRevisionHistory);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitRepositoryI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitRepositoryI18n::CULTURE, $this->culture);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitRepositoryI18n::DATABASE_NAME);
     }
 
-    BasePeer::doInsert($criteria, $connection);
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -556,105 +382,43 @@ abstract class BaseRepositoryI18n
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('geoculturalContext'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitRepositoryI18n::GEOCULTURAL_CONTEXT, $this->geoculturalContext);
+      $connection = QubitTransactionFilter::getConnection(QubitRepositoryI18n::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('collectingPolicies'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitRepositoryI18n::COLLECTING_POLICIES, $this->collectingPolicies);
-    }
-
-    if ($this->isColumnModified('buildings'))
-    {
-      $criteria->add(QubitRepositoryI18n::BUILDINGS, $this->buildings);
-    }
-
-    if ($this->isColumnModified('holdings'))
-    {
-      $criteria->add(QubitRepositoryI18n::HOLDINGS, $this->holdings);
-    }
-
-    if ($this->isColumnModified('findingAids'))
-    {
-      $criteria->add(QubitRepositoryI18n::FINDING_AIDS, $this->findingAids);
-    }
-
-    if ($this->isColumnModified('openingTimes'))
-    {
-      $criteria->add(QubitRepositoryI18n::OPENING_TIMES, $this->openingTimes);
-    }
-
-    if ($this->isColumnModified('accessConditions'))
-    {
-      $criteria->add(QubitRepositoryI18n::ACCESS_CONDITIONS, $this->accessConditions);
-    }
-
-    if ($this->isColumnModified('disabledAccess'))
-    {
-      $criteria->add(QubitRepositoryI18n::DISABLED_ACCESS, $this->disabledAccess);
-    }
-
-    if ($this->isColumnModified('researchServices'))
-    {
-      $criteria->add(QubitRepositoryI18n::RESEARCH_SERVICES, $this->researchServices);
-    }
-
-    if ($this->isColumnModified('reproductionServices'))
-    {
-      $criteria->add(QubitRepositoryI18n::REPRODUCTION_SERVICES, $this->reproductionServices);
-    }
-
-    if ($this->isColumnModified('publicFacilities'))
-    {
-      $criteria->add(QubitRepositoryI18n::PUBLIC_FACILITIES, $this->publicFacilities);
-    }
-
-    if ($this->isColumnModified('descInstitutionIdentifier'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_INSTITUTION_IDENTIFIER, $this->descInstitutionIdentifier);
-    }
-
-    if ($this->isColumnModified('descRules'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_RULES, $this->descRules);
-    }
-
-    if ($this->isColumnModified('descSources'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_SOURCES, $this->descSources);
-    }
-
-    if ($this->isColumnModified('descRevisionHistory'))
-    {
-      $criteria->add(QubitRepositoryI18n::DESC_REVISION_HISTORY, $this->descRevisionHistory);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitRepositoryI18n::ID, $this->id);
-    }
-
-    if ($this->isColumnModified('culture'))
-    {
-      $criteria->add(QubitRepositoryI18n::CULTURE, $this->culture);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitRepositoryI18n::ID, $this->id);
-      $selectCriteria->add(QubitRepositoryI18n::CULTURE, $this->culture);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitRepositoryI18n::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -685,9 +449,9 @@ abstract class BaseRepositoryI18n
 	{
 		$pks = array();
 
-		$pks[0] = $this->getId();
+		$pks[0] = $this->getid();
 
-		$pks[1] = $this->getCulture();
+		$pks[1] = $this->getculture();
 
 		return $pks;
 	}
@@ -696,30 +460,28 @@ abstract class BaseRepositoryI18n
 	public function setPrimaryKey($keys)
 	{
 
-		$this->setId($keys[0]);
+		$this->setid($keys[0]);
 
-		$this->setCulture($keys[1]);
+		$this->setculture($keys[1]);
 
 	}
 
-  public static function addJoinRepositoryCriteria(Criteria $criteria)
+  public static function addJoinrepositoryCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitRepositoryI18n::ID, QubitRepository::ID);
 
     return $criteria;
   }
 
-  public function getRepository(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->repository = QubitRepository::getById($this->id, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setRepository(QubitRepository $repository)
-  {
-    $this->id = $repository->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.RepositoryI18nMapBuilder');

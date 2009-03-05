@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfEventDispatcher.class.php 10632 2008-08-03 16:51:41Z fabien $
+ * @version    SVN: $Id: sfEventDispatcher.class.php 10631 2008-08-03 16:50:47Z fabien $
  */
 class sfEventDispatcher
 {

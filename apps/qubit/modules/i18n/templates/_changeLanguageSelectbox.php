@@ -1,6 +1,8 @@
-<div id="language-selector" class="language-list">
-  <?php echo form_tag($sf_context->getRouting()->getCurrentInternalUri()) ?>
-		<?php echo select_language_tag('sf_culture', $sf_user->getCulture(), array('class' => 'selectbox', 'languages' => $enabledI18nLanguages)) ?>
-      	<?php echo my_submit_tag(__('change')) ?>
+<div id="language-selector" class="language-selectbox">
+  <form action="<?php echo url_for($sf_data->getRaw('sf_context')->getRouting()->getCurrentInternalUri()) ?>">
+          <?php echo select_tag('sf_culture', options_for_select($enabledI18nLanguages, $sf_user->getCulture()), array('class' => 'selectbox')) ?>
+          <div style="">
+            <?php echo my_submit_tag(__('change language')) ?>
+          </div>
   </form>
 </div>

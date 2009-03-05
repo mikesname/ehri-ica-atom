@@ -17,12 +17,13 @@
  * @package    symfony
  * @subpackage autoload
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfSimpleAutoload.class.php 10702 2008-08-06 11:11:16Z hartym $
+ * @version    SVN: $Id: sfSimpleAutoload.class.php 13317 2008-11-24 20:54:45Z fabien $
  */
 class sfSimpleAutoload
 {
   static protected
-    $instance = null;
+    $registered = false,
+    $instance   = null;
 
   protected
     $cacheFile    = null,
@@ -66,8 +67,13 @@ class sfSimpleAutoload
    */
   static public function register()
   {
+    if (self::$registered)
+    {
+      return;
+    }
+
     ini_set('unserialize_callback_func', 'spl_autoload_call');
-    if (!spl_autoload_register(array(self::getInstance(), 'autoload')))
+    if (false === spl_autoload_register(array(self::getInstance(), 'autoload')))
     {
       throw new sfException(sprintf('Unable to register %s::autoload as an autoloading method.', get_class(self::getInstance())));
     }
@@ -76,6 +82,8 @@ class sfSimpleAutoload
     {
       register_shutdown_function(array(self::getInstance(), 'saveCache'));
     }
+
+    self::$registered = true;
   }
 
   /**
@@ -137,7 +145,10 @@ class sfSimpleAutoload
   {
     if ($this->cacheChanged)
     {
-      file_put_contents($this->cacheFile, serialize(array($this->classes, $this->dirs, $this->files)));
+      if (is_writable(dirname($this->cacheFile)))
+      {
+        file_put_contents($this->cacheFile, serialize(array($this->classes, $this->dirs, $this->files)));
+      }
 
       $this->cacheChanged = false;
     }

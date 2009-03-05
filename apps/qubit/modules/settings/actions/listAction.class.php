@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -63,6 +61,7 @@ class SettingsListAction extends sfAction
     $this->defaultTemplateForm = new SettingsDefaultTemplateForm;
     $this->uiLabelForm = new SettingsGenericForm(array(), array(
       'settings' => QubitSetting::getByScope('ui_label'), 'scope'=>'ui_label', 'fieldsRequired' => false));
+    $this->oaiHarvestingForm = new SettingsOaiHarvestingForm;
 
     // Handle POST data (form submit)
     if ($request->isMethod('post'))
@@ -121,6 +120,18 @@ class SettingsListAction extends sfAction
           $this->redirect('settings/list');
         }
       }
+
+      // Handle OAI Harvesting form submission
+      if (null !== $request->getParameter('oai_harvesting'))
+      {
+        $this->oaiHarvestingForm->bind($request->getParameter('oai_harvesting'));
+        if ($this->oaiHarvestingForm->isValid())
+        {
+          // Do update and redirect to avoid repeat submit wackiness
+          $this->updateOaiHarvestingSettings($this->oaiHarvestingForm);
+          $this->redirect('settings/list');
+        }
+      }
     }
 
     // Populate forms
@@ -128,6 +139,7 @@ class SettingsListAction extends sfAction
     $this->populateSiteInformationForm();
     $this->populateDefaultTemplateForm($this->defaultTemplateForm);
     $this->populateUiLabelForm($this->uiLabelForm);
+    $this->populateOaiHarvestingForm($this->oaiHarvestingForm);
 
     // Last symfony 1.0 forms holdout
     $this->i18nLanguages = QubitSetting::getByScope('i18n_languages');
@@ -146,6 +158,7 @@ class SettingsListAction extends sfAction
     $uploadDir = QubitSetting::getSettingByName('upload_dir');
     $refImageMaxWidth = QubitSetting::getSettingByName('reference_image_maxwidth');
     $hitsPerPage = QubitSetting::getSettingByName('hits_per_page');
+    $inheritCodeInformationObject = QubitSetting::getSettingByName('inherit_code_informationobject');
     $multiRepository = QubitSetting::getSettingByName('multi_repository');
 
     // Set defaults for global form
@@ -154,6 +167,7 @@ class SettingsListAction extends sfAction
       'upload_dir' => (isset($uploadDir)) ? $uploadDir->getValue(array('sourceCulture'=>true)) : null,
       'reference_image_maxwidth' => (isset($refImageMaxWidth)) ? $refImageMaxWidth->getValue(array('sourceCulture'=>true)) : null,
       'hits_per_page' => (isset($hitsPerPage)) ? $hitsPerPage->getValue(array('sourceCulture'=>true)) : null,
+      'inherit_code_informationobject' => (isset($inheritCodeInformationObject)) ? intval($inheritCodeInformationObject->getValue(array('sourceCulture'=>true))) : 1,
       'multi_repository' => (isset($multiRepository)) ? intval($multiRepository->getValue(array('sourceCulture'=>true))) : 1
     ));
   }
@@ -191,6 +205,16 @@ class SettingsListAction extends sfAction
       }
     }
 
+    // Inherit Code (Information Object)
+    if (null !== $inheritCodeInformationObjectValue = $thisForm->getValue('inherit_code_informationobject'))
+    {
+      $setting = QubitSetting::getSettingByName('inherit_code_informationobject');
+
+       // Force sourceCulture update to prevent discrepency in settings between cultures
+      $setting->setValue($inheritCodeInformationObjectValue, array('sourceCulture'=>true));
+      $setting->save();
+    }
+
     // Multi-repository radio button
     if (null !== $multiRepositoryValue = $thisForm->getValue('multi_repository'))
     {
@@ -210,7 +234,6 @@ class SettingsListAction extends sfAction
 
     return $this;
   }
-
 
   /**
    * Populate the site information settings from the database (localized)
@@ -237,33 +260,29 @@ class SettingsListAction extends sfAction
   {
     $thisForm = $this->siteInformationForm;
 
-    if (strlen($siteTitle = $thisForm->getValue('site_title')))
+    // Get Site Title
+    $siteTitle = $thisForm->getValue('site_title');
+    $siteTitleSetting = QubitSetting::getSettingByName('site_title');
+
+    // Create new QubitSetting if site_title doesn't already exist
+    if (null === $siteTitleSetting)
     {
-      $setting = QubitSetting::getSettingByName('site_title');
-
-      // Create new QubitSetting if site_title doesn't already exist (backwards
-      // compatiblity with v1.0.3 sampleData.yml file)
-      if (null === $setting)
-      {
-        $setting = QubitSetting::createNewSetting('site_title', null, array('scope'=>'site_information', 'deleteable'=>false));
-      }
-      $setting->setValue($siteTitle);
-      $setting->save();
+      $siteTitleSetting = QubitSetting::createNewSetting('site_title', null, array('scope'=>'site_information', 'deleteable'=>false));
     }
+    $siteTitleSetting->setValue($siteTitle);
+    $siteTitleSetting->save();
 
-    if (strlen($siteDescription = $thisForm->getValue('site_description')))
+    // Save Site Description
+    $siteDescription = $thisForm->getValue('site_description');
+    $siteDescSetting = QubitSetting::getSettingByName('site_description');
+
+    // Create new QubitSetting if site_description doesn't already exist
+    if (null === $siteDescSetting)
     {
-      $setting = QubitSetting::getSettingByName('site_description');
-
-      // Create new QubitSetting if site_description doesn't already exist
-      // (backwards compatiblity with v1.0.3 sampleData.yml file)
-      if (null === $setting)
-      {
-        $setting = QubitSetting::createNewSetting('site_description', null, array('scope'=>'site_information', 'deleteable'=>false));
-      }
-      $setting->setValue($siteDescription);
-      $setting->save();
+      $siteDescSetting = QubitSetting::createNewSetting('site_description', null, array('scope'=>'site_information', 'deleteable'=>false));
     }
+    $siteDescSetting->setValue($siteDescription);
+    $siteDescSetting->save();
 
     return $this;
   }
@@ -345,6 +364,67 @@ class SettingsListAction extends sfAction
     {
       $setting = QubitSetting::createNewSetting($newName, $newValue, array('scope'=>$form->getScope()));
       $setting->save();
+    }
+
+    return $this;
+  }
+
+  /**
+   * Populate the OAI Harvesting form with database values (non-localized)
+   */
+  protected function populateOaiHarvestingForm()
+  {
+    // Get OAI Harvesting settings
+    $oaiEnabled = QubitSetting::getSettingByName('oai_enabled');
+    $oaiRepositoryCode = QubitSetting::getSettingByName('oai_repository_code');
+    $oaiRepositoryIdentifier = QubitOai::getRepositoryIdentifier();
+    $sampleOaiIdentifier = QubitOai::getSampleIdentifier();
+    $resumptionTokenLimit = QubitSetting::getSettingByName('resumption_token_limit');
+
+    // Set defaults for global form
+    $this->oaiHarvestingForm->setDefaults(array(
+      'oai_enabled' => (isset($oaiEnabled)) ? intval($oaiEnabled->getValue(array('sourceCulture'=>true))) : 1,
+      'oai_repository_code' => (isset($oaiRepositoryCode)) ? $oaiRepositoryCode->getValue(array('sourceCulture'=>true)) : null,
+      'oai_repository_identifier' => $oaiRepositoryIdentifier,
+      'sample_oai_identifier' => $sampleOaiIdentifier,
+      'resumption_token_limit' => (isset($resumptionTokenLimit)) ? $resumptionTokenLimit->getValue(array('sourceCulture'=>true)) : null
+    ));
+  }
+
+  /**
+   * Update the OAI Harvesting settings in database (non-localized)
+   */
+  protected function updateOaiHarvestingSettings()
+  {
+    $thisForm = $this->oaiHarvestingForm;
+
+    // OAI enabled radio button
+    if (null !== $oaiEnabledValue = $thisForm->getValue('oai_enabled'))
+    {
+      $setting = QubitSetting::getSettingByName('oai_enabled');
+
+      // Force sourceCulture update to prevent discrepency in settings between cultures
+      $setting->setValue($oaiEnabledValue, array('sourceCulture'=>true));
+      $setting->save();
+    }
+
+    // OAI repository code
+    $oaiRepositoryCodeValue = $thisForm->getValue('oai_repository_code');
+    $setting = QubitSetting::getSettingByName('oai_repository_code');
+    $setting->setValue($oaiRepositoryCodeValue, array('sourceCulture'=>true));
+    $setting->save();
+
+    // Hits per page
+    if (null !== $resumptionTokenLimit = $thisForm->getValue('resumption_token_limit'))
+    {
+      if (intval($resumptionTokenLimit) && $resumptionTokenLimit > 0)
+      {
+        $setting = QubitSetting::getSettingByName('resumption_token_limit');
+
+        // Force sourceCulture update to prevent discrepency in settings between cultures
+        $setting->setValue($resumptionTokenLimit, array('sourceCulture'=>true));
+        $setting->save();
+      }
     }
 
     return $this;

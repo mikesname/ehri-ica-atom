@@ -24,26 +24,27 @@
   Qubit.paths = ({"eventShow": "<?php echo url_for('event/show') ?>"});
 
   // Do this after newActorEventDialog.js actions
-  Drupal.behaviors.writeNewActorEventHTML = function(context) 
-  {
-    // Create YUI container for form
-    $('body').prepend(
-      '<div class="yui-skin-sam">' +
-        '<div id="newActorEventDialog">' +
-          '<div class="hd"><?php echo __('new event') ?></div>' + 
-          '<div class="bd">' +
-            '<form action="" method="POST" style="border: none">' +
-            '</form>' +
-          '</div>' +
-        '</div>' +
-      '</div>'
-    );
+  Drupal.behaviors.writeNewActorEventHTML = {
+    attach: function(context) 
+      {
+        // Create YUI container for form
+        $('body').prepend(
+          '<div class="yui-skin-sam">' +
+            '<div id="newActorEventDialog">' +
+              '<div class="hd"><?php echo __('new event') ?></div>' + 
+              '<div class="bd">' +
+                '<form action="" method="POST" style="border: none">' +
+                '</form>' +
+              '</div>' +
+            '</div>' +
+          '</div>'
+        );
 
-    // build the dialog
-    renderActorEventDialog();
+        // build the dialog
+        renderActorEventDialog();
 
-    // Write a link to show the dialog
-    $("table#actorEvents").append('<tr id="addActorEventLink"><td colspan="4"><a href="javascript:Qubit.newActorEventDialog.show()"><?php echo __('add new') ?></a></td></tr>');
-  }
+        // Write a link to show the dialog
+        $("table#actorEvents").append('<tr id="addActorEventLink"><td colspan="4"><a href="javascript:Qubit.newActorEventDialog.show()"><?php echo __('add new') ?></a></td></tr>');
+      } };
 //]]>
 </script>

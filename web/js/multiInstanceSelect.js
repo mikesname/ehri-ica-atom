@@ -62,18 +62,19 @@ function restrictOptionList(setSelector, optionList)
 // On page load, link multiInstanceSelector function to "onChange" event for
 // selectboxes with class="multiInstance"
 var fullOptionList = new Array;
-Drupal.behaviors.addMultiInstanceSelect = function (context)
-{
-  $('select.multiInstance').change(function(event){
-    multiInstanceSelector($(this));
-  });
-
-  // Store an array of intial options for each selectbox option list
-  $('select.multiInstance').each(function(i){
-    fullOptionList[this.name] = new Array;
-    for (var j=0; j<this.options.length; j++)
+Drupal.behaviors.addMultiInstanceSelect = {
+  attach: function (context)
     {
-      fullOptionList[this.name][j] = this.options[j].value;
-    }
-  });
-}
+      $('select.multiInstance').change(function(event){
+        multiInstanceSelector($(this));
+      });
+
+      // Store an array of intial options for each selectbox option list
+      $('select.multiInstance').each(function(i){
+        fullOptionList[this.name] = new Array;
+        for (var j=0; j<this.options.length; j++)
+        {
+          fullOptionList[this.name][j] = this.options[j].value;
+        }
+      });
+    } };

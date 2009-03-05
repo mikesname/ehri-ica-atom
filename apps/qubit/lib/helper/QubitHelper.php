@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -86,12 +84,28 @@ function format_script($script_iso, $culture = null)
   return isset($scripts[$script_iso]) ? $scripts[$script_iso] : '';
 }
 
+function render_title($object)
+{
+  // TODO: Workaround for PHP bug: http://bugs.php.net/bug.php?id=47522
+  if (method_exists($object, '__toString'))
+  {
+    $object = $object->__toString();
+  }
+
+  if (0 < strlen($object))
+  {
+    return (string) $object;
+  }
+
+  return '<em>Untitled</em>';
+}
+
 function object_select_tree($object, $method, array $options = array())
 {
   $response = sfContext::getInstance()->getResponse();
 
-  $response->addJavaScript('jquery');
-  $response->addJavaScript('/vendor/drupal/misc/drupal');
+  $response->addJavaScript('/vendor/jquery/jquery');
+  $response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
   $response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
   $response->addJavaScript('/vendor/yui/element/element-beta-min');
   $response->addJavaScript('/vendor/yui/button/button-min');
@@ -130,7 +144,7 @@ function object_select_tree($object, $method, array $options = array())
     $selectTreeObject = array();
     $selectTreeObject['id'] = $optionsObject->getId();
     $selectTreeObject['parentId'] = $optionsObject->getParentId();
-    $selectTreeObject['text'] = (string) $optionsObject;
+    $selectTreeObject['text'] = render_title($optionsObject);
 
     // Hack to parallel the disabled behavior of options_for_select
     if (isset($options['disabled'][$optionsObject->getId()]))
@@ -152,59 +166,60 @@ function object_select_tree($object, $method, array $options = array())
   }
 
   return select_tag($options['control_name'], options_for_select(_get_options_from_objects($optionsObjects, _get_option($options, 'text_method')), $value, $options), $options).javascript_tag(<<<EOF
-Drupal.behaviors = jQuery.extend({ selectTree: function (context)
-  {
-    $('#$options[id]', context).each(function ()
-      {
-        function build(objects, parentId)
+Drupal.behaviors = jQuery.extend({ selectTree: {
+  attach: function (context)
+    {
+      $('#$options[id]', context).each(function ()
         {
-          var itemdata = [];
-          while (objects.length > 0 && objects[0].parentId == parentId)
+          function build(objects, parentId)
           {
-            var object = objects.shift();
-            object.value = object.id;
-
-            var submenu = {};
-            submenu.id = '$options[id]_' + object.id;
-            submenu.itemdata = build(objects, object.id);
-            if (submenu.itemdata.length > 0)
+            var itemdata = [];
+            while (objects.length > 0 && objects[0].parentId == parentId)
             {
-              object.submenu = submenu;
+              var object = objects.shift();
+              object.value = object.id;
+
+              var submenu = {};
+              submenu.id = '$options[id]_' + object.id;
+              submenu.itemdata = build(objects, object.id);
+              if (submenu.itemdata.length > 0)
+              {
+                object.submenu = submenu;
+              }
+
+              itemdata.push(object);
             }
 
-            itemdata.push(object);
+            return itemdata;
           }
 
-          return itemdata;
-        }
+          var objects = $selectTreeObjects;
 
-        var objects = $selectTreeObjects;
+          var button = new YAHOO.widget.Button({
+            container: this.parentNode,
+            label: $('option:selected', this).text(),
+            menu: build(objects, objects[0].parentId),
+            name: '$options[control_name]',
+            selectedMenuItem: $('option:selected', this).get(0),
+            type: 'menu' });
 
-        var button = new YAHOO.widget.Button({
-          container: this.parentNode,
-          label: $('option:selected', this).text(),
-          menu: build(objects, objects[0].parentId),
-          name: '$options[control_name]',
-          selectedMenuItem: $('option:selected', this).get(0),
-          type: 'menu' });
-
-        // Change the button label when a menu item is clicked.  Do not use the
-        // selectedMenuItemChange event because it fires before a menu item is
-        // clicked.
-        button.getMenu().subscribe('click', function (type, args)
-          {
-            // If the target of the event was a MenuItem instance, it will be
-            // passed back as the second argument
-            if (args[1] != null)
+          // Change the button label when a menu item is clicked.  Do not use the
+          // selectedMenuItemChange event because it fires before a menu item is
+          // clicked.
+          button.getMenu().subscribe('click', function (type, args)
             {
-              button.set('label', args[1].cfg.getProperty('text'));
-              button.set('selectedMenuItem', args[1]);
-            }
-          });
-      }).remove();
-  } }, Drupal.behaviors);
+              // If the target of the event was a MenuItem instance, it will be
+              // passed back as the second argument
+              if (args[1] != null)
+              {
+                button.set('label', args[1].cfg.getProperty('text'));
+                button.set('selectedMenuItem', args[1]);
+              }
+            });
+        }).remove();
+    } } }, Drupal.behaviors);
 EOF
-);
+  );
 }
 
 /**
@@ -236,27 +251,28 @@ function string_wrap($longString, $width, $maxLines=3, $whiteSpaceChars = array(
     else
     {
       // find the right-most $whiteSpaceChar in $thisLine
-      for ($i=strlen($thisLine); $i>=0; $i--)
+      for ($i = strlen($thisLine); $i >= 0; $i--)
       {
         $thisChar = substr($thisLine, $i, 1);
         if (in_array($thisChar, $whiteSpaceChars))
         {
-          $end = $start + $i; break;
+          $end = $start + $i;
+          break;
         }
       }
 
       // If no $whiteSpaceChar found or resulting line length would be
       // less than 1/4 of $width, break arbitrarily at $width
-      if ($i < floor($width/4))
+      if ($i < floor($width / 4))
       {
         $end = $start + strlen($thisLine);
       }
     }
 
-    if ($lineCount == ($maxLines-1))
+    if ($lineCount == ($maxLines - 1))
     {
       // If at $maxLines, maximize length of last line, and add ellipses
-      $wrappedLines[$lineCount] = substr($longString, $start, $width-3);
+      $wrappedLines[$lineCount] = substr($longString, $start, $width - 3);
       if ($end < strlen($longString))
       {
         $wrappedLines[$lineCount] .= '...';
@@ -277,22 +293,21 @@ function string_wrap($longString, $width, $maxLines=3, $whiteSpaceChars = array(
 }
 
 /**
- * Remove element $key from $array, and return it's value.
+ * Return a human readable file size, using the appropriate SI prefix
  *
- * @param string $key
- * @param array $array
- * @return mixed string on success, false on failure
+ * @param integer $val value in bytes
+ * @return string human-readable value with units
  */
-function array_slice_key($key, &$array)
+function hr_filesize($val)
 {
-  if (!array_key_exists($key, $array))
+  $units = array('B', 'KB', 'MB', 'GB');
+  for ($i = 0; $i < count($units); $i++)
   {
-    
-    return false;
+    if ($val / pow(1024, $i + 1) < 1)
+    {
+      break;
+    }
   }
-  
-  $returnValue = $array[$key];
-  unset($array[$key]);
-  
-  return $returnValue;
+
+  return round(($val / pow(1024, $i)), 1).' '.$units[$i];
 }

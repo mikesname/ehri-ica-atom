@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -30,24 +28,76 @@
 
 class InformationObjectUpdateDcAction extends InformationObjectUpdateAction
 {
-  public function execute($request)
+  public function validate()
   {
-    // run the core informationObject update action commands
-    parent::execute($request);
-
-    // add Dublin Core specific commands
-
-    // update informationObject in the search index
-    if (!$this->foreignKeyUpdate)
+    // If $_POST array is empty, then display an error
+    if ($_POST === array())
     {
-      SearchIndex::updateIndexDocument($this->informationObject, $this->getUser()->getCulture());
+      $this->getRequest()->setError('form', 'no_form_data');
+
+      return false;
+    }
+
+    return true;
+  }
+
+  public function handleError()
+  {
+    if ($id = $this->getRequestParameter('id'))
+    {
+      $this->editPage = array('module' => 'informationobject', 'action' => 'editDc', 'id' => $id);
     }
     else
     {
-      SearchIndex::updateTranslatedLanguages($this->informationObject);
+      $this->editPage = array('module' => 'informationobject', 'action' => 'createDc');
     }
 
-   // return to DC edit template
-   return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => 'dc', 'id' => $this->informationObject->getId()));
+    return sfView::ERROR;
+  }
+
+  public function execute($request)
+  {
+    // Redirect parameters
+    $redirectParams = array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => 'dc');
+
+    // If $_POST array is empty, then display an error
+    if ($_POST === array())
+    {
+      if ($id = $request->getParameter('id'))
+      {
+        $redirectParams['id'] = $id;
+      }
+      $redirectParams['error'] = 'no_form_data';
+    }
+
+    // Else, do update
+    else
+    {
+      // run the core informationObject update action commands
+      parent::execute($request);
+
+      // Update Dc Properties
+      $this->updateDcProperties($request);
+
+      // Set id
+      if ($id = $this->informationObject->getId())
+      {
+        $redirectParams['id'] = $id;
+      }
+    }
+
+    // If no valid info object id, then show create template
+    if ($id === null)
+    {
+      $redirectParams['action'] = 'create';
+    }
+
+    // return to DC edit template
+    return $this->redirect($redirectParams);
+  }
+
+  protected function updateDcProperties($request)
+  {
+    $this->informationObject->saveProperty('information_object_relation', $this->getRequestParameter('dc_relation'), array('scope'=>'dc'));
   }
 }

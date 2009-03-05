@@ -2,7 +2,7 @@
 
 
 
-class RoleMapBuilder {
+class RoleMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.RoleMapBuilder';
@@ -25,16 +25,17 @@ class RoleMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitRole::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_role');
-		$tMap->setPhpName('Role');
+		$tMap = $this->dbMap->addTable(QubitRole::TABLE_NAME);
+		$tMap->setPhpName('role');
+		$tMap->setClassname('QubitRole');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

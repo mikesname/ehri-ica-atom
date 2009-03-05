@@ -11,54 +11,77 @@
 /*           MENU - TOP                  */
 /*****************************************/
 
-.menu-top
+.menu-quick-links
 {
-margin: 0;
-padding: 3px 0 0 0;
-height: 12px;
-background-color: transparent;
-position: absolute;
-top: 3px;
-right: 2px;
+  float: right;
+  margin: 0;
+  padding: 3px 2px 0 0;
+  background-color: transparent;
 }
 
-.menu-top a
+.menu-quick-links ul
 {
-float: right;
-height: 12px;
-padding: 0px 5px 0px 5px;
-margin: 0;
-text-decoration: none;
-display: block;
-text-align: center;
-font: normal 11px/12px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
-background:  transparent;
-border: 0;
-border-right: 1px solid #cccccc;
-color: #999999;
+  padding: 0;
+  margin: 0;
 }
 
-.menu-top a:link, .menu-top a:visited
+.menu-quick-links li
 {
-background: transparent;
-color: #999999;
-text-decoration: none;
+  float: left;
+  background: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-left: 1px solid #cccccc;
 }
 
-.menu-top a:hover
+.menu-quick-links li.hidden
 {
-background: #000000;
-color: #ffffff;
+  visibility: hidden;
+  position: absolute;
 }
 
-.menu-top a.active
+.menu-quick-links a
 {
-border-bottom: 3px solid #999999;
+  display: block;
+  height: 12px;
+  padding: 0px 5px 0px 5px;
+  margin: 0;
+  text-decoration: none;
+  text-align: center;
+  font: normal 11px/12px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+  background:  transparent;
+  border: 0;
+  color: #999999;
 }
 
-.menu-top a:first-child
+.menu-quick-links a:link
 {
-border-right: none;
+  background: transparent;
+  color: #999999;
+  text-decoration: none;
+}
+
+.menu-quick-links a:hover
+{
+  background: #000000;
+  color: #ffffff;
+}
+
+.menu-quick-links a.active
+{
+  border-bottom: 3px solid #999999;
+}
+
+.menu-quick-links li:first-child
+{
+  border-left: none;
+}
+
+.menu-quick-links ul.menu-level-2
+{
+  visibility: hidden;
+  position: absolute;
 }
 
 /*****************************************/
@@ -72,9 +95,7 @@ padding: 3px 0 0 0;
 height: 12px;
 background-color: transparent;
 border: 0;
-position: absolute;
-top: 3px;
-left: 2px;
+float: left;
 }
 
 .language-list a
@@ -93,7 +114,7 @@ border-left: 1px solid #cccccc;
 color: #999999;
 }
 
-.language-list a:link, .menu-top a:visited
+.language-list a:link
 {
 background: transparent;
 color: #999999;
@@ -122,62 +143,109 @@ border-left: none;
 
 #menu-main
 {
-/* background-image: url(Images/back.gif);
-background-repeat: repeat-x; */
-margin: 0;
-padding: 0;
-height: 28px;
-background-color: #ffffff;
-border-top: 0;
-border-bottom: 1px solid #999999;
-border-left: 1px solid #999999;
-border-right: 1px solid #999999;
+  /* background-image: url(Images/back.gif);
+  background-repeat: repeat-x; */
+  margin: 0;
+  padding: 0;
+  height: 28px;
+  background-color: #ffffff;
+  border-top: 0;
+  border-bottom: 1px solid #999999;
+  border-left: 1px solid #999999;
+  border-right: 1px solid #999999;
+  position: relative;
 }
 
 #menu-main a
 {
-float: left;
-padding: 5px 20px 4px 20px;
-margin: 0;
-text-decoration: none;
-display: block;
-text-align: center;
-text-decoration: none;
-min-width: 80px;
-height: 19px;
-font: normal 17px/18px georgia, serif;
-background:  #a0a9bc;
-color: #ffffff;
-border:0;
-border-right: 1px solid #999999;
+  float: left;
+  padding: 5px 20px 4px 20px;
+  margin: 0;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  min-width: 80px;
+  height: 19px;
+  font: normal 17px/18px georgia, serif;
+  background:  #a0a9bc;
+  color: #ffffff;
+  border:0;
+  border-right: 1px solid #999999;
 }
 
 #menu-main a:link, #menu-main a:visited, #menu-main a:active
 {
-background:  #a0a9bc;
-color: #ffffff;
-text-decoration: none;
+  background:  #a0a9bc;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 #menu-main a:hover
 {
-background: #000000;
-color: #ffffff;
-text-decoration: none;
+  background: #000000;
+  color: #ffffff;
+  text-decoration: none;
 }
 
 #menu-main a.selected
 {
-background: #006699;
-color: #ffffff;
-padding-bottom: 4px;
-text-decoration: none;
+  background: #006699;
+  color: #ffffff;
+  padding-bottom: 4px;
+  text-decoration: none;
 }
 
 #menu-main a#first
 {
-border-left: 1px solid #000066;
+  border-left: 1px solid #000066;
 }
+
+#menu-main ul
+{
+  position: absolute;
+  visibility: hidden;
+  padding: 0;
+  margin: 0;
+}
+
+#menu-main ul li
+{
+  background: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#menu-main ul.menu-level-1
+{
+  visibility: visible;
+}
+
+#menu-main ul.menu-level-1 li
+{
+  position: relative;
+  float: left;
+}
+
+#menu-main ul.menu-level-1 li.hidden
+{
+  position: absolute;
+  visibility: hidden;
+}
+
+#menu-main ul.menu-level-1 li a
+{
+  position: relative;
+}
+
+/* hide all menu-level-2 and lower menus in #menu-main div */
+#menu-main ul.menu-level-2 li
+{
+  position: absolute;
+  visibility: hidden;
+}
+
 
 /*****************************************/
 /*            MENU - SECONDARY           */
@@ -192,6 +260,7 @@ background-color: #006699;
 border-bottom: solid 1px #999999;
 border-left: solid 1px #999999;
 border-right: solid 1px #999999;
+position: relative;
 }
 
 .menu-secondary a
@@ -231,6 +300,60 @@ color: #ffffff;
 border-bottom: 5px solid #ffffff;
 text-decoration: none;
 font-weight: bold;
+}
+
+.menu-secondary ul
+{
+  position: relative;
+  visibility: hidden;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.menu-secondary ul li
+{
+  position: relative;
+  background: none;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.menu-secondary ul li a
+{
+  position: absolute;
+  visibility: hidden;
+}
+
+.menu-secondary ul.menu-level-2.visible
+{
+  visibility: visible;
+  position: static;
+  display: block;
+  margin: 0;
+  padding: 0;
+  float: left;
+}
+
+.menu-secondary ul.menu-level-2.visible li
+{
+  visibility: visible;
+  position: static;
+}
+
+.menu-secondary ul.menu-level-2.visible li a
+{
+  visibility: visible;
+  position: static;
+}
+
+/* Requried to hide menus below level 2 */
+.menu-secondary ul.menu-level-2 ul.menu-level-3 li a
+{
+  visibility: hidden;
+  position: absolute;
 }
 
 /****************************************************/

@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfProjectUnfreezeTask.class.php 7962 2008-03-19 10:21:16Z fabien $
+ * @version    SVN: $Id: sfProjectUnfreezeTask.class.php 13212 2008-11-21 19:53:12Z FabianLange $
  */
 class sfProjectUnfreezeTask extends sfBaseTask
 {
@@ -55,17 +55,28 @@ EOF;
     $content = file_get_contents($config);
     if (preg_match('/^# FROZEN_SF_LIB_DIR\: (.+?)$/m', $content, $match))
     {
-      $content = str_replace("# FROZEN_SF_LIB_DIR: {$match[1]}\n\n", '', $content);
-      $content = preg_replace('#^require_once.+?$#m', "require_once '{$match[1]}/autoload/sfCoreAutoload.class.php';", $content, 1);
-      file_put_contents($config, $content);
-    }
+      $publishAssets = new sfPluginPublishAssetsTask($this->dispatcher, $this->formatter);
+      $publishAssets->setCommandApplication($this->commandApplication);
 
-    $finder = sfFinder::type('any');
-    $this->getFilesystem()->remove($finder->in(sfConfig::get('sf_lib_dir').'/symfony'));
-    $this->getFilesystem()->remove(sfConfig::get('sf_lib_dir').'/symfony');
-    $this->getFilesystem()->remove($finder->in(sfConfig::get('sf_data_dir').'/symfony'));
-    $this->getFilesystem()->remove(sfConfig::get('sf_data_dir').'/symfony');
-    $this->getFilesystem()->remove($finder->in(sfConfig::get('sf_web_dir').'/sf'));
-    $this->getFilesystem()->remove(sfConfig::get('sf_web_dir').'/sf');
+      $symfonyLibDir = $match[1];
+
+      $content = str_replace("# FROZEN_SF_LIB_DIR: {$match[1]}\n\n", '', $content);
+      // need to escape windows pathes "symfony\1.2" -> "symfony\\1.2"
+      // because preg_replace would then use \1 as group identifier resulting in "symfony.2"
+      $content = preg_replace('#^require_once.+?$#m', sprintf("require_once '%s/autoload/sfCoreAutoload.class.php';", str_replace('\\', '\\\\', $symfonyLibDir)), $content, 1);
+      file_put_contents($config, $content);
+
+      // re-publish assets
+      $publishAssets->run(array(), array('--symfony-lib-dir='.$symfonyLibDir));
+
+      // remove files
+      $finder = sfFinder::type('any');
+      $this->getFilesystem()->remove($finder->in(sfConfig::get('sf_lib_dir').'/symfony'));
+      $this->getFilesystem()->remove(sfConfig::get('sf_lib_dir').'/symfony');
+      $this->getFilesystem()->remove($finder->in(sfConfig::get('sf_data_dir').'/symfony'));
+      $this->getFilesystem()->remove(sfConfig::get('sf_data_dir').'/symfony');
+      $this->getFilesystem()->remove($finder->in(sfConfig::get('sf_web_dir').'/sf'));
+      $this->getFilesystem()->remove(sfConfig::get('sf_web_dir').'/sf');
+    }
   }
 }

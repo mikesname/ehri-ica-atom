@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWidgetFormSelect.class.php 11538 2008-09-14 14:45:59Z fabien $
+ * @version    SVN: $Id: sfWidgetFormSelect.class.php 11689 2008-09-20 19:45:10Z fabien $
  */
 class sfWidgetFormSelect extends sfWidgetForm
 {
@@ -103,16 +103,6 @@ class sfWidgetFormSelect extends sfWidgetForm
     $this->attributes = $mainAttributes;
 
     return $options;
-  }
-
-  /**
-   * @see sfWidget
-   *
-   * We always generate an attribute for the value.
-   */
-  protected function attributesToHtmlCallback($k, $v)
-  {
-    return is_null($v) || ('' === $v && 'value' != $k) ? '' : sprintf(' %s="%s"', $k, $this->escapeOnce($v));
   }
 
   public function __clone()

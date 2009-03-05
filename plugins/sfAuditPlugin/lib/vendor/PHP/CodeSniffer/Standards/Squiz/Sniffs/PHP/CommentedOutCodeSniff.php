@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: CommentedOutCodeSniff.php,v 1.9 2008/02/14 23:16:34 squiz Exp $
+ * @version   CVS: $Id: CommentedOutCodeSniff.php,v 1.11 2008/10/31 04:53:56 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -32,11 +32,21 @@ class Squiz_Sniffs_PHP_CommentedOutCodeSniff implements PHP_CodeSniffer_Sniff
 {
 
     /**
+     * A list of tokenizers this sniff supports.
+     *
+     * @var array
+     */
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'CSS',
+                                  );
+
+    /**
      * If a comment is more than $maxPercentage% code, a warning will be shown.
      *
      * @var int
      */
-    protected $maxPercentage = 45;
+    protected $maxPercentage = 35;
 
 
     /**
@@ -69,7 +79,16 @@ class Squiz_Sniffs_PHP_CommentedOutCodeSniff implements PHP_CodeSniffer_Sniff
             return;
         }
 
-        $content = '<?php ';
+        // Ignore comments at the end of code blocks.
+        if (substr($tokens[$stackPtr]['content'], 0, 6) === '//end ') {
+            return;
+        }
+
+        $content = '';
+        if ($phpcsFile->tokenizerType === 'PHP') {
+            $content = '<?php ';
+        }
+
         for ($i = $stackPtr; $i < $phpcsFile->numTokens; $i++) {
             if ($tokens[$stackPtr]['code'] !== $tokens[$i]['code']) {
                 break;
@@ -109,7 +128,11 @@ class Squiz_Sniffs_PHP_CommentedOutCodeSniff implements PHP_CodeSniffer_Sniff
             $content .= $tokenContent.$phpcsFile->eolChar;
         }//end for
 
-        $content = trim($content).' ?>';
+        $content = trim($content);
+
+        if ($phpcsFile->tokenizerType === 'PHP') {
+            $content .= ' ?>';
+        }
 
         $stringTokens = PHP_CodeSniffer_File::tokenizeString($content, $phpcsFile->tokenizer, $phpcsFile->eolChar);
 
@@ -118,6 +141,7 @@ class Squiz_Sniffs_PHP_CommentedOutCodeSniff implements PHP_CodeSniffer_Sniff
                         T_STRING,
                         T_STRING_CONCAT,
                         T_ENCAPSED_AND_WHITESPACE,
+                        T_NONE,
                        );
 
         $numTokens = count($stringTokens);

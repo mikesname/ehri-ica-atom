@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: LineLengthSniff.php,v 1.15 2007/11/26 22:11:49 squiz Exp $
+ * @version   CVS: $Id: LineLengthSniff.php,v 1.16 2008/06/27 01:58:38 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -90,27 +90,43 @@ class Generic_Sniffs_Files_LineLengthSniff implements PHP_CodeSniffer_Sniff
                 $currentLineContent .= $tokens[$tokenCount]['content'];
             } else {
                 $currentLineContent = trim($currentLineContent, $phpcsFile->eolChar);
-
-                // If the content is a CVS or SVN id in a version tag, or it is
-                // a license tag with a name and URL, there is nothing the
-                // developer can do to shorten the line, so don't throw errors.
-                if (preg_match('|@version[^\$]+\$Id|', $currentLineContent) === 0 && preg_match('|@license|', $currentLineContent) === 0) {
-                    $lineLength = strlen($currentLineContent);
-                    if ($this->absoluteLineLimit > 0 && $lineLength > $this->absoluteLineLimit) {
-                        $error = 'Line exceeds maximum limit of '.$this->absoluteLineLimit." characters; contains $lineLength characters";
-                        $phpcsFile->addError($error, ($tokenCount - 1));
-                    } else if ($lineLength > $this->lineLimit) {
-                        $warning = 'Line exceeds '.$this->lineLimit." characters; contains $lineLength characters";
-                        $phpcsFile->addWarning($warning, ($tokenCount - 1));
-                    }
-                }
-
+                $this->checkLineLength($phpcsFile, ($tokenCount - 1), $currentLineContent);
                 $currentLineContent = $tokens[$tokenCount]['content'];
                 $currentLine++;
             }
         }
 
+        $this->checkLineLength($phpcsFile, ($tokenCount - 1), $currentLineContent);
+
     }//end process()
+
+
+    /**
+     * Checks if a line is too long.
+     *
+     * @param PHP_CodeSniffer_File $phpcsFile   The file being scanned.
+     * @param int                  $stackPtr    The token at the end of the line.
+     * @param string               $lineContent The content of the line.
+     *
+     * @return void
+     */
+    protected function checkLineLength(PHP_CodeSniffer_File $phpcsFile, $stackPtr, $lineContent)
+    {
+        // If the content is a CVS or SVN id in a version tag, or it is
+        // a license tag with a name and URL, there is nothing the
+        // developer can do to shorten the line, so don't throw errors.
+        if (preg_match('|@version[^\$]+\$Id|', $lineContent) === 0 && preg_match('|@license|', $lineContent) === 0) {
+            $lineLength = strlen($lineContent);
+            if ($this->absoluteLineLimit > 0 && $lineLength > $this->absoluteLineLimit) {
+                $error = 'Line exceeds maximum limit of '.$this->absoluteLineLimit." characters; contains $lineLength characters";
+                $phpcsFile->addError($error, $stackPtr);
+            } else if ($lineLength > $this->lineLimit) {
+                $warning = 'Line exceeds '.$this->lineLimit." characters; contains $lineLength characters";
+                $phpcsFile->addWarning($warning, $stackPtr);
+            }
+        }
+
+    }//end checkLineLength()
 
 
 }//end class

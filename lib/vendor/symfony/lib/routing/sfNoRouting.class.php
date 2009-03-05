@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage routing
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfNoRouting.class.php 7779 2008-03-08 18:08:36Z fabien $
+ * @version    SVN: $Id: sfNoRouting.class.php 11313 2008-09-03 17:28:33Z fabien $
  */
 class sfNoRouting extends sfRouting
 {
@@ -23,7 +23,7 @@ class sfNoRouting extends sfRouting
    */
   public function getCurrentInternalUri($with_route_name = false)
   {
-    $parameters = $this->fixDefaults($this->mergeArrays($this->defaultParameters, $_GET));
+    $parameters = $this->mergeArrays($this->defaultParameters, $_GET);
     $action = sprintf('%s/%s', $parameters['module'], $parameters['action']);
 
     // other parameters
@@ -37,11 +37,21 @@ class sfNoRouting extends sfRouting
  /**
   * @see sfRouting
   */
-  public function generate($name, $params = array(), $querydiv = '/', $divider = '/', $equals = '/')
+  public function generate($name, $params = array(), $absolute = false)
   {
-    $parameters = http_build_query($this->mergeArrays($this->defaultParameters, $params), null, '&');
+    $parameters = $this->mergeArrays($this->defaultParameters, $params);
+    if ($this->getDefaultParameter('module') == $parameters['module'])
+    {
+      unset($parameters['module']);
+    }
+    if ($this->getDefaultParameter('action') == $parameters['action'])
+    {
+      unset($parameters['action']);
+    }
 
-    return '/'.($parameters ? '?'.$parameters : '');
+    $parameters = http_build_query($parameters, null, '&');
+
+    return $this->fixGeneratedUrl('/'.($parameters ? '?'.$parameters : ''), $absolute);
   }
 
  /**

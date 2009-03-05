@@ -1,9 +1,9 @@
 ﻿<div class="pageTitle"><?php echo __('add/edit %1% term', array('%1%' =>$taxonomy->getName())); ?></div>
 
-<?php echo form_tag('term/update?taxonomy_id='.$term->getTaxonomyId()) ?>
+<?php echo form_tag('term/update') ?>
 
 <?php echo object_input_hidden_tag($term, 'getId') ?>
-<?php echo input_hidden_tag('taxonomy_id', $taxonomy->getId()) ?>
+<?php echo input_hidden_tag('taxonomy_id', $taxonomyId) ?>
 
 <table class="detail">
 <tbody>
@@ -77,7 +77,14 @@
 
 <div class="menu-action">
 <?php if ($term->getId()): ?>
-  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId().'&taxonomyId='.$term->getTaxonomyId(), 'post=true&confirm='.__('are you sure?')) ?>
+  <?php if($relatedEventCount > 0): ?>
+  <?php $confirmString = __('WARNING: Deleting this term will also delete %1% related event(s)! Are you sure you want to delete these related events forever?', array('%1%' => $relatedEventCount)) ?>
+  <?php elseif ($relatedObjectCount > 0): ?>
+  <?php $confirmString = __('This term is linked to %1% other objects, are you sure you want to remove this term from *all* of these objects?', array('%1%' => $relatedObjectCount)) ?>
+  <?php else: ?>
+  <?php $confirmString = __('Are you sure?') ?>
+  <?php endif; ?>
+  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId().'&taxonomyId='.$term->getTaxonomyId(), 'post=true&confirm='.$confirmString) ?>
   &nbsp;<?php echo link_to(__('cancel'), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>
 <?php else: ?>
   &nbsp;<?php echo link_to(__('cancel'), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>

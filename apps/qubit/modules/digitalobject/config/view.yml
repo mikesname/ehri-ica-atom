@@ -1,5 +1,5 @@
 editSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
 
 all:
   components:

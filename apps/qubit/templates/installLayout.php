@@ -25,10 +25,10 @@
 
     <div class="sidebar">
       <ol class="task-list">
-        <li<?php if ('check' == $sf_request->getParameter('action')): ?> class="active"<?php elseif ('configure' == $sf_request->getParameter('action') || 'load' == $sf_request->getParameter('action') || 'finish' == $sf_request->getParameter('action')): ?> class="done"<?php endif; ?>>Check system</li>
-        <li<?php if ('configure' == $sf_request->getParameter('action')): ?> class="active"<?php elseif ('load' == $sf_request->getParameter('action') || 'finish' == $sf_request->getParameter('action')): ?> class="done"<?php endif; ?>>Configure database</li>
-        <li<?php if ('load' == $sf_request->getParameter('action')): ?> class="active"<?php elseif ('finish' == $sf_request->getParameter('action')): ?> class="done"<?php endif; ?>>Load data</li>
-        <li<?php if ('finish' == $sf_request->getParameter('action')): ?> class="active"<?php endif; ?>>Finish install</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'check': ?> class="active"<?php break; case 'configure': case 'load': case 'finish': ?> class="done"<?php endswitch; ?>>Check system</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'configure': ?> class="active"<?php break; case 'load': case 'finish': ?> class="done"<?php endswitch; ?>>Configure database</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'load': ?> class="active"<?php break; case 'finish': ?> class="done"<?php endswitch; ?>>Load data</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'finish': ?> class="active"<?php endswitch; ?>>Finish install</li>
       </ol>
     </div>
 

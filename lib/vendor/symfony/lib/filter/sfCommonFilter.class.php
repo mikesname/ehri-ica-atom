@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage filter
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCommonFilter.class.php 9087 2008-05-20 02:00:40Z Carl.Vondrick $
+ * @version    SVN: $Id: sfCommonFilter.class.php 11783 2008-09-25 16:21:27Z fabien $
  */
 class sfCommonFilter extends sfFilter
 {
@@ -35,7 +35,7 @@ class sfCommonFilter extends sfFilter
     $content = $response->getContent();
     if (false !== ($pos = strpos($content, '</head>')))
     {
-      sfLoader::loadHelpers(array('Tag', 'Asset'));
+      $this->context->getConfiguration()->loadHelpers(array('Tag', 'Asset'));
       $html = '';
       if (!sfConfig::get('symfony.asset.javascripts_included', false))
       {

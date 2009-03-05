@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: SingleElement.php,v 1.12 2008/02/01 03:19:53 squiz Exp $
+ * @version   CVS: $Id: SingleElement.php,v 1.13 2008/12/02 02:38:33 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -70,8 +70,12 @@ class PHP_CodeSniffer_CommentParser_SingleElement extends PHP_CodeSniffer_Commen
      *                                                                  this element
      *                                                                  is in.
      */
-    public function __construct($previousElement, $tokens, $tag, PHP_CodeSniffer_File $phpcsFile)
-    {
+    public function __construct(
+        $previousElement,
+        $tokens,
+        $tag,
+        PHP_CodeSniffer_File $phpcsFile
+    ) {
         parent::__construct($previousElement, $tokens, $tag, $phpcsFile);
 
     }//end __construct()
@@ -145,8 +149,11 @@ class PHP_CodeSniffer_CommentParser_SingleElement extends PHP_CodeSniffer_Commen
      *
      * @return void
      */
-    public function process(PHP_CodeSniffer_File $phpcsFile, $commentStart, $docBlock)
-    {
+    public function process(
+        PHP_CodeSniffer_File $phpcsFile,
+        $commentStart,
+        $docBlock
+    ) {
         if ($this->content === '') {
             $errorPos = ($commentStart + $this->getLine());
             $error    = "Content missing for $this->tag tag in $docBlock comment";

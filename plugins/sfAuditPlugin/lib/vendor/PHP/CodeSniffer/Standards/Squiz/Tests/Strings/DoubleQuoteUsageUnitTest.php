@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: DoubleQuoteUsageUnitTest.php,v 1.1 2006/12/28 06:03:47 squiz Exp $
+ * @version   CVS: $Id: DoubleQuoteUsageUnitTest.php,v 1.2 2008/08/11 23:07:08 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -44,8 +44,12 @@ class Squiz_Tests_Strings_DoubleQuoteUsageUnitTest extends AbstractSniffUnitTest
     public function getErrorList()
     {
         return array(
-                4 => 1,
-                8 => 2,
+                4  => 1,
+                5  => 1,
+                6  => 1,
+                8  => 2,
+                13 => 1,
+                14 => 1,
                );
 
     }//end getErrorList()

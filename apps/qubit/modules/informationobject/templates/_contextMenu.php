@@ -15,7 +15,7 @@ EOF
       <div class="label">
         <?php echo sfConfig::get('app_ui_label_repository') ?>
       </div>
-      <?php echo link_to($repository, 'repository/show?id='.$repository->getId(), $sf_data->getRaw('repositoryOptions')) ?>
+      <?php echo link_to(render_title($repository), 'repository/show?id='.$repository->getId(), $sf_data->getRaw('repositoryOptions')) ?>
     <?php endif; ?>
 
     <?php if (count($creators) > 0): ?>
@@ -29,7 +29,7 @@ EOF
       </div>
       <ul>
         <?php foreach ($creators as $creator): ?>
-          <li><?php echo link_to($creator, 'actor/show?id='.$creator->getId(), $sf_data->getRaw('creatorOptions')) ?></li>
+          <li><?php echo link_to(render_title($creator), 'actor/show?id='.$creator->getId(), $sf_data->getRaw('creatorOptions')) ?></li>
         <?php endforeach; ?>
       </ul>
     <?php endif; ?>

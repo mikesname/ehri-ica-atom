@@ -7,8 +7,34 @@
 class sfInstall
 {
   public static $MINIMUM_MEMORY_LIMIT_MB = 64;
-  
-  
+
+  public static function applicationThrowException(sfEvent $event)
+  {
+    // TODO: Choose a more specific test.  Do not redirect to the installer on
+    // all PropelExceptions
+    if ($event->getSubject() instanceof PropelException)
+    {
+      sfContext::getInstance()->getController()->redirect(array('module' => 'sfInstallPlugin'));
+    }
+  }
+
+  public static function routingLoadConfiguration(sfEvent $event)
+  {
+    $routing = $event->getSubject();
+    $routing->insertRouteBefore('default', 'sfInstallPlugin/help', new sfRoute('http://qubit-toolkit.org/wiki/index.php?title=Installer_Warnings', array('module' => 'sfInstallPlugin', 'action' => 'help')));
+  }
+
+  public static function publishAssets()
+  {
+    $dispatcher = sfContext::getInstance()->getEventDispatcher();
+    $formatter = new sfAnsiColorFormatter;
+
+    chdir(sfConfig::get('sf_root_dir'));
+
+    $publishAssets = new sfPluginPublishAssetsTask($dispatcher, $formatter);
+    $publishAssets->run();
+  }
+
   // Returns an array of missing dependencies
   // TODO: This is already implemented in PEAR.  Make this check more robust by
   // calling their code.
@@ -310,16 +336,8 @@ EOF;
   public static function setNoScriptName($noScriptName, $settingsYmlContents)
   {
     // TODO: Make this pattern more robust, or parse the YAML?
-    $pattern = '/^(prod:\v+  .settings:)(?:\v+    no_script_name:\h*[^\v]+)?/';
-
-    $replacement = '\1';
-    if ($noScriptName)
-    {
-      $replacement .= <<<EOF
-
-    no_script_name: true
-EOF;
-    }
+    $pattern = '/^(prod:\v+  .settings:\v+    no_script_name:\h*)[^\v]+/';
+    $replacement = '\1'.($noScriptName ? 'on' : 'off');
 
     return preg_replace($pattern, $replacement, $settingsYmlContents);
   }
@@ -427,8 +445,7 @@ EOF;
 
     return $searchIndex;
   }
-  
-  
+
   /**
    * Check that memory_limit ini value meets Qubit's minimum requirements
    * (currently 64 MB)
@@ -438,7 +455,7 @@ EOF;
   public static function checkMemoryLimit()
   {
     $memoryLimit = ini_get('memory_limit');
-    
+
     // Convert memoryLimit to float or integer value in units of MB
     // See http://ca.php.net/manual/en/faq.using.php#faq.using.shorthandbytes
     switch (strtolower(substr($memoryLimit, -1)))
@@ -451,36 +468,40 @@ EOF;
         break;
       case 'g':
         $memoryLimit = intval(substr($memoryLimit, 0, -1))*1024;
-        break; 
+        break;
       default:
         // If suffix is not K, M, or G (case-insensitive), then value is assumed to be bytes
         $memoryLimit = round(intval($memoryLimit)/1048576, 3);
     }
-    
+
     if ($memoryLimit < self::$MINIMUM_MEMORY_LIMIT_MB)
     {
-    
       return $memoryLimit;
     }
   }
 
-  public static function configureDatabase($databaseName, $databaseUsername, $databasePassword)
+  public static function configureDatabase(array $options = array())
   {
     $database = array();
 
-    $dsn = 'mysql://';
-    if (strlen($databaseUsername) > 0)
+    $dsn = 'mysql:dbname='.$options['databaseName'].';host='.$options['databaseHost'];
+    if (isset($options['databasePort']))
     {
-      $usernameAndPassword = $databaseUsername;
-      if (strlen($databasePassword) > 0)
-      {
-        $usernameAndPassword .= ':'.$databasePassword;
-      }
-
-      $dsn .= $usernameAndPassword.'@';
+      $dsn .= ';port='.$options['databasePort'];
     }
 
-    $dsn .= 'localhost/'.$databaseName;
+    $arguments = array();
+    $arguments[] = $dsn;
+
+    if (isset($options['databaseUsername']))
+    {
+      $arguments[] = $options['databaseUsername'];
+
+      if (isset($options['databasePassword']))
+      {
+        $arguments[] = $options['databasePassword'];
+      }
+    }
 
     $dispatcher = sfContext::getInstance()->getEventDispatcher();
     $formatter = new sfAnsiColorFormatter;
@@ -488,7 +509,7 @@ EOF;
     chdir(sfConfig::get('sf_root_dir'));
 
     $configureDatabase = new sfConfigureDatabaseTask($dispatcher, $formatter);
-    $configureDatabase->run(array($dsn));
+    $configureDatabase->run($arguments);
 
     // FIXME: By instantiating a new application configuration the cache clear
     // task may change these settings, leading to bugs in code which expects
@@ -523,13 +544,18 @@ EOF;
 
   public static function insertSql()
   {
+    $arguments = array();
+
+    $options = array();
+    $options[] = 'no-confirmation';
+
     $dispatcher = sfContext::getInstance()->getEventDispatcher();
     $formatter = new sfAnsiColorFormatter;
 
     chdir(sfConfig::get('sf_root_dir'));
 
     $insertSql = new sfPropelInsertSqlTask($dispatcher, $formatter);
-    $insertSql->run();
+    $insertSql->run($arguments, $options);
   }
 
   public static function loadData()
@@ -540,6 +566,6 @@ EOF;
     chdir(sfConfig::get('sf_root_dir'));
 
     $loadData = new sfPropelLoadDataTask($dispatcher, $formatter);
-    $loadData->run(array('qubit'));
+    $loadData->run();
   }
 }

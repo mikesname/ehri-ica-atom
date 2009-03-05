@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfProjectClearControllersTask.class.php 10581 2008-08-01 14:44:42Z nicolas $
+ * @version    SVN: $Id: sfProjectClearControllersTask.class.php 10582 2008-08-01 14:45:42Z nicolas $
  */
 class sfProjectClearControllersTask extends sfBaseTask
 {

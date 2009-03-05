@@ -52,24 +52,6 @@ class ReleaseTask extends sfBaseTask
       throw new Exception('Local modifications. Release process aborted!');
     }
 
-    // Test
-    require_once(sfConfig::get('sf_symfony_lib_dir').'/vendor/lime/lime.php');
-    $h = new lime_harness(new lime_output_color);
-
-    $h->base_dir = sfConfig::get('sf_test_dir');
-
-    // unit tests
-    $h->register_glob($h->base_dir.'/unit/*/*Test.php');
-
-    // functional tests
-    $h->register_glob($h->base_dir.'/functional/*Test.php');
-    $h->register_glob($h->base_dir.'/functional/*/*Test.php');
-
-    if (!$h->run())
-    {
-      throw new Exception('Some tests failed. Release process aborted!');
-    }
-
     if (!$xpath->evaluate('boolean(p:date)', $doc->documentElement))
     {
       $dateNode = $doc->createElement('date', date('Y-m-d'));

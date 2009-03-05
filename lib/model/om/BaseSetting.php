@@ -1,17 +1,18 @@
 <?php
 
-abstract class BaseSetting
+abstract class BaseSetting implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_setting';
+    TABLE_NAME = 'q_setting',
 
-  const NAME = 'q_setting.NAME';
-  const SCOPE = 'q_setting.SCOPE';
-  const EDITABLE = 'q_setting.EDITABLE';
-  const DELETEABLE = 'q_setting.DELETEABLE';
-  const SOURCE_CULTURE = 'q_setting.SOURCE_CULTURE';
-  const ID = 'q_setting.ID';
+    NAME = 'q_setting.NAME',
+    SCOPE = 'q_setting.SCOPE',
+    EDITABLE = 'q_setting.EDITABLE',
+    DELETEABLE = 'q_setting.DELETEABLE',
+    SOURCE_CULTURE = 'q_setting.SOURCE_CULTURE',
+    ID = 'q_setting.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -25,14 +26,19 @@ abstract class BaseSetting
     return $criteria;
   }
 
-  protected static $settings = array();
+  protected static
+    $settings = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$settings[$id = $resultSet->getInt(6)]))
+    if (!isset(self::$settings[$id = (int) $row[5]]))
     {
       $setting = new QubitSetting;
-      $setting->hydrate($resultSet);
+      $setting->new = false;
+      $setting->row = $row;
 
       self::$settings[$id] = $setting;
     }
@@ -86,127 +92,189 @@ abstract class BaseSetting
     return $affectedRows;
   }
 
-  protected $name = null;
+  protected
+    $tables = array();
 
-  public function getName()
+  public function __construct()
   {
-    return $this->name;
+    $this->tables[] = Propel::getDatabaseMap(QubitSetting::DATABASE_NAME)->getTable(QubitSetting::TABLE_NAME);
   }
 
-  public function setName($name)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->name = $name;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    if ($this->getCurrentsettingI18n($options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
+
+    if (!empty($options['cultureFallback']) && $this->getCurrentsettingI18n(array('sourceCulture' => true) + $options)->offsetExists($offset, $options))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    if (null !== $value = $this->getCurrentsettingI18n($options)->offsetGet($offset, $options))
+    {
+      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      {
+        $value = $this->getCurrentsettingI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options);
+      }
+
+      return $value;
+    }
+
+    if (!empty($options['cultureFallback']) && null !== $value = $this->getCurrentsettingI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options))
+    {
+      return $value;
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    $this->getCurrentsettingI18n($options)->offsetSet($offset, $value, $options);
 
     return $this;
   }
 
-  protected $scope = null;
-
-  public function getScope()
+  public function __set($name, $value)
   {
-    return $this->scope;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setScope($scope)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->scope = $scope;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    $this->getCurrentsettingI18n($options)->offsetUnset($offset, $options);
 
     return $this;
   }
 
-  protected $editable = '';
-
-  public function getEditable()
+  public function __unset($name)
   {
-    return $this->editable;
+    return $this->offsetUnset($name);
   }
 
-  public function setEditable($editable)
-  {
-    $this->editable = $editable;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $deleteable = '';
-
-  public function getDeleteable()
-  {
-    return $this->deleteable;
-  }
-
-  public function setDeleteable($deleteable)
-  {
-    $this->deleteable = $deleteable;
-
-    return $this;
-  }
-
-  protected $sourceCulture = null;
-
-  public function getSourceCulture()
-  {
-    return $this->sourceCulture;
-  }
-
-  public function setSourceCulture($sourceCulture)
-  {
-    $this->sourceCulture = $sourceCulture;
-
-    return $this;
-  }
-
-  protected $id = null;
-
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  public function setId($id)
-  {
-    $this->id = $id;
-
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['name'] = $this->name;
-    $this->columnValues['scope'] = $this->scope;
-    $this->columnValues['editable'] = $this->editable;
-    $this->columnValues['deleteable'] = $this->deleteable;
-    $this->columnValues['sourceCulture'] = $this->sourceCulture;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->name = $results->getString($columnOffset++);
-    $this->scope = $results->getString($columnOffset++);
-    $this->editable = $results->getBoolean($columnOffset++);
-    $this->deleteable = $results->getBoolean($columnOffset++);
-    $this->sourceCulture = $results->getString($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -218,12 +286,12 @@ abstract class BaseSetting
     $criteria = new Criteria;
     $criteria->add(QubitSetting::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -244,12 +312,26 @@ abstract class BaseSetting
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     foreach ($this->settingI18ns as $settingI18n)
     {
-      $settingI18n->setId($this->id);
+      $settingI18n->setid($this->id);
 
       $affectedRows += $settingI18n->save($connection);
     }
@@ -261,47 +343,49 @@ abstract class BaseSetting
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('name'))
-    {
-      $criteria->add(QubitSetting::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('scope'))
-    {
-      $criteria->add(QubitSetting::SCOPE, $this->scope);
-    }
-
-    if ($this->isColumnModified('editable'))
-    {
-      $criteria->add(QubitSetting::EDITABLE, $this->editable);
-    }
-
-    if ($this->isColumnModified('deleteable'))
-    {
-      $criteria->add(QubitSetting::DELETEABLE, $this->deleteable);
-    }
-
-    if (!$this->isColumnModified('sourceCulture'))
-    {
-      $this->sourceCulture = sfPropel::getDefaultCulture();
-    }
-    $criteria->add(QubitSetting::SOURCE_CULTURE, $this->sourceCulture);
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitSetting::ID, $this->id);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitSetting::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -310,49 +394,43 @@ abstract class BaseSetting
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('name'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitSetting::NAME, $this->name);
+      $connection = QubitTransactionFilter::getConnection(QubitSetting::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('scope'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitSetting::SCOPE, $this->scope);
-    }
-
-    if ($this->isColumnModified('editable'))
-    {
-      $criteria->add(QubitSetting::EDITABLE, $this->editable);
-    }
-
-    if ($this->isColumnModified('deleteable'))
-    {
-      $criteria->add(QubitSetting::DELETEABLE, $this->deleteable);
-    }
-
-    if ($this->isColumnModified('sourceCulture'))
-    {
-      $criteria->add(QubitSetting::SOURCE_CULTURE, $this->sourceCulture);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitSetting::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitSetting::ID, $this->id);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitSetting::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -380,38 +458,39 @@ abstract class BaseSetting
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addSettingI18nsCriteriaById(Criteria $criteria, $id)
+  public static function addsettingI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitSettingI18n::ID, $id);
 
     return $criteria;
   }
 
-  public static function getSettingI18nsById($id, array $options = array())
+  public static function getsettingI18nsById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addSettingI18nsCriteriaById($criteria, $id);
+    self::addsettingI18nsCriteriaById($criteria, $id);
 
     return QubitSettingI18n::get($criteria, $options);
   }
 
-  public function addSettingI18nsCriteria(Criteria $criteria)
+  public function addsettingI18nsCriteria(Criteria $criteria)
   {
-    return self::addSettingI18nsCriteriaById($criteria, $this->id);
+    return self::addsettingI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected $settingI18ns = null;
+  protected
+    $settingI18ns = null;
 
-  public function getSettingI18ns(array $options = array())
+  public function getsettingI18ns(array $options = array())
   {
     if (!isset($this->settingI18ns))
     {
@@ -421,32 +500,14 @@ abstract class BaseSetting
       }
       else
       {
-        $this->settingI18ns = self::getSettingI18nsById($this->id, array('self' => $this) + $options);
+        $this->settingI18ns = self::getsettingI18nsById($this->id, array('self' => $this) + $options);
       }
     }
 
     return $this->settingI18ns;
   }
 
-  public function getValue(array $options = array())
-  {
-    $value = $this->getCurrentSettingI18n($options)->getValue();
-    if (!empty($options['cultureFallback']) && strlen($value) < 1)
-    {
-      $value = $this->getCurrentSettingI18n(array('sourceCulture' => true) + $options)->getValue();
-    }
-
-    return $value;
-  }
-
-  public function setValue($value, array $options = array())
-  {
-    $this->getCurrentSettingI18n($options)->setValue($value);
-
-    return $this;
-  }
-
-  public function getCurrentSettingI18n(array $options = array())
+  public function getCurrentsettingI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
     {
@@ -460,16 +521,26 @@ abstract class BaseSetting
 
     if (!isset($this->settingI18ns[$options['culture']]))
     {
-      if (null === $settingI18n = QubitSettingI18n::getByIdAndCulture($this->id, $options['culture'], $options))
+      if (!isset($this->id) || null === $settingI18n = QubitSettingI18n::getByIdAndCulture($this->id, $options['culture'], $options))
       {
         $settingI18n = new QubitSettingI18n;
-        $settingI18n->setCulture($options['culture']);
+        $settingI18n->setculture($options['culture']);
       }
       $this->settingI18ns[$options['culture']] = $settingI18n;
     }
 
     return $this->settingI18ns[$options['culture']];
   }
-}
 
-BasePeer::getMapBuilder('lib.model.map.SettingMapBuilder');
+  public function __call($name, $args)
+  {
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
+
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
+
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+  }
+}

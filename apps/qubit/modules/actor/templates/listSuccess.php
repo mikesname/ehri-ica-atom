@@ -30,9 +30,9 @@
 
     <div>
       <?php if ($editCredentials): ?>
-        <?php echo link_to($actor->getAuthorizedFormOfName(array('cultureFallback' => true)), 'actor/show?id='.$actor->getId()) ?>
+        <?php echo link_to(render_title($actor->getAuthorizedFormOfName(array('cultureFallback' => true))), 'actor/show?id='.$actor->getId()) ?>
       <?php else: ?>
-        <?php echo link_to($actor->getAuthorizedFormOfName(array('cultureFallback' => true)), 'actor/show?id='.$actor->getId()) ?>
+        <?php echo link_to(render_title($actor->getAuthorizedFormOfName(array('cultureFallback' => true))), 'actor/show?id='.$actor->getId()) ?>
       <?php endif; ?>
      </div>
    </td><td>

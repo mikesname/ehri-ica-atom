@@ -213,9 +213,9 @@ It's up to you to build a fast-processing `getArticleTitlesWithNbComments()` met
 
 ### Bypassing the ORM
 
-When you don't really need objects but only a few columns from various tables, as in the previous example, you can create specific methods in your model that bypass completely the ORM layer. You can directly call the database with Creole, for instance, and return a custom-built array. Listing 18-9 illustrates this idea.
+When you don't really need objects but only a few columns from various tables, as in the previous example, you can create specific methods in your model that bypass completely the ORM layer. You can directly call the database with PDO, for instance, and return a custom-built array. Listing 18-9 illustrates this idea.
 
-Listing 18-9 - Using Direct Creole Access for Optimized Model Methods, in `lib/model/ArticlePeer.php`
+Listing 18-9 - Using Direct PDO Access for Optimized Model Methods, in `lib/model/ArticlePeer.php`
 
     [php]
     class ArticlePeer extends BaseArticlePeer
@@ -230,12 +230,14 @@ Listing 18-9 - Using Direct Creole Access for Optimized Model Methods, in `lib/m
           ArticlePeer::ID, CommentPeer::ARTICLE_ID,
           ArticlePeer::ID
         );
-        $statement = $connection->prepareStatement($query);
-        $resultset = $statement->executeQuery();
+
+        $statement = $connection->prepare($query);
+        $statement->execute();
+
         $results = array();
-        while ($resultset->next())
+        while ($resultset = $statement->fetch(PDO::FETCH_OBJ))
         {
-          $results[] = array($resultset->getString('title'), $resultset->getInt('nb'));
+          $results[] = array($resultset->title, $resultset->nb);
         }
 
         return $results;
@@ -245,7 +247,7 @@ Listing 18-9 - Using Direct Creole Access for Optimized Model Methods, in `lib/m
 When you start building these sorts of methods, you may end up writing one custom method for each action, and lose the benefit of the layer separation--not to mention the fact that you lose database-independence.
 
 >**TIP**
->If Propel doesn't suit you as a model layer, consider using other ORMs before writing your queries by hand. For instance, check the `sfDoctrine` plug-in for an interface with the PhpDoctrine ORM. In addition, you can use another database abstraction layer than Creole to access your database directly. As of PHP 5.1, PDO is bundled with PHP and provides a faster alternative to Creole.
+>If Propel doesn't suit you as a model layer, consider using other ORMs before writing your queries by hand. For instance, check the `sfDoctrine` plug-in for an interface with the PhpDoctrine ORM. In addition, you can use any other database abstraction layer.
 
 ### Speeding Up the Database
 
@@ -277,10 +279,12 @@ Listing 18-11 - Enabling Persistent Database Connection Support, in `config/data
 
     prod:
       propel:
-        class:          sfPropelDatabase
+        class:         sfPropelDatabase
         param:
-          persistent:   true
-          dsn:          mysql://login:passwd@localhost/blog
+          dsn:         mysql:dbname=example;host=localhost
+          username:    username
+          password:    password
+          persistent:  true      # Use persistent connections
 
 This may or may not improve the overall database performance, depending on numerous factors. The documentation on the subject is abundant on the Internet. Make sure you benchmark your application performance before and after changing this setting to validate its interest.
 

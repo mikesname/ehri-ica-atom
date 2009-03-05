@@ -1,3 +1,15 @@
+homepage:
+  url:   /
+  param: { module: staticpage, action: static, permalink: homepage }
+
+permalink:
+  url:   /page/:permalink
+  param: { module: staticpage, action: static }
+
+default_index:
+  url:   /:module
+  param: { action: index }
+
 createDc:
   url: /:module/create/dc/*
   param: { action: createDc }
@@ -33,6 +45,18 @@ editRad:
 showRad:
   url: /:module/show/rad/*
   param: { action: showRad }
+
+createMods:
+  url: /:module/create/mods/*
+  param: { action: createMods }
+
+editMods:
+  url: /:module/edit/mods/*
+  param: { action: editMods }
+
+showMods:
+  url: /:module/show/mods/*
+  param: { action: showMods }
 
 createIsaar:
   url: /:module/create/isaar/*
@@ -76,22 +100,6 @@ repository_template:
   url: /repository/:action/:repository_template/*
   param: { module: repository }
   requirements: { action: create|edit|show }
-
-homepage:
-  url:   /
-  param: { module: staticpage, action: static, permalink: homepage }
-
-permalink:
-  url:   /:permalink
-  param: { module: staticpage, action: static }
-
-default_symfony:
-  url:   /symfony/:action/*
-  param: { module: default }
-
-default_index:
-  url:   /:module
-  param: { action: index }
 
 default:
   url:   /:module/:action/*

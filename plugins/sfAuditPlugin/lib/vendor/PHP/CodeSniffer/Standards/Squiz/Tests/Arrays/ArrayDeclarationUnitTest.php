@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ArrayDeclarationUnitTest.php,v 1.9 2008/05/19 03:34:56 squiz Exp $
+ * @version   CVS: $Id: ArrayDeclarationUnitTest.php,v 1.10 2008/06/30 05:26:24 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -93,6 +93,7 @@ class Squiz_Tests_Arrays_ArrayDeclarationUnitTest extends AbstractSniffUnitTest
                 151 => 1,
                 157 => 1,
                 162 => 1,
+                174 => 3,
                );
 
     }//end getErrorList()

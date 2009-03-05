@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_07_edit_physical_storage.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_07_edit_physical_storage.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[2]/ul/li[1]/ul/li[1]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Selenium test fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=physical storage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>physicalObjectId</td>
+	<td>label=Box A12</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Box: Box A12 - Shelf 3, Aisle C10, Main Repository</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=physical storage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>physicalObjectName</td>
+	<td>Box 52</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>physicalObjectLocation</td>
+	<td>Bay 18</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>physicalObjectTypeId</td>
+	<td>label=regexp:\sHollinger box</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Box: Box A12 - Shelf 3, Aisle C10, Main Repository</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Hollinger box: Box 52 - Bay 18</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=physical storage</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//form[@id='editForm']/fieldset[10]/div/div[1]/table/tbody/tr[3]/td[2]/div/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Box 82</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Box: Box A12 - Shelf 3, Aisle C10, Main Repository</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Hollinger box: Box 82 - Bay 18</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Box 82</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>There is 1 information object related to this item.&nbsp;&nbsp;Are you sure you wish proceed with delete?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Fonds 66 - Selenium test fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>Hollinger box: Box 82 - Bay 18</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

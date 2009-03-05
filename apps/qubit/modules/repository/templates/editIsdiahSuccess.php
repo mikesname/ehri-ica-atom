@@ -1,19 +1,19 @@
 ﻿<?php use_helper('Javascript') ?>
 
-<div class="pageTitle"><?php echo __('edit %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))); ?></div>
+<div class="pageTitle"><?php echo __('edit %1% - ISDIAH', array('%1%' => sfConfig::get('app_ui_label_repository'))); ?></div>
 
 <?php echo form_tag('repository/updateIsdiah') ?>
   <?php echo object_input_hidden_tag($repository, 'getId') ?>
 
-  <?php if ($repository->getId()): ?>
+  <?php if ($repository->getAuthorizedFormOfName(array('cutureFallback' => true))): ?>
     <div class="formHeader">
       <?php echo link_to($repository, 'repository/showIsdiah?id='.$repository->getId()) ?>
     </div>
   <?php else: ?>
-    <table class="list" style="height: 25px;"><thead><tr><th></th></tr></table>
+    <table class="list" style="height: 25px;"><thead><tr><th>&nbsp;</th></tr></table>
   <?php endif; ?>
 
-  <?php if ($sf_context->getActionName() == 'create'): ?>
+  <?php if ($sf_context->getActionName() == 'createIsdiah'): ?>
   <fieldset class="collapsible">
   <?php else : ?>
   <fieldset class="collapsible collapsed">
@@ -161,7 +161,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-       <?php echo object_textarea_tag($repository, 'getHistory', array('size' => '30x3')) ?>
+       <?php echo object_textarea_tag($repository, 'getHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -169,7 +169,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getGeoculturalContext(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -177,7 +177,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getMandates(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getMandates', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getMandates', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -185,7 +185,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getInternalStructures(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getInternalStructures', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getInternalStructures', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -193,7 +193,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getCollectingPolicies(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getCollectingPolicies', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getCollectingPolicies', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -201,7 +201,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getBuildings(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getBuildings', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getBuildings', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -209,7 +209,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getHoldings(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getHoldings', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getHoldings', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -217,7 +217,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getFindingAids(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getFindingAids', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getFindingAids', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
 
@@ -229,7 +229,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getOpeningTimes(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getOpeningTimes', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getOpeningTimes', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -237,7 +237,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getAccessConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getAccessConditions', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getAccessConditions', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -245,7 +245,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getDisabledAccess(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDisabledAccess', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getDisabledAccess', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
 
@@ -257,7 +257,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getResearchServices(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getResearchServices', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getResearchServices', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -265,7 +265,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getReproductionServices(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getReproductionServices', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getReproductionServices', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -273,7 +273,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getPublicFacilities(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getPublicFacilities', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getPublicFacilities', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
 
@@ -297,7 +297,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getDescRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDescRules', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getDescRules', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -315,7 +315,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getDescRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDescRevisionHistory', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getDescRevisionHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
     <div>
 
     <div class="form-item">
@@ -324,7 +324,7 @@
       <?php if(count($languageCodes) > 0): ?>
       <?php foreach ($languageCodes as $languageCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_language($languageCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'),
+        <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'),
             array('module' => 'actor', 'action' => 'deleteProperty', 'Id' => $languageCode->getId()),
             array('query_string' => 'next='.url_for(array('module' => 'repository', 'action' => 'editIsdiah', 'id' => $repository->getId())))
           ) ?><br/>
@@ -341,7 +341,7 @@
       <?php if(count($scriptCodes) > 0): ?>
       <?php foreach ($scriptCodes as $scriptCode): ?>
         <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_script($scriptCode->getValue()) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'),
+        <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'),
             array('module' => 'actor', 'action' => 'deleteProperty', 'Id' => $scriptCode->getId()),
             array('query_string' => 'next='.url_for(array('module' => 'repository', 'action' => 'editIsdiah', 'id' => $repository->getId())))
           ) ?><br/>
@@ -357,7 +357,7 @@
       <?php if (strlen($sourceCultureValue = $repository->getDescSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDescSources', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($repository, 'getDescSources', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -421,7 +421,7 @@ EOF
 </form>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), 'repository/createIsdiah'); ?>
+  <?php echo link_to(__('add new'), 'repository/createIsdiah'); ?>
   <?php echo link_to(__('list all'), 'repository/list'); ?>
 </div>
 

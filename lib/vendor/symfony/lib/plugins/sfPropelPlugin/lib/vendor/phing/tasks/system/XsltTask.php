@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: XsltTask.php 3076 2006-12-18 08:52:12Z fabien $
+ *  $Id: XsltTask.php 144 2007-02-05 15:19:00Z hans $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -57,7 +57,7 @@ class XsltTask extends CopyTask {
      * @see CopyTask::main()
      */
     function main() {        
-        $this->log("Doing XSLT transformation using stylesheet " . $this->xsltFilter->getStyle(), PROJECT_MSG_VERBOSE);
+        $this->log("Doing XSLT transformation using stylesheet " . $this->xsltFilter->getStyle(), Project::MSG_VERBOSE);
         $this->xsltFilter->setParams($this->parameters);
         parent::main();
     }

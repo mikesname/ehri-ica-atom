@@ -18,7 +18,7 @@
  * @subpackage storage
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfPostgreSQLSessionStorage.class.php 10589 2008-08-01 16:00:48Z nicolas $
+ * @version    SVN: $Id: sfPostgreSQLSessionStorage.class.php 10590 2008-08-01 16:01:23Z nicolas $
  */
 class sfPostgreSQLSessionStorage extends sfDatabaseSessionStorage
 {

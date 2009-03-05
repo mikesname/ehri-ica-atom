@@ -60,7 +60,7 @@ body,
 
 .yuimenu ul li
 {
-  background: none;
+  list-style-image: none;
   margin: 0;
   padding: 0;
 }
@@ -73,4 +73,57 @@ body,
 html.js fieldset.collapsible
 {
   position: static;
+}
+
+/* Translation interface customizations */
+
+#l10n-client
+{
+  border-top: 2px solid #000;
+}
+
+#l10n-client .labels
+{
+  background: #fd0;
+}
+
+#l10n-client .string-list li.translated
+{
+  background: transparent;
+  border-bottom-color: #ddd;
+  color: #000;
+}
+
+#l10n-client .string-list li.translated:hover
+{
+  background: #ace;
+}
+
+#l10n-client .string-list li.translated:active
+{
+  background: #8ac;
+}
+
+#l10n-client .string-list li.untranslated
+{
+  background: #ffd;
+  border-bottom-color: #fd0;
+  color: #000;
+}
+
+#l10n-client .string-list li.untranslated:hover
+{
+  background: #ace;
+}
+
+#l10n-client .string-list li.untranslated:active
+{
+  background: #ffd;
+}
+
+#l10n-client-form .source textarea
+{
+  background: #ffd;
+  border: 1px dashed #fd0;
+  color: #000;
 }

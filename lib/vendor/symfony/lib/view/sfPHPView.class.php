@@ -16,7 +16,7 @@
  * @subpackage view
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfPHPView.class.php 9945 2008-06-27 20:40:58Z fabien $
+ * @version    SVN: $Id: sfPHPView.class.php 11783 2008-09-25 16:21:27Z fabien $
  */
 class sfPHPView extends sfView
 {
@@ -49,7 +49,7 @@ class sfPHPView extends sfView
       unset($helpers[$i]);
     }
 
-    sfLoader::loadHelpers($helpers);
+    $this->context->getConfiguration()->loadHelpers($helpers);
   }
 
   /**

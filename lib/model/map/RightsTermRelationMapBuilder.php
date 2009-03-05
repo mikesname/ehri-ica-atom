@@ -2,7 +2,7 @@
 
 
 
-class RightsTermRelationMapBuilder {
+class RightsTermRelationMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.RightsTermRelationMapBuilder';
@@ -25,26 +25,27 @@ class RightsTermRelationMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitRightsTermRelation::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_rights_term_relation');
-		$tMap->setPhpName('RightsTermRelation');
+		$tMap = $this->dbMap->addTable(QubitRightsTermRelation::TABLE_NAME);
+		$tMap->setPhpName('rightsTermRelation');
+		$tMap->setClassname('QubitRightsTermRelation');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addForeignKey('RIGHTS_ID', 'RightsId', 'int', CreoleTypes::INTEGER, 'q_rights', 'ID', true, null);
+		$tMap->addForeignKey('RIGHTS_ID', 'rightsId', 'INTEGER', 'q_rights', 'ID', true, null);
 
-		$tMap->addForeignKey('TERM_ID', 'TermId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', true, null);
+		$tMap->addForeignKey('TERM_ID', 'termId', 'INTEGER', 'q_term', 'ID', true, null);
 
-		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('DESCRIPTION', 'Description', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

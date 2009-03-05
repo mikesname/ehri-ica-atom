@@ -2,7 +2,7 @@
 
 
 
-class MenuI18nMapBuilder {
+class MenuI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.MenuI18nMapBuilder';
@@ -25,18 +25,21 @@ class MenuI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitMenuI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_menu_i18n');
-		$tMap->setPhpName('MenuI18n');
+		$tMap = $this->dbMap->addTable(QubitMenuI18n::TABLE_NAME);
+		$tMap->setPhpName('menuI18n');
+		$tMap->setClassname('QubitMenuI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('LABEL', 'label', 'VARCHAR', false, 255);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_menu', 'ID', true, null);
+		$tMap->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_menu', 'ID', true, null);
+
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -30,6 +28,33 @@
  */
 class InformationObjectUpdateRadAction extends InformationObjectUpdateAction
 {
+  public function validate()
+  {
+    // If $_POST array is empty, then display an error
+    if ($_POST === array())
+    {
+      $this->getRequest()->setError('form', 'no_form_data');
+
+      return false;
+    }
+
+    return true;
+  }
+
+  public function handleError()
+  {
+    if ($id = $this->getRequestParameter('id'))
+    {
+      $this->editPage = array('module' => 'informationobject', 'action' => 'editRad', 'id' => $id);
+    }
+    else
+    {
+      $this->editPage = array('module' => 'informationobject', 'action' => 'createRad');
+    }
+
+    return sfView::ERROR;
+  }
+
   public function execute($request)
   {
     // run the core informationObject update action commands
@@ -49,101 +74,74 @@ class InformationObjectUpdateRadAction extends InformationObjectUpdateAction
     // Update RAD Properties
     $this->updateRadProperties($request);
 
-    // update informationObject in the search index
-    if (!$this->foreignKeyUpdate)
+    // return to RAD edit template
+    if ($this->hasWarning)
     {
-      SearchIndex::updateIndexDocument($this->informationObject, $this->getUser()->getCulture());
+      // Set id parameter if this is a new information object
+      if (!$request->getParameter('id'))
+      {
+        $request->setParameter('id', $this->informationObject->getId());
+      }
+
+      $this->forward('informationobject', 'editRad');
     }
     else
     {
-      SearchIndex::updateTranslatedLanguages($this->informationObject);
-    }
 
-    // return to RAD edit template
-    return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => 'rad', 'id' => $this->informationObject->getId()));
+      return $this->redirect(array('module' => 'informationobject', 'action' => 'edit', 'informationobject_template' => 'rad', 'id' => $this->informationObject->getId()));
+    }
   }
 
   protected function updateRadProperties($request)
   {
-    // Rad 1.1 properties
-    if ($newValue = $this->getRequestParameter('rad_other_title_information'))
-    {
-      $this->informationObject->saveProperty('other_title_information', $newValue, array('scope'=>'rad'));
-    }
+    // Rad 1.1 properties (do some conditional logic to set empty strings as null values in db)
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_other_title_information'))) ? $newValue : null;
+    $this->informationObject->saveProperty('other_title_information', $newValue, array('scope'=>'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_title_statement_of_responsibility'))
-    {
-      $this->informationObject->saveProperty('title_statement_of_responsibility', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_title_statement_of_responsibility'))) ? $newValue : null;
+    $this->informationObject->saveProperty('title_statement_of_responsibility', $newValue, array('scope' => 'rad'));
 
     // Rad 1.2 properties
-    if ($newValue = $this->getRequestParameter('rad_edition_statement_of_responsibility'))
-    {
-      $this->informationObject->saveProperty('edition_statement_of_responsibility', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_edition_statement_of_responsibility'))) ? $newValue : null;
+    $this->informationObject->saveProperty('edition_statement_of_responsibility', $newValue, array('scope' => 'rad'));
 
     // Rad 1.3 properties
-    if ($newValue = $this->getRequestParameter('rad_statement_of_scale_cartographic'))
-    {
-      $this->informationObject->saveProperty('statement_of_scale_cartographic', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_statement_of_scale_cartographic'))) ? $newValue : null;
+    $this->informationObject->saveProperty('statement_of_scale_cartographic', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_statement_of_projection'))
-    {
-      $this->informationObject->saveProperty('statement_of_projection', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_statement_of_projection'))) ? $newValue : null;
+    $this->informationObject->saveProperty('statement_of_projection', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_statement_of_coordinates'))
-    {
-      $this->informationObject->saveProperty('statement_of_coordinates', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_statement_of_coordinates'))) ? $newValue : null;
+    $this->informationObject->saveProperty('statement_of_coordinates', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_statement_of_scale_architectural'))
-    {
-      $this->informationObject->saveProperty('statement_of_scale_architectural', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_statement_of_scale_architectural'))) ? $newValue : null;
+    $this->informationObject->saveProperty('statement_of_scale_architectural', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_issuing_jursidiction_and_denomination'))
-    {
-      $this->informationObject->saveProperty('issuing_jursidiction_and_denomination', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_issuing_jursidiction_and_denomination'))) ? $newValue : null;
+    $this->informationObject->saveProperty('issuing_jursidiction_and_denomination', $newValue, array('scope' => 'rad'));
 
     // Rad 1.6 properties
-    if ($newValue = $this->getRequestParameter('rad_title_proper_of_publishers_series'))
-    {
-      $this->informationObject->saveProperty('title_proper_of_publishers_series', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_title_proper_of_publishers_series'))) ? $newValue : null;
+    $this->informationObject->saveProperty('title_proper_of_publishers_series', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_parallel_titles_of_publishers_series'))
-    {
-      $this->informationObject->saveProperty('parallel_titles_of_publishers_series', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_parallel_titles_of_publishers_series'))) ? $newValue : null;
+    $this->informationObject->saveProperty('parallel_titles_of_publishers_series', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_other_title_information_of_publishers_series'))
-    {
-      $this->informationObject->saveProperty('other_title_information_of_publishers_series', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_other_title_information_of_publishers_series'))) ? $newValue : null;
+    $this->informationObject->saveProperty('other_title_information_of_publishers_series', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_statement_of_responsibility_relating_to_publishers_series'))
-    {
-      $this->informationObject->saveProperty('statement_of_responsibility_relating_to_publishers_series', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_statement_of_responsibility_relating_to_publishers_series'))) ? $newValue : null;
+    $this->informationObject->saveProperty('statement_of_responsibility_relating_to_publishers_series', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_numbering_within_publishers_series'))
-    {
-      $this->informationObject->saveProperty('numbering_within_publishers_series', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_numbering_within_publishers_series'))) ? $newValue : null;
+    $this->informationObject->saveProperty('numbering_within_publishers_series', $newValue, array('scope' => 'rad'));
 
-    if ($newValue = $this->getRequestParameter('rad_note_on_publishers_series'))
-    {
-      $this->informationObject->saveProperty('note_on_publishers_series', $newValue, array('scope' => 'rad'));
-    }
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_note_on_publishers_series'))) ? $newValue : null;
+    $this->informationObject->saveProperty('note_on_publishers_series', $newValue, array('scope' => 'rad'));
 
     // Rad 1.9 properties
-    if ($newValue = $this->getRequestParameter('rad_standard_number'))
-    {
-      $this->informationObject->saveProperty('standard_number', $newValue, array('scope' => 'rad'));
-    }
-
+    $newValue = (strlen($newValue = $this->getRequestParameter('rad_standard_number'))) ? $newValue : null;
+    $this->informationObject->saveProperty('standard_number', $newValue, array('scope' => 'rad'));
   }
 }

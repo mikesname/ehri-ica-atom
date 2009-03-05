@@ -2,7 +2,7 @@
 
 
 
-class NoteI18nMapBuilder {
+class NoteI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.NoteI18nMapBuilder';
@@ -25,18 +25,19 @@ class NoteI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitNoteI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_note_i18n');
-		$tMap->setPhpName('NoteI18n');
+		$tMap = $this->dbMap->addTable(QubitNoteI18n::TABLE_NAME);
+		$tMap->setPhpName('noteI18n');
+		$tMap->setClassname('QubitNoteI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('CONTENT', 'Content', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('CONTENT', 'content', 'LONGVARCHAR', false, null);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_note', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_note', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 

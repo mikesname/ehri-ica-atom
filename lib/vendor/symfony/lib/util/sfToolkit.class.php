@@ -16,7 +16,7 @@
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfToolkit.class.php 10833 2008-08-13 11:33:13Z fabien $
+ * @version    SVN: $Id: sfToolkit.class.php 12169 2008-10-13 16:17:33Z Kris.Wallsmith $
  */
 class sfToolkit
 {
@@ -812,5 +812,48 @@ class sfToolkit
     }
 
     return $string;
+  }
+
+  /**
+   * Adds a path to the PHP include_path setting.
+   * 
+   * @param   mixed  $path     Single string path or an array of paths
+   * @param   string $position Either 'front' or 'back'
+   * 
+   * @return  string The old include path
+   */
+  static public function addIncludePath($path, $position = 'front')
+  {
+    if (is_array($path))
+    {
+      foreach ('front' == $position ? array_reverse($path) : $path as $p)
+      {
+        self::addIncludePath($p, $position);
+      }
+
+      return;
+    }
+
+    $paths = explode(PATH_SEPARATOR, get_include_path());
+
+    // remove what's already in the include_path
+    if (false !== $key = array_search(realpath($path), array_map('realpath', $paths)))
+    {
+      unset($paths[$key]);
+    }
+
+    switch ($position)
+    {
+      case 'front':
+        array_unshift($paths, $path);
+        break;
+      case 'back':
+        $paths[] = $path;
+        break;
+      default:
+        throw new InvalidArgumentException(sprintf('Unrecognized position: "%s"', $position));
+    }
+
+    return set_include_path(join(PATH_SEPARATOR, $paths));
   }
 }

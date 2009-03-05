@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: SwitchDeclarationUnitTest.php,v 1.11 2007/12/20 22:09:54 squiz Exp $
+ * @version   CVS: $Id: SwitchDeclarationUnitTest.php,v 1.12 2008/12/04 06:07:51 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -39,9 +39,11 @@ class Squiz_Tests_ControlStructures_SwitchDeclarationUnitTest extends AbstractSn
      * The key of the array should represent the line number and the value
      * should represent the number of errors that should occur on that line.
      *
+     * @param string $testFile The name of the file being tested.
+     *
      * @return array(int => int)
      */
-    public function getErrorList()
+    public function getErrorList($testFile='SwitchDeclarationUnitTest.inc')
     {
         return array(
                 27  => 1,

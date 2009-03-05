@@ -1,70 +1,66 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class SearchKeywordAction extends sfAction
 {
   public function execute($request)
   {
-  $culture = $this->getUser()->getCulture();
-  setlocale(LC_CTYPE, $culture.'.utf-8');
-  $this->query = urldecode($this->getRequestParameter('query'));
+    $culture = $this->getUser()->getCulture();
+    setlocale(LC_CTYPE, $culture.'.utf-8', $culture.'@utf-8');
+    $this->query = urldecode($this->getRequestParameter('query'));
 
-  if ($this->query)
-  {
-  $this->getResponse()->setTitle('Search for \''.$this->query.'\'', true);
-  }
+    if ($this->query)
+    {
+      $this->getResponse()->setTitle('Search for \''.$this->query.'\'', true);
+    }
 
-  $search_index = SearchIndex::getIndexLocation('informationobject', $culture);
-  Zend_Search_Lucene_Analysis_Analyzer::setDefault(SearchIndex::getIndexAnalyzer());
+    $search_index = SearchIndex::getIndexLocation('informationobject', $culture);
+    Zend_Search_Lucene_Analysis_Analyzer::setDefault(SearchIndex::getIndexAnalyzer());
+    Zend_Search_Lucene_Search_QueryParser::setDefaultEncoding('utf-8');
 
-  $hits = array();
+    $hits = array();
 
-  if ($this->query)
-  {
+    if ($this->query)
+    {
       $index = Zend_Search_Lucene::open($search_index);
       $parser = new Zend_Search_Lucene_Search_QueryParser;
       $c = $parser->parse(strtolower($this->query), 'UTF-8');
       $hits = $index->find($c);
-  }
-  $this->hits = $hits;
+    }
+    $this->hits = $hits;
 
-  //* begin pager expirement */
-  // send results through pagination
-  if ($this->getRequestParameter('page')) 
-  {
-    $page = $this->getRequestParameter('page');
-  }
-  else
-  {
-    //set default page
-    $page = 1;
-  }
-
-  $this->results = new SearchPager($hits, $page);
-  //* end pager expirement */
+    // send results through pagination
+    if ($this->getRequestParameter('page'))
+    {
+      $page = $this->getRequestParameter('page');
+    }
+    else
+    {
+      //set default page
+      $page = 1;
+    }
+      $this->results = new QubitSearchPager($hits, $page);
 
   }
 
   public function handleError()
-    {
+  {
     return sfView::SUCCESS;
-    }
+  }
 }

@@ -3,14 +3,37 @@
 <table class="detail">
 <tbody>
 
-<!-- title and statement of responsibility area -->
-<?php if ($informationObject->getTitle(array('sourceCulture' => true))): ?>
-  <tr><td colspan="2" class="headerCell">
-  <?php if ($editCredentials) echo link_to(QubitRad::getLabel($informationObject), 'informationobject/editRad/?id='.$informationObject->getId());
-        else echo QubitRad::getLabel($informationObject); ?>
-  </td></tr>
+<tr>
+  <td colspan="2" class="headerCell">
+  <?php if ($editCredentials): ?>
+    <?php echo link_to(render_title(QubitRad::getLabel($informationObject)), 'informationobject/editRad/?id='.$informationObject->getId()); ?>
+  <?php else: ?>
+    <?php echo render_title(QubitRad::getLabel($informationObject)); ?>
+  <?php endif; ?>
+  </td>
+</tr>
+
+<!-- Digital Object reference representation -->
+<?php if ($showCompoundDigitalObject): ?>
+  <tr>
+    <td colspan="2">
+      <div style="text-align: center">
+      <?php include_component('digitalobject', 'showCompound', array('informationObject'=>$informationObject)); ?>
+      </div>
+    </td>
+  </tr>
+<?php elseif (isset($digitalObject)): ?>
+  <tr>
+    <td colspan="2">
+      <div style="text-align: center">
+      <?php include_component('digitalobject', 'show', array(
+        'digitalObject'=>$digitalObject, 'usageType'=>QubitTerm::REFERENCE_ID, 'link'=>$digitalObjectLink)); ?>
+      </div>
+    </td>
+  </tr>
 <?php endif; ?>
 
+<!-- title and statement of responsibility area -->
 <?php if (strlen($value = $informationObject->getTitle(array('cultureFallback' => true))) > 0) : ?>
   <tr>
     <th><?php echo __('title proper'); ?></th>
@@ -71,7 +94,7 @@
 <?php if ($informationObject->getRepositoryId()) : ?>
   <tr>
     <th><?php echo __('repository'); ?></th>
-    <td><?php echo link_to($informationObject->getRepository(), 'repository/show?id='.$informationObject->getRepositoryId()); ?></td>
+    <td><?php echo link_to(render_title($informationObject->getRepository()), 'repository/show?id='.$informationObject->getRepositoryId()); ?></td>
   </tr>
 <?php endif; ?>
 
@@ -142,9 +165,9 @@
     <th><?php echo __('dates'); ?></th>
     <td>
     <?php foreach ($informationObject->getDates() as $date): ?>
-      <?php echo $date->getDateDisplay().' ('.$date->getType().')' ?>
+      <?php echo $date->getDateDisplay(array('cultureFallback' => true)).' ('.$date->getType().')' ?>
       <?php if ($actor = $date->getActor()): ?>
-        <?php echo link_to($actor, array('module' => 'actor', 'action' => 'show', 'id' => $actor->getId())) ?>
+        <?php echo link_to(render_title($actor), array('module' => 'actor', 'action' => 'show', 'id' => $actor->getId())) ?>
       <?php endif; ?><br />
         <?php if (($date->getPlace()) || ($date->getDescription())): ?>
         <div style="margin-left: 30px; color: #999999;">
@@ -164,7 +187,7 @@
 <?php  foreach ($creators as $creator): ?>
   <tr>
   <th><?php echo __('name of creator') ?></th>
-  <td><?php echo link_to($creator, 'actor/show?id='.$creator->getId()); ?>
+  <td><?php echo link_to(render_title($creator), 'actor/show?id='.$creator->getId()); ?>
     <?php if ($existence = $creator->getDatesOfExistence(array('cultureFallback' => true))) echo ' ('.$existence.')'; ?>
   <?php if ($history = $creator->getHistory(array('cultureFallback' => true))): ?>
     <table class="detail" style="margin-top: 5px;">
@@ -407,7 +430,7 @@
     <th><?php echo __('name access points'); ?></th>
     <td>
       <?php foreach ($nameAccessPoints as $name): ?>
-        <?php echo link_to($name->getActor(), 'actor/show?id='.$name->getActorId()) ?>
+        <?php echo link_to(render_title($name->getActor()), 'actor/show?id='.$name->getActorId()) ?>
         <?php echo ' ('.$name->getType()->getRole().')' ?>
         <br />
       <?php endforeach; ?>
@@ -489,27 +512,54 @@
 <?php endif; ?>
 <!-- End Control Area -->
 
-<!-- Digital Object Area -->
-<?php if ($digitalObject = $informationObject->getDigitalObject()): ?>
-<tr><th><?php echo sfConfig::get('app_ui_label_digitalobject') ?></th>
-  <td>
-    <?php include_component('digitalobject', 'show', array(
-      'digitalObject'=>$digitalObject,
-      'usageType'=>QubitTerm::THUMBNAIL_ID,
-      'link'=>'digitalobject/show?id='.$digitalObject->getId()
-    )); ?>
-  </td>
-</tr>
-<!-- End Digital Object Area -->
-
 <!-- Physical Object Area -->
 <?php if (count($physicalObjects) && $editCredentials): ?>
   <?php include_partial('physicalobject/show',
     array('informationObject'=>$informationObject, 'physicalObjects'=>$physicalObjects)); ?>
 <?php endif; ?>
-
-<?php endif; ?>
 <!-- End Physical Object Area -->
+
+<!--  Digital Object metadata -->
+<?php if (isset($digitalObject)): ?>
+  <tr><td colspan="2" class="subHeaderCell">
+    <?php echo __('digital object metadata') ?>
+  </td></tr>
+
+  <?php if ($digitalObject->getName()): ?>
+  <tr>
+    <th><?php echo __('filename'); ?></th>
+    <td><?php echo $digitalObject->getName(); ?></td>
+  </tr>
+  <?php endif; ?>
+  
+  <?php if ($digitalObject->getMediaType()): ?>
+  <tr>
+    <th><?php echo __('media type'); ?></th>
+    <td><?php echo $digitalObject->getMediaType(); ?></td>
+  </tr>
+  <?php endif; ?>
+
+  <?php if ($digitalObject->getMimeType()): ?>
+  <tr>
+    <th><?php echo __('mime-type'); ?></th>
+    <td><?php echo $digitalObject->getMimeType(); ?></td>
+  </tr>
+  <?php endif; ?>
+  
+  <?php if ($digitalObject->getHRfileSize()): ?>
+  <tr>
+    <th><?php echo __('filesize'); ?></th>
+    <td><?php echo $digitalObject->getHRfileSize(); ?></td>
+  </tr>
+  <?php endif; ?>
+  
+  <?php if ($digitalObject->getCreatedAt()): ?>
+  <tr>
+    <th><?php echo __('uploaded'); ?></th>
+    <td><?php echo $digitalObject->getCreatedAt(); ?></td>
+  </tr>
+  <?php endif; ?>
+<?php endif; ?>
 
 </tbody>
 </table>
@@ -522,7 +572,7 @@
 
 <div class="menu-extra">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('add new archival description'), 'informationobject/createRad'); ?>
+  <?php echo link_to(__('add new'), 'informationobject/createRad'); ?>
 <?php endif; ?>
   <?php echo link_to(__('list all'), 'informationobject/list'); ?>
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-use_helper('Form');
+require_once dirname(__FILE__).'/FormHelper.php';
 
 /*
  * This file is part of the symfony package.
@@ -16,7 +16,7 @@ use_helper('Form');
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: DateFormHelper.php 11700 2008-09-21 10:53:44Z fabien $
+ * @version    SVN: $Id: DateFormHelper.php 11783 2008-09-25 16:21:27Z fabien $
  */
 
 /**

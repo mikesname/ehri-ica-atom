@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: SquizCodingStandard.php,v 1.14 2008/05/01 00:49:32 squiz Exp $
+ * @version   CVS: $Id: SquizCodingStandard.php,v 1.19 2008/12/05 04:39:00 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -45,15 +45,20 @@ class PHP_CodeSniffer_Standards_Squiz_SquizCodingStandard extends PHP_CodeSniffe
     public function getIncludedSniffs()
     {
         return array(
+                'Generic/Sniffs/Commenting/TodoSniff.php',
                 'Generic/Sniffs/ControlStructures/InlineControlStructureSniff.php',
+                'Generic/Sniffs/Formatting/DisallowMultipleStatementsSniff.php',
                 'Generic/Sniffs/Formatting/SpaceAfterCastSniff.php',
                 'Generic/Sniffs/Functions/OpeningFunctionBraceBsdAllmanSniff.php',
                 'Generic/Sniffs/NamingConventions/UpperCaseConstantNameSniff.php',
                 'Generic/Sniffs/Metrics/CyclomaticComplexitySniff.php',
                 'Generic/Sniffs/Metrics/NestingLevelSniff.php',
                 'Generic/Sniffs/PHP/DisallowShortOpenTagSniff.php',
+                'Generic/Sniffs/Strings/UnnecessaryStringConcatSniff.php',
                 'Generic/Sniffs/WhiteSpace/DisallowTabIndentSniff.php',
+                'PEAR/Sniffs/ControlStructures/MultiLineConditionSniff.php',
                 'PEAR/Sniffs/Files/IncludingFileSniff.php',
+                'PEAR/Sniffs/Formatting/MultiLineAssignmentSniff.php',
                 'PEAR/Sniffs/Functions/FunctionCallArgumentSpacingSniff.php',
                 'PEAR/Sniffs/Functions/FunctionCallSignatureSniff.php',
                 'Zend/Sniffs/Debug/CodeAnalyzerSniff.php',

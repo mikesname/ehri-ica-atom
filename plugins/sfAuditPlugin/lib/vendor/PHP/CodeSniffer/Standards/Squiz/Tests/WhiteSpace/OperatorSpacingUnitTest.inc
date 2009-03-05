@@ -42,7 +42,7 @@ $result -= 4;
 $result-=4;
 $result /= 4;
 $result/=4;
-$result *= 4;
+$result *=4;
 $result*=4;
 
 $result =& $thing;
@@ -91,4 +91,7 @@ $a ==$b && $c !=$d && $e ===$f && $g !==$h;
 $i >$j && $k <$l && $m >=$n && $o <=$p && $q <>$r;
 
 function myFunction($variable=0, $var2='string') {}
+
+if (index > -1) {
+}
 ?>

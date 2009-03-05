@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage command
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCommandManager.class.php 9801 2008-06-23 15:12:05Z fabien $
+ * @version    SVN: $Id: sfCommandManager.class.php 12536 2008-11-01 14:43:18Z fabien $
  */
 class sfCommandManager
 {
@@ -367,7 +367,7 @@ class sfCommandManager
     $this->setOption($option, $value);
   }
 
-  protected function setOption(sfCommandOption $option, $value)
+  public function setOption(sfCommandOption $option, $value)
   {
     if ($option->isArray())
     {

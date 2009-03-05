@@ -15,7 +15,7 @@
  * @package    symfony
  * @subpackage filter
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfRenderingFilter.class.php 10439 2008-07-23 12:36:55Z nicolas $
+ * @version    SVN: $Id: sfRenderingFilter.class.php 11286 2008-09-02 10:27:36Z fabien $
  */
 class sfRenderingFilter extends sfFilter
 {
@@ -31,11 +31,6 @@ class sfRenderingFilter extends sfFilter
   {
     // execute next filter
     $filterChain->execute();
-
-    if (sfConfig::get('sf_logging_enabled'))
-    {
-      $this->context->getEventDispatcher()->notify(new sfEvent($this, 'application.log', array('Render to the client')));
-    }
 
     // get response object
     $response = $this->context->getResponse();

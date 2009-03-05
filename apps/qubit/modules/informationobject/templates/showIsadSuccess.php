@@ -3,11 +3,33 @@
 <table class="detail">
 <tbody>
 
-<?php if ($informationObject->getTitle(array('sourceCulture' => true))): ?>
-  <tr><td colspan="2" class="headerCell">
-  <?php if ($editCredentials) echo link_to(QubitIsad::getLabel($informationObject), 'informationobject/editIsad/?id='.$informationObject->getId());
-        else echo QubitIsad::getLabel($informationObject); ?>
-  </td></tr>
+<tr>
+  <td colspan="2" class="headerCell">
+  <?php if ($editCredentials): ?> 
+    <?php echo link_to(render_title(QubitIsad::getLabel($informationObject)), 'informationobject/editIsad/?id='.$informationObject->getId()); ?>
+  <?php else: ?> 
+    <?php echo render_title(QubitIsad::getLabel($informationObject)); ?>
+  <?php endif; ?>
+  </td>
+</tr>
+
+<?php if ($showCompoundDigitalObject): ?>
+  <tr>
+    <td colspan="2">
+      <div style="text-align: center">
+      <?php include_component('digitalobject', 'showCompound', array('informationObject'=>$informationObject)); ?>
+      </div>
+    </td>
+  </tr>
+<?php elseif (isset($digitalObject)): ?>
+  <tr>
+    <td colspan="2">
+      <div style="text-align: center">
+      <?php include_component('digitalobject', 'show', array(
+        'digitalObject'=>$digitalObject, 'usageType'=>QubitTerm::REFERENCE_ID, 'link'=>$digitalObjectLink)); ?>
+      </div>
+    </td>
+  </tr>
 <?php endif; ?>
 
 <?php if ($informationObject->getIdentifier()): ?>
@@ -21,9 +43,9 @@
 <?php if (count($informationObject->getDates()) > 0) : ?>
 <tr><th><?php echo __('dates'); ?></th><td>
 <?php foreach ($informationObject->getDates() as $date): ?>
-  <?php echo $date->getDateDisplay().' ('.$date->getType().')' ?>
+  <?php echo $date->getDateDisplay(array('cultureFallback' => true)).' ('.$date->getType().')' ?>
   <?php if ($actor = $date->getActor()): ?>
-    <?php echo link_to($actor, array('module' => 'actor', 'action' => 'show', 'id' => $actor->getId())) ?>
+    <?php echo link_to(render_title($actor), array('module' => 'actor', 'action' => 'show', 'id' => $actor->getId())) ?>
   <?php endif; ?><br />
     <?php if (($date->getPlace()) || ($date->getDescription())): ?>
     <div style="margin-left: 30px; color: #999999;">
@@ -53,22 +75,10 @@
 </tr>
 <?php endif; ?>
 
-<?php if ($digitalObject = $informationObject->getDigitalObject()): ?>
-<tr><th><?php echo sfConfig::get('app_ui_label_digitalobject') ?></th>
-  <td>
-    <?php include_component('digitalobject', 'show', array(
-      'digitalObject'=>$digitalObject,
-      'usageType'=>QubitTerm::THUMBNAIL_ID,
-      'link'=>'digitalobject/show?id='.$digitalObject->getId()
-    )); ?>
-  </td>
-</tr>
-<?php endif; ?>
-
 <?php  foreach ($creators as $creator): ?>
   <tr>
   <th><?php echo __('name of creator') ?></th>
-  <td><?php echo link_to($creator, 'actor/show?id='.$creator->getId()); ?>
+  <td><?php echo link_to(render_title($creator), 'actor/show?id='.$creator->getId()); ?>
     <?php if ($existence = $creator->getDatesOfExistence(array('cultureFallback' => true))) echo ' ('.$existence.')'; ?>
   <?php if ($history = $creator->getHistory(array('cultureFallback' => true))): ?>
     <table class="detail" style="margin-top: 5px;"><tr><th style="text-align: left; padding: 1px;">
@@ -93,7 +103,7 @@
 <?php if ($informationObject->getRepositoryId()) : ?>
 <tr>
 <th><?php echo __('repository'); ?></th>
-<td><?php echo link_to($informationObject->getRepository(), 'repository/show?id='.$informationObject->getRepositoryId()); ?></td>
+<td><?php echo link_to(render_title($informationObject->getRepository()), 'repository/show?id='.$informationObject->getRepositoryId()); ?></td>
 </tr>
 <?php endif; ?>
 
@@ -233,7 +243,7 @@
 <th><?php echo __('name access points'); ?></th>
 <td>
   <?php foreach ($nameAccessPoints as $name): ?>
-    <?php echo link_to($name->getActor(), 'actor/show?id='.$name->getActorId()) ?>
+    <?php echo link_to(render_title($name->getActor()), 'actor/show?id='.$name->getActorId()) ?>
     <?php echo ' ('.$name->getType()->getRole().')' ?>
     <br />
   <?php endforeach; ?>
@@ -305,6 +315,48 @@
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
+<!--  Digital Object metadata -->
+<?php if (isset($digitalObject)): ?>
+  <tr><td colspan="2" class="subHeaderCell">
+    <?php echo __('digital object metadata') ?>
+  </td></tr>
+
+  <?php if ($digitalObject->getName()): ?>
+  <tr>
+    <th><?php echo __('filename'); ?></th>
+    <td><?php echo $digitalObject->getName(); ?></td>
+  </tr>
+  <?php endif; ?>
+  
+  <?php if ($digitalObject->getMediaType()): ?>
+  <tr>
+    <th><?php echo __('media type'); ?></th>
+    <td><?php echo $digitalObject->getMediaType(); ?></td>
+  </tr>
+  <?php endif; ?>
+
+  <?php if ($digitalObject->getMimeType()): ?>
+  <tr>
+    <th><?php echo __('mime-type'); ?></th>
+    <td><?php echo $digitalObject->getMimeType(); ?></td>
+  </tr>
+  <?php endif; ?>
+  
+  <?php if ($digitalObject->getHRfileSize()): ?>
+  <tr>
+    <th><?php echo __('filesize'); ?></th>
+    <td><?php echo $digitalObject->getHRfileSize(); ?></td>
+  </tr>
+  <?php endif; ?>
+  
+  <?php if ($digitalObject->getCreatedAt()): ?>
+  <tr>
+    <th><?php echo __('uploaded'); ?></th>
+    <td><?php echo $digitalObject->getCreatedAt(); ?></td>
+  </tr>
+  <?php endif; ?>
+<?php endif; ?>
+
 </tbody>
 </table>
 
@@ -316,7 +368,7 @@
 
 <div class="menu-extra">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('add new archival description'), 'informationobject/createIsad'); ?>
+  <?php echo link_to(__('add new'), 'informationobject/createIsad'); ?>
 <?php endif; ?>
   <?php echo link_to(__('list all'), 'informationobject/list'); ?>
 </div>

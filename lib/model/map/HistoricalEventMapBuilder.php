@@ -2,7 +2,7 @@
 
 
 
-class HistoricalEventMapBuilder {
+class HistoricalEventMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.HistoricalEventMapBuilder';
@@ -25,24 +25,25 @@ class HistoricalEventMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitHistoricalEvent::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_historical_event');
-		$tMap->setPhpName('HistoricalEvent');
+		$tMap = $this->dbMap->addTable(QubitHistoricalEvent::TABLE_NAME);
+		$tMap->setPhpName('historicalEvent');
+		$tMap->setClassname('QubitHistoricalEvent');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_term', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_term', 'ID', true, null);
 
-		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('START_DATE', 'StartDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('START_DATE', 'startDate', 'DATE', false, null);
 
-		$tMap->addColumn('START_TIME', 'StartTime', 'int', CreoleTypes::TIME, false, null);
+		$tMap->addColumn('START_TIME', 'startTime', 'TIME', false, null);
 
-		$tMap->addColumn('END_DATE', 'EndDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('END_DATE', 'endDate', 'DATE', false, null);
 
-		$tMap->addColumn('END_TIME', 'EndTime', 'int', CreoleTypes::TIME, false, null);
+		$tMap->addColumn('END_TIME', 'endTime', 'TIME', false, null);
 
 	} 
 } 

@@ -6,7 +6,7 @@
  * @package    test
  * @subpackage attachment
  * @author     Your name here
- * @version    SVN: $Id: actions.class.php 8535 2008-04-18 17:42:22Z fabien $
+ * @version    SVN: $Id: actions.class.php 11445 2008-09-11 14:19:28Z fabien $
  */
 class attachmentActions extends sfActions
 {
@@ -20,9 +20,6 @@ class attachmentActions extends sfActions
 
       if ($this->form->isValid())
       {
-        $file = $this->form->getValue('file');
-        $file->save(sfConfig::get('sf_cache_dir').'/uploaded'.$file->getExtension($file->getOriginalExtension()));
-
         $this->form->save();
 
         $this->redirect('attachment/ok');

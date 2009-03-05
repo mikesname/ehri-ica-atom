@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -34,17 +32,20 @@ class DigitalObjectImageflowComponent extends sfComponent
     $this->getResponse()->addStylesheet('imageflow');
     $this->getResponse()->addJavaScript('imageflow');
 
-    // Hack to get parent info object for generic thumbnails. Required because
-    // getTopAncestorOrSelf() method queries database and generic thumbnail
-    // objects are not represented in the database.
     foreach ($this->thumbnails as $thumbnail)
     {
-      if (!$parentInfoObject = $thumbnail->getTopAncestorOrSelf()->getInformationObject())
+      // If object has a related information object, get it
+      if ($parentInfoObject = $thumbnail->getInformationObject())
       {
-        $parentInfoObject = $thumbnail->getParent()->getTopAncestorOrSelf()->getInformationObject();
+        $informationObjects[] = $parentInfoObject;
       }
 
-      $informationObjects[] = $parentInfoObject;
+      // Else, if it's a derived image (no related info object) get parent digital
+      // object, and grab *that* related info object
+      else if ($parentInfoObject = $thumbnail->getParent()->getInformationObject())
+      {
+        $informationObjects[] = $parentInfoObject;
+      }
     }
 
     $this->informationObjects = $informationObjects;

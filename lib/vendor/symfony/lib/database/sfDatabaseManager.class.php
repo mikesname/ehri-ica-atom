@@ -18,7 +18,7 @@
  * @subpackage database
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfDatabaseManager.class.php 9086 2008-05-20 01:56:29Z Carl.Vondrick $
+ * @version    SVN: $Id: sfDatabaseManager.class.php 11293 2008-09-02 18:56:30Z fabien $
  */
 class sfDatabaseManager
 {
@@ -31,7 +31,7 @@ class sfDatabaseManager
    *
    * @see initialize()
    */
-  public function __construct(sfApplicationConfiguration $configuration, $options = array())
+  public function __construct(sfProjectConfiguration $configuration, $options = array())
   {
     $this->initialize($configuration);
 
@@ -44,13 +44,13 @@ class sfDatabaseManager
   /**
    * Initializes this sfDatabaseManager object
    *
-   * @param  sfApplicationConfiguration $configuration A sfApplicationConfiguration instance
+   * @param  sfProjectConfiguration $configuration A sfProjectConfiguration instance
    *
    * @return bool true, if initialization completes successfully, otherwise false
    *
    * @throws <b>sfInitializationException</b> If an error occurs while initializing this sfDatabaseManager object
    */
-  public function initialize(sfApplicationConfiguration $configuration)
+  public function initialize(sfProjectConfiguration $configuration)
   {
     $this->configuration = $configuration;
 
@@ -62,7 +62,20 @@ class sfDatabaseManager
    */
   public function loadConfiguration()
   {
-    require($this->configuration->getConfigCache()->checkConfig('config/databases.yml'));
+    if ($this->configuration instanceof sfApplicationConfiguration)
+    {
+      $databases = include($this->configuration->getConfigCache()->checkConfig('config/databases.yml', true));
+    }
+    else
+    {
+      $configHandler = new sfDatabaseConfigHandler();
+      $databases = $configHandler->evaluate(array($this->configuration->getRootDir().'/config/databases.yml', true));
+    }
+
+    foreach ($databases as $name => $database)
+    {
+      $this->setDatabase($name, $database);
+    }
   }
 
   /**

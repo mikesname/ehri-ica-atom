@@ -53,9 +53,6 @@ apps/qubit/lib/xslt/*.xsl:
 config/package.xml:
   code:
 
-lib/drupal//*:
-  code:
-
 lib/GoogleMapAPI//*:
   code:
 
@@ -78,12 +75,13 @@ plugins/*/modules/*/templates//*:
 plugins/*/package.xml:
   code:
 
-plugins/sfAuditPlugin/lib/vendor/PHP//*:
+plugins/sfAuditPlugin/lib/vendor//*:
   code:
-
-plugins/sfAuditPlugin/lib/vendor/PHP//*.php:
   props:
-    'svn:keywords':
+
+plugins/sfThumbnailPlugin//*:
+  code:
+  props:
 
 test/selenium//*:
   code:

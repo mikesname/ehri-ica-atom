@@ -42,7 +42,13 @@ class myResponse
   }
 }
 
-$t = new lime_test(94, new lime_output_color());
+class ProjectConfiguration extends sfProjectConfiguration
+{
+}
+
+$configuration = new ProjectConfiguration(dirname(__FILE__).'/../../lib', new sfEventDispatcher());
+
+$t = new lime_test(96, new lime_output_color());
 
 $context = sfContext::getInstance(array(
   'controller' => 'myController',
@@ -66,6 +72,10 @@ $t->is(options_for_select(array('item1', 'item2', 'item3'), '2'), "<option value
 $t->is(options_for_select(array('item1', 'item2', 'item3'), array('1', '2')), "<option value=\"0\">item1</option>\n<option value=\"1\" selected=\"selected\">item2</option>\n<option value=\"2\" selected=\"selected\">item3</option>\n", 'options_for_select() takes the selected index as its second argument');
 $t->is(options_for_select(array('group1' => array('item1', 'item2'), 'bar' => 'item3')), "<optgroup label=\"group1\"><option value=\"0\">item1</option>\n<option value=\"1\">item2</option>\n</optgroup>\n<option value=\"bar\">item3</option>\n", 'options_for_select() can deal with optgroups');
 
+// unit testing for #3923
+$escaped = sfOutputEscaper::escape('htmlspecialchars', array('group1' => array('item1', 'item2'), 'bar' => 'item3'));
+$t->is(options_for_select($escaped), "<optgroup label=\"group1\"><option value=\"0\">item1</option>\n<option value=\"1\">item2</option>\n</optgroup>\n<option value=\"bar\">item3</option>\n", 'options_for_select() can deal with optgroups of escaped arrays');
+
 // options
 $t->is(options_for_select(array('item1'), '', array('include_custom' => 'test')), "<option value=\"\">test</option>\n<option value=\"0\">item1</option>\n", 'options_for_select() can take an "include_custom" option');
 $t->is(options_for_select(array('item1'), '', array('include_blank' => true)), "<option value=\"\"></option>\n<option value=\"0\">item1</option>\n", 'options_for_select() can take an "include_blank" option');
@@ -78,6 +88,7 @@ $t->is(form_tag(), '<form method="post" action="module/action">', 'form_tag() cr
 $t->is(form_tag('', array('class' => 'foo')), '<form class="foo" method="post" action="module/action">', 'form_tag() takes an array of attribute options');
 $t->is(form_tag('', array('method' => 'get')), '<form method="get" action="module/action">', 'form_tag() takes a "method" as an option');
 $t->is(form_tag('', array('multipart' => true)), '<form method="post" enctype="multipart/form-data" action="module/action">', 'form_tag() takes a "multipart" boolean option');
+$t->is(form_tag('', array('method' => 'put')), '<form method="post" action="module/action"><input type="hidden" name="sf_method" value="put" />', 'form_tag() creates a hidden field for methods different from GET or POST');
 
 // select_tag()
 $t->diag('select_tag()');

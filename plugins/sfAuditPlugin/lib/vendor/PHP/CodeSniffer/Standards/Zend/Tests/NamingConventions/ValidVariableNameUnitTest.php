@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ValidVariableNameUnitTest.php,v 1.2 2007/12/26 21:17:49 squiz Exp $
+ * @version   CVS: $Id: ValidVariableNameUnitTest.php,v 1.3 2008/07/02 05:08:16 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -70,6 +70,7 @@ class Zend_Tests_NamingConventions_ValidVariableNameUnitTest extends AbstractSni
                 90 => 1,
                 92 => 1,
                 96 => 1,
+                99 => 1,
                );
 
     }//end getErrorList()

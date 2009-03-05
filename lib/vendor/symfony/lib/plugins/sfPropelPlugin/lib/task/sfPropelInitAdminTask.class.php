@@ -3,7 +3,7 @@
 /*
  * This file is part of the symfony package.
  * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
@@ -14,9 +14,9 @@ require_once(dirname(__FILE__).'/sfPropelBaseTask.class.php');
  * Initializes a Propel admin module.
  *
  * @package    symfony
- * @subpackage command
+ * @subpackage propel
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelInitAdminTask.class.php 10512 2008-07-30 15:27:39Z nicolas $
+ * @version    SVN: $Id: sfPropelInitAdminTask.class.php 10527 2008-07-30 23:50:54Z dwhittle $
  */
 class sfPropelInitAdminTask extends sfPropelBaseTask
 {

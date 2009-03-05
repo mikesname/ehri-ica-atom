@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: OperatorSpacingSniff.php,v 1.10 2007/07/23 01:47:54 squiz Exp $
+ * @version   CVS: $Id: OperatorSpacingSniff.php,v 1.12 2008/12/01 23:25:16 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -30,6 +30,16 @@
  */
 class Squiz_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSniffer_Sniff
 {
+
+    /**
+     * A list of tokenizers this sniff supports.
+     *
+     * @var array
+     */
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'JS',
+                                  );
 
 
     /**
@@ -122,7 +132,7 @@ class Squiz_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSniffer_Sn
                     return;
                 }
 
-                if (in_array($tokens[$prev]['code'], PHP_CodeSniffer_Tokens::$equalityTokens) === true) {
+                if (in_array($tokens[$prev]['code'], PHP_CodeSniffer_Tokens::$comparisonTokens) === true) {
                     // Just trying to compare a negative value; eg. ($var === -1).
                     return;
                 }
@@ -157,13 +167,6 @@ class Squiz_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSniffer_Sn
             if ($tokens[($stackPtr - 1)]['code'] !== T_WHITESPACE) {
                 $error = "Expected 1 space before \"$operator\"; 0 found";
                 $phpcsFile->addError($error, $stackPtr);
-            } else if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
-                $error = "Expected 1 space after \"$operator\"; 0 found";
-                $phpcsFile->addError($error, $stackPtr);
-            } else if (strlen($tokens[($stackPtr + 1)]['content']) !== 1) {
-                $found = strlen($tokens[($stackPtr + 1)]['content']);
-                $error = "Expected 1 space after \"$operator\"; $found found";
-                $phpcsFile->addError($error, $stackPtr);
             } else if (strlen($tokens[($stackPtr - 1)]['content']) !== 1) {
                 // Don't throw an error for assignments, because other standards allow
                 // multiple spaces there to align multiple assignments.
@@ -172,6 +175,15 @@ class Squiz_Sniffs_WhiteSpace_OperatorSpacingSniff implements PHP_CodeSniffer_Sn
                     $error = "Expected 1 space before \"$operator\"; $found found";
                     $phpcsFile->addError($error, $stackPtr);
                 }
+            }
+
+            if ($tokens[($stackPtr + 1)]['code'] !== T_WHITESPACE) {
+                $error = "Expected 1 space after \"$operator\"; 0 found";
+                $phpcsFile->addError($error, $stackPtr);
+            } else if (strlen($tokens[($stackPtr + 1)]['content']) !== 1) {
+                $found = strlen($tokens[($stackPtr + 1)]['content']);
+                $error = "Expected 1 space after \"$operator\"; $found found";
+                $phpcsFile->addError($error, $stackPtr);
             }
 
         }//end if

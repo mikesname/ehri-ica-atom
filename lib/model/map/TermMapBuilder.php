@@ -2,7 +2,7 @@
 
 
 
-class TermMapBuilder {
+class TermMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.TermMapBuilder';
@@ -25,30 +25,31 @@ class TermMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitTerm::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_term');
-		$tMap->setPhpName('Term');
+		$tMap = $this->dbMap->addTable(QubitTerm::TABLE_NAME);
+		$tMap->setPhpName('term');
+		$tMap->setClassname('QubitTerm');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('TAXONOMY_ID', 'TaxonomyId', 'int', CreoleTypes::INTEGER, 'q_taxonomy', 'ID', true, null);
+		$tMap->addForeignKey('TAXONOMY_ID', 'taxonomyId', 'INTEGER', 'q_taxonomy', 'ID', true, null);
 
-		$tMap->addColumn('CODE', 'Code', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('CODE', 'code', 'VARCHAR', false, 255);
 
-		$tMap->addForeignKey('PARENT_ID', 'ParentId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('LFT', 'Lft', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addColumn('LFT', 'lft', 'INTEGER', true, null);
 
-		$tMap->addColumn('RGT', 'Rgt', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addColumn('RGT', 'rgt', 'INTEGER', true, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
 	} 
 } 

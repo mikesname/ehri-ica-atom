@@ -13,7 +13,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfInflector.class.php 9051 2008-05-19 11:43:00Z FabianLange $
+ * @version    SVN: $Id: sfInflector.class.php 10972 2008-08-19 19:42:59Z FabianLange $
  */
 class sfInflector
 {
@@ -29,7 +29,7 @@ class sfInflector
   {
     $tmp = $lower_case_and_underscored_word;
     $tmp = sfToolkit::pregtr($tmp, array('#/(.?)#e'    => "'::'.strtoupper('\\1')",
-                                         '/(^|_)(.)/e' => "strtoupper('\\2')"));
+                                         '/(^|_|-)+(.)/e' => "strtoupper('\\2')"));
 
     return $tmp;
   }

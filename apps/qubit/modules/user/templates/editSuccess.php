@@ -7,13 +7,13 @@
 <table class="detail">
 <tbody>
 
-<tr><td colspan="2" class="headerCell"><?php echo link_to(__('%1% profile', array('%1%' =>$user->getUserName())), 'user/show?id='.$user->getId()) ?></td></tr>
+<tr><td colspan="2" class="headerCell"><?php echo link_to(__('%1% profile', array('%1%' => $user)), array('module' => 'user', 'action' => 'show', 'id' => $user->id)) ?></td></tr>
 <tr>
 
 <tr>
   <th><?php echo __('user name'); ?></th>
   <td>
-      <?php echo object_input_tag($user, 'getUserName', array ('size' => 20)) ?>
+      <?php echo object_input_tag($user, 'getUsername', array ('size' => 20)) ?>
    </td>
 </tr>
 
@@ -59,9 +59,8 @@
 </div>
 </form>
 
-<?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'user', 'action' => 'list'))): ?>
 <div class="menu-extra">
+  <?php echo link_to(__('add new'), 'user/create'); ?>
   <?php echo link_to(__('list all users'), 'user/list'); ?>
 </div>
-<?php endif; ?>
 </div>

@@ -16,7 +16,7 @@
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
- * @version    SVN: $Id: TagHelper.php 9967 2008-06-29 07:58:50Z fabien $
+ * @version    SVN: $Id: TagHelper.php 13097 2008-11-18 06:58:24Z Kris.Wallsmith $
  */
 
 /**
@@ -50,6 +50,21 @@ function content_tag($name, $content = '', $options = array())
 function cdata_section($content)
 {
   return "<![CDATA[$content]]>";
+}
+
+/**
+ * Wraps the content in conditional comments.
+ *
+ * @param  string $condition
+ * @param  string $content
+ *
+ * @return string
+ *
+ * @see http://msdn.microsoft.com/en-us/library/ms537512(VS.85).aspx
+ */
+function comment_as_conditional($condition, $content)
+{
+  return "<!--[if $condition]>$content<![endif]-->";
 }
 
 /**
@@ -135,7 +150,7 @@ function _get_option(&$options, $name, $default = null)
  *  echo get_id_from_name('status[]', '1');
  * </code>
  *
- * @param  string $name   field name 
+ * @param  string $name   field name
  * @param  string $value  field value
  *
  * @return string <select> tag populated with all the languages in the world.
@@ -155,7 +170,7 @@ function get_id_from_name($name, $value = null)
  * Converts specific <i>$options</i> to their correct HTML format
  *
  * @param  array $options
- * @return array returns properly formatted options 
+ * @return array returns properly formatted options
  */
 function _convert_options($options)
 {

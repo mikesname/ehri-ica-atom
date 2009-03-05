@@ -16,7 +16,7 @@ require_once(dirname(__FILE__).'/sfGeneratorBaseTask.class.php');
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfGenerateModuleTask.class.php 8514 2008-04-17 18:25:39Z fabien $
+ * @version    SVN: $Id: sfGenerateModuleTask.class.php 13022 2008-11-15 23:08:23Z Kris.Wallsmith $
  */
 class sfGenerateModuleTask extends sfGeneratorBaseTask
 {
@@ -45,9 +45,9 @@ for a new module in an existing application:
 The task can also change the author name found in the [actions.class.php|COMMENT]
 if you have configure it in [config/properties.ini|COMMENT]:
 
-  [symfony]
+  [[symfony]
     name=blog
-    author=Fabien Potencier <fabien.potencier@sensio.com>
+    author=Fabien Potencier <fabien.potencier@sensio.com>|INFO]
 
 You can customize the default skeleton used by the task by creating a
 [%sf_data_dir%/skeleton/module|COMMENT] directory.
@@ -70,9 +70,9 @@ EOF;
     $module = $arguments['module'];
 
     // Validate the module name
-    if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $app))
+    if (!preg_match('/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/', $module))
     {
-      throw new sfCommandException(sprintf('The module name "%s" is invalid.', $app));
+      throw new sfCommandException(sprintf('The module name "%s" is invalid.', $module));
     }
 
     $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$module;

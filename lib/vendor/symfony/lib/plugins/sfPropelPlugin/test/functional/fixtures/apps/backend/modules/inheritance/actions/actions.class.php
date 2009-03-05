@@ -6,7 +6,7 @@
  * @package    project
  * @subpackage inheritance
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: actions.class.php 2909 2006-12-04 15:15:42Z fabien $
+ * @version    SVN: $Id: actions.class.php 5125 2007-09-16 00:53:55Z dwhittle $
  */
 class inheritanceActions extends autoinheritanceActions
 {

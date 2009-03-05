@@ -1,25 +1,21 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-require_once 'propel/engine/builder/om/PeerBuilder.php';
 
 class QubitObjectBuilder extends SfObjectBuilder
 {
@@ -43,12 +39,13 @@ class QubitObjectBuilder extends SfObjectBuilder
   public function __construct(Table $table)
   {
     parent::__construct($table);
+
     $this->initialize($table);
   }
 
   public function initialize(Table $table)
   {
-    $this->basePeerClassName = $this->className($this->getBasePeer($table));
+    $this->basePeerClassName = preg_replace('/.*\./', null, $this->getBasePeer($table));
 
     foreach ($table->getColumns() as $column)
     {
@@ -128,12 +125,12 @@ class QubitObjectBuilder extends SfObjectBuilder
 
   public function getClassName()
   {
-    return $this->getBuildProperty('basePrefix').$this->getTable()->getPhpName();
+    return $this->getBuildProperty('basePrefix').ucfirst($this->getTable()->getPhpName());
   }
 
   protected function getColumnVarName(Column $column)
   {
-    return strtolower(substr($name = $column->getPhpName(), 0, 1)).substr($name, 1);
+    return $column->getPhpName();
   }
 
   public function getPeerClassName()
@@ -146,7 +143,7 @@ class QubitObjectBuilder extends SfObjectBuilder
     $names = array();
     foreach ($this->getTable()->getPrimaryKey() as $column)
     {
-      $names[] = $column->getPhpName();
+      $names[] = ucfirst($column->getPhpName());
     }
 
     return 'getBy'.implode($names, 'And');
@@ -154,7 +151,7 @@ class QubitObjectBuilder extends SfObjectBuilder
 
   protected function getVarName($plural = null)
   {
-    $name = strtolower(substr($name = $this->getTable()->getPhpName(), 0, 1)).substr($name, 1);
+    $name = $this->getTable()->getPhpName();
     if (!empty($plural))
     {
       $name .= 's';
@@ -168,12 +165,12 @@ class QubitObjectBuilder extends SfObjectBuilder
     $extends = null;
     if (null !== $baseClass = $this->getBaseClass())
     {
-      $extends = ' extends '.ClassTools::className($baseClass);
+      $extends = ' extends '.preg_replace('/.*\./', null, $baseClass);
     }
 
     $script .= <<<EOF
 
-abstract class {$this->getClassName()}$extends$implements
+abstract class {$this->getClassName()}$extends implements ArrayAccess
 {
 EOF;
   }
@@ -195,18 +192,15 @@ EOF;
       $this->addAddRootsCriteria($script);
     }
 
+    $this->addConstructor($script);
     $this->addColumnMethods($script);
 
     if (!isset($this->inheritanceFk))
     {
       $this->addNew($script);
       $this->addDeleted($script);
-      $this->addColumnModified($script);
     }
 
-    $this->addResetModified($script);
-
-    $this->addHydrate($script);
     $this->addRefresh($script);
     $this->addManipulationMethods($script);
 
@@ -243,56 +237,48 @@ EOF;
       $this->addI18nMethods($script);
     }
 
-    if (DataModelBuilder::getBuildProperty('builderAddBehaviors'))
-    {
-      $this->addCall($script);
-    }
-
     if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
     {
       $this->addAddAncestorsCriteria($script);
       $this->addAncestorsAttributes($script);
-      $this->addGetAncestors($script);
       $this->addAddDescendantsCriteria($script);
       $this->addDescendantsAttributes($script);
-      $this->addGetDescendants($script);
       $this->addUpdateNestedSet($script);
       $this->addDeleteFromNestedSet($script);
     }
+
+    $this->addCall($script);
   }
 
   protected function addConstants(&$script)
   {
-    $script .= <<<EOF
-
-  const DATABASE_NAME = '{$this->getDatabase()->getName()}';
-
-  const TABLE_NAME = '{$this->getTable()->getName()}';
-
-
-EOF;
-
-    $this->addColumnNameConstants(&$script);
-  }
-
-  protected function addColumnNameConstants(&$script)
-  {
+    $consts = array();
     foreach ($this->getTable()->getColumns() as $column)
     {
       $upperColumnName = strtoupper($column->getName());
-
-      $script .= <<<EOF
-  const $upperColumnName = '{$this->getTable()->getName()}.$upperColumnName';
-
+      $consts[] = <<<EOF
+    $upperColumnName = '{$this->getTable()->getName()}.$upperColumnName'
 EOF;
     }
+    $consts = implode(",\n", $consts);
+
+    $script .= <<<EOF
+
+  const
+    DATABASE_NAME = '{$this->getDatabase()->getName()}',
+
+    TABLE_NAME = '{$this->getTable()->getName()}',
+
+$consts;
+
+EOF;
   }
 
   protected function addSelectMethods(&$script)
   {
     $this->addAddSelectColumns($script);
 
-    $this->addGetFromResultSet($script);
+    $this->addGetFromRow($script);
 
     $this->addGet($script);
     $this->addGetAll($script);
@@ -351,28 +337,7 @@ EOF;
 EOF;
   }
 
-  protected function addCount(&$script)
-  {
-    $script .= <<<EOF
-
-  public static function count(Criteria \$criteria, array \$options = array())
-  {
-    if (!isset(\$options['connection']))
-    {
-      \$options['connection'] = Propel::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
-    }
-
-    \$criteria->addSelectColumn('COUNT(*)');
-    \$results = {$this->basePeerClassName}::doSelect(\$criteria, \$options['connection']);
-    \$results->next();
-
-    return \$results->getInt(1);
-  }
-
-EOF;
-  }
-
-  protected function addGetFromResultSet(&$script)
+  protected function addGetFromRow(&$script)
   {
     // Cache sub-class instances in the base class
     if (isset($this->inheritanceFk))
@@ -389,7 +354,9 @@ EOF;
     foreach ($this->getTable()->getPrimaryKey() as $primaryKey)
     {
       $keyVariable = '$'.$this->getColumnVarName($primaryKey);
-      $keyComponents[] = '$resultSet->get'.CreoleTypes::getAffix(CreoleTypes::getCreoleCode($primaryKey->getType())).'('.$primaryKey->getPosition().')';
+
+      $position = $primaryKey->getPosition() - 1;
+      $keyComponents[] = '('.$primaryKey->getPhpType().') $row['.$position.']';
     }
 
     $keyExpression = $keyComponents[0];
@@ -403,37 +370,24 @@ EOF;
 
     $script .= <<<EOF
 
-  protected static \${$this->getVarName(true)} = array();
+  protected static
+    \${$this->getVarName(true)} = array();
 
-  public static function getFromResultSet(ResultSet \$resultSet)
+  protected
+    \$row = array();
+
+  public static function getFromRow(array \$row)
   {
     if (!isset(self::\${$this->getVarName(true)}[$keyVariable = $keyExpression]))
     {
 
 EOF;
 
-    // In the case of multi-table inheritance, class names are stored in the
-    // database.  This is currently quite a hack.  Hopefully the object is a
-    // super class of the table we queried.  If it is not, then the result set
-    // will not contain enough columns, resulting in an SQLExcetion.  In that
-    // case we do another query to get all the required columns.  This needs
-    // optimization.
     if (isset($this->classNameColumn))
     {
-      $affix = CreoleTypes::getAffix(CreoleTypes::getCreoleCode($this->classNameColumn->getType()));
-
+      $position = $this->classNameColumn->getPosition() - 1;
       $script .= <<<EOF
-      \$className = \$resultSet->get$affix({$this->classNameColumn->getPosition()});
-      \${$this->getVarname()} = new \$className;
-
-      try
-      {
-        \${$this->getVarName()}->hydrate(\$resultSet);
-      }
-      catch (SQLException \$e)
-      {
-        return call_user_func(array(\$className, '{$this->getRetrieveMethodName()}'), $args);
-      }
+      \${$this->getVarName()} = new \$row[$position];
 
 EOF;
     }
@@ -441,12 +395,13 @@ EOF;
     {
       $script .= <<<EOF
       \${$this->getVarName()} = new {$this->getObjectClassName()};
-      \${$this->getVarName()}->hydrate(\$resultSet);
 
 EOF;
     }
 
     $script .= <<<EOF
+      \${$this->getVarName()}->new = false;
+      \${$this->getVarName()}->row = \$row;
 
       self::\${$this->getVarName(true)}[$keyVariable] = \${$this->getVarName()};
     }
@@ -585,7 +540,7 @@ EOF;
 
     $script .= <<<EOF
 
-    \$affectedRows += {$this->basePeerClassName}::doDelete(\$criteria, \$connection);
+    \$affectedRows += $this->basePeerClassName::doDelete(\$criteria, \$connection);
 
     return \$affectedRows;
   }
@@ -633,169 +588,479 @@ $adds
 EOF;
   }
 
+  protected function addConstructor(&$script)
+  {
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  protected
+    \$tables = array();
+
+EOF;
+    }
+
+    $script .= <<<EOF
+
+  public function __construct()
+  {
+
+EOF;
+
+    if (isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    parent::__construct();
+
+
+EOF;
+    }
+
+    if (isset($this->classNameColumn))
+    {
+      // Bypass __get() because tables are not yet initialized
+      $script .= <<<EOF
+    \$this->values['{$this->getColumnVarName($this->classNameColumn)}'] = get_class(\$this);
+
+
+EOF;
+    }
+
+    $script .= <<<EOF
+    \$this->tables[] = Propel::getDatabaseMap({$this->getPeerClassName()}::DATABASE_NAME)->getTable({$this->getPeerClassName()}::TABLE_NAME);
+  }
+
+EOF;
+  }
+
   protected function addColumnMethods(&$script)
   {
-    foreach ($this->getTable()->getColumns() as $column)
+    if (isset($this->inheritanceFk) && !$this->getTable()->getAttribute('isI18n') && (!isset($this->nestedSetLeftColumn) || !isset($this->nestedSetRightColumn)))
     {
-      if (isset($this->inheritanceFk))
+      return;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  protected
+    \$values = array();
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  protected function rowOffsetGet(\$offset, \$rowOffset, array \$options = array())
+  {
+    if (array_key_exists(\$offset, \$this->values))
+    {
+      return \$this->values[\$offset];
+    }
+
+    if (!array_key_exists(\$rowOffset, \$this->row))
+    {
+      if (\$this->new)
       {
-        $localForeignMap = $this->inheritanceFk->getLocalForeignMapping();
-        if (isset($localForeignMap[$column->getName()]))
+        return;
+      }
+
+      \$this->refresh();
+    }
+
+    return \$this->row[\$rowOffset];
+  }
+
+EOF;
+    }
+
+    $script .= <<<EOF
+
+  public function offsetExists(\$offset, array \$options = array())
+  {
+
+EOF;
+
+    if (isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    if (parent::offsetExists(\$offset, \$options))
+    {
+      return true;
+    }
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
+    {
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (\$offset == \$column->getPhpName())
         {
-          continue;
+          return null !== \$this->rowOffsetGet(\$offset, \$rowOffset, \$options);
+        }
+
+        if (\$offset.'Id' == \$column->getPhpName())
+        {
+          return null !== \$this->rowOffsetGet(\$offset.'Id', \$rowOffset, \$options);
+        }
+
+        \$rowOffset++;
+      }
+    }
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    if (\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetExists(\$offset, \$options))
+    {
+      return true;
+    }
+
+    if (!empty(\$options['cultureFallback']) && \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->offsetExists(\$offset, \$options))
+    {
+      return true;
+    }
+
+EOF;
+    }
+
+    if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
+    {
+      $script .= <<<EOF
+
+    if ('ancestors' == \$offset)
+    {
+      return true;
+    }
+
+    if ('descendants' == \$offset)
+    {
+      return true;
+    }
+
+EOF;
+    }
+
+    $script .= <<<EOF
+
+    return false;
+  }
+
+EOF;
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  public function __isset(\$name)
+  {
+    return \$this->offsetExists(\$name);
+  }
+
+EOF;
+    }
+
+    $script .= <<<EOF
+
+  public function offsetGet(\$offset, array \$options = array())
+  {
+
+EOF;
+
+    if (isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    if (null !== \$value = parent::offsetGet(\$offset, \$options))
+    {
+      return \$value;
+    }
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
+    {
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (\$offset == \$column->getPhpName())
+        {
+          return \$this->rowOffsetGet(\$offset, \$rowOffset, \$options);
+        }
+
+        if (\$offset.'Id' == \$column->getPhpName())
+        {
+          \$relatedTable = \$column->getTable()->getDatabaseMap()->getTable(\$column->getRelatedTableName());
+
+          return call_user_func(array(\$relatedTable->getClassName(), 'getBy'.ucfirst(\$relatedTable->getColumn(\$column->getRelatedColumnName())->getPhpName())), \$this->rowOffsetGet(\$offset.'Id', \$rowOffset));
+        }
+
+        \$rowOffset++;
+      }
+    }
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    if (null !== \$value = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetGet(\$offset, \$options))
+    {
+      if (!empty(\$options['cultureFallback']) && 1 > strlen(\$value))
+      {
+        \$value = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->offsetGet(\$offset, \$options);
+      }
+
+      return \$value;
+    }
+
+    if (!empty(\$options['cultureFallback']) && null !== \$value = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->offsetGet(\$offset, \$options))
+    {
+      return \$value;
+    }
+
+EOF;
+    }
+
+    if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
+    {
+      $script .= <<<EOF
+
+    if ('ancestors' == \$offset)
+    {
+      if (!isset(\$this->ancestors))
+      {
+        if (\$this->new)
+        {
+          \$this->ancestors = QubitQuery::create(array('self' => \$this) + \$options);
+        }
+        else
+        {
+          \$criteria = new Criteria;
+          \$this->addAncestorsCriteria(\$criteria);
+          \$this->addOrderByPreorder(\$criteria);
+          \$this->ancestors = self::get(\$criteria, array('self' => \$this) + \$options);
         }
       }
 
-      if (null !== $default = $column->getPhpDefaultValue())
+      return \$this->ancestors;
+    }
+
+    if ('descendants' == \$offset)
+    {
+      if (!isset(\$this->descendants))
       {
-        $default = var_export($default, true);
-      }
-      else
-      {
-        $default = 'null';
+        if (\$this->new)
+        {
+          \$this->descendants = QubitQuery::create(array('self' => \$this) + \$options);
+        }
+        else
+        {
+          \$criteria = new Criteria;
+          \$this->addDescendantsCriteria(\$criteria);
+          \$this->addOrderByPreorder(\$criteria);
+          \$this->descendants = self::get(\$criteria, array('self' => \$this) + \$options);
+        }
       }
 
+      return \$this->descendants;
+    }
+
+EOF;
+    }
+
+    $script .= <<<EOF
+  }
+
+EOF;
+
+    if (!isset($this->inheritanceFk))
+    {
       $script .= <<<EOF
 
-  protected \${$this->getColumnVarName($column)} = $default;
-
-EOF;
-
-      if ($column->getType() == PropelTypes::DATE || $column->getType() == PropelTypes::TIME || $column->getType() == PropelTypes::TIMESTAMP)
-      {
-        $this->addTemporalAccessor($script, $column);
-        $this->addTemporalMutator($script, $column);
-      }
-      else
-      {
-        $this->addGenericAccessor($script, $column);
-        $this->addDefaultMutator($script, $column);
-      }
-    }
-  }
-
-  protected function addGenericAccessor(&$script, Column $column)
+  public function __get(\$name)
   {
-    if ($column == $this->nestedSetLeftColumn || $column == $this->nestedSetRightColumn)
-    {
-      //return;
-    }
-
-    $script .= <<<EOF
-
-  public function get{$column->getPhpName()}()
-  {
-    return \$this->{$this->getColumnVarName($column)};
+    return \$this->offsetGet(\$name);
   }
 
 EOF;
-  }
-
-  protected function addTemporalAccessor(&$script, Column $column)
-  {
-    $script .= <<<EOF
-
-  public function get{$column->getPhpName()}(array \$options = array())
-  {
-
-EOF;
-
-    $default = null;
-    switch ($column->getType())
-    {
-      case PropelTypes::DATE:
-        $default = $this->getBuildProperty('defaultDateFormat');
-        break;
-
-      case PropelTypes::TIME:
-        $default = $this->getBuildProperty('defaultTimeFormat');
-        break;
-
-      case PropelTypes::TIMESTAMP:
-        $default = $this->getBuildProperty('defaultTimeStampFormat');
-        break;
     }
 
-    if (isset($default))
+    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
     {
       $script .= <<<EOF
-    \$options += array('format' => '$default');
+
+  public function offsetSet(\$offset, \$value, array \$options = array())
+  {
 
 EOF;
     }
 
-    $script .= <<<EOF
-    if (isset(\$options['format']))
+    if (isset($this->inheritanceFk) && $this->getTable()->getAttribute('isI18n'))
     {
-      return date(\$options['format'], \$this->{$this->getColumnVarName($column)});
+      $script .= <<<EOF
+    parent::offsetSet(\$offset, \$value, \$options);
+
+EOF;
     }
 
-    return \$this->{$this->getColumnVarName($column)};
-  }
-
-EOF;
-  }
-
-  protected function addDefaultMutator(&$script, Column $column)
-  {
-    $this->addMutatorOpen($script, $column);
-
-    $script .= <<<EOF
-    \$this->{$this->getColumnVarName($column)} = \${$this->getColumnVarName($column)};
-
-EOF;
-
-    $this->addMutatorClose($script, $column);
-  }
-
-  protected function addTemporalMutator(&$script, Column $column)
-  {
-    $this->addMutatorOpen($script, $column);
-
-    $script .= <<<EOF
-    if (is_string(\${$this->getColumnVarName($column)}) && false === \${$this->getColumnVarName($column)} = strtotime(\${$this->getColumnVarName($column)}))
+    if (!isset($this->inheritanceFk))
     {
-      throw new PropelException('Unable to parse date / time value for [{$this->getColumnVarName($column)}] from input: '.var_export(\${$this->getColumnVarName($column)}, true));
-    }
-
-    \$this->{$this->getColumnVarName($column)} = \${$this->getColumnVarName($column)};
-
-EOF;
-
-    $this->addMutatorClose($script, $column);
-  }
-
-  protected function addMutatorOpen(&$script, Column $column)
-  {
-    $visibility = 'public';
-    if ($column == $this->nestedSetLeftColumn || $column == $this->nestedSetRightColumn)
+      $script .= <<<EOF
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
     {
-      $visibility = 'protected';
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (\$offset == \$column->getPhpName())
+        {
+          \$this->values[\$offset] = \$value;
+        }
+
+        if (\$offset.'Id' == \$column->getPhpName())
+        {
+          \$relatedTable = \$column->getTable()->getDatabaseMap()->getTable(\$column->getRelatedTableName());
+
+          \$this->values[\$offset.'Id'] = \$value->offsetGet(\$relatedTable->getColumn(\$column->getRelatedColumnName())->getPhpName(), \$options);
+        }
+
+        \$rowOffset++;
+      }
     }
 
-    $script .= <<<EOF
+EOF;
+    }
 
-  $visibility function set{$column->getPhpName()}(\${$this->getColumnVarName($column)})
-  {
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetSet(\$offset, \$value, \$options);
 
 EOF;
-  }
+    }
 
-  protected function addMutatorClose(&$script, Column $column)
-  {
-    $script .= <<<EOF
+    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
 
     return \$this;
   }
 
 EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  public function __set(\$name, \$value)
+  {
+    return \$this->offsetSet(\$name, \$value);
+  }
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+  public function offsetUnset(\$offset, array \$options = array())
+  {
+
+EOF;
+    }
+
+    if (isset($this->inheritanceFk) && $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+    parent::offsetUnset(\$offset, \$options);
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
+    {
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (\$offset == \$column->getPhpName())
+        {
+          \$this->values[\$offset] = null;
+        }
+
+        if (\$offset.'Id' == \$column->getPhpName())
+        {
+          \$this->values[\$offset.'Id'] = null;
+        }
+
+        \$rowOffset++;
+      }
+    }
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetUnset(\$offset, \$options);
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    return \$this;
+  }
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  public function __unset(\$name)
+  {
+    return \$this->offsetUnset(\$name);
+  }
+
+EOF;
+    }
   }
 
   protected function addNew(&$script)
   {
     $script .= <<<EOF
 
-  protected \$new = true;
+  protected
+    \$new = true;
 
 EOF;
   }
@@ -804,117 +1069,19 @@ EOF;
   {
     $script .= <<<EOF
 
-  protected \$deleted = false;
-
-EOF;
-  }
-
-  protected function addColumnModified(&$script)
-  {
-    $script .= <<<EOF
-
-  protected \$columnValues = null;
-
-  protected function isColumnModified(\$name)
-  {
-    return \$this->\$name != \$this->columnValues[\$name];
-  }
-
-EOF;
-  }
-
-  protected function addResetModified(&$script)
-  {
-    $sets = array();
-    foreach ($this->getTable()->getColumns() as $column)
-    {
-      $sets[] = <<<EOF
-    \$this->columnValues['{$this->getColumnVarName($column)}'] = \$this->{$this->getColumnVarName($column)};
-EOF;
-    }
-    $sets = implode("\n", $sets);
-
-    $script .= <<<EOF
-
-  protected function resetModified()
-  {
-
-EOF;
-
-    if (isset($this->inheritanceFk))
-    {
-      $script .= <<<EOF
-    parent::resetModified();
-
-
-EOF;
-    }
-
-    $script .= <<<EOF
-$sets
-
-    return \$this;
-  }
-
-EOF;
-  }
-
-  protected function addHydrate(&$script)
-  {
-    $script .= <<<EOF
-
-  public function hydrate(ResultSet \$results, \$columnOffset = 1)
-  {
-
-EOF;
-
-    if (isset($this->inheritanceFk))
-    {
-      $script .= <<<EOF
-    \$columnOffset = parent::hydrate(\$results, \$columnOffset);
-
-
-EOF;
-    }
-
-    foreach ($this->getTable()->getColumns() as $column)
-    {
-      if ($column->isLazyLoad())
-      {
-        continue;
-      }
-
-      $affix = CreoleTypes::getAffix(CreoleTypes::getCreoleCode($column->getType()));
-
-      $args = array();
-      $args[] = '$columnOffset++';
-
-      // Hack to prevent Creole from formatting timestamps as strings
-      if ($column->getType() == PropelTypes::TIMESTAMP)
-      {
-        $args[] = 'null';
-      }
-      $args = implode(', ', $args);
-
-      $script .= <<<EOF
-    \$this->{$this->getColumnVarName($column)} = \$results->get$affix($args);
-
-EOF;
-    }
-
-    $script .= <<<EOF
-
-    \$this->new = false;
-    \$this->resetModified();
-
-    return \$columnOffset;
-  }
+  protected
+    \$deleted = false;
 
 EOF;
   }
 
   protected function addRefresh(&$script)
   {
+    if (isset($this->inheritanceFk))
+    {
+      return;
+    }
+
     $adds = array();
     foreach ($this->getTable()->getPrimaryKey() as $column)
     {
@@ -936,12 +1103,12 @@ EOF;
     \$criteria = new Criteria;
 $adds
 
-    self::addSelectColumns(\$criteria);
+    call_user_func(array(get_class(\$this), 'addSelectColumns'), \$criteria);
 
-    \$resultSet = {$this->basePeerClassName}::doSelect(\$criteria, \$options['connection']);
-    \$resultSet->next();
+    \$statement = $this->basePeerClassName::doSelect(\$criteria, \$options['connection']);
+    \$this->row = \$statement->fetch();
 
-    return \$this->hydrate(\$resultSet);
+    return \$this;
   }
 
 EOF;
@@ -957,27 +1124,31 @@ EOF;
 
   protected function addSave(&$script)
   {
-    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    if (isset($this->inheritanceFk) && !$this->getTable()->getAttribute('isI18n'))
     {
-      $script .= <<<EOF
+      return;
+    }
+
+    $script .= <<<EOF
 
   public function save(\$connection = null)
   {
 
 EOF;
 
-      if (isset($this->inheritanceFk))
-      {
-        $script .= <<<EOF
+    if (isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
     \$affectedRows = 0;
 
     \$affectedRows += parent::save(\$connection);
 
 EOF;
-      }
-      else
-      {
-        $script .= <<<EOF
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
     if (\$this->deleted)
     {
       throw new PropelException('You cannot save an object that has been deleted.');
@@ -994,26 +1165,40 @@ EOF;
       \$affectedRows += \$this->update(\$connection);
     }
 
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
+    {
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (array_key_exists(\$column->getPhpName(), \$this->values))
+        {
+          \$this->row[\$rowOffset] = \$this->values[\$column->getPhpName()];
+        }
+
+        \$rowOffset++;
+      }
+    }
+
     \$this->new = false;
-    \$this->resetModified();
+    \$this->values = array();
 
 EOF;
-      }
+    }
 
-      if ($this->getTable()->getAttribute('isI18n'))
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $foreignPeerBuilder = self::getNewPeerBuilder($this->i18nFk->getTable());
+
+      $sets = array();
+      foreach ($this->i18nFk->getLocalForeignMapping() as $localName => $foreignName)
       {
-        $foreignPeerBuilder = self::getNewPeerBuilder($this->i18nFk->getTable());
-
-        $sets = array();
-        foreach ($this->i18nFk->getLocalForeignMapping() as $localName => $foreignName)
-        {
-          $sets[] = <<<EOF
+        $sets[] = <<<EOF
       \${$foreignPeerBuilder->getVarName()}->set{$this->i18nFk->getTable()->getColumn($localName)->getPhpName()}(\$this->{$this->getColumnVarName($this->getTable()->getColumn($foreignName))});
 EOF;
-        }
-        $sets = implode("\n", $sets);
+      }
+      $sets = implode("\n", $sets);
 
-        $script .= <<<EOF
+      $script .= <<<EOF
 
     foreach (\$this->{$this->getRefFkCollVarName($this->i18nFk)} as \${$foreignPeerBuilder->getVarName()})
     {
@@ -1023,56 +1208,22 @@ $sets
     }
 
 EOF;
-      }
+    }
 
-      $script .= <<<EOF
+    $script .= <<<EOF
 
     return \$affectedRows;
   }
 
 EOF;
-    }
   }
 
   protected function addInsert(&$script)
   {
-    $adds = array();
-    foreach ($this->getTable()->getColumns() as $column)
+    if (isset($this->inheritanceFk) && (!isset($this->nestedSetLeftColumn) || !isset($this->nestedSetRightColumn)))
     {
-      if ($column->getName() == 'created_at' || $column->getName() == 'updated_at')
-      {
-        $adds[] = <<<EOF
-    if (!\$this->isColumnModified('{$this->getColumnVarName($column)}'))
-    {
-      \$this->{$this->getColumnVarName($column)} = time();
+      return;
     }
-    \$criteria->add({$this->getColumnConstant($column)}, \$this->{$this->getColumnVarName($column)});
-EOF;
-
-        continue;
-      }
-
-      if ($column->getName() == 'source_culture')
-      {
-        $adds[] = <<<EOF
-    if (!\$this->isColumnModified('{$this->getColumnVarName($column)}'))
-    {
-      \$this->{$this->getColumnVarName($column)} = sfPropel::getDefaultCulture();
-    }
-    \$criteria->add({$this->getColumnConstant($column)}, \$this->{$this->getColumnVarName($column)});
-EOF;
-
-        continue;
-      }
-
-      $adds[] = <<<EOF
-    if (\$this->isColumnModified('{$this->getColumnVarName($column)}'))
-    {
-      \$criteria->add({$this->getColumnConstant($column)}, \$this->{$this->getColumnVarName($column)});
-    }
-EOF;
-    }
-    $adds = implode("\n\n", $adds);
 
     $script .= <<<EOF
 
@@ -1081,15 +1232,6 @@ EOF;
     \$affectedRows = 0;
 
 EOF;
-
-    if (isset($this->inheritanceFk))
-    {
-      $script .= <<<EOF
-
-    \$affectedRows += parent::insert(\$connection);
-
-EOF;
-    }
 
     if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
     {
@@ -1100,48 +1242,68 @@ EOF;
 EOF;
     }
 
-    $script .= <<<EOF
+    if (isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
 
-    \$criteria = new Criteria;
+    \$affectedRows += parent::insert(\$connection);
 
-$adds
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
 
     if (!isset(\$connection))
     {
       \$connection = QubitTransactionFilter::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
     }
 
-EOF;
-
-    if ($this->getTable()->getIdMethod() == IDMethod::NO_ID_METHOD)
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
     {
-        $script .= <<<EOF
-
-    {$this->basePeerClassName}::doInsert(\$criteria, \$connection);
-
-EOF;
-    }
-    else
-    {
-        $script .= <<<EOF
-
-    \$id = {$this->basePeerClassName}::doInsert(\$criteria, \$connection);
-
-EOF;
-      foreach ($this->getTable()->getPrimaryKey() as $column)
+      \$criteria = new Criteria;
+      foreach (\$table->getColumns() as \$column)
       {
-        if ($column->isAutoIncrement())
+        if (!array_key_exists(\$column->getPhpName(), \$this->values))
         {
-          $script .= <<<EOF
-    \$this->{$this->getColumnVarName($column)} = \$id;
+          if ('createdAt' == \$column->getPhpName() || 'updatedAt' == \$column->getPhpName())
+          {
+            \$this->values[\$column->getPhpName()] = new DateTime;
+          }
 
-EOF;
+          if ('sourceCulture' == \$column->getPhpName())
+          {
+            \$this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists(\$column->getPhpName(), \$this->values))
+        {
+          \$criteria->add(\$column->getFullyQualifiedName(), \$this->values[\$column->getPhpName()]);
+        }
+
+        \$rowOffset++;
+      }
+
+      if (null !== \$id = $this->basePeerClassName::doInsert(\$criteria, \$connection))
+      {
+        // Guess that the first primary key of the first table is auto-incremented
+        if (\$this->tables[0] == \$table)
+        {
+          \$columns = \$table->getPrimaryKeyColumns();
+          \$this->values[\$columns[0]->getPhpName()] = \$id;
         }
       }
+
+      \$affectedRows += 1;
+    }
+
+EOF;
     }
 
     $script .= <<<EOF
-    \$affectedRows += 1;
 
     return \$affectedRows;
   }
@@ -1151,30 +1313,10 @@ EOF;
 
   protected function addUpdate(&$script)
   {
-    $adds = array();
-    foreach ($this->getTable()->getColumns() as $column)
+    if (isset($this->inheritanceFk) && (!isset($this->nestedSetLeftColumn) || !isset($this->nestedSetRightColumn)))
     {
-      if ($column->getName() == 'updated_at')
-      {
-        $adds[] = <<<EOF
-    if (!\$this->isColumnModified('{$this->getColumnVarName($column)}'))
-    {
-      \$this->{$this->getColumnVarName($column)} = time();
+      return;
     }
-    \$criteria->add({$this->getColumnConstant($column)}, \$this->{$this->getColumnVarName($column)});
-EOF;
-
-        continue;
-      }
-
-      $adds[] = <<<EOF
-    if (\$this->isColumnModified('{$this->getColumnVarName($column)}'))
-    {
-      \$criteria->add({$this->getColumnConstant($column)}, \$this->{$this->getColumnVarName($column)});
-    }
-EOF;
-    }
-    $adds = implode("\n\n", $adds);
 
     $script .= <<<EOF
 
@@ -1183,6 +1325,41 @@ EOF;
     \$affectedRows = 0;
 
 EOF;
+
+    // TODO: Only update nested set if the self foreign key has changed
+    if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
+    {
+      $script .= <<<EOF
+
+    \/\/ Update nested set keys only if parent id has changed
+    if (isset(\$this->values['parentId']))
+    {
+      \/\/ Get the "original" parentId before any updates
+      \$rowOffset = 0; 
+      \$originalParentId = null;
+      foreach (\$this->tables as \$table)
+      {
+        foreach (\$table->getColumns() as \$column)
+        {
+          if ('parentId' == \$column->getPhpName())
+          {
+            \$originalParentId = \$this->row[\$rowOffset];
+            break;
+          }
+          \$rowOffset++;
+        }
+      }
+      
+      \/\/ If updated value of parentId is different then original value,
+      \/\/ update the nested set
+      if (\$originalParentId != \$this->values['parentId'])
+      {
+        \$this->updateNestedSet(\$connection);
+      }
+    }
+
+EOF;
+    }
 
     if (isset($this->inheritanceFk))
     {
@@ -1193,54 +1370,53 @@ EOF;
 EOF;
     }
 
-    if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
+    if (!isset($this->inheritanceFk))
     {
-      $conds = array();
-      foreach ($this->selfFk->getLocalColumns() as $localName)
-      {
-        $conds[] = '$this->isColumnModified(\''.$this->getColumnVarName($this->getTable()->getColumn($localName)).'\')';
-      }
-      $conds = implode(' || ', $conds);
-
       $script .= <<<EOF
 
-    if ($conds)
+    if (!isset(\$connection))
     {
-      \$this->updateNestedSet(\$connection);
+      \$connection = QubitTransactionFilter::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
     }
 
-EOF;
-    }
-
-    $script .= <<<EOF
-
-    \$criteria = new Criteria;
-
-$adds
-
-    if (\$criteria->size() > 0)
+    \$rowOffset = 0;
+    foreach (\$this->tables as \$table)
     {
+      \$criteria = new Criteria;
       \$selectCriteria = new Criteria;
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (!array_key_exists(\$column->getPhpName(), \$this->values))
+        {
+          if ('updatedAt' == \$column->getPhpName())
+          {
+            \$this->values['updatedAt'] = new DateTime;
+          }
+        }
 
-EOF;
+        if (array_key_exists(\$column->getPhpName(), \$this->values))
+        {
+          \$criteria->add(\$column->getFullyQualifiedName(), \$this->values[\$column->getPhpName()]);
+        }
 
-    foreach ($this->getTable()->getPrimaryKey() as $column)
-    {
-      $script .= <<<EOF
-      \$selectCriteria->add({$this->getColumnConstant($column)}, \$this->{$this->getColumnVarName($column)});
+        if (\$column->isPrimaryKey())
+        {
+          \$selectCriteria->add(\$column->getFullyQualifiedName(), \$this->row[\$rowOffset]);
+        }
+
+        \$rowOffset++;
+      }
+
+      if (\$criteria->size() > 0)
+      {
+        \$affectedRows += $this->basePeerClassName::doUpdate(\$selectCriteria, \$criteria, \$connection);
+      }
+    }
 
 EOF;
     }
 
     $script .= <<<EOF
-
-      if (!isset(\$connection))
-      {
-        \$connection = QubitTransactionFilter::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
-      }
-
-      \$affectedRows += {$this->basePeerClassName}::doUpdate(\$selectCriteria, \$criteria, \$connection);
-    }
 
     return \$affectedRows;
   }
@@ -1289,7 +1465,8 @@ EOF;
 
 EOF;
     }
-    else
+
+    if (!isset($this->inheritanceFk))
     {
       $adds = array();
       foreach ($this->getTable()->getPrimaryKey() as $column)
@@ -1322,12 +1499,12 @@ EOF;
 
   public function getFkPhpName(ForeignKey $fk)
   {
-    if (count($localNames = $fk->getLocalColumns()) != 1 || substr($localNames[0], -3) != '_id')
+    if (count($localNames = $fk->getLocalColumns()) < 2 && '_id' == substr($localNames[0], -3))
     {
-      return $this->getFkPhpNameAffix($fk);
+      return substr($this->getTable()->getColumn($localNames[0])->getPhpName(), 0, -2);
     }
 
-    return sfInflector::camelize(substr($localNames[0], 0, -3));
+    return $this->getFkPhpNameAffix($fk);
   }
 
   public function getFkVarName(ForeignKey $fk)
@@ -1350,8 +1527,6 @@ EOF;
       }
 
       $this->addFkAddJoinCriteria($script, $fk);
-      $this->addFkAccessor($script, $fk);
-      $this->addFkMutator($script, $fk);
     }
   }
 
@@ -1375,54 +1550,6 @@ EOF;
 $adds
 
     return \$criteria;
-  }
-
-EOF;
-  }
-
-  protected function addFkAccessor(&$script, ForeignKey $fk)
-  {
-    $args = array();
-    foreach ($fk->getLocalColumns() as $localName)
-    {
-      $args[] = '$this->'.$this->getColumnVarName($this->getTable()->getColumn($localName));
-    }
-    $args = implode(', ', $args);
-
-    $foreignPeerBuilder = self::getNewPeerBuilder($this->getForeignTable($fk));
-
-    $script .= <<<EOF
-
-  public function get{$this->getFkPhpName($fk)}(array \$options = array())
-  {
-    return \$this->{$this->getFkVarName($fk)} = {$foreignPeerBuilder->getPeerClassName()}::{$foreignPeerBuilder->getRetrieveMethodName()}($args, \$options);
-  }
-
-EOF;
-  }
-
-  // TODO: Consider dropping the foreign key mutator because foreign objects
-  // are now cached in the foreign class and indexed by primary key
-  protected function addFkMutator(&$script, ForeignKey $fk)
-  {
-    $foreignPeerBuilder = self::getNewPeerBuilder($this->getForeignTable($fk));
-
-    $sets = array();
-    foreach ($fk->getLocalForeignMapping() as $localName => $foreignName)
-    {
-      $sets[] = <<<EOF
-    \$this->{$this->getColumnVarName($this->getTable()->getColumn($localName))} = \${$foreignPeerBuilder->getVarName()}->get{$this->getForeignTable($fk)->getColumn($foreignName)->getPhpName()}();
-EOF;
-    }
-    $sets = implode("\n", $sets);
-
-    $script .= <<<EOF
-
-  public function set{$this->getFkPhpName($fk)}({$foreignPeerBuilder->getObjectClassName()} \${$foreignPeerBuilder->getVarName()})
-  {
-$sets
-
-    return \$this;
   }
 
 EOF;
@@ -1522,7 +1649,8 @@ EOF;
   {
     $script .= <<<EOF
 
-  protected \${$this->getRefFkCollVarName($refFk)} = null;
+  protected
+    \${$this->getRefFkCollVarName($refFk)} = null;
 
 EOF;
   }
@@ -1572,36 +1700,6 @@ EOF;
     }
     $args = implode(', ', $args);
 
-    foreach ($this->i18nFk->getTable()->getColumns() as $column)
-    {
-      if ($column->isPrimaryKey())
-      {
-        continue;
-      }
-
-      $script .= <<<EOF
-
-  public function get{$column->getPhpName()}(array \$options = array())
-  {
-    \${$this->getColumnVarName($column)} = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->get{$column->getPhpName()}();
-    if (!empty(\$options['cultureFallback']) && strlen(\${$this->getColumnVarName($column)}) < 1)
-    {
-      \${$this->getColumnVarName($column)} = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->get{$column->getPhpName()}();
-    }
-
-    return \${$this->getColumnVarName($column)};
-  }
-
-  public function set{$column->getPhpName()}(\$value, array \$options = array())
-  {
-    \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->set{$column->getPhpName()}(\$value);
-
-    return \$this;
-  }
-
-EOF;
-    }
-
     $script .= <<<EOF
 
   public function getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array \$options = array())
@@ -1618,7 +1716,7 @@ EOF;
 
     if (!isset(\$this->{$this->getRefFkCollVarName($this->i18nFk)}[\$options['culture']]))
     {
-      if (null === \${$foreignPeerBuilder->getVarName()} = {$foreignPeerBuilder->getPeerClassName()}::{$foreignPeerBuilder->getRetrieveMethodName()}($args, \$options['culture'], \$options))
+      if (!isset($args) || null === \${$foreignPeerBuilder->getVarName()} = {$foreignPeerBuilder->getPeerClassName()}::{$foreignPeerBuilder->getRetrieveMethodName()}($args, \$options['culture'], \$options))
       {
         \${$foreignPeerBuilder->getVarName()} = new {$foreignPeerBuilder->getObjectClassName()};
         \${$foreignPeerBuilder->getVarName()}->set{$foreignPeerBuilder->cultureColumn->getPhpName()}(\$options['culture']);
@@ -1648,34 +1746,8 @@ EOF;
   {
     $script .= <<<EOF
 
-  protected \$ancestors = null;
-
-EOF;
-  }
-
-  protected function addGetAncestors(&$script)
-  {
-    $script .= <<<EOF
-
-  public function getAncestors(array \$options = array())
-  {
-    if (!isset(\$this->ancestors))
-    {
-      if (\$this->new)
-      {
-        \$this->ancestors = QubitQuery::create(array('self' => \$this) + \$options);
-      }
-      else
-      {
-        \$criteria = new Criteria;
-        \$this->addAncestorsCriteria(\$criteria);
-        \$this->addOrderByPreorder(\$criteria);
-        \$this->ancestors = self::get(\$criteria, array('self' => \$this) + \$options);
-      }
-    }
-
-    return \$this->ancestors;
-  }
+  protected
+    \$ancestors = null;
 
 EOF;
   }
@@ -1696,34 +1768,8 @@ EOF;
   {
     $script .= <<<EOF
 
-  protected \$descendants = null;
-
-EOF;
-  }
-
-  protected function addGetDescendants(&$script)
-  {
-    $script .= <<<EOF
-
-  public function getDescendants(array \$options = array())
-  {
-    if (!isset(\$this->descendants))
-    {
-      if (\$this->new)
-      {
-        \$this->descendants = QubitQuery::create(array('self' => \$this) + \$options);
-      }
-      else
-      {
-        \$criteria = new Criteria;
-        \$this->addDescendantsCriteria(\$criteria);
-        \$this->addOrderByPreorder(\$criteria);
-        \$this->descendants = self::get(\$criteria, array('self' => \$this) + \$options);
-      }
-    }
-
-    return \$this->descendants;
-  }
+  protected
+    \$descendants = null;
 
 EOF;
   }
@@ -1734,19 +1780,33 @@ EOF;
 
   protected function updateNestedSet(\$connection = null)
   {
+// HACK: Try to prevent modifying left and right values anywhere except in this
+// method.  Perhaps it would be more logical to use protected visibility for
+// these values?
+unset(\$this->values['{$this->getColumnVarName($this->nestedSetLeftColumn)}']);
+unset(\$this->values['{$this->getColumnVarName($this->nestedSetRightColumn)}']);
     if (!isset(\$connection))
     {
       \$connection = QubitTransactionFilter::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
     }
 
-    if (null === \${$this->getFkVarName($this->selfFk)} = \$this->get{$this->getFkPhpName($this->selfFk)}(array('connection' => \$connection)))
+    if (!isset(\$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}) || !isset(\$this->{$this->getColumnVarName($this->nestedSetRightColumn)}))
     {
-      \$stmt = \$connection->prepareStatement('
+      \$delta = 2;
+    }
+    else
+    {
+      \$delta = \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} - \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} + 1;
+    }
+
+    if (null === \${$this->getFkVarName($this->selfFk)} = \$this->offsetGet('{$this->getFkPhpName($this->selfFk)}', array('connection' => \$connection)))
+    {
+      \$statement = \$connection->prepare('
         SELECT MAX('.{$this->getColumnConstant($this->nestedSetRightColumn)}.')
         FROM '.{$this->getPeerClassName()}::TABLE_NAME);
-      \$results = \$stmt->executeQuery(ResultSet::FETCHMODE_NUM);
-      \$results->next();
-      \$max = \$results->getInt(1);
+      \$statement->execute();
+      \$row = \$statement->fetch();
+      \$max = \$row[0];
 
       if (!isset(\$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}) || !isset(\$this->{$this->getColumnVarName($this->nestedSetRightColumn)}))
       {
@@ -1762,35 +1822,22 @@ EOF;
     {
       \$parent->refresh(array('connection' => \$connection));
 
-      if (!isset(\$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}) || !isset(\$this->{$this->getColumnVarName($this->nestedSetRightColumn)}))
+      if (isset(\$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}) && isset(\$this->{$this->getColumnVarName($this->nestedSetRightColumn)}) && \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} <= \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetLeftColumn)} && \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} >= \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)})
       {
-        \$delta = 2;
-      }
-      else
-      {
-        if (\$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} <= \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetLeftColumn)} && \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} >= \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)})
-        {
-          throw new PropelException('An object cannot be a descendant of itself.');
-        }
-
-        \$delta = \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} - \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} + 1;
+        throw new PropelException('An object cannot be a descendant of itself.');
       }
 
-      \$stmt = \$connection->prepareStatement('
+      \$statement = \$connection->prepare('
         UPDATE '.{$this->getPeerClassName()}::TABLE_NAME.'
         SET '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' = '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' + ?
         WHERE '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' >= ?');
-      \$stmt->setInt(1, \$delta);
-      \$stmt->setInt(2, \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)});
-      \$stmt->executeUpdate();
+      \$statement->execute(array(\$delta, \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)}));
 
-      \$stmt = \$connection->prepareStatement('
+      \$statement = \$connection->prepare('
         UPDATE '.{$this->getPeerClassName()}::TABLE_NAME.'
         SET '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' = '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' + ?
         WHERE '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' >= ?');
-      \$stmt->setInt(1, \$delta);
-      \$stmt->setInt(2, \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)});
-      \$stmt->executeUpdate();
+      \$statement->execute(array(\$delta, \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)}));
 
       if (!isset(\$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}) || !isset(\$this->{$this->getColumnVarName($this->nestedSetRightColumn)}))
       {
@@ -1809,21 +1856,23 @@ EOF;
       \$shift = \${$this->getFkVarName($this->selfFk)}->{$this->getColumnVarName($this->nestedSetRightColumn)} - \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)};
     }
 
-    \$stmt = \$connection->prepareStatement('
+    \$statement = \$connection->prepare('
       UPDATE '.{$this->getPeerClassName()}::TABLE_NAME.'
       SET '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' = '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' + ?, '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' = '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' + ?
       WHERE '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' >= ?
       AND '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' <= ?');
-    \$stmt->setInt(1, \$shift);
-    \$stmt->setInt(2, \$shift);
-    \$stmt->setInt(3, \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)});
-    \$stmt->setInt(4, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)});
-    \$stmt->executeUpdate();
+    \$statement->execute(array(\$shift, \$shift, \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)}));
 
     \$this->deleteFromNestedSet(\$connection);
 
-    \$this->columnValues['{$this->getColumnVarName($this->nestedSetLeftColumn)}'] = \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} += \$shift;
-    \$this->columnValues['{$this->getColumnVarName($this->nestedSetRightColumn)}'] = \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} += \$shift;
+    if (\$shift > 0)
+    {
+      \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} -= \$delta;
+      \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} -= \$delta;
+    }
+
+    \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} += \$shift;
+    \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} += \$shift;
 
     return \$this;
   }
@@ -1844,23 +1893,43 @@ EOF;
 
     \$delta = \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} - \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} + 1;
 
-    \$stmt = \$connection->prepareStatement('
+    \$statement = \$connection->prepare('
       UPDATE '.{$this->getPeerClassName()}::TABLE_NAME.'
       SET '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' = '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' - ?
       WHERE '.{$this->getColumnConstant($this->nestedSetLeftColumn)}.' >= ?');
-    \$stmt->setInt(1, \$delta);
-    \$stmt->setInt(2, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)});
-    \$stmt->executeUpdate();
+    \$statement->execute(array(\$delta, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)}));
 
-    \$stmt = \$connection->prepareStatement('
+    \$statement = \$connection->prepare('
       UPDATE '.{$this->getPeerClassName()}::TABLE_NAME.'
       SET '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' = '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' - ?
       WHERE '.{$this->getColumnConstant($this->nestedSetRightColumn)}.' >= ?');
-    \$stmt->setInt(1, \$delta);
-    \$stmt->setInt(2, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)});
-    \$stmt->executeUpdate();
+    \$statement->execute(array(\$delta, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)}));
 
     return \$this;
+  }
+
+EOF;
+  }
+
+  protected function addCall(&$script)
+  {
+    if (isset($this->inheritanceFk))
+    {
+      return;
+    }
+
+    $script .= <<<EOF
+
+  public function __call(\$name, \$args)
+  {
+    if ('get' == substr(\$name, 0, 3) || 'set' == substr(\$name, 0, 3))
+    {
+      \$args = array_merge(array(strtolower(substr(\$name, 3, 1)).substr(\$name, 4)), \$args);
+
+      return call_user_func_array(array(\$this, 'offset'.ucfirst(substr(\$name, 0, 3))), \$args);
+    }
+
+    throw new sfException('Call to undefined method '.get_class(\$this).'::'.\$name);
   }
 
 EOF;
@@ -1870,17 +1939,6 @@ EOF;
   {
     $script .= <<<EOF
 }
-
-EOF;
-
-    $this->addStaticMapBuilderRegistration($script);
-  }
-
-  protected function addStaticMapBuilderRegistration(&$script)
-  {
-    $script .= <<<EOF
-
-{$this->basePeerClassName}::getMapBuilder('{$this->getMapBuilderBuilder()->getClassPath()}');
 
 EOF;
   }

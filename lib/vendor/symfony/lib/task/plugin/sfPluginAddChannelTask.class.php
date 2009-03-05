@@ -16,7 +16,7 @@ require_once(dirname(__FILE__).'/sfPluginBaseTask.class.php');
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPluginAddChannelTask.class.php 10197 2008-07-10 08:44:22Z fabien $
+ * @version    SVN: $Id: sfPluginAddChannelTask.class.php 11750 2008-09-23 18:33:28Z Carl.Vondrick $
  */
 class sfPluginAddChannelTask extends sfPluginBaseTask
 {
@@ -35,7 +35,7 @@ class sfPluginAddChannelTask extends sfPluginBaseTask
     $this->briefDescription = 'Add a new PEAR channel';
 
     $this->detailedDescription = <<<EOF
-The [plugin:add-channel|INFO] task add a new PEAR channel:
+The [plugin:add-channel|INFO] task adds a new PEAR channel:
 
   [./symfony plugin:add-channel symfony.plugins.pear.example.com|INFO]
 EOF;

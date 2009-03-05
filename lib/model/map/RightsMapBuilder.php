@@ -2,7 +2,7 @@
 
 
 
-class RightsMapBuilder {
+class RightsMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.RightsMapBuilder';
@@ -25,24 +25,25 @@ class RightsMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitRights::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_rights');
-		$tMap->setPhpName('Rights');
+		$tMap = $this->dbMap->addTable(QubitRights::TABLE_NAME);
+		$tMap->setPhpName('rights');
+		$tMap->setClassname('QubitRights');
 
 		$tMap->setUseIdGenerator(true);
 
-		$tMap->addForeignKey('OBJECT_ID', 'ObjectId', 'int', CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('PERMISSION_ID', 'PermissionId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('PERMISSION_ID', 'permissionId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('SOURCE_CULTURE', 'SourceCulture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
-		$tMap->addPrimaryKey('ID', 'Id', 'int', CreoleTypes::INTEGER, true, null);
+		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
 	} 
 } 

@@ -1,22 +1,22 @@
 // $Id$
 
-Qubit.treeView = Qubit.treeView || {}; // Information object treeview
+Qubit.treeView = Qubit.treeView || {};
 
-Drupal.behaviors.treeView = function (context)
-  {
-    function build(objects, expands, parentId, parentNode)
+Drupal.behaviors.treeView = {
+  attach: function (context)
     {
-      while (objects.length > 0 && objects[0].parentId == parentId)
+      function build(objects, expands, parentId, parentNode)
       {
-        var object = objects.shift();
-        var textNode = new YAHOO.widget.TextNode(object, parentNode, expands[object.id] !== undefined);
-        build(objects, expands, object.id, textNode);
+        while (objects.length > 0 && objects[0].parentId == parentId)
+        {
+          var object = objects.shift();
+          var textNode = new YAHOO.widget.TextNode(object, parentNode, expands[object.id] !== undefined);
+          build(objects, expands, object.id, textNode);
+        }
       }
-    }
-    
-    // Information object treeview
-    Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
-    build(Qubit.treeView.objects, Qubit.treeView.expands, Qubit.treeView.objects[0].parentId, Qubit.treeView.treeView.getRoot());
 
-    Qubit.treeView.treeView.draw();
-  }
+      Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
+      build(Qubit.treeView.objects, Qubit.treeView.expands, Qubit.treeView.objects[0].parentId, Qubit.treeView.treeView.getRoot());
+
+      Qubit.treeView.treeView.draw();
+    } };

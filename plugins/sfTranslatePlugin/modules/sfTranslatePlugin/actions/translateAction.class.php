@@ -50,6 +50,8 @@ class sfTranslatePluginTranslateAction extends sfAction
       $this->forward($user->getAttribute('moduleName', 'default', 'sfHistoryPlugin'), $user->getAttribute('actionName', 'index', 'sfHistoryPlugin'));
     }
 
+    $messageSource->getCache()->clean();
+
     $this->redirect($user->getAttribute('currentInternalUri', null, 'sfHistoryPlugin'));
   }
 }

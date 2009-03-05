@@ -16,12 +16,14 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorBase.class.php 10893 2008-08-14 12:30:27Z hartym $
+ * @version    SVN: $Id: sfValidatorBase.class.php 12876 2008-11-10 12:53:18Z nicolas $
  */
 abstract class sfValidatorBase
 {
   protected static
-    $charset = 'UTF-8';
+    $charset         = 'UTF-8',
+    $invalidMessage  = 'Invalid.',
+    $requiredMessage = 'Required.';
 
   protected
     $requiredOptions = array(),
@@ -50,7 +52,7 @@ abstract class sfValidatorBase
   public function __construct($options = array(), $messages = array())
   {
     $this->options  = array_merge(array('required' => true, 'trim' => false, 'empty_value' => null), $this->options);
-    $this->messages = array_merge(array('required' => 'Required.', 'invalid' => 'Invalid.'), $this->messages);
+    $this->messages = array_merge(array('required' => self::$requiredMessage, 'invalid' => self::$invalidMessage), $this->messages);
 
     $this->configure($options, $messages);
 
@@ -246,6 +248,26 @@ abstract class sfValidatorBase
   public function getRequiredOptions()
   {
     return $this->requiredOptions;
+  }
+
+  /**
+   * Sets the default invalid message
+   *
+   * @param string $message
+   */
+  static public function setInvalidMessage($message)
+  {
+    self::$invalidMessage = $message;
+  }
+
+  /**
+   * Sets the default required message
+   *
+   * @param string $message
+   */
+  static public function setRequiredMessage($message)
+  {
+    self::$requiredMessage = $message;
   }
 
   /**

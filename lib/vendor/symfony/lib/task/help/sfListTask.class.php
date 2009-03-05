@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfListTask.class.php 7397 2008-02-08 06:48:35Z fabien $
+ * @version    SVN: $Id: sfListTask.class.php 11505 2008-09-13 09:22:23Z fabien $
  */
 class sfListTask extends sfCommandApplicationTask
 {
@@ -45,6 +45,9 @@ EOF;
    */
   protected function execute($arguments = array(), $options = array())
   {
+    $this->commandApplication->help();
+    $this->log('');
+
     $tasks = array();
     foreach ($this->commandApplication->getTasks() as $name => $task)
     {

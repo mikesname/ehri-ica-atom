@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: OperatorBracketUnitTest.php,v 1.7 2008/02/27 04:43:55 squiz Exp $
+ * @version   CVS: $Id: OperatorBracketUnitTest.php,v 1.9 2008/10/27 04:36:24 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -48,58 +48,49 @@ class Squiz_Tests_Formatting_OperatorBracketUnitTest extends AbstractSniffUnitTe
         switch ($testFile) {
         case 'OperatorBracketUnitTest.inc':
             return array(
-                3   => 1,
-                6   => 1,
-                9   => 1,
-                12  => 1,
-                15  => 1,
-                18  => 2,
-                20  => 1,
-                25  => 1,
-                28  => 1,
-                31  => 1,
-                34  => 1,
-                37  => 1,
-                40  => 1,
-                43  => 2,
-                45  => 1,
-                47  => 5,
-                48  => 1,
-                50  => 2,
-                55  => 2,
-                56  => 1,
-                63  => 2,
-                64  => 1,
-                67  => 1,
-                86  => 1,
-                90  => 1,
-                109 => 1,
-               );
+                    3   => 1,
+                    6   => 1,
+                    9   => 1,
+                    12  => 1,
+                    15  => 1,
+                    18  => 2,
+                    20  => 1,
+                    25  => 1,
+                    28  => 1,
+                    31  => 1,
+                    34  => 1,
+                    37  => 1,
+                    40  => 1,
+                    43  => 2,
+                    45  => 1,
+                    47  => 5,
+                    48  => 1,
+                    50  => 2,
+                    55  => 2,
+                    56  => 1,
+                    63  => 2,
+                    64  => 1,
+                    67  => 1,
+                    86  => 1,
+                    90  => 1,
+                    109 => 1,
+                   );
             break;
         case 'OperatorBracketUnitTest.js':
             return array(
-                2  => 1,
-                5  => 1,
-                8  => 1,
-                11 => 1,
-                14 => 1,
-                17 => 2,
-                19 => 1,
-                24 => 1,
-                27 => 1,
-                30 => 1,
-                33 => 1,
-                36 => 1,
-                39 => 1,
-                42 => 2,
-                44 => 1,
-                46 => 5,
-                47 => 1,
-                49 => 2,
-                54 => 2,
-                55 => 1,
-                63 => 1,
-               );
+                    5  => 1,
+                    8  => 1,
+                    11 => 1,
+                    14 => 1,
+                    24 => 1,
+                    30 => 1,
+                    33 => 1,
+                    36 => 1,
+                    39 => 1,
+                    46 => 1,
+                    47 => 1,
+                    63 => 1,
+                   );
              break;
         default:
             return array();

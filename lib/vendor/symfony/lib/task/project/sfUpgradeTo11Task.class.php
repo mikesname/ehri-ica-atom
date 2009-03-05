@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfUpgradeTo11Task.class.php 7400 2008-02-08 07:57:06Z fabien $
+ * @version    SVN: $Id: sfUpgradeTo11Task.class.php 10628 2008-08-03 15:03:08Z fabien $
  */
 class sfUpgradeTo11Task extends sfBaseTask
 {
@@ -33,7 +33,7 @@ based the 1.0 release to the 1.1 symfony release.
 
   [./symfony project:upgrade1.1|INFO]
 
-Please read the UPGRADE file to have information on what does this task.
+Please read the UPGRADE_TO_1_1 file to have information on what does this task.
 EOF;
   }
 

@@ -43,7 +43,7 @@
 <?php foreach ($informationObjects->getResults() as $informationObject): ?>
   <tr>
     <td>
-      <?php if (strlen($title = $informationObject->getTitle(array('cultureFallback' => true))) > 0); ?>
+      <?php $title = render_title($informationObject->getTitle(array('cultureFallback' => true))) ?>
       <?php echo link_to($title, 'informationobject/show?id='.$informationObject->getId()) ?>
     </td>
   <?php if($multiRepository): // multi-repository: show related repository ?>

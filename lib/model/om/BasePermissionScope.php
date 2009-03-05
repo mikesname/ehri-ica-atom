@@ -1,17 +1,18 @@
 <?php
 
-abstract class BasePermissionScope
+abstract class BasePermissionScope implements ArrayAccess
 {
-  const DATABASE_NAME = 'propel';
+  const
+    DATABASE_NAME = 'propel',
 
-  const TABLE_NAME = 'q_permission_scope';
+    TABLE_NAME = 'q_permission_scope',
 
-  const NAME = 'q_permission_scope.NAME';
-  const PARAMETERS = 'q_permission_scope.PARAMETERS';
-  const PERMISSION_ID = 'q_permission_scope.PERMISSION_ID';
-  const ROLE_ID = 'q_permission_scope.ROLE_ID';
-  const USER_ID = 'q_permission_scope.USER_ID';
-  const ID = 'q_permission_scope.ID';
+    NAME = 'q_permission_scope.NAME',
+    PARAMETERS = 'q_permission_scope.PARAMETERS',
+    PERMISSION_ID = 'q_permission_scope.PERMISSION_ID',
+    ROLE_ID = 'q_permission_scope.ROLE_ID',
+    USER_ID = 'q_permission_scope.USER_ID',
+    ID = 'q_permission_scope.ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -25,14 +26,19 @@ abstract class BasePermissionScope
     return $criteria;
   }
 
-  protected static $permissionScopes = array();
+  protected static
+    $permissionScopes = array();
 
-  public static function getFromResultSet(ResultSet $resultSet)
+  protected
+    $row = array();
+
+  public static function getFromRow(array $row)
   {
-    if (!isset(self::$permissionScopes[$id = $resultSet->getInt(6)]))
+    if (!isset(self::$permissionScopes[$id = (int) $row[5]]))
     {
       $permissionScope = new QubitPermissionScope;
-      $permissionScope->hydrate($resultSet);
+      $permissionScope->new = false;
+      $permissionScope->row = $row;
 
       self::$permissionScopes[$id] = $permissionScope;
     }
@@ -86,127 +92,160 @@ abstract class BasePermissionScope
     return $affectedRows;
   }
 
-  protected $name = null;
+  protected
+    $tables = array();
 
-  public function getName()
+  public function __construct()
   {
-    return $this->name;
+    $this->tables[] = Propel::getDatabaseMap(QubitPermissionScope::DATABASE_NAME)->getTable(QubitPermissionScope::TABLE_NAME);
   }
 
-  public function setName($name)
+  protected
+    $values = array();
+
+  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
   {
-    $this->name = $name;
+    if (array_key_exists($offset, $this->values))
+    {
+      return $this->values[$offset];
+    }
+
+    if (!array_key_exists($rowOffset, $this->row))
+    {
+      if ($this->new)
+      {
+        return;
+      }
+
+      $this->refresh();
+    }
+
+    return $this->row[$rowOffset];
+  }
+
+  public function offsetExists($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+        }
+
+        $rowOffset++;
+      }
+    }
+
+    return false;
+  }
+
+  public function __isset($name)
+  {
+    return $this->offsetExists($name);
+  }
+
+  public function offsetGet($offset, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          return $this->rowOffsetGet($offset, $rowOffset, $options);
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
+        }
+
+        $rowOffset++;
+      }
+    }
+  }
+
+  public function __get($name)
+  {
+    return $this->offsetGet($name);
+  }
+
+  public function offsetSet($offset, $value, array $options = array())
+  {
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = $value;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $parameters = null;
-
-  public function getParameters()
+  public function __set($name, $value)
   {
-    return $this->parameters;
+    return $this->offsetSet($name, $value);
   }
 
-  public function setParameters($parameters)
+  public function offsetUnset($offset, array $options = array())
   {
-    $this->parameters = $parameters;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($offset == $column->getPhpName())
+        {
+          $this->values[$offset] = null;
+        }
+
+        if ($offset.'Id' == $column->getPhpName())
+        {
+          $this->values[$offset.'Id'] = null;
+        }
+
+        $rowOffset++;
+      }
+    }
 
     return $this;
   }
 
-  protected $permissionId = null;
-
-  public function getPermissionId()
+  public function __unset($name)
   {
-    return $this->permissionId;
+    return $this->offsetUnset($name);
   }
 
-  public function setPermissionId($permissionId)
-  {
-    $this->permissionId = $permissionId;
+  protected
+    $new = true;
 
-    return $this;
-  }
-
-  protected $roleId = null;
-
-  public function getRoleId()
-  {
-    return $this->roleId;
-  }
-
-  public function setRoleId($roleId)
-  {
-    $this->roleId = $roleId;
-
-    return $this;
-  }
-
-  protected $userId = null;
-
-  public function getUserId()
-  {
-    return $this->userId;
-  }
-
-  public function setUserId($userId)
-  {
-    $this->userId = $userId;
-
-    return $this;
-  }
-
-  protected $id = null;
-
-  public function getId()
-  {
-    return $this->id;
-  }
-
-  public function setId($id)
-  {
-    $this->id = $id;
-
-    return $this;
-  }
-
-  protected $new = true;
-
-  protected $deleted = false;
-
-  protected $columnValues = null;
-
-  protected function isColumnModified($name)
-  {
-    return $this->$name != $this->columnValues[$name];
-  }
-
-  protected function resetModified()
-  {
-    $this->columnValues['name'] = $this->name;
-    $this->columnValues['parameters'] = $this->parameters;
-    $this->columnValues['permissionId'] = $this->permissionId;
-    $this->columnValues['roleId'] = $this->roleId;
-    $this->columnValues['userId'] = $this->userId;
-    $this->columnValues['id'] = $this->id;
-
-    return $this;
-  }
-
-  public function hydrate(ResultSet $results, $columnOffset = 1)
-  {
-    $this->name = $results->getString($columnOffset++);
-    $this->parameters = $results->getString($columnOffset++);
-    $this->permissionId = $results->getInt($columnOffset++);
-    $this->roleId = $results->getInt($columnOffset++);
-    $this->userId = $results->getInt($columnOffset++);
-    $this->id = $results->getInt($columnOffset++);
-
-    $this->new = false;
-    $this->resetModified();
-
-    return $columnOffset;
-  }
+  protected
+    $deleted = false;
 
   public function refresh(array $options = array())
   {
@@ -218,12 +257,12 @@ abstract class BasePermissionScope
     $criteria = new Criteria;
     $criteria->add(QubitPermissionScope::ID, $this->id);
 
-    self::addSelectColumns($criteria);
+    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
 
-    $resultSet = BasePeer::doSelect($criteria, $options['connection']);
-    $resultSet->next();
+    $statement = BasePeer::doSelect($criteria, $options['connection']);
+    $this->row = $statement->fetch();
 
-    return $this->hydrate($resultSet);
+    return $this;
   }
 
   public function save($connection = null)
@@ -244,8 +283,22 @@ abstract class BasePermissionScope
       $affectedRows += $this->update($connection);
     }
 
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+        }
+
+        $rowOffset++;
+      }
+    }
+
     $this->new = false;
-    $this->resetModified();
+    $this->values = array();
 
     return $affectedRows;
   }
@@ -254,46 +307,49 @@ abstract class BasePermissionScope
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('name'))
-    {
-      $criteria->add(QubitPermissionScope::NAME, $this->name);
-    }
-
-    if ($this->isColumnModified('parameters'))
-    {
-      $criteria->add(QubitPermissionScope::PARAMETERS, $this->parameters);
-    }
-
-    if ($this->isColumnModified('permissionId'))
-    {
-      $criteria->add(QubitPermissionScope::PERMISSION_ID, $this->permissionId);
-    }
-
-    if ($this->isColumnModified('roleId'))
-    {
-      $criteria->add(QubitPermissionScope::ROLE_ID, $this->roleId);
-    }
-
-    if ($this->isColumnModified('userId'))
-    {
-      $criteria->add(QubitPermissionScope::USER_ID, $this->userId);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitPermissionScope::ID, $this->id);
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitPermissionScope::DATABASE_NAME);
     }
 
-    $id = BasePeer::doInsert($criteria, $connection);
-    $this->id = $id;
-    $affectedRows += 1;
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
+    {
+      $criteria = new Criteria;
+      foreach ($table->getColumns() as $column)
+      {
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
+          {
+            $this->values[$column->getPhpName()] = new DateTime;
+          }
+
+          if ('sourceCulture' == $column->getPhpName())
+          {
+            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        $rowOffset++;
+      }
+
+      if (null !== $id = BasePeer::doInsert($criteria, $connection))
+      {
+                if ($this->tables[0] == $table)
+        {
+          $columns = $table->getPrimaryKeyColumns();
+          $this->values[$columns[0]->getPhpName()] = $id;
+        }
+      }
+
+      $affectedRows += 1;
+    }
 
     return $affectedRows;
   }
@@ -302,49 +358,43 @@ abstract class BasePermissionScope
   {
     $affectedRows = 0;
 
-    $criteria = new Criteria;
-
-    if ($this->isColumnModified('name'))
+    if (!isset($connection))
     {
-      $criteria->add(QubitPermissionScope::NAME, $this->name);
+      $connection = QubitTransactionFilter::getConnection(QubitPermissionScope::DATABASE_NAME);
     }
 
-    if ($this->isColumnModified('parameters'))
+    $rowOffset = 0;
+    foreach ($this->tables as $table)
     {
-      $criteria->add(QubitPermissionScope::PARAMETERS, $this->parameters);
-    }
-
-    if ($this->isColumnModified('permissionId'))
-    {
-      $criteria->add(QubitPermissionScope::PERMISSION_ID, $this->permissionId);
-    }
-
-    if ($this->isColumnModified('roleId'))
-    {
-      $criteria->add(QubitPermissionScope::ROLE_ID, $this->roleId);
-    }
-
-    if ($this->isColumnModified('userId'))
-    {
-      $criteria->add(QubitPermissionScope::USER_ID, $this->userId);
-    }
-
-    if ($this->isColumnModified('id'))
-    {
-      $criteria->add(QubitPermissionScope::ID, $this->id);
-    }
-
-    if ($criteria->size() > 0)
-    {
+      $criteria = new Criteria;
       $selectCriteria = new Criteria;
-      $selectCriteria->add(QubitPermissionScope::ID, $this->id);
-
-      if (!isset($connection))
+      foreach ($table->getColumns() as $column)
       {
-        $connection = QubitTransactionFilter::getConnection(QubitPermissionScope::DATABASE_NAME);
+        if (!array_key_exists($column->getPhpName(), $this->values))
+        {
+          if ('updatedAt' == $column->getPhpName())
+          {
+            $this->values['updatedAt'] = new DateTime;
+          }
+        }
+
+        if (array_key_exists($column->getPhpName(), $this->values))
+        {
+          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+        }
+
+        if ($column->isPrimaryKey())
+        {
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+        }
+
+        $rowOffset++;
       }
 
-      $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      if ($criteria->size() > 0)
+      {
+        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+      }
     }
 
     return $affectedRows;
@@ -372,71 +422,45 @@ abstract class BasePermissionScope
 	
 	public function getPrimaryKey()
 	{
-		return $this->getId();
+		return $this->getid();
 	}
 
 	
 	public function setPrimaryKey($key)
 	{
-		$this->setId($key);
+		$this->setid($key);
 	}
 
-  public static function addJoinPermissionCriteria(Criteria $criteria)
+  public static function addJoinpermissionCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitPermissionScope::PERMISSION_ID, QubitPermission::ID);
 
     return $criteria;
   }
 
-  public function getPermission(array $options = array())
-  {
-    return $this->permission = QubitPermission::getById($this->permissionId, $options);
-  }
-
-  public function setPermission(QubitPermission $permission)
-  {
-    $this->permissionId = $permission->getId();
-
-    return $this;
-  }
-
-  public static function addJoinRoleCriteria(Criteria $criteria)
+  public static function addJoinroleCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitPermissionScope::ROLE_ID, QubitRole::ID);
 
     return $criteria;
   }
 
-  public function getRole(array $options = array())
-  {
-    return $this->role = QubitRole::getById($this->roleId, $options);
-  }
-
-  public function setRole(QubitRole $role)
-  {
-    $this->roleId = $role->getId();
-
-    return $this;
-  }
-
-  public static function addJoinUserCriteria(Criteria $criteria)
+  public static function addJoinuserCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitPermissionScope::USER_ID, QubitUser::ID);
 
     return $criteria;
   }
 
-  public function getUser(array $options = array())
+  public function __call($name, $args)
   {
-    return $this->user = QubitUser::getById($this->userId, $options);
-  }
+    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
+    {
+      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-  public function setUser(QubitUser $user)
-  {
-    $this->userId = $user->getId();
+      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+    }
 
-    return $this;
+    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
   }
 }
-
-BasePeer::getMapBuilder('lib.model.map.PermissionScopeMapBuilder');

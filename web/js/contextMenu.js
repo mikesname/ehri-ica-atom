@@ -2,42 +2,43 @@
 
 Qubit.contextMenu = Qubit.contextMenu || {};
 
-Drupal.behaviors.contextMenu = function (context)
-  {
-    $('#treeView').click(function (event)
-      {
-        function getTarget(target)
+Drupal.behaviors.contextMenu = {
+  attach: function (context)
+    {
+      $('#treeView').click(function (event)
         {
-          if (target.tagName.toLowerCase() == 'a' && target.className == 'ygtvlabel')
+          function getTarget(target)
           {
-            return target;
+            if (target.tagName.toLowerCase() == 'a' && target.className == 'ygtvlabel')
+            {
+              return target;
+            }
+
+            if (target.parentNode && target.parentNode.nodeType == 1)
+            {
+              return getTarget(target.parentNode);
+            }
           }
 
-          if (target.parentNode && target.parentNode.nodeType == 1)
+          var target = getTarget(event.target);
+          if (!target)
           {
-            return getTarget(target.parentNode);
+            return false;
           }
-        }
 
-        var target = getTarget(event.target);
-        if (!target)
-        {
+          var menu = new YAHOO.widget.Menu('menu', {
+            itemData: [
+              { text: 'Add' },
+              { text: 'Delete' },
+              { text: 'Edit' },
+              { text: 'List' },
+              { text: 'Show' }],
+            lazyLoad: true,
+            x: event.pageX,
+            y: event.pageY });
+
+          menu.show();
+
           return false;
-        }
-
-        var menu = new YAHOO.widget.Menu('menu', {
-          itemData: [
-            { text: 'Add' },
-            { text: 'Delete' },
-            { text: 'Edit' },
-            { text: 'List' },
-            { text: 'Show' }],
-          lazyLoad: true,
-          x: event.pageX,
-          y: event.pageY });
-
-        menu.show();
-
-        return false;
-      });
-  }
+        });
+    } };

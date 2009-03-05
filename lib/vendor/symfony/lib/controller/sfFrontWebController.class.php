@@ -18,7 +18,7 @@
  * @subpackage controller
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfFrontWebController.class.php 7792 2008-03-09 22:06:59Z fabien $
+ * @version    SVN: $Id: sfFrontWebController.class.php 11286 2008-09-02 10:27:36Z fabien $
  */
 class sfFrontWebController extends sfWebController
 {
@@ -31,11 +31,6 @@ class sfFrontWebController extends sfWebController
   {
     try
     {
-      if (sfConfig::get('sf_logging_enabled'))
-      {
-        $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Dispatch request')));
-      }
-
       // reinitialize filters (needed for unit and functional tests)
       sfFilter::$filterCalled = array();
 

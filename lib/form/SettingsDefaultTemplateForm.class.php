@@ -1,23 +1,23 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+sfLoader::loadHelpers('I18N');
 
 /**
  * Settings module - "site information" form definition
@@ -29,34 +29,35 @@
  */
 class SettingsDefaultTemplateForm extends sfForm
 {
-  // Available templates
-  protected static $informationObjectTemplates = array(
-    'isad' => 'ISAD(G), International Council on Archives',
-    'rad' => 'RAD, Canadian Council of Archives'
-  );
-
-  protected static $actorTemplates = array(
-    'isaar' => 'ISAAR(CPF), International Council on Archives'
-  );
-
-  protected static $repositoryTemplates = array(
-    'isdiah' => 'ISDIAH, International Council on Archives'
-  );
-
   public function configure()
   {
+    // Available templates
+    $informationObjectTemplates = array(
+      'isad' => __('ISAD(G), 2nd ed. International Council on Archives'),
+      'rad' => __('RAD, July 2008 version. Canadian Council of Archives'),
+      'dc' => __('Dublin Core, Version 1.1. Dublin Core Metadata Initiative')
+    );
+
+    $actorTemplates = array(
+      'isaar' => __('ISAAR(CPF), 2nd ed. International Council on Archives')
+    );
+
+    $repositoryTemplates = array(
+      'isdiah' => __('ISDIAH, 1st ed. International Council on Archives')
+    );
+
     // Build widgets
     $this->setWidgets(array(
-    'informationobject' => new sfWidgetFormSelect(array('choices'=>self::$informationObjectTemplates)),
-    'actor' => new sfWidgetFormSelect(array('choices'=>self::$actorTemplates)),
-    'repository' => new sfWidgetFormSelect(array('choices'=>self::$repositoryTemplates)),
+      'informationobject' => new sfWidgetFormSelect(array('choices'=>$informationObjectTemplates)),
+      'actor' => new sfWidgetFormSelect(array('choices'=>$actorTemplates)),
+      'repository' => new sfWidgetFormSelect(array('choices'=>$repositoryTemplates)),
     ));
 
     // Add labels
     $this->widgetSchema->setLabels(array(
-    'informationobject' => 'information object',
-    'actor' => 'actor',
-    'repository' => 'repository'
+      'informationobject' => sfConfig::get('app_ui_label_informationobject'),
+      'actor' => sfConfig::get('app_ui_label_actor'),
+      'repository' => sfConfig::get('app_ui_label_repository')
     ));
 
     // Add helper text

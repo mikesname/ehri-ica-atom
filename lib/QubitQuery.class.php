@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class QubitQuery implements ArrayAccess, Countable, Iterator
@@ -28,7 +26,7 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
     $className = null,
     $options = null,
 
-    $resultSet = null,
+    $statement = null,
     $objects = null,
 
     $offset = 0,
@@ -56,24 +54,14 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
 
     return $query;
   }
-  
-  public static function createFromResultSet(ResultSet $resultSet, $className, array $options = array())
-  {
-    $query = new QubitQuery;
-    $query->resultSet = $resultSet;
-    $query->className = $className;
-    $query->options = $options;
-    
-    return $query;
-  }
 
   // Not recursive: Only ever called from the root.
-  protected function getResultSet(QubitQuery $leaf)
+  protected function getStatement(QubitQuery $leaf)
   {
     // HACK: Tell the caller whether we sorted according to the leaf
     $sorted = false;
 
-    if (!isset($this->resultSet))
+    if (!isset($this->statement))
     {
       foreach ($leaf->getOrderByNames() as $name)
       {
@@ -81,11 +69,11 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
       }
       $sorted = true;
 
-      $this->resultSet = BasePeer::doSelect($this->criteria);
+      $this->statement = BasePeer::doSelect($this->criteria);
     }
 
     // TODO: Determine whether the sort order matches the previous sort order
-    return array($this->resultSet, $sorted);
+    return array($this->statement, $sorted);
   }
 
   protected function getObjects(QubitQuery $leaf)
@@ -118,15 +106,12 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
 
         if (isset($this->criteria))
         {
-          list ($this->resultSet, $sorted) = $this->getResultSet($leaf);
-        }
-        
-        if ($this->resultSet)
-        {
-          while ($this->resultSet->next())
+          list ($this->statement, $sorted) = $this->getStatement($leaf);
+
+          while ($row = $this->statement->fetch())
           {
             // $this->parent is unset, so we should have a className?
-            $object = call_user_func(array($this->className, 'getFromResultSet'), $this->resultSet);
+            $object = call_user_func(array($this->className, 'getFromRow'), $row);
 
             // TODO: $this->parent is unset, so we probably do not have
             // $this->indexByName, but it would be nice to use the indexByName
@@ -223,8 +208,8 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
 
         if (isset($this->criteria))
         {
-          list ($resultSet, $sorted) = $this->getResultSet($leaf);
-          $count = $resultSet->getRecordCount();
+          list ($statement, $sorted) = $this->getStatement($leaf);
+          $count = $statement->rowCount();
         }
       }
 

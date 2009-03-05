@@ -10,43 +10,34 @@
 /*********************************************************
                 WEBSITE NAME & LOGO
 **********************************************************/
-
-
 #website-name {
-  font: bold 64px/78px verdana, georgia, garamond, serif;
+  font: bold 64px verdana, georgia, garamond, serif;
   letter-spacing: -0.1ex;
   color: #FC6E3C;
-  background-color: white;
-  border: none;
-  margin: 0px;
+  border: 0;
+  margin-bottom: 3px;
+  text-align: left;
+  float: left;
 }
 
-#website-name a:hover,
-#website-name a:link,
-#website-name a:visited,
-#website-name a:active
-{
+#website-name a:hover,#website-name a:link,#website-name a:visited,#website-name a:active
+  {
   text-decoration: none;
-  color: #FC6E3C;
   border: 0;
+  color: #FC6E3C;
   background-color: transparent;
 }
 
 #website-description {
   color: #04025C;
-  font: bold 15px/ 16px georgia, garamond, serif;
-  margin-top: 0px;
-  margin-bottom: 3px;
-  clear: both;
-  padding: 0px 3px;
+  font: bold 15px georgia, garamond, serif;
+  margin: 75px 0 0 0;
+  padding: 0;
   text-align: left;
+  float: right;
 }
 
-#logo,
-#logo a:hover,
-#logo a:link,
-#logo a:visited,
-#logo a:active {
+#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
   border: 0;
   color: #ffffff;
   background-color: transparent;
@@ -57,6 +48,7 @@
 }
 
 #logo img {
+  margin: 0 0 0 20px;
 }
 
 /*********************************************************
@@ -74,7 +66,7 @@
                 GENERAL TEXT STYLING
 **********************************************************/
 body {
-  font: normal 11px/ 14px verdana, lucida, sans-serif;
+  font: normal 11px verdana, lucida, sans-serif;
   color: #000000;
 }
 
@@ -98,7 +90,7 @@ img.static_page {
 
 /*headers*/
 h1 {
-  font: bold 20px/ 20px georgia, garamond, serif;
+  font: bold 20px georgia, garamond, serif;
   margin: 15px 0 0 0;
   padding: 2px 2px 2px 4px;
   color: #ffffff;
@@ -112,7 +104,7 @@ h1#first {
 }
 
 h1#page-title {
-  font: bold 22px/ 22px georgia, garamond, serif;
+  font: bold 22px georgia, garamond, serif;
   margin: 0 0 10px 0;
   color: #000066;
   background-color: #ff9933;
@@ -210,6 +202,16 @@ a:hover {
 .disabled {
   background-color: #CCC;
   color: #666;
+}
+
+button.delete-small {
+  background: transparent url('../images/delete.png');
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: scroll;
+  width: 16px;
+  height: 16px;
+  border: none;
 }
 
 /*********************************************************
@@ -372,11 +374,21 @@ table.detail th {
   color: #ffffff;
 }
 
+table.detail label {
+  color: #ffffff;
+  text-align: right;
+  display: inline;
+}
+
+table.detail label.required_field:after {
+  content: '*';
+}
+
 table.detail th:after {
   content: ":";
 }
 
-table.list th:first-letter,table.detail th:first-letter {
+table.detail th:first-letter {
   text-transform: capitalize;
 }
 
@@ -415,15 +427,8 @@ table.detail td.headerCell-name {
 }
 
 table.detail td.subHeaderCell {
-  padding: 2px;
-  vertical-align: top;
-  text-align: right;
-  font: normal 14px/ 14px georgia, verdana, sans-serif;
-  border: 0;
-  border-bottom: 1px solid #999999;
-  border-top: 1px solid #999999;
-  color: #000033;
-  background-color: #FF9D3C;
+  font-weight: bold;
+  color: #999999;
 }
 
 /*********************************************************
@@ -435,7 +440,7 @@ table.inline {
 }
 
 table.inline td.headerCell,table.inline th {
-  border: 0;
+  border: none;
   background-color: #cccccc;
   color: #ffffff;
   font: bold 10px verdana, lucida, sans-serif;
@@ -446,17 +451,22 @@ table.inline td.headerCell,table.inline th {
 
 table.inline tr {
   vertical-align: top;
+  border: none;
 }
 
 table.inline td {
-  border: 0;
+  border: none;
   border-top: 1px solid #cccccc;
   text-align: left;
 }
 
+table.inline td.noline {
+  border: none;
+}
+
 table.inlineClear {
   width: 100%;
-  border: 0;
+  border: none;
   margin: 0;
   padding: 0;
 }
@@ -469,7 +479,7 @@ table.inlineClear tr {
 
 table.inlineClear th {
   text-align: left;
-  border: 0;
+  border: none;
   width: 30%;
   background: transparent;
 }
@@ -477,7 +487,7 @@ table.inlineClear th {
 table.inlineClear td {
   width: 70%;
   text-align: left;
-  border: 0;
+  border: none;
   background: transparent;
 }
 
@@ -503,6 +513,20 @@ table.list {
   color: #000000;
 }
 
+table.list caption {
+  font: bold 25px/ 25px Lucida Sans Unicode, Lucida Grande, sans-serif;
+  color: #cccccc;
+  letter-spacing: -2px;
+  padding: 3px 10px 2px 0;
+  border: 0;
+  margin: 0;
+  text-align: right;
+}
+
+table.list th:first-letter {
+  text-transform: capitalize;
+}
+
 table.list thead tr {
   border-left: 2px solid #999999;
 }
@@ -520,6 +544,11 @@ table.list td {
   border: 0;
   border-bottom: 1px solid #cccccc;
   vertical-align: top;
+}
+
+table.list td.center {
+  padding: 4px;
+  text-align: center;
 }
 
 table.list ul.nobullet {
@@ -541,6 +570,11 @@ table.list th {
   font-weight: bold;
   vertical-align: top;
   text-align: left;
+}
+
+table.list th.center {
+  padding: 4px;
+  text-align: center;
 }
 
 table.list th.header {
@@ -753,4 +787,82 @@ div.digitalObjectDesc img {
 .pager a {
   border: 1px solid #CCCCCC;
   padding: 2px 4px 2px 4px;
+}
+
+/* Style modifications for compound digital object pager */
+.pager.compound_digiobj {
+  margin-top: 0;
+}
+
+.result-count.compound_digiobj {
+  margin: 0 0 5px 0;
+}
+
+/*********************************************************
+             COMPOUND DIGITAL OBJECT TABLE
+**********************************************************/
+
+table.compound_digiobj {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0px;
+}
+
+table.compound_digiobj td {
+  border: 1px solid black;
+  width: 50%;
+  padding: 0;
+  vertical-align: middle;
+  text-align: center;
+  background: #666;
+}
+
+table.compound_digiobj td.download_link {
+  border: none;
+  background: white;
+  padding: 2px;
+}
+
+/*********************************************************
+             ERRORS
+**********************************************************/
+
+div.error-block
+{
+  margin: 10px;
+  font: bold 18px/19px georgia, serif;
+}
+
+ul.error-list
+{
+  padding: 0 0 0 30px;
+  margin: 2px 6px 0.1em 0;
+  background: none;
+  color: #a30000;
+  background-color: #FFCCCC;
+  border: 1px solid #c52020;
+  list-style: url(../images/exclamation.png) outside;
+}
+
+ul.error-list li
+{
+  padding: 0;
+  margin: 5px 0;
+}
+
+ul.validation_error
+{
+  padding: 1px;
+  margin: 2px 6px 0.1em 0;
+  background: none;
+  color: #a30000;
+  background-color: #FFCCCC;
+  border: 1px solid #c52020;
+}
+
+ul.validation_error li
+{
+  background: url(../images/exclamation.png) no-repeat 1px;
+  padding: 0.1em 0.1em 0.1em 20px;
+  margin: 0;
 }

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: ParameterElement.php,v 1.13 2008/02/01 03:19:53 squiz Exp $
+ * @version   CVS: $Id: ParameterElement.php,v 1.14 2008/12/02 02:38:33 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -90,8 +90,11 @@ class PHP_CodeSniffer_CommentParser_ParameterElement extends PHP_CodeSniffer_Com
      *                                                                  this element
      *                                                                  is in.
      */
-    public function __construct($previousElement, $tokens, PHP_CodeSniffer_File $phpcsFile)
-    {
+    public function __construct(
+        $previousElement,
+        $tokens,
+        PHP_CodeSniffer_File $phpcsFile
+    ) {
         parent::__construct($previousElement, $tokens, 'param', $phpcsFile);
 
         // Handle special variable type: array(x => y).
@@ -99,7 +102,8 @@ class PHP_CodeSniffer_CommentParser_ParameterElement extends PHP_CodeSniffer_Com
         if ($this->_varName === '=>' && strpos($type, 'array(') !== false) {
             $rawContent = $this->getRawContent();
             $matches    = array();
-            if (preg_match('/^(\s+)(array\(.*\))(\s+)(\$\S*)(\s+)(.*)/i', $rawContent, $matches) !== 0) {
+            $pattern    = '/^(\s+)(array\(.*\))(\s+)(\$\S*)(\s+)(.*)/i';
+            if (preg_match($pattern, $rawContent, $matches) !== 0) {
                 // Process the sub elements correctly for this special case.
                 if (count($matches) === 7) {
                     $this->processSubElement('type', $matches[2], $matches[1]);
@@ -257,8 +261,9 @@ class PHP_CodeSniffer_CommentParser_ParameterElement extends PHP_CodeSniffer_Com
      *
      * @return boolean
      */
-    public function alignsVariableWith(PHP_CodeSniffer_CommentParser_ParameterElement $other)
-    {
+    public function alignsVariableWith(
+        PHP_CodeSniffer_CommentParser_ParameterElement $other
+    ) {
         // Format is:
         // @param type $variable Comment.
         // @param <-a-><---b---->
@@ -283,11 +288,15 @@ class PHP_CodeSniffer_CommentParser_ParameterElement extends PHP_CodeSniffer_Com
      *
      * @return boolean
      */
-    public function alignsCommentWith(PHP_CodeSniffer_CommentParser_ParameterElement $other)
-    {
+    public function alignsCommentWith(
+        PHP_CodeSniffer_CommentParser_ParameterElement $other
+    ) {
         // Compares the index before param comment.
-        $otherComment = (strlen($other->_varName) + strlen($other->_commentWhitespace));
-        $thisComment  = (strlen($this->_varName) + strlen($this->_commentWhitespace));
+        $otherComment
+            = (strlen($other->_varName) + strlen($other->_commentWhitespace));
+        $thisComment
+            = (strlen($this->_varName) + strlen($this->_commentWhitespace));
+
         if ($otherComment !== $thisComment) {
             return false;
         }

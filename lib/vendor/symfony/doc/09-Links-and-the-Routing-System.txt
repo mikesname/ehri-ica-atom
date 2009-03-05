@@ -112,7 +112,7 @@ Listing 9-3 - The Routing System Interprets Incoming Request URLs
       'title'   => 'activity-breakdown'
 
 >**TIP**
->The `.html` extension of the external URL is a simple decoration and is ignored by the routing system. Its sole interest is to makes dynamic pages look like static ones. You will see how to activate this extension in the "Routing Configuration" section later in this chapter.
+>The `.html` extension of the external URL is a simple decoration and is ignored by the routing system. Its sole interest is to make dynamic pages look like static ones. You will see how to activate this extension in the "Routing Configuration" section later in this chapter.
 
 The request is then passed to the `permalink` action of the `article` module, which has all the required information in the request parameters to determine which article is to be shown.
 
@@ -344,21 +344,22 @@ A URL with request parameters appearing as GET variables can be interpreted by a
 >
 >Chapter 7 introduced the asset helpers `image_tag()`, `stylesheet_tag()`, and `javascript_include_ tag()`, which allow you to include an image, a style sheet, or a JavaScript file in the response. The paths to such assets are not processed by the routing system, because they link to resources that are actually located under the public web directory.
 >
->You don't need to mention a file extension for an asset. Symfony automatically adds `.png`, `.js`, or `.css` to an image, JavaScript, or style sheet helper call. Also, symfony will automatically look for those assets in the `web/images/`, `web/js/`, and `web/css/` directories. Of course, if you want to include a specific file format or a file from a specific location, just use the full file name or the full file path as an argument. And don't bother to specify an `alt` attribute if your media file has an explicit name, since symfony will determine it for you.
+>You don't need to mention a file extension for an asset. Symfony automatically adds `.png`, `.js`, or `.css` to an image, JavaScript, or style sheet helper call. Also, symfony will automatically look for those assets in the `web/images/`, `web/js/`, and `web/css/` directories. Of course, if you want to include a specific file format or a file from a specific location, just use the full file name or the full file path as an argument.
+>And don't bother to specify both an `alt` and `title` attribute, as `alt_title` will set both attributes to the same value, which is useful for cross browser tooltips. Note that as of symfony 1.2 the `alt` attribute is no longer autoguessed from the filename to ease finding missing tags using a validator (to enable this again, turn `sf_compat_10` on).
 >
 >     [php]
->     <?php echo image_tag('test') ?>
->     <?php echo image_tag('test.gif') ?>
->     <?php echo image_tag('/my_images/test.gif') ?>
+>     <?php echo image_tag('test', 'alt=Test') ?>
+>     <?php echo image_tag('test.gif', 'title=Test') ?>
+>     <?php echo image_tag('/my_images/test.gif', 'alt_title=Test') ?>
 >      => <img href="/images/test.png" alt="Test" />
->         <img href="/images/test.gif" alt="Test" />
->         <img href="/my_images/test.gif" alt="Test" />
+>         <img href="/images/test.gif" title="Test" />
+>         <img href="/my_images/test.gif" alt="Test" title="Test" />
 >
 >To fix the size of an image, use the `size` attribute. It expects a width and a height in pixels, separated by an `x`.
 >
 >     [php]
 >     <?php echo image_tag('test', 'size=100x20')) ?>
->      => <img href="/images/test.png" alt="Test" width="100" height="20"/>
+>      => <img href="/images/test.png" width="100" height="20"/>
 >
 >If you want the asset inclusion to be done in the `<head>` section (for JavaScript files and style sheets), you should use the `use_stylesheet()` and `use_javascript()` helpers in your templates, instead of the `_tag()` versions in the layout. They add the asset to the response, and these assets are included before the `</head>` tag is sent to the browser.
 
@@ -556,7 +557,7 @@ Listing 9-20 - Setting a Default Value for a Request Parameter
 If you look carefully, you can see that `article` and `read` are also default values for `module` and `action` variables not found in the pattern.
 
 >**TIP**
->You can define a default parameter for all the routing rules by calling the `sfRouting::addDefaultParameter()` method. For instance, if you want all the rules to have a `theme` parameter set to `default` by default, add  `$this->context->getRouting()->setDefaultParameter('theme', 'default');` to one of your global filters.
+>You can define a default parameter for all the routing rules by calling the `sfRouting::setDefaultParameter()` method. For instance, if you want all the rules to have a `theme` parameter set to `default` by default, add  `$this->context->getRouting()->setDefaultParameter('theme', 'default');` to one of your global filters.
 
 ### Speeding Up Routing by Using the Rule Name
 

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: FunctionOpeningBraceSpaceSniff.php,v 1.4 2007/10/23 05:14:03 squiz Exp $
+ * @version   CVS: $Id: FunctionOpeningBraceSpaceSniff.php,v 1.7 2008/10/27 03:00:03 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -30,6 +30,16 @@
  */
 class Squiz_Sniffs_WhiteSpace_FunctionOpeningBraceSpaceSniff implements PHP_CodeSniffer_Sniff
 {
+
+    /**
+     * A list of tokenizers this sniff supports.
+     *
+     * @var array
+     */
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'JS',
+                                  );
 
 
     /**
@@ -76,10 +86,42 @@ class Squiz_Sniffs_WhiteSpace_FunctionOpeningBraceSpaceSniff implements PHP_Code
         $nextLine  = $tokens[$nextContent]['line'];
 
         $found = ($nextLine - $braceLine - 1);
-        if ($found !== 0) {
+        if ($found > 0) {
             $error = "Expected 0 blank lines after opening function brace; $found found";
             $phpcsFile->addError($error, $openBrace);
         }
+
+        if ($phpcsFile->tokenizerType === 'JS') {
+            // Do some additional checking before the function brace.
+            $nestedFunction = ($phpcsFile->hasCondition($stackPtr, T_FUNCTION) === true || isset($tokens[$stackPtr]['nested_parenthesis']) === true);
+
+            $functionLine   = $tokens[$tokens[$stackPtr]['parenthesis_closer']]['line'];
+            $lineDifference = ($braceLine - $functionLine);
+
+            if ($nestedFunction === true) {
+                if ($lineDifference > 0) {
+                    $error = "Expected 0 blank lines before openning brace of nested function; $found found";
+                    $phpcsFile->addError($error, $openBrace);
+                }
+            } else {
+                if ($lineDifference === 0) {
+                    $error = 'Opening brace should be on a new line';
+                    $phpcsFile->addError($error, $openBrace);
+                    return;
+                }
+
+                if ($lineDifference > 1) {
+                    $ender = 'line';
+                    if (($lineDifference - 1) !== 1) {
+                        $ender .= 's';
+                    }
+
+                    $error = 'Opening brace should be on the line after the declaration; found '.($lineDifference - 1).' blank '.$ender;
+                    $phpcsFile->addError($error, $openBrace);
+                    return;
+                }
+            }//end if
+        }//end if
 
     }//end process()
 

@@ -1,31 +1,29 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
- * Extend functionality of propel generated "BaseDigitalObject" class.
+ * Extend functionality of propel generated "BaseDigitalObject" class
  *
  * @package    qubit
- * @subpackage digitalObject
+ * @subpackage model
  * @author     David Juhasz <david@artefactual.com>
- * @version    SVN: $Id
+ * @version    SVN: $Id$
  */
 class QubitDigitalObject extends BaseDigitalObject
 {
@@ -35,6 +33,15 @@ class QubitDigitalObject extends BaseDigitalObject
   // Mime-type for thumbnails (including reference image)
   const THUMB_MIME_TYPE = 'image/jpeg';
   const THUMB_EXTENSION = 'jpg';
+
+  // List of web compatible image formats (supported in most major browsers)
+  private static $webCompatibleImageFormats = array(
+    'image/jpeg',
+    'image/jpg',
+    'image/jpe',
+    'image/gif',
+    'image/png'
+  );
 
   // Qubit Generic Icon list
   private static $qubitGenericIcons = array(
@@ -271,8 +278,85 @@ class QubitDigitalObject extends BaseDigitalObject
       SearchIndex::updateTranslatedLanguages($this->getInformationObject());
     }
   }
-  
-  
+
+  /**
+   * Save digitalObject asset (file) to the appropriate directory
+   *
+   * @param sfRequest $request current sfRequest object
+   * @param informationObject $informationObject associated informationObject
+   * @param integer $usageId intended usage (master, reference, thumbnail)
+   * @return mixed array of file metadata on sucess, false on failure
+   */
+  public static function uploadAsset($request, $informationObject, $usageId)
+  {
+    $uploadFiles = $request->getFiles('upload_file');
+    $filename = $uploadFiles['name'][$usageId];
+
+    // Fail if upload file not specified
+    if (!$filename)
+    {
+      return false;
+    }
+
+    // Don't upload this file if it's intended usage is a reference or thumbnail object
+    // and it's *not* an image mimetype
+    $isImage = QubitDigitalObject::isImageFile($filename);
+    if (($usageId == QubitTerm::REFERENCE_ID || $usageId == QubitTerm::THUMBNAIL_ID) && $isImage === false)
+    {
+      return false;
+    }
+
+    // Get clean file name (no bad chars)
+    $cleanFileName = self::sanitizeFilename($filename);
+
+    // Upload paths for this information object / digital object
+    $infoObjectPath    = QubitDigitalObject::getAssetPathfromParent($informationObject);
+    $uploadPath        = sfConfig::get('sf_web_dir').$infoObjectPath.'/';
+    $relativePath      = $infoObjectPath.'/';
+
+    // Upload the file
+    if (!$request->moveFile('upload_file['.$usageId.']', $uploadPath.$cleanFileName, 0644, true, 0755))
+    {
+      return false; // File creation error
+    }
+
+    // Iterate through new directories and set permissions
+    // (bug in sfWebRequest::moveFile() only sets permissions properly on final directory)
+    $pathToDir = sfConfig::get('sf_web_dir');
+    foreach (explode('/', $infoObjectPath) as $dir)
+    {
+      $pathToDir .= '/'.$dir;
+
+      // Don't set permissions on base uploads directory
+      if ($pathToDir != sfConfig::get('sf_upload_dir'))
+      {
+        chmod($pathToDir, 0755);
+      }
+    }
+
+    // Capture and return file data
+    $fileData = array(
+      'name'=>$cleanFileName,
+      'path'=>$relativePath,
+      'fullpath'=>$relativePath.$cleanFileName,
+      'size'=>$uploadFiles['size'][$usageId],
+      'mime-type-request'=>$uploadFiles['type'][$usageId], // passed from webserver? may be incorrect
+    );
+
+    return $fileData;
+  }
+
+  /**
+   * Remove undesirable characters from a filename
+   *
+   * @param string $filename incoming file name
+   * @return string sanitized filename
+   */
+  private static function sanitizeFilename($filename)
+  {
+    return preg_replace('/[^a-z0-9_\.-]/i', '_', $filename);
+  }
+
   /**
    * Get a list of digital objects for an icon table
    *
@@ -283,47 +367,47 @@ class QubitDigitalObject extends BaseDigitalObject
   public static function getIconList($mediaTypeId=null, $page=1)
   {
     $criteria = new Criteria;
-    
+
     if (isset($mediaTypeId))
     {
       $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $mediaTypeId);
     }
-    
+
     // Don't show derivative Digital Objects
     $criteria->add(QubitDigitalObject::INFORMATION_OBJECT_ID, null, Criteria::ISNOTNULL);
-    
+
     // Sort by name ascending
     $criteria->addAscendingOrderByColumn(QubitDigitalObject::NAME);
-    
+
     $pager = new QubitPager('QubitDigitalObject', '8'); // 8 thumbs per page
     $pager->setCriteria($criteria);
     $pager->setPage($page);
     $pager->init();
-    
+
     return $pager;
   }
-  
+
   /**
    * Get count of digital objects by media-type
    */
   public static function getCount($mediaTypeId=null)
   {
     $sql = 'SELECT COUNT(*) as hits FROM '.QubitDigitalObject::TABLE_NAME.'
-      WHERE '.QubitDigitalObject::PARENT_ID.' IS NULL';
-    
+    WHERE '.QubitDigitalObject::PARENT_ID.' IS NULL';
+
     if (isset($mediaTypeId))
     {
       $sql .= ' AND '.QubitDigitalObject::MEDIA_TYPE_ID.'='.$mediaTypeId;
     }
-    
+
     $conn = Propel::getConnection();
-    $stmt = $conn->prepareStatement($sql);
-    $rs = $stmt->executeQuery(ResultSet::FETCHMODE_NUM);
-    $rs->next();
-    
-    return $rs->getInt(1);
+    $stmt = $conn->prepare($sql);
+    $stmt->execute();
+    $rs = $stmt->fetch();
+
+    return $rs['hits'];
   }
-  
+
   /**
    * Get full path to asset, relative to the web directory
    *
@@ -332,6 +416,16 @@ class QubitDigitalObject extends BaseDigitalObject
   public function getFullPath()
   {
     return $this->getPath().$this->getName();
+  }
+
+  /**
+   * Test that image will display in major web browsers
+   *
+   * @return boolean
+   */
+  public function isWebCompatibleImageFormat()
+  {
+    return in_array($this->getMimeType(), self::$webCompatibleImageFormats);
   }
 
   /**
@@ -358,7 +452,7 @@ class QubitDigitalObject extends BaseDigitalObject
       return null;
     }
 
-    $mimePieces = explode('/',$this->getMimeType());
+    $mimePieces = explode('/', $this->getMimeType());
 
     switch($mimePieces[0])
     {
@@ -385,7 +479,7 @@ class QubitDigitalObject extends BaseDigitalObject
         }
         break;
       default:
-       $mediaTypeId = QubitTerm::OTHER_ID;
+        $mediaTypeId = QubitTerm::OTHER_ID;
     }
 
     $this->setMediaTypeId($mediaTypeId);
@@ -396,7 +490,7 @@ class QubitDigitalObject extends BaseDigitalObject
    *
    * return QubitInformationObject  Closest InformationObject ancestor
    */
-  public function getTopAncestorOrSelf ()
+  public function getTopAncestorOrSelf()
   {
     // Get the ancestor at array index "0"
     return $this->getAncestors()->andSelf()->offsetGet(0);
@@ -440,6 +534,23 @@ class QubitDigitalObject extends BaseDigitalObject
   }
 
   /**
+   * Return a compound representation for this digital object - generating the
+   * rep if necessary
+   *
+   * @return QubitDigitalObject compound image representation
+   */
+  public function getCompoundRepresentation()
+  {
+    if (null === $compoundRep = $this->getRepresentationByUsage(QubitTerm::COMPOUND_ID))
+    {
+      // Generate a compound representation if one doesn't exist already
+      $compoundRep = self::createImageDerivative(QubitTerm::COMPOUND_ID);
+    }
+
+    return $compoundRep;
+  }
+
+  /**
    * Determine if this digital object is an image, based on mimetype
    *
    * @return boolean
@@ -450,49 +561,15 @@ class QubitDigitalObject extends BaseDigitalObject
   }
 
   /**
-   * Resize this digital object (image)
+   * Return true if this is a compound digital object
    *
-   * @param integer $maxwidth  Max width of resized image
-   * @param integer $maxheight Max height of resized image
-   *
-   * @return boolean success or failure
+   * @return boolean
    */
-  public function resize($maxwidth, $maxheight=null)
+  public function isCompoundObject()
   {
-    // Only operate on digital objects that are images
-    if ($this->isImage())
-    {
-      $filename = sfConfig::get('sf_web_dir').$this->getFullPath();
-      return QubitDigitalObject::resizeImage($filename, $filename, $maxwidth, $maxheight);
-    }
+    $isCompoundObjectProp = QubitProperty::getOneByObjectIdAndName($this->getId(), 'is_compound_object');
 
-    return false;
-  }
-
-  /**
-   * Resize current digital object according to a specific usage type
-   *
-   * @param integer $usageId
-   * @return boolean success or failure
-   */
-  public function resizeByUsageId($usageId)
-  {
-    if ($usageId == QubitTerm::REFERENCE_ID)
-    {
-      $maxwidth = (sfConfig::get('app_reference_image_maxwidth')) ? sfConfig::get('app_reference_image_maxwidth') : 480;
-      $maxheight = null;
-    }
-    else if ($usageId == QubitTerm::THUMBNAIL_ID)
-    {
-      $maxwidth = 100;
-      $maxheight = 100;
-    }
-    else
-    {
-      return false;
-    }
-
-    return $this->resize($maxwidth, $maxheight);
+    return (null !== $isCompoundObjectProp && '1' == $isCompoundObjectProp->getValue(array('sourceCulture' => true)));
   }
 
   /**
@@ -503,75 +580,12 @@ class QubitDigitalObject extends BaseDigitalObject
   public function getHRfileSize()
   {
     $suffix = array( 'B', 'KB', 'MB', 'GB', 'TB' );
-    $bytes = parent::getByteSize();
-    for ($i = 0; $bytes >= 1024 && $i < (count($suffix)-1); $bytes /= 1024, $i++)
+    $bytes = $this->getByteSize();
+    for ($i = 0; $bytes >= 1024 && $i < (count($suffix) - 1); $bytes /= 1024, $i++)
     {
     }
 
     return round($bytes, 2).' '.$suffix[$i];
-  }
-
-  /**
-   * Set a related row in the DigitalObjectMetaData db, identified by $name, to
-   * $value. If the element doesn't already exist, create it
-   *
-   * @param string    key for meta-data element
-   * @param string    new value for meta-data element
-   * @return integer  return primary key value
-   */
-  public function setMetaDataValue($name, $value)
-  {
-    // Test for existing element with $name
-    $criteria = new Criteria;
-    $criteria->add(QubitDigitalObjectMetadata::DIGITAL_OBJECT_ID, $this->getId());
-    $criteria->add(QubitDigitalObjectMetadata::ELEMENT, $name);
-    $foundElement = QubitDigitalObjectMetadata::get($criteria);
-
-    // Get existing meta-data element, else create a new one
-    if (is_array($foundElement))
-    {
-      $metaData = $foundElement;
-    }
-    else
-    {
-      $metaData = new QubitDigitalObjectMetadata;
-    }
-
-    // Update database
-    $metaData->setDigitalObjectId($this->getId());
-    $metaData->setElement($name);
-    $metaData->setValue($value);
-    $metaData->save();
-
-    return $metaData->getId();
-  }
-
-  /**
-   * Get the current value of the meta-data row identified by $name
-   * in the DigitalObjectMetaData db
-   *
-   * @param string  key for meta-data element
-   * @return mixed  string value on success, false on failure
-   */
-  public function getMetadataValue($elementName = null)
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitDigitalObjectMetadata::DIGITAL_OBJECT_ID, $this->getId());
-
-    if (!is_null($elementName))
-    {
-      $criteria->add(QubitDigitalObjectMetadata::ELEMENT, $elementName);
-    }
-    $results = QubitDigitalObjectMetadata::getOne($criteria);
-
-    if ($results)
-    {
-      return $results->getValue();
-    }
-    else
-    {
-      return false;
-    }
   }
 
   /**
@@ -623,7 +637,7 @@ class QubitDigitalObject extends BaseDigitalObject
     $genericIconList = QubitDigitalObject::$qubitGenericIcons;
 
     // Check the list for a generic icon matching this mime-type
-    if (array_key_exists($mimeType,$genericIconList))
+    if (array_key_exists($mimeType, $genericIconList))
     {
       $genericIconPath = $genericIconDir.'/'.$genericIconList[$mimeType];
     }
@@ -674,16 +688,55 @@ class QubitDigitalObject extends BaseDigitalObject
     foreach ($rfilePieces as $key => $ext)
     {
       $ext = strtolower($ext);  // Convert uppercase extensions to lowercase
-      
+
       // Try to match this extension to a mime-type
       if (array_key_exists($ext, $mimeTypeList))
       {
-         $mimeType = $mimeTypeList[$ext];
-         break;
+        $mimeType = $mimeTypeList[$ext];
+        break;
       }
     }
 
     return $mimeType;
+  }
+
+  /**
+   * Create various representations for this digital object
+   *
+   * @param integer $usageId intended use of asset
+   * @return QubitDigitalObject this object
+   */
+  public function createRepresentations($usageId)
+  {
+    // Scale images (and pdfs) and create derivatives
+    if ($this->canThumbnail())
+    {
+      if ($usageId == QubitTerm::MASTER_ID)
+      {
+        $this->createReferenceImage();
+        $this->createThumbnail();
+      }
+      else if ($usageId == QubitTerm::REFERENCE_ID)
+      {
+        $this->resizeByUsageId(QubitTerm::REFERENCE_ID);
+        $this->createThumbnail();
+      }
+      else if ($usageId == QubitTerm::THUMBNAIL_ID)
+      {
+        $this->resizeByUsageId(QubitTerm::THUMBNAIL_ID);
+      }
+    }
+
+    if ($this->getMediaType() == 'video')
+    {
+      if ($usageId == QubitTerm::MASTER_ID)
+      {
+        $this->createVideoDerivative(QubitTerm::REFERENCE_ID);
+        $this->createVideoDerivative(QubitTerm::THUMBNAIL_ID);
+      }
+    }
+
+    return $this;
   }
 
   /**
@@ -739,6 +792,212 @@ class QubitDigitalObject extends BaseDigitalObject
 
     return $derivative;
   }
+
+  /**
+   * Set 'page_count' property for this asset
+   *
+   * NOTE: requires the ImageMagick library
+   *
+   * @return QubitDigitalObject this object
+   */
+  public function setPageCount()
+  {
+    if ($this->canThumbnail() && self::hasImageMagick())
+    {
+      exec('identify '.sfConfig::get('sf_web_dir').$this->getFullPath(), $output, $status);
+      if ($status == 0)
+      {
+        // Add "number of pages" property
+        $pageCount = new QubitProperty;
+        $pageCount->setObjectId($this->getId());
+        $pageCount->setName('page_count');
+        $pageCount->setScope('digital_object');
+        $pageCount->setValue(count($output), array('sourceCulture' => true));
+        $pageCount->save();
+      }
+    }
+
+    return $this;
+  }
+
+  /**
+   * Get the number of pages in asset (multi-page file)
+   *
+   * @return integer number of pages
+   */
+  public function getPageCount()
+  {
+    if (null === $pageCount = QubitProperty::getOneByObjectIdAndName($this->getId(), 'page_count'))
+    {
+      $this->setPageCount();
+      $pageCount = QubitProperty::getOneByObjectIdAndName($this->getId(), 'page_count');
+    }
+
+    if ($pageCount)
+    {
+      return (integer) $pageCount->getValue();
+    }
+  }
+
+  /**
+   * Explode multi-page asset into multiple image files
+   *
+   * @return unknown
+   */
+  public function explodeMultiPageAsset()
+  {
+    $pageCount = $this->getPageCount();
+
+    if ($pageCount > 1 && $this->canThumbnail())
+    {
+      $filenameMinusExtension = preg_replace('/\.[a-zA-Z]{2,3}$/', '', $this->getFullPath());
+
+      $convertStr  = 'convert -quality 100 ';
+      $convertStr .= sfConfig::get('sf_web_dir').$this->getFullPath();
+      $convertStr .= ' '.sfConfig::get('sf_web_dir').$filenameMinusExtension.'_%02d.'.self::THUMB_EXTENSION;
+
+      exec($convertStr, $output, $status);
+
+      if (false && $status == 1)
+      {
+        throw sfException('Encountered error: '.implode("\n".$output).' while running convert.');
+      }
+
+      // Build an array of the exploded file names
+      for ($i = 0; $i < $pageCount; $i++)
+      {
+        $fileList[] = sfConfig::get('sf_web_dir').$filenameMinusExtension.sprintf('_%02d.', $i).self::THUMB_EXTENSION;
+      }
+    }
+
+    return $fileList;
+  }
+
+  /**
+   * Create an info and digital object tree for multi-page assets
+   *
+   * For digital objects that describe a multi-page digital asset (e.g. a
+   * multi-page tif image), create a derived asset for each page, create a child
+   * information object and linked child digital object and move the derived
+   * asset to the appropriate directory for the new (child) info object
+   *
+   * NOTE: Requires the Imagemagick library for creating derivative assets
+   *
+   * @return QubitDigitalObject this object
+   */
+  public function createCompoundChildren()
+  {
+    // Bail out if the imagemagick library is not installed
+    if (false === self::hasImageMagick())
+    {
+      return $this;
+    }
+
+    $pages = $this->explodeMultiPageAsset();
+
+    foreach ($pages as $i => $filepath)
+    {
+      // Create a new information object
+      $newInfoObject = new QubitInformationObject;
+      $newInfoObject->setParentId($this->getInformationObject()->getId());
+      $newInfoObject->setTitle($this->getInformationObject()->getTitle().' ('.($i + 1).')');
+      $newInfoObject->save();
+
+      // Create and link a new digital object
+      $newDigiObject = new QubitDigitalObject;
+      $newDigiObject->setParentId($this->getId());
+      $newDigiObject->setInformationObjectId($newInfoObject->getId());
+      $newDigiObject->save();
+
+      // Derive new file path based on newInfoObject
+      $assetPath = self::getAssetPathfromParent($newInfoObject);
+      $createPath = '';
+      foreach (explode('/', $assetPath) as $d)
+      {
+        $createPath .= '/'.$d;
+        if (!is_dir(sfConfig::get('sf_web_dir').$createPath))
+        {
+          mkdir(sfConfig::get('sf_web_dir').$createPath, 0755);
+        }
+        chmod(sfConfig::get('sf_web_dir').$createPath, 0755);
+      }
+
+      // Derive new name for file based on original file name + newDigitalObject
+      // id
+      $filename = basename($filepath);
+      $newFilepath = sfConfig::get('sf_web_dir').$assetPath.'/'.$filename;
+
+      // Move asset to new name and path
+      rename($filepath, $newFilepath);
+      chmod($newFilepath, 0644);
+
+      // Save new file information
+      $newDigiObject->setPath($assetPath.'/');
+      $newDigiObject->setName($filename);
+      $newDigiObject->setByteSize(filesize($newFilepath));
+      $newDigiObject->setUsageId(QubitTerm::MASTER_ID);
+      $newDigiObject->setMimeType(QubitDigitalObject::deriveMimeType($filename));
+      $newDigiObject->setMediaTypeId($this->getMediaTypeId());
+      $newDigiObject->setPageCount();
+      $newDigiObject->setSequence($i + 1);
+      $newDigiObject->save();
+
+      // And finally create reference and thumb images for child asssets
+      $newDigiObject->createRepresentations($newDigiObject->getUsageId());
+    }
+
+    return $this;
+  }
+
+  /**
+   * Test various php settings that affect file upload size and report the
+   * most limiting one.
+   *
+   * @return integer max upload file size in bytes
+   */
+  public static function getMaxUploadSize()
+  {
+    $post_max_size = self::returnBytes(ini_get('post_max_size'));
+    $upload_max_filesize = self::returnBytes(ini_get('upload_max_filesize'));
+
+    if ($memory_limit = ini_get('memory_limit'))
+    {
+      $memory_limit = self::returnBytes($memory_limit);
+
+      return min($post_max_size, $upload_max_filesize, $memory_limit);
+    }
+    else
+    {
+
+      return min($post_max_size, $upload_max_filesize);
+    }
+  }
+
+  /**
+   * Transform the php.ini notation for numbers (like '2M') to number of bytes
+   *
+   * Taken from http://ca2.php.net/manual/en/function.ini-get.php
+   *
+   * @param string $value A string denoting byte size by multiple (e.g. 2M)
+   * @return integer size in bytes
+   */
+  private static function returnBytes($val)
+  {
+    $val = trim($val);
+    $last = strtolower(substr($val, -1));
+    switch($last) {
+      // The 'G' modifier is available since PHP 5.1.0
+      case 'g':
+        $val *= 1024;
+      case 'm':
+        $val *= 1024;
+      case 'k':
+        $val *= 1024;
+    }
+
+    return $val;
+  }
+
 
   /*
    * -----------------------------------------------------------------------
@@ -800,6 +1059,52 @@ class QubitDigitalObject extends BaseDigitalObject
   }
 
   /**
+   * Resize this digital object (image)
+   *
+   * @param integer $maxwidth  Max width of resized image
+   * @param integer $maxheight Max height of resized image
+   *
+   * @return boolean success or failure
+   */
+  public function resize($maxwidth, $maxheight=null)
+  {
+    // Only operate on digital objects that are images
+    if ($this->isImage())
+    {
+      $filename = sfConfig::get('sf_web_dir').$this->getFullPath();
+      return QubitDigitalObject::resizeImage($filename, $filename, $maxwidth, $maxheight);
+    }
+
+    return false;
+  }
+
+  /**
+   * Resize current digital object according to a specific usage type
+   *
+   * @param integer $usageId
+   * @return boolean success or failure
+   */
+  public function resizeByUsageId($usageId)
+  {
+    if ($usageId == QubitTerm::REFERENCE_ID)
+    {
+      $maxwidth = (sfConfig::get('app_reference_image_maxwidth')) ? sfConfig::get('app_reference_image_maxwidth') : 480;
+      $maxheight = null;
+    }
+    else if ($usageId == QubitTerm::THUMBNAIL_ID)
+    {
+      $maxwidth = 100;
+      $maxheight = 100;
+    }
+    else
+    {
+      return false;
+    }
+
+    return $this->resize($maxwidth, $maxheight);
+  }
+
+  /**
    * Allow multiple ways of getting the max dimensions for image by usage
    *
    * @param integer $usageId  the usage type
@@ -819,10 +1124,19 @@ class QubitDigitalObject extends BaseDigitalObject
         {
           $maxwidth = 480;
         }
+        $maxheight = $maxwidth;
         break;
       case QubitTerm::THUMBNAIL_ID:
         $maxwidth = 100;
         $maxheight = 100;
+        break;
+      case QubitTerm::COMPOUND_ID:
+        if (!$maxwidth = sfConfig::get('app_reference_image_maxwidth'))
+        {
+          $maxwidth = 480;
+        }
+        $maxheight = $maxwidth; // Full maxwidth dimensions (480 default)
+        $maxwidth = floor($maxwidth / 2) - 10; // 1/2 size - gutter (230 default)
         break;
     }
 
@@ -905,7 +1219,7 @@ class QubitDigitalObject extends BaseDigitalObject
     exec('convert -version', $stdout);
     if (count($stdout) && strpos($stdout[0], 'ImageMagick') !== false)
     {
-       $found = true;
+      $found = true;
     }
 
     return $found;
@@ -1041,7 +1355,7 @@ class QubitDigitalObject extends BaseDigitalObject
     exec('ffmpeg -version', $stdout);
     if (count($stdout) && strpos($stdout[0], 'FFmpeg') !== false)
     {
-       $found = true;
+      $found = true;
     }
 
     return $found;

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: Generator.php,v 1.3 2007/12/21 02:54:45 squiz Exp $
+ * @version   CVS: $Id: Generator.php,v 1.4 2008/12/02 02:38:34 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -137,8 +137,9 @@ class PHP_CodeSniffer_DocGenerators_Generator
             $standardDir = $this->_standard;
             $standard    = basename($this->_standard);
         } else {
-            $standardDir = realpath(dirname(__FILE__).'/../Standards/'.$this->_standard);
-            $standard    = $this->_standard;
+            $standardDir
+                = realpath(dirname(__FILE__).'/../Standards/'.$this->_standard);
+            $standard = $this->_standard;
         }
 
         $sniffs = PHP_CodeSniffer::getSniffFiles($standardDir, $standard);
@@ -155,7 +156,11 @@ class PHP_CodeSniffer_DocGenerators_Generator
                 }
             }
 
-            $standardFile = str_replace(DIRECTORY_SEPARATOR.'Sniffs'.DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.'Docs'.DIRECTORY_SEPARATOR, $sniff);
+            $standardFile= str_replace(
+                DIRECTORY_SEPARATOR.'Sniffs'.DIRECTORY_SEPARATOR,
+                DIRECTORY_SEPARATOR.'Docs'.DIRECTORY_SEPARATOR,
+                $sniff
+            );
             $standardFile = str_replace('Sniff.php', 'Standard.xml', $standardFile);
 
             if (is_file($standardFile) === true) {

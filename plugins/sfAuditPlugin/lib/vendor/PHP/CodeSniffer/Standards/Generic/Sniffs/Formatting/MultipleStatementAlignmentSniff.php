@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: MultipleStatementAlignmentSniff.php,v 1.17 2008/02/21 05:21:12 squiz Exp $
+ * @version   CVS: $Id: MultipleStatementAlignmentSniff.php,v 1.23 2008/12/02 02:38:34 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -51,7 +51,7 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
     protected $error = false;
 
     /**
-     * The maximum amount of padding before the alignment is ignore.
+     * The maximum amount of padding before the alignment is ignored.
      *
      * If the amount of padding required to align this assignment with the
      * surrounding assignments exceeds this number, the assignment will be
@@ -60,6 +60,13 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
      * @var int
      */
     protected $maxPadding = 1000;
+
+    /**
+     * If true, multi-line assignments are not checked.
+     *
+     * @var int
+     */
+    protected $ignoreMultiLine = false;
 
 
     /**
@@ -78,8 +85,8 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
      * Processes this test, when one of its tokens is encountered.
      *
      * @param PHP_CodeSniffer_File $phpcsFile The file being scanned.
-     * @param int                  $stackPtr  The position of the current token in the
-     *                                        stack passed in $tokens.
+     * @param int                  $stackPtr  The position of the current token
+     *                                        in the stack passed in $tokens.
      *
      * @return void
      */
@@ -106,7 +113,11 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
         // end of the assignment so we can check assignment blocks correctly.
         $lineEnd = $phpcsFile->findNext(T_SEMICOLON, ($stackPtr + 1));
 
-        $nextAssign = $phpcsFile->findNext(PHP_CodeSniffer_Tokens::$assignmentTokens, ($lineEnd + 1));
+        $nextAssign = $phpcsFile->findNext(
+            PHP_CodeSniffer_Tokens::$assignmentTokens,
+            ($lineEnd + 1)
+        );
+
         if ($nextAssign !== false) {
             $isAssign = true;
             if ($tokens[$nextAssign]['line'] === ($tokens[$lineEnd]['line'] + 1)) {
@@ -140,6 +151,16 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
             // above the current one to be in the same assignment block.
             $lineEnd = $phpcsFile->findNext(T_SEMICOLON, ($prevAssignment + 1));
 
+            // And the end token must actually belong to this assignment.
+            $nextOpener = $phpcsFile->findNext(
+                PHP_CodeSniffer_Tokens::$scopeOpeners,
+                ($prevAssignment + 1)
+            );
+
+            if ($nextOpener !== false && $nextOpener < $lineEnd) {
+                break;
+            }
+
             if ($tokens[$lineEnd]['line'] !== ($lastLine - 1)) {
                 break;
             }
@@ -162,7 +183,12 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
         $maxVariableLength   = 0;
 
         foreach ($assignments as $assignment) {
-            $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($assignment - 1), null, true);
+            $prev = $phpcsFile->findPrevious(
+                PHP_CodeSniffer_Tokens::$emptyTokens,
+                ($assignment - 1),
+                null,
+                true
+            );
 
             $endColumn = $tokens[($prev + 1)]['column'];
 
@@ -174,10 +200,11 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
                 $maxAssignmentLength = strlen($tokens[$assignment]['content']);
             }
 
-            $assignmentData[$assignment] = array(
-                                            'variable_length'   => $endColumn,
-                                            'assignment_length' => strlen($tokens[$assignment]['content']),
-                                           );
+            $assignmentData[$assignment]
+                = array(
+                   'variable_length'   => $endColumn,
+                   'assignment_length' => strlen($tokens[$assignment]['content']),
+                  );
         }//end foreach
 
         foreach ($assignmentData as $assignment => $data) {
@@ -202,10 +229,23 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
             // Actual column takes into account the length of the assignment operator.
             $actualColumn = ($column + $maxAssignmentLength - strlen($tokens[$assignment]['content']));
             if ($tokens[$assignment]['column'] !== $actualColumn) {
-                $prev = $phpcsFile->findPrevious(PHP_CodeSniffer_Tokens::$emptyTokens, ($assignment - 1), null, true);
+                $prev = $phpcsFile->findPrevious(
+                    PHP_CodeSniffer_Tokens::$emptyTokens,
+                    ($assignment - 1),
+                    null,
+                    true
+                );
 
                 $expected = ($actualColumn - $tokens[($prev + 1)]['column']);
-                $found    = ($tokens[$assignment]['column'] - $tokens[($prev + 1)]['column']);
+
+                if ($tokens[$assignment]['line'] !== $tokens[$prev]['line']) {
+                    // Instead of working out how many spaces there are
+                    // across new lines, the error message becomes more
+                    // generic below.
+                    $found = null;
+                } else {
+                    $found = ($tokens[$assignment]['column'] - $tokens[($prev + 1)]['column']);
+                }
 
                 // If the expected number of spaces for alignment exceeds the
                 // maxPadding rule, we can ignore this assignment.
@@ -213,8 +253,17 @@ class Generic_Sniffs_Formatting_MultipleStatementAlignmentSniff implements PHP_C
                     continue;
                 }
 
+                // Skip multi-line assignments if required.
+                if ($found === null && $this->ignoreMultiLine === true) {
+                    continue;
+                }
+
                 $expected .= ($expected === 1) ? ' space' : ' spaces';
-                $found    .= ($found === 1) ? ' space' : ' spaces';
+                if ($found === null) {
+                    $found = 'a new line';
+                } else {
+                    $found .= ($found === 1) ? ' space' : ' spaces';
+                }
 
                 if (count($assignments) === 1) {
                     $error = "Equals sign not aligned correctly; expected $expected but found $found";

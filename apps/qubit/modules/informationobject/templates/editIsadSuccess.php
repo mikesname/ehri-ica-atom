@@ -1,9 +1,8 @@
 ﻿<?php use_helper('DateForm') ?>
 <?php use_helper('Javascript') ?>
 
-<div class="pageTitle"><?php echo __('edit %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))); ?></div>
-
-<?php echo form_tag('informationobject/updateIsad', 'multipart=true') ?>
+<div class="pageTitle"><?php echo __('edit archival description - ISAD(G)'); ?></div>
+<form method="post" action="<?php echo url_for($sf_data->getRaw('postAction')) ?>" enctype="multipart/form-data" id="editForm">
   <?php echo object_input_hidden_tag($informationObject, 'getId') ?>
   <?php echo input_hidden_tag('collection_type_id', QubitTerm::ARCHIVAL_MATERIAL_ID) ?>
 
@@ -12,10 +11,10 @@
       <?php echo link_to($label, 'informationobject/showIsad/?id='.$informationObject->getId()) ?>
     </div>
   <?php else: ?>
-    <table class="list" style="height: 25px;"><thead><tr><th></th></tr></table>
+    <div class="formHeader" style="height: 20px;"></div>
   <?php endif; ?>
 
-  <?php if ($sf_context->getActionName() == 'create'): ?>
+  <?php if ($sf_context->getActionName() == 'createIsad'): ?>
   <fieldset class="collapsible">
   <?php else : ?>
   <fieldset class="collapsible collapsed">
@@ -44,16 +43,27 @@
     </div>
 
     <div class="form-item">
-      <label for="new_title_note"><?php echo __('title note'); ?></label>
-
-      <?php if ($titleNotes): ?>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('title note(s)'); ?></th>
+          <th style="width: 10%; text-align: right"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
+        <?php if ($titleNotes): ?>
         <?php foreach ($titleNotes as $titleNote): ?>
-          <?php echo $titleNote->getContent(array('cultureFallback' => 'true')) ?>
-          <?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteNote?noteId='.$titleNote->getId().'&returnTemplate=isad') ?><br />
+        <tr class="<?php echo 'related_obj_'.$titleNote->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo $titleNote->getContent(array('cultureFallback' => 'true')) ?>
+          </div></td>
+          <td style="text-align: right;"><div class="animateNicely">
+            <input type="checkbox" name="delete_notes[<?php echo $titleNote->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
-      <?php endif; ?>
-
-      <?php echo input_tag('new_title_note') ?>
+        <?php endif; ?>
+        <tr>
+          <td colspan="2"><?php echo input_tag('new_title_note') ?></td>
+        </tr>
+      </table>
     </div>
 
     <table style="border: 0; width: 98%; margin: 0; padding: 0;"><tr><td style="width: 150px;">
@@ -76,7 +86,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getExtentAndMedium(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getExtentAndMedium', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getExtentAndMedium', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
 
@@ -88,30 +98,24 @@
           <th style="width: 35%;"><?php echo __('Name') ?></th>
           <th style="width: 25%;"><?php echo __('Role').'/'.__('Event') ?></th>
           <th style="width: 30%;"><?php echo __('Date(s)') ?></th>
-          <th style="width: 10%">&nbsp;</th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
         </tr>
         <?php if(count($actorEvents)): ?>
         <?php foreach ($actorEvents as $actorEvent): ?>
-        <tr>
-          <?php if ($actorEvent->getActor()): ?>
-            <td>
-              <?php echo $actorEvent->getActor() ?>
-            </td>
-          <?php else: ?>
-            <td></td>
-          <?php endif; ?>
-          <?php if ($actorEvent->getActor()): ?>
-          <td>
-            <?php echo $actorEvent->getType()->getRole() ?>
-          </td>
-          <?php else: ?>
-            <td><?php echo $actorEvent->getType() ?></td>
-          <?php endif; ?>
-          <td><?php echo $actorEvent->getDateDisplay(array('cultureFallback' => 'true')) ?></td>
-          <td style="text-align: right">
-            <!-- <a href="javascript:editActorEventDialog(<?php echo $actorEvent->getId()?>)"><?php echo image_tag('pencil', 'align=top') ?></a> -->
-            <?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteEvent?eventId='.$actorEvent->getId().'&returnTemplate=isad') ?>
-          </td>
+        <tr class="<?php echo 'related_obj_'.$actorEvent->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo ($actorEvent->getActor()) ? render_title($actorEvent->getActor()) : '&nbsp;' ?>
+          </div></td>
+          <td><div class="animateNicely">
+            <?php echo ($actorEvent->getActor()) ? $actorEvent->getType()->getRole() : $actorEvent->getType() ?>
+          </div></td>
+          <td><div class="animateNicely">
+            <?php echo $actorEvent->getDateDisplay(array('cultureFallback' => 'true')) ?>
+          </div></td>
+          <!-- <td><a href="javascript:editActorEventDialog(<?php echo $actorEvent->getId()?>)"><?php echo image_tag('pencil', 'align=top') ?></a></td> -->
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_actor_events[<?php echo $actorEvent->getId()?>]" value="delete" class="multiDelete" />
+          </div></td>
         </tr>
         <?php endforeach; ?>
         <?php endif; ?>
@@ -134,33 +138,32 @@
           <td class="headerCell" style="width: 40%;"><i><?php echo __('or'); ?> </i><?php echo __('add new name'); ?></td>
         </tr>
         <tr>
-          <td colspan ="2"><?php echo object_select_tag($newActorEvent, 'getActorId',
-            array('related_class' => 'QubitActor',
-              'name' => 'newActorEvent[actorId]',
-              'include_blank' => true,
-              'peer_method' => 'getAllExceptUsers')) ?></td>
-          <td><?php echo input_tag('newActorEvent[newActorAuthorizedName]') ?></td>
+          <td colspan ="2">
+            <?php echo select_tag('newActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID, 
+              array('include_blank' => true, 'cultureFallback' => true))) ?>
+          </td>
+          <td class="noline"><?php echo input_tag('newActorEvent[newActorAuthorizedName]') ?></td>
         </tr>
         <tr>
           <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
         </tr>
         <tr>
-          <td colspan="2"><?php echo select_tag('newActorEvent[eventTypeId]', options_for_select($actorEventTypes, $defaultActorEventType))?></td>
-          <td><?php echo select_tag('newActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
+          <td class="noline" colspan="2"><?php echo select_tag('newActorEvent[eventTypeId]', options_for_select($isadEventTypes, $defaultActorEventType))?></td>
+          <td class="noline"><?php echo select_tag('newActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
         </tr>
         <tr>
           <td class="headerCell"><?php echo __('year'); ?></td><td class="headerCell"><?php echo __('end year'); ?></td>
           <td class="headerCell"><?php echo __('date display (defaults to date range)'); ?></td></tr>
         <tr>
-          <td><?php echo input_tag('newActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('newActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('newActorEvent[dateDisplay]') ?></td>
+          <td class="noline"><?php echo input_tag('newActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td class="noline"><?php echo input_tag('newActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td class="noline"><?php echo input_tag('newActorEvent[dateDisplay]') ?></td>
         </tr>
         <tr>
           <td colspan="3" class="headerCell"><?php echo __('note'); ?></td>
         </tr>
         <tr>
-          <td colspan="3"><?php echo input_tag('newActorEvent[description]') ?></td>
+          <td class="noline" colspan="3"><?php echo input_tag('newActorEvent[description]') ?></td>
         </tr>
       </table>
       </fieldset>
@@ -170,23 +173,30 @@
       <?php foreach ($creators as $creator): ?>
       <div class="form-item">
       <label>
-      <?php $entityTypeId = $creator->getEntityTypeId() ?>
-      <?php if ($entityTypeId == QubitTerm::CORPORATE_BODY_ID): ?>
+        <?php $entityTypeId = $creator->getEntityTypeId() ?>
+        <?php if ($entityTypeId == QubitTerm::CORPORATE_BODY_ID): ?>
         <?php echo __('Administrative').' ' ?>
-      <?php elseif (($entityTypeId == QubitTerm::PERSON_ID) || ($entityTypeId == QubitTerm::FAMILY_ID)): ?>
+        <?php elseif (($entityTypeId == QubitTerm::PERSON_ID) || ($entityTypeId == QubitTerm::FAMILY_ID)): ?>
         <?php echo __('Biographic').' ' ?>
-      <?php endif; ?>
-        <?php echo __('history').': ' ?></td><td><?php echo $creator ?>
+        <?php endif; ?>
+        <?php echo __('history').': ' ?><?php echo $creator ?>
       </label>
-        <table class="inline" style="margin: 0;"><tr><td><?php echo nl2br($creator->getHistory(array('cultureFallback' => 'true'))) ?></td><td style="width: 20px;"><?php echo link_to(image_tag('pencil', 'align=top'), 'actor/edit?id='.$creator->getId().'&informationObjectReroute='.$informationObject->getId()) ?></td></tr>
+        <table class="inline" style="margin: 0;">
+          <tr>
+            <td><?php echo nl2br($creator->getHistory(array('cultureFallback' => 'true'))) ?></td>
+            <td style="width: 20px;">
+              <?php echo link_to(image_tag('pencil', 'align=top'), 'actor/edit?id='.$creator->getId().'&informationObjectReroute='.$informationObject->getId()) ?>
+            </td>
+         </tr>
         </table>
        </div>
       <?php endforeach; ?>
     <?php endif; ?>
 
-     <div class="form-item">
+    <div class="form-item">
       <label for="repository_id"><?php echo __('repository'); ?></label>
-      <?php echo object_select_tag($informationObject, 'getRepositoryId', array('include_blank' => true,)) ?>
+      <?php echo select_tag('repository_id', QubitRepository::getOptionsForSelectList($informationObject->getRepositoryId(),
+        array('include_blank' => true, 'cultureFallback' => true))) ?>
     </div>
 
     <div class="form-item">
@@ -194,7 +204,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAcquisition(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAcquisition', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAcquisition', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -202,7 +212,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getArchivalHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-       <?php echo object_textarea_tag($informationObject, 'getArchivalHistory', array('size' => '30x3')) ?>
+       <?php echo object_textarea_tag($informationObject, 'getArchivalHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
   </fieldset>
@@ -215,7 +225,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getScopeAndContent(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getScopeAndContent', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getScopeAndContent', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -223,7 +233,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAppraisal(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAppraisal', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAppraisal', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -231,7 +241,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAccruals(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAccruals', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAccruals', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -239,7 +249,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getArrangement(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getArrangement', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getArrangement', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
 
@@ -251,7 +261,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getAccessConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getAccessConditions', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getAccessConditions', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -259,31 +269,59 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getReproductionConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getReproductionConditions', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getReproductionConditions', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
-      <label for="language_of_material"><?php echo __('language of material'); ?></label>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('language of material'); ?></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($languageCodes): ?>
         <?php foreach ($languageCodes as $languageCode): ?>
-          <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=isad') ?><br/>
-          </div>
+        <tr class="<?php echo 'related_obj_'.$languageCode->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_properties[<?php echo $languageCode->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_language_tag('language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
-     </div>
+        <tr>
+          <td colspan="2">
+            <?php echo select_language_tag('language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
+    </div>
 
     <div class="form-item">
-      <label for="script_of_material"><?php echo __('script of material'); ?></label>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('script of material'); ?></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($scriptCodes): ?>
         <?php foreach ($scriptCodes as $scriptCode): ?>
-          <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=isad') ?><br/>
-          </div>
+        <tr class="<?php echo 'related_obj_'.$scriptCode->getId() ?>">
+          <td><div class="animateNicely">
+              <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_properties[<?php echo $scriptCode->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_script_tag('script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+        <tr>
+          <td colspan="2">
+            <?php echo select_script_tag('script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="form-item">
@@ -291,7 +329,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getPhysicalCharacteristics(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getPhysicalCharacteristics', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getPhysicalCharacteristics', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -299,7 +337,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getFindingAids(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getFindingAids', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getFindingAids', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
  </fieldset>
 
@@ -310,7 +348,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getLocationOfOriginals(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getLocationOfOriginals', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getLocationOfOriginals', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -318,7 +356,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getLocationOfCopies(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getLocationOfCopies', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getLocationOfCopies', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -326,20 +364,33 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getRelatedUnitsOfDescription(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getRelatedUnitsOfDescription', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getRelatedUnitsOfDescription', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
-      <label for="new_title_note"><?php echo __('publication note'); ?></label>
-
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('publication note'); ?></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($publicationNotes): ?>
         <?php foreach ($publicationNotes as $publicationNote): ?>
-          <?php echo $publicationNote->getContent(array('cultureFallback' => 'true')) ?>
-          <?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteNote?noteId='.$publicationNote->getId().'&returnTemplate=isad') ?><br />
+        <tr class="<?php echo 'related_obj_'.$publicationNote->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo nl2br($publicationNote->getContent(array('cultureFallback' => 'true'))) ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_notes[<?php echo $publicationNote->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-
-      <?php echo textarea_tag('new_publication_note', '', 'size=30x3') ?>
+        <tr>
+          <td colspan="2">
+            <?php echo textarea_tag('new_publication_note', '', 'size=30x2') ?>
+          </td>
+        </tr>
+      </table>
     </div>
   </fieldset>
 
@@ -349,18 +400,23 @@
       <label for="notes"><?php echo __('notes'); ?></label>
       <table class="inline">
         <tr>
-          <td class="headerCell" style="width: 65%;"><?php echo __('note'); ?></td>
-          <td class="headerCell" style="width: 30%"><?php echo __('note type'); ?></td>
-          <td class="headerCell" style="width: 5%;"></td>
+          <th style="width: 65%;"><?php echo __('note'); ?></th>
+          <th style="width: 30%"><?php echo __('note type'); ?></th>
+          <th style="width: 5%;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
         </tr>
         <?php if ($notes): ?>
-          <?php foreach ($notes as $note): ?>
-            <tr>
-            <td><?php echo $note->getContent(array('cultureFallback' => 'true')) ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
-            <td><?php echo $note->getType() ?></td>
-            <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteNote?noteId='.$note->getId().'&returnTemplate=isad') ?></td>
-            </tr>
-          <?php endforeach; ?>
+        <?php foreach ($notes as $note): ?>
+        <tr class="<?php echo 'related_obj_'.$note->getId() ?>">
+          <td><div class="animateNicely">
+          <?php echo nl2br($note->getContent(array('cultureFallback' => 'true'))) ?><br/>
+          <span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span>
+          </div></td>
+          <td><div class="animateNicely"><?php echo $note->getType() ?></div></td>
+          <td style="text-align: center;"><div class="animateNicely">
+            <input type="checkbox" name="delete_notes[<?php echo $note->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
+        <?php endforeach; ?>
         <?php endif; ?>
         <tr valign="top">
           <td><?php echo input_tag('note')?></td>
@@ -374,38 +430,89 @@
     <legend><?php echo __('access points'); ?></legend>
 
     <?php include_partial('addAccessPointTermDialog') ?>
+
     <div class="form-item" id="subjectAccessPoints">
-      <label for="subject_id"><?php echo __('subject access points'); ?><span id="addSubjectAccessPointLink" style="font-weight:normal"></span></label>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('subject access points'); ?><span id="addSubjectAccessPointLink" style="font-weight:normal"></span></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($subjectAccessPoints): ?>
         <?php foreach ($subjectAccessPoints as $subject): ?>
-          <?php echo $subject->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$subject->getId().'&returnTemplate=isad') ?><br/>
+        <tr class="<?php echo 'related_obj_'.$subject->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo $subject->getTerm() ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_object_term_relations[<?php echo $subject->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_select_tag($newSubjectAccessPoint, 'getTermId', array('name' => 'subject_id', 'id' => 'subject_id', 'include_blank' => true, 'peer_method' => 'getSubjects', 'class'=>'multiInstance')) ?>
+        <tr>
+          <td colspan="2">
+            <?php echo object_select_tag($newSubjectAccessPoint, 'getTermId', array(
+              'name' => 'subject_id', 'id' => 'subject_id', 'include_blank' => true, 'peer_method' => 'getSubjects', 'class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="form-item" id="placeAccessPoints">
-      <label for="place_id"><?php echo __('place access points'); ?><span id="addPlaceAccessPointLink" style="font-weight:normal"></span></label>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('place access points'); ?><span id="addPlaceAccessPointLink" style="font-weight:normal"></span></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($placeAccessPoints): ?>
         <?php foreach ($placeAccessPoints as $place): ?>
-          <?php echo $place->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$place->getId().'&returnTemplate=isad') ?><br/>
+        <tr class="<?php echo 'related_obj_'.$place->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo $place->getTerm() ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_object_term_relations[<?php echo $place->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_select_tag($newPlaceAccessPoint, 'getTermId', array('name' => 'place_id', 'id' => 'place_id', 'include_blank' => true, 'peer_method' => 'getPlaces', 'class'=>'multiInstance')) ?>
+        <tr>
+          <td colspan="2">
+            <?php echo object_select_tag($newPlaceAccessPoint, 'getTermId', array(
+              'name' => 'place_id', 'id' => 'place_id', 'include_blank' => true, 'peer_method' => 'getPlaces', 'class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
     </div>
 
-    <div class="form-item">
-      <label for="name_id"><?php echo __('name access points'); ?></label>
+    <div class="form-item" id="nameAccessPoints">
+      <table class="inline">
+        <tr>
+          <th style="width: 60%;"><?php echo __('name access points'); ?></th>
+          <th style="width: 30%;"><?php echo __('role'); ?></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($nameAccessPoints): ?>
         <?php foreach ($nameAccessPoints as $name): ?>
-          <?php echo $name->getActor().' ('.$name->getType()->getRole().')' ?>
-          <?php if ($name->getTypeId() == QubitTerm::SUBJECT_ID): ?>
-            <?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteEvent?eventId='.$name->getId().'&returnTemplate=isad') ?>
-          <?php endif; ?>
-          <br/>
+        <tr class="<?php echo 'related_obj_'.$name->getId() ?>">
+          <td><div class="animateNicely"><?php echo render_title($name->getActor()) ?></div></td>
+          <td><div class="animateNicely"><?php echo $name->getType()->getRole() ?></div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <?php if ($name->getTypeId() == QubitTerm::SUBJECT_ID): ?>
+              <input type="checkbox" name="delete_actor_events[<?php echo $name->getId() ?>]" value="delete" class="multiDelete" />
+            <?php else: ?>
+              &nbsp;
+            <?php endif; ?>
+          </div></td>
+        </tr>
         <?php endforeach; ?>
-       <?php endif; ?>
-       <?php echo select_tag('name_id', options_for_select($nameSelectList, null, array('include_blank' => true)), array('class'=>'multiInstance')) ?>
+      <?php endif; ?>
+        <tr>
+          <td colspan="3">
+            <?php echo select_tag('name_id', options_for_select($nameSelectList, null, array('include_blank' => true)), array('class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
     </div>
   </fieldset>
 
@@ -430,7 +537,7 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getRules', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getRules', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
@@ -448,31 +555,59 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getRevisionHistory', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getRevisionHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
 
     <div class="form-item">
-      <label for="language_code"><?php echo __('languages of archival description'); ?></label>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('languages of archival description'); ?></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($descriptionLanguageCodes): ?>
         <?php foreach ($descriptionLanguageCodes as $languageCode): ?>
-          <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$languageCode->getId().'&returnTemplate=isad') ?><br/>
-          </div>
+        <tr class="<?php echo 'related_obj_'.$languageCode->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_properties[<?php echo $languageCode->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_language_tag('description_language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+        <tr>
+          <td colspan="2">
+            <?php echo select_language_tag('description_language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="form-item">
-      <label for="script_id"><?php echo __('scripts of archival description'); ?></label>
+      <table class="inline">
+        <tr>
+          <th style="width: 90%;"><?php echo __('scripts of archival description'); ?></th>
+          <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+        </tr>
       <?php if ($descriptionScriptCodes): ?>
         <?php foreach ($descriptionScriptCodes as $scriptCode): ?>
-          <div style="margin-top: 5px; margin-bottom: 5px;">
-          <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteProperty?Id='.$scriptCode->getId().'&returnTemplate=isad') ?><br/>
-          </div>
+        <tr class="<?php echo 'related_obj_'.$scriptCode->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?>
+          </div></td>
+          <td style="text-align: right"><div class="animateNicely">
+            <input type="checkbox" name="delete_properties[<?php echo $scriptCode->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo select_script_tag('description_script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+        <tr>
+          <td colspan="2">
+            <?php echo select_script_tag('description_script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
+          </td>
+        </tr>
+      </table>
     </div>
 
     <div class="form-item">
@@ -480,12 +615,19 @@
       <?php if (strlen($sourceCultureValue = $informationObject->getSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $informationObject->getSourceCulture()): ?>
       <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_textarea_tag($informationObject, 'getSources', array('size' => '30x3')) ?>
+      <?php echo object_textarea_tag($informationObject, 'getSources', array('class' => 'resizable', 'size' => '30x3')) ?>
     </div>
   </fieldset>
 
   <fieldset class="collapsible collapsed">
     <legend><?php echo sfConfig::get('app_ui_label_digitalobject'); ?></legend>
+    <?php if(isset($warnings['upload_file'])): ?>
+      <ul class="validation_error">
+      <?php foreach($warnings['upload_file'] as $message): ?>
+        <li><?php echo $message ?></li>
+      <?php endforeach; ?>
+      </ul>
+    <?php endif; ?>
     <?php include_component('digitalobject', 'edit', array('informationObject'=>$informationObject)); ?>
   </fieldset>
 
@@ -502,8 +644,6 @@ EOF
   ) ?>
   <?php endif; ?>
 
-
-
 <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
 <div id="button-block-bump"></div>
 
@@ -512,10 +652,10 @@ EOF
     <?php if ($informationObject->getId()): ?>
 
     <?php if (($descendantCount = count($informationObject->getDescendants())) > 0): ?>
-         <?php $deleteWarning = __('Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?', array ('%1%' =>sfConfig::get('app_ui_label_informationobject'), '%2%' => $descendantCount)) ?>
+         <?php $deleteWarning = __('Warning: this archival description has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this archival description?', array ('%1%' => $descendantCount)) ?>
          &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
       <?php else: ?>
-      <?php $deleteWarning = __('Are you sure you want to delete this %1% permanently?', array('%1%' => sfConfig::get('app_ui_label_informationobject'))); ?>
+      <?php $deleteWarning = __('Are you sure you want to delete this archival description permanently?'); ?>
       <?php if ($digitalObjectCount > 0): ?>
         <?php $deleteWarning .= ' '.__('This will also delete the related %1%.', array('%1%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
       <?php endif; ?>
@@ -534,10 +674,13 @@ EOF
     <?php endif; ?>
   </div>
 
-</form>
+  <?php // Don't show add/list buttons for new info objects ?>
+  <?php if ($informationObject->getId()): ?>
+  <div class="menu-extra">
+    <?php echo link_to(__('add new'), 'informationobject/createIsad'); ?>
+    <?php echo link_to(__('list all'), 'informationobject/list'); ?>
+  </div>
+  <?php endif; ?>
+</div>
 
-<div class="menu-extra">
-  <?php echo link_to(__('add new %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))), 'informationobject/createIsad'); ?>
-  <?php echo link_to(__('list all %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))), 'informationobject/list'); ?>
-</div>
-</div>
+</form>

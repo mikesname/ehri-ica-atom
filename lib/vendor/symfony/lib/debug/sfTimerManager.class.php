@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfTimerManager.class.php 9079 2008-05-20 00:38:07Z Carl.Vondrick $
+ * @version    SVN: $Id: sfTimerManager.class.php 13339 2008-11-25 14:58:05Z fabien $
  */
 class sfTimerManager
 {

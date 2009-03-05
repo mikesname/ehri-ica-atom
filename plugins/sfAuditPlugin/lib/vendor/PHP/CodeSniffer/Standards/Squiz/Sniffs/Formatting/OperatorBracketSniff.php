@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: OperatorBracketSniff.php,v 1.10 2008/03/17 03:52:43 squiz Exp $
+ * @version   CVS: $Id: OperatorBracketSniff.php,v 1.13 2008/11/19 02:45:12 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -66,6 +66,13 @@ class Squiz_Sniffs_Formatting_OperatorBracketSniff implements PHP_CodeSniffer_Sn
     public function process(PHP_CodeSniffer_File $phpcsFile, $stackPtr)
     {
         $tokens = $phpcsFile->getTokens();
+
+        if ($phpcsFile->tokenizerType === 'JS' && $tokens[$stackPtr]['code'] === T_PLUS) {
+            // JavaScript uses the plus operator for string concatenation as well
+            // so we cannot accurately determine if it is a string concat or addition.
+            // So just ignore it.
+            return;
+        }
 
         // If the & is a reference, then we don't want to check for brackets.
         if ($tokens[$stackPtr]['code'] === T_BITWISE_AND && $phpcsFile->isReference($stackPtr) === true) {
@@ -125,6 +132,8 @@ class Squiz_Sniffs_Formatting_OperatorBracketSniff implements PHP_CodeSniffer_Sn
                                 T_DNUMBER,
                                 T_STRING,
                                 T_WHITESPACE,
+                                T_THIS,
+                                T_OBJECT_OPERATOR,
                                );
 
                     for ($prev = ($stackPtr - 1); $prev > $bracket; $prev--) {
@@ -187,6 +196,7 @@ class Squiz_Sniffs_Formatting_OperatorBracketSniff implements PHP_CodeSniffer_Sn
                 // part of an arithmetic operation.
                 $invalidTokens = array(
                                   T_COMMA,
+                                  T_COLON,
                                   T_OPEN_PARENTHESIS,
                                   T_OPEN_SQUARE_BRACKET,
                                  );

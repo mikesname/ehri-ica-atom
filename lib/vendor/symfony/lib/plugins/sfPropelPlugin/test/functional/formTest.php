@@ -40,7 +40,7 @@ $c->add(AttachmentPeer::NAME, $name);
 $attachments = AttachmentPeer::doSelect($c);
 
 $b->test()->is(count($attachments), 1, 'the attachment has been saved in the database');
-$b->test()->is($attachments[0]->getFile(), $uploadedFile, 'the attachment filename has been saved in the database');
+$b->test()->is($attachments[0]->getFile(), 'uploaded.yml', 'the attachment filename has been saved in the database');
 
 // sfValidatorPropelUnique
 
@@ -64,6 +64,11 @@ $b->
   isRequestParameter('action', 'category')->
   isStatusCode(200)->
   click('submit', array('category' => array('name' => 'foo')))->
+  with('form')->begin()->
+    hasErrors(1)->
+    hasGlobalError(false)->
+    isError('name', 'invalid')->
+  end()->
   checkResponseElement('td[colspan="2"] .error_list li', 0)->
   checkResponseElement('.error_list li', 'An object with the same "name" already exist.')->
   checkResponseElement('.error_list li', 1)
@@ -76,6 +81,11 @@ $b->
   isRequestParameter('action', 'category')->
   isStatusCode(200)->
   click('submit', array('category' => array('name' => 'foo'), 'global' => 1))->
+  with('form')->begin()->
+    hasErrors(1)->
+    hasGlobalError('invalid')->
+    isError('name', false)->
+  end()->
   checkResponseElement('td[colspan="2"] .error_list li', 'An object with the same "name" already exist.')->
   checkResponseElement('td[colspan="2"] .error_list li', 1)
 ;
@@ -125,4 +135,21 @@ $b->
   isStatusCode(200)->
   click('submit', array('article' => array('title' => 'foo', 'category_id' => 1)))->
   checkResponseElement('.error_list li', 'An object with the same "title, category_id" already exist.')
+;
+
+// update the category from the article form
+$b->
+  get('/unique/edit')->
+  isRequestParameter('module', 'unique')->
+  isRequestParameter('action', 'edit')->
+  isStatusCode(200)->
+  checkResponseElement('input[value="foo title"]')->
+  checkResponseElement('#article_category_id option[selected="selected"]', 1)->
+  checkResponseElement('input[value="Category 1"]')->
+  click('submit', array('article' => array('title' => 'foo bar', 'category' => array('name' => 'Category foo'))))->
+  isRedirected()->
+  followRedirect()->
+  checkResponseElement('input[value="foo bar"]')->
+  checkResponseElement('#article_category_id option[selected="selected"]', 1)->
+  checkResponseElement('input[value="Category foo"]')
 ;

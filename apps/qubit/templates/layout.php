@@ -1,94 +1,83 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
+  <head>
+    <?php include_http_metas() ?>
+    <?php include_metas() ?>
+    <?php include_title() ?>
+    <link rel="shortcut icon" href="/favicon.ico" />
+  </head>
+  <body class="yui-skin-sam">
+    <div id="body-banner-top"></div>
 
-<?php include_http_metas() ?>
-<?php include_metas() ?>
+    <div id="body-page">
 
-<?php include_title() ?>
+    <div id="header">
+      <?php include_component_slot('header') ?>
+    <div id="header-top">
 
-<link rel="shortcut icon" href="/favicon.ico" />
+    <div class="menu-top">
+      <?php include_component_slot('ChangeLanguage') ?>
+      <?php include_component('menu', 'quickLinks') ?>
+    </div>
+    </div> <!--close header-top -->
 
-</head>
-<body class="yui-skin-sam">
+    <div id="header-middle">
+    <?php if (strlen(sfConfig::get('app_site_information_site_title'))): ?>
+    <div id="website-name">
+      <?php echo link_to(__(sfConfig::get('app_site_information_site_title')),
+        array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
+    </div>
+    <?php endif; ?>
 
-<div id="body-banner-top"></div>
+    <?php if (strlen(sfConfig::get('app_site_information_site_description'))): ?>
+    <div id="website-description">
+      <?php echo __(sfConfig::get('app_site_information_site_description')); ?>
+    </div>
+    <?php endif; ?>
 
-<div id="body-page">
+    <div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_name', 'Qubit'))),
+      array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
+    </div> <!-- close header-middle -->
 
-<div id="header">
-  <?php include_component_slot('header') ?>
-<div id="header-top">
+    <div id="header-bottom">
+    <?php if ($sf_user->hasCredential('administrator' or 'editor' or 'contributor' or 'translator')): ?>
+    <?php include_component_slot('MainMenu') ?>
+    <?php endif; ?>
+    </div> <!-- close header-bottom -->
 
-<?php include_component_slot('ChangeLanguageList') ?>
+    </div> <!-- close header -->
 
-<div class="menu-top">
-<?php if ($sf_user->isAuthenticated()): ?>
-<?php echo link_to(__('log out'), 'user/logout') ?>
-<?php echo link_to(__('%1% profile', array('%1%' =>$sf_user->getUserName())), 'user/show?id='.$sf_user->getUserID()) ?>
-<?php else: ?>
-<?php echo link_to(__('log in'), array('module' => 'user', 'action' => 'login')) ?><?php endif; ?>
+    <div id="main">
 
-<?php echo link_to(__('help'), 'http://www.ica-atom.org/docs/index.php?title=User_manual', array('target' => '_blank')) ?>
-<?php echo link_to(__('about'), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'about')) ?>
-<?php echo link_to(__('home'), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
-</div>
-</div> <!--close header-top -->
+    <div id="context-column">
 
-<div id="header-middle">
+    <div class="context-column-box">
+    <?php include_component_slot('SearchSidebar') ?>
+    <?php include_component_slot('BrowseSidebar') ?>
+    </div>
 
-<div id="logo"><?php echo link_to(image_tag('logo', 
-  array('alt' => sfConfig::get('app_name', 'ICA-AtoM'))), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
+    <div id="sidebar">
+      <?php include_component_slot('sidebar') ?>
+    </div>
 
-<?php if (strlen(sfConfig::get('app_site_information_site_title'))): ?>
-<h1 id="website-name"><?php echo link_to(__(sfConfig::get('app_site_information_site_title')), '/homepage/') ?></h1>
-<?php endif; ?>
+    </div> <!-- close context-column" -->
 
-<?php if (strlen(sfConfig::get('app_site_information_site_description'))): ?>
-<h2 id="website-description"><?php echo __(sfConfig::get('app_site_information_site_description')); ?></h2>
-<?php endif; ?>
+    <div id="content-two-column">
 
-</div> <!-- close header-middle -->
+    <div class="content-column-box">
+    <?php echo $sf_data->getRaw('sf_content') ?>
+    </div>
 
-<div id="header-bottom">
-<?php if ($sf_user->hasCredential('administrator' or 'editor' or 'contributor' or 'translator')): ?>
-<?php include_component_slot('MainMenu') ?>
-<?php endif; ?>
-</div> <!-- close header-bottom -->
+    </div> <!-- close content-two-column -->
 
-</div> <!-- close header -->
+    </div> <!-- close main -->
 
-<div id="main">
+    <div id="footer">
+    </div>
 
-<div id="context-column">
-
-<div class="context-column-box">
-<?php include_component_slot('SearchSidebar') ?>
-<?php include_component_slot('BrowseSidebar') ?>
-</div>
-
-<div id="sidebar">
-  <?php include_component_slot('sidebar') ?>
-</div>
-
-</div> <!-- close context-column" -->
-
-<div id="content-two-column">
-
-<div class="content-column-box">
-<?php echo $sf_data->getRaw('sf_content') ?>
-</div>
-
-</div> <!-- close content-two-column -->
-
-</div> <!-- close main -->
-
-<div id="footer">
-</div>
-
-</div> <!-- close body-page -->
-<div id="body-banner-bottom">
-  <?php include_component_slot('bottomBanner') ?>
-</div>
-</body>
+    </div> <!-- close body-page -->
+    <div id="body-banner-bottom">
+      <?php include_component_slot('bottomBanner') ?>
+    </div>
+  </body>
 </html>

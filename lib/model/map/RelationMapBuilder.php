@@ -2,7 +2,7 @@
 
 
 
-class RelationMapBuilder {
+class RelationMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.RelationMapBuilder';
@@ -25,28 +25,29 @@ class RelationMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitRelation::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_relation');
-		$tMap->setPhpName('Relation');
+		$tMap = $this->dbMap->addTable(QubitRelation::TABLE_NAME);
+		$tMap->setPhpName('relation');
+		$tMap->setClassname('QubitRelation');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('SUBJECT_ID', 'SubjectId', 'int', CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignKey('SUBJECT_ID', 'subjectId', 'INTEGER', 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('OBJECT_ID', 'ObjectId', 'int', CreoleTypes::INTEGER, 'q_object', 'ID', true, null);
+		$tMap->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null);
 
-		$tMap->addForeignKey('TYPE_ID', 'TypeId', 'int', CreoleTypes::INTEGER, 'q_term', 'ID', false, null);
+		$tMap->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('START_DATE', 'StartDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('START_DATE', 'startDate', 'DATE', false, null);
 
-		$tMap->addColumn('END_DATE', 'EndDate', 'string', CreoleTypes::VARCHAR, false, null);
+		$tMap->addColumn('END_DATE', 'endDate', 'DATE', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'CreatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
-		$tMap->addColumn('UPDATED_AT', 'UpdatedAt', 'int', CreoleTypes::TIMESTAMP, true, null);
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
 	} 
 } 

@@ -10,7 +10,7 @@
  * @author    Marc McIntyre <mmcintyre@squiz.net>
  * @copyright 2006 Squiz Pty Ltd (ABN 77 084 670 600)
  * @license   http://matrix.squiz.net/developer/tools/php_cs/licence BSD Licence
- * @version   CVS: $Id: PostStatementCommentSniff.php,v 1.3 2007/07/23 01:47:53 squiz Exp $
+ * @version   CVS: $Id: PostStatementCommentSniff.php,v 1.4 2008/08/21 04:47:42 squiz Exp $
  * @link      http://pear.php.net/package/PHP_CodeSniffer
  */
 
@@ -30,6 +30,16 @@
  */
 class Squiz_Sniffs_Commenting_PostStatementCommentSniff implements PHP_CodeSniffer_Sniff
 {
+
+    /**
+     * A list of tokenizers this sniff supports.
+     *
+     * @var array
+     */
+    public $supportedTokenizers = array(
+                                   'PHP',
+                                   'JS',
+                                  );
 
 
     /**

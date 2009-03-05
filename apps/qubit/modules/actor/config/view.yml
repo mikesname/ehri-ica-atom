@@ -1,11 +1,11 @@
-editIsaarSuccess:
-  javascripts: [/vendor/drupal/misc/collapse]
-
-listSuccess:
+editContactInformationSuccess:
   components:
     sidebar: []
 
-editContactInformationSuccess:
+editIsaarSuccess:
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
+
+listSuccess:
   components:
     sidebar: []
 

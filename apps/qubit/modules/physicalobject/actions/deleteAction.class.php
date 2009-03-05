@@ -1,22 +1,20 @@
 <?php
 
 /*
- * This file is part of the Qubit Toolkit.
- * Copyright (C) 2006-2008 Peter Van Garderen <peter@artefactual.com>
+ * This file is part of Qubit Toolkit.
  *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU General Public License as published by the Free
- * Software Foundation; either version 2 of the License, or (at your option)
- * any later version.
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
  *
- * This program is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
- * FITNESS FOR A PARTICULAR PURPOSE.  See the GNU Lesser General Public License
- * for more details.
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, write to the Free Software Foundation, Inc., 51
- * Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 /**
@@ -33,28 +31,19 @@ class PhysicalObjectDeleteAction extends sfAction
   {
     $physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('id'));
     $this->forward404Unless($physicalObject);
-    
+
     $this->forward404Unless($this->hasRequestParameter('next'));
-    
+
     // Get related information objects (if any)
-    $informationObjects = QubitRelation::getRelatedObjectsBySubjectId($physicalObject->getId(),
+    $informationObjects = QubitRelation::getRelatedObjectsBySubjectId('QubitInformationObject', $physicalObject->getId(),
       array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
-    
+
     // Delete physical object record from the database
     $physicalObject->delete();
-    
-    // Update Index (if related to an information object)
-    if (count($informationObjects) > 0) 
-    {
-      foreach($informationObjects as $informationObject)
-      {
-        SearchIndex::updateTranslatedLanguages($informationObject);
-      }
-    }
 
     // Make the $next parameter into an absolute URL because redirect() expects
     // an absolute URL or an array containing module and action
-    // (Pre-pend code copied from sfWebController->genUrl() method)  
+    // (Pre-pend code copied from sfWebController->genUrl() method)
     $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
     return $this->redirect($next);
   }

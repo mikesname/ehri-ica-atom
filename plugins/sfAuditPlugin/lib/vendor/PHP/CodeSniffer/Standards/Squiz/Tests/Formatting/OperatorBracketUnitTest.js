@@ -69,3 +69,15 @@ three = myFunction((one / two) / four);
 three = myFunction(one / (two / four));
 
 four = -0.25;
+
+id = id.replace(/row\/:/gi, '');
+return /MSIE/.test(navigator.userAgent);
+
+var re = new RegExp(/<\/?(\w+)((\s+\w+(\s*=\s*(?:".*?"|'.*?'|[^'">\s]+))?)+\s*|\s*)\/?>/gim);
+
+var options = {
+    minVal: -1,
+    maxVal: -1
+};
+
+stepWidth = Math.round(this.width / 5);

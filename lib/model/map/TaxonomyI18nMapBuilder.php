@@ -2,7 +2,7 @@
 
 
 
-class TaxonomyI18nMapBuilder {
+class TaxonomyI18nMapBuilder implements MapBuilder {
 
 	
 	const CLASS_NAME = 'lib.model.map.TaxonomyI18nMapBuilder';
@@ -25,20 +25,21 @@ class TaxonomyI18nMapBuilder {
 	
 	public function doBuild()
 	{
-		$this->dbMap = Propel::getDatabaseMap('propel');
+		$this->dbMap = Propel::getDatabaseMap(QubitTaxonomyI18n::DATABASE_NAME);
 
-		$tMap = $this->dbMap->addTable('q_taxonomy_i18n');
-		$tMap->setPhpName('TaxonomyI18n');
+		$tMap = $this->dbMap->addTable(QubitTaxonomyI18n::TABLE_NAME);
+		$tMap->setPhpName('taxonomyI18n');
+		$tMap->setClassname('QubitTaxonomyI18n');
 
 		$tMap->setUseIdGenerator(false);
 
-		$tMap->addColumn('NAME', 'Name', 'string', CreoleTypes::VARCHAR, false, 255);
+		$tMap->addColumn('NAME', 'name', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('NOTE', 'Note', 'string', CreoleTypes::LONGVARCHAR, false, null);
+		$tMap->addColumn('NOTE', 'note', 'LONGVARCHAR', false, null);
 
-		$tMap->addForeignPrimaryKey('ID', 'Id', 'int' , CreoleTypes::INTEGER, 'q_taxonomy', 'ID', true, null);
+		$tMap->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_taxonomy', 'ID', true, null);
 
-		$tMap->addPrimaryKey('CULTURE', 'Culture', 'string', CreoleTypes::VARCHAR, true, 7);
+		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
 	} 
 } 
