@@ -244,172 +244,172 @@ class QubitMigrate104to105
   {
     $this->data['QubitMenu']['QubitMenu_root'] = array(
       'id' => '<?php echo QubitMenu::ROOT_ID."\n" ?>'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu'] = array(
       'id' => '<?php echo QubitMenu::MAIN_MENU_ID."\n" ?>',
       'parent_id' => 'QubitMenu_root',
       'source_culture' => 'en',
       'name' => 'Main menu'
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks'] = array(
       'id' => '<?php echo QubitMenu::QUICK_LINKS_ID."\n" ?>',
       'parent_id' => 'QubitMenu_root',
       'source_culture' => 'en',
       'name' => 'Quick links'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_addedit'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_addedit'] = array(
       'id' => '<?php echo QubitMenu::ADD_EDIT_ID."\n" ?>',
       'parent_id' => 'QubitMenu_mainmenu',
       'source_culture' => 'en',
       'name' => 'add/edit',
       'label' => array('de' => 'Hinzufügen/Bearbeiten', 'en' => 'add/edit', 'es' => 'agregar/editar', 'fa' => 'افزودن/ويرايش', 'fr' => 'ajouter/modifier', 'it' => 'aggiungi/modifica', 'nl' => 'toevoegen/wijzigen', 'pt' => 'adicionar/editar', 'sl' => 'uporabniški vmesnik'),
       'path' => 'informationobject/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_importexport'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_importexport'] = array(
       'id' => '<?php echo QubitMenu::IMPORT_EXPORT_ID."\n" ?>',
       'parent_id' => 'QubitMenu_mainmenu',
       'source_culture' => 'en',
       'name' => 'import/export',
       'label' => array('en' => 'import/export', 'es' => 'importar/exportar', 'fa' => 'وارد كردن/صادر كردن', 'fr' => 'importer/exporter', 'it' => 'importa/esporta', 'nl' => 'import/export', 'pt' => 'importar/exportar', 'sl' => 'uvoz/izvoz'),
       'path' => 'object/importexport'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_translate'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_translate'] = array(
       'id' => '<?php echo QubitMenu::TRANSLATE_ID."\n" ?>',
       'parent_id' => 'QubitMenu_mainmenu',
       'source_culture' => 'en',
       'name' => 'translate',
       'label' => array('de' => 'Übersetzen', 'en' => 'translate', 'es' => 'traducir', 'fa' => 'ترجمه', 'fr' => 'traduire', 'it' => 'traduci', 'nl' => 'vertalen', 'pt' => 'traduzir', 'sl' => 'prevedi'),
       'path' => 'i18n/listUserInterfaceTranslation'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_admin'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_admin'] = array(
       'id' => '<?php echo QubitMenu::ADMIN_ID."\n" ?>',
       'parent_id' => 'QubitMenu_mainmenu',
       'source_culture' => 'en',
       'name' => 'admin',
       'label' => array('de' => 'Administrator', 'en' => 'admin', 'es' => 'administrador', 'fa' => 'مدير', 'fr' => 'administrer', 'it' => 'amministra',  'sl' => 'administrator'),
       'path' => 'user/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_informationobject'] = array(
-      'parent_id' => 'QubitMenu_mainmenu_addedit',
-      'source_culture' => 'en',
-      'name' => 'information object',
-      'label' => array('en' => 'information object', 'fr' => 'objet d\'information' , 'it' => 'oggetto informativo', 'nl' => 'information object', 'pt' => 'objeto informacional', 'sl' => 'informacijski objekt'),
-      'path' => 'informationobject/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_actor'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_informationobject'] = array(
+    'parent_id' => 'QubitMenu_mainmenu_addedit',
+    'source_culture' => 'en',
+    'name' => 'information object',
+    'label' => array('en' => 'information object', 'fr' => 'objet d\'information' , 'it' => 'oggetto informativo', 'nl' => 'information object', 'pt' => 'objeto informacional', 'sl' => 'informacijski objekt'),
+    'path' => 'informationobject/list'
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_actor'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
       'source_culture' => 'en',
       'name' => 'actor',
       'label' => array('en' => 'person/organization', 'fr' => 'personne/organisation', 'it' => 'persona/organizzazione', 'nl' => 'persoon/organisatie', 'pt' => 'pessoa/organização', 'sl' => 'oseba/organizacija'),
       'path' => 'actor/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_repository'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_repository'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
       'source_culture' => 'en',
       'name' => 'repository',
       'label' => array('en' => 'repository', 'fr' => 'service d\'archives', 'it' => 'soggetto conservatore', 'nl' => 'depot', 'pt' => 'repositório', 'sl' => 'skladišče'),
       'path' => 'repository/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_term'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_term'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
       'source_culture' => 'en',
       'name' => 'term',
       'label' => array('en' => 'term', 'fr' => 'terme', 'it' => 'termine', 'nl' => 'term', 'pt' => 'termo', 'sl' => 'izraz'),
       'path' => 'term/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_importexport_importexport'] = array(
-      'parent_id' => 'QubitMenu_mainmenu_importexport',
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_importexport_importexport'] = array(
+      'parent z_id' => 'QubitMenu_mainmenu_importexport',
       'source_culture' => 'en',
       'name' => 'import/export',
       'label' => array('en' => 'import/export', 'es' => 'importar/exportar', 'fa' => 'وارد كردن/صادر كردن', 'fr' => 'importer/exporter', 'it' => 'importa/esporta', 'nl' => 'import/export', 'pt' => 'importar/exportar', 'sl' => 'uvoz/izvoz'),
       'path' => 'object/importexport'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_translate_userinterface'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_translate_userinterface'] = array(
       'parent_id' => 'QubitMenu_mainmenu_translate',
       'source_culture' => 'en',
       'name' => 'user interface',
       'label' => array('en' => 'user interface', 'es' => 'interfaz del usuario', 'fa' => 'رابط كاربر', 'fr' => 'interface utilisateur', 'it' => 'interfaccia utente', 'nl' => 'gebruikersinterface', 'pt' => 'interface de usuário', 'sl' => 'uporabniški vmesnik'),
       'path' => 'i18n/listUserInterfaceTranslation'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_translate_defaultcontent'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_translate_defaultcontent'] = array(
       'parent_id' => 'QubitMenu_mainmenu_translate',
       'source_culture' => 'en',
       'name' => 'default content',
       'label' => array('de' => 'Vorgegebener Inhalt', 'en' => 'default content', 'es' => 'contenidos por defecto', 'fa' => 'محتواي پيش فرض', 'fr' => 'contenu par défaut', 'it' => 'contenuto predefinito', 'nl' => 'standaard inhoud', 'pt' => 'conteúdo padrão', 'sl' => 'prednastavljena vsebina'),
       'path' => 'i18n/listDefaultContentTranslation'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_admin_users'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_admin_users'] = array(
       'parent_id' => 'QubitMenu_mainmenu_admin',
       'source_culture' => 'en',
       'name' => 'users',
       'label' => array('en' => 'users', 'es' => 'usuarios', 'fa' => 'كاربران', 'fr' => 'utilisateurs', 'it' => 'utenti', 'nl' => 'gebruikers', 'pt' => 'usuários', 'sl' => 'uporabniki'),
       'path' => 'user/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_admin_staticpages'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_admin_staticpages'] = array(
       'parent_id' => 'QubitMenu_mainmenu_admin',
       'source_culture' => 'en',
       'name' => 'static pages',
       'label' => array('en' => 'static pages', 'es' => 'páginas estáticas', 'fa' => 'صفحات ايستا', 'fr' => 'pages statiques', 'it' => 'pagine statiche', 'nl' => 'statische pagina\'s', 'pt' => 'páginas estáticas', 'sl' => 'statična stran'),
       'path' => 'staticpage/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_admin_settings'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_admin_settings'] = array(
       'parent_id' => 'QubitMenu_mainmenu_admin',
       'source_culture' => 'en',
       'name' => 'settings',
       'label' => array('de' => 'Einstellungen', 'en' => 'settings', 'es' => 'configuración', 'fa' => 'تنظيمات', 'fr' => 'paramètres', 'it' => 'impostazioni', 'nl' => 'instellingen', 'pt' => 'configurações', 'sl' => 'nastavitve'),
       'path' => 'settings/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_mainmenu_admin_menu'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_mainmenu_admin_menu'] = array(
       'parent_id' => 'QubitMenu_mainmenu_admin',
       'source_culture' => 'en',
       'name' => 'menu',
       'label' => array('en' => 'menu'),
       'path' => 'menu/list'
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks_home'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks_home'] = array(
       'parent_id' => 'QubitMenu_quicklinks',
       'source_culture' => 'en',
       'name' => 'home',
       'label' => array('en' => 'home', 'es' => 'inicio', 'fa' => 'صفحه اصلي', 'fr' => 'accueil', 'it' => 'pagina iniziale', 'nl' => 'home', 'pt' => 'inicio', 'sl' => 'domov'),
       'path' => ''
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks_about'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks_about'] = array(
       'parent_id' => 'QubitMenu_quicklinks',
       'source_culture' => 'en',
       'name' => 'about',
       'label' => array('de' => 'Über', 'en' => 'about', 'es' => 'acerca', 'fa' => 'درباره ما', 'fr' => 'à propos', 'it' => 'informazioni su', 'nl' => 'over', 'pt' => 'sobre', 'sl' => 'o tem'),
       'path' => 'staticpage/static?permalink=about'
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks_help'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks_help'] = array(
       'parent_id' => 'QubitMenu_quicklinks',
       'source_culture' => 'en',
       'name' => 'help',
       'label' => array('de' => 'Hilfe', 'en' => 'help', 'es' => 'ayuda', 'fa' => 'راهنما', 'fr' => 'aide', 'it' => 'aiuto', 'nl' => 'help', 'pt' => 'ajuda', 'sl' => 'pomoč'),
       'path' => 'http://qubit-toolkit.org'
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks_myProfile'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks_myProfile'] = array(
       'parent_id' => 'QubitMenu_quicklinks',
       'source_culture' => 'en',
       'name' => 'my profile',
       'label' => array('en' => 'my profile'),
       'path' => '%profile%'
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks_login'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks_login'] = array(
       'parent_id' => 'QubitMenu_quicklinks',
       'source_culture' => 'en',
       'name' => 'log in',
       'label' => array('en' => 'log in', 'es' => 'iniciar sesión', 'fa' => 'ورود به سيستم', 'fr' => 'ouverture de session', 'it' => 'accesso', 'nl' => 'inloggen', 'pt' => 'entrar', 'sl' => 'prijava'),
       'path' => 'user/login'
-      );
-      $this->data['QubitMenu']['QubitMenu_quicklinks_logout'] = array(
+    );
+    $this->data['QubitMenu']['QubitMenu_quicklinks_logout'] = array(
       'parent_id' => 'QubitMenu_quicklinks',
       'source_culture' => 'en',
       'name' => 'logout',
       'label' => array('en' => 'log out', 'es' => 'cerrar sesión', 'fa' => 'خروج', 'fr' => 'fermeture de session', 'it' => 'esci', 'nl' => 'uitloggen', 'pt' => 'sair', 'sl' => 'izhod'),
       'path' => 'user/logout'
-      );
+    );
 
-      return $this;
+    return $this;
   }
 
   /**
