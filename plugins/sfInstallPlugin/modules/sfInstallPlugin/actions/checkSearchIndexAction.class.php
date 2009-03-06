@@ -5,7 +5,7 @@
 
 class sfInstallPluginCheckSearchIndexAction extends sfAction
 {
-  public function execute()
+  public function execute($request)
   {
   }
 }
