@@ -290,11 +290,11 @@ class QubitMigrate104to105
       'path' => 'user/list'
     );
     $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_informationobject'] = array(
-    'parent_id' => 'QubitMenu_mainmenu_addedit',
-    'source_culture' => 'en',
-    'name' => 'information object',
-    'label' => array('en' => 'information object', 'fr' => 'objet d\'information' , 'it' => 'oggetto informativo', 'nl' => 'information object', 'pt' => 'objeto informacional', 'sl' => 'informacijski objekt'),
-    'path' => 'informationobject/list'
+      'parent_id' => 'QubitMenu_mainmenu_addedit',
+      'source_culture' => 'en',
+      'name' => 'information object',
+      'label' => array('en' => 'information object', 'fr' => 'objet d\'information' , 'it' => 'oggetto informativo', 'nl' => 'information object', 'pt' => 'objeto informacional', 'sl' => 'informacijski objekt'),
+      'path' => 'informationobject/list'
     );
     $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_actor'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
