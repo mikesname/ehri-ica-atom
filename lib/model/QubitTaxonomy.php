@@ -67,19 +67,4 @@ class QubitTaxonomy extends BaseTaxonomy
     return QubitTaxonomy::get($criteria);
   }
 
-  /**
-   * Get the terms in this taxonomy and sort them by name
-   *
-   * @param string $sortColumn name of the sort column
-   * @param string $options optional parameters
-   * @return QubitQuery object
-   */
-  public function getTermsSorted($sortColumn = 'name', $options = array())
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitTerm::TAXONOMY_ID, $this->getId(), Criteria::EQUAL);
-
-    return QubitTerm::getSorted($criteria, $sortColumn, $options);
-  }
-
 }

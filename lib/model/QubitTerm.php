@@ -126,21 +126,6 @@ class QubitTerm extends BaseTerm
     return (string) $this->getName();
   }
 
-  /**
-   * Get a list of terms, sorted using cultural fallback class
-   *
-   * @param Criteria $criteria search criteria
-   * @param string $sortColumn name of sort column
-   * @param array $options optional parameters
-   * @return QubitQuery object
-   */
-  public static function getSorted($criteria, $sortColumn, $options = array())
-  {
-    $criteria->addAscendingOrderByColumn($sortColumn);
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
-
-    return QubitTerm::get($criteria, $options);
-  }
 
   public function setNote($userId, $note, $noteTypeId)
   {
@@ -597,7 +582,7 @@ class QubitTerm extends BaseTerm
 
     return self::executeCount($sql);
   }
-  
+
   /**
    * Get a count of objects related via q_object_term_relation that have a 
    * class_name = $objectClassName (i.e. only 'QubitInformationObject's)
@@ -617,7 +602,7 @@ class QubitTerm extends BaseTerm
     $stmt->bindValue(':p1', $objectClassName);
     $stmt->bindValue(':p2', $this->getId());
     $stmt->execute();
-    
+
     $count = (count($row = $stmt->fetch())) ? $count = intval($row[0]) : 0;
 
     return $count;
@@ -655,7 +640,7 @@ class QubitTerm extends BaseTerm
     return $selectList;
   }
 
-  /**
+    /**
    * Get a basic key['id']/value['name'] array for use as options in the Event Type
    * select list on the Dublin Core edit template
    *
@@ -696,7 +681,7 @@ class QubitTerm extends BaseTerm
     return $selectList;
   }
 
-  /**
+   /**
    * Get a basic key['id']/value['name'] array for use as options in the Event Type
    * select list on the ISAD(G) edit template
    *

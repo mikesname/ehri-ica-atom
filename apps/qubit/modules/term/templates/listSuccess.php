@@ -14,7 +14,7 @@
     </thead>
     <tbody>
   <?php $prevTerm = null; $indent = 0; $lastRgt = array(); ?>
-  <?php foreach ($terms = $taxonomy->getTermsSorted('name') as $term): ?>
+  <?php foreach ($terms = $taxonomy->getTerms()->orderBy('lft') as $term): ?>
     <?php if ($prevTerm && $term->getLft() > $prevTerm->getLft() && $term->getRgt() < $prevTerm->getRgt()): ?>
     <?php $indent += 2; array_push($lastRgt, $prevTerm->getRgt()); ?>
     <?php elseif (count($lastRgt) && $term->getRgt() > $lastRgt[count($lastRgt)-1]): ?>
