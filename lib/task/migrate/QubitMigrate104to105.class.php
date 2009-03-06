@@ -292,22 +292,22 @@ class QubitMigrate104to105
     $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_informationobject'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
       'source_culture' => 'en',
-      'name' => 'information object',
-      'label' => array('en' => 'information object', 'fr' => 'objet d\'information' , 'it' => 'oggetto informativo', 'nl' => 'information object', 'pt' => 'objeto informacional', 'sl' => 'informacijski objekt'),
+      'name' => 'archival description',
+      'label' => array('en' => 'archival description', 'es' => 'Descripción archivística', 'fr' => 'description archivistique', 'it' => 'descrizione archivistica', 'nl' => 'archivistische beschrijving', 'pt' => 'descrição arquivística', 'sl' => 'arhivski opisi'),
       'path' => 'informationobject/list'
     );
     $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_actor'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
       'source_culture' => 'en',
-      'name' => 'actor',
-      'label' => array('en' => 'person/organization', 'fr' => 'personne/organisation', 'it' => 'persona/organizzazione', 'nl' => 'persoon/organisatie', 'pt' => 'pessoa/organização', 'sl' => 'oseba/organizacija'),
+      'name' => 'authority record',
+      'label' => array('en' => 'authority record', 'es' => 'Registro de autoridad', 'fr' => 'fichier d\'autorité', 'it' => 'record di autorità', 'nl' => 'geautoriseerd bestand', 'pt' => 'registro de autoridade', 'sl' => 'normativni zapisi'),
       'path' => 'actor/list'
     );
     $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_repository'] = array(
       'parent_id' => 'QubitMenu_mainmenu_addedit',
       'source_culture' => 'en',
-      'name' => 'repository',
-      'label' => array('en' => 'repository', 'fr' => 'service d\'archives', 'it' => 'soggetto conservatore', 'nl' => 'depot', 'pt' => 'repositório', 'sl' => 'skladišče'),
+      'name' => 'archival institution',
+      'label' => array('en' => 'archival institution', 'es' => 'Institución archivística ', 'fr' => 'institution de conservation', 'it' => 'istituzione archivistica', 'nl' => 'archiefinstelling', 'pt' => 'instituição arquivística', 'sl' => 'arhivske ustanove'),
       'path' => 'repository/list'
     );
     $this->data['QubitMenu']['QubitMenu_mainmenu_addedit_term'] = array(
@@ -318,7 +318,7 @@ class QubitMigrate104to105
       'path' => 'term/list'
     );
     $this->data['QubitMenu']['QubitMenu_mainmenu_importexport_importexport'] = array(
-      'parent z_id' => 'QubitMenu_mainmenu_importexport',
+      'parent_id' => 'QubitMenu_mainmenu_importexport',
       'source_culture' => 'en',
       'name' => 'import/export',
       'label' => array('en' => 'import/export', 'es' => 'importar/exportar', 'fa' => 'وارد كردن/صادر كردن', 'fr' => 'importer/exporter', 'it' => 'importa/esporta', 'nl' => 'import/export', 'pt' => 'importar/exportar', 'sl' => 'uvoz/izvoz'),
