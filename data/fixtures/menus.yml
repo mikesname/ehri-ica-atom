@@ -121,7 +121,7 @@ QubitMenu:
     source_culture: en
     name: 'help'
     label: { de: 'Hilfe', en: help, es: ayuda, fa: راهنما, fr: aide, it: aiuto, nl: help, pt: ajuda, sl: pomoč }
-    path: 'http://qubit-toolkit.org'
+    path: 'http://www.ica-atom.org/docs/index.php?title=User_manual'
   QubitMenu_quicklinks_myProfile:
     parent_id: QubitMenu_quicklinks
     source_culture: en
