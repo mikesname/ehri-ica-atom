@@ -30,6 +30,8 @@ class InformationObjectShowDcAction extends InformationObjectShowAction
 {
   public function execute($request)
   {
+    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'dc');
+
     // run the core informationObject show action commands
     parent::execute($request);
 

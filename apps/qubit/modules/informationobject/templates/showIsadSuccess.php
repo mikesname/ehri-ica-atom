@@ -5,8 +5,8 @@
 
 <tr>
   <td colspan="2" class="headerCell">
-  <?php if ($editCredentials): ?> 
-    <?php echo link_to(render_title(QubitIsad::getLabel($informationObject)), 'informationobject/editIsad/?id='.$informationObject->getId()); ?>
+  <?php if ($editCredentials): ?>
+    <?php echo link_to(render_title(QubitIsad::getLabel($informationObject)), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())); ?>
   <?php else: ?> 
     <?php echo render_title(QubitIsad::getLabel($informationObject)); ?>
   <?php endif; ?>
@@ -32,6 +32,21 @@
   </tr>
 <?php endif; ?>
 
+<!-- ******************************************** -->
+<!--   START IDENTITY AREA                         -->
+<!-- ******************************************** -->
+
+<?php if(
+  0 < strlen($informationObject->getIdentifier()) ||
+  0 < strlen($informationObject->getTitle(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getLevelOfDescriptionId()) ||
+  0 < strlen($informationObject->getExtentAndMedium(array('cultureFallback' => true)))
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('identity area') ?>
+</td></tr>
+<?php endif; ?>
+
 <?php if ($informationObject->getIdentifier()): ?>
   <tr>
   <th><?php echo __('reference code'); ?></th>
@@ -40,23 +55,19 @@
   </tr>
 <?php endif; ?>
 
-<?php if (count($informationObject->getDates()) > 0) : ?>
-<tr><th><?php echo __('dates'); ?></th><td>
+<?php if ($informationObject->getTitle(array('cultureFallback' => true))): ?>
+  <tr>
+  <th><?php echo __('title'); ?></th>
+  <td><?php echo $informationObject->getTitle(array('cultureFallback' => true)) ?>
+  </td>
+  </tr>
+<?php endif; ?>
+
+<?php if (0 < count($informationObject->getDates())) : ?>
+<tr><th><?php echo __('date(s)'); ?></th><td>
 <?php foreach ($informationObject->getDates() as $date): ?>
-  <?php echo $date->getDateDisplay(array('cultureFallback' => true)).' ('.$date->getType().')' ?>
-  <?php if ($actor = $date->getActor()): ?>
-    <?php echo link_to(render_title($actor), array('module' => 'actor', 'action' => 'show', 'id' => $actor->getId())) ?>
-  <?php endif; ?><br />
-    <?php if (($date->getPlace()) || ($date->getDescription())): ?>
-    <div style="margin-left: 30px; color: #999999;">
-    <?php if ($place=$date->getPlace()): ?>
-      <?php echo __('Place') ?>: <?php echo $place ?><br />
-    <?php endif; ?>
-    <?php if ($note=$date->getDescription()): ?>
-      <?php echo __('Note') ?>: <?php echo $note ?><br />
-    <?php endif; ?>
-    </div>
-  <?php endif; ?>
+  <?php echo $date->getDateDisplay(array('cultureFallback' => true)) ?> 
+  (<?php echo $date->getType(array('cultureFallback' => true)) ?>)<br />
 <?php endforeach; ?>
 </td></tr>
 <?php endif; ?>
@@ -68,14 +79,31 @@
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getExtentAndMedium(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getExtentAndMedium(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('extent and medium'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php  foreach ($creators as $creator): ?>
+
+<!-- ******************************************** -->
+<!--   START CONTEXT AREA                         -->
+<!-- ******************************************** -->
+
+<?php if(
+  0 < count($creators) ||
+  0 < count($physicalObjects) ||
+  0 < strlen($informationObject->getRepositoryId()) ||
+  0 < strlen($informationObject->getArchivalHistory(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getAcquisition(array('cultureFallback' => true)))
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('context area') ?>
+</td></tr>
+<?php endif; ?>
+
+<?php foreach ($creators as $creator): ?>
   <tr>
   <th><?php echo __('name of creator') ?></th>
   <td><?php echo link_to(render_title($creator), 'actor/show?id='.$creator->getId()); ?>
@@ -107,63 +135,97 @@
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getArchivalHistory(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getArchivalHistory(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('archival history'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getAcquisition(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getAcquisition(array('cultureFallback' => true)))) : ?>
 <tr>
-<th><?php echo __('immediate source of acquisition'); ?></th>
+<th><?php echo __('immediate source of acquisition or transfer'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getScopeAndContent(array('cultureFallback' => true))) > 0) : ?>
+
+<!-- ******************************************** -->
+<!--   START CONTENT AND STRUCTURE AREA           -->
+<!-- ******************************************** -->
+
+<?php if(
+  0 < strlen($informationObject->getScopeAndContent(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getAppraisal(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getAccruals(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getArrangement(array('cultureFallback' => true)))
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('content and structure area') ?>
+</td></tr>
+<?php endif; ?>
+
+<?php if (0 < strlen($value = $informationObject->getScopeAndContent(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('scope and content'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getAppraisal(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getAppraisal(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('appraisal, destruction and scheduling'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getAccruals(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getAccruals(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('accruals'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getArrangement(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getArrangement(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('system of arrangement'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getAccessConditions(array('cultureFallback' => true))) > 0) : ?>
+
+<!-- ******************************************** -->
+<!--   START CONDITIONS OF ACCESS AND USE AREA    -->
+<!-- ******************************************** -->
+
+<?php if(
+  0 < strlen($informationObject->getAccessConditions(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getReproductionConditions(array('cultureFallback' => true))) ||
+  0 < count($languageCodes) || 
+  0 < count($scriptCodes) ||
+  0 < strlen($informationObject->getPhysicalCharacteristics(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getFindingAids(array('cultureFallback' => true)))
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('conditions of access and use area') ?>
+</td></tr>
+<?php endif; ?>
+
+<?php if (0 < strlen($value = $informationObject->getAccessConditions(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('conditions governing access'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getReproductionConditions(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getReproductionConditions(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('conditions governing reproduction'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (count($languageCodes) > 0) : ?>
+<?php if (0 < count($languageCodes)) : ?>
 <tr>
 <th><?php echo __('language of material'); ?></th>
 <td>
@@ -173,52 +235,113 @@
 </td></tr>
 <?php endif; ?>
 
-<?php if (count($scriptCodes) > 0) : ?>
+<?php if (0 < count($scriptCodes)) : ?>
 <tr>
 <th><?php echo __('script of material'); ?></th>
 <td>
-      <?php foreach ($scriptCodes as $scriptCode): ?>
-    <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))); ?><br />
-  <?php endforeach; ?>
+<?php foreach ($scriptCodes as $scriptCode): ?>
+  <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))); ?><br />
+<?php endforeach; ?>
 </td></tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getPhysicalCharacteristics(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getPhysicalCharacteristics(array('cultureFallback' => true)))) : ?>
 <tr>
-<th><?php echo __('physical characteristics'); ?></th>
+<th><?php echo __('physical characteristics and technical requirements'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getFindingAids(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getFindingAids(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('finding aids'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getLocationOfOriginals(array('cultureFallback' => true))) > 0) : ?>
+
+<!-- ******************************************** -->
+<!--   START ALLIED MATERIALS AREA                -->
+<!-- ******************************************** -->
+
+<?php if(
+  0 < strlen($informationObject->getLocationOfOriginals(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getLocationOfCopies(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getRelatedUnitsOfDescription(array('cultureFallback' => true))) ||
+  0 < count($publicationNotes)
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('allied materials area') ?>
+</td></tr>
+<?php endif; ?>
+
+<?php if (0 < strlen($value = $informationObject->getLocationOfOriginals(array('cultureFallback' => true)))) : ?>
 <tr>
-<th><?php echo __('location of originals'); ?></th>
+<th><?php echo __('existence and location of originals'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getLocationOfCopies(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getLocationOfCopies(array('cultureFallback' => true)))) : ?>
 <tr>
-<th><?php echo __('location of copies'); ?></th>
+<th><?php echo __('existence and location of copies'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getRelatedUnitsOfDescription(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getRelatedUnitsOfDescription(array('cultureFallback' => true)))) : ?>
 <tr>
 <th><?php echo __('related units of description'); ?></th>
 <td><?php echo nl2br($value); ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (count($subjectAccessPoints) > 0) : ?>
+<?php if (0 < count($publicationNotes)): ?>
+  <?php foreach ($publicationNotes as $publicationNote): ?>
+  <tr>
+  <th><?php echo __('publication note'); ?></th>
+  <td><?php echo nl2br($publicationNote->getContent(array('cultureFallback' => true))) ?>
+  </td>
+  </tr>
+  <?php endforeach; ?>
+<?php endif; ?>
+
+
+<!-- ******************************************** -->
+<!--   START NOTES AREA                           -->
+<!-- ******************************************** -->
+
+<?php if (0 < count($notes)) : ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('notes area') ?>
+</td></tr>
+
+<?php foreach($notes as $note): ?>
+<tr>
+  <th><?php echo __('note'); ?></th>
+  <td>
+    <?php echo nl2br($note->getContent(array('cultureFallback' => true))); ?><br />
+  </td>
+</tr>
+<?php endforeach; ?>
+<?php endif; ?>
+
+
+<!-- ******************************************** -->
+<!--   START ACCESS POINTS                        -->
+<!-- ******************************************** -->
+
+<?php if (
+  0 < count($subjectAccessPoints) ||
+  0 < count($placeAccessPoints) ||
+  0 < count($nameAccessPoints)
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('access points') ?>
+</td></tr>
+<?php endif; ?>
+
+<?php if (0 < count($subjectAccessPoints)) : ?>
 <tr>
 <th><?php echo __('subject access points'); ?></th>
 <td>
@@ -228,7 +351,7 @@
 </td></tr>
 <?php endif; ?>
 
-<?php if (count($placeAccessPoints) > 0) : ?>
+<?php if (0 < count($placeAccessPoints)) : ?>
 <tr>
 <th><?php echo __('place access points'); ?></th>
 <td>
@@ -238,7 +361,7 @@
 </td></tr>
 <?php endif; ?>
 
-<?php if (count($nameAccessPoints) > 0 ) : ?>
+<?php if (0 < count($nameAccessPoints) ) : ?>
 <tr>
 <th><?php echo __('name access points'); ?></th>
 <td>
@@ -250,28 +373,50 @@
 </td></tr>
 <?php endif; ?>
 
-<?php if (count($notes) > 0) : ?>
+
+<!-- ******************************************** -->
+<!--   START CONTROL AREA                         -->
+<!-- ******************************************** -->
+
+<?php if (
+  0 < count($archivistsNotes) ||
+  0 < strlen($informationObject->getDescriptionIdentifier(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getInstitutionResponsibleIdentifier(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getRules(array('cultureFallback' => true))) ||
+  0 < strlen($informationObject->getDescriptionStatusId()) ||
+  0 < strlen($informationObject->getDescriptionDetailId()) ||
+  0 < strlen($informationObject->getRevisionHistory(array('cultureFallback' => true))) ||
+  0 < count($descriptionLanguageCodes) || 
+  0 < count($descriptionScriptCodes) ||
+  0 < strlen($informationObject->getSources(array('cultureFallback' => true)))
+): ?>
+<tr><td colspan="2" class="subHeaderCell">
+  <?php echo __('description control area') ?>
+</td></tr>
+<?php endif; ?>
+
+<?php if (0 < count($archivistsNotes)) : ?>
+<?php foreach($archivistsNotes as $archivistsNote): ?>
 <tr>
-<th><?php echo __('notes'); ?></th>
-<td>
-  <?php foreach ($notes as $note): ?>
-    <?php echo $note->getType().': '.nl2br($note->getContent(array('cultureFallback' => true))); ?><br />
-  <?php endforeach; ?>
-</td>
+  <th><?php echo __('archivist\'s note'); ?></th>
+  <td>
+    <?php echo nl2br($archivistsNote->getContent(array('cultureFallback' => true))); ?><br />
+  </td>
 </tr>
+<?php endforeach; ?>
 <?php endif; ?>
 
-<?php if ($informationObject->getDescriptionIdentifier()): ?>
+<?php if ($informationObject->getDescriptionIdentifier(array('cultureFallback' => true))): ?>
   <tr><th><?php echo __('description identifier')?></th>
-  <td><?php echo $informationObject->getDescriptionIdentifier() ?></td></tr>
+  <td><?php echo $informationObject->getDescriptionIdentifier(array('cultureFallback' => true)) ?></td></tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getInstitutionResponsibleIdentifier(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getInstitutionResponsibleIdentifier(array('cultureFallback' => true)))) : ?>
   <tr><th><?php echo __('institution identifier')?></th>
   <td><?php echo $value ?></td></tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getRules(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getRules(array('cultureFallback' => true)))) : ?>
   <tr><th><?php echo __('rules')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
@@ -288,13 +433,13 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getRevisionHistory(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getRevisionHistory(array('cultureFallback' => true)))) : ?>
   <tr><th><?php echo __('dates of creation revision deletion')?></th><td>
   <?php echo nl2br($value) ?>
   </td></tr>
 <?php endif; ?>
 
-<?php if (count($descriptionLanguageCodes) > 0): ?>
+<?php if (0 < count($descriptionLanguageCodes)): ?>
   <tr><th><?php echo __('language of description')?></th><td>
   <?php foreach ($descriptionLanguageCodes as $languageCode): ?>
     <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))) ?><br />
@@ -302,7 +447,7 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if (count($descriptionScriptCodes) > 0): ?>
+<?php if (0 < count($descriptionScriptCodes)): ?>
   <tr><th><?php echo __('script of description')?></th><td>
   <?php foreach ($descriptionScriptCodes as $scriptCode): ?>
     <?php echo format_script($scriptCode->getValue(array('sourceCulture'=>true))) ?><br />
@@ -310,12 +455,16 @@
   </td></tr>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getSources(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getSources(array('cultureFallback' => true)))) : ?>
   <tr><th><?php echo __('sources')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<!--  Digital Object metadata -->
+
+<!-- ******************************************** -->
+<!--   START DIGITAL OBJECT METADATA              -->
+<!-- ******************************************** -->
+
 <?php if (isset($digitalObject)): ?>
   <tr><td colspan="2" class="subHeaderCell">
     <?php echo __('digital object metadata') ?>
@@ -334,7 +483,7 @@
     <td><?php echo $digitalObject->getMediaType(); ?></td>
   </tr>
   <?php endif; ?>
-
+  
   <?php if ($digitalObject->getMimeType()): ?>
   <tr>
     <th><?php echo __('mime-type'); ?></th>
@@ -356,19 +505,18 @@
   </tr>
   <?php endif; ?>
 <?php endif; ?>
-
 </tbody>
 </table>
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-  <?php echo link_to (__('edit archival description'), 'informationobject/editIsad?id='.$informationObject->getId()) ?>
+  <?php echo link_to (__('edit archival description'), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())) ?>
 </div>
 <?php endif; ?>
 
 <div class="menu-extra">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('add new'), 'informationobject/createIsad'); ?>
+  <?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create')); ?>
 <?php endif; ?>
-  <?php echo link_to(__('list all'), 'informationobject/list'); ?>
+  <?php echo link_to(__('list all'), array('module' => 'informationobject', 'action' => 'list')); ?>
 </div>

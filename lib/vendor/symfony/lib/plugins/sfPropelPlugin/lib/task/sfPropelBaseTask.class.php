@@ -16,7 +16,7 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'..'.DIRECTORY_SEPARATOR.'..'
  * @package    symfony
  * @subpackage propel
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelBaseTask.class.php 12170 2008-10-13 16:35:40Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfPropelBaseTask.class.php 15727 2009-02-23 16:19:10Z fabien $
  */
 abstract class sfPropelBaseTask extends sfBaseTask
 {
@@ -42,9 +42,9 @@ abstract class sfPropelBaseTask extends sfBaseTask
     }
   }
 
-  protected function createConfiguration($application, $env, $isDebug)
+  protected function createConfiguration($application, $env)
   {
-    $configuration = parent::createConfiguration($application, $env, $isDebug);
+    $configuration = parent::createConfiguration($application, $env);
 
     $autoloader = sfSimpleAutoload::getInstance();
     $config = new sfAutoloadConfigHandler();
@@ -312,7 +312,7 @@ abstract class sfPropelBaseTask extends sfBaseTask
 
       if (count(sfPhingListener::getErrors()))
       {
-        $messages[] = '  Read the logs to fix them';
+        $messages[] = '  If the exception message is not clear enough, read the output of the task for more information';
       }
 
       $this->logBlock($messages, 'ERROR');

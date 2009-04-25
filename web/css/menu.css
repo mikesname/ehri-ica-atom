@@ -421,7 +421,7 @@ float: left;
 
 /* see also graphic.css: EDIT FORMS (i.e. more styles for #content form) */
 
-.submit
+.form-submit
 {
 color: #ffffff;
 background-color: #000000;
@@ -433,12 +433,12 @@ border-top: 0;
 padding: 0 6px 1px 6px;
 margin: 0 0 0 5px;
 font: normal 15px/15px georgia, serif;
-width: 60px;
+width: auto;
 height: 25px;
 float: left;
 }
 
-.submithover
+.form-submit:hover
 {
 color: #000000;
 background-color: #ffffff;
@@ -448,7 +448,6 @@ border-bottom: 3px solid #999999;
 padding: 0 6px 1px 6px;
 margin: 0 0 0 5px;
 font: normal 15px/15px georgia, serif;
-width: 60px;
 height: 25px;
 float: left;
 }

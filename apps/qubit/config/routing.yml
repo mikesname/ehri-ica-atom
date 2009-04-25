@@ -11,95 +11,125 @@ default_index:
   param: { action: index }
 
 createDc:
-  url: /:module/create/dc/*
-  param: { action: createDc }
+  url: /:module/create/dc
+  param: { action: editDc }
 
 editDc:
-  url: /:module/edit/dc/*
+  url: /:module/edit/dc/:id
   param: { action: editDc }
 
 showDc:
-  url: /:module/show/dc/*
+  url: /:module/show/dc/:id
   param: { action: showDc }
 
-createIsad:
-  url: /:module/create/isad/*
-  param: { action: createIsad }
-
-editIsad:
-  url: /:module/edit/isad/*
-  param: { action: editIsad }
-
-showIsad:
-  url: /:module/show/isad/*
-  param: { action: showIsad }
-
-createRad:
-  url: /:module/create/rad/*
-  param: { action: createRad }
-
-editRad:
-  url: /:module/edit/rad/*
-  param: { action: editRad }
-
-showRad:
-  url: /:module/show/rad/*
-  param: { action: showRad }
-
-createMods:
-  url: /:module/create/mods/*
-  param: { action: createMods }
-
-editMods:
-  url: /:module/edit/mods/*
-  param: { action: editMods }
-
-showMods:
-  url: /:module/show/mods/*
-  param: { action: showMods }
-
 createIsaar:
-  url: /:module/create/isaar/*
-  param: { action: createIsaar }
+  url: /:module/create/isaar
+  param: { action: editIsaar }
 
 editIsaar:
-  url: /:module/edit/isaar/*
+  url: /:module/edit/isaar/:id
   param: { action: editIsaar }
 
 showIsaar:
-  url: /:module/show/isaar/*
+  url: /:module/show/isaar/:id
   param: { action: showIsaar }
 
-editContactInformation:
-  url: /:module/editContactInformation/*
-  param: { action: editContactInformation }
+createIsad:
+  url: /:module/create/isad
+  param: { action: editIsad }
+
+editIsad:
+  url: /:module/edit/isad/:id
+  param: { action: editIsad }
+
+showIsad:
+  url: /:module/show/isad/:id
+  param: { action: showIsad }
 
 createIsdiah:
-  url: /:module/create/isdiah/*
-  param: { action: createIsdiah }
+  url: /:module/create/isdiah
+  param: { action: editIsdiah }
 
 editIsdiah:
-  url: /:module/edit/isdiah/*
+  url: /:module/edit/isdiah/:id
   param: { action: editIsdiah }
 
 showIsdiah:
-  url: /:module/show/isdiah/*
+  url: /:module/show/isdiah/:id
   param: { action: showIsdiah }
 
-informationobject_template:
-  url: /informationobject/:action/:informationobject_template/*
-  param: { module: informationobject }
-  requirements: { action: create|edit|show }
+createMods:
+  url: /:module/create/mods
+  param: { action: editMods }
 
-actor_template:
-  url: /actor/:action/:actor_template/*
-  param: { module: actor }
-  requirements: { action: create|edit|show }
+editMods:
+  url: /:module/edit/mods/:id
+  param: { action: editMods }
 
-repository_template:
-  url: /repository/:action/:repository_template/*
-  param: { module: repository }
-  requirements: { action: create|edit|show }
+showMods:
+  url: /:module/show/mods/:id
+  param: { action: showMods }
+
+createRad:
+  url: /:module/create/rad
+  param: { action: editRad }
+
+editRad:
+  url: /:module/edit/rad/:id
+  param: { action: editRad }
+
+showRad:
+  url: /:module/show/rad/:id
+  param: { action: showRad }
+
+actorCreate:
+  url: /actor/create/:actor_template
+  param: { module: actor, action: create }
+
+actorEdit:
+  url: /actor/edit/:actor_template/:id
+  param: { module: actor, action: edit }
+
+actorShow:
+  url: /actor/show/:actor_template/:id
+  param: { module: actor, action: show }
+
+informationObjectCreate:
+  url: /informationobject/create/:informationobject_template
+  param: { module: informationobject, action: create }
+
+informationObjectEdit:
+  url: /informationobject/edit/:informationobject_template/:id
+  param: { module: informationobject, action: edit }
+
+informationObjectShow:
+  url: /informationobject/show/:informationobject_template/:id
+  param: { module: informationobject, action: show }
+
+repositoryCreate:
+  url: /repository/create/:repository_template
+  param: { module: repository, action: create }
+
+repositoryEdit:
+  url: /repository/edit/:repository_template/:id
+  param: { module: repository, action: edit }
+
+repositoryShow:
+  url: /repository/show/:repository_template/:id
+  param: { module: repository, action: show }
+
+oai_harvester_harvest_all_sets:
+  url: /oai/harvest/:type/:harvestId/*
+  param: { module: oai, action: harvesterHarvest }
+  requirements:
+    harvestId: \d+
+
+oai_harvester_delete:
+  url: /oai/deleteRepository/:repositoryId/*
+  param: { module: oai, action: harvesterDelete }
+  requirements:
+    repositoryId: \d+
+
 
 default:
   url:   /:module/:action/*

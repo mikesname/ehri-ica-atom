@@ -1,0 +1,663 @@
+/*******************************************************/
+/*                                                     */
+/*    STYLE.CSS: OVERIDE CORE QUBIT CSS FILES          */
+/*               WITH THEME-SPECIFIC VALUES            */
+/*                                                     */
+/*******************************************************/
+
+
+
+/*******************************************************/
+/*                                                     */
+/*                  LAYOUT.CSS                         */
+/*                                                     */
+/*******************************************************/
+
+
+/************************************/
+/*            BODY                  */
+/************************************/
+
+#body-banner-top
+{
+  height: auto;
+  padding: 5px 0 0 0;
+  margin: 0;
+  position: relative;
+  background: #083852;
+}
+
+#body-page
+{
+  margin: 20px auto 0 auto;
+}
+
+/************************************/
+/*            HEADER                */
+/************************************/
+
+#header
+{
+  background-color: #ffffff;
+  clear: both;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  border: 0;
+  background-image: url(../images/ColumbiaStreet_NewWestminster_1903.jpg);
+  background-repeat: repeat-x;
+}
+
+#header-top
+{
+  padding: 0;
+  border: 0;
+  margin: 0;
+  text-align: center;
+  background-color: #083852;
+  border: 0;
+}
+
+#header-middle
+{
+  clear: both;
+  height: 175px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  position: relative;
+}
+
+#header-bottom
+{
+  clear: both;
+  width: auto;
+  text-align: left;
+  height: auto;
+  padding: 5px 0 5px 0;
+  margin: 0 auto 0 auto;
+  border: 0;
+  background: #0A5F8C;
+}
+
+/*******************************************************/
+/*                                                     */
+/*                  GRAPHIC.CSS                        */
+/*                                                     */
+/*******************************************************/
+
+/*********************************************************
+                WEBSITE NAME & LOGO
+**********************************************************/
+
+#site-info
+{
+  padding: 30px 0 0 50px;
+  clear: both;
+  width: 770px;
+  text-align: left;
+  height: auto;
+  margin: 0 auto 0 auto;
+  border: 0;
+  position: relative;
+}
+
+#website-name
+{
+  font: bold 48px georgia, garamond, serif;
+  letter-spacing: 0.15ex;
+  border: 0;
+  margin: 0 0 5px 0;
+  padding: 3px 3px 10px 3px;
+  background-color: white;
+  width: 360px;
+  text-align: center;
+  display: block;
+  -moz-border-radius: 10px;
+  border: 2px solid #083852;
+}
+
+#website-name a:hover,#website-name a:link,#website-name a:visited,#website-name a:active
+{
+  text-decoration: none;
+  border: 0;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  color: #CC3204;
+}
+
+#website-description {
+  color: #083852;
+  font: bold 12px georgia, garamond, serif;
+  margin: 0;
+  padding: 3px;
+  text-align: center;
+  letter-spacing: -0.1ex;
+  background-color: white;
+  width: 360px;
+  -moz-border-radius: 10px;
+  border: 2px solid #083852;
+}
+
+#logo
+{
+   float: left;
+}
+
+#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
+  color: #ffffff;
+  padding: 0;
+  margin: 0;
+  float: left;
+}
+
+#logo img {
+  margin: 0 5px 0 0;
+}
+
+/*****************************************
+              LIST TABLES
+*****************************************/
+
+table.list th {
+  border: 1px solid #6A7F9A;
+  background-color: #F1F9FC;
+  color: #000000;
+  padding: 4px 4px 4px 10px;
+  font-weight: bold;
+  vertical-align: top;
+  text-align: left;
+}
+
+/************************************************
+              DETAIL (SHOW/EDIT) TABLES
+*************************************************/
+
+table.detail td.headerCell {
+  border-bottom: 1px solid #6A7F9A;
+  border-top: 2px solid #6A7F9A;
+  color: #000033;
+  background-color: #F1F9FC;
+}
+
+table.detail td.headerCell a {
+  color: #000000;
+  background-color: #F1F9FC;
+}
+
+table.detail td.headerCell a:hover {
+  color: #ffffff;
+  background-color: #083852;
+}
+
+/*****************************************
+              SEARCH RESULTS
+*****************************************/
+
+h1.search
+{
+  background-color: #F1F9FC;
+  border-bottom: 1px solid #6A7F9A;
+  border-top: 2px solid #6A7F9A;
+}
+
+/*****************************************
+                APP VERSION NUMBER
+*****************************************/
+.versionNumber {
+  float: right;
+  color: #cccccc;
+  margin: 18px 50px 0 0;
+  background: transparent;
+  z-index: 1;
+}
+
+
+/*******************************************************/
+/*                                                     */
+/*                  MENU.CSS                           */
+/*                                                     */
+/*******************************************************/
+
+/*****************************************/
+/*           MENU - TOP                  */
+/*****************************************/
+.menu-top
+{
+  padding: 0 10px 10px 10px;
+  margin: 0;
+  background-color: #083852;
+  border: 0;
+  height: 15px;
+}
+
+/*****************************************/
+/*           MENU - LANGUAGE LIST        */
+/*****************************************/
+
+.language-list
+{
+position: absolute;
+top: 1px;
+left: 10px;
+margin: 0;
+padding: 3px 0 0 0;
+height: 12px;
+background-color: transparent;
+border: 0;
+}
+
+.language-list a:link, .language-list a:visited
+{
+background: transparent;
+color: #999999;
+text-decoration: none;
+}
+
+.language-list a:hover
+{
+background: #083852;
+color: #ffffff;
+}
+
+.language-list a.active
+{
+text-decoration: underline;
+color: #ffffff;
+}
+
+/*****************************************/
+/*           MENU - QUICKLINKS           */
+/*****************************************/
+
+.menu-quick-links
+{
+  margin: 0;
+  padding: 3px 2px 0 0;
+  background-color: transparent;
+  position: absolute;
+  top: 1px;
+  right: 10px;
+}
+
+.menu-quick-links a:link, .menu-quick-links a:visited
+{
+  background: transparent;
+  color: #999999;
+  text-decoration: none;
+}
+
+.menu-quick-links a:hover
+{
+  background: #083852;
+  color: #ffffff;
+}
+
+.menu-quick-links a.active
+{
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+/*****************************************/
+/*           MENU -  MAIN                */
+/*****************************************/
+
+#menu-main-block
+{
+  background: #DAEEF8;
+  padding: 8px 0 4px 0;
+}
+
+#menu-main
+{
+  margin: 0 auto 0 auto;
+  width: 770px;
+  padding: 0;
+  height: 27px;
+  background: transparent;
+  border-top: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  position: relative;
+}
+
+#menu-main a
+{
+  float: left;
+  padding: 5px 20px 3px 20px;
+  margin: 0;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  min-width: 80px;
+  height: 19px;
+  font: normal 17px/18px georgia, serif;
+  background:  transparent;
+  color: #083852;
+  border-right: 0;
+}
+
+#menu-main a:link, #menu-main a:visited, #menu-main a:active
+{
+  background:  transparent;
+  color: #083852;
+  text-decoration: none;
+}
+
+#menu-main a:hover
+{
+  background: #083852;
+  color: #ffffff;
+  text-decoration: none;
+  border: 1px solid #083852;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-topright: 15px;
+}
+
+#menu-main a.selected
+{
+  background:  #F1F9FC;
+  color: #083852;
+  padding-bottom: 7px;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid #DAEEF8;
+  border-bottom: 0;
+  -moz-border-radius-topleft: 15px;
+  -moz-border-radius-topright: 15px;
+}
+
+/*****************************************/
+/*            MENU - SECONDARY           */
+/*****************************************/
+
+#menu-secondary-block
+{
+  background-color: #F1F9FC;
+  padding: 4px 0 5px 0;
+  border-bottom: 1px solid #DAEEF8;
+  border-top: 1px solid #DAEEF8;
+}
+
+
+.menu-secondary
+{
+  margin: 0 auto 0 auto;
+  width: 770px;
+  padding: 0px 0 0 30px;
+  height: 25px;
+  background: transparent;
+  border: 0;
+  position: relative;
+}
+
+.menu-secondary a
+{
+  float:left;
+  height: 15px;
+  border: 1px solid transparent;
+  padding: 7px 20px 5px 20px;
+  margin: 3px 10px 0 10px;
+  color: #083852;
+  text-decoration: none;
+  display: block;
+  text-align: center;
+  font: normal 15px/15px georgia, serif;
+}
+
+.menu-secondary a:link, .menu-secondary a:visited, .menu-secondary a:active
+{
+  background: transparent;
+  color: #083852;
+  text-decoration: none;
+}
+
+.menu-secondary a:hover
+{
+  background-color: #083852;
+  color: #ffffff;
+  text-decoration: none;
+  border: 1px solid #083852;
+  border-bottom: 0;
+  -moz-border-radius-topleft: 25px;
+  -moz-border-radius-topright: 25px;
+}
+
+.menu-secondary a.selected
+{
+  background:  #ffffff;
+  color: #083852;
+  text-decoration: none;
+  font-weight: bold;
+  border: 1px solid #DAEEF8;
+  border-bottom: 0;
+  -moz-border-radius-topleft: 25px;
+  -moz-border-radius-topright: 25px;
+}
+
+
+/********************************************/
+/*            BUTTON-BLOCK                  */
+/********************************************/
+
+#button-block
+{
+  border: 3px solid #6A7F9A;
+  background: #F1F9FC;
+}
+
+/****************************************************/
+/*            MENU - ACTION                         */
+/****************************************************/
+
+.menu-action a:link, .menu-action a:visited, .menu-action a:active
+{
+color: #ffffff;
+background-color: #083852;
+}
+
+.menu-action a:hover
+{
+color: #083852;
+background-color: #ffffff;
+}
+
+/* see also graphic.css: EDIT FORMS (i.e. more styles for #content form) */
+
+.form-submit
+{
+color: #ffffff;
+background-color: #083852;
+}
+
+.form-submit:hover
+{
+color: #083852;
+background-color: #ffffff;
+}
+
+/*****************************************/
+/*           MENU - BROWSE               */
+/*****************************************/
+
+.menu-browse
+{
+  -moz-border-radius: 25px;
+  float: right;
+  margin: 0;
+  padding: 10px 0 0 0;
+  background-color: #0A5F8C;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 650px;
+  z-index: 5;
+  border: 2px solid #0A5F8C;
+}
+
+.menu-browse #label
+{
+  font: 13px/14px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+  color: #ffffff;
+  background: transparent;
+}
+
+.menu-browse ul
+{
+  padding: 5px 0 0 0;
+  margin: 0;
+}
+
+.menu-browse li
+{
+  list-style-type: none;
+  list-style-image: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px dotted #0A5F8C;
+  background: #ffffff;
+}
+
+.menu-browse li.hidden
+{
+  visibility: hidden;
+  position: absolute;
+}
+
+.menu-browse a
+{
+  display: block;
+  padding: 5px 15px 5px 15px;
+  margin: 0;
+  text-decoration: none;
+  text-align: center;
+  background:  transparent;
+  border: 0;
+  height: auto;
+  font: 13px/14px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+  color: #083852;
+}
+
+.menu-browse a:link, .menu-browse a:visited
+{
+  background: transparent;
+  color: #083852;
+  text-decoration: none;
+}
+
+.menu-browse a:hover
+{
+  background: #083852;
+  color: #ffffff;
+}
+
+.menu-browse a.active
+{
+  border-bottom: 1px solid #999999;
+}
+
+.menu-browse li:first-child
+{
+  border-top: none;
+}
+
+.menu-browse li:last-child
+{
+  border-bottom: none;
+}
+
+.menu-browse ul.menu-level-2
+{
+  visibility: hidden;
+  position: absolute;
+}
+
+/*******************************************************/
+/*                                                     */
+/*                  FORM.CSS                           */
+/*                                                     */
+/*******************************************************/
+
+
+.formHeader
+{
+  border-bottom: 1px solid #6A7F9A;
+  border-top: 2px solid #6A7F9A;
+  background-color: #F1F9FC;
+}
+
+.login-form input.form-submit
+{
+  background-color: #083852;
+}
+
+.login-form input.form-submit:hover
+{
+  color: #083852;
+}
+
+
+
+/*****************************************/
+/*           searchbox                   */
+/*****************************************/
+
+#searchbox
+{
+  background: transparent url(../images/searchbox.gif) repeat scroll 0 0;
+  background-repeat: repeat-y;
+  height: 42px;
+  margin: 0 auto 0 auto;
+  width: 770px;
+}
+
+#searchbox .box
+{
+  width: 360px;
+  height: auto;
+  font-size: 24px;
+  color: #C9C9C9;
+  border: 0;
+  padding: 0;
+  margin: 5px;
+}
+
+#searchbox .box:focus
+{
+  background: transparent;
+}
+
+#searchbox .searchbox-submit
+{
+  background: transparent url(../images/searchbox-button.gif) repeat scroll 0 0;;
+  background-repeat: repeat-y;
+  width: 38px;
+  height: 33px;
+  border: 0;
+  margin: 4px 4px 2px 0;
+  position: relative;
+  bottom: 39px;
+  left: 380px;
+}
+
+
+/*******************************************************/
+/*                                                     */
+/*                  TREEVIEW-SKIN.CSS                  */
+/*                                                     */
+/*******************************************************/
+
+a.currentTextNode
+{
+  background: #DAEEF8 none repeat scroll 0 0;
+  color:#000000;
+}
+
+.ygtvlabel:hover {
+  background-color: #083852;
+  color: #ffffff;
+}

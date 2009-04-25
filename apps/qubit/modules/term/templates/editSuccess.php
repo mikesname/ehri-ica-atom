@@ -88,9 +88,9 @@
   &nbsp;<?php echo link_to(__('cancel'), 'term/list') ?>
 <?php endif; ?>
     <?php if ($term->getId()): ?>
-      <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
     <?php else: ?>
-      <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
     <?php endif; ?>
 </div>
 

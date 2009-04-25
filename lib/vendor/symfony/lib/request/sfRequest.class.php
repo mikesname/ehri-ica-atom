@@ -132,6 +132,26 @@ abstract class sfRequest
     $this->method = strtoupper($method);
   }
 
+  public function __isset($name)
+  {
+    return $this->parameterHolder->has($name);
+  }
+
+  public function __get($name)
+  {
+    return $this->parameterHolder->get($name);
+  }
+
+  public function __set($name, $value)
+  {
+    return $this->parameterHolder->set($name, $value);
+  }
+
+  public function __unset($name)
+  {
+    return $this->parameterHolder->remove($name);
+  }
+
   /**
    * Retrieves the parameters for the current request.
    *

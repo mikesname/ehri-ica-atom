@@ -156,6 +156,12 @@ class QubitMenu extends BaseMenu
 
       return false;
     }
+    // Yucky Hack, Part Deux: Don't display any active menu options when displaying search results
+    if ($currentModule == 'search' && $currentAction == 'keyword')
+    {
+
+      return false;
+    }
 
     /***
      * FIXME Implement a better way to determine if a menu is selected than

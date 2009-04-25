@@ -15,7 +15,7 @@
     <td><?php echo input_file_tag('file', array('size' => '30px')) ?></td>
     <td width="100px">
       <div style="float: right; margin: 3px 8px 0 0">
-        <?php echo my_submit_tag(__('upload'), array('style' => 'width: auto;')) ?>
+        <?php echo submit_tag(__('upload'), array('class' => 'form-submit')) ?>
       </div>
     </td>
   </tr>
@@ -59,7 +59,7 @@
   </td>
   <td width="100px">
     <div style="float: right; margin: 3px 3px 0 0;">
-      <?php echo my_submit_tag(__('export'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('export'), array('class' => 'form-submit')) ?>
     </div>
   </td>
 </tr>

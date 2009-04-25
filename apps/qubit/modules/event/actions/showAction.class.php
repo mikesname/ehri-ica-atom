@@ -33,7 +33,7 @@ class EventShowAction extends sfAction
         $properties['id'] = $actorEvent->getId();
         $properties['actorId'] = $actorEvent->getActorId();
         $properties['eventTypeId'] = $actorEvent->getTypeId();
-        //$properties['placeId'] = $actorEvent->getPlaceId();
+        $properties['placeId'] = $actorEvent->getPlaceId();
 
         if ($actorEvent->getStartDate() != '0000-00-00')
         {

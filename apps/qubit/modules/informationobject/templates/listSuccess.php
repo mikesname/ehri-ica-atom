@@ -3,8 +3,7 @@
 <table class="list">
 <thead>
 <tr>
-  <th>
-  <?php if ($sort == 'titleUp'): ?>
+  <th><?php if ($sort == 'titleUp'): ?>
     <?php echo link_to(__('title'), 'informationobject/list?repository='.$repositoryId.'&sort=titleDown&page='.$page) ?>
     <?php echo image_tag('up.gif', 'style="padding-bottom: 3px;"', 'sort up') ?>
   <?php else: ?>
@@ -37,7 +36,7 @@
     <th>
       <?php echo __('creator(s)') ?>
     </th>
-  <?php endif; ?>
+    <?php endif; ?>
 </tr>
 </thead>
 <tbody>
@@ -49,8 +48,8 @@
     </td>
   <?php if($multiRepository): // multi-repository: show related repository ?>
     <td>
-      <?php if ($repository = $informationObject->getRepository()): ?>
-      <?php echo render_title($repository->getAuthorizedFormOfName(array('cultureFallback' => true))) ?>
+      <?php if (isset($informationObject->repository)): ?>
+        <?php echo $informationObject->repository->__toString() ?>
       <?php endif; ?>
     </td>
   <?php else: // NOT multi-repostiory: show creators as list ?>

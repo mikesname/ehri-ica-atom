@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebDebugPanelPropel.class.php 12055 2008-10-07 19:42:24Z fabien $
+ * @version    SVN: $Id: sfWebDebugPanelPropel.class.php 17296 2009-04-14 15:27:30Z fabien $
  */
 class sfWebDebugPanelPropel extends sfWebDebugPanel
 {
@@ -34,7 +34,7 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
   {
     if ($sqlLogs = $this->getSqlLogs())
     {
-      return '<img src="'.$this->webDebug->getOption('image_root_path').'/database.png" /> '.count($sqlLogs);
+      return '<img src="'.$this->webDebug->getOption('image_root_path').'/database.png" alt="SQL queries" /> '.count($sqlLogs);
     }
   }
 
@@ -45,9 +45,15 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
 
   public function getPanelContent()
   {
+    $logs = array();
+    foreach ($this->getSqlLogs() as $log)
+    {
+      $logs[] = htmlspecialchars($log, ENT_QUOTES, sfConfig::get('sf_charset'));
+    }
+
     return '
       <div id="sfWebDebugDatabaseLogs">
-      <ol><li>'.implode("</li>\n<li>", $this->getSqlLogs()).'</li></ol>
+      <ol><li>'.implode("</li>\n<li>", $logs).'</li></ol>
       </div>
     ';
   }
@@ -83,14 +89,14 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
         continue;
       }
 
-      if (preg_match('/^.*?(\b(?:SELECT|INSERT|UPDATE|DELETE)\b.*)$/', $log['message'], $match))
+      if (preg_match('/^(?:prepare|exec|query): (.*)$/s', $log['message'], $match))
       {
         $logs[$i++] = $match[1];
         $bindings[$i - 1] = array();
       }
       else if (preg_match('/Binding (.*) at position (.+?) w\//', $log['message'], $match))
       {
-        $bindings[$i - 1][] = $match[2].' = '.$match[1];
+        $bindings[$i - 1][$match[2]] = $match[1];
       }
     }
 
@@ -98,7 +104,11 @@ class sfWebDebugPanelPropel extends sfWebDebugPanel
     {
       if (count($bindings[$i]))
       {
-        $logs[$i] .= sprintf(' (%s)', implode(', ', $bindings[$i]));
+        $bindings[$i] = array_reverse($bindings[$i]);
+        foreach ($bindings[$i] as $search => $replace)
+        {
+          $logs[$i] = str_replace($search, $replace, $logs[$i]);
+        }
       }
     }
 

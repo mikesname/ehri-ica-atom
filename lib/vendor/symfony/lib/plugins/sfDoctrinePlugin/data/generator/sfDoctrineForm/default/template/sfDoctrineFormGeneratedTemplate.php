@@ -17,7 +17,7 @@ class Base<?php echo $this->modelName ?>Form extends BaseFormDoctrine
       '<?php echo $column->getFieldName() ?>'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($column->getFieldName())) ?> => new <?php echo $this->getWidgetClassForColumn($column) ?>(<?php echo $this->getWidgetOptionsForColumn($column) ?>),
 <?php endforeach; ?>
 <?php foreach ($this->getManyToManyRelations() as $relation): ?>
-      '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDoctrineSelectMany(array('model' => '<?php echo $relation['table']->getOption('name') ?>')),
+      '<?php echo $this->underscore($relation['alias']) ?>_list'<?php echo str_repeat(' ', $this->getColumnNameMaxLength() - strlen($this->underscore($relation['alias']).'_list')) ?> => new sfWidgetFormDoctrineChoiceMany(array('model' => '<?php echo $relation['table']->getOption('name') ?>')),
 <?php endforeach; ?>
     ));
 
@@ -30,6 +30,20 @@ class Base<?php echo $this->modelName ?>Form extends BaseFormDoctrine
 <?php endforeach; ?>
     ));
 
+<?php if ($uniqueColumns = $this->getUniqueColumnNames()): ?>
+    $this->validatorSchema->setPostValidator(
+<?php if (count($uniqueColumns) > 1): ?>
+      new sfValidatorAnd(array(
+<?php foreach ($uniqueColumns as $uniqueColumn): ?>
+        new sfValidatorDoctrineUnique(array('model' => '<?php echo $this->table->getOption('name') ?>', 'column' => array('<?php echo implode("', '", $uniqueColumn) ?>'))),
+<?php endforeach; ?>
+      ))
+<?php else: ?>
+      new sfValidatorDoctrineUnique(array('model' => '<?php echo $this->table->getOption('name') ?>', 'column' => array('<?php echo implode("', '", $uniqueColumns[0]) ?>')))
+<?php endif; ?>
+    );
+
+<?php endif; ?>
     $this->widgetSchema->setNameFormat('<?php echo $this->underscore($this->modelName) ?>[%s]');
 
     $this->errorSchema = new sfValidatorErrorSchema($this->validatorSchema);
@@ -84,12 +98,23 @@ class Base<?php echo $this->modelName ?>Form extends BaseFormDoctrine
       $con = $this->getConnection();
     }
 
-    $this->object->unlink('<?php echo $relation['alias'] ?>', array());
-
+    $existing = $this->object-><?php echo $relation['alias']; ?>->getPrimaryKeys();
     $values = $this->getValue('<?php echo $this->underscore($relation['alias']) ?>_list');
-    if (is_array($values))
+    if (!is_array($values))
     {
-      $this->object->link('<?php echo $relation['alias'] ?>', $values);
+      $values = array();
+    }
+
+    $unlink = array_diff($existing, $values);
+    if (count($unlink))
+    {
+      $this->object->unlink('<?php echo $relation['alias'] ?>', array_values($unlink));
+    }
+
+    $link = array_diff($values, $existing);
+    if (count($link))
+    {
+      $this->object->link('<?php echo $relation['alias'] ?>', array_values($link));
     }
   }
 

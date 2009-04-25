@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage generator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelFormGenerator.class.php 13234 2008-11-22 13:52:02Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfPropelFormGenerator.class.php 16976 2009-04-04 12:47:44Z fabien $
  */
 class sfPropelFormGenerator extends sfGenerator
 {
@@ -219,6 +219,7 @@ class sfPropelFormGenerator extends sfGenerator
       case PropelColumnTypes::BOOLEAN:
         $name = 'InputCheckbox';
         break;
+      case PropelColumnTypes::CLOB:
       case PropelColumnTypes::LONGVARCHAR:
         $name = 'Textarea';
         break;
@@ -261,6 +262,12 @@ class sfPropelFormGenerator extends sfGenerator
     if (!$column->isPrimaryKey() && $column->isForeignKey())
     {
       $options[] = sprintf('\'model\' => \'%s\', \'add_empty\' => %s', $this->getForeignTable($column)->getClassname(), $column->isNotNull() ? 'false' : 'true');
+
+      $refColumn = $this->getForeignTable($column)->getColumn($column->getRelatedColumnName());
+      if (!$refColumn->isPrimaryKey())
+      {
+        $options[] = sprintf('\'key_method\' => \'get%s\'', $refColumn->getPhpName());
+      }
     }
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
@@ -280,6 +287,7 @@ class sfPropelFormGenerator extends sfGenerator
       case PropelColumnTypes::BOOLEAN:
         $name = 'Boolean';
         break;
+      case PropelColumnTypes::CLOB:
       case PropelColumnTypes::CHAR:
       case PropelColumnTypes::VARCHAR:
       case PropelColumnTypes::LONGVARCHAR:
@@ -332,25 +340,17 @@ class sfPropelFormGenerator extends sfGenerator
 
     if ($column->isForeignKey())
     {
-      $map = call_user_func(array(constant($this->getForeignTable($column)->getClassname().'::PEER'), 'getTableMap'));
-      foreach ($map->getColumns() as $primaryKey)
-      {
-        if ($primaryKey->isPrimaryKey())
-        {
-          break;
-        }
-      }
-
-      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $this->getForeignTable($column)->getClassname(), strtolower($primaryKey->getColumnName()));
+      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $this->getForeignTable($column)->getClassname(), $this->translateColumnName($column, true));
     }
     else if ($column->isPrimaryKey())
     {
-      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $column->getTable()->getClassname(), strtolower($column->getColumnName()));
+      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $column->getTable()->getClassname(), $this->translateColumnName($column));
     }
     else
     {
       switch ($column->getType())
       {
+        case PropelColumnTypes::CLOB:
         case PropelColumnTypes::CHAR:
         case PropelColumnTypes::VARCHAR:
         case PropelColumnTypes::LONGVARCHAR:
@@ -380,7 +380,7 @@ class sfPropelFormGenerator extends sfGenerator
     $max = 0;
     foreach ($this->table->getColumns() as $column)
     {
-      if (($m = strlen($column->getColumnName())) > $max)
+      if (($m = strlen($column->getName())) > $max)
       {
         $max = $m;
       }
@@ -409,7 +409,7 @@ class sfPropelFormGenerator extends sfGenerator
     {
       if ($column->isPrimaryKey())
       {
-        $pks[] = strtolower($column->getColumnName());
+        $pks[] = $this->translateColumnName($column);
       }
     }
 
@@ -462,13 +462,21 @@ class sfPropelFormGenerator extends sfGenerator
       $uniqueColumn = array();
       foreach ($unique as $column)
       {
-        $uniqueColumn[] = strtolower($this->table->getColumn($column)->getColumnName());
+        $uniqueColumn[] = $this->translateColumnName($this->table->getColumn($column));
       }
 
       $uniqueColumns[] = $uniqueColumn;
     }
 
     return $uniqueColumns;
+  }
+
+  public function translateColumnName($column, $related = false, $to = BasePeer::TYPE_FIELDNAME)
+  {
+    $peer = $related ? constant($column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName())->getPhpName().'::PEER') : constant($column->getTable()->getPhpName().'::PEER');
+    $field = $related ? $column->getRelatedName() : $column->getFullyQualifiedName();
+
+    return call_user_func(array($peer, 'translateFieldName'), $field, BasePeer::TYPE_COLNAME, $to);
   }
 
   /**

@@ -23,13 +23,20 @@ body,
 {
   margin: 0;
   padding: 0;
+  list-style-image: none;
 }
 
 .contextMenu ul li
 {
   background: none;
-  margin: 0;
-  padding: 0;
+  margin: 2px;
+  padding: 0px;
+  border-top: 1px dotted #999;
+}
+
+.contextMenu ul li:first-child
+{
+  border-top: none;
 }
 
 /* Fixes for Drupal and YUI to play together */
@@ -126,4 +133,11 @@ html.js fieldset.collapsible
   background: #ffd;
   border: 1px dashed #fd0;
   color: #000;
+}
+
+/* Lowercase menus */
+
+#menu-main, .menu-quick-links, .menu-secondary
+{
+  text-transform: lowercase;
 }

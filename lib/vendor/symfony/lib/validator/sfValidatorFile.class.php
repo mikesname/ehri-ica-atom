@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorFile.class.php 11691 2008-09-20 20:53:11Z fabien $
+ * @version    SVN: $Id: sfValidatorFile.class.php 17044 2009-04-06 14:23:53Z fabien $
  */
 class sfValidatorFile extends sfValidatorBase
 {
@@ -23,11 +23,12 @@ class sfValidatorFile extends sfValidatorBase
    *
    * Available options:
    *
-   *  * max_size:           The maximum file size
-   *  * mime_types:         Allowed mime types array or category (available categories: web_images)
-   *  * mime_type_guessers: An array of mime type guesser PHP callables (must return the mime type or null)
-   *  * mime_categories:    An array of mime type categories (web_images is defined by default)
-   *  * path:               The path where to save the file - as used by the sfValidatedFile class (optional)
+   *  * max_size:             The maximum file size
+   *  * mime_types:           Allowed mime types array or category (available categories: web_images)
+   *  * mime_type_guessers:   An array of mime type guesser PHP callables (must return the mime type or null)
+   *  * mime_categories:      An array of mime type categories (web_images is defined by default)
+   *  * path:                 The path where to save the file - as used by the sfValidatedFile class (optional)
+   *  * validated_file_class: Name of the class that manages the cleaned uploaded file (optional)
    *
    * There are 3 built-in mime type guessers:
    *
@@ -128,7 +129,7 @@ class sfValidatorFile extends sfValidatorBase
       case UPLOAD_ERR_NO_TMP_DIR:
         throw new sfValidatorError($this, 'no_tmp_dir');
       case UPLOAD_ERR_CANT_WRITE:
-        throw new sfValidatorError($this, 'no_cant_write');
+        throw new sfValidatorError($this, 'cant_write');
       case UPLOAD_ERR_EXTENSION:
         throw new sfValidatorError($this, 'extension');
     }
@@ -191,7 +192,7 @@ class sfValidatorFile extends sfValidatorBase
    */
   protected function guessFromFileinfo($file)
   {
-    if (!function_exists('finfo_open'))
+    if (!function_exists('finfo_open') || !is_readable($file))
     {
       return null;
     }
@@ -215,7 +216,7 @@ class sfValidatorFile extends sfValidatorBase
    */
   protected function guessFromMimeContentType($file)
   {
-    if (!function_exists('mime_content_type'))
+    if (!function_exists('mime_content_type') || !is_readable($file))
     {
       return null;
     }
@@ -236,6 +237,8 @@ class sfValidatorFile extends sfValidatorBase
     passthru(sprintf('file -bi %s 2>/dev/null', escapeshellarg($file)), $return);
     if ($return > 0)
     {
+      ob_end_clean();
+
       return null;
     }
     $type = trim(ob_get_clean());
@@ -281,7 +284,7 @@ class sfValidatorFile extends sfValidatorBase
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorFile.class.php 11691 2008-09-20 20:53:11Z fabien $
+ * @version    SVN: $Id: sfValidatorFile.class.php 17044 2009-04-06 14:23:53Z fabien $
  */
 class sfValidatedFile
 {
@@ -391,9 +394,9 @@ class sfValidatedFile
   }
 
   /**
-   * Generates a unique filename for the current file.
+   * Generates a random filename for the current file.
    *
-   * @return string A unique name to represent the current file
+   * @return string A random name to represent the current file
    */
   public function generateFilename()
   {
@@ -525,10 +528,10 @@ class sfValidatedFile
       'application/ocsp-request' => 'orq',
       'application/ocsp-response' => 'ors',
       'application/octet-stream' => 'bin',
-      'application/octet-stream' => 'exe',
       'application/oda' => 'oda',
       'application/ogg' => 'ogg',
       'application/pdf' => 'pdf',
+      'application/x-pdf' => 'pdf',
       'application/pgp-encrypted' => '7bit',
       'application/pgp-keys' => '7bit',
       'application/pgp-signature' => 'sig',
@@ -539,8 +542,6 @@ class sfValidatedFile
       'application/pkix-crl' => 'crl',
       'application/pkix-pkipath' => 'pkipath',
       'application/pkixcmp' => 'pki',
-      'application/postscript' => 'ai',
-      'application/postscript' => 'eps',
       'application/postscript' => 'ps',
       'application/presentations' => 'shw',
       'application/prs.cww' => 'cw',
@@ -692,8 +693,6 @@ class sfValidatedFile
       'application/x-cult3d-object' => 'co',
       'application/x-debian-package' => 'deb',
       'application/x-director' => 'dcr',
-      'application/x-director' => 'dir',
-      'application/x-director' => 'dxr',
       'application/x-dvi' => 'dvi',
       'application/x-envoy' => 'evy',
       'application/x-futuresplash' => 'spl',
@@ -721,7 +720,6 @@ class sfValidatedFile
       'application/x-midi' => 'mid',
       'application/x-mif' => 'mif',
       'application/x-msaccess' => 'mda',
-      'application/x-msdos-program' => 'cmd',
       'application/x-msdos-program' => 'com',
       'application/x-msdownload' => 'base64',
       'application/x-msexcel' => 'xls',
@@ -761,6 +759,7 @@ class sfValidatedFile
       'application/x-word' => 'base64',
       'application/x-wordperfect6.1' => 'wp6',
       'application/x-x509-ca-cert' => 'crt',
+      'application/x-zip' => 'zip',
       'application/x-zip-compressed' => 'zip',
       'application/xhtml+xml' => 'xhtml',
       'application/zip' => 'zip',
@@ -772,7 +771,6 @@ class sfValidatedFile
       'audio/l16' => 'l16',
       'audio/midi' => 'mid',
       'audio/mpeg' => 'mp3',
-      'audio/mpeg' => 'mpga',
       'audio/prs.sid' => 'sid',
       'audio/qcelp' => 'qcp',
       'audio/smv' => 'smv',
@@ -792,7 +790,6 @@ class sfValidatedFile
       'audio/x-midi' => 'mid',
       'audio/x-mpeg' => 'mp2',
       'audio/x-mpegurl' => 'mpu',
-      'audio/x-pn-realaudio' => 'ra',
       'audio/x-pn-realaudio' => 'rm',
       'audio/x-pn-realaudio-plugin' => 'rpm',
       'audio/x-realaudio' => 'ra',
@@ -819,7 +816,6 @@ class sfValidatedFile
       'image/gif' => 'gif',
       'image/ief' => 'ief',
       'image/jp2' => 'jp2',
-      'image/jpeg' => 'jpeg',
       'image/jpeg' => 'jpg',
       'image/jpm' => 'jpm',
       'image/jpx' => 'jpf',
@@ -828,7 +824,6 @@ class sfValidatedFile
       'image/png' => 'png',
       'image/targa' => 'tga',
       'image/tiff' => 'tif',
-      'image/tiff' => 'tiff',
       'image/vn-svf' => 'svf',
       'image/vnd.dgn' => 'dgn',
       'image/vnd.djvu' => 'djvu',
@@ -860,7 +855,6 @@ class sfValidatedFile
       'model/mesh' => 'msh',
       'model/vnd.parasolid.transmit.binary' => 'x_b',
       'model/vnd.parasolid.transmit.text' => 'x_t',
-      'model/vrml' => 'vrm',
       'model/vrml' => 'wrl',
       'multipart/alternative' => '8bit',
       'multipart/appledouble' => '8bit',
@@ -869,13 +863,11 @@ class sfValidatedFile
       'multipart/parallel' => '8bit',
       'text/comma-separated-values' => 'csv',
       'text/css' => 'css',
-      'text/html' => 'htm',
       'text/html' => 'html',
       'text/plain' => 'txt',
       'text/prs.fallenstein.rst' => 'rst',
       'text/richtext' => 'rtx',
       'text/rtf' => 'rtf',
-      'text/sgml' => 'sgm',
       'text/sgml' => 'sgml',
       'text/tab-separated-values' => 'tsv',
       'text/vnd.net2phone.commcenter.command' => 'ccc',
@@ -896,11 +888,8 @@ class sfValidatedFile
       'video/dl' => 'dl',
       'video/gl' => 'gl',
       'video/mj2' => 'mj2',
-      'video/mpeg' => 'mp2',
       'video/mpeg' => 'mpeg',
-      'video/mpeg' => 'mpg',
       'video/quicktime' => 'mov',
-      'video/quicktime' => 'qt',
       'video/vdo' => 'vdo',
       'video/vivo' => 'viv',
       'video/vnd.fvt' => 'fvt',
@@ -911,7 +900,6 @@ class sfValidatedFile
       'video/vnd.sealed.mpeg4' => 'smpg',
       'video/vnd.sealed.swf' => 'sswf',
       'video/vnd.sealedmedia.softseal.mov' => 'smov',
-      'video/vnd.vivo' => 'viv',
       'video/vnd.vivo' => 'vivo',
       'video/x-fli' => 'fli',
       'video/x-ms-asf' => 'asf',

@@ -74,6 +74,9 @@ class QubitTerm extends BaseTerm
   const ARTEFACT_ID = 146;
   //Relation Type taxonomy
   const HAS_PHYSICAL_OBJECT_ID = 147;
+  //Actor name type taxonomy
+  const PARALLEL_FORM_OF_NAME_ID = 148;
+  const OTHER_FORM_OF_NAME_ID = 149;
 
   public function isProtected()
   {
@@ -90,6 +93,9 @@ class QubitTerm extends BaseTerm
     $this->getId() == QubitTerm::SOURCE_NOTE_ID ||
     $this->getId() == QubitTerm::SCOPE_NOTE_ID ||
     $this->getId() == QubitTerm::DISPLAY_NOTE_ID ||
+    $this->getId() == QubitTerm::ARCHIVIST_NOTE_ID ||
+    $this->getId() == QubitTerm::GENERAL_NOTE_ID ||
+    $this->getId() == QubitTerm::OTHER_DESCRIPTIVE_DATA_ID ||
     $this->getId() == QubitTerm::ARCHIVAL_MATERIAL_ID ||
     $this->getId() == QubitTerm::PUBLISHED_MATERIAL_ID ||
     $this->getId() == QubitTerm::ARTEFACT_MATERIAL_ID ||
@@ -110,9 +116,8 @@ class QubitTerm extends BaseTerm
     $this->getId() == QubitTerm::CONTAINER_ID ||
     $this->getId() == QubitTerm::ARTEFACT_ID ||
     $this->getId() == QubitTerm::HAS_PHYSICAL_OBJECT_ID ||
-    $this->getId() == QubitTerm::ARCHIVIST_NOTE_ID ||
-    $this->getId() == QubitTerm::OTHER_DESCRIPTIVE_DATA_ID ||
-    $this->getId() == QubitTerm::GENERAL_NOTE_ID;
+    $this->getId() == QubitTerm::PARALLEL_FORM_OF_NAME_ID ||
+    $this->getId() == QubitTerm::OTHER_FORM_OF_NAME_ID;
   }
 
 
@@ -254,6 +259,11 @@ class QubitTerm extends BaseTerm
   public static function getRADTitleNotes($options = array())
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::RAD_TITLE_NOTE_ID, $options);
+  }
+
+  public static function getModsTitleTypes($options = array())
+  {
+    return QubitTaxonomy::getTermsById(QubitTaxonomy::MODS_TITLE_TYPE_ID, $options);
   }
 
   /**
@@ -405,7 +415,7 @@ class QubitTerm extends BaseTerm
     {
       // Add Fallback criteria
       $options = array();
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $culture, $options);
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
     }
     else
     {
@@ -584,7 +594,7 @@ class QubitTerm extends BaseTerm
   }
 
   /**
-   * Get a count of objects related via q_object_term_relation that have a 
+   * Get a count of objects related via q_object_term_relation that have a
    * class_name = $objectClassName (i.e. only 'QubitInformationObject's)
    *
    * @param string $objectClassName related object class_name column value
@@ -618,13 +628,23 @@ class QubitTerm extends BaseTerm
    */
   public static function getOptionsForSelectList($taxonomyId, $options = array())
   {
-    $context = sfContext::getInstance();
-    $culture = $context->getUser()->getCulture();
-
     $criteria = new Criteria;
     $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
+
+    // Exclude specified term
+    if (isset($options['exclude']))
+    {
+      // Turn string into a single entity array
+      $excludes = (is_array($options['exclude'])) ? $options['exclude'] : array($options['exclude']);
+
+      foreach ($excludes as $exclude)
+      {
+        $criteria->addAnd(QubitTerm::ID, $exclude, Criteria::NOT_EQUAL);
+      }
+    }
+
     $criteria->addAscendingOrderByColumn('name');
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $culture, $options);
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
     $terms = QubitTerm::get($criteria);
 
     $selectList = array();
@@ -634,7 +654,19 @@ class QubitTerm extends BaseTerm
     }
     foreach ($terms as $term)
     {
-      $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
+      $displayValue = $term->getName(array('cultureFallback'=>true));
+
+      // Display note content instead of term name - used mainly for displaying
+      // event type actor vs. action (e.g. "creator" vs. "creation")
+      if (isset($options['displayNote']) && $options['displayNote'] == true)
+      {
+        if (count($notes = $term->getNotesByType(QubitTerm::DISPLAY_NOTE_ID)))
+        {
+          $displayValue = $notes[0]->getContent(array('cultureFallback'=>true));
+        }
+      }
+
+      $selectList[$term->getId()] = $displayValue;
     }
 
     return $selectList;
@@ -661,13 +693,10 @@ class QubitTerm extends BaseTerm
     // TODO: include unlocked event type terms that have been added to the taxonomy
     if (isset($options['include_custom']))
     {
-      $context = sfContext::getInstance();
-      $culture = $context->getUser()->getCulture();
-
       $criteria = new Criteria;
       $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::EVENT_TYPE_ID);
       $criteria->addAscendingOrderByColumn('name');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $culture, $options);
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
       $terms = QubitTerm::get($criteria);
       foreach ($terms as $term)
       {
@@ -698,13 +727,10 @@ class QubitTerm extends BaseTerm
     // TODO: include unlocked event type terms that have been added to the taxonomy
     if (isset($options['include_custom']))
     {
-      $context = sfContext::getInstance();
-      $culture = $context->getUser()->getCulture();
-
       $criteria = new Criteria;
       $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::EVENT_TYPE_ID);
       $criteria->addAscendingOrderByColumn('name');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $culture, $options);
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
       $terms = QubitTerm::get($criteria);
       foreach ($terms as $term)
       {
@@ -718,4 +744,17 @@ class QubitTerm extends BaseTerm
     return $selectList;
   }
 
+  /**
+   * Add search criteria for find records updated in last $numberOfDays
+   *
+   * @param Criteria $criteria current search criteria
+   * @param string $cutoff earliest date to show
+   * @return Criteria modified criteria object
+   */
+  public static function addRecentUpdatesCriteria($criteria, $cutoff)
+  {
+    $criteria->add(QubitTerm::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
+
+    return $criteria;
+  }
 }

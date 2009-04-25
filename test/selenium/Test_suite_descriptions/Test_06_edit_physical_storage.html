@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add/edit</td>
+	<td>link=Add/edit</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,34 +37,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>physicalObjectId</td>
-	<td>label=Box A12</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Box: Box A12 - Shelf 3, Aisle C10, Main Repository</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=physical storage</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
 	<td>physicalObjectName</td>
-	<td>Box 52</td>
+	<td>Box A12</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>physicalObjectLocation</td>
-	<td>Bay 18</td>
+	<td>Shelf 3, Aisle C10, Main Repository</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -73,17 +53,42 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Box: Box A12 - Shelf 3, Aisle C10, Main Repository</td>
+	<td>Hollinger box: Box A12 - Shelf 3, Aisle C10, Main Repository </td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Box A12</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Box A42</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>location</td>
+	<td>Shelf 4, Aisle C11, West Repository</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>typeId</td>
+	<td>label=regexp:\sCardboard box</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Hollinger box: Box 52 - Bay 18</td>
+	<td>Cardboard box: Box A42 - Shelf 4, Aisle C11, West Repository </td>
 	<td></td>
 </tr>
 <tr>
@@ -93,32 +98,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//form[@id='editForm']/fieldset[10]/div/div[1]/table/tbody/tr[3]/td[2]/div/a/img</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>name</td>
-	<td>Box 82</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Box: Box A12 - Shelf 3, Aisle C10, Main Repository</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Hollinger box: Box 82 - Bay 18</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Box 82</td>
+	<td>//form[@id='editForm']/fieldset[10]/div/div[1]/table/tbody/tr[2]/td[2]/div/a/img</td>
 	<td></td>
 </tr>
 <tr>
@@ -132,13 +112,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Fonds 66 - Selenium test fonds</td>
-	<td></td>
-</tr>
-<tr>
 	<td>verifyTextNotPresent</td>
-	<td>Hollinger box: Box 82 - Bay 18</td>
+	<td>Hollinger box: Box A42 - Shelf 4, Aisle C11,West Repository </td>
 	<td></td>
 </tr>
 

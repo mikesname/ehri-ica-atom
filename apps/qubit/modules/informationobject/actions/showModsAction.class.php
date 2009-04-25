@@ -30,6 +30,8 @@ class InformationObjectShowModsAction extends InformationObjectShowAction
 {
   public function execute($request)
   {
+    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'mods');
+
     // run the core informationObject show action commands
     parent::execute($request);
 

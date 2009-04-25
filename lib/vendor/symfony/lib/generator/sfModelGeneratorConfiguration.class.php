@@ -6,7 +6,7 @@
  * @package    symfony
  * @subpackage generator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfModelGeneratorConfiguration.class.php 13282 2008-11-23 18:18:17Z FabianLange $
+ * @version    SVN: $Id: sfModelGeneratorConfiguration.class.php 13653 2008-12-03 08:51:34Z fabien $
  */
 class sfModelGeneratorConfiguration
 {
@@ -57,12 +57,12 @@ class sfModelGeneratorConfiguration
 
     foreach (array_keys($config['default']) as $field)
     {
-      $formConfig = array_merge($config['default'][$field], $config['form'][$field]);
+      $formConfig = array_merge($config['default'][$field], isset($config['form'][$field]) ? $config['form'][$field] : array());
 
-      $this->configuration['list']['fields'][$field]   = new sfModelGeneratorConfigurationField($field, array_merge(array('label' => sfInflector::humanize(sfInflector::underscore($field))), $config['default'][$field], $config['list'][$field]));
-      $this->configuration['filter']['fields'][$field] = new sfModelGeneratorConfigurationField($field, array_merge($config['default'][$field], $config['filter'][$field]));
-      $this->configuration['new']['fields'][$field]    = new sfModelGeneratorConfigurationField($field, array_merge($formConfig, $config['new'][$field]));
-      $this->configuration['edit']['fields'][$field]   = new sfModelGeneratorConfigurationField($field, array_merge($formConfig, $config['edit'][$field]));
+      $this->configuration['list']['fields'][$field]   = new sfModelGeneratorConfigurationField($field, array_merge(array('label' => sfInflector::humanize(sfInflector::underscore($field))), $config['default'][$field], isset($config['list'][$field]) ? $config['list'][$field] : array()));
+      $this->configuration['filter']['fields'][$field] = new sfModelGeneratorConfigurationField($field, array_merge($config['default'][$field], isset($config['filter'][$field]) ? $config['filter'][$field] : array()));
+      $this->configuration['new']['fields'][$field]    = new sfModelGeneratorConfigurationField($field, array_merge($formConfig, isset($config['new'][$field]) ? $config['new'][$field] : array()));
+      $this->configuration['edit']['fields'][$field]   = new sfModelGeneratorConfigurationField($field, array_merge($formConfig, isset($config['edit'][$field]) ? $config['edit'][$field] : array()));
     }
 
     // "virtual" fields for list
@@ -70,16 +70,11 @@ class sfModelGeneratorConfiguration
     {
       list($field, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($field);
 
-      if (isset($this->configuration['list']['fields'][$field]))
-      {
-        continue;
-      }
-
       $this->configuration['list']['fields'][$field] = new sfModelGeneratorConfigurationField($field, array_merge(
         array('type' => 'Text', 'label' => sfInflector::humanize(sfInflector::underscore($field))),
         isset($config['default'][$field]) ? $config['default'][$field] : array(),
         isset($config['list'][$field]) ? $config['list'][$field] : array(),
-        array('is_real' => false, 'flag' => $flag)
+        array('flag' => $flag)
       ));
     }
 
@@ -137,10 +132,18 @@ class sfModelGeneratorConfiguration
       list($name, $flag) = sfModelGeneratorConfigurationField::splitFieldWithFlag($name);
       if (!isset($this->configuration['list']['fields'][$name]))
       {
-        throw new InvalidArgumentException(sprintf('The field "%s" does not exist.', $name));
+        $this->configuration['list']['fields'][$name] = new sfModelGeneratorConfigurationField($name, array_merge(
+          array('type' => 'Text', 'label' => sfInflector::humanize(sfInflector::underscore($name))),
+          isset($config['default'][$name]) ? $config['default'][$name] : array(),
+          isset($config['list'][$name]) ? $config['list'][$name] : array(),
+          array('flag' => $flag)
+        ));
       }
-      $field = $this->configuration['list']['fields'][$name];
-      $field->setFlag($flag);
+      else
+      {
+        $this->configuration['list']['fields'][$name]->setFlag($flag);
+      }
+
       $this->configuration['list']['params'] = str_replace('%%'.$flag.$name.'%%', '%%'.$name.'%%', $this->configuration['list']['params']);
     }
 

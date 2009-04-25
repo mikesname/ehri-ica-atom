@@ -34,7 +34,7 @@ class InformationObjectTreeViewComponent extends sfComponent
     $this->getResponse()->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
     $this->getResponse()->addJavaScript('/vendor/yui/treeview/treeview-min');
     $this->getResponse()->addJavaScript('treeView');
-    $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin');
+    $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin', 'first');
 
     $this->treeViewObjects = array();
     foreach ($this->informationObjects->orderBy('lft') as $informationObject)

@@ -17,36 +17,6 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/**
- * Returns an XHTML compliant <input> tag with type="submit" and a CSS class name that corresponds to $value
- *
- * This custom helper overrides the default Symfony submit_tag Helper by adding a CSS class (which is assigned the name
- * of the $value value so that the button can by styled using class name as a CSS selector)
- *
- * By default, this helper creates a submit tag with a name of <em>commit</em> to avoid
- * conflicts with other parts of the framework.  It is recommended that you do not use the name
- * "submit" for submit tags unless absolutely necessary. Also, the default <i>$value</i> parameter
- * (title of the button) is set to "Submit", which can be easily overwritten by passing a
- * <i>$value</i> parameter.
- *
- * <b>Examples:</b>
- * <code>
- *  echo submit_tag();
- * </code>
- *
- * <code>
- *  echo submit_tag('Update Record');
- * </code>
- *
- * @param  string field value (title of submit button)
- * @param  array  additional HTML compliant <input> tag parameters
- * @return string XHTML compliant <input> tag with type="submit"
- */
-function my_submit_tag($value = 'submit', $options = array())
-{
-  return tag('input', array_merge(array('type' => 'submit', 'name' => 'commit', 'class' => 'submit', 'value' => $value, 'onmouseover' => "this.className='submithover'", 'onmouseout' => "this.className='submit'"), _convert_options($options)));
-}
-
 function select_script_tag($name, $selected = null, $options = array())
 {
   $c = new sfCultureInfo(sfContext::getInstance()->getUser()->getCulture());
@@ -107,7 +77,7 @@ function object_select_tree($object, $method, array $options = array())
   $response->addJavaScript('/vendor/jquery/jquery');
   $response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
   $response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
-  $response->addJavaScript('/vendor/yui/element/element-beta-min');
+  $response->addJavaScript('/vendor/yui/element/element-min');
   $response->addJavaScript('/vendor/yui/button/button-min');
   $response->addJavaScript('/vendor/yui/container/container_core-min');
   $response->addJavaScript('/vendor/yui/menu/menu-min');
@@ -310,4 +280,26 @@ function hr_filesize($val)
   }
 
   return round(($val / pow(1024, $i)), 1).' '.$units[$i];
+}
+
+/**
+ * Format a date string for display
+ *
+ * @param string $format see date() formatting strings
+ * @param string $date human-readable date (not unix timestamp)
+ * @return string formatted date
+ */
+function format_date($format, $date)
+{
+  $date = strtotime($date);
+  if (null == $date || 0 == $date)
+  {
+    $date = '';
+  }
+  else
+  {
+    $date = date($format, $date);
+  }
+
+  return $date;
 }

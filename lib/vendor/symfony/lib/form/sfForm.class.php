@@ -18,7 +18,7 @@
  * @package    symfony
  * @subpackage form
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfForm.class.php 13361 2008-11-26 20:05:25Z fabien $
+ * @version    SVN: $Id: sfForm.class.php 17023 2009-04-06 06:15:22Z fabien $
  */
 class sfForm implements ArrayAccess, Iterator, Countable
 {
@@ -139,13 +139,6 @@ $this->widgetSchema->setFormFormatterName($name);
   {
     $currentFormatterName = $this->widgetSchema->getFormFormatterName();
 
-    $formatterClass = sprintf('sfWidgetFormSchemaFormatter%s', ucfirst($formatterName));
-
-    if (!class_exists($formatterClass))
-    {
-      throw new InvalidArgumentException(sprintf('Formatter "%s" (class "%s") does not exist', $formatterName, $formatterClass));
-    }
-
     $this->widgetSchema->setFormFormatterName($formatterName);
 
     $output = $this->render($attributes);
@@ -157,7 +150,7 @@ $this->widgetSchema->setFormFormatterName($name);
 
   /**
    * Renders hidden form fields.
-   * 
+   *
    * @return string
    */
   public function renderHiddenFields()
@@ -400,11 +393,11 @@ $this->widgetSchema->setFormFormatterName($name);
    * @param integer $n                The number of times to embed the form
    * @param string  $decorator        A HTML decorator for the main form around embedded forms
    * @param string  $innerDecorator   A HTML decorator for each embedded form
-   * @param array   $attributes       Attributes for schema
    * @param array   $options          Options for schema
+   * @param array   $attributes       Attributes for schema
    * @param array   $labels           Labels for schema
    */
-  public function embedFormForEach($name, sfForm $form, $n, $decorator = null, $innerDecorator = null, $attributes = array(), $options = array(), $labels = array())
+  public function embedFormForEach($name, sfForm $form, $n, $decorator = null, $innerDecorator = null, $options = array(), $attributes = array(), $labels = array())
   {
     if (true === $this->isBound() || true === $form->isBound())
     {
@@ -431,7 +424,8 @@ $this->widgetSchema->setFormFormatterName($name);
 
     $decorator = is_null($decorator) ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $decorator;
     $innerDecorator = is_null($innerDecorator) ? $widgetSchema->getFormFormatter()->getDecoratorFormat() : $innerDecorator;
-    $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator(new sfWidgetFormSchemaForEach(new sfWidgetFormSchemaDecorator($widgetSchema, $innerDecorator), $n, $attributes, $options), $decorator);
+
+    $this->widgetSchema[$name] = new sfWidgetFormSchemaDecorator(new sfWidgetFormSchemaForEach(new sfWidgetFormSchemaDecorator($widgetSchema, $innerDecorator), $n, $options, $attributes), $decorator);
     $this->validatorSchema[$name] = new sfValidatorSchemaForEach($form->getValidatorSchema(), $n);
 
     // generate labels
@@ -478,9 +472,9 @@ $this->widgetSchema->setFormFormatterName($name);
 
     $this->defaults = array_merge($this->defaults, $form->getDefaults());
 
-    foreach ($form->getWidgetSchema()->getFields() as $field => $widget)
+    foreach ($form->getWidgetSchema()->getPositions() as $field)
     {
-      $this->widgetSchema[$field] = $widget;
+      $this->widgetSchema[$field] = $form->getWidget($field);
     }
 
     foreach ($form->getValidatorSchema()->getFields() as $field => $validator)
@@ -488,8 +482,8 @@ $this->widgetSchema->setFormFormatterName($name);
       $this->validatorSchema[$field] = $validator;
     }
 
-    $this->getWidgetSchema()->setLabels(array_merge($this->getWidgetSchema()->getLabels(),
-                                                    $form->getWidgetSchema()->getLabels()));
+    $this->getWidgetSchema()->setLabels(array_merge($this->getWidgetSchema()->getLabels(), $form->getWidgetSchema()->getLabels()));
+    $this->getWidgetSchema()->setHelps(array_merge($this->getWidgetSchema()->getHelps(), $form->getWidgetSchema()->getHelps()));
 
     $this->mergePreValidator($form->getValidatorSchema()->getPreValidator());
     $this->mergePostValidator($form->getValidatorSchema()->getPostValidator());
@@ -819,12 +813,17 @@ $this->widgetSchema->setFormFormatterName($name);
    * If you want to change the algorithm used to compute the token, you
    * can override this method.
    *
-   * @param string $secret The secret string to use
+   * @param  string $secret The secret string to use (null to use the current secret)
    *
    * @return string A token string
    */
-  public function getCSRFToken($secret)
+  public function getCSRFToken($secret = null)
   {
+    if (is_null($secret))
+    {
+      $secret = self::$CSRFSecret;
+    }
+
     return md5($secret.session_id().get_class($this));
   }
 
@@ -1023,7 +1022,14 @@ $this->widgetSchema->setFormFormatterName($name);
    */
   public function __unset($name)
   {
-    unset($this->widgetSchema[$name], $this->validatorSchema[$name]);
+    unset(
+      $this->widgetSchema[$offset],
+      $this->validatorSchema[$offset],
+      $this->defaults[$offset],
+      $this->taintedValues[$offset],
+      $this->values[$offset],
+      $this->embeddedForms[$offset]
+    );
 
     $this->resetFormFields();
   }
@@ -1057,7 +1063,7 @@ $this->widgetSchema->setFormFormatterName($name);
    */
   public function rewind()
   {
-    $this->fieldNames = array_keys($this->widgetSchema->getFields());
+    $this->fieldNames = $this->widgetSchema->getPositions();
 
     reset($this->fieldNames);
     $this->count = count($this->fieldNames);
@@ -1123,82 +1129,43 @@ $this->widgetSchema->setFormFormatterName($name);
    */
   static public function convertFileInformation(array $taintedFiles)
   {
-    return self::pathsToArray(preg_replace('#^(/[^/]+)?(/name|/type|/tmp_name|/error|/size)([^\s]*)( = [^\n]*)#m', '$1$3$2$4', self::arrayToPaths($taintedFiles)));
-  }
-
-  /**
-   * Converts a string of paths separated by newlines into an array.
-   *
-   * Code adapted from http://www.shauninman.com/archive/2006/11/30/fixing_the_files_superglobal
-   * @author Shaun Inman (www.shauninman.com)
-   *
-   * @param  string $str A string representing an array
-   *
-   * @return Array  An array
-   */
-  static public function pathsToArray($str)
-  {
-    $array = array();
-    $lines = explode("\n", trim($str));
-
-    if (!empty($lines[0]))
+    $files = array();
+    foreach ($taintedFiles as $key => $data)
     {
-      foreach ($lines as $line)
-      {
-        list($path, $value) = explode(' = ', $line);
-
-        $steps = explode('/', $path);
-        array_shift($steps);
-
-        $insertion =& $array;
-
-        foreach ($steps as $step)
-        {
-          if (!isset($insertion[$step]))
-          {
-            $insertion[$step] = array();
-          }
-          $insertion =& $insertion[$step];
-        }
-        $insertion = ctype_digit($value) ? (int) $value : $value;
-      }
+      $files[$key] = self::fixPhpFilesArray($data);
     }
 
-    return $array;
+    return $files;
   }
 
-  /**
-   * Converts an array into a string containing the path to each of its values separated by a newline.
-   *
-   * Code adapted from http://www.shauninman.com/archive/2006/11/30/fixing_the_files_superglobal
-   * @author Shaun Inman (www.shauninman.com)
-   *
-   * @param  Array  $array  An array
-   * @param  string $prefix Prefix for internal use
-   *
-   * @return string A string representing the array
-   */
-  static public function arrayToPaths($array = array(), $prefix = '')
+  static protected function fixPhpFilesArray($data)
   {
-    $str = '';
-    $freshPrefix = $prefix;
+    $fileKeys = array('error', 'name', 'size', 'tmp_name', 'type');
+    $keys = array_keys($data);
+    sort($keys);
 
-    foreach ($array as $key => $value)
+    if ($fileKeys != $keys || !isset($data['name']) || !is_array($data['name']))
     {
-      $freshPrefix .= "/{$key}";
-
-      if (is_array($value))
-      {
-        $str .= self::arrayToPaths($value, $freshPrefix);
-        $freshPrefix = $prefix;
-      }
-      else
-      {
-        $str .= "{$prefix}/{$key} = {$value}\n";
-      }
+      return $data;
     }
 
-    return $str;
+    $files = $data;
+    foreach ($fileKeys as $k)
+    {
+      unset($files[$k]);
+    }
+    foreach (array_keys($data['name']) as $key)
+    {
+      $files[$key] = self::fixPhpFilesArray(array(
+        'error'    => $data['error'][$key],
+        'name'     => $data['name'][$key],
+        'type'     => $data['type'][$key],
+        'tmp_name' => $data['tmp_name'][$key],
+        'size'     => $data['size'][$key],
+      ));
+    }
+
+    return $files;
   }
 
   /**

@@ -30,14 +30,26 @@ class InformationObjectEditDcAction extends InformationObjectEditAction
 {
   public function execute($request)
   {
+    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'dc');
+
     // run the core informationObject edit action commands
     parent::execute($request);
 
     // add Dublin Core specific commands
     $this->dcEventTypes = QubitTerm::getDcEventTypeList();
     $this->dcRelation = $this->informationObject->getPropertyByName('information_object_relation', array('scope'=>'dc'));
+  }
 
-    // overwrite the default edit template
-    $this->setTemplate('editDc');
+  protected function processForm()
+  {
+    parent::processForm();
+
+    // Update Dc Properties
+    $this->updateDcProperties();
+  }
+
+  protected function updateDcProperties()
+  {
+    $this->informationObject->saveProperty('information_object_relation', $this->getRequestParameter('dc_relation'), array('scope'=>'dc'));
   }
 }

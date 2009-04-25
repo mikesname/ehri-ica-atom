@@ -27,7 +27,7 @@
       </div>
       <div class="translation">
       </div>
-      <?php echo my_submit_tag(__('save translation'), array('style' => 'margin: 5px 20px 0 0; float: right; width: 150px;')) ?>
+      <?php echo submit_tag(__('save translation'), array('class' => 'form-submit')) ?>
     </form>
   </div>
 </div>

@@ -1,6 +1,5 @@
 QubitUser:
   QubitUser_1:
-    class_name: QubitUser
     created_at: '2008-04-24 09:30:12'
     updated_at: '2008-04-24 09:30:12'
     source_culture: en

@@ -91,9 +91,9 @@ class SearchIndex
     Zend_Search_Lucene_Analysis_Analyzer::setDefault(new Zend_Search_Lucene_Analysis_Analyzer_Common_Utf8Num());
 
     //first delete existing index entries for this information object
-    $term =  new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
+    $term  = new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
     $query = new Zend_Search_Lucene_Search_Query_Term($term);
-    $hits = array();
+    $hits  = array();
     $hits  = $index->find($query);
 
     foreach ($hits as $hit)
@@ -159,20 +159,17 @@ class SearchIndex
     $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_scopeandcontent', $informationObject->getScopeAndContent(array('culture' => $language)), $encoding));
 
     // REPOSITORY
-    //
-    // The following cast to (string) should not be required, but PHP <= 5.2.5
-    // dies without it.  This is a very difficult bug to reproduce.  For
-    // example, var_dump(strtolower($informationObject->getRepository())); in
-    // this function causes PHP to die, however it works when moved to the
-    // calling function.  Returning a string constant from __toString() causes
-    // strtolower($informationObject->getRepository()) to work, however calling
-    // getAuthorizedFormOfName() in __toString() before returning the string
-    // constant causes PHP to die, even though getAuthorizedFormOfName()
-    // correctly returns a string.
-    //
-    // Options for locating this bug might include using Xdebug, running PHP
-    // under gdb, or trying a PHP snapshot to see if it is resolved.
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', strtolower((string) $informationObject->getRepository()), $encoding));
+    $repository = $informationObject->getRepository(array('inherit' => true));
+    if (null !== $repository)
+    {
+      $doc->addField(Zend_Search_Lucene_Field::Unindexed('repositoryid', $repository->getId()), $encoding);
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', strtolower($repository->getAuthorizedFormOfName()), $encoding));
+    }
+    else
+    {
+      $doc->addField(Zend_Search_Lucene_Field::Unindexed('repositoryid', null, $encoding));
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', null, $encoding));
+    }
 
     // I18N FIELDS
     $doc->addField(Zend_Search_Lucene_Field::Unstored('alternatetitle', strtolower($informationObject->getAlternateTitle(array('culture' => $language))), $encoding));
@@ -224,7 +221,11 @@ class SearchIndex
     // DIGITAL OBJECTS
     if ($informationObject->getDigitalObject())
     {
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', strtolower($informationObject->getDigitalObject()->getMediaType(array('culture' => $language))), $encoding));
+      if (isset($informationObject->digitalObject->mediaType))
+      {
+        $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', strtolower($informationObject->getDigitalObject()->getMediaType(array('culture' => $language))->__toString()), $encoding));
+      }
+
       $doc->addField(Zend_Search_Lucene_Field::Unstored('filename', strtolower($informationObject->getDigitalObject()->getName(array('culture' => $language))), $encoding));
       $doc->addField(Zend_Search_Lucene_Field::Unstored('mimetype', strtolower($informationObject->getDigitalObject()->getMimeType(array('culture' => $language))), $encoding));
     }
@@ -285,9 +286,9 @@ class SearchIndex
       $index = Zend_Search_Lucene::open(self::getIndexLocation('informationobject', $code));
       Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
 
-      $term =  new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
+      $term  = new Zend_Search_Lucene_Index_Term($informationObject->getId(), 'informationObjectId');
       $query = new Zend_Search_Lucene_Search_Query_Term($term);
-      $hits = array();
+      $hits  = array();
       $hits  = $index->find($query);
 
       foreach ($hits as $hit)

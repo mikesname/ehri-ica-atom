@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add/edit</td>
+	<td>link=Add/edit</td>
 	<td></td>
 </tr>
 <tr>
@@ -24,6 +24,11 @@
 <tr>
 	<td>verifyTextPresent</td>
 	<td>edit resource metadata - Dublin Core</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=resource metadata</td>
 	<td></td>
 </tr>
 <tr>
@@ -42,38 +47,33 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>newActorEvent_actorId</td>
-	<td>label=TeleLearning Network Inc</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>newActorEvent_placeId</td>
-	<td>label=Vancouver</td>
+	<td>type</td>
+	<td>editActorEvent_newActorName</td>
+	<td>TeleLearning Network Inc</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>newActorEvent_year</td>
+	<td>editActorEvent_year</td>
 	<td>1977</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>newActorEvent_endYear</td>
+	<td>editActorEvent_endYear</td>
 	<td>1988</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>newActorEvent_dateDisplay</td>
+	<td>editActorEvent_dateDisplay</td>
 	<td>[ca. 1977] - 1988</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>newActorEvent_description</td>
+	<td>editActorEvent_description</td>
 	<td>Here is a creation note.</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//span[@id='yui-gen2']/span/button</td>
+	<td>yui-gen2-button</td>
 	<td></td>
 </tr>
 <tr>
@@ -88,12 +88,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='create']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=055 - Dublin Core fonds</td>
+	<td>//input[@value='create']</td>
 	<td></td>
 </tr>
 <tr>
@@ -134,11 +129,6 @@
 <tr>
 	<td>verifyTextPresent</td>
 	<td>[ca. 1977] - 1988 (Creation)</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Archival material</td>
 	<td></td>
 </tr>
 <tr>

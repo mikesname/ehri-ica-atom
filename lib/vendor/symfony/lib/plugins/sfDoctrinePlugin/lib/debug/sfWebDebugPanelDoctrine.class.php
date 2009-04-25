@@ -41,7 +41,7 @@ class sfWebDebugPanelDoctrine extends sfWebDebugPanel
   {
     if ($sqlLogs = $this->getSqlLogs())
     {
-      return '<img src="'.$this->webDebug->getOption('image_root_path').'/database.png" /> '.count($sqlLogs);
+      return '<img src="'.$this->webDebug->getOption('image_root_path').'/database.png" alt="SQL queries" /> '.count($sqlLogs);
     }
   }
 

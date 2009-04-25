@@ -16,7 +16,7 @@
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfFilterConfigHandler.class.php 9400 2008-06-02 00:47:11Z dwhittle $
+ * @version    SVN: $Id: sfFilterConfigHandler.class.php 13547 2008-11-30 14:05:44Z Kris.Wallsmith $
  */
 class sfFilterConfigHandler extends sfYamlConfigHandler
 {

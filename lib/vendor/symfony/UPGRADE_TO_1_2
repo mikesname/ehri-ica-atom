@@ -16,6 +16,9 @@ How to upgrade?
 
 To upgrade a project:
 
+  * Check that all plugins used by your project are compatible with symfony
+    1.2
+
   * If you don't use a SCM tool, please make a backup of your project.
 
   * Upgrade symfony to 1.2
@@ -29,8 +32,10 @@ To upgrade a project:
     you upgrade to a new symfony 1.2 beta / RC or the final symfony 1.2, you
     have to launch this task.
 
+  * Upgrade the plugins to their 1.2 version
+
   * You need to rebuild your models and forms due to some changes described
-    below:
+    below (read below how to upgrade to Propel 1.3 first):
 
         $ php symfony propel:build-model
         $ php symfony propel:build-forms
@@ -42,6 +47,20 @@ To upgrade a project:
 
 The remaining sections explain the main changes made in symfony 1.2 that need
 some kind of upgrade (automatic or not).
+
+Upgrade to 1.2 final
+--------------------
+
+If you have upgraded your 1.1 project before 1.2 final, you need to check the
+following things:
+
+  * If you have generated CRUD modules with the `--non-verbose-templates` options,
+    you need to remove the extra `$form->renderHiddenFields()` statement in the `_form.php`
+    template. If not, you can have erroneous "CSRF attack detected" error messages.
+
+  * For all generated CRUD modules, and if you have enabled CSRF protection, you need
+    to insert `$request->checkCSRFProtection()` at the beginning of the generated
+    `executeDelete()` method to be protected from CSRF attacks.
 
 Propel
 ------
@@ -121,7 +140,7 @@ Replace with the following:
 Since the underlying api has changed quite a bit, you need to rebuild the
 object model:
 
-   $ php symfony propel:build-model
+    $ php symfony propel:build-model
 
 In most cases, this will be all that is required. If you have customized
 object model classes, you may need to manually upgrade for the changes in
@@ -220,6 +239,16 @@ The `::doSelectRS` method has been renamed to `::doSelectStmt`. Here are the dif
     while($row = $stmt->fetch()) { 
        print "Name: " . $row['name'] . "\n";
     }
+
+The `Clob` and `Lob` classes from Creole are not used anymore. It means you
+need to change your code when using these objects:
+
+    [php]
+    // Propel 1.1
+    $object->getClobColumn()->getContents();
+
+    // Propel 1.2
+    $object->getClobColumn();
 
 See http://propel.phpdb.org/trac/wiki/Users/Documentation/1.3/Upgrading for more details
 on upgrading.
@@ -515,6 +544,25 @@ default status code:
     $this->redirectUnless($condition, '@homepage', 301);
 
 The `redirect()` method already have this feature.
+
+Components
+----------
+
+If you have the output escaper enabled, there was a bug in symfony 1.0 and 1.1.
+When you passed some variables from an action to a component, these were escaped
+in the component. So, in some circumstances, you had to unescaped them:
+
+    [php]
+    public function executeInAComponent($request)
+    {
+      $this->foo = $this->foo->getRawValue();
+    }
+
+As of symfony 1.2, this has been fixed and all variables are now unescaped
+by default in a component method.
+
+For the above example, you will need to remove the `getRawValue()` step as
+the framework does this automatically for you.
 
 sfParameterHolder
 -----------------

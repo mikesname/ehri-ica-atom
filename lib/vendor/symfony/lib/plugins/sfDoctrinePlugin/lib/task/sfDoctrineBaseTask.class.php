@@ -16,7 +16,7 @@
  * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id: sfDoctrineBaseTask.class.php 12186 2008-10-14 18:44:15Z Jonathan.Wage $
+ * @version    SVN: $Id: sfDoctrineBaseTask.class.php 15865 2009-02-28 03:34:26Z Jonathan.Wage $
  */
 abstract class sfDoctrineBaseTask extends sfBaseTask
 {
@@ -27,9 +27,10 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
     parent::initialize($dispatcher, $formatter);
     self::$done = true;
   }
-  protected function createConfiguration($application, $env, $isDebug)
+
+  protected function createConfiguration($application, $env)
   {
-    $configuration = parent::createConfiguration($application, $env, $isDebug);
+    $configuration = parent::createConfiguration($application, $env);
 
     $autoloader = sfSimpleAutoload::getInstance();
     $config = new sfAutoloadConfigHandler();
@@ -49,8 +50,16 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
    */
   public function getCliConfig()
   {
-    $pluginDirs = glob(sfConfig::get('sf_root_dir').'/plugins/*/data');
-    $fixtures = sfFinder::type('dir')->name('fixtures')->in(array_merge(array(sfConfig::get('sf_data_dir')), $pluginDirs));
+    $fixtures = array();
+    $fixtures[] = sfConfig::get('sf_root_dir').'/data/fixtures';
+    $pluginPaths = $this->configuration->getPluginPaths();
+    foreach ($pluginPaths as $pluginPath)
+    {
+      if (is_dir($dir = $pluginPath.'/data/fixtures'))
+      {
+        $fixtures[] = $dir;
+      }
+    }
     $models = sfConfig::get('sf_lib_dir') . DIRECTORY_SEPARATOR . 'model' . DIRECTORY_SEPARATOR . 'doctrine';
     $migrations = sfConfig::get('sf_lib_dir') . DIRECTORY_SEPARATOR . 'migration' . DIRECTORY_SEPARATOR . 'doctrine';
     $sql = sfConfig::get('sf_data_dir') . DIRECTORY_SEPARATOR . 'sql';
@@ -99,6 +108,7 @@ abstract class sfDoctrineBaseTask extends sfBaseTask
 
     $cli = new sfDoctrineCli($config);
     $cli->setDispatcher($this->dispatcher);
+    $cli->setFormatter($this->formatter);
     $cli->run($arguments);
   }
 }

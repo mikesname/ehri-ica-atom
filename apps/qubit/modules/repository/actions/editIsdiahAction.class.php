@@ -33,6 +33,65 @@ class RepositoryEditIsdiahAction extends RepositoryEditAction
     // run the core repository edit action commands
     parent::execute($request);
 
-    // add ISDIAH specific commands
+    $this->parallelFormsOfName = $this->repository->getParallelFormsOfName();
+    $this->otherFormsOfName = $this->repository->getOtherFormsOfName();
   }
+
+  protected function processForm()
+  {
+    parent::processForm();
+
+    // Do updates
+    $this->updateActorNames();
+    $this->deleteActorNames();
+  }
+
+  /**
+   * Update ISDIAH actor names
+   *
+   * @param sfWebRequest $request
+   */
+  private function updateActorNames()
+  {
+    foreach ((array) $this->getRequestParameter('parallel_form_of_name') as $parallelFormOfName)
+    {
+      if (strlen($parallelFormOfName) > 0)
+      {
+        $this->repository->setOtherNames($parallelFormOfName, QubitTerm::PARALLEL_FORM_OF_NAME_ID, null);
+      }
+    }
+
+    foreach ((array) $this->getRequestParameter('other_form_of_name') as $otherFormOfName)
+    {
+      if (strlen($otherFormOfName) > 0)
+      {
+        $this->repository->setOtherNames($otherFormOfName, QubitTerm::OTHER_FORM_OF_NAME_ID, null);
+      }
+    }
+  }
+
+  /**
+   * Delete ISDIAH actor names
+   *
+   * @param sfWebRequest $request
+   */
+  private function deleteActorNames()
+  {
+    if ($this->request->hasParameter('delete_parallel_names'))
+    {
+      foreach ((array) $this->request->getParameter('delete_parallel_names') as $id => $val)
+      {
+        QubitActorName::deleteById($id);
+      }
+    }
+
+    if ($this->request->hasParameter('delete_other_names'))
+    {
+      foreach ((array) $this->request->getParameter('delete_other_names') as $id => $val)
+      {
+        QubitActorName::deleteById($id);
+      }
+    }
+  }
+
 }

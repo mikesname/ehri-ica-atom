@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage response
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebResponse.class.php 12106 2008-10-09 12:27:03Z fabien $
+ * @version    SVN: $Id: sfWebResponse.class.php 13564 2008-11-30 21:34:25Z fabien $
  */
 class sfWebResponse extends sfResponse
 {
@@ -407,7 +407,7 @@ class sfWebResponse extends sfResponse
    *
    * @return string Formatted date
    */
-  public function getDate($timestamp, $type = 'rfc1123')
+  static public function getDate($timestamp, $type = 'rfc1123')
   {
     $type = strtolower($type);
 
@@ -440,7 +440,7 @@ class sfWebResponse extends sfResponse
     $currentHeaders = array();
     if ($vary)
     {
-      $currentHeaders = split('/\s*,\s*/', $vary);
+      $currentHeaders = preg_split('/\s*,\s*/', $vary);
     }
     $header = $this->normalizeHeaderName($header);
 
@@ -463,7 +463,7 @@ class sfWebResponse extends sfResponse
     $currentHeaders = array();
     if ($cacheControl)
     {
-      foreach (split('/\s*,\s*/', $cacheControl) as $tmp)
+      foreach (preg_split('/\s*,\s*/', $cacheControl) as $tmp)
       {
         $tmp = explode('=', $tmp);
         $currentHeaders[$tmp[0]] = isset($tmp[1]) ? $tmp[1] : null;

@@ -139,27 +139,36 @@ class QubitRepository extends BaseRepository
    *
    * @return QubitQuery collection of QubitInformationObject objects
    */
-  public function getRepositoryHoldings()
+  public function getHoldingsPager($options = array())
   {
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::REPOSITORY_ID, $this->getId());
-    $holdings = QubitInformationObject::get($criteria);
+    $criteria->addAscendingOrderByColumn('title');
 
-    return $holdings;
+    // Sort holdings alphabetically (w/ fallback)
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+
+    // Page results
+    $page = (isset($options['page'])) ? $options['page'] : 1;
+    $pager = new QubitPager('QubitInformationObject');
+    $pager->setCriteria($criteria);
+    $pager->setPage($page);
+
+    return $pager;
   }
 
   /**
-   * Get a list of repositories.
+   * Only find repository objects, not other actor types
    *
-   * @param string $sort sort order (optional)
-   * @param string $countryCode filter by two-letter country code (optional)
-   * @return QubitQuery collection of QubitRepository objects
-   *
-   * @todo implement fallback
+   * @param Criteria $criteria current search criteria
+   * @return Criteria modified search critieria
    */
-  public static function addGetRepositoriesCriteria($criteria)
+  public static function addGetOnlyRepositoryCriteria($criteria)
   {
+    $criteria->add(QubitRepository::ID, null, Criteria::ISNOTNULL);
+    $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::INNER_JOIN);
 
+    return $criteria;
   }
 
   public static function addCountryCodeCriteria($criteria, $countryCode)
@@ -174,8 +183,16 @@ class QubitRepository extends BaseRepository
     return $criteria;
   }
 
-
-  public static function getList($culture, $options=array())
+  /**
+   * Get a list of repositories.
+   *
+   * @param string $sort sort order (optional)
+   * @param string $countryCode filter by two-letter country code (optional)
+   * @return QubitQuery collection of QubitRepository objects
+   *
+   * @todo implement fallback
+   */
+  public static function getList($options=array())
   {
     $criteria = new Criteria;
 
@@ -235,7 +252,7 @@ class QubitRepository extends BaseRepository
     {
       // Return a QubitQuery object of class-type QubitInformationObject
       $options = array('returnClass'=>'QubitRepository');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $culture, $options);
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
     }
     else
     {
@@ -272,5 +289,47 @@ class QubitRepository extends BaseRepository
     }
 
     return options_for_select($selectOptions, $default, $options);
+  }
+
+  /**
+   * Get related parallel forms of name
+   *
+   * @return QubitQuery list of parallel names
+   */
+  public function getParallelFormsOfName()
+  {
+    $c = new Criteria;
+    $c->add(QubitActorName::TYPE_ID, QubitTerm::PARALLEL_FORM_OF_NAME_ID, Criteria::EQUAL);
+    $c->addAnd(QubitActorName::ACTOR_ID, $this->getId(), Criteria::EQUAL);
+
+    return QubitActorName::get($c);
+  }
+
+  /**
+   * Get related other forms of name
+   *
+   * @return QubitQuery list of other names
+   */
+  public function getOtherFormsOfName()
+  {
+    $c = new Criteria;
+    $c->add(QubitActorName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID, Criteria::EQUAL);
+    $c->addAnd(QubitActorName::ACTOR_ID, $this->getId(), Criteria::EQUAL);
+
+    return QubitActorName::get($c);
+  }
+
+  /**
+   * Add search criteria for find records updated in last $numberOfDays
+   *
+   * @param Criteria $criteria current search criteria
+   * @param string $cutoff earliest date to show
+   * @return Criteria modified criteria object
+   */
+  public static function addRecentUpdatesCriteria($criteria, $cutoff)
+  {
+    $criteria->add(QubitRepository::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
+
+    return $criteria;
   }
 }

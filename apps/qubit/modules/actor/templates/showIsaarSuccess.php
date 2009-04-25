@@ -6,7 +6,7 @@
 <?php $name = render_title($actor->getAuthorizedFormOfName(array('cultureFallback' => true))) ?>
 <?php if ($editCredentials): ?>
   <tr><td colspan="2" class="headerCell">
-  <?php echo link_to($name, array('module' => 'actor', 'action' => 'editIsaar', 'id' => $actor->getId())) ?>
+  <?php echo link_to($name, array('module' => 'actor', 'action' => 'edit', 'id' => $actor->getId())) ?>
   </td></tr>
 <?php else: ?>
   <tr><td colspan="2" class="headerCell">
@@ -17,6 +17,12 @@
 <?php if ($actor->getEntityTypeId()): ?>
   <tr><th><?php echo __('type of entity') ?></th><td>
   <?php echo $actor->getEntityType()->getName(array('cultureFallback' => true)) ?>
+  </td></tr>
+<?php endif; ?>
+
+<?php if (strlen($authName = $actor->getAuthorizedFormOfName(array('cultureFallback' => true))) > 0): ?>
+  <tr><th><?php echo __('authorized form of name') ?></th><td>
+  <?php echo $authName ?>
   </td></tr>
 <?php endif; ?>
 
@@ -67,12 +73,12 @@
 <?php endif; ?>
 
 <?php if (strlen($value = $actor->getMandates(array('cultureFallback' => true))) >0): ?>
-  <tr><th><?php echo __('mandates or sources of authority')?></th>
+  <tr><th><?php echo __('Mandates/Sources of authority')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
 <?php if (strlen($value = $actor->getInternalStructures(array('cultureFallback' => true))) >0): ?>
-  <tr><th><?php echo __('internal structures or genealogy')?></th>
+  <tr><th><?php echo __('Internal structures/Genealogy')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
@@ -98,7 +104,7 @@
 <?php endif; ?>
 
 <?php if (strlen($value = $actor->getRules(array('cultureFallback' => true))) >0): ?>
-  <tr><th><?php echo __('rules')?></th>
+  <tr><th><?php echo __('rules and/or conventions')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
@@ -156,11 +162,11 @@
 
 <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'actor', 'action' => 'update'))): ?>
 <div class="menu-action">
-<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), 'actor/editIsaar?id='.$actor->getId()) ?>
+<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), array('module' => 'actor', 'action' => 'edit', 'id' => $actor->getId())) ?>
 </div>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new'), 'actor/createIsaar'); ?>
-  <?php echo link_to(__('list all'), 'actor/list'); ?>
+  <?php echo link_to(__('add new'), array('module' => 'actor', 'action' => 'create')) ?>
+  <?php echo link_to(__('list all'), array('module' => 'actor', 'action' => 'list')) ?>
 </div>
 <?php endif; ?>

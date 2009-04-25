@@ -1,5 +1,4 @@
 <?php use_helper('Javascript') ?>
-<?php $sf_response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event') ?>
 <?php $sf_response->addJavaScript('/vendor/yui/animation/animation-min') ?>
 <?php $sf_response->addJavaScript('/vendor/yui/dragdrop/dragdrop-min') ?>
 <?php $sf_response->addJavaScript('/vendor/yui/connection/connection-min') ?>

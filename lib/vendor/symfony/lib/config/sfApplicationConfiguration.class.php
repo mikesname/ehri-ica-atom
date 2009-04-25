@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfApplicationConfiguration.class.php 13196 2008-11-20 18:23:18Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfApplicationConfiguration.class.php 13947 2008-12-11 14:15:32Z fabien $
  */
 abstract class sfApplicationConfiguration extends ProjectConfiguration
 {
@@ -348,6 +348,29 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
   }
 
   /**
+   * Gets directories where lib files are stored for a given module.
+   *
+   * @param string $moduleName The module name
+   *
+   * @return array An array of directories
+   */
+  public function getLibDirs($moduleName)
+  {
+    $dirs = array();
+    foreach (sfConfig::get('sf_module_dirs', array()) as $key => $value)
+    {
+      $dirs[] = $key.'/'.$moduleName.'/lib';
+    }
+
+    $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/lib';                  // application
+    $dirs = array_merge($dirs, $this->getPluginSubPaths('/modules/'.$moduleName.'/lib')); // plugins
+    $dirs[] = sfConfig::get('sf_symfony_lib_dir').'/controller/'.$moduleName.'/lib';      // core modules
+    $dirs[] = sfConfig::get('sf_module_cache_dir').'/auto'.ucfirst($moduleName.'/lib');   // generated templates in cache
+
+    return $dirs;
+  }
+
+  /**
    * Gets directories where template files are stored for a given module.
    *
    * @param string $moduleName The module name
@@ -523,7 +546,9 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
   {
     $globalConfigPath = basename(dirname($configPath)).'/'.basename($configPath);
 
-    $files = array();
+    $files = array(
+      sfConfig::get('sf_symfony_lib_dir').'/config/'.$globalConfigPath,              // symfony
+    );
 
     foreach ($this->getPluginPaths() as $path)
     {
@@ -531,13 +556,7 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
       {
         $files[] = $file;                                                            // plugins
       }
-      if (is_file($file = $path.'/'.$configPath))
-      {
-        $files[] = $file;                                                            // plugins
-      }
     }
-
-    $files[] = sfConfig::get('sf_symfony_lib_dir').'/config/'.$globalConfigPath;     // symfony
 
     $files = array_merge($files, array(
       sfConfig::get('sf_root_dir').'/'.$globalConfigPath,                            // project
@@ -545,6 +564,14 @@ abstract class sfApplicationConfiguration extends ProjectConfiguration
       sfConfig::get('sf_app_dir').'/'.$globalConfigPath,                             // application
       sfConfig::get('sf_app_cache_dir').'/'.$configPath,                             // generated modules
     ));
+
+    foreach ($this->getPluginPaths() as $path)
+    {
+      if (is_file($file = $path.'/'.$configPath))
+      {
+        $files[] = $file;                                                            // plugins
+      }
+    }
 
     $files[] = sfConfig::get('sf_app_dir').'/'.$configPath;                          // module
 

@@ -5,7 +5,7 @@
 
 <?php if ($editCredentials): ?>
   <tr><td colspan="2" class="headerCell">
-  <?php echo link_to(render_title($repository), 'repository/editIsdiah/?id='.$repository->getId())?>
+  <?php echo link_to(render_title($repository), array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())) ?>
   </td></tr>
 <?php else: ?>
   <tr><td colspan="2" class="headerCell">
@@ -23,16 +23,26 @@
   <tr><th><?php echo __('authorized form of name')?></th><td><?php echo $repository ?></td></tr>
 <?php endif; ?>
 
-<?php if (count($otherNames) > 0): ?>
-  <tr><th><?php echo __('other names') ?></th><td>
-  <?php foreach ($otherNames as $otherName): ?>
-    <?php echo $otherName->getName(array('cultureFallback' => true)).' ('.$otherName->getType()->getName(array('cultureFallback' => true)).')' ?>
-    <?php if ($otherName->getNote(array('cultureFallback' => true))): ?>
-      <span class="note">--<?php echo $otherName->getNote(array('cultureFallback' => true)) ?></span>
-    <?php endif; ?>
-    <br />
+<?php if (count($parallelFormsOfName) > 0): ?>
+  <?php foreach ($parallelFormsOfName as $parallelName): ?>
+  <tr>
+    <th><?php echo __('parallel form of name') ?></th>
+    <td>
+      <?php echo $parallelName->getName(array('cultureFallback' => true)) ?>
+    </td>
+  </tr>
   <?php endforeach; ?>
-  </td></tr>
+<?php endif; ?>
+
+<?php if (count($otherFormsOfName) > 0): ?>
+  <?php foreach ($otherFormsOfName as $otherName): ?>
+  <tr>
+    <th><?php echo __('other form of name') ?></th>
+    <td>
+      <?php echo $otherName->getName(array('cultureFallback' => true)) ?>
+    </td>
+  </tr>
+  <?php endforeach; ?>
 <?php endif; ?>
 
 <?php if ($repository->getTypeId()): ?>
@@ -50,9 +60,7 @@
       <?php if ($contact->getPrimaryContact()): ?><?php echo '('.__('primary contact').')' ?><?php endif; ?>
       </td></tr></table>
           <div style="padding-left: 10px; margin-bottom: 0px;">
-            <?php if ($contact->getContactPerson()): ?>
-              <?php echo $contact->getContactPerson() ?><br />
-            <?php endif; ?>
+            
             <?php if ($contact->getStreetAddress()): ?>
               <?php echo nl2br($contact->getStreetAddress()) ?><br />
             <?php endif; ?>
@@ -69,10 +77,10 @@
               <?php echo $contact->getPostalCode() ?><br />
             <?php endif; ?>
             <?php if ($contact->getTelephone()): ?>
-              <?php echo 'phone: '.$contact->getTelephone() ?><br />
+              <?php echo __('telephone').': '.$contact->getTelephone() ?><br />
             <?php endif; ?>
             <?php if ($contact->getFax()): ?>
-              <?php echo 'fax: '.$contact->getFax() ?><br />
+              <?php echo __('fax').': '.$contact->getFax() ?><br />
             <?php endif; ?>
             <?php if ($contact->getEmail()): ?>
               <?php echo $contact->getEmail() ?><br />
@@ -84,8 +92,11 @@
               ?>
               <?php echo '<a href="'.$fullUrl.'" target="_NEW">'.$fullUrl.'</a>' ?><br />
             <?php endif; ?>
+            <?php if ($contact->getContactPerson()): ?>
+              <?php echo '<strong>'.__('contact person').':</strong> '.$contact->getContactPerson() ?><br />
+            <?php endif; ?>
             <?php if (strlen($value = $contact->getNote(array('cultureFallback' => true))) >0): ?>
-              <span class="note"><?php echo $value ?></span>
+              <span class="note"><?php echo nl2br($value) ?></span>
             <?php endif; ?>
           </div>
   <?php endforeach; ?>
@@ -105,7 +116,7 @@
 <?php endif; ?>
 
 <?php if (strlen($value = $repository->getMandates(array('cultureFallback' => true))) >0): ?>
-  <tr><th><?php echo __('mandates or sources of authority')?></th>
+  <tr><th><?php echo __('Mandates/Sources of authority')?></th>
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
@@ -134,7 +145,7 @@
 <?php endif; ?>
 
 <?php if (strlen($value = $repository->getFindingAids(array('cultureFallback' => true))) >0): ?>
-  <tr><th><?php echo __('finding aids, guides, publications')?></th><td>
+  <tr><th><?php echo __('finding aids, guides and publications')?></th><td>
   <?php echo nl2br($value)?>
   </td></tr>
 <?php endif; ?>
@@ -212,21 +223,25 @@
 <?php endif; ?>
 
 <?php if (count($languageCodes) > 0): ?>
-  <tr><th><?php echo __('language of description')?>:
-  </th><td>
-  <?php foreach ($languageCodes as $languageCode): ?>
-    <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?><br />
-  <?php endforeach; ?>
-  </td></tr>
+  <tr>
+    <th><?php echo __('languages')?></th>
+    <td>
+    <?php foreach ($languageCodes as $languageCode): ?>
+      <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?><br />
+    <?php endforeach; ?>
+    </td>
+  </tr>
 <?php endif; ?>
 
 <?php if (count($scriptCodes) > 0): ?>
-  <tr><th><?php echo __('script of description')?>:
-  </th><td>
-  <?php foreach ($scriptCodes as $scriptCode): ?>
-    <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?><br />
-  <?php endforeach; ?>
-  </td></tr>
+  <tr>
+    <th><?php echo __('scripts')?></th>
+    <td>
+    <?php foreach ($scriptCodes as $scriptCode): ?>
+      <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?><br />
+    <?php endforeach; ?>
+    </td>
+  </tr>
 <?php endif; ?>
 
 <?php if (strlen($value = $repository->getDescSources(array('cultureFallback' => true))) >0): ?>
@@ -250,11 +265,11 @@
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), 'repository/editIsdiah?id='.$repository->getId()) ?>
+<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())) ?>
 </div>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new'), 'repository/createIsdiah'); ?>
-  <?php echo link_to(__('list all'), 'repository/list'); ?>
+  <?php echo link_to(__('add new'), array('module' => 'repository', 'action' => 'create')) ?>
+  <?php echo link_to(__('list all'), array('module' => 'repository', 'action' => 'list')) ?>
 </div>
 <?php endif; ?>

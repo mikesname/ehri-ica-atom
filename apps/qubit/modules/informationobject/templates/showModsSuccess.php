@@ -5,8 +5,11 @@
 
 <?php if ($informationObject->getTitle(array('sourceCulture' => true))): ?>
   <tr><td colspan="2" class="headerCell">
-  <?php if ($editCredentials) echo link_to(QubitMods::getLabel($informationObject), 'informationobject/editIsad/?id='.$informationObject->getId());
-        else echo QubitMods::getLabel($informationObject); ?>
+  <?php if ($editCredentials): ?>
+  <?php echo link_to(QubitIsad::getLabel($informationObject), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())); ?>
+  <?php else: ?>
+  <?php echo QubitIsad::getLabel($informationObject); ?>
+  <?php endif; ?>
   </td></tr>
 <?php endif; ?>
 
@@ -76,13 +79,13 @@
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-  <?php echo link_to (__('edit MODS record'), 'informationobject/editMods?id='.$informationObject->getId()) ?>
+  <?php echo link_to (__('edit MODS record'), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())) ?>
 </div>
 <?php endif; ?>
 
 <div class="menu-extra">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('add new'), 'informationobject/createMods'); ?>
+  <?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create')); ?>
 <?php endif; ?>
-  <?php echo link_to(__('list all'), 'informationobject/list'); ?>
+  <?php echo link_to(__('list all'), array('module' => 'informationobject', 'action' => 'list')); ?>
 </div>

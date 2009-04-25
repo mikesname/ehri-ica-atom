@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage view
  * @author     Mike Squire <mike@somosis.co.uk>
- * @version    SVN: $Id: sfOutputEscaper.class.php 9158 2008-05-21 20:32:00Z FabianLange $
+ * @version    SVN: $Id: sfOutputEscaper.class.php 13463 2008-11-28 15:35:54Z fabien $
  */
 abstract class sfOutputEscaper
 {
@@ -132,6 +132,43 @@ abstract class sfOutputEscaper
 
     // it must be a resource; cannot escape that.
     throw new InvalidArgumentException(sprintf('Unable to escape value "%s".', var_export($value, true)));
+  }
+
+  /**
+   * Unescapes a value that has been escaped previously with the escape() method.
+   *
+   * @param  mixed $value The value to unescape
+   *
+   * @return mixed Unescaped value
+   *
+   * @throws InvalidArgumentException If the escaping fails
+   */
+  static public function unescape($value)
+  {
+    if (is_null($value) || is_bool($value))
+    {
+      return $value;
+    }
+
+    if (is_scalar($value))
+    {
+      return html_entity_decode($value, ENT_QUOTES, sfConfig::get('sf_charset'));
+    }
+    elseif (is_array($value))
+    {
+      foreach ($value as $name => $v)
+      {
+        $value[$name] = self::unescape($v);
+      }
+
+      return $value;
+    }
+    elseif (is_object($value))
+    {
+      return $value instanceof sfOutputEscaper ? $value->getRawValue() : $value;
+    }
+
+    return $value;
   }
 
   /**

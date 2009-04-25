@@ -11,4 +11,14 @@ class sfDrupalWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
     $errorListFormatInARow = "<div class=\"messages error\">\n  <ul>\n    %errors%\n  </ul>\n</div>\n",
     $helpFormat = "<div class=\"description\">\n  %help%\n</div>\n",
     $rowFormat = "<div class=\"form-item\">\n  %label%\n  %error%%field%\n  %help%%hidden_fields%\n</div>\n";
+
+  public function formatRow($label, $field, $errors = array(), $help = '', $hiddenFields = null)
+  {
+    if (preg_match('/<input [^>]*type="checkbox"/', $field))
+    {
+      return parent::formatRow(preg_replace('/<label[^>]*>/', '\\0'.$field, $label), null, $errors, $help, $hiddenFields);
+    }
+
+    return parent::formatRow($label, $field, $errors, $help, $hiddenFields);
+  }
 }

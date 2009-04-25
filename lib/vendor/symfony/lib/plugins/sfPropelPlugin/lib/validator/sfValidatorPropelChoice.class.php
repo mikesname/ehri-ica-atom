@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage validator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfValidatorPropelChoice.class.php 11669 2008-09-19 14:03:40Z fabien $
+ * @version    SVN: $Id: sfValidatorPropelChoice.class.php 16976 2009-04-04 12:47:44Z fabien $
  */
 class sfValidatorPropelChoice extends sfValidatorBase
 {
@@ -55,7 +55,7 @@ class sfValidatorPropelChoice extends sfValidatorBase
         $value = array($value);
       }
 
-      $criteria->add($this->getColumn(), $value, Criteria::IN);
+      $criteria->addAnd($this->getColumn(), $value, Criteria::IN);
 
       $objects = call_user_func(array(constant($this->getOption('model').'::PEER'), 'doSelect'), $criteria, $this->getOption('connection'));
 
@@ -66,7 +66,7 @@ class sfValidatorPropelChoice extends sfValidatorBase
     }
     else
     {
-      $criteria->add($this->getColumn(), $value);
+      $criteria->addAnd($this->getColumn(), $value);
 
       $object = call_user_func(array(constant($this->getOption('model').'::PEER'), 'doSelectOne'), $criteria, $this->getOption('connection'));
 
@@ -91,6 +91,7 @@ class sfValidatorPropelChoice extends sfValidatorBase
     if ($this->getOption('column'))
     {
       $columnName = $this->getOption('column');
+      $from = BasePeer::TYPE_FIELDNAME;
     }
     else
     {
@@ -99,12 +100,13 @@ class sfValidatorPropelChoice extends sfValidatorBase
       {
         if ($column->isPrimaryKey())
         {
-          $columnName = strtolower($column->getColumnName());
+          $columnName = $column->getPhpName();
           break;
         }
       }
+      $from = BasePeer::TYPE_PHPNAME;
     }
 
-    return call_user_func(array(constant($this->getOption('model').'::PEER'), 'translateFieldName'), $columnName, BasePeer::TYPE_FIELDNAME, BasePeer::TYPE_COLNAME);
+    return call_user_func(array(constant($this->getOption('model').'::PEER'), 'translateFieldName'), $columnName, $from, BasePeer::TYPE_COLNAME);
   }
 }

@@ -84,12 +84,6 @@
 <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if ($collectionType = $informationObject->getCollectionType()): ?>
-  <tr><th><?php echo __('type'); ?></th>
-  <td><?php echo $collectionType ?></td>
-  </tr>
-<?php endif; ?>
-
 <?php if (count($materialTypes) > 0) : ?>
 <?php foreach ($materialTypes as $materialType): ?>
   <tr>
@@ -225,13 +219,13 @@
 
 <?php if ($editCredentials): ?>
 <div class="menu-action">
-  <?php echo link_to (__('edit resource metadata'), 'informationobject/editDc?id='.$informationObject->getId()) ?>
+  <?php echo link_to (__('edit resource metadata'), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())) ?>
 </div>
 <?php endif; ?>
 
 <div class="menu-extra">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('add new'), 'informationobject/createDc'); ?>
+  <?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create')); ?>
 <?php endif; ?>
-  <?php echo link_to(__('list all'), 'informationobject/list'); ?>
+  <?php echo link_to(__('list all'), array('module' => 'informationobject', 'action' => 'list')); ?>
 </div>

@@ -49,7 +49,7 @@ class ActorListAction extends sfAction
     $options['role'] = $this->role;
 
     // Get results
-    $this->actors = QubitActor::getList($this->culture, $options);
+    $this->actors = QubitActor::getList($options);
 
     //determine if user has edit priviliges
     $this->editCredentials = false;

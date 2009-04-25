@@ -16,7 +16,7 @@ require_once(dirname(__FILE__).'/sfGeneratorBaseTask.class.php');
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfGenerateProjectTask.class.php 12728 2008-11-07 19:56:17Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfGenerateProjectTask.class.php 13588 2008-12-01 13:53:09Z Kris.Wallsmith $
  */
 class sfGenerateProjectTask extends sfGeneratorBaseTask
 {
@@ -76,6 +76,9 @@ EOF;
 
     // update ProjectConfiguration class
     $this->getFileSystem()->replaceTokens(sfConfig::get('sf_config_dir').'/ProjectConfiguration.class.php', '##', '##', array('SYMFONY_LIB_DIR'  => sfConfig::get('sf_symfony_lib_dir')));
+
+    // update vhost sample file
+    $this->getFileSystem()->replaceTokens(sfConfig::get('sf_config_dir').'/vhost.sample', '##', '##', array('PROJECT_NAME' => $arguments['name'], 'SYMFONY_WEB_DIR' => sfConfig::get('sf_web_dir'), 'SYMFONY_SF_DIR' => realpath(sfCoreAutoload::getInstance()->getBaseDir().'../data/web/sf')));
 
     // fix permission for common directories
     $fixPerms = new sfProjectPermissionsTask($this->dispatcher, $this->formatter);

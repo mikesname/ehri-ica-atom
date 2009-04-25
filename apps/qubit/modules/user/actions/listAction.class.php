@@ -21,10 +21,10 @@ class UserListAction extends sfAction
 {
   public function execute($request)
   {
-  	// Set current page
+    // Set current page
     $this->page = $this->getRequestParameter('page', 1);
     $options['page'] = $this->page;
-    
-    $this->users = QubitUser::getList($this->getUser()->getCulture(), $options);
+
+    $this->users = QubitUser::getList($options);
   }
 }

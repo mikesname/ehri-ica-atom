@@ -167,23 +167,32 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
     return array($this->objects, $sorted);
   }
 
-  public function offsetExists($offset)
+  public function __isset($name)
   {
     list ($objects, $sorted) = $this->getObjects($this);
 
-    return array_key_exists($offset, $this->objects);
+    return array_key_exists($name, $this->objects);
   }
 
-  public function offsetGet($offset, array $options = array())
+  public function offsetExists($offset)
   {
-    if (array_key_exists('defaultValue', $options) && !$this->offsetExists($offset))
-    {
-      return $options['defaultValue'];
-    }
+    $args = func_get_args();
 
+    return call_user_func_array(array($this, '__isset'), $args);
+  }
+
+  public function __get($name)
+  {
     list ($objects, $sorted) = $this->getObjects($this);
 
-    return $this->objects[$offset];
+    return $this->objects[$name];
+  }
+
+  public function offsetGet($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__get'), $args);
   }
 
   public function offsetSet($offset, $value)

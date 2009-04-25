@@ -158,10 +158,12 @@ class QubitDc
   public static function getTypes($informationObject, array $options = array())
   {
     $dcType = array();
+    /* disable display of collection type until this option is fully supported in the UI
     if ($collectionType = $informationObject->getCollectionType())
     {
       $dcType[] = $collectionType;
     }
+    */
     if (count($materialTypes = $informationObject->getMaterialTypes()) > 0)
     {
       foreach ($materialTypes as $type)

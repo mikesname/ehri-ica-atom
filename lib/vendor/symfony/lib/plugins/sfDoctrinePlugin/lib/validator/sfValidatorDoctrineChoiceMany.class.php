@@ -36,12 +36,12 @@ class sfValidatorDoctrineChoiceMany extends sfValidatorDoctrineChoice
     }
 
     $a = $this->getOption('alias');
-    $q = is_null($this->getOption('query')) ? Doctrine_Query::create()->from($this->getOption('model') . " $a") : $this->getOption('query');
-    $q = $q->whereIn("$a." . $this->getColumn(), $values);
+    $q = is_null($this->getOption('query')) ? Doctrine_Query::create()->from($this->getOption('model') . ' ' . $a) : $this->getOption('query');
+    $q = $q->andWhereIn($a . '.' . $this->getColumn(), $values);
 
     $objects = $q->execute();
 
-    if (count(array_diff($values, $objects->getPrimaryKeys())))
+    if (count($objects) != count($values))
     {
       throw new sfValidatorError($this, 'invalid', array('value' => $values));
     }

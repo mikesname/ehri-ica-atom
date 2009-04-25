@@ -9,12 +9,13 @@ class ProjectConfiguration extends sfProjectConfiguration
   {
     $this->enablePlugins(array(
       'sfAuditPlugin',
-      'sfCompat10Plugin',
       'sfDrupalPlugin',
       'sfHistoryPlugin',
       'sfInstallPlugin',
       'sfLucenePlugin',
+      'sfPluginAdminPlugin',
       'sfSearchPlugin',
+      'sfThemePlugin',
       'sfThumbnailPlugin',
       'sfTranslatePlugin'));
   }

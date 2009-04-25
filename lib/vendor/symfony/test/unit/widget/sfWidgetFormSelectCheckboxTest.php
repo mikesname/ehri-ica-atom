@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(7, new lime_output_color());
+$t = new lime_test(10, new lime_output_color());
 
 $dom = new DomDocument('1.0', 'utf-8');
 $dom->validateOnParse = true;
@@ -55,6 +55,11 @@ $output = 'foo <ul class="checkbox_list"><li><input name="foo[]" type="checkbox"
 bar <ul class="checkbox_list"><li><input name="foo[]" type="checkbox" value="foobar" id="foo_foobar" checked="checked" />&nbsp;<label for="foo_foobar">barfoo</label></li></ul>';
 $t->is($w->render('foo', array('foo', 'foobar')), $output, '->render() has support for groups');
 
+$w->setOption('choices', array('foo' => array('foo' => 'bar', 'bar' => 'foo')));
+$output = 'foo <ul class="checkbox_list"><li><input name="foo[]" type="checkbox" value="foo" id="foo_foo" />&nbsp;<label for="foo_foo">bar</label></li>
+<li><input name="foo[]" type="checkbox" value="bar" id="foo_bar" checked="checked" />&nbsp;<label for="foo_bar">foo</label></li></ul>';
+$t->is($w->render('foo', array('bar')), $output, '->render() accepts a single group');
+
 try
 {
   $w = new sfWidgetFormSelectCheckbox();
@@ -76,3 +81,15 @@ $w = new sfWidgetFormSelectCheckbox(array('choices' => new sfCallable('choice_ca
 $dom->loadHTML($w->render('foo'));
 $css = new sfDomCssSelector($dom);
 $t->is(count($css->matchAll('input[type="checkbox"]')->getNodes()), 3, '->render() accepts a sfCallable as a choices option');
+
+// __clone()
+$t->diag('__clone()');
+$w = new sfWidgetFormSelectCheckbox(array('choices' => new sfCallable(array($w, 'foo'))));
+$w1 = clone $w;
+$callable = $w1->getOption('choices')->getCallable();
+$t->is(spl_object_hash($callable[0]), spl_object_hash($w1), '__clone() changes the choices is a callable and the object is an instance of the current object');
+
+$w = new sfWidgetFormSelectCheckbox(array('choices' => new sfCallable(array($a = new stdClass(), 'foo'))));
+$w1 = clone $w;
+$callable = $w1->getOption('choices')->getCallable();
+$t->is(spl_object_hash($callable[0]), spl_object_hash($a), '__clone() changes nothing if the choices is a callable and the object is not an instance of the current object');

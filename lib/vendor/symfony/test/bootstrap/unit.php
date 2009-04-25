@@ -10,7 +10,6 @@
 
 // setup expected test environment (per check_configuration.php)
 ini_set('magic_quotes_runtime', 'off');
-ini_set('register_globals', 'off');
 ini_set('session.auto_start', 'off');
 ini_set('arg_separator.output', '&amp;');
 ini_set('allow_url_fopen', 'on');
@@ -31,7 +30,7 @@ sf_unit_test_shutdown();
 
 // create test cache dir
 $sf_root_dir = sfToolkit::getTmpDir().'/sf_test_project';
-mkdir($sf_root_dir, 0777, true);
+@mkdir($sf_root_dir, 0777, true);
 
 register_shutdown_function('sf_unit_test_shutdown');
 

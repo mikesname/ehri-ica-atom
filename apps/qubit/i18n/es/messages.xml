@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2009-03-02T13:10:25Z" product-name="messages">
+  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2009-03-19T01:08:56Z" product-name="messages">
     <body>
       <trans-unit id="1">
         <source>log out</source>
@@ -2042,7 +2042,7 @@
       </trans-unit>
       <trans-unit id="578">
         <source>edit %1% - ISAAR</source>
-        <target/>
+        <target>bearbeite %1%</target>
       </trans-unit>
       <trans-unit id="579">
         <source>WARNING: Deleting this term will also delete %1% related event(s)! Are you sure you want to delete these related events forever?</source>

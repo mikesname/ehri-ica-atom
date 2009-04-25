@@ -4,143 +4,177 @@ Code licensed under the BSD License:
 http://developer.yahoo.net/yui/license.txt
 version: 2.5.1
 */
+
 /* first or middle sibling, no children */
 .ygtvchildren .ygtvchildren .ygtvtn {
-	width:18px; height:22px; 
-	background: url(treeview-sprite.gif) 0 -5600px no-repeat; 
+  width: 18px;
+  height: 22px;
+  background: url(treeview-sprite.gif) 0 -5600px no-repeat;
 }
 
 /* first or middle sibling, collapsable */
 .ygtvchildren .ygtvchildren .ygtvtm {
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -4000px no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -4000px no-repeat;
 }
 
 /* first or middle sibling, collapsable, hover */
 .ygtvchildren .ygtvchildren .ygtvtmh {
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -4800px no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -4800px no-repeat;
 }
 
 /* first or middle sibling, expandable */
 .ygtvchildren .ygtvchildren .ygtvtp {
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -6400px no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -6400px no-repeat;
 }
 
 /* first or middle sibling, expandable, hover */
 .ygtvchildren .ygtvchildren .ygtvtph {
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -7200px no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -7200px no-repeat;
 }
 
 /* last sibling, no children */
 .ygtvchildren .ygtvchildren .ygtvln {
-	width:18px; height:22px; 
-	background: url(treeview-sprite.gif) 0 -1600px no-repeat; 
+  width: 18px;
+  height: 22px;
+  background: url(treeview-sprite.gif) 0 -1600px no-repeat;
 }
 
 /* Last sibling, collapsable */
 .ygtvchildren .ygtvchildren .ygtvlm {
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 0px no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 0px no-repeat;
 }
 
 /* Last sibling, collapsable, hover */
 .ygtvchildren .ygtvchildren .ygtvlmh {
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -800px no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -800px no-repeat;
 }
 
 /* Last sibling, expandable */
-.ygtvchildren .ygtvchildren .ygtvlp { 
-	width:18px; height:22px; 
-	cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -2400px no-repeat; 
+.ygtvchildren .ygtvchildren .ygtvlp {
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -2400px no-repeat;
 }
 
 /* Last sibling, expandable, hover */
-.ygtvchildren .ygtvchildren .ygtvlph { 
-	width:18px; height:22px; cursor:pointer ;
-	background: url(treeview-sprite.gif) 0 -3200px no-repeat; 
+.ygtvchildren .ygtvchildren .ygtvlph {
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(treeview-sprite.gif) 0 -3200px no-repeat;
 }
 
 /* Loading icon */
-.ygtvloading { 
-	width:18px; height:22px; 
-	background: url(treeview-loading.gif) 0 0 no-repeat; 
+.ygtvloading {
+  width: 18px;
+  height: 22px;
+  background: url(treeview-loading.gif) 0 0 no-repeat;
 }
 
-/* the style for the empty cells that are used for rendering the depth 
+/* the style for the empty cells that are used for rendering the depth
  * of the node */
-.ygtvdepthcell { 
-	width:18px; height:22px; 
-	background: url(treeview-sprite.gif) 0 -8000px no-repeat; 
+.ygtvdepthcell {
+  width: 18px;
+  height: 22px;
+  background: url(treeview-sprite.gif) 0 -8000px no-repeat;
 }
 
-.ygtvblankdepthcell { width:18px; height:22px; }
+.ygtvblankdepthcell {
+  width: 18px;
+  height: 22px;
+}
 
 /* the style of the div around each node */
-.ygtvitem { }  
+.ygtvitem {
+
+}
 
 /* the style of the div around each node's collection of children */
-.ygtvchildren {  
-    *zoom: 1;
-}  
+.ygtvchildren { *
+  zoom: 1;
+}
 
 /* the style of the text label in ygTextNode */
-.ygtvlabel, .ygtvlabel:link, .ygtvlabel:visited { 
-	margin-left:2px;
-	text-decoration: none;
+.ygtvlabel,.ygtvlabel:link,.ygtvlabel:visited {
+  margin-left: 2px;
+  text-decoration: none;
   background-color: #ffff;
 }
 
-.ygtvlabel:hover { 
-	margin-left:2px;
-	text-decoration: none;
+.ygtvlabel:hover {
+  margin-left: 2px;
+  text-decoration: none;
   background-color: #000000;
   color: #ffffff;
 }
 
+a.ygtvlabel {
+  display: block;
+}
 
-.ygtvspacer { height: 22px; width: 12px; }
+a.ygtvspacer:hover {
+  background-color: transparent;
+  margin: 0;
+  display: inline;
+}
 
+.ygtvspacer {
+  height: 22px;
+  width: 12px;
+}
 
 /*top node */
 .ygtvlp {
-width:18px; height:22px; cursor:pointer ;
-background: url(top-node-expandable.gif) no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(top-node-expandable.gif) no-repeat;
 }
 
 .ygtvlph {
-width:18px; height:22px; cursor:pointer ;
-background: url(top-node-expandable-hover.gif) no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(top-node-expandable-hover.gif) no-repeat;
 }
 
 .ygtvlm {
-width:18px; height:22px; cursor:pointer ;
-background: url(top-node-collapsible.gif) no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(top-node-collapsible.gif) no-repeat;
 }
 
 .ygtvlmh {
-width:18px; height:22px; cursor:pointer ;
-background: url(top-node-collapsible-hover.gif) no-repeat; 
+  width: 18px;
+  height: 22px;
+  cursor: pointer;
+  background: url(top-node-collapsible-hover.gif) no-repeat;
 }
 
 a.currentTextNode {
-font-weight: bold;
-color: #000000;
-background: #FF9D3C;
-display: block;
-padding: 1px 1px 1px 3px;
-}
-
-#treeView a {
-display: block;
+  font-weight: bold;
+  color: #000000;
+  background: #FF9D3C;
+  display: block;
+  padding: 1px 1px 1px 3px;
 }

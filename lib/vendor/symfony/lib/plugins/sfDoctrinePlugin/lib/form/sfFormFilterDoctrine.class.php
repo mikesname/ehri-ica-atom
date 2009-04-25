@@ -20,6 +20,9 @@
  */
 abstract class sfFormFilterDoctrine extends sfFormFilter
 {
+  protected
+    $tableMethodName       = null;
+
   /**
    * Returns the current model name.
    *
@@ -33,6 +36,27 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
    * @return array An array of fields with their filter type
    */
   abstract public function getFields();
+
+  /**
+   * Get the name of the table method used to retrieve the query object for the filter
+   *
+   * @return string $tableMethodName
+   */
+  public function getTableMethod()
+  {
+    return $this->tableMethodName;
+  }
+
+  /**
+   * Set the name of the table method used to retrieve the query object for the filter
+   *
+   * @param string $tableMethodName 
+   * @return void
+   */
+  public function setTableMethod($tableMethodName)
+  {
+    $this->tableMethodName = $tableMethodName;
+  }
 
   /**
    * Returns a Doctrine Query based on the current values form the form.
@@ -71,7 +95,7 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
     {
       try
       {
-        $method = sprintf('convert%sValue', $field);
+        $method = sprintf('convert%sValue', self::camelize($field));
       }
       catch (Exception $e)
       {
@@ -106,19 +130,24 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
   {
     $values = $this->processValues($values);
 
-    $query = Doctrine_Query::create()
-      ->from($this->getModelName() . ' r');
+    $query = Doctrine::getTable($this->getModelName())->createQuery('r');
+
+    if ($this->tableMethodName)
+    {
+      $method = $this->tableMethodName;
+      $query = Doctrine::getTable($this->getModelName())->$method($query);
+    }
 
     foreach ($this->getFields() as $field => $type)
     {
-      if (!isset($values[$field]) || is_null($values[$field]) || '' == $values[$field])
+      if (!isset($values[$field]) || is_null($values[$field]) || '' === $values[$field])
       {
         continue;
       }
 
       if ($this->getTable()->hasField($field))
       {
-        $method = sprintf('add%sColumnQuery', $this->getFieldName($field));
+        $method = sprintf('add%sColumnQuery', self::camelize($this->getFieldName($field)));
       } else {
         // not a "real" column
         if (!method_exists($this, $method = sprintf('add%sColumnQuery', self::camelize($field))))
@@ -174,9 +203,23 @@ abstract class sfFormFilterDoctrine extends sfFormFilter
     {
       $query->addWhere('r.' . $fieldName . ' IS NULL');
     }
-    else if (isset($values['text']) && '' != $values['text'])
+    else if (is_array($values) && isset($values['text']) && '' != $values['text'])
     {
       $query->addWhere('r.' . $fieldName . ' LIKE ?', '%' . $values['text'] . '%');
+    }
+  }
+
+  protected function addNumberQuery(Doctrine_Query $query, $field, $values)
+  {
+    $fieldName = $this->getFieldName($field);
+
+    if (is_array($values) && isset($values['is_empty']) && $values['is_empty'])
+    {
+      $query->addWhere('r.' . $fieldName . ' IS NULL');
+    }
+    else if (is_array($values) && isset($values['text']) && '' != $values['text'])
+    {
+      $query->addWhere('r.' . $fieldName . ' = ?', $values['text']);
     }
   }
 

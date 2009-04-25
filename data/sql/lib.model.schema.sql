@@ -1421,5 +1421,50 @@ CREATE TABLE `q_user_role_relation`
 		ON DELETE CASCADE
 )Type=InnoDB;
 
+#-----------------------------------------------------------------------------
+#-- q_oai_repository
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_oai_repository`;
+
+
+CREATE TABLE `q_oai_repository`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`name` VARCHAR(512),
+	`uri` VARCHAR(255),
+	`admin_email` VARCHAR(255),
+	`earliest_timestamp` DATETIME,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	PRIMARY KEY (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_oai_harvest
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_oai_harvest`;
+
+
+CREATE TABLE `q_oai_harvest`
+(
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`oai_repository_id` INTEGER  NOT NULL,
+	`start_timestamp` DATETIME,
+	`end_timestamp` DATETIME,
+	`last_harvest` DATETIME,
+	`last_harvest_attempt` DATETIME,
+	`metadataPrefix` VARCHAR(255),
+	`set` VARCHAR(255),
+	`created_at` DATETIME  NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `q_oai_harvest_FI_1` (`oai_repository_id`),
+	CONSTRAINT `q_oai_harvest_FK_1`
+		FOREIGN KEY (`oai_repository_id`)
+		REFERENCES `q_oai_repository` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

@@ -4,21 +4,31 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>Test_02_multi-page_2.html</title>
+<title>Test_03_multi-page_2.html</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Test_02_multi-page_2.html</td></tr>
+<tr><td rowspan="1" colspan="3">Test_03_multi-page_2.html</td></tr>
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add/edit</td>
+	<td>link=Import/export</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>file</td>
+	<td>/var/www/ica-atom/test/selenium/Test_suite_digital_objects/City_Clerk.xml</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='upload']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[2]/ul/li[1]/ul/li[1]/a</td>
+	<td>link=Add/edit</td>
 	<td></td>
 </tr>
 <tr>
@@ -28,12 +38,12 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>//td[@id='ygtvt9']/div</td>
+	<td>ygtvt2</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>ygtvlabelel10</td>
+	<td>ygtvlabelel3</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,12 +63,12 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>ygtvlabelel11</td>
+	<td>ygtvlabelel4</td>
 	<td></td>
 </tr>
 <tr>
@@ -78,17 +88,22 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>ygtvlabelel9</td>
+	<td>ygtvlabelel1</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
 	<td>imageflow_slider</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>ygtvlabelel2</td>
 	<td></td>
 </tr>
 <tr>
@@ -108,12 +123,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//form[@id='editForm']/div[1]/a</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -123,7 +133,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>ygtvlabelel10</td>
+	<td>ygtvlabelel3</td>
 	<td></td>
 </tr>
 <tr>
@@ -148,7 +158,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>ygtvlabelel11</td>
+	<td>ygtvlabelel4</td>
 	<td></td>
 </tr>
 <tr>
@@ -173,7 +183,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>ygtvlabelel9</td>
+	<td>ygtvlabelel2</td>
 	<td></td>
 </tr>
 <tr>
@@ -183,7 +193,102 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=log out</td>
+	<td>ygtvlabelel1</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit archival description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Warning: this archival description has 4 descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this archival description?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=City of Vancouver. Office of the City Clerk</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit authority record</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>are you sure?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[4]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Vancouver</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=list all taxonomies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Local government</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>Are you sure?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Log out</td>
 	<td></td>
 </tr>
 

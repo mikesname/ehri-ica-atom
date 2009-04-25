@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage propel
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelGenerator.class.php 13234 2008-11-22 13:52:02Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfPropelGenerator.class.php 16976 2009-04-04 12:47:44Z fabien $
  */
 class sfPropelGenerator extends sfModelGenerator
 {
@@ -216,6 +216,66 @@ class sfPropelGenerator extends sfModelGenerator
   }
 
   /**
+   * Returns the default configuration for fields.
+   *
+   * @return array An array of default configuration for all fields
+   */
+  public function getDefaultFieldsConfiguration()
+  {
+    $fields = array();
+
+    $names = array();
+    foreach ($this->getTableMap()->getColumns() as $column)
+    {
+      $name = $this->translateColumnName($column);
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'is_link'      => (Boolean) $column->isPrimaryKey(),
+        'is_real'      => true,
+        'is_partial'   => false,
+        'is_component' => false,
+        'type'         => $this->getType($column),
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
+    foreach ($this->getManyToManyTables() as $tables)
+    {
+      $name = sfInflector::underscore($tables['middleTable']->getClassname()).'_list';
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'is_link'      => false,
+        'is_real'      => false,
+        'is_partial'   => false,
+        'is_component' => false,
+        'type'         => 'Text',
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
+    if (isset($this->config['fields']))
+    {
+      foreach ($this->config['fields'] as $name => $params)
+      {
+        if (in_array($name, $names))
+        {
+          continue;
+        }
+
+        $fields[$name] = array_merge(array(
+          'is_link'      => false,
+          'is_real'      => false,
+          'is_partial'   => false,
+          'is_component' => false,
+          'type'         => 'Text',
+        ), is_array($params) ? $params : array());
+      }
+    }
+
+    unset($this->config['fields']);
+
+    return $fields;
+  }
+
+  /**
    * Returns the configuration for fields in a given context.
    *
    * @param  string $context The Context
@@ -229,7 +289,7 @@ class sfPropelGenerator extends sfModelGenerator
     $names = array();
     foreach ($this->getTableMap()->getColumns() as $column)
     {
-      $name = sfInflector::underscore($column->getName());
+      $name = $this->translateColumnName($column);
       $names[] = $name;
       $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : array();
     }
@@ -271,7 +331,7 @@ class sfPropelGenerator extends sfModelGenerator
     $names = array();
     foreach ($this->getTableMap()->getColumns() as $column)
     {
-      $names[] = sfInflector::underscore($column->getPhpName());
+      $names[] = $this->translateColumnName($column);
     }
 
     if ($withM2M)
@@ -283,5 +343,13 @@ class sfPropelGenerator extends sfModelGenerator
     }
 
     return $names;
+  }
+
+  public function translateColumnName($column, $related = false, $to = BasePeer::TYPE_FIELDNAME)
+  {
+    $peer = $related ? constant($column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName())->getPhpName().'::PEER') : constant($column->getTable()->getPhpName().'::PEER');
+    $field = $related ? $column->getRelatedName() : $column->getFullyQualifiedName();
+
+    return call_user_func(array($peer, 'translateFieldName'), $field, BasePeer::TYPE_COLNAME, $to);
   }
 }

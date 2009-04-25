@@ -33,6 +33,7 @@ class QubitSocket
   var $err_str;
   var $headers;
   var $status;
+  var $type;
 
   var $protocol;
   var $host;
@@ -43,6 +44,7 @@ class QubitSocket
   var $error;
   var $attempts = 0;
   var $max_attempts = 3;
+  var $sleep_between_attempts = 10;
   var $max_redirects = 10;
   var $agent = 'Qubit Toolkit';
   var $from;
@@ -56,7 +58,7 @@ class QubitSocket
   * @param string $timeout, time to timeout of the connection
   * @return bool true for success, false for failure
   */
-  public function QubitSocket($url='', $agent='Not Specified', $from='admin@somewhere.com', $timeout='1200')
+  public function QubitSocket($url='', $agent='Not Specified', $from='admin@somewhere .com', $timeout='1200')
   {
     //error_reporting(E_ALL);
     //ini_set('error_reporting', E_ALL);
@@ -108,10 +110,29 @@ class QubitSocket
   {
     curl_setopt($this->sock, CURLOPT_URL, $this->url);
     curl_setopt($this->sock, CURLOPT_RETURNTRANSFER, true);
+    $return_value = false;
+    $requestCount = 0;
+    while ($return_value == false && $requestCount < $this->max_attempts)
+    {
+      $return_value = curl_exec($this->sock);
+      $requestCount++;
+      //Pause between attempts
+      if (!$return_value)
+      {
+        sleep($this->sleep_between_attempts);
+      }
+    }
 
-    $return_value = curl_exec($this->sock);
+    //Check status of request
+    $this->status = curl_getinfo($this->sock, CURLINFO_HTTP_CODE);
+    $this->type = curl_getinfo($this->sock, CURLINFO_CONTENT_TYPE);
+
+    if ($this->status != 200)
+    {
+      return false;
+    }
+
     curl_close($this->sock);
-
     return $return_value;
   }
 
@@ -146,7 +167,8 @@ class QubitSocket
   public function get_file($file='')
   {
     $file_handle = fopen($file, 'w');
-
+    curl_setopt($this->sock, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($this->sock, CURLOPT_MAXREDIRS, $this->max_redirects);
     curl_setopt($this->sock, CURLOPT_URL, $this->url);
     curl_setopt($this->sock, CURLOPT_FILE, $file_handle);
     curl_exec($this->sock);
@@ -187,6 +209,16 @@ class QubitSocket
     curl_exec($this->sock);
     fclose($fileStream);
     $error_no = curl_errno($this->sock);
+
+    //Check status of request
+    $this->status = curl_getinfo($this->sock, CURLINFO_HTTP_CODE);
+    $this->type = curl_getinfo($this->sock, CURLINFO_CONTENT_TYPE);
+
+    if ($this->status != 200)
+    {
+      return false;
+    }
+
     curl_close($this->sock);
     unlink($filePath);
     return ($error_no == 0); //TRUE if communication okay

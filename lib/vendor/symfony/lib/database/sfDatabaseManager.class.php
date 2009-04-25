@@ -64,12 +64,12 @@ class sfDatabaseManager
   {
     if ($this->configuration instanceof sfApplicationConfiguration)
     {
-      $databases = include($this->configuration->getConfigCache()->checkConfig('config/databases.yml', true));
+      $databases = include($this->configuration->getConfigCache()->checkConfig('config/databases.yml'));
     }
     else
     {
       $configHandler = new sfDatabaseConfigHandler();
-      $databases = $configHandler->evaluate(array($this->configuration->getRootDir().'/config/databases.yml', true));
+      $databases = $configHandler->evaluate(array($this->configuration->getRootDir().'/config/databases.yml'));
     }
 
     foreach ($databases as $name => $database)

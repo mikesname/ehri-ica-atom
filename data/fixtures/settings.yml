@@ -1,230 +1,317 @@
 QubitSetting:
   QubitSetting_1:
     name: version
-    editable: '0'
-    deleteable: '0'
-    source_culture: en
-    value: { en: 'ICA-AtoM 1.0.5-beta' }
+    editable: 0
+    deleteable: 0
+    value: 'ICA-AtoM 1.0.6-beta'
   QubitSetting_2:
     name: upload_dir
-    editable: '0'
-    deleteable: '0'
-    source_culture: en
-    value: { en: uploads }
+    editable: 0
+    deleteable: 0
+    value: uploads
   QubitSetting_3:
     name: reference_image_maxwidth
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '480' }
+    editable: 1
+    deleteable: 0
+    value: 480
   QubitSetting_4:
     name: hits_per_page
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '10' }
+    editable: 1
+    deleteable: 0
+    value: 10
   QubitSetting_5:
     name: multi_repository
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '1' }
+    editable: 1
+    deleteable: 0
+    value: 1
   QubitSetting_6:
     name: site_title
     scope: site_information
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
+    editable: 1
+    deleteable: 0
   QubitSetting_7:
     name: site_description
     scope: site_information
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
+    editable: 1
+    deleteable: 0
   QubitSetting_8:
     name: informationobject
     scope: default_template
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: isad }
+    editable: 1
+    deleteable: 0
+    value: isad
   QubitSetting_9:
     name: actor
     scope: default_template
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: isaar }
+    editable: 1
+    deleteable: 0
+    value: isaar
   QubitSetting_10:
     name: repository
     scope: default_template
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: isdiah }
+    editable: 1
+    deleteable: 0
+    value: isdiah
   QubitSetting_11:
     name: informationobject
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'archival description', es: 'Descripción archivística', fr: 'description archivistique', it: 'descrizione archivistica', nl: 'archivistische beschrijving', pt: 'descrição arquivística', sl: 'arhivski opisi' }
+    value:
+      en: 'archival description'
+      es: 'Descripción archivística'
+      fr: 'description archivistique'
+      it: 'descrizione archivistica'
+      nl: 'archivistische beschrijving'
+      pt: 'descrição arquivística'
+      sl: 'arhivski opisi'
   QubitSetting_12:
     name: actor
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'authority record', es: 'registro de autoridade', fr: 'fichier d''autorité', nl: 'geautoriseerd bestand', pt: 'registro de autoridade' }
+    value:
+      en: 'authority record'
+      es: 'registro de autoridade'
+      fr: 'fichier d''autorité'
+      nl: 'geautoriseerd bestand'
+      pt: 'registro de autoridade'
   QubitSetting_13:
     name: creator
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: creator, fr: 'producteur d''archives', it: 'soggetto produttore', nl: archiefvormer, pt: produtor, sl: ustvarjalec }
+    value:
+      de: Urheber/Bestandsbildner
+      en: creator
+      es: produtor
+      fr: 'producteur d''archives'
+      it: 'soggetto produttore'
+      nl: archiefvormer
+      pt: produtor
+      sl: ustvarjalci
   QubitSetting_14:
     name: repository
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'archival institution', es: 'Institución archivística ', fr: 'institution de conservation', it: 'istituzione archivistica', nl: archiefinstelling, pt: 'instituição arquivística', sl: 'arhivske ustanove' }
+    value:
+      en: 'archival institution'
+      es: 'Institución archivística '
+      fr: 'institution de conservation'
+      it: 'istituzione archivistica'
+      nl: archiefinstelling
+      pt: 'instituição arquivística'
+      sl: 'arhivske ustanove'
   QubitSetting_15:
     name: term
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: term, es: término, fr: terme, it: termine, nl: term, pt: termo, sl: deskriptorji }
+    value:
+      de: Begriff
+      en: term
+      es: Término
+      fr: terme
+      it: termine
+      nl: term
+      pt: termo
+      sl: deskriptorji
   QubitSetting_16:
     name: subject
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: subject, es: termo, fr: sujet, it: soggetto, nl: onderwerp, pt: assunto, sl: osebe }
+    value:
+      de: Gegenstand
+      en: subject
+      es: termo
+      fr: sujet
+      it: soggetto
+      nl: onderwerp
+      pt: assunto
+      sl: osebe
   QubitSetting_17:
     name: collection
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: fonds, es: fundo, fr: collection, it: collezione, nl: collectie, pt: fundo/coleção, sl: zbirke }
+    value:
+      en: fonds
+      es: fundo
+      fr: collection
+      it: collezione
+      nl: collectie
+      pt: fundo/coleção
+      sl: zbirka
   QubitSetting_18:
     name: holdings
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: holdings, es: coleções, fr: collections, it: patrimoni, nl: collecties, pt: acervo, sl: fondi }
+    value:
+      de: Bestand
+      en: holdings
+      es: coleções
+      fr: collections
+      it: patrimoni
+      nl: collecties
+      pt: acervo
+      sl: fondi
   QubitSetting_19:
     name: place
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: place, es: place, fr: lieu, it: luogo, nl: plaats, pt: local, sl: kraji }
+    value:
+      de: Ort
+      en: place
+      es: place
+      fr: lieu
+      it: luogo
+      nl: plaats
+      pt: local
+      sl: kraji
   QubitSetting_20:
     name: name
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: name, es: name, fr: nom, it: nome, nl: naam, pt: nome, sl: imena }
+    value:
+      de: Name
+      en: name
+      es: name
+      fr: nom
+      it: nome
+      nl: naam
+      pt: nome
+      sl: imena
   QubitSetting_21:
     name: digitalobject
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'digital object', es: 'digital object', fr: 'objet numérique', it: 'oggetto digitale', nl: 'digitaal object', pt: 'objeto digital', sl: 'digitalni objekti' }
+    value:
+      de: 'Digitales Objekt'
+      en: 'digital object'
+      es: 'digital object'
+      fr: 'objet numérique'
+      it: 'oggetto digitale'
+      nl: 'digitaal object'
+      pt: 'objeto digital'
+      sl: 'digitalni objekti'
   QubitSetting_22:
     name: physicalobject
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'physical storage', es: 'physical storage', fr: 'conservation matérielle', it: 'oggetto fisico', nl: 'fysieke opslag', pt: 'objeto físico', sl: skladišča }
+    value:
+      de: 'Physisches Objekt'
+      en: 'physical storage'
+      es: 'physical storage'
+      fr: 'conservation matérielle'
+      it: 'oggetto fisico'
+      nl: 'fysieke opslag'
+      pt: 'objeto físico'
+      sl: skladišča
   QubitSetting_23:
     name: mediatype
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'media type', es: 'media type', fr: 'type de support', it: 'tipo di media', nl: bestandsformaat, pt: 'tipo de mídia', sl: 'tip medija' }
+    value:
+      de: Medientyp
+      en: 'media type'
+      es: 'media type'
+      fr: 'type de support'
+      it: 'tipo di media'
+      nl: bestandsformaat
+      pt: 'tipo de mídia'
+      sl: 'tip medija'
   QubitSetting_24:
     name: materialtype
     scope: ui_label
-    editable: '1'
-    deleteable: '0'
+    editable: 1
+    deleteable: 0
     source_culture: en
-    value: { en: 'material type', fr: 'type de document', it: 'tipo di materiale', pt: 'gênero documental', sl: 'tip materiala' }
+    value:
+      de: Materialart
+      en: 'material type'
+      fr: 'type de document'
+      it: 'tipo di materiale'
+      pt: 'gênero documental'
+      sl: 'tip materiala'
   QubitSetting_25:
     name: en
     scope: i18n_languages
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: en }
+    editable: 1
+    deleteable: 0
+    value: en
   QubitSetting_26:
     name: fr
     scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    source_culture: en
-    value: { en: fr }
+    editable: 1
+    deleteable: 1
+    value: fr
   QubitSetting_27:
     name: es
     scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    source_culture: en
-    value: { en: es }
+    editable: 1
+    deleteable: 1
+    value: es
   QubitSetting_28:
     name: nl
     scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    source_culture: en
-    value: { en: nl }
+    editable: 1
+    deleteable: 1
+    value: nl
   QubitSetting_29:
     name: pt
     scope: i18n_languages
-    editable: '1'
-    deleteable: '1'
-    source_culture: en
-    value: { en: pt }
+    editable: 1
+    deleteable: 1
+    value: pt
   QubitSetting_default_repository:
     name: default_repository
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '' }
+    editable: 1
+    deleteable: 0
+    value: ''
   QubitSetting_oai_enabled:
     name: oai_enabled
     scope: oai
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '0' }
+    editable: 1
+    deleteable: 0
+    value: 0
   QubitSetting_oai_repository_code:
     name: oai_repository_code
     scope: oai
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '' }
+    editable: 1
+    deleteable: 0
+    value: ''
   QubitSetting_resumption_token_limit:
     name: resumption_token_limit
     scope: oai
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '100' }
+    editable: 1
+    deleteable: 0
+    value: 100
   QubitSetting_inherit_code_informationobject:
     name: inherit_code_informationobject
-    editable: '1'
-    deleteable: '0'
-    source_culture: en
-    value: { en: '1' }
+    editable: 1
+    deleteable: 0
+    value: 1
+  toggleLogo:
+    name: toggleLogo
+    value: 1

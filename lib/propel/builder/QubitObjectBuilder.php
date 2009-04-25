@@ -240,9 +240,7 @@ EOF;
     if (isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
     {
       $this->addAddAncestorsCriteria($script);
-      $this->addAncestorsAttributes($script);
       $this->addAddDescendantsCriteria($script);
-      $this->addDescendantsAttributes($script);
       $this->addUpdateNestedSet($script);
       $this->addDeleteFromNestedSet($script);
     }
@@ -484,7 +482,10 @@ EOF;
     \$criteria = new Criteria;
 $adds
 
-    return self::get(\$criteria, \$options)->offsetGet(0, array('defaultValue' => null));
+    if (1 == count(\$query = self::get(\$criteria, \$options)))
+    {
+      return \$query[0];
+    }
   }
 
 EOF;
@@ -846,42 +847,42 @@ EOF;
 
     if ('ancestors' == \$offset)
     {
-      if (!isset(\$this->ancestors))
+      if (!isset(\$this->values['ancestors']))
       {
         if (\$this->new)
         {
-          \$this->ancestors = QubitQuery::create(array('self' => \$this) + \$options);
+          \$this->values['ancestors'] = QubitQuery::create(array('self' => \$this) + \$options);
         }
         else
         {
           \$criteria = new Criteria;
           \$this->addAncestorsCriteria(\$criteria);
           \$this->addOrderByPreorder(\$criteria);
-          \$this->ancestors = self::get(\$criteria, array('self' => \$this) + \$options);
+          \$this->values['ancestors'] = self::get(\$criteria, array('self' => \$this) + \$options);
         }
       }
 
-      return \$this->ancestors;
+      return \$this->values['ancestors'];
     }
 
     if ('descendants' == \$offset)
     {
-      if (!isset(\$this->descendants))
+      if (!isset(\$this->values['descendants']))
       {
         if (\$this->new)
         {
-          \$this->descendants = QubitQuery::create(array('self' => \$this) + \$options);
+          \$this->values['descendants'] = QubitQuery::create(array('self' => \$this) + \$options);
         }
         else
         {
           \$criteria = new Criteria;
           \$this->addDescendantsCriteria(\$criteria);
           \$this->addOrderByPreorder(\$criteria);
-          \$this->descendants = self::get(\$criteria, array('self' => \$this) + \$options);
+          \$this->values['descendants'] = self::get(\$criteria, array('self' => \$this) + \$options);
         }
       }
 
-      return \$this->descendants;
+      return \$this->values['descendants'];
     }
 
 EOF;
@@ -1742,16 +1743,6 @@ EOF;
 EOF;
   }
 
-  protected function addAncestorsAttributes(&$script)
-  {
-    $script .= <<<EOF
-
-  protected
-    \$ancestors = null;
-
-EOF;
-  }
-
   protected function addAddDescendantsCriteria(&$script)
   {
     $script .= <<<EOF
@@ -1760,16 +1751,6 @@ EOF;
   {
     return \$criteria->add({$this->getColumnConstant($this->nestedSetLeftColumn)}, \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)}, Criteria::GREATER_THAN)->add({$this->getColumnConstant($this->nestedSetRightColumn)}, \$this->{$this->getColumnVarName($this->nestedSetRightColumn)}, Criteria::LESS_THAN);
   }
-
-EOF;
-  }
-
-  protected function addDescendantsAttributes(&$script)
-  {
-    $script .= <<<EOF
-
-  protected
-    \$descendants = null;
 
 EOF;
   }

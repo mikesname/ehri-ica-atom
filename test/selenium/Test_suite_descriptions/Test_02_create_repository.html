@@ -4,16 +4,16 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>Test_02_create_repository</title>
+<title>Test_02_create_repository.html</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">Test_02_create_repository</td></tr>
+<tr><td rowspan="1" colspan="3">Test_02_create_repository.html</td></tr>
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add/edit</td>
+	<td>link=Add/edit</td>
 	<td></td>
 </tr>
 <tr>
@@ -24,11 +24,6 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>link=add new</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=identity area</td>
 	<td></td>
 </tr>
 <tr>
@@ -43,13 +38,13 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>other_name</td>
+	<td>parallel_form_of_name</td>
 	<td>Fraser Valley Archives</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>other_name_type_id</td>
-	<td>label=Other name</td>
+	<td>type</td>
+	<td>other_form_of_name</td>
+	<td>Deroche Community Archives</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -268,12 +263,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='create']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='content-two-column']/div/form/div[1]/a</td>
+	<td>//input[@value='create']</td>
 	<td></td>
 </tr>
 <tr>
@@ -288,7 +278,12 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Fraser Valley Archives (Other name)</td>
+	<td>Fraser Valley Archives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Deroche Community Archives</td>
 	<td></td>
 </tr>
 <tr>
@@ -488,11 +483,6 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>other names</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
 	<td>type</td>
 	<td></td>
 </tr>
@@ -513,7 +503,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>mandates or sources of authority</td>
+	<td>Mandates/Sources of authority</td>
 	<td></td>
 </tr>
 <tr>
@@ -538,7 +528,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>finding aids, guides, publications</td>
+	<td>finding aids, guides and publications</td>
 	<td></td>
 </tr>
 <tr>
@@ -603,12 +593,12 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>language of description</td>
+	<td>languages</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>script of description</td>
+	<td>scripts</td>
 	<td></td>
 </tr>
 <tr>

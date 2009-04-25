@@ -35,11 +35,10 @@ class QubitPager extends sfPropelPager
   $peer_count_method_name = null,  // Qubit BasePeer has no "doCount()" method
   $offset                 = 0,
   $limit                  = 0,
+  $maxLinkCount           = 10,
   $firstPageLink          = null,
   $lastPageLink           = null,
   $totalRecordCount       = null;
-
-
 
   /**
    * Class constructor
@@ -141,12 +140,12 @@ class QubitPager extends sfPropelPager
    * Overwrite sfPager::getLinks() so we can set the $firstPageLink
    * and $lastPageLink
    *
-   * @param unknown_type $nb_links
-   * @return unknown
+   * @return array of page numbers
    */
-  public function getLinks($nb_links = 10)
+  public function getLinks($nb_links = null)
   {
     $links = array();
+    $nb_links = (null === $nb_links) ? $this->getMaxLinkCount() : null;
     $tmp   = $this->page - floor($nb_links / 2);
     $check = $this->lastPage - $nb_links + 1;
     $limit = ($check > 0) ? $check : 1;
@@ -286,5 +285,25 @@ class QubitPager extends sfPropelPager
     $count = $stmt->fetchColumn(0);
 
     return $count;
+  }
+
+  /**
+   * Set the maximum number of page links to show (e.g. 3 => '1, 2, 3, next >')
+   *
+   * @param integer $count page links
+   */
+  public function setMaxLinkCount($count)
+  {
+    $this->maxLinkCount = $count;
+  }
+
+  /**
+   * Get the maximum number of page links to show
+   *
+   * @return integer number of page links to show
+   */
+  public function getMaxLinkCount()
+  {
+    return $this->maxLinkCount;
   }
 }

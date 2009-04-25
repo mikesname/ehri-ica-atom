@@ -18,7 +18,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+          <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
         </div>
       </td>
     </tr>
@@ -68,7 +68,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+          <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
         </div>
       </td>
     </tr>
@@ -87,7 +87,6 @@
       <tr>
         <th><?php echo __('name')?></th>
         <th><?php echo __('value')?></th>
-        <th/>
       </tr>
     </thead>
 
@@ -97,7 +96,7 @@
         <td>&nbsp;</td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+            <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
           </div>
         </td>
       </tr>
@@ -116,7 +115,6 @@
       <tr>
         <th><?php echo __('name')?></th>
         <th><?php echo __('value')?></th>
-        <th/>
       </tr>
     </thead>
     <tbody>
@@ -133,11 +131,6 @@
         <td>
           <?php echo $uiLabelForm[$setting->getName()] ?>
         </td>
-        <td>
-          <?php if ($setting->isDeleteable()): ?>
-            <?php echo link_to(image_tag('delete', 'valign=top'), 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
-          <?php endif; ?>
-        </td>
       </tr>
     <?php endforeach; ?>
 
@@ -145,7 +138,7 @@
         <td>&nbsp;</td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+            <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
           </div>
         </td>
       </tr>
@@ -193,7 +186,7 @@
         </td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo my_submit_tag(__('add'), array('style' => 'width: auto;')) ?>
+            <?php echo submit_tag(__('add'), array('class' => 'form-submit')) ?>
           </div>
         </td>
       </tr>
@@ -220,7 +213,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+          <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
         </div>
       </td>
     </tr>

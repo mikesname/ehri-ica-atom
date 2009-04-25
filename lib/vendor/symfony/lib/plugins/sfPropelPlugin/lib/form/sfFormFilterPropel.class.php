@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage form
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfFormFilterPropel.class.php 11690 2008-09-20 19:50:03Z fabien $
+ * @version    SVN: $Id: sfFormFilterPropel.class.php 14499 2009-01-06 18:15:39Z Jonathan.Wage $
  */
 abstract class sfFormFilterPropel extends sfFormFilter
 {
@@ -109,7 +109,7 @@ abstract class sfFormFilterPropel extends sfFormFilter
     $peer = constant($this->getModelName().'::PEER');
     foreach ($this->getFields() as $field => $type)
     {
-      if (!isset($values[$field]) || is_null($values[$field]) || '' == $values[$field])
+      if (!isset($values[$field]) || is_null($values[$field]) || '' === $values[$field])
       {
         continue;
       }
@@ -178,9 +178,25 @@ abstract class sfFormFilterPropel extends sfFormFilter
       $criterion->addOr($criteria->getNewCriterion($colname, null, Criteria::ISNULL));
       $criteria->add($criterion);
     }
-    else if (isset($values['text']) && '' != $values['text'])
+    else if (is_array($values) && isset($values['text']) && '' != $values['text'])
     {
       $criteria->add($colname, '%'.$values['text'].'%', Criteria::LIKE);
+    }
+  }
+
+  protected function addNumberCriteria(Criteria $criteria, $field, $values)
+  {
+    $colname = $this->getColname($field);
+
+    if (is_array($values) && isset($values['is_empty']) && $values['is_empty'])
+    {
+      $criterion = $criteria->getNewCriterion($colname, '');
+      $criterion->addOr($criteria->getNewCriterion($colname, null, Criteria::ISNULL));
+      $criteria->add($criterion);
+    }
+    else if (is_array($values) && isset($values['text']) && '' != $values['text'])
+    {
+      $criteria->add($colname, $values['text']);
     }
   }
 

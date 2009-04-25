@@ -72,7 +72,7 @@ class InformationObjectListAction extends sfAction
     }
 
     // Get QubitQuery collection of information objects (with pagination, fallback and sorting)
-    $this->informationObjects = QubitInformationObject::getList($this->culture, $options);
+    $this->informationObjects = QubitInformationObject::getList($options);
 
     //determine if user has edit priviliges
     $this->editCredentials = false;

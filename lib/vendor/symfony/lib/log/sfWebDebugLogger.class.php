@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage log
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebDebugLogger.class.php 13373 2008-11-26 21:06:27Z fabien $
+ * @version    SVN: $Id: sfWebDebugLogger.class.php 16942 2009-04-03 14:48:17Z fabien $
  */
 class sfWebDebugLogger extends sfVarLogger
 {
@@ -77,7 +77,7 @@ class sfWebDebugLogger extends sfVarLogger
 
     // don't add debug toolbar:
     // * for XHR requests
-    // * if 304
+    // * if response status code is in the 3xx range
     // * if not rendering to the client
     // * if HTTP headers only
     $response = $event->getSubject();
@@ -85,7 +85,7 @@ class sfWebDebugLogger extends sfVarLogger
     if (!$this->context->has('request') || !$this->context->has('response') || !$this->context->has('controller') ||
       $request->isXmlHttpRequest() ||
       strpos($response->getContentType(), 'html') === false ||
-      $response->getStatusCode() == 304 ||
+      '3' == substr($response->getStatusCode(), 0, 1) ||
       $this->context->getController()->getRenderMode() != sfView::RENDER_CLIENT ||
       $response->isHeaderOnly()
     )
@@ -94,8 +94,8 @@ class sfWebDebugLogger extends sfVarLogger
     }
 
     $webDebug = new $this->webDebugClass($this->dispatcher, $this, array(
-      'image_root_path' => ($request->getRelativeUrlRoot() ? $request->getRelativeUrlRoot().'/' : '').sfConfig::get('sf_web_debug_web_dir').'/images')
-    );
+      'image_root_path' => ($request->getRelativeUrlRoot() ? $request->getRelativeUrlRoot() : '').sfConfig::get('sf_web_debug_web_dir').'/images',
+    ));
 
     return $webDebug->injectToolbar($content);
   }

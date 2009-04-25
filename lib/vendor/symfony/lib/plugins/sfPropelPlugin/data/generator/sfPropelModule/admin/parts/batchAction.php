@@ -1,5 +1,7 @@
   public function executeBatch(sfWebRequest $request)
   {
+    $request->checkCSRFProtection();
+
     if (!$ids = $request->getParameter('ids'))
     {
       $this->getUser()->setFlash('error', 'You must at least select one item.');
@@ -45,10 +47,17 @@
   {
     $ids = $request->getParameter('ids');
 
-    $criteria = new Criteria(<?php echo constant($this->getModelClass().'::PEER') ?>::DATABASE_NAME);
-    $criteria->add('<?php echo call_user_func(array(constant($this->getModelClass().'::PEER'), 'translateFieldName'), $this->getPrimaryKeys(true), BasePeer::TYPE_PHPNAME, BasePeer::TYPE_COLNAME) ?>', $ids, Criteria::IN);
+    $count = 0;
+    foreach (<?php echo constant($this->getModelClass().'::PEER') ?>::retrieveByPks($ids) as $object)
+    {
+      $this->dispatcher->notify(new sfEvent($this, 'admin.delete_object', array('object' => $object)));
 
-    $count = <?php echo constant($this->getModelClass().'::PEER') ?>::doDelete($criteria);
+      $object->delete();
+      if ($object->isDeleted())
+      {
+        $count++;
+      }
+    }
 
     if ($count >= count($ids))
     {

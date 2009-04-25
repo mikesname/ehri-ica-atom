@@ -15,7 +15,7 @@
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfAutoloadConfigHandler.class.php 13196 2008-11-20 18:23:18Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfAutoloadConfigHandler.class.php 17047 2009-04-06 14:43:02Z fabien $
  */
 class sfAutoloadConfigHandler extends sfYamlConfigHandler
 {
@@ -133,7 +133,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
       if ($prefix)
       {
         // FIXME: does not work for plugins installed with a symlink
-        preg_match('~^'.str_replace('\*', '(.+?)', preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $path), '~')).'~', $file, $match);
+        preg_match('~^'.str_replace('\*', '(.+?)', preg_quote(str_replace('/', DIRECTORY_SEPARATOR, $path), '~')).'~', str_replace('/', DIRECTORY_SEPARATOR, $file), $match);
         if (isset($match[$prefix]))
         {
           $localPrefix = $match[$prefix].'/';
@@ -151,6 +151,24 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
    */
   static public function getConfiguration(array $configFiles)
   {
+    $configuration = sfProjectConfiguration::getActive();
+
+    $pluginPaths = $configuration->getPluginPaths();
+    $pluginConfigFiles = array();
+
+    // move plugin files to front
+    foreach ($configFiles as $i => $configFile)
+    {
+      $path = preg_replace('/(?:\/[^\/]+){2}$/', null, $configFile);
+      if (in_array($path, $pluginPaths))
+      {
+        $pluginConfigFiles[] = $configFile;
+        unset($configFiles[$i]);
+      }
+    }
+
+    $configFiles = array_merge($pluginConfigFiles, $configFiles);
+
     $config = self::replaceConstants(self::parseYamls($configFiles));
 
     foreach ($config['autoload'] as $name => $values)
@@ -161,7 +179,7 @@ class sfAutoloadConfigHandler extends sfYamlConfigHandler
       }
     }
 
-    $event = sfProjectConfiguration::getActive()->getEventDispatcher()->filter(new sfEvent(__CLASS__, 'autoload.filter_config'), $config);
+    $event = $configuration->getEventDispatcher()->filter(new sfEvent(__CLASS__, 'autoload.filter_config'), $config);
     $config = $event->getReturnValue();
 
     return $config;

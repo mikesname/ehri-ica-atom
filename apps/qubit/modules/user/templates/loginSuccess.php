@@ -33,7 +33,7 @@
       
     <div class="menu-action">
       <?php echo input_hidden_tag('referer', $sf_request->getAttribute('referer')) ?>
-      <?php echo my_submit_tag(__('log in'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('log in'), array('class' => 'form-submit')) ?>
     </div>
   </form>
 </fieldset>

@@ -14,22 +14,34 @@
  *
  * @package    sfDoctrinePlugin
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id: sfDoctrinePager.class.php 12089 2008-10-08 20:23:25Z Jonathan.Wage $
+ * @version    SVN: $Id: sfDoctrinePager.class.php 14793 2009-01-15 23:15:41Z Jonathan.Wage $
  */
 class sfDoctrinePager extends sfPager implements Serializable
 {
-  protected $query;
+  protected
+    $query                 = null,
+    $tableMethodName       = null,
+    $tableMethodCalled     = false;
 
   /**
-   * __construct
+   * Get the name of the table method used to retrieve the query object for the pager
    *
+   * @return string $tableMethodName
+   */
+  public function getTableMethod()
+  {
+    return $this->tableMethodName;
+  }
+
+  /**
+   * Set the name of the table method used to retrieve the query object for the pager
+   *
+   * @param string $tableMethodName 
    * @return void
    */
-  public function __construct($class, $defaultMaxPerPage = 10)
+  public function setTableMethod($tableMethodName)
   {
-    parent::__construct($class, $defaultMaxPerPage);
-
-    $this->setQuery(Doctrine_Query::create()->from($class));
+    $this->tableMethodName = $tableMethodName;
   }
 
   /**
@@ -60,6 +72,15 @@ class sfDoctrinePager extends sfPager implements Serializable
     }
   }
 
+  public function getCountQuery()
+  {
+    $q = clone $this->getQuery()
+      ->offset(0)
+      ->limit(0);
+
+    return $q;
+  }
+
   /**
    * Initialize the pager instance and prepare it to be used for rendering
    *
@@ -67,14 +88,15 @@ class sfDoctrinePager extends sfPager implements Serializable
    */
   public function init()
   {
-    $count = $this->getQuery()->offset(0)->limit(0)->count();
+    $countQuery = $this->getCountQuery();
+    $count = $countQuery->count();
 
     $this->setNbResults($count);
 
     $p = $this->getQuery();
     $p->offset(0);
     $p->limit(0);
-    if ($this->getPage() == 0 || $this->getMaxPerPage() == 0)
+    if ($this->getPage() == 0 || $this->getMaxPerPage() == 0 || $this->getNbResults() == 0)
     {
       $this->setLastPage(0);
     }
@@ -96,6 +118,14 @@ class sfDoctrinePager extends sfPager implements Serializable
    */
   public function getQuery()
   {
+    if (!$this->tableMethodCalled && $this->tableMethodName)
+    {
+      $method = $this->tableMethodName;
+      $this->query = Doctrine::getTable($this->getClass())->$method($this->query);
+      $this->tableMethodCalled = true;
+    } else if (!$this->query) {
+      $this->query = Doctrine::getTable($this->getClass())->createQuery();
+    }
     return $this->query;
   }
 

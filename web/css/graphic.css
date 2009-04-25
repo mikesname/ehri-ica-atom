@@ -11,13 +11,11 @@
                 WEBSITE NAME & LOGO
 **********************************************************/
 #website-name {
-  font: bold 64px verdana, georgia, garamond, serif;
-  letter-spacing: -0.1ex;
+  font: bold 54px verdana, georgia, garamond, serif;
+  letter-spacing: 0.15ex;
   color: #FC6E3C;
   border: 0;
   margin-bottom: 3px;
-  text-align: left;
-  float: left;
 }
 
 #website-name a:hover,#website-name a:link,#website-name a:visited,#website-name a:active
@@ -26,15 +24,14 @@
   border: 0;
   color: #FC6E3C;
   background-color: transparent;
+  line-height: 100%;
 }
 
 #website-description {
   color: #04025C;
-  font: bold 15px georgia, garamond, serif;
-  margin: 75px 0 0 0;
+  font: 12px georgia, garamond, serif;
+  margin: 10px 0 0 20px;
   padding: 0;
-  text-align: left;
-  float: right;
 }
 
 #logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
@@ -48,7 +45,7 @@
 }
 
 #logo img {
-  margin: 0 0 0 20px;
+  margin: 0 0 0 0;
 }
 
 /*********************************************************
@@ -212,6 +209,7 @@ button.delete-small {
   width: 16px;
   height: 16px;
   border: none;
+  vertical-align: top;
 }
 
 /*********************************************************
@@ -322,14 +320,14 @@ button.delete-small {
   float: left;
 }
 
-#search-form .submit {
+#search-form .form-submit {
   height: 30px;
   font: 15px Verdana, Arial, Sans-Serif;
   margin: 0 5px 0 5px;
   width: 100px;
 }
 
-#search-form .submithover {
+#search-form .form-submit:hover {
   height: 30px;
   font: 15px Verdana, Arial, Sans-Serif;
   margin: 0 0 0 5px;
@@ -431,6 +429,16 @@ table.detail td.subHeaderCell {
   color: #999999;
 }
 
+table.detail td ul {
+  padding: 0 16px;
+  margin: 0;
+}
+
+table.detail td ul li {
+  padding: 0px;
+  margin: 0px;
+}
+
 /*********************************************************
               INLINE TABLES
 **********************************************************/
@@ -447,6 +455,10 @@ table.inline td.headerCell,table.inline th {
   font-weight: bold;
   text-align: left;
   width: 15%;
+}
+
+table.inline thead tr {
+  vertical-align: bottom;
 }
 
 table.inline tr {
@@ -681,6 +693,17 @@ table.list td.headerCell-name {
 }
 
 /*********************************************************
+               TABLE FILTER
+**********************************************************/
+
+div.table-control {
+  border: 1px #aaa solid;
+  margin: 3px 0px;
+  padding: 3px;
+  background: #eee;
+}
+
+/*********************************************************
                 STATIC PAGE
 **********************************************************/
 .staticPageContent {
@@ -796,6 +819,15 @@ div.digitalObjectDesc img {
 
 .result-count.compound_digiobj {
   margin: 0 0 5px 0;
+}
+
+/* Modifications to pager for display in context menus */
+.contextMenu .pager
+{
+  border-top: 1px dotted #999;
+  margin: 0;
+  padding: 10px 2px;
+  font-size: 10px;
 }
 
 /*********************************************************

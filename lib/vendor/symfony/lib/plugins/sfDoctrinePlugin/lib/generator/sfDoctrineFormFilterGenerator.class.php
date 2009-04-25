@@ -72,6 +72,8 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
       file_put_contents($file, $this->evalTemplate('sfDoctrineFormFilterBaseTemplate.php'));
     }
 
+    $pluginPaths = $this->generatorManager->getConfiguration()->getAllPluginPaths();
+
     // create a form class for every Doctrine class
     foreach ($models as $model)
     {
@@ -95,7 +97,7 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
       file_put_contents($baseDir.'/base/Base'.$model.'FormFilter.class.php', $this->evalTemplate('sfDoctrineFormFilterGeneratedTemplate.php'));
       if ($isPluginModel)
       {
-        $pluginBaseDir = sfConfig::get('sf_plugins_dir') . '/' . $pluginName . '/lib/filter/doctrine';
+        $pluginBaseDir = $pluginPaths[$pluginName].'/lib/filter/doctrine';
         if (!file_exists($classFile = $pluginBaseDir.'/Plugin'.$model.'FormFilter.class.php'))
         {
             if (!is_dir($pluginBaseDir))
@@ -277,6 +279,17 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
   }
 
+  public function getValidatorForColumn($column)
+  {
+    $format = 'new %s(%s)';
+    if (in_array($class = $this->getValidatorClassForColumn($column), array('sfValidatorInteger', 'sfValidatorNumber')))
+    {
+      $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s))';
+    }
+
+    return sprintf($format, $class, $this->getValidatorOptionsForColumn($column));
+  }
+
   public function getType($column)
   {
     if ($column->isForeignKey())
@@ -294,6 +307,10 @@ class sfDoctrineFormFilterGenerator extends sfDoctrineFormGenerator
       case 'datetime':
       case 'timestamp':
         return 'Date';
+      case 'integer':
+      case 'decimal':
+      case 'float':
+        return 'Number';
       default:
         return 'Text';
     }

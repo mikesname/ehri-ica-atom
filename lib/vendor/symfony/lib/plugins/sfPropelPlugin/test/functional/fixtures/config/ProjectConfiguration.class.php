@@ -7,6 +7,7 @@ class ProjectConfiguration extends sfProjectConfiguration
 {
   public function setup()
   {
+    $this->enableAllPluginsExcept(array('sfDoctrinePlugin', 'sfCompat10Plugin'));
   }
 
   public function initializePropel($app)
@@ -37,7 +38,7 @@ class ProjectConfiguration extends sfProjectConfiguration
     {
       chdir(sfConfig::get('sf_root_dir'));
       $task = new sfPropelBuildFormsTask($this->dispatcher, new sfFormatter());
-      $task->run(array(), array('application' => $app));
+      $task->run(array(), array('application='.$app));
     }
   }
 

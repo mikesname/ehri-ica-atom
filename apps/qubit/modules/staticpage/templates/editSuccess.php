@@ -30,7 +30,7 @@
       <?php if (strlen($sourceCultureValue = $staticPage->getContent(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $staticPage->getSourceCulture()): ?>
       <div class="default-translation" id="title"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-    <?php echo object_textarea_tag($staticPage, 'getContent', array ('size' => '30x10')) ?>
+    <?php echo object_textarea_tag($staticPage, 'getContent', array ('class' => 'resizable', 'size' => '30x10')) ?>
   </td>
 </tr>
 </tbody>
@@ -48,9 +48,9 @@
     &#160;<?php echo link_to(__('cancel'), 'staticpage/list') ?>
   <?php endif; ?>
     <?php if ($staticPage->getId()): ?>
-      <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
     <?php else: ?>
-      <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
     <?php endif; ?>
 </div>
 

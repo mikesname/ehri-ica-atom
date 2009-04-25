@@ -65,6 +65,8 @@ class sf_test_project
   }
 }
 
+$t = new lime_test(37, new lime_output_color());
+
 if (!extension_loaded('SQLite'))
 {
   $t->skip('You need SQLite to run these tests', 33);
@@ -72,7 +74,6 @@ if (!extension_loaded('SQLite'))
   return;
 }
 
-$t = new lime_test(33, new lime_output_color());
 $c = new sf_test_project();
 $c->initialize($t);
 
@@ -80,8 +81,12 @@ $c->initialize($t);
 $content = $c->execute_command('generate:project myproject');
 $t->ok(file_exists($c->tmp_dir.DS.'symfony'), '"generate:project" installs the symfony CLI in root project directory');
 
-$content = $c->execute_command('generate:app frontend');
+$content = $c->execute_command('generate:app frontend --escaping-strategy=on');
 $t->ok(is_dir($c->tmp_dir.DS.'apps'.DS.'frontend'), '"generate:app" creates a "frontend" directory under "apps" directory');
+$t->like(file_get_contents($c->tmp_dir.'/apps/frontend/config/settings.yml'), '/escaping_strategy: +true/', '"generate:app" switches escaping_strategy "on"');
+
+$content = $c->execute_command('generate:app backend');
+$t->like(file_get_contents($c->tmp_dir.'/apps/backend/config/settings.yml'), '/escaping_strategy: +false/', '"generate:app" switches escaping_strategy "off"');
 
 // failing
 $content = $c->execute_command('generate:module wrongapp foo', 1);
@@ -92,6 +97,7 @@ $t->ok(is_dir($c->tmp_dir.DS.'apps'.DS.'frontend'.DS.'modules'.DS.'foo'), '"gene
 copy(dirname(__FILE__).'/fixtures/propel/schema.yml', $c->tmp_dir.DS.'config'.DS.'schema.yml');
 copy(dirname(__FILE__).'/fixtures/propel/databases.yml', $c->tmp_dir.DS.'config'.DS.'databases.yml');
 copy(dirname(__FILE__).'/fixtures/propel/propel.ini', $c->tmp_dir.DS.'config'.DS.'propel.ini');
+copy(dirname(__FILE__).'/fixtures/factories.yml', $c->tmp_dir.DS.'apps'.DS.'frontend'.DS.'config'.DS.'factories.yml');
 
 // update propel configuration paths
 file_put_contents($c->tmp_dir.DS.'config'.DS.'propel.ini', str_replace('%SF_ROOT_DIR%', $c->tmp_dir, str_replace('%SF_DATA_DIR%', $c->tmp_dir.'/data', file_get_contents($c->tmp_dir.DS.'config'.DS.'propel.ini'))));
@@ -138,5 +144,7 @@ $t->like(file_get_contents($c->tmp_dir.DS.'config'.DS.'ProjectConfiguration.clas
 
 $content = $c->execute_command('project:unfreeze');
 $t->unlike(file_get_contents($c->tmp_dir.DS.'config'.DS.'ProjectConfiguration.class.php'), '/dirname\(__FILE__\)/', '"project:unfreeze" unfreezes symfony lib and data dir');
+
+$content = $c->execute_command('cache:clear');
 
 $c->shutdown();

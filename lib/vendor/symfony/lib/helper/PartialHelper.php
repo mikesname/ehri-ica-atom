@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: PartialHelper.php 11483 2008-09-12 15:48:17Z FabianLange $
+ * @version    SVN: $Id: PartialHelper.php 13463 2008-11-28 15:35:54Z fabien $
  */
 
 /**
@@ -354,7 +354,8 @@ function _call_component($moduleName, $componentName, $vars)
   // load component's module config file
   require($context->getConfigCache()->checkConfig('modules/'.$moduleName.'/config/module.yml'));
 
-  $componentInstance->getVarHolder()->add($vars);
+  // pass unescaped vars to the component
+  $componentInstance->getVarHolder()->add(sfOutputEscaper::unescape($vars));
 
   // dispatch component
   $componentToRun = 'execute'.ucfirst($componentName);

@@ -395,3 +395,23 @@ propel:
   user_role_relation:
     user_id: { type: integer, required: true, foreignTable: user, foreignReference: id, onDelete: cascade }
     role_id: { type: integer, required: true, foreignTable: role, foreignReference: id, onDelete: cascade }
+
+  oai_repository:
+    id: 
+    name:  varchar(512)
+    uri: varchar(255)
+    admin_email: varchar(255)
+    earliest_timestamp: timestamp
+    created_at:
+    updated_at:
+
+  oai_harvest:
+    id:
+    oai_repository_id: { type: integer, required: true, foreignTable: oai_repository, foreignReference: id, onDelete: cascade}
+    start_timestamp: timestamp
+    end_timestamp: timestamp
+    last_harvest: timestamp
+    last_harvest_attempt: timestamp
+    metadataPrefix: varchar(255)
+    set: varchar(255)
+    created_at:

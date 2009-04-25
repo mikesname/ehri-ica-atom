@@ -16,7 +16,7 @@
  * @subpackage controller
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfWebController.class.php 13026 2008-11-16 16:50:51Z fabien $
+ * @version    SVN: $Id: sfWebController.class.php 16711 2009-03-29 13:03:54Z Kris.Wallsmith $
  */
 abstract class sfWebController extends sfController
 {
@@ -37,7 +37,7 @@ abstract class sfWebController extends sfController
     }
 
     // relative URL?
-    if (is_string($parameters) && '/' == $parameters[0])
+    if (is_string($parameters) && 0 === strpos($parameters, '/'))
     {
       return $parameters;
     }

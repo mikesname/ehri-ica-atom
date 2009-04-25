@@ -17,7 +17,7 @@
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfCompileConfigHandler.class.php 9085 2008-05-20 01:53:23Z Carl.Vondrick $
+ * @version    SVN: $Id: sfCompileConfigHandler.class.php 13547 2008-11-30 14:05:44Z Kris.Wallsmith $
  */
 class sfCompileConfigHandler extends sfYamlConfigHandler
 {

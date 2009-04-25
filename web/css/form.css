@@ -64,6 +64,26 @@ form ul.radio_list label
   color: black;
 }
 
+
+form ul.linked-object
+{
+  background: none;
+  list-style-type: none;
+  list-style-image: none;
+  border-top: 1px solid #cccccc;
+  padding: 0;
+  margin: 0;
+}
+
+form ul.linked-object li
+{
+  border: none;
+  border-bottom: 1px solid #cccccc;
+  text-align: left;
+  padding: 3px;
+  margin: 0;
+}
+
 form select
 {
   font: normal 12px Verdana, Arial, Sans-Serif;
@@ -225,7 +245,7 @@ border: 0;
   width: 160px;
 }
 
-#search-sidebar .submit, #search-sidebar .submithover, #browse-sidebar .submit, #browse-sidebar .submithover
+#search-sidebar .form-submit, #search-sidebar .form-submit:hover, #browse-sidebar .form-submit, #browse-sidebar .form-submit:hover
 {
   float: none;
   font: 11px Verdana, Arial, sans-serif;
@@ -295,7 +315,7 @@ padding: 0;
 background: #cccccc;
 }
 
-#language-selector .submit
+#language-selector .form-submit
 {
 font: 11px Verdana, Arial, Sans-Serif;
 margin: 5px 0 0 5px;
@@ -303,7 +323,7 @@ width: auto;
 min-width: 130px;
 }
 
-#language-selector .submithover
+#language-selector .form-submit:hover
 {
 
 font: 11px Verdana, Arial, Sans-Serif;
@@ -338,7 +358,7 @@ min-width: 130px;
   border: 1px solid #999999;
 }
 
-.login-form input.submit
+.login-form input.form-submit
 {
   text-decoration: none;
   padding: 0 6px 1px 6px;
@@ -353,7 +373,7 @@ min-width: 130px;
   border-bottom: 3px solid #999999;
 }
 
-.login-form input.submithover
+.login-form input.form-submit:hover
 {
   text-decoration: none;
   padding: 0 6px 1px 6px;

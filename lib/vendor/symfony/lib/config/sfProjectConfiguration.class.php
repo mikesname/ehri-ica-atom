@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfProjectConfiguration.class.php 13196 2008-11-20 18:23:18Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfProjectConfiguration.class.php 15805 2009-02-26 10:05:08Z fabien $
  */
 class sfProjectConfiguration
 {
@@ -43,12 +43,11 @@ class sfProjectConfiguration
       sfProjectConfiguration::$active = $this;
     }
 
-    $this->rootDir = is_null($rootDir) ? self::guessRootDir() : realpath($rootDir);
+    $this->rootDir = str_replace(DIRECTORY_SEPARATOR, '/', is_null($rootDir) ? self::guessRootDir() : realpath($rootDir));
     $this->symfonyLibDir = realpath(dirname(__FILE__).'/..');
     $this->dispatcher = is_null($dispatcher) ? new sfEventDispatcher() : $dispatcher;
 
     ini_set('magic_quotes_runtime', 'off');
-    ini_set('register_globals', 'off');
 
     sfConfig::set('sf_symfony_lib_dir', $this->symfonyLibDir);
 
@@ -110,18 +109,18 @@ class sfProjectConfiguration
       'sf_root_dir' => $rootDir,
 
       // global directory structure
-      'sf_apps_dir'    => $rootDir.DIRECTORY_SEPARATOR.'apps',
-      'sf_lib_dir'     => $rootDir.DIRECTORY_SEPARATOR.'lib',
-      'sf_log_dir'     => $rootDir.DIRECTORY_SEPARATOR.'log',
-      'sf_data_dir'    => $rootDir.DIRECTORY_SEPARATOR.'data',
-      'sf_config_dir'  => $rootDir.DIRECTORY_SEPARATOR.'config',
-      'sf_test_dir'    => $rootDir.DIRECTORY_SEPARATOR.'test',
-      'sf_doc_dir'     => $rootDir.DIRECTORY_SEPARATOR.'doc',
-      'sf_plugins_dir' => $rootDir.DIRECTORY_SEPARATOR.'plugins',
+      'sf_apps_dir'    => $rootDir.'/apps',
+      'sf_lib_dir'     => $rootDir.'/lib',
+      'sf_log_dir'     => $rootDir.'/log',
+      'sf_data_dir'    => $rootDir.'/data',
+      'sf_config_dir'  => $rootDir.'/config',
+      'sf_test_dir'    => $rootDir.'/test',
+      'sf_doc_dir'     => $rootDir.'/doc',
+      'sf_plugins_dir' => $rootDir.'/plugins',
     ));
 
-    $this->setWebDir($rootDir.DIRECTORY_SEPARATOR.'web');
-    $this->setCacheDir($rootDir.DIRECTORY_SEPARATOR.'cache');
+    $this->setWebDir($rootDir.'/web');
+    $this->setCacheDir($rootDir.'/cache');
   }
 
   /**
@@ -163,7 +162,7 @@ class sfProjectConfiguration
   {
     sfConfig::add(array(
       'sf_web_dir'    => $webDir,
-      'sf_upload_dir' => $webDir.DIRECTORY_SEPARATOR.'uploads',
+      'sf_upload_dir' => $webDir.'/uploads',
     ));
   }
 
@@ -253,7 +252,9 @@ class sfProjectConfiguration
   {
     $globalConfigPath = basename(dirname($configPath)).'/'.basename($configPath);
 
-    $files = array();
+    $files = array(
+      sfConfig::get('sf_symfony_lib_dir').'/config/'.$globalConfigPath,              // symfony
+    );
 
     foreach ($this->getPluginPaths() as $path)
     {
@@ -261,18 +262,20 @@ class sfProjectConfiguration
       {
         $files[] = $file;                                                            // plugins
       }
-      if (is_file($file = $path.'/'.$configPath))
-      {
-        $files[] = $file;                                                            // plugins
-      }
     }
-
-    $files[] = sfConfig::get('sf_symfony_lib_dir').'/config/'.$globalConfigPath;     // symfony
 
     $files = array_merge($files, array(
       sfConfig::get('sf_root_dir').'/'.$globalConfigPath,                            // project
       sfConfig::get('sf_root_dir').'/'.$configPath,                                  // project
     ));
+
+    foreach ($this->getPluginPaths() as $path)
+    {
+      if (is_file($file = $path.'/'.$configPath))
+      {
+        $files[] = $file;                                                            // plugins
+      }
+    }
 
     $configs = array();
     foreach (array_unique($files) as $file)
@@ -444,7 +447,7 @@ class sfProjectConfiguration
    * 
    * @return array
    */
-  protected function getAllPluginPaths()
+  public function getAllPluginPaths()
   {
     $pluginPaths = array();
 

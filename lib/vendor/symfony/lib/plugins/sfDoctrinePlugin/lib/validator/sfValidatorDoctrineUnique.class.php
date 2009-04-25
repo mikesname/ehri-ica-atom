@@ -48,7 +48,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
    *  * primary_key:        The primary key column name in Doctrine field name format (optional, will be introspected if not provided)
    *                        You can also pass an array if the table has several primary keys
    *  * connection:         The Doctrine connection to use (null by default)
-   *  * throw_global_error: Whether to throw a global error (false by default) or an error tied to the first field related to the column option array
+   *  * throw_global_error: Whether to throw a global error (true by default) or an error tied to the first field related to the column option array
    *
    * @see sfValidatorBase
    */
@@ -89,6 +89,11 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
     foreach ($this->getOption('column') as $column)
     {
       $colName = $table->getColumnName($column);
+      if (!array_key_exists($column, $values))
+      {
+        // one of the column has be removed from the form
+        return $originalValues;
+      }
 
       $q->addWhere('a.' . $colName . ' = ?', $values[$column]);
     }
@@ -101,7 +106,7 @@ class sfValidatorDoctrineUnique extends sfValidatorSchema
       return $originalValues;
     }
 
-    $error = new sfValidatorError($this, 'invalid', array('column' => implode(', ', $this->getOption('column')), 'value' => implode (', ', $values)));
+    $error = new sfValidatorError($this, 'invalid', array('column' => implode(', ', $this->getOption('column'))));
 
     if ($this->getOption('throw_global_error'))
     {

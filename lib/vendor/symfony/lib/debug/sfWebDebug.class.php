@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage debug
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebDebug.class.php 12982 2008-11-13 17:25:10Z hartym $
+ * @version    SVN: $Id: sfWebDebug.class.php 16169 2009-03-11 07:56:12Z fabien $
  */
 class sfWebDebug
 {
@@ -145,7 +145,7 @@ class sfWebDebug
    */
   public function injectToolbar($content)
   {
-    $content = str_ireplace('</head>', '<style type="text/css">'.str_replace("\n", ' ', $this->getStylesheet()).'</style></head>', $content);
+    $content = str_ireplace('</head>', '<style type="text/css">'.str_replace(array("\r", "\n"), ' ', $this->getStylesheet()).'</style></head>', $content);
 
     $debug = $this->asHtml();
     $count = 0;
@@ -171,7 +171,7 @@ class sfWebDebug
     {
       if ($title = $panel->getTitle())
       {
-        if ($content = $panel->getPanelContent() || $panel->getTitleUrl())
+        if (($content = $panel->getPanelContent()) || $panel->getTitleUrl())
         {
           $id = sprintf('sfWebDebug%sDetails', $name);
           $titles[]  = sprintf('<li><a title="%s" href="%s"%s>%s</a></li>',
@@ -183,7 +183,7 @@ class sfWebDebug
           $panels[] = sprintf('<div id="%s" class="sfWebDebugTop" style="display: none"><h1>%s</h1>%s</div>',
             $id,
             $panel->getPanelTitle(),
-            $panel->getPanelContent()
+            $content
           );
         }
         else
@@ -198,7 +198,7 @@ class sfWebDebug
         <div id="sfWebDebugBar" class="sfWebDebug'.ucfirst($this->getPriority($this->logger->getHighestPriority())).'">
           <a href="#" onclick="sfWebDebugToggleMenu(); return false;"><img src="'.$this->options['image_root_path'].'/sf.png" alt="Debug toolbar" /></a>
 
-          <ul id="sfWebDebugDetails" class="menu">
+          <ul id="sfWebDebugDetails" class="sfWebDebugMenu">
             '.implode("\n", $titles).'
             <li class="last">
               <a href="#" onclick="document.getElementById(\'sfWebDebug\').style.display=\'none\'; return false;"><img src="'.$this->options['image_root_path'].'/close.png" alt="Close" /></a>
@@ -242,6 +242,7 @@ class sfWebDebug
   public function getJavascript()
   {
     return <<<EOF
+/* <![CDATA[ */
 function sfWebDebugGetElementsByClassName(strClass, strTag, objContElm)
 {
   // http://muffinresearch.co.uk/archives/2006/04/29/getelementsbyclassname-deluxe-edition/
@@ -383,6 +384,7 @@ function sfWebDebugShowOnlyLogLines(type)
     }
   }
 }
+/* ]]> */
 EOF;
   }
 
@@ -416,6 +418,7 @@ EOF;
 #sfWebDebug img
 {
   border: 0;
+  display: inline;
 }
 
 #sfWebDebugBar
@@ -441,7 +444,7 @@ EOF;
   vertical-align: middle;
 }
 
-#sfWebDebugBar .menu
+#sfWebDebugBar .sfWebDebugMenu
 {
   padding: 5px;
   padding-left: 0;
@@ -449,7 +452,7 @@ EOF;
   margin: 0;
 }
 
-#sfWebDebugBar .menu li
+#sfWebDebugBar .sfWebDebugMenu li
 {
   display: inline;
   list-style: none;
@@ -457,7 +460,7 @@ EOF;
   padding: 0 6px;
 }
 
-#sfWebDebugBar .menu li.last
+#sfWebDebugBar .sfWebDebugMenu li.last
 {
   margin: 0;
   padding: 0;

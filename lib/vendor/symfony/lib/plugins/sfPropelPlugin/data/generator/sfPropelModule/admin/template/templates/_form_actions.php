@@ -1,5 +1,11 @@
 <ul class="sf_admin_actions">
-<?php foreach ($this->configuration->getValue('edit.actions') as $name => $params): ?>
+<?php foreach (array('new', 'edit') as $action): ?>
+<?php if ('new' == $action): ?>
+[?php if ($form->isNew()): ?]
+<?php else: ?>
+[?php else: ?]
+<?php endif; ?>
+<?php foreach ($this->configuration->getValue($action.'.actions') as $name => $params): ?>
 <?php if ('_delete' == $name): ?>
   <?php echo $this->addCredentialCondition('[?php echo $helper->linkToDelete($form->getObject(), '.$this->asPhp($params).') ?]', $params) ?>
 
@@ -24,4 +30,6 @@
   </li>
 <?php endif; ?>
 <?php endforeach; ?>
+<?php endforeach; ?>
+[?php endif; ?]
 </ul>

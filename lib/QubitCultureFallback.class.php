@@ -63,7 +63,7 @@ class QubitCultureFallback
    */
   private static function getfallbackCaseStmt($column)
   {
-    $fallbackCaseStmt  = '(CASE WHEN current.'.$column.' IS NOT NULL THEN current.'.$column;
+    $fallbackCaseStmt  = '(CASE WHEN (current.'.$column.' IS NOT NULL AND current.'.$column.' <> \'\') THEN current.'.$column;
     $fallbackCaseStmt .= ' ELSE source.'.$column.' END)';
 
     return $fallbackCaseStmt;
@@ -77,9 +77,13 @@ class QubitCultureFallback
    * @param array $options
    * @return QubitQuery array of objects
    */
-  public static function addFallbackCriteria($criteria, $fallbackClassName, $culture = null, $options = array())
+  public static function addFallbackCriteria($criteria, $fallbackClassName, $options = array())
   {
-    if (null === $culture)
+    if (isset($options['culture']))
+    {
+      $culture = $options['culture'];
+    }
+    else
     {
       $culture = sfContext::getInstance()->getUser()->getCulture();
     }

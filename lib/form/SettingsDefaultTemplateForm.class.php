@@ -34,8 +34,8 @@ class SettingsDefaultTemplateForm extends sfForm
     // Available templates
     $informationObjectTemplates = array(
       'isad' => __('ISAD(G), 2nd ed. International Council on Archives'),
+      'dc' => __('Dublin Core, Version 1.1. Dublin Core Metadata Initiative'),
       'rad' => __('RAD, July 2008 version. Canadian Council of Archives'),
-      'dc' => __('Dublin Core, Version 1.1. Dublin Core Metadata Initiative')
     );
 
     $actorTemplates = array(

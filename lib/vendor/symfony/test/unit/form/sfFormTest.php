@@ -10,11 +10,11 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(131, new lime_output_color());
+$t = new lime_test(138, new lime_output_color());
 
 class FormTest extends sfForm
 {
-  public function getCSRFToken($secret)
+  public function getCSRFToken($secret = null)
   {
     return "*$secret*";
   }
@@ -158,35 +158,54 @@ $f->setWidgetSchema(new sfWidgetFormSchema(array(
 )));
 $f->setValidatorSchema(new sfValidatorSchema(array(
   'first_name' => new sfValidatorPass(),
+  'last_name'  => new sfValidatorPass(),
+  'image'      => new sfValidatorPass(),
 )));
-$t->ok($f['first_name'] instanceof sfFormField, 'sfForm implements the ArrayAccess interface');
-$t->is($f['first_name']->render(), '<input type="text" name="first_name" value="Fabien" id="first_name" />', 'sfForm implements the ArrayAccess interface');
+$f->setDefaults(array(
+  'image' => 'default.gif',
+));
+$f->embedForm('embedded', new sfForm());
+$t->ok($f['first_name'] instanceof sfFormField, '"sfForm" implements the ArrayAccess interface');
+$t->is($f['first_name']->render(), '<input type="text" name="first_name" value="Fabien" id="first_name" />', '"sfForm" implements the ArrayAccess interface');
 
 try
 {
-  $f['first_name'] = 'first_name';
-  $t->fail('sfForm ArrayAccess implementation does not permit to set a form field');
+  $f['image'] = 'image';
+  $t->fail('"sfForm" ArrayAccess implementation does not permit to set a form field');
 }
 catch (LogicException $e)
 {
-  $t->pass('sfForm ArrayAccess implementation does not permit to set a form field');
+  $t->pass('"sfForm" ArrayAccess implementation does not permit to set a form field');
 }
-$t->ok(isset($f['first_name']), 'sfForm implements the ArrayAccess interface');
-unset($f['first_name']);
-$t->ok(!isset($f['first_name']), 'sfForm implements the ArrayAccess interface');
+$t->ok(isset($f['image']), '"sfForm" implements the ArrayAccess interface');
+unset($f['image']);
+$t->ok(!isset($f['image']), '"sfForm" implements the ArrayAccess interface');
+$t->ok(!array_key_exists('image', $f->getDefaults()), '"sfForm" ArrayAccess implementation removes form defaults');
 $v = $f->getValidatorSchema();
-$t->ok(!isset($v['first_name']), 'sfForm ArrayAccess implementation removes the widget and the validator');
+$t->ok(!isset($v['image']), '"sfForm" ArrayAccess implementation removes the widget and the validator');
 $w = $f->getWidgetSchema();
-$t->ok(!isset($w['first_name']), 'sfForm ArrayAccess implementation removes the widget and the validator');
+$t->ok(!isset($w['image']), '"sfForm" ArrayAccess implementation removes the widget and the validator');
 try
 {
   $f['nonexistant'];
-  $t->fail('sfForm ArrayAccess implementation throws a LogicException if the form field does not exist');
+  $t->fail('"sfForm" ArrayAccess implementation throws a LogicException if the form field does not exist');
 }
 catch (LogicException $e)
 {
-  $t->pass('sfForm ArrayAccess implementation throws a LogicException if the form field does not exist');
+  $t->pass('"sfForm" ArrayAccess implementation throws a LogicException if the form field does not exist');
 }
+
+unset($f['embedded']);
+$t->ok(!array_key_exists('embedded', $f->getEmbeddedForms()), '"sfForm" ArrayAccess implementation removes embedded forms');
+
+$f->bind(array(
+  'first_name' => 'John',
+  'last_name'  => 'Doe',
+));
+unset($f['first_name']);
+$t->is_deeply($f->getValues(), array('last_name' => 'Doe'), '"sfForm" ArrayAccess implementation removes bound values');
+$w['first_name'] = new sfWidgetFormInput();
+$t->is($f['first_name']->getValue(), '', '"sfForm" ArrayAccess implementation removes tainted values');
 
 // Countable interface
 $t->diag('Countable interface');
@@ -196,7 +215,7 @@ $f->setWidgetSchema(new sfWidgetFormSchema(array(
   'last_name'  => new sfWidgetFormInput(),
   'image'      => new sfWidgetFormInputFile(),
 )));
-$t->is(count($f), 3, 'sfForm implements the Countable interface');
+$t->is(count($f), 3, '"sfForm" implements the Countable interface');
 
 // Iterator interface
 $t->diag('Iterator interface');
@@ -206,14 +225,13 @@ $f->setWidgetSchema(new sfWidgetFormSchema(array(
   'last_name'  => new sfWidgetFormInput(),
   'image'      => new sfWidgetFormInputFile(),
 )));
-$values = array();
 foreach ($f as $name => $value)
 {
   $values[$name] = $value;
 }
-$t->is(isset($values['first_name']), true, 'sfForm implements the Iterator interface');
-$t->is(isset($values['last_name']), true, 'sfForm implements the Iterator interface');
-$t->is(count($values), 3, 'sfForm implements the Iterator interface');
+$t->is(isset($values['first_name']), true, '"sfForm" implements the Iterator interface');
+$t->is(isset($values['last_name']), true, '"sfForm" implements the Iterator interface');
+$t->is_deeply(array_keys($values), array('first_name', 'last_name', 'image'), '"sfForm" implements the Iterator interface');
 
 // ->bind() ->isValid() ->hasErrors() ->getValues() ->getValue() ->isBound() ->getErrorSchema()
 $t->diag('->bind() ->isValid() ->getValues() ->isBound() ->getErrorSchema()');
@@ -410,6 +428,20 @@ EOF;
 $t->is($f->renderUsing('list'), $output, 'renderUsing() renders the widget schema using the given form formatter');
 $t->is($f->getWidgetSchema()->getFormFormatterName(), 'table', 'renderUsing() does not persist form formatter name for the current form instance');
 
+$w = $f->getWidgetSchema();
+$w->addFormFormatter('custom', new sfWidgetFormSchemaFormatterList($w));
+$t->is($f->renderUsing('custom'), $output, 'renderUsing() renders a custom form formatter');
+
+try
+{
+  $f->renderUsing('nonexistant');
+  $t->fail('renderUsing() throws an exception if formatter name does not exist');
+}
+catch (InvalidArgumentException $e)
+{
+  $t->pass('renderUsing() throws an exception if formatter name does not exist');
+}
+
 // renderHiddenFields()
 $t->diag('->renderHiddenFields()');
 $f = new sfForm();
@@ -456,7 +488,7 @@ $t->is($w['author']['company']->generateName('name'), 'article[author][company][
 
 // ->embedFormForEach()
 $t->diag('->embedFormForEach()');
-$article->embedFormForEach('authors', $author, 2);
+$article->embedFormForEach('authors', $author, 2, null, null, array('id_format' => '%s_id'), array('class' => 'embedded'));
 $v = $article->getValidatorSchema();
 $w = $article->getWidgetSchema();
 $d = $article->getDefaults();
@@ -547,101 +579,76 @@ $expected = array(
   ),
 );
 $t->is_deeply(sfForm::convertFileInformation($input), $expected, '::convertFileInformation() converts $_FILES to be coherent with $_GET and $_POST naming convention');
-$t->is_deeply(sfForm::convertFileInformation($expected), $expected, '::convertFileInformation() converts $_FILES to be coherent with $_GET and $_POST naming convention');
+$t->is_deeply(sfForm::convertFileInformation($expected), $expected, '::convertFileInformation() only changes the input array if needed');
 
 $input = array(
+  'file' => array(
+    'name' => 'test.txt',
+    'type' => 'text/plain',
+    'tmp_name' => '/tmp/test.txt',
+    'error' => 0,
+    'size' => 100,
+  ),
   'article' => array(
     'name' => array(
-      'files' => array(
-        'file1' => 'test1.txt',
-        'file2' => 'test2.txt',
+      'name' => array(
+        'name' => 'test1.txt',
+        'another' => array('file2' => 'test2.txt'),
       ),
     ),
     'type' => array(
-      'files' => array(
-        'file1' => 'text/plain',
-        'file2' => 'text/plain',
+      'name' => array(
+        'name' => 'text/plain',
+        'another' => array('file2' => 'text/plain'),
       ),
     ),
     'tmp_name' => array(
-      'files' => array(
-        'file1' => '/tmp/test1.txt',
-        'file2' => '/tmp/test2.txt',
+      'name' => array(
+        'name' => '/tmp/test1.txt',
+        'another' => array('file2' => '/tmp/test2.txt'),
       ),
     ),
     'error' => array(
-      'files' => array(
-        'file1' => 0,
-        'file2' => 0,
+      'name' => array(
+        'name' => 0,
+        'another' => array('file2' => 0),
       ),
     ),
     'size' => array(
-      'files' => array(
-        'file1' => 100,
-        'file2' => 200,
+      'name' => array(
+        'name' => 100,
+        'another' => array('file2' => 200),
       ),
     ),
   ),
 );
 $expected = array(
+  'file' => array(
+    'name' => 'test.txt',
+    'type' => 'text/plain',
+    'tmp_name' => '/tmp/test.txt',
+    'error' => 0,
+    'size' => 100,
+  ),
   'article' => array(
-    'files' => array(
-      'file1' => array(
+    'name' => array(
+      'name' => array(
         'name' => 'test1.txt',
         'type' => 'text/plain',
         'tmp_name' => '/tmp/test1.txt',
         'error' => 0,
         'size' => 100,
       ),
-      'file2' => array(
-        'name' => 'test2.txt',
-        'type' => 'text/plain',
-        'tmp_name' => '/tmp/test2.txt',
-        'error' => 0,
-        'size' => 200,
+      'another' => array(
+        'file2' => array(
+          'name' => 'test2.txt',
+          'type' => 'text/plain',
+          'tmp_name' => '/tmp/test2.txt',
+          'error' => 0,
+          'size' => 200,
+        ),
       ),
     )
-  ),
-);
-$t->is_deeply(sfForm::convertFileInformation($input), $expected, '::convertFileInformation() converts $_FILES to be coherent with $_GET and $_POST naming convention');
-$t->is_deeply(sfForm::convertFileInformation($expected), $expected, '::convertFileInformation() converts $_FILES to be coherent with $_GET and $_POST naming convention');
-
-$input = array(
-  'name' => array(
-    'file1' => 'test1.txt',
-    'file2' => 'test2.txt',
-  ),
-  'type' => array(
-    'file1' => 'text/plain',
-    'file2' => 'text/plain',
-  ),
-  'tmp_name' => array(
-    'file1' => '/tmp/test1.txt',
-    'file2' => '/tmp/test2.txt',
-  ),
-  'error' => array(
-    'file1' => 0,
-    'file2' => 0,
-  ),
-  'size' => array(
-    'file1' => 100,
-    'file2' => 200,
-  ),
-);
-$expected = array(
-  'file1' => array(
-    'name' => 'test1.txt',
-    'type' => 'text/plain',
-    'tmp_name' => '/tmp/test1.txt',
-    'error' => 0,
-    'size' => 100,
-  ),
-  'file2' => array(
-    'name' => 'test2.txt',
-    'type' => 'text/plain',
-    'tmp_name' => '/tmp/test2.txt',
-    'error' => 0,
-    'size' => 200,
   ),
 );
 $t->is_deeply(sfForm::convertFileInformation($input), $expected, '::convertFileInformation() converts $_FILES to be coherent with $_GET and $_POST naming convention');
@@ -696,6 +703,11 @@ class TestForm1 extends FormTest
       'b' => '1_b',
       'c' => '1_c',
     ));
+    $this->getWidgetSchema()->setHelps(array(
+      'a' => '1_a',
+      'b' => '1_b',
+      'c' => '1_c',
+    ));
   }
 }
 
@@ -716,6 +728,10 @@ class TestForm2 extends FormTest
       'c' => '2_c',
       'd' => '2_d',
     ));
+    $this->getWidgetSchema()->setHelps(array(
+      'c' => '2_c',
+      'd' => '2_d',
+    ));
     $this->validatorSchema->setPreValidator(new sfValidatorPass());
     $this->validatorSchema->setPostValidator(new sfValidatorPass());
   }
@@ -732,6 +748,7 @@ $t->is(count($validatorSchema->getFields()), 4, 'mergeForm() merges a validator 
 $t->is(array_keys($widgetSchema->getFields()), array('a', 'b', 'c', 'd'), 'mergeForms() merges the correct widgets');
 $t->is(array_keys($validatorSchema->getFields()), array('a', 'b', 'c', 'd'), 'mergeForms() merges the correct validators');
 $t->is($widgetSchema->getLabels(), array('a' => '1_a', 'b' => '1_b', 'c' => '2_c', 'd' => '2_d'), 'mergeForm() merges labels correctly');
+$t->is($widgetSchema->getHelps(), array('a' => '1_a', 'b' => '1_b', 'c' => '2_c', 'd' => '2_d'), 'mergeForm() merges helps correctly');
 $t->isa_ok($widgetSchema['c'], 'sfWidgetFormTextarea', 'mergeForm() overrides original form widget');
 $t->isa_ok($validatorSchema['c'], 'sfValidatorPass', 'mergeForm() overrides original form validator');
 $t->isa_ok($validatorSchema->getPreValidator(), 'sfValidatorPass', 'mergeForm() merges pre validator');
@@ -750,6 +767,24 @@ catch (LogicException $e)
 
 $errorSchema = $f1->getErrorSchema();
 $t->ok(array_key_exists('d', $errorSchema->getErrors()), 'mergeForm() merges errors after having been bound');
+
+$f1 = new TestForm1();
+$f1->getWidgetSchema()->moveField('a', 'last');
+
+// is moved field well positioned when accessed with iterator interface? (#5551)
+foreach($f1 as $f1name => $f1field)
+{
+  $t->is ($f1name, 'b', 'iterating on form takes in account ->moveField() operations.');
+  break;
+}
+
+$f2 = new TestForm2();
+$f2->mergeForm($f1);
+
+$t->is_deeply(array_keys($f2->getWidgetSchema()->getFields()), array('c', 'd', 'b', 'a'), 'mergeForm() merges fields in the correct order');
+
+// ->getJavaScripts() ->getStylesheets()
+$t->diag('->getJavaScripts() ->getStylesheets()');
 
 class MyWidget extends sfWidgetForm
 {
@@ -774,8 +809,6 @@ class MyWidget extends sfWidgetForm
   }
 }
 
-// ->getJavaScripts() ->getStylesheets()
-$t->diag('->getJavaScripts() ->getStylesheets()');
 $f = new FormTest();
 $f->setWidgets(array(
   'foo' => new MyWidget(array('name' => 'foo')),

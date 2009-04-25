@@ -27,7 +27,7 @@
 
   <publicationstmt>
     <?php if ($this->baseObject->getRepository()): ?>
-    <publisher encodinganalog="260$b"><?php echo htmlentities($this->baseObject->getRepository()) ?></publisher>
+    <publisher encodinganalog="260$b"><?php echo htmlentities($this->baseObject->getRepository()->__toString()) ?></publisher>
     <date encodinganalog="260$c"></date>
     <address encodinganalog="260$a">
       <addressline><?php echo htmlentities($this->baseObject->getRepository()) ?></addressline>
@@ -66,7 +66,7 @@
 
 
 
-<archdesc level="<?php echo htmlentities($this->baseObject->getLevelOfDescription()) ?>" type="">
+<archdesc level="<?php echo htmlentities($this->baseObject->getLevelOfDescription()->__toString()) ?>" type="">
 
 
 <did>
@@ -99,7 +99,7 @@ countrycode="<?php echo htmlentities($this->baseObject->getRepository()->getCoun
 ><?php echo htmlentities($this->baseObject->getIdentifier()) ?></unitid>
 
 <?php foreach ($this->baseObject->getCreationEvents() as $event): ?>
-<unitdate type="" encodinganalog="245$f" datechar="<?php echo htmlentities($event->getType()) ?>" normal="<?php echo htmlentities($event->getStartDate()) ?><?php if ($event->getEndDate()): ?>/<?php echo htmlentities($event->getEndDate()) ?><?php endif; ?>">
+<unitdate type="" encodinganalog="245$f" datechar="<?php echo htmlentities($event->getType()->__toString()) ?>" normal="<?php echo htmlentities($event->getStartDate()) ?><?php if ($event->getEndDate()): ?>/<?php echo htmlentities($event->getEndDate()) ?><?php endif; ?>">
 <?php echo htmlentities($event->getDateDisplay()) ?>
 </unitdate>
 <?php endforeach; ?>

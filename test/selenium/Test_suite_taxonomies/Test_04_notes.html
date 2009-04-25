@@ -13,17 +13,47 @@
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[3]/ul/li[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=default template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>default_template_informationobject</td>
+	<td>label=RAD, July 2008 version. Canadian Council of Archives</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/fieldset[3]/div/form/table/tbody/tr[4]/td[2]/div/input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[4]/a</td>
 	<td></td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Note types</td>
+	<td>link=RAD Note</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add new Note types</td>
+	<td>link=add new RAD Note</td>
 	<td></td>
 </tr>
 <tr>
@@ -33,7 +63,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='create']</td>
+	<td>//input[@value='create']</td>
 	<td></td>
 </tr>
 <tr>
@@ -58,17 +88,17 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>note</td>
+	<td>rad_note</td>
 	<td>Fonds is still undergoing appraisal and processing</td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
-	<td></td>
+	<td>select</td>
+	<td>rad_note_type</td>
+	<td>label=Administrative note</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Test for terms</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -83,7 +113,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Note types</td>
+	<td>link=RAD Note</td>
 	<td></td>
 </tr>
 <tr>
@@ -98,7 +128,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -123,7 +153,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=Note types</td>
+	<td>link=RAD Note</td>
 	<td></td>
 </tr>
 <tr>

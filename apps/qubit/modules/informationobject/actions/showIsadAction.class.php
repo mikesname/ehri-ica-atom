@@ -30,9 +30,18 @@ class InformationObjectShowIsadAction extends InformationObjectShowAction
 {
   public function execute($request)
   {
+    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'isad');
+
     // run the core informationObject show action commands
     parent::execute($request);
 
-    // add ISAD specific commands
+    // Omit title & publication notes from ISAD note list
+    $this->notes = $this->informationObject->getNotesByType(
+      array('exclude' => array(QubitTerm::TITLE_NOTE_ID, QubitTerm::PUBLICATION_NOTE_ID)));
+
+    // Split notes into "Notes" (general notes), Title notes and Publication notes
+    $this->notes = $this->informationObject->getNotesByType(array('noteTypeId' => QubitTerm::GENERAL_NOTE_ID));
+    $this->archivistsNotes = $this->informationObject->getNotesByType(array('noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID));
+    $this->publicationNotes = $this->informationObject->getNotesByType(array('noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
   }
 }

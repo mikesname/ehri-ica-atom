@@ -72,9 +72,9 @@ class sfDoctrineGenerator extends sfModelGenerator
   protected function loadPrimaryKeys()
   {
     $this->primaryKey = array();
-    foreach ($this->table->getColumns() as $name => $column)
+    foreach ($this->getColumns() as $name => $column)
     {
-      if (isset($column['primary']))
+      if ($column->isPrimaryKey())
       {
         $this->primaryKey[] = $name;
       }
@@ -97,12 +97,13 @@ class sfDoctrineGenerator extends sfModelGenerator
    */
   public function getColumnGetter($column, $developed = false, $prefix = '')
   {
+    $getter = 'get'.sfInflector::camelize($column);
     if ($developed)
     {
-      return sprintf("$%s%s['%s']", $prefix, $this->getSingularName(), $column);
+      $getter = sprintf('$%s%s->%s()', $prefix, $this->getSingularName(), $getter);
     }
 
-    return 'get' . $column;
+    return $getter;
   }
 
   /**
@@ -136,6 +137,65 @@ class sfDoctrineGenerator extends sfModelGenerator
   }
 
   /**
+   * Returns the default configuration for fields.
+   *
+   * @return array An array of default configuration for all fields
+   */
+  public function getDefaultFieldsConfiguration()
+  {
+    $fields = array();
+
+    $names = array();
+    foreach ($this->getColumns() as $name => $column)
+    {
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'is_link'      => (Boolean) $column->isPrimaryKey(),
+        'is_real'      => true,
+        'is_partial'   => false,
+        'is_component' => false,
+        'type'         => $this->getType($column),
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
+    foreach ($this->getManyToManyTables() as $tables)
+    {
+      $name = sfInflector::underscore($tables['alias']).'_list';
+      $names[] = $name;
+      $fields[$name] = array_merge(array(
+        'is_link'      => false,
+        'is_real'      => false,
+        'is_partial'   => false,
+        'is_component' => false,
+        'type'         => 'Text',
+      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array());
+    }
+
+    if (isset($this->config['fields']))
+    {
+      foreach ($this->config['fields'] as $name => $params)
+      {
+        if (in_array($name, $names))
+        {
+          continue;
+        }
+
+        $fields[$name] = array_merge(array(
+          'is_link'      => false,
+          'is_real'      => false,
+          'is_partial'   => false,
+          'is_component' => false,
+          'type'         => 'Text',
+        ), is_array($params) ? $params : array());
+      }
+    }
+
+    unset($this->config['fields']);
+
+    return $fields;
+  }
+
+  /**
    * Returns the configuration for fields in a given context.
    *
    * @param  string $context The Context
@@ -147,9 +207,8 @@ class sfDoctrineGenerator extends sfModelGenerator
     $fields = array();
 
     $names = array();
-    foreach ($this->table->getColumns() as $name => $column)
+    foreach ($this->getColumns() as $name => $column)
     {
-      $name = sfInflector::underscore($name);
       $names[] = $name;
       $fields[$name] = isset($this->config[$context]['fields'][$name]) ? $this->config[$context]['fields'][$name] : array();
     }
@@ -189,9 +248,9 @@ class sfDoctrineGenerator extends sfModelGenerator
   public function getAllFieldNames($withM2M = true)
   {
     $names = array();
-    foreach ($this->table->getColumns() as $name => $column)
+    foreach ($this->getColumns() as $name => $column)
     {
-      $names[] = sfInflector::underscore($name);
+      $names[] = $name;
     }
 
     if ($withM2M)
@@ -214,9 +273,29 @@ class sfDoctrineGenerator extends sfModelGenerator
   {
     foreach (array_keys($this->table->getColumns()) as $name)
     {
-      $columns[] = new sfDoctrineColumn($name, $this->table);
+      $name = $this->table->getFieldName($name);
+      $columns[$name] = new sfDoctrineColumn($name, $this->table);
     }
 
     return $columns;
+  }
+
+  /**
+   * Returns PHP code for primary keys parameters.
+   *
+   * @param integer $indent The indentation value
+   * @param string  $callee The function to call
+   *
+   * @return string The PHP code
+   */
+  public function getRetrieveByPkParamsForAction($indent)
+  {
+    $params = array();
+    foreach ($this->getPrimaryKeys() as $pk)
+    {
+      $params[] = sprintf("\$request->getParameter('%s')", sfInflector::underscore($pk));
+    }
+
+    return 'array('.implode(",\n".str_repeat(' ', max(0, $indent - strlen($this->getSingularName().$this->modelClass))), $params).')';
   }
 }

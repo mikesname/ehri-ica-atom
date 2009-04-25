@@ -22,21 +22,25 @@
     </div> <!--close header-top -->
 
     <div id="header-middle">
-    <?php if (strlen(sfConfig::get('app_site_information_site_title'))): ?>
+
+    <?php if (sfConfig::get('app_toggleLogo')): ?>
+    <div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_name', 'Qubit'))),
+      array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
+    <?php endif; ?>
+
+    <?php if (sfConfig::get('app_toggleTitle')): ?>
     <div id="website-name">
       <?php echo link_to(__(sfConfig::get('app_site_information_site_title')),
         array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
     </div>
     <?php endif; ?>
 
-    <?php if (strlen(sfConfig::get('app_site_information_site_description'))): ?>
+    <?php if (sfConfig::get('app_toggleDescription')): ?>
     <div id="website-description">
       <?php echo __(sfConfig::get('app_site_information_site_description')); ?>
     </div>
     <?php endif; ?>
 
-    <div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_name', 'Qubit'))),
-      array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
     </div> <!-- close header-middle -->
 
     <div id="header-bottom">
@@ -52,8 +56,8 @@
     <div id="context-column">
 
     <div class="context-column-box">
-    <?php include_component_slot('SearchSidebar') ?>
-    <?php include_component_slot('BrowseSidebar') ?>
+    <?php include_component_slot('SearchBox') ?>
+    <?php include_component_slot('BrowseBox') ?>
     </div>
 
     <div id="sidebar">

@@ -24,15 +24,21 @@ class RepositoryContextMenuComponent extends sfComponent
     $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
     if ($this->repository)
     {
-      $this->repositoryHoldings = $this->repository->getRepositoryHoldings();
-      if (empty($this->repositoryHoldings))
-      {
-        return sfView::NONE;
-      }
+      // Set current page
+      $this->holdingsPage = $this->getRequestParameter('holdingsPage', 1);
+      $options['page'] = $this->holdingsPage;
+
+      // Paginate holdings list
+      $this->pager = $this->repository->getHoldingsPager($options);
+      $this->pager->setMaxLinkCount(5);
+      $this->pager->init();
+
+      $this->holdings = $this->pager->getResults();
+      $this->currentAction = sfContext::getInstance()->getActionName();
     }
     else
     {
-    return sfView::NONE;
+      return sfView::NONE;
     }
   }
 }

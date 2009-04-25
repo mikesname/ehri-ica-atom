@@ -5,7 +5,6 @@
 
 <?php foreach ($results->getHits() as $hit): ?>
   <div class="search-results" style="padding-top: 5px;">
-
     <h3><?php echo link_to($hit->display_title, 'informationobject/show?id='.$hit->informationObjectId) ?></h3>
 
     <div class="CRUD_summary">
@@ -13,7 +12,13 @@
       <?php echo truncate_text($hit->display_scopeandcontent, 250) ?><br />
     <?php endif; ?>
     <?php if ($hit->collectionid !== $hit->informationObjectId) : ?>
-      <?php echo __('Part of').': '.link_to($hit->collectiontitle, 'informationobject/show?id='.$hit->collectionid) ?>
+      <?php echo __('Part of').': '.link_to($hit->collectiontitle, 'informationobject/show?id='.$hit->collectionid) ?><br />
+    <?php endif; ?>
+    
+    <?php $repository = (0 < $hit->repositoryid) ? QubitRepository::getById($hit->repositoryid) : null ?>
+    <?php if (null !== $repository && 0 < sfConfig::get('app_multi_repository')) : ?>
+      <?php echo __('Repository').': '.link_to($repository->getAuthorizedFormOfName(array('cultureFallback' => true)), 
+        array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId())) ?><br />
     <?php endif; ?>
     </div>
 

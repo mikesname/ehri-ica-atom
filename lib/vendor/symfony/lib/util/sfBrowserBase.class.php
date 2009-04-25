@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfBrowserBase.class.php 13023 2008-11-16 00:25:26Z FabianLange $
+ * @version    SVN: $Id: sfBrowserBase.class.php 14015 2008-12-13 21:54:33Z Kris.Wallsmith $
  */
 abstract class sfBrowserBase
 {
@@ -273,16 +273,24 @@ abstract class sfBrowserBase
 
     // request parameters
     $_GET = $_POST = array();
-    if (strtoupper($method) == 'POST')
+    if (in_array(strtoupper($method), array('POST', 'DELETE', 'PUT')))
     {
+      if (isset($parameters['_with_csrf']) && $parameters['_with_csrf'])
+      {
+        unset($parameters['_with_csrf']);
+        $form = new sfForm();
+        $parameters[$form->getCSRFFieldName()] = $form->getCSRFToken();
+      }
+
       $_POST = $parameters;
     }
     if (strtoupper($method) == 'GET')
     {
-      $_GET  = $parameters;
+      $_GET = $parameters;
     }
 
     // handle input type="file" fields
+    $_FILES = array();
     if (count($this->files))
     {
       $_FILES = $this->files;
@@ -676,6 +684,11 @@ abstract class sfBrowserBase
     {
       if (in_array($method, array('post', 'put', 'delete')))
       {
+        if (isset($options['_with_csrf']) && $options['_with_csrf'])
+        {
+          $arguments['_with_csrf'] = true;
+        }
+
         return array($link->getAttribute('href'), $method, $arguments);
       }
       else

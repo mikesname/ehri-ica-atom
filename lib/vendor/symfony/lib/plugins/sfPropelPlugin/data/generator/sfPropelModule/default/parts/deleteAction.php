@@ -1,5 +1,7 @@
   public function executeDelete(sfWebRequest $request)
   {
+    $request->checkCSRFProtection();
+
 <?php if (isset($this->params['with_propel_route']) && $this->params['with_propel_route']): ?>
     $this->getRoute()->getObject()->delete();
 <?php else: ?>

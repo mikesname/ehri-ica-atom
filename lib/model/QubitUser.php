@@ -50,7 +50,7 @@ class QubitUser extends BaseUser
     return $this->getRoles();
   }
 
-  public static function getList($culture, $options=array())
+  public static function getList($options=array())
   {
     $criteria = new Criteria;
 

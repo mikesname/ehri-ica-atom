@@ -6,7 +6,7 @@
       <thead>
         <tr>
 <?php if ($this->configuration->getValue('list.batch_actions')): ?>
-          <th id="sf_admin_list_batch_actions"><input type="checkbox" onclick="boxes = document.getElementsByTagName('input'); for(index in boxes) { box = boxes[index]; if (box.type == 'checkbox' && box.className == 'sf_admin_batch_checkbox') box.checked = this.checked } return true;" /></th>
+          <th id="sf_admin_list_batch_actions"><input id="sf_admin_list_batch_checkbox" type="checkbox" onclick="checkAll();" /></th>
 <?php endif; ?>
           [?php include_partial('<?php echo $this->getModuleName() ?>/list_th_<?php echo $this->configuration->getValue('list.layout') ?>', array('sort' => $sort)) ?]
 <?php if ($this->configuration->getValue('list.object_actions')): ?>
@@ -44,3 +44,11 @@
     </table>
   [?php endif; ?]
 </div>
+<script type="text/javascript">
+/* <![CDATA[ */
+function checkAll()
+{
+  var boxes = document.getElementsByTagName('input'); for(var index = 0; index < boxes.length; index++) { box = boxes[index]; if (box.type == 'checkbox' && box.className == 'sf_admin_batch_checkbox') box.checked = document.getElementById('sf_admin_list_batch_checkbox').checked } return true;
+}
+/* ]]> */
+</script>

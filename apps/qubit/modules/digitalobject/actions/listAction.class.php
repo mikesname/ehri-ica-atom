@@ -21,7 +21,7 @@
  * @package    qubit
  * @subpackage digitalobject
  * @author     David Juhasz <david@artefactual.com>
- * @version    svn: $id
+ * @version    svn: $Id$
  */
 class DigitalObjectListAction extends sfAction
 {
@@ -32,8 +32,6 @@ class DigitalObjectListAction extends sfAction
    */
   public function execute($request)
   {
-    $this->culture = $this->getUser()->getCulture();
-    
     if ($this->getRequestParameter('sort'))
     {
       $this->sort = $this->getRequestParameter('sort');
@@ -44,7 +42,6 @@ class DigitalObjectListAction extends sfAction
       $this->sort = 'nameUp';
     }
 
-    // TODO Figure out how to replace this with an ORM resultset
     // Build funky join query to get a count of top level digital objects
     // for each media type (term)
     $criteria = new Criteria;
@@ -52,35 +49,28 @@ class DigitalObjectListAction extends sfAction
     $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
     $criteria->addAsColumn('hits', 'COUNT('.QubitDigitalObject::ID.')');
     $criteria->addGroupByColumn(QubitTerm::ID);
-    
-    /*
-    $criteria = new Criteria;
-    $criteria->addSelectColumn(QubitTerm::ID);
-    $criteria->addSelectColumn('COUNT('.QubitDigitalObject::ID.')');
-    $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
-    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
-    $criteria->add(QubitDigitalObject::PARENT_ID, null, Criteria::ISNULL);
-    $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MEDIA_TYPE_ID);
-    $criteria->addGroupByColumn(QubitTerm::ID);
-    */
 
     // Sort the list
     switch ($this->sort)
     {
       case 'nameUp':
-        $criteria->addAscendingOrderByColumn('name'); break;
+        $criteria->addAscendingOrderByColumn('name');
+        break;
       case 'nameDown':
-        $criteria->addDescendingOrderByColumn('name'); break;
+        $criteria->addDescendingOrderByColumn('name');
+        break;
       case 'hitsUp':
-        $criteria->addAscendingOrderByColumn('hits'); break;
+        $criteria->addAscendingOrderByColumn('hits');
+        break;
       case 'hitsDown':
-        $criteria->addDescendingOrderByColumn('hits'); break;
+        $criteria->addDescendingOrderByColumn('hits');
+        break;
     }
-    
+
     // Add I18n fallback
     $options = array();
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $this->culture, $options);
-    
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
+
     $this->terms = QubitTerm::get($criteria);
 
     //determine if user has edit priviliges

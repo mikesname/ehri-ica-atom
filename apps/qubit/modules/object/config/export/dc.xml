@@ -7,12 +7,12 @@
 <dc:title><?php echo htmlentities($this->baseObject->getTitle()) ?></dc:title>
 
 <?php foreach ($this->baseObject->getCreators() as $creator): ?>
-          <dc:creator><?php echo htmlentities($creator) ?></dc:creator>
+          <dc:creator><?php echo htmlentities($creator->__toString()) ?></dc:creator>
 <?php endforeach; ?>
 
 <?php if (count($dcSubjects = QubitDc::getSubjects($this->baseObject)) > 0): ?>
   <?php foreach ($dcSubjects as $dcSubject): ?>
-        <dc:subject><?php echo htmlentities($dcSubject) ?></dc:subject>
+        <dc:subject><?php echo htmlentities($dcSubject->__toString()) ?></dc:subject>
   <?php endforeach; ?>
 <?php endif; ?>
 

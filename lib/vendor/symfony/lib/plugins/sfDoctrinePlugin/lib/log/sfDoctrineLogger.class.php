@@ -113,6 +113,15 @@ class sfDoctrineLogger extends Doctrine_EventListener
 
     if ($params = $event->getParams())
     {
+      foreach ($params as $key => $param)
+      {
+        if (strlen($param) >= 255)
+        {
+          $len = strlen($param);
+          $kb = '[' . number_format($len / 1024, 2) . 'Kb]';
+          $params[$key] = $kb; 
+        }
+      }
       $message .= ' - ('.implode(', ', $params) . ' )';
     }
 

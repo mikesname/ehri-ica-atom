@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: UrlHelper.php 11838 2008-09-29 08:15:21Z fabien $
+ * @version    SVN: $Id: UrlHelper.php 14507 2009-01-06 19:12:41Z Kris.Wallsmith $
  */
 
 function link_to2($name, $routeName, $params, $options = array())
@@ -402,7 +402,10 @@ function button_to($name, $internal_uri, $options = array())
  *  echo mail_to('webmaster@example.com', 'send us an email');
  *    => <a href="mailto:webmaster@example.com">send us an email</a>
  *  echo mail_to('webmaster@example.com', 'send us an email', array('encode' => true));
- *    => <a href="&#x6d;a&#x69;&#x6c;&#x74;&#111;&#58;&#x77;&#x65;b&#x6d;as&#116;&#x65;&#114;&#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;">send us an email</a>
+ *    => <a href="
+            &#x6d;a&#x69;&#x6c;&#x74;&#111;&#58;&#x77;&#x65;b&#x6d;as&#116;&#x65;&#114;
+            &#64;&#101;&#x78;&#x61;&#x6d;&#x70;&#108;&#x65;&#46;&#99;&#x6f;&#109;
+          ">send us an email</a>
  * </code>
  *
  * @param  string $email          target email
@@ -529,12 +532,20 @@ function _post_javascript_function()
 
 function _method_javascript_function($method)
 {
-  $function = "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'POST'; f.action = this.href;";
+  $function = "var f = document.createElement('form'); f.style.display = 'none'; this.parentNode.appendChild(f); f.method = 'post'; f.action = this.href;";
 
   if ('post' != strtolower($method))
   {
     $function .= "var m = document.createElement('input'); m.setAttribute('type', 'hidden'); ";
     $function .= sprintf("m.setAttribute('name', 'sf_method'); m.setAttribute('value', '%s'); f.appendChild(m);", strtolower($method));
+  }
+
+  // CSRF protection
+  $form = new sfForm();
+  if ($form->isCSRFProtected())
+  {
+    $function .= "var m = document.createElement('input'); m.setAttribute('type', 'hidden'); ";
+    $function .= sprintf("m.setAttribute('name', '%s'); m.setAttribute('value', '%s'); f.appendChild(m);", $form->getCSRFFieldName(), $form->getCSRFToken());
   }
 
   $function .= "f.submit();";

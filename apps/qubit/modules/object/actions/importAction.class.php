@@ -17,343 +17,54 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Ingest an uploaded file and import it as an object w/relations
+ * 
+ * @package    qubit
+ * @subpackage import/export
+ * @version    svn: $Id$
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class ObjectImportAction extends sfAction
 {
-  // ingest an uploaded file and import it as an object w/relations
   public function execute($request)
   {
+    $options = array();
+
     // should we do strict validation? (recommended)
     // TODO: this should be an application-level setting
-    $this->strictXMLParsing = false;
+    $options['strictXmlParsing'] = true;
 
-    // load the uploaded file into a DOMXML object (assuming it's XML as per the file import validator)
-    $importDOM = $this->loadXML($this->getRequest()->getFilePath('file'));
+    require_once sfConfig::get('sf_symfony_lib_dir').'/plugins/sfCompat10Plugin/lib/request/sfRequestCompat10.class.php';
+    $this->dispatcher->connect('request.method_not_found', array('sfRequestCompat10', 'call'));
 
-    // if we were unable to parse the XML file at all
-    if (empty($importDOM->documentElement))
+    // Check for import file
+    if (strlen($this->getRequest()->getFilePath('file')) > 0)
     {
-      $this->errors = $this->getContext()->getI18N()->__('unable to parse XML file: malformed or unresolvable entities');
-      return sfView::ERROR;
-    }
-
-    // if libxml threw errors, populate them to show in the template
-    if ($importDOM->libxmlerrors)
-    {
-      // warning condition, XML file has errors (perhaps not well-formed or invalid?)
-      foreach ($importDOM->libxmlerrors as $libxmlerror)
-      {
-        $xmlerrors[] = $this->getContext()->getI18N()->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
-      }
-      $this->errors = $xmlerrors;
-    }
-
-    // FIXME: hardcoded until we decide how these will be developed
-    $validSchemas = array(
-        // document type declarations
-        '+//ISBN 1-931666-00-8//DTD ead.dtd Encoded Archival Description (EAD) Version 2002//EN' => 'ead',
-        '-//Society of American Archivists//DTD ead.dtd (Encoded Archival Description (EAD) Version 1.0)//EN' => 'ead1',
-        // namespaces
-        'http://www.loc.gov/METS/' => 'mets',
-        'http://www.loc.gov/mods/' => 'mods',
-        'http://www.loc.gov/MARC21/slim' => 'marc',
-        // root element names
-          //'collection' => 'marc',
-          //'record' => 'marc',
-        'record' => 'oai_dc_record',
-        'dc' => 'dc',
-        'dublinCore' => 'dc',
-        'metadata' => 'dc',
-        'mods' => 'mods',
-        'ead' => 'ead',
-        'add' => 'alouette');
-
-    // determine what kind of schema we're trying to import
-    $schemaDescriptors = array($importDOM->documentElement->tagName);
-    if (!empty($importDOM->namespaces))
-    {
-      krsort($importDOM->namespaces);
-      $schemaDescriptors = array_merge($schemaDescriptors, $importDOM->namespaces);
-    }
-    if (!empty($importDOM->doctype))
-    {
-      $schemaDescriptors = array_merge($schemaDescriptors, array($importDOM->doctype->name, $importDOM->doctype->systemId, $importDOM->doctype->publicId));
-    }
-
-    foreach ($schemaDescriptors as $descriptor)
-    {
-      if (array_key_exists($descriptor, $validSchemas))
-      {
-        $importSchema = $validSchemas[$descriptor];
-      }
-    }
-
-    $importMap = sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'import'.DIRECTORY_SEPARATOR.$importSchema.'.yml';
-    if (!file_exists($importMap))
-    {
-      // error condition, unknown schema or no import filter
-      $this->errors = $this->getContext()->getI18N()->__('unknown schema or import format: "%format%"', array('%format%' => $importSchema));
-      return sfView::ERROR;
-    }
-
-    $this->schemaMap = sfYaml::load($importMap);
-
-    // if XSLs are specified in the mapping, process them
-    if (!empty($this->schemaMap['processXSLT']))
-    {
-      // pre-filter through XSLs in order
-      foreach ((array) $this->schemaMap['processXSLT'] as $importXSL)
-      {
-        $importXSL = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'xslt'.DIRECTORY_SEPARATOR.$importXSL;
-
-        if (file_exists($importXSL))
-        {
-          // instantiate an XSLT parser
-          $xslDOM = new DOMDocument;
-          $xslDOM->load($importXSL);
-
-          // Configure the transformer
-          $xsltProc = new XSLTProcessor;
-          $xsltProc->registerPHPFunctions();
-          $xsltProc->importStyleSheet($xslDOM);
-
-          $importDOM->loadXML($xsltProc->transformToXML($importDOM));
-        }
-        else
-        {
-          $this->errors[] = $this->getContext()->getI18N()->__('unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
-        }
-      }
-
-      // re-initialize xpath on the new XML
-      $importDOM->xpath = new DOMXPath($importDOM);
-    }
-
-    unset($this->schemaMap['processXSLT']);
-
-    // go through schema map and populate objects/properties
-    foreach ($this->schemaMap as $name => $mapping)
-    {
-
-      // if object is not defined or a valid class, we can't process this mapping
-      if (empty($mapping['Object']) || !class_exists('Qubit'.$mapping['Object']))
-      {
-        $this->errors[] = $this->getContext()->getI18N()->__('non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
-          continue;
-      }
-
-      // get a list of XML nodes to process
-      $nodeList = $importDOM->xpath->query($mapping['XPath']);
-
-      foreach ($nodeList as $domNode)
-      {
-        // create a new object
-        eval('$this->currentObject = new Qubit'.$mapping['Object'].';');
-
-        // we need to save the object to get an ID
-        $this->currentObject->save();
-
-        // set the rootObject to use for initial display in successful import
-        if (!$this->rootObject)
-        {
-          $this->rootObject = $this->currentObject;
-        }
-
-        // write the ID onto the current XML node for tracking
-        $domNode->setAttribute('xml:id', $this->currentObject->getId());
-
-        // if a parent path is specified, try to parent the node
-        $parentNodes = $importDOM->xpath->query('('.$mapping['Parent'].')', $domNode);
-
-        if ($parentNodes->length > 0)
-        {
-          // parent ID comes from last node in the list because XPath forces forward document order
-          $parentId = $parentNodes->item($parentNodes->length - 1)->getAttribute('xml:id');
-
-          if (!empty($parentId) && is_callable(array($this->currentObject, 'setParentId')))
-          {
-            $this->currentObject->setParentId($parentId);
-          }
-        }
-        else
-        {
-          // orphaned object, set root if possible
-          if (is_callable(array($this->currentObject, 'setRoot')))
-          {
-            $this->currentObject->setRoot();
-          }
-        }
-
-        // go through methods and populate properties
-        foreach ($mapping['Methods'] as $name => $methodMap)
-        {
-
-          // if method is not defined, we can't process this mapping
-          if (empty($methodMap['Method']) || !is_callable(array($this->currentObject, $methodMap['Method'])))
-          {
-            $this->errors[] = $this->getContext()->getI18N()->__('non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
-            continue;
-          }
-
-          // get a list of XML nodes to process
-          $nodeList2 = $importDOM->xpath->query($methodMap['XPath'], $domNode);
-
-          foreach ($nodeList2 as $domNode2)
-          {
-            // normalize the node text (trim whitespace manually); NB: this will strip any child elements, eg. HTML tags
-            $nodeValue = trim(preg_replace('/[\n\r\s]+/', ' ', $domNode2->nodeValue));
-
-            // if you want the full XML from the node, use this
-            $nodeXML = $domNode2->ownerDocument->saveXML($domNode2);
-
-            // set the parameters for the method call
-            if (empty($methodMap['Parameters']))
-            {
-              $parameters = $nodeValue;
-            }
-            else
-            {
-              $parameters = array();
-              foreach ((array) $methodMap['Parameters'] as $parameter)
-              {
-                // if the parameter begins with %, evaluate it as an XPath expression relative to the current node
-                if ('%' == substr($parameter, 0, 1))
-                {
-                  // evaluate the XPath expression
-                  $xPath = substr($parameter, 1);
-                  $result = $importDOM->xpath->query($xPath, $domNode2);
-
-                  if ($result->length > 1)
-                  {
-                    // convert nodelist into an array
-                    foreach ($result as $element)
-                    {
-                      $resultArray[] = $element->nodeValue;
-                    }
-                    $parameters[] = $resultArray;
-                  }
-                  else
-                  {
-                    // pass the node value unaltered; this provides an alternative to $nodeValue above
-                    $parameters[] = $result->item(0)->nodeValue;
-                  }
-                }
-                else
-                {
-                  eval('$parameters[] = '.$parameter.';');
-                }
-              }
-            }
-
-            // invoke the object and method defined in the schema map
-            eval("return call_user_func_array(array(&\$this->currentObject, \$methodMap['Method']), \$parameters);");
-
-          }
-        }
-
-        // save the object after it's fully-populated
-        $this->currentObject->save();
-      }
-    }
-
-    // FIXME: Redirect depends on single or multiple object import!
-    $this->objectType = strtr(get_class($this->rootObject), array('Qubit' => ''));
-
-    return sfView::SUCCESS;
-  }
-
-  /*
-   * modified helper methods from (http://www.php.net/manual/en/ref.dom.php):
-   *
-   * - create a DOMDocument from a file
-   * - parse the namespaces in it
-   * - create a XPath object with all the namespaces registered
-   *  - load the schema locations
-   *  - validate the file on the main schema (the one without prefix)
-   */
-  private function loadXML($file)
-  {
-    libxml_use_internal_errors(true);
-
-    // FIXME: trap possible load validation errors (just suppress for now)
-    $err_level = error_reporting(0);
-
-    $doc = new DOMDocument('1.0', 'UTF-8');
-
-    if ($this->strictXMLParsing)
-    {
-      // enforce all XML parsing rules and validation
-      $doc->validateOnParse = true;
-      $doc->resolveExternals = true;
+      $xmlStream = file_get_contents($this->getRequest()->getFilePath('file'));
     }
     else
     {
-      // try to load whatever we've got, even if it's mal-formed or invalid
-      $doc->recover = true;
-      $doc->strictErrorChecking = false;
+      $this->errors = sfContext::getInstance()->getI18N()->__('No import file selected, or the selected file exceeds the maximum upload size.');
+
+      return sfView::ERROR;
     }
-    $doc->formatOutput = false;
-    $doc->preserveWhitespace = false;
 
-    $doc->load($file);
-
-    $xsi = false;
-    $doc->namespaces = array();
-    $doc->xpath = new DOMXPath($doc);
-
-    // pass along any XML errors that have been generated
-    $doc->libxmlerrors = libxml_get_errors();
-
-    // if the document didn't parse correctly, stop right here
-    if (empty($doc->documentElement))
+    // Try import
+    try
     {
-      return $doc;
+      $this->import = QubitXmlImport::execute($xmlStream, $options);
     }
-
-    error_reporting($err_level);
-
-    // look through the entire document for namespaces
-    $re = '/xmlns:([^=]+)="([^"]+)"/';
-    preg_match_all($re, file_get_contents($file), $mat, PREG_SET_ORDER);
-
-    foreach ($mat as $xmlns)
+    catch (Exception $e)
     {
-      $pre = $xmlns[1];
-      $uri = $xmlns[2];
+      $this->errors = $e->getMessage();
 
-      $doc->namespaces[$pre] = $uri;
-
-      if ($pre == '')
-      {
-        $pre = 'noname';
-      }
-      $doc->xpath->registerNamespace($pre, $uri);
+      return sfView::ERROR;
     }
 
-    if (!isset($doc->namespaces['']))
-    {
-      $doc->namespaces[''] = $doc->documentElement->lookupnamespaceURI(null);
-    }
+    // FIXME: Redirect depends on single or multiple object import!
+    $this->objectType = strtr(get_class($this->import->getRootObject()), array('Qubit' => ''));
 
-    if ($xsi)
-    {
-      $doc->schemaLocations = array();
-      $lst = $doc->xpath->query('//@$xsi:schemaLocation');
-      foreach ($lst as $el)
-      {
-        $re = "{[\\s\n\r]*([^\\s\n\r]+)[\\s\n\r]*([^\\s\n\r]+)}";
-        preg_match_all($re, $el->nodeValue, $mat);
-        for ($i = 0; $i < count($mat[0]); $i++)
-        {
-          $value = $mat[2][$i];
-          $doc->schemaLocations[$mat[1][$i]] = $value;
-        }
-      }
-
-      // validate document against default namespace schema
-      $doc->schemaValidate($doc->schemaLocations[$doc->namespaces['']]);
-    }
-
-    return $doc;
+    return sfView::SUCCESS;
   }
-
 }

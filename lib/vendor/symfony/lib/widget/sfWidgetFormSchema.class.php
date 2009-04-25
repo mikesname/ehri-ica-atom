@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWidgetFormSchema.class.php 12813 2008-11-09 10:23:47Z fabien $
+ * @version    SVN: $Id: sfWidgetFormSchema.class.php 16733 2009-03-30 06:04:08Z fabien $
  */
 class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 {
@@ -279,7 +279,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   }
 
   /**
-   * Sets the labels.
+   * Gets the labels.
    *
    * @return array An array of label names
    */
@@ -797,11 +797,6 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     {
       // offsetSet will clone the field and change the parent
       $this[$name] = $field;
-    }
-    foreach ($this->formFormatters as &$formFormatter)
-    {
-      $formFormatter = clone $formFormatter;
-      $formFormatter->setWidgetSchema($this);
     }
 
     foreach ($this->formFormatters as &$formFormatter)

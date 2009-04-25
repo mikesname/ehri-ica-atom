@@ -20,12 +20,26 @@
 class QubitActorName extends BaseActorName
 {
   public function __toString()
-    {
+  {
     if (!$this->getName())
-      {
+    {
       return (string) $this->getName(array('sourceCulture' => true));
-      }
+    }
 
     return (string) $this->getName();
+  }
+
+  /**
+   * Static method to delete an actor name with given $id
+   *
+   * @param integer $id primary key of property
+   * @param Connection $connection database connection object
+   */
+  public static function deleteById($id, $connection = null)
+  {
+    if (null !== $actorName = parent::getById($id))
+    {
+      $actorName->delete($connection);
     }
+  }
 }

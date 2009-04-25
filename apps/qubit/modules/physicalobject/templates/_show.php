@@ -9,8 +9,8 @@
       <?php endif; ?>
       <?php if ($physicalObject->getName(array('cultureFallback' => 'true'))): ?>
       <?php echo link_to($physicalObject->getName(array('cultureFallback' => 'true')), 
-        'physicalobject/edit?id='.$physicalObject->getId(),
-        array('query_string'=>'next=informationobject%2Fshow%3Fid%3D'.$informationObject->getId())); ?>
+        array('module' => 'physicalobject', 'action' => 'edit', 'id' => $physicalObject->getId()),
+        array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->getId())))); ?>
       <?php endif; ?>
       <?php if ($physicalObject->getLocation(array('cultureFallback' => 'true'))): ?>
       <?php echo ' - '.$physicalObject->getLocation(array('cultureFallback' => 'true')); ?>

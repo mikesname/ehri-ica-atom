@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: BasePeer.php 1060 2008-06-13 12:52:23Z hans $
+ *  $Id: BasePeer.php 1093 2009-02-02 08:20:54Z ron $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -35,7 +35,7 @@
  * @author     John D. McNally <jmcnally@collab.net> (Torque)
  * @author     Brett McLaughlin <bmclaugh@algx.net> (Torque)
  * @author     Stephen Haberman <stephenh@chase3000.com> (Torque)
- * @version    $Revision: 1060 $
+ * @version    $Revision: 1093 $
  * @package    propel.util
  */
 class BasePeer
@@ -557,7 +557,7 @@ class BasePeer
 
 				$stmt->bindValue(':p'.$i++, null, PDO::PARAM_NULL);
 
-			} else {
+			} elseif (isset($tableName) ) {
 
 				$cMap = $dbMap->getTable($tableName)->getColumn($columnName);
 				$type = $cMap->getType();
@@ -591,6 +591,8 @@ class BasePeer
 				}
 
 				$stmt->bindValue(':p'.$i++, $value, $pdoType);
+			} else {
+				$stmt->bindValue(':p'.$i++, $value);
 			}
 		} // foreach
 	}
@@ -844,7 +846,8 @@ class BasePeer
 
 		// Unique from clause elements
 		$fromClause = array_unique($fromClause);
-
+		$fromClause = array_diff($fromClause, array(''));
+		
 		// tables should not exist in both the from and join clauses
 		if ($joinTables && $fromClause) {
 			foreach ($fromClause as $fi => $ftable) {

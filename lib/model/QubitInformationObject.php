@@ -113,7 +113,7 @@ class QubitInformationObject extends BaseInformationObject
    * @param array    $options array of optional function parameters
    * @return QubitQuery collection of QubitInformationObject objects
    */
-  public static function getList($culture, $options = array())
+  public static function getList($options = array())
   {
     $criteria = new Criteria;
 
@@ -121,6 +121,15 @@ class QubitInformationObject extends BaseInformationObject
     if (isset($options['parentId']))
     {
       $criteria->add(QubitInformationObject::PARENT_ID, $options['parentId'], Criteria::EQUAL);
+    }
+
+    if (isset($options['culture']))
+    {
+      $culture = $options['culture'];
+    }
+    else
+    {
+      $culture = sfContext::getInstance()->getUser()->getCulture();
     }
 
     $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
@@ -165,7 +174,7 @@ class QubitInformationObject extends BaseInformationObject
     {
       // Return a QubitQuery object of class-type QubitInformationObject
       $options = array('returnClass'=>'QubitInformationObject');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $culture, $options);
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
     }
     else
     {
@@ -263,6 +272,35 @@ class QubitInformationObject extends BaseInformationObject
     }
   }
 
+  /**
+   * Wrapper for getRepository method to allow inheriting repo from ancestors
+   *
+   * @param array $options optional parameters
+   * @return QubitRepository repository object
+   */
+  public function getRepository(array $options = array())
+  {
+    $repositoryId = parent::offsetGet('repositoryId', $options);
+    $repository = QubitRepository::getById($repositoryId);
+
+    if (isset($options['inherit']) && false !== $options['inherit'])
+    {
+      if (null === $repository)
+      {
+        // Ascend up object hierarchy until a related repository is found
+        foreach ($this->getAncestors() as $ancestor)
+        {
+          if (null !== $repository = $ancestor->getRepository())
+          {
+            break;
+          }
+        }
+      }
+    }
+
+    return $repository;
+  }
+
   /**************************
      Nested Set (Hierarchy)
   ***************************/
@@ -303,7 +341,7 @@ class QubitInformationObject extends BaseInformationObject
 
   public function getCollectionRoot()
   {
-    return $this->getAncestors()->orderBy('lft')->offsetGet(1, array('defaultValue' => $this));
+    return $this->ancestors->andSelf()->orderBy('lft')->__get(1);
   }
 
   public function setRoot()
@@ -324,18 +362,24 @@ class QubitInformationObject extends BaseInformationObject
     $criteria = new Criteria;
     $criteria->addJoin(QubitActor::ID, QubitEvent::ACTOR_ID);
     $criteria->add(QubitEvent::INFORMATION_OBJECT_ID, $this->getId());
+
     if (isset($options['eventTypeId']))
     {
       $criteria->add(QubitEvent::TYPE_ID, $options['eventTypeId']);
     }
-    $criteria->addGroupByColumn(QubitEvent::ACTOR_ID);
+
+    if (isset($options['cultureFallback']) && true === $options['cultureFallback'])
+    {
+      $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $options);
+    }
 
     return QubitActor::get($criteria);
   }
 
-  public function getCreators()
+  public function getCreators($options = array())
   {
-    return $this->getActors($options = array('eventTypeId' => QubitTerm::CREATION_ID));
+    return $this->getActors($options + array('eventTypeId' => QubitTerm::CREATION_ID));
   }
 
   public function getPublishers()
@@ -372,9 +416,18 @@ class QubitInformationObject extends BaseInformationObject
   public function getDates(array $options = array())
   {
     $criteria = new Criteria;
+    $criteria->addJoin(QubitEvent::ID, QubitEventI18n::ID, Criteria::INNER_JOIN);
     $criteria->add(QubitEvent::INFORMATION_OBJECT_ID, $this->getId());
-    $criteria->addJoin(QubitEvent::ID, QubitEventI18n::ID);
     $criteria->add(QubitEventI18n::DATE_DISPLAY, null, Criteria::ISNOTNULL);
+
+    try
+    {
+      $criteria->add(QubitEventI18n::CULTURE, sfContext::getInstance()->getUser()->getCulture());
+    }
+    catch (sfException $e)
+    {
+    }
+
     if (isset($options['type_id']))
     {
       $criteria->add(QubitEvent::TYPE_ID, $options['type_id']);
@@ -644,9 +697,15 @@ class QubitInformationObject extends BaseInformationObject
     {
       $criteria->add(QubitNote::TYPE_ID, $options['noteTypeId']);
     }
-    if (isset($options['excludeNoteTypeId']))
+    if (isset($options['exclude']))
     {
-      $criteria->add(QubitNote::TYPE_ID, $options['excludeNoteTypeId'], Criteria::NOT_EQUAL);
+      // Turn exclude string into an array
+      $excludes = (is_array($options['exclude'])) ? $options['exclude'] : array($options['exclude']);
+
+      foreach ($excludes as $exclude)
+      {
+        $criteria->addAnd(QubitNote::TYPE_ID, $exclude, Criteria::NOT_EQUAL);
+      }
     }
 
     return QubitNote::get($criteria);
@@ -1362,5 +1421,19 @@ class QubitInformationObject extends BaseInformationObject
   public function getSourceOaiIdentifier()
   {
     return $this->getPropertyByName('source_oai_identifier');
+  }
+
+  /**
+   * Add search criteria for find records updated in last $numberOfDays
+   *
+   * @param Criteria $criteria current search criteria
+   * @param string $cutoff earliest date to show
+   * @return Criteria modified criteria object
+   */
+  public static function addRecentUpdatesCriteria($criteria, $cutoff)
+  {
+    $criteria->add(QubitInformationObject::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
+
+    return $criteria;
   }
 }

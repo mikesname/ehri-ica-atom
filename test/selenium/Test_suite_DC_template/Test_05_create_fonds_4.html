@@ -13,7 +13,32 @@
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add/edit</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorized_form_of_name</td>
+	<td>City of Vancouver Archives</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[1]/a</td>
 	<td></td>
 </tr>
 <tr>
@@ -37,13 +62,8 @@
 	<td>label=City of Vancouver Archives</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>physicalObjectId</td>
-	<td>label=Box D9</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -58,17 +78,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>repository</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>physical storage</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Box: Box D9 - Shelf 11, Aisle C10, Main Repository</td>
+	<td>archival institution</td>
 	<td></td>
 </tr>
 

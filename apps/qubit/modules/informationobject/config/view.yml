@@ -1,14 +1,14 @@
 editDcSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
 
 editIsadSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
 
 editRadSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
 
 editModsSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, multiDelete, multiInstanceInput, multiInstanceSelect]
 
 listSuccess:
   components:

@@ -1,9 +1,11 @@
-<?xml version="1.0" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd" >
 <xliff version="1.0">
-  <file orginal="global" source-language="en" datatype="plaintext">
+  <file original="global" source-language="en" datatype="plaintext">
   <!-- This file uses ş and ţ (cedilla below) insted of ș and ț (comma below) for compatibility. -->
   <!-- Acest fişier foloseşte ş şi ţ (sedilă dedesubt) în loc de ș şi ț (virgulă dedesubt) pentru compatibilitate. -->
   <!-- ref: http://en.wikipedia.org/wiki/Romanian_alphabet#Comma-below_.28.C8.99_and_.C8.9B.29_versus_cedilla_.28.C5.9F_and_.C5.A3.29 -->
+    <header />
     <body>
       <!-- Actions -->
       <trans-unit>

@@ -3,8 +3,11 @@
 
 <div class="pageTitle"><?php echo __('edit resource metadata - Dublin Core'); ?></div>
 
-<?php echo form_tag('informationobject/updateDc', array('multipart' => 'true', 'id'=>'editForm')) ?>
-  <?php echo object_input_hidden_tag($informationObject, 'getId') ?>
+<?php if (isset($sf_request->id)): ?>
+  <?php echo form_tag(array('module' => 'informationobject', 'action' => 'edit', 'id' => $sf_request->id), array('multipart' => 'true', 'id'=>'editForm')) ?>
+<?php else: ?>
+  <?php echo form_tag(array('module' => 'informationobject', 'action' => 'create'), array('multipart' => 'true', 'id'=>'editForm')) ?>
+<?php endif; ?>
 
 <?php if ($label = QubitDc::getLabel($informationObject, array('sourceCulture' => true))): ?>
   <div class="formHeader">
@@ -46,7 +49,7 @@
       </tr>
       <?php if(count($actorEvents)): ?>
       <?php foreach ($actorEvents as $actorEvent): ?>
-      <tr class="<?php echo 'related_obj_'.$actorEvent->getId() ?>">
+      <tr id="<?php echo 'actorEvent_'.$actorEvent->getId() ?>" class="<?php echo 'related_obj_'.$actorEvent->getId() ?>">
         <td><div class="animateNicely">
         <?php if ($actorEvent->getActor()): ?>
           <?php echo render_title($actorEvent->getActor()) ?>
@@ -63,8 +66,7 @@
           <?php echo $actorEvent->getDateDisplay(array('cultureFallback' => 'true')) ?>
         </div></td>
         <td style="text-align: right"><div class="animateNicely">
-          <!-- <a href="javascript:editActorEventDialog(<?php echo $actorEvent->getId()?>)"><?php echo image_tag('pencil', 'align=top') ?></a> -->
-          <input type="checkbox" name="delete_actor_events[<?php echo $actorEvent->getId()?>]" value="delete" class="multiDelete" />
+          <input type="checkbox" name="deleteEvents[<?php echo $actorEvent->getId() ?>]" value="delete" class="multiDelete" />
         </div></td>
       </tr>
       <?php endforeach; ?>
@@ -72,56 +74,51 @@
     </table>
 
     <!-- add new creation event yui dialog object -->
-    <?php echo include_partial('newActorEventDialog') ?>
+    <?php echo include_partial('actorEventDialog') ?>
 
     <div class="form-item">
       <fieldset id="newActorEventFields" style="border: 1px solid #cccccc; padding: 1px; background: #fff">
       <label for="newActorEvent"><?php echo __('new event'); ?></label>
 
       <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
-      <!-- NOTE: The newActorEventDialog script cuts this *entire*          -->
-      <!-- "newActorEvent" table and pastes it in a YUI dialog object.      -->
+      <!-- NOTE: The editActorEventDialog script cuts this *entire*          -->
+      <!-- "editActorEvent" table and pastes it in a YUI dialog object.      -->
       <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
-      <table id="newActorEvent" class="inline">
+      <table id="actorEvent" class="inline">
         <tr>
           <td colspan ="2" class="headerCell" style="width: 55%;"><?php echo __('name'); ?></td>
           <td class="headerCell" style="width: 40%;"><i><?php echo __('or'); ?> </i><?php echo __('add new name'); ?></td>
         </tr>
         <tr>
           <td colspan ="2">
-            <?php echo select_tag('newActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
+            <?php echo select_tag('editActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
               array('include_blank' => true, 'cultureFallback' => true))) ?>
           </td>
-          <td><?php echo input_tag('newActorEvent[newActorAuthorizedName]') ?></td>
+          <td><?php echo input_tag('editActorEvent[newActorName]') ?></td>
         </tr>
         <tr>
           <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
         </tr>
         <tr>
-          <td colspan="2"><?php echo select_tag('newActorEvent[eventTypeId]', options_for_select($dcEventTypes, $defaultActorEventType))?></td>
-          <td><?php echo select_tag('newActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
+          <td colspan="2"><?php echo select_tag('editActorEvent[eventTypeId]', options_for_select($dcEventTypes, $defaultActorEventType))?></td>
+          <td><?php echo select_tag('editActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
         </tr>
         <tr>
           <td class="headerCell"><?php echo __('year'); ?></td><td class="headerCell"><?php echo __('end year'); ?></td>
           <td class="headerCell"><?php echo __('date display (defaults to date range)'); ?></td></tr>
         <tr>
-          <td><?php echo input_tag('newActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('newActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('newActorEvent[dateDisplay]') ?></td>
+          <td><?php echo input_tag('editActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td><?php echo input_tag('editActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td><?php echo input_tag('editActorEvent[dateDisplay]') ?></td>
         </tr>
         <tr>
           <td colspan="3" class="headerCell"><?php echo __('note'); ?></td>
         </tr>
         <tr>
-          <td colspan="3"><?php echo input_tag('newActorEvent[description]') ?></td>
+          <td colspan="3"><?php echo input_tag('editActorEvent[description]') ?></td>
         </tr>
       </table>
       </fieldset>
-    </div>
-
-    <div class="form-item">
-      <label for="collection_type_id"><?php echo __('type'); ?></label>
-      <?php echo object_select_tag($informationObject, 'getCollectionTypeId', array('related_class' => 'QubitTerm', 'peer_method' => 'getCollectionTypes'), QubitTerm::ARCHIVAL_MATERIAL_ID) ?>
     </div>
 
     <div class="form-item">
@@ -193,7 +190,7 @@
     <div class="form-item" id="subjectAccessPoints">
       <table class="inline">
         <tr>
-          <th style="width: 90%;"><?php echo __('Subject'); ?><span id="addSubjectAccessPointLink" style="font-weight:normal"></span></th>
+          <th style="width: 90%;"><?php echo __('Subject'); ?><?php if($editTaxonomyCredentials): ?><span id="addSubjectAccessPointLink" style="font-weight:normal"></span><?php endif; ?></th>
           <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
         </tr>
       <?php if ($subjectAccessPoints): ?>
@@ -220,7 +217,7 @@
     <div class="form-item" id="placeAccessPoints">
       <table class="inline">
         <tr>
-          <th style="width: 90%;"><?php echo __('Coverage').' - '.__('spatial'); ?><span id="addPlaceAccessPointLink" style="font-weight:normal"></span></th>
+          <th style="width: 90%;"><?php echo __('Coverage').' - '.__('spatial'); ?><?php if($editTaxonomyCredentials): ?><span id="addPlaceAccessPointLink" style="font-weight:normal"></span><?php endif; ?></th>
           <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
         </tr>
       <?php if ($placeAccessPoints): ?>
@@ -310,22 +307,22 @@ EOF
       &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
       <?php endif; ?>
 
-       &nbsp;<?php echo link_to(__('cancel'), 'informationobject/showDc?id='.$informationObject->getId()) ?>
+       &nbsp;<?php echo link_to(__('cancel'), array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->getId())) ?>
     <?php else: ?>
-      &nbsp;<?php echo link_to(__('cancel'), 'informationobject/list') ?>
+      &nbsp;<?php echo link_to(__('cancel'), array('module' => 'informationobject', 'action' => 'list')) ?>
     <?php endif; ?>
 
     <?php if ($informationObject->getId()): ?>
-      <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
     <?php else: ?>
-      <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
+      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
     <?php endif; ?>
   </div>
 
 </form>
 
 <div class="menu-extra">
-  <?php echo link_to(__('add new'), 'informationobject/createDc'); ?>
-  <?php echo link_to(__('list all'), 'informationobject/list'); ?>
+  <?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create')); ?>
+  <?php echo link_to(__('list all'), array('module' => 'informationobject', 'action' => 'list')); ?>
 </div>
 </div>

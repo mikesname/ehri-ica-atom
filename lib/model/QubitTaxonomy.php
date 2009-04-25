@@ -42,6 +42,7 @@ class QubitTaxonomy extends BaseTaxonomy
   //CCA Rules for Archival Description (RAD) taxonomies
   const RAD_NOTE_ID = 21;
   const RAD_TITLE_NOTE_ID = 22;
+  const MODS_TITLE_TYPE_ID = 23;
 
   public function __toString()
   {
@@ -56,13 +57,12 @@ class QubitTaxonomy extends BaseTaxonomy
   public static function getEditableTaxonomies()
   {
     $criteria = new Criteria;
-    $criteria->add(QubitTaxonomy::ID, array(QubitTaxonomy::QUBIT_SETTING_LABEL_ID), Criteria::NOT_IN);
+    $criteria->add(QubitTaxonomy::ID, array(QubitTaxonomy::QUBIT_SETTING_LABEL_ID, QubitTaxonomy::COLLECTION_TYPE_ID), Criteria::NOT_IN);
 
     // Add criteria to sort by name with culture fallback
     $criteria->addAscendingOrderByColumn('name');
     $options = array('returnClass'=>'QubitTaxonomy');
-    $culture = sfContext::getInstance()->getUser()->getCulture();
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTaxonomy', $culture, $options);
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTaxonomy', $options);
 
     return QubitTaxonomy::get($criteria);
   }

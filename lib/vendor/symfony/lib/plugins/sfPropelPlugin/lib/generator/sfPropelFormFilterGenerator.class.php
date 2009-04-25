@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage generator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelFormFilterGenerator.class.php 11675 2008-09-19 15:21:38Z fabien $
+ * @version    SVN: $Id: sfPropelFormFilterGenerator.class.php 16976 2009-04-04 12:47:44Z fabien $
  */
 class sfPropelFormFilterGenerator extends sfPropelFormGenerator
 {
@@ -161,6 +161,12 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
     if ($column->isForeignKey())
     {
       $options[] = sprintf('\'model\' => \'%s\', \'add_empty\' => true', $this->getForeignTable($column)->getClassname());
+
+      $refColumn = $this->getForeignTable($column)->getColumn($column->getRelatedColumnName());
+      if (!$refColumn->isPrimaryKey())
+      {
+        $options[] = sprintf('\'key_method\' => \'get%s\'', $refColumn->getPhpName());
+      }
     }
 
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
@@ -223,20 +229,11 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
 
     if ($column->isForeignKey())
     {
-      $map = call_user_func(array(constant($this->getForeignTable($column)->getClassname().'::PEER'), 'getTableMap'));
-      foreach ($map->getColumns() as $primaryKey)
-      {
-        if ($primaryKey->isPrimaryKey())
-        {
-          break;
-        }
-      }
-
-      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $this->getForeignTable($column)->getClassname(), strtolower($primaryKey->getColumnName()));
+      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $this->getForeignTable($column)->getClassname(), $this->translateColumnName($column, true));
     }
     else if ($column->isPrimaryKey())
     {
-      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $column->getTable()->getClassname(), strtolower($column->getColumnName()));
+      $options[] = sprintf('\'model\' => \'%s\', \'column\' => \'%s\'', $column->getTable()->getClassname(), $this->translateColumnName($column));
     }
     else
     {
@@ -256,6 +253,17 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
     return count($options) ? sprintf('array(%s)', implode(', ', $options)) : '';
   }
 
+  public function getValidatorForColumn($column)
+  {
+    $format = 'new %s(%s)';
+    if (in_array($class = $this->getValidatorClassForColumn($column), array('sfValidatorInteger', 'sfValidatorNumber')))
+    {
+      $format = 'new sfValidatorSchemaFilter(\'text\', new %s(%s))';
+    }
+
+    return sprintf($format, $class, $this->getValidatorOptionsForColumn($column));
+  }
+
   public function getType(ColumnMap $column)
   {
     if ($column->isForeignKey())
@@ -271,6 +279,16 @@ class sfPropelFormFilterGenerator extends sfPropelFormGenerator
       case PropelColumnTypes::TIME:
       case PropelColumnTypes::TIMESTAMP:
         return 'Date';
+      case PropelColumnTypes::DOUBLE:
+      case PropelColumnTypes::FLOAT:
+      case PropelColumnTypes::NUMERIC:
+      case PropelColumnTypes::DECIMAL:
+      case PropelColumnTypes::REAL:
+      case PropelColumnTypes::INTEGER:
+      case PropelColumnTypes::SMALLINT:
+      case PropelColumnTypes::TINYINT:
+      case PropelColumnTypes::BIGINT:
+        return 'Number';
       default:
         return 'Text';
     }

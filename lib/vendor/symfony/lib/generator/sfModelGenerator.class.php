@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage generator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfModelGenerator.class.php 13089 2008-11-17 23:18:18Z fabien $
+ * @version    SVN: $Id: sfModelGenerator.class.php 17063 2009-04-06 22:29:34Z Kris.Wallsmith $
  */
 abstract class sfModelGenerator extends sfGenerator
 {
@@ -63,7 +63,7 @@ abstract class sfModelGenerator extends sfGenerator
     // move helper file
     if (file_exists($file = $this->generatorManager->getBasePath().'/'.$this->getGeneratedModuleName().'/lib/helper.php'))
     {
-      rename($file, $this->generatorManager->getBasePath().'/'.$this->getGeneratedModuleName().'/lib/Base'.ucfirst($this->moduleName).'GeneratorHelper.class.php');
+      @rename($file, $this->generatorManager->getBasePath().'/'.$this->getGeneratedModuleName().'/lib/Base'.ucfirst($this->moduleName).'GeneratorHelper.class.php');
     }
 
     return "require_once(sfConfig::get('sf_module_cache_dir').'/".$this->generatedModuleName."/actions/actions.class.php');";
@@ -206,7 +206,7 @@ abstract class sfModelGenerator extends sfGenerator
 
     $url_params = $pk_link ? '?'.$this->getPrimaryKeyUrlParams() : '\'';
 
-    return '[?php echo link_to(__(\''.$params['label'].'\'), \''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).', \''.$this->getI18nCatalogue().'\') ?]';
+    return '[?php echo link_to(__(\''.$params['label'].'\', array(), \''.$this->getI18nCatalogue().'\'), \''.$this->getModuleName().'/'.$action.$url_params.', '.$this->asPhp($params['params']).') ?]';
   }
 
   /**
@@ -392,15 +392,17 @@ EOF;
 
     require_once $this->getGeneratorManager()->getBasePath().'/'.$basePath;
 
-    $moduleDirs = array_keys($config->getControllerDirs($this->getModuleName()));
-    if (is_file($moduleDirs[0].'/../lib/configuration.php'))
+    $class = 'Base'.ucfirst($this->getModuleName()).'GeneratorConfiguration';
+    foreach ($config->getLibDirs($this->getModuleName()) as $dir)
     {
-      require_once $moduleDirs[0].'/../lib/configuration.php';
+      if (!is_file($configuration = $dir.'/'.$this->getModuleName().'GeneratorConfiguration.class.php'))
+      {
+        continue;
+      }
+
+      require_once $configuration;
       $class = $this->getModuleName().'GeneratorConfiguration';
-    }
-    else
-    {
-      $class = 'Base'.ucfirst($this->getModuleName()).'GeneratorConfiguration';
+      break;
     }
 
     // validate configuration
@@ -437,5 +439,10 @@ EOF;
   public function asPhp($variable)
   {
     return str_replace(array("\n", 'array ('), array('', 'array('), var_export($variable, true));
+  }
+
+  public function escapeString($string)
+  {
+    return str_replace("'", "\\'", $string);
   }
 }

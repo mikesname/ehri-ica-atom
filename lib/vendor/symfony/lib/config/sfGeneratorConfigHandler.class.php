@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfGeneratorConfigHandler.class.php 12105 2008-10-09 12:26:37Z fabien $
+ * @version    SVN: $Id: sfGeneratorConfigHandler.class.php 13464 2008-11-28 15:45:07Z fabien $
  */
 class sfGeneratorConfigHandler extends sfYamlConfigHandler
 {
@@ -81,7 +81,7 @@ class sfGeneratorConfigHandler extends sfYamlConfigHandler
   {
     $data = '';
 
-    // TODO: remove when the admin generator is moved to the new form framework
+    // needed to maintain BC with the 1.0 admin generator
     $r = new ReflectionClass($class);
     if (
       (class_exists('sfPropelAdminGenerator') && ('sfPropelAdminGenerator' == $class || $r->isSubclassOf(new ReflectionClass('sfPropelAdminGenerator'))))

@@ -8,22 +8,6 @@ class sfInstall
 {
   public static $MINIMUM_MEMORY_LIMIT_MB = 64;
 
-  public static function applicationThrowException(sfEvent $event)
-  {
-    // TODO: Choose a more specific test.  Do not redirect to the installer on
-    // all PropelExceptions
-    if ($event->getSubject() instanceof PropelException)
-    {
-      sfContext::getInstance()->getController()->redirect(array('module' => 'sfInstallPlugin'));
-    }
-  }
-
-  public static function routingLoadConfiguration(sfEvent $event)
-  {
-    $routing = $event->getSubject();
-    $routing->insertRouteBefore('default', 'sfInstallPlugin/help', new sfRoute('http://qubit-toolkit.org/wiki/index.php?title=Installer_Warnings', array('module' => 'sfInstallPlugin', 'action' => 'help')));
-  }
-
   public static function publishAssets()
   {
     $dispatcher = sfContext::getInstance()->getEventDispatcher();
@@ -556,6 +540,12 @@ EOF;
 
     $insertSql = new sfPropelInsertSqlTask($dispatcher, $formatter);
     $insertSql->run($arguments, $options);
+  }
+
+  public static function loadRoot()
+  {
+    $object = new QubitInformationObject;
+    $object->save();
   }
 
   public static function loadData()

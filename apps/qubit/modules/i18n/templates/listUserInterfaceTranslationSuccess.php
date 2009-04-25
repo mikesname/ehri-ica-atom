@@ -5,9 +5,9 @@
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_informationobject')))?></div>
     <ul>
-    <li><?php echo link_to(__('create (ISAD)'), 'informationobject/createIsad') ?></li>
+    <li><?php echo link_to(__('create (ISAD)'), array('module' => 'informationobject', 'action' => 'create', 'informationobject_template' => 'isad')) ?></li>
     <?php if ($sf_user->getCulture() == 'fr'): ?>
-      <li><?php echo link_to(__('create (RAD)'), 'informationobject/createRad') ?></li>
+      <li><?php echo link_to(__('create (RAD)'), array('module' => 'informationobject', 'action' => 'create', 'informationobject_template' => 'rad')) ?></li>
     <?php endif; ?>
     <?php if ($sampleInformationObject): ?>
       <li><?php echo link_to(__('edit (ISAD)'), 'informationobject/editIsad?id='.$sampleInformationObject->getId()) ?></li>
@@ -65,8 +65,8 @@
     <ul>
     <li><?php echo link_to(__('search results'), 'search/keyword?query=foo') ?></li>
     </ul>
-    
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('import/export module')?></div>    
+
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('import/export module')?></div>
     <ul>
       <li><?php echo link_to(__('import/export'), 'object/importexport') ?></li>
     </ul>

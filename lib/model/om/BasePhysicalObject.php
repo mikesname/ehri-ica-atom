@@ -63,7 +63,10 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     $criteria = new Criteria;
     $criteria->add(QubitPhysicalObject::ID, $id);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    if (1 == count($query = self::get($criteria, $options)))
+    {
+      return $query[0];
+    }
   }
 
   public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
@@ -144,42 +147,42 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
 
     if ('ancestors' == $offset)
     {
-      if (!isset($this->ancestors))
+      if (!isset($this->values['ancestors']))
       {
         if ($this->new)
         {
-          $this->ancestors = QubitQuery::create(array('self' => $this) + $options);
+          $this->values['ancestors'] = QubitQuery::create(array('self' => $this) + $options);
         }
         else
         {
           $criteria = new Criteria;
           $this->addAncestorsCriteria($criteria);
           $this->addOrderByPreorder($criteria);
-          $this->ancestors = self::get($criteria, array('self' => $this) + $options);
+          $this->values['ancestors'] = self::get($criteria, array('self' => $this) + $options);
         }
       }
 
-      return $this->ancestors;
+      return $this->values['ancestors'];
     }
 
     if ('descendants' == $offset)
     {
-      if (!isset($this->descendants))
+      if (!isset($this->values['descendants']))
       {
         if ($this->new)
         {
-          $this->descendants = QubitQuery::create(array('self' => $this) + $options);
+          $this->values['descendants'] = QubitQuery::create(array('self' => $this) + $options);
         }
         else
         {
           $criteria = new Criteria;
           $this->addDescendantsCriteria($criteria);
           $this->addOrderByPreorder($criteria);
-          $this->descendants = self::get($criteria, array('self' => $this) + $options);
+          $this->values['descendants'] = self::get($criteria, array('self' => $this) + $options);
         }
       }
 
-      return $this->descendants;
+      return $this->values['descendants'];
     }
   }
 
@@ -405,16 +408,10 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     return $criteria->add(QubitPhysicalObject::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitPhysicalObject::RGT, $this->rgt, Criteria::GREATER_THAN);
   }
 
-  protected
-    $ancestors = null;
-
   public function addDescendantsCriteria(Criteria $criteria)
   {
     return $criteria->add(QubitPhysicalObject::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitPhysicalObject::RGT, $this->rgt, Criteria::LESS_THAN);
   }
-
-  protected
-    $descendants = null;
 
   protected function updateNestedSet($connection = null)
   {

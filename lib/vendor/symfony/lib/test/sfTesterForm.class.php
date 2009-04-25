@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage test
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfTesterForm.class.php 13360 2008-11-26 20:02:38Z fabien $
+ * @version    SVN: $Id: sfTesterForm.class.php 13481 2008-11-29 14:35:33Z dwhittle $
  */
 class sfTesterForm extends sfTester
 {
@@ -92,7 +92,7 @@ class sfTesterForm extends sfTester
     }
     else
     {
-      $this->tester->is($this->form->hasErrors(), $value, 'the submitted form has some errors.');
+      $this->tester->is($this->form->hasErrors(), $value, sprintf('the submitted form %s.', ($value) ? 'has some errors' : 'is valid'));
     }
 
     return $this->getObjectToReturn();

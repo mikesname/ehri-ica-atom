@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage form
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfFormField.class.php 12351 2008-10-23 17:06:55Z fabien $
+ * @version    SVN: $Id: sfFormField.class.php 15807 2009-02-26 10:45:51Z fabien $
  */
 class sfFormField
 {
@@ -174,10 +174,10 @@ class sfFormField
   {
     if (is_null($this->parent))
     {
-      throw new LogicException(sprintf('Unable to render the label for "%s".', $this->name));
+      throw new LogicException(sprintf('Unable to render the help for "%s".', $this->name));
     }
 
-    return $this->parent->getWidget()->getHelp($this->name);
+    return $this->parent->getWidget()->getFormFormatter()->formatHelp($this->parent->getWidget()->getHelp($this->name));
   }
 
   /**
@@ -224,6 +224,16 @@ class sfFormField
     }
 
     return $this->parent->getWidget()->getFormFormatter()->generateLabelName($this->name);
+  }
+
+  /**
+   * Returns the id attribute of the widget.
+   *
+   * @return string The id attribute of the widget
+   */
+  public function renderId()
+  {
+    return $this->widget->generateId($this->parent ? $this->parent->getWidget()->generateName($this->name) : $this->name, $this->value);
   }
 
   /**

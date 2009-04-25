@@ -15,7 +15,7 @@
  * @package    symfony
  * @subpackage propel
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelData.class.php 13234 2008-11-22 13:52:02Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfPropelData.class.php 16948 2009-04-03 15:52:30Z fabien $
  */
 class sfPropelData extends sfData
 {
@@ -270,7 +270,7 @@ class sfPropelData extends sfData
   public function dumpData($directoryOrFile, $tables = 'all', $connectionName = 'propel')
   {
     $dumpData = $this->getData($tables, $connectionName);
-    
+
     // save to file(s)
     if (!is_dir($directoryOrFile))
     {
@@ -304,7 +304,6 @@ class sfPropelData extends sfData
     $this->loadMapBuilders();
     $this->con = Propel::getConnection($connectionName);
     $this->dbMap = Propel::getDatabaseMap($connectionName);
-    $counter=0;
 
     // get tables
     if ('all' === $tables || is_null($tables))
@@ -330,7 +329,7 @@ class sfPropelData extends sfData
     $classNames = array();
 
     $dumpData = array();
-    $dumpData['QubitTaxonomy'] = array();
+$dumpData['QubitTaxonomy'] = array();
 
     $tables = $this->fixOrderingOfForeignKeyData($tables);
     foreach ($tables as $tableName)
@@ -341,7 +340,7 @@ class sfPropelData extends sfData
       $fixColumn = null;
       foreach ($tableMap->getColumns() as $column)
       {
-        $col = strtolower($column->getColumnName());
+        $col = strtolower($column->getName());
         if ($column->isForeignKey())
         {
           $relatedTable = $this->dbMap->getTable($column->getRelatedTableName());
@@ -392,7 +391,7 @@ class sfPropelData extends sfData
 
           foreach ($tableMap->getColumns() as $column)
           {
-            $col = strtolower($column->getColumnName());
+            $col = strtolower($column->getName());
 
             if (is_null($row[$col]))
             {
@@ -401,7 +400,7 @@ class sfPropelData extends sfData
 
             // Hack: Rely on an explicitly named 'class_name' column of the
             // base class for multi-table inheritance
-            if ($col == 'class_name')
+            if ('class_name' == $col)
             {
               $className = $row[$col];
             }
@@ -417,7 +416,7 @@ class sfPropelData extends sfData
               {
                 $className = $classNames['Qubit'.$relatedTable->getPhpName().'_'.$row[$col]];
 
-                $values = array_merge($values, $dumpData[$className][$className.'_'.$row[$col]]);
+                $values += $dumpData[$className][$className.'_'.$row[$col]];
               }
               else
               {
@@ -439,7 +438,7 @@ class sfPropelData extends sfData
                 // matches a constant defined by the corresponding class.  We
                 // use the first constant whose value matches the value of the
                 // primary key.  This is not a rigorous test.
-                $class = new ReflectionClass('Qubit'.$tableName);
+                $class = new ReflectionClass('Qubit'.ucfirst($tableName));
                 $constants = array_flip($class->getConstants());
                 if (isset($constants[$row[$col]]))
                 {
@@ -461,19 +460,16 @@ class sfPropelData extends sfData
               $values[$col] = $row[$col];
             }
           }
-          
-          
-          
+
           // Roll i18n values into an array in the non-i18n object, for clarity
-          if (substr($tableName, -4) == 'I18n')
+          if ('I18n' == substr($tableName, -4))
           {
             foreach ($values as $key => $value)
-            { 
+            {
               // Dirty hack: Reuse last value of $relatedTable outside columns
               // loop.  This works because i18n tables are related to exactly
               // one other table.
-              $lookupName = 'Qubit'.$relatedTable->getPhpName().'_'.$primaryKeys['id'];
-              $dumpData[$classNames[$lookupName]][$foreignKeys['id']][$key][$primaryKeys['culture']] = $value;
+              $dumpData[$classNames['Qubit'.$relatedTable->getPhpName().'_'.$primaryKeys['id']]][$foreignKeys['id']][$key][$primaryKeys['culture']] = $value;
             }
           }
           else
@@ -531,24 +527,20 @@ class sfPropelData extends sfData
 
   protected function fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $column, $in = null)
   {
-    $rows = array();
-    $query = 'SELECT * FROM '.constant('Qubit'.$tableName.'::TABLE_NAME').' WHERE '.strtolower($column->getColumnName());
-    $query .= is_null($in) ? ' IS NULL' : ' IN ('.$in.')';
-    
-    $stmt = $this->con->prepare($query);
+    $stmt = $this->con->prepare('
+      SELECT *
+      FROM '.constant('Qubit'.$tableName.'::TABLE_NAME').'
+      WHERE '.strtolower($column->getName()).' '.(is_null($in) ? 'IS NULL' : 'IN ('.$in.')'));
     $stmt->execute();
-    
-    $first = null;
+
     $in = array();
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
+    foreach ($resultsSets[] = $stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
     {
       $in[] = "'".$row[strtolower($column->getRelatedColumnName())]."'";
-      $rows[] = $row;
     }
 
     if ($in = implode(', ', $in))
     {
-      $resultsSets[] = $rows;
       $resultsSets = $this->fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $column, $in);
     }
 

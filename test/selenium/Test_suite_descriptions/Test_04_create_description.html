@@ -38,8 +38,23 @@
 </tr>
 <tr>
 	<td>type</td>
-	<td>new_title_note</td>
-	<td>title based on provenance of fonds</td>
+	<td>editActorEvents_new_dateDisplay</td>
+	<td>[ca. June 1988] - 1990</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editActorEvents_new_year</td>
+	<td>1988</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editActorEvents_new_endYear</td>
+	<td>1990</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>editActorEvents_new_eventTypeId</td>
+	<td>label=Creation</td>
 </tr>
 <tr>
 	<td>select</td>
@@ -57,44 +72,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=add new</td>
-	<td></td>
-</tr>
-<tr>
 	<td>select</td>
-	<td>newActorEvent_actorId</td>
+	<td>addCreator_0_actorId</td>
 	<td>label=Selenium test office</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>newActorEvent_placeId</td>
-	<td>label=Vancouver</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>newActorEvent_year</td>
-	<td>1980</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>newActorEvent_endYear</td>
-	<td>1988</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>newActorEvent_dateDisplay</td>
-	<td>June 1980 - [ca. 1988]</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>newActorEvent_description</td>
-	<td>Here is a note about the creation</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//span[@id='yui-gen2']/span/button</td>
-	<td></td>
 </tr>
 <tr>
 	<td>select</td>
@@ -202,13 +182,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>note_type_id</td>
-	<td>label=Conservation note</td>
-</tr>
-<tr>
 	<td>type</td>
-	<td>note</td>
+	<td>new_note</td>
 	<td>Some records encapsulated in mylar</td>
 </tr>
 <tr>
@@ -217,23 +192,48 @@
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>subject_id</td>
-	<td>label=Photographic records</td>
+	<td>click</td>
+	<td>//span[@id='addSubjectAccessPointLink']/a</td>
+	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>place_id</td>
-	<td>label=Vancouver</td>
+	<td>type</td>
+	<td>addSubjectTermName</td>
+	<td>Peanuts</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='button']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//span[@id='addPlaceAccessPointLink']/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>addSubjectTermName</td>
+	<td>New Westminster</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//button[@type='button']</td>
+	<td></td>
 </tr>
 <tr>
 	<td>select</td>
 	<td>name_id</td>
-	<td>label=TeleLearning Network Inc</td>
+	<td>label=Selenium test office</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=control area</td>
+	<td>//select[@id='name_id0']/option[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=description control area</td>
 	<td></td>
 </tr>
 <tr>
@@ -283,12 +283,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='create']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Fonds 66 - Selenium test fonds</td>
+	<td>//input[@value='create']</td>
 	<td></td>
 </tr>
 <tr>
@@ -303,17 +298,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>June 1980 - [ca. 1988] (Creation) Selenium test office</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Place: Vancouver</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Note: Here is a note about the creation</td>
+	<td>[ca. June 1988] - 1990</td>
 	<td></td>
 </tr>
 <tr>
@@ -423,37 +408,32 @@
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
-	<td>link=Photographic records</td>
+	<td>link=Peanuts</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
-	<td>link=Vancouver</td>
+	<td>link=New Westminster</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Selenium test office (Creator)</td>
+	<td>Selenium test office (1977-1999)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>TeleLearning Network Inc (Subject)</td>
+	<td>Selenium test office (Subject)</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Title note: title based on provenance of fonds</td>
+	<td>Records not published</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Publication note: Records not published</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Conservation note: Some records encapsulated in mylar</td>
+	<td>Some records encapsulated in mylar</td>
 	<td></td>
 </tr>
 <tr>
@@ -623,7 +603,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>notes</td>
+	<td>note</td>
 	<td></td>
 </tr>
 <tr>

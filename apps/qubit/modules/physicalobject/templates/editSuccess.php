@@ -86,7 +86,7 @@
           &nbsp;<a href="<?php echo $nextAction ?>"><?php echo __('cancel') ?></a>
         <?php endif; ?>
         
-        &nbsp;<?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+        &nbsp;<?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
     </div>
   </div>
 </form>

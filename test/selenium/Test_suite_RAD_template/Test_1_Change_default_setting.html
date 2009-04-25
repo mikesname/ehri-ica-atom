@@ -13,7 +13,7 @@
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=log in</td>
+	<td>link=Log in</td>
 	<td></td>
 </tr>
 <tr>
@@ -28,17 +28,17 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='log in']</td>
+	<td>//input[@value='log in']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=admin</td>
+	<td>link=Admin</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=settings</td>
+	<td>link=Settings</td>
 	<td></td>
 </tr>
 <tr>
@@ -58,87 +58,132 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=add/edit</td>
+	<td>link=Add/edit</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=TeleLearning Network fonds</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[3]/a</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=edit archival description</td>
+	<td>link=add new</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>title and statement of responsibility area</td>
+	<td>type</td>
+	<td>identifier</td>
+	<td>CVA</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorized_form_of_name</td>
+	<td>City of Vancouver Archives</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>type_id</td>
+	<td>label=Municipal</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=contact area</td>
 	<td></td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>edition area</td>
-	<td></td>
+	<td>select</td>
+	<td>country_code</td>
+	<td>label=Canada</td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>class of material specific details area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>dates of creation area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>physical description area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>publisher's series area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>archival description area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>notes area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>standard number area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>access points</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>control area</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>digital object</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>physical storage</td>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=cancel</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>entity_type_id</td>
+	<td>label=Corporate body</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorized_form_of_name</td>
+	<td>Townley, Matheson and Partners</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=description area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>history</td>
+	<td>Townley, Matheson and Partners was a major Vancouver architectural firm throughout most of the 20th century.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[4]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Vancouver</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[4]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Local government</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
 	<td></td>
 </tr>
 

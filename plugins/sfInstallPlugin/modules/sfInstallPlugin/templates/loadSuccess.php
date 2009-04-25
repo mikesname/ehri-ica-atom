@@ -2,6 +2,8 @@
 
 <?php sfInstall::insertSql() ?>
 
+<?php sfInstall::loadRoot() ?>
+
 <?php sfInstall::loadData() ?>
 
 <!-- If JavaScript is enabled, automatically redirect to the next task.  Include a link in case it is not. -->

@@ -23,7 +23,11 @@ class InformationObjectDeleteAction extends sfAction
   {
     $informationObject = QubitInformationObject::getById($this->getRequestParameter('id'));
 
-    $this->forward404Unless($informationObject);
+    // Check that object exists and that it is not the root
+    if (!isset($informationObject) || !isset($informationObject->parent))
+    {
+      $this->forward404();
+    }
 
     //retrieve all descendants to be deleted along with this informationObject
     $informationObjects = $informationObject->getDescendants()->andSelf()->orderBy('rgt');

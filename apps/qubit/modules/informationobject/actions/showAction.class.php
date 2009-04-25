@@ -32,7 +32,12 @@ class InformationObjectShowAction extends sfAction
   public function execute($request)
   {
     $this->informationObject = QubitInformationObject::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->informationObject);
+
+    // Check that object exists and that it is not the root
+    if (!isset($this->informationObject) || !isset($this->informationObject->parent))
+    {
+      $this->forward404();
+    }
 
     // HACK: populate information object from ORM
     $request->setAttribute('informationObject', $this->informationObject);

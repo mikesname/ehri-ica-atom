@@ -12,19 +12,19 @@
 
   public function getListTitle()
   {
-    return '<?php echo isset($this->config['list']['title']) ? $this->config['list']['title'] : sfInflector::humanize($this->getModuleName()).' List' ?>';
+    return '<?php echo $this->escapeString(isset($this->config['list']['title']) ? $this->config['list']['title'] : sfInflector::humanize($this->getModuleName()).' List') ?>';
 <?php unset($this->config['list']['title']) ?>
   }
 
   public function getEditTitle()
   {
-    return '<?php echo isset($this->config['edit']['title']) ? $this->config['edit']['title'] : 'Edit '.sfInflector::humanize($this->getModuleName()) ?>';
+    return '<?php echo $this->escapeString(isset($this->config['edit']['title']) ? $this->config['edit']['title'] : 'Edit '.sfInflector::humanize($this->getModuleName())) ?>';
 <?php unset($this->config['edit']['title']) ?>
   }
 
   public function getNewTitle()
   {
-    return '<?php echo isset($this->config['new']['title']) ? $this->config['new']['title'] : 'New '.sfInflector::humanize($this->getModuleName()) ?>';
+    return '<?php echo $this->escapeString(isset($this->config['new']['title']) ? $this->config['new']['title'] : 'New '.sfInflector::humanize($this->getModuleName())) ?>';
 <?php unset($this->config['new']['title']) ?>
   }
 
@@ -67,26 +67,10 @@
   public function getFieldsDefault()
   {
     return array(
-<?php foreach ($this->getColumns() as $column): $name = sfInflector::underscore($column->getName()) ?>
-      '<?php echo $name ?>' => <?php echo $this->asPhp(array_merge(array(
-        'is_link'      => (Boolean) $column->isPrimaryKey(),
-        'is_real'      => true,
-        'is_partial'   => false,
-        'is_component' => false,
-        'type'         => $this->getType($column),
-      ), isset($this->config['fields'][sfInflector::underscore($column->getName())]) ? $this->config['fields'][sfInflector::underscore($column->getName())] : array())) ?>,
-<?php endforeach; ?>
-<?php foreach ($this->getManyToManyTables() as $tables): $name = sfInflector::underscore($tables['alias']).'_list' ?>
-      '<?php echo $name ?>' => <?php echo $this->asPhp(array_merge(array(
-        'is_link'      => false,
-        'is_real'      => false,
-        'is_partial'   => false,
-        'is_component' => false,
-        'type'         => 'Text',
-      ), isset($this->config['fields'][$name]) ? $this->config['fields'][$name] : array())) ?>,
+<?php foreach ($this->getDefaultFieldsConfiguration() as $name => $params): ?>
+      '<?php echo $name ?>' => <?php echo $this->asPhp($params) ?>,
 <?php endforeach; ?>
     );
-<?php unset($this->config['fields']) ?>
   }
 
 <?php foreach (array('list', 'filter', 'form', 'edit', 'new') as $context): ?>

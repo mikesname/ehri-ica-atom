@@ -34,5 +34,7 @@ class RepositoryShowIsdiahAction extends RepositoryShowAction
     parent::execute($request);
 
     // add ISDIAH specific commands
+    $this->parallelFormsOfName = $this->repository->getParallelFormsOfName();
+    $this->otherFormsOfName = $this->repository->getOtherFormsOfName();
   }
 }

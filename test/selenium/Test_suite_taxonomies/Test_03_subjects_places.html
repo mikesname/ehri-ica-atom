@@ -13,6 +13,66 @@
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[4]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>New Westminster</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_scope_note</td>
+	<td>Town near Vancouver</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=list all taxonomies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new Subjects</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>Glossaries</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_scope_note</td>
+	<td>Here is a scope note for Glossaries</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[1]/a</td>
 	<td></td>
 </tr>
@@ -32,73 +92,18 @@
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>//span[@id='addSubjectAccessPointLink']/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addSubjectTermName</td>
-	<td>Glossaries</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addSubjectTermScope</td>
-	<td>Here is a scope note for Glossaries</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//button[@type='button']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//span[@id='addPlaceAccessPointLink']/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addSubjectTermName</td>
-	<td>New Westminster</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>addSubjectTermScope</td>
-	<td>Town near Vancouver</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//button[@type='button']</td>
-	<td></td>
+	<td>select</td>
+	<td>subject_id</td>
+	<td>label=Glossaries</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>subject_id</td>
-	<td>label=Hotels</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//select[@id='subject_id1']/option[5]</td>
-	<td></td>
+	<td>place_id</td>
+	<td>label=New Westminster</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Test for terms</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyElementPresent</td>
-	<td>link=Glossaries</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyElementPresent</td>
-	<td>link=Hotels</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -107,18 +112,8 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Hotels</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Browse for 'Hotels' in 'Subjects' returned 2 results</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Test for terms</td>
+	<td>verifyElementPresent</td>
+	<td>link=Glossaries</td>
 	<td></td>
 </tr>
 <tr>
@@ -198,7 +193,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='save']</td>
+	<td>//input[@value='save']</td>
 	<td></td>
 </tr>
 <tr>
@@ -233,7 +228,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='browse']</td>
+	<td>//input[@value='browse']</td>
 	<td></td>
 </tr>
 <tr>
@@ -248,7 +243,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@name='commit' and @value='browse']</td>
+	<td>//input[@value='browse']</td>
 	<td></td>
 </tr>
 <tr>

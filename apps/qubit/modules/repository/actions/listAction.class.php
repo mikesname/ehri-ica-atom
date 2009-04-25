@@ -37,7 +37,6 @@ class RepositoryListAction extends sfAction
     $this->country = 0;
 
     // Set culture and cultural fallback flag
-    $this->culture = $this->getUser()->getCulture();
     $options['cultureFallback'] = true; // Do cultural fallback
 
     // Set sort
@@ -56,7 +55,7 @@ class RepositoryListAction extends sfAction
     }
 
     // Get repository hitlist
-    $this->repositories = QubitRepository::getList($this->culture, $options);
+    $this->repositories = QubitRepository::getList($options);
 
     //determine if user has edit priviliges
     $this->editCredentials = false;

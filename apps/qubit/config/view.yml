@@ -10,20 +10,20 @@ default:
     #robots:       index, follow
 
   stylesheets:
-    /sfDrupalPlugin/vendor/drupal/modules/system/defaults: { media: all }
-    /sfDrupalPlugin/vendor/drupal/modules/system/system: { media: all }
-    /sfDrupalPlugin/vendor/drupal/themes/garland/style: { media: all }
-    /sfDrupalPlugin/vendor/drupal/themes/garland/minnelli/minnelli: { media: all }
-    /sfDrupalPlugin/vendor/drupal/themes/garland/print: { media: print }
-    /vendor/yui/button/assets/skins/sam/button: {}
-    /vendor/yui/menu/assets/skins/sam/menu: {}
-    form: {}
-    graphic: {}
-    layout: {}
+    /sfDrupalPlugin/vendor/drupal/modules/system/defaults: { media: all, position: first }
+    /sfDrupalPlugin/vendor/drupal/modules/system/system: { media: all, position: first }
+    /sfDrupalPlugin/vendor/drupal/themes/garland/style: { media: all, position: first }
+    /sfDrupalPlugin/vendor/drupal/themes/garland/minnelli/minnelli: { media: all, position: first }
+    /sfDrupalPlugin/vendor/drupal/themes/garland/print: { media: print, position: first }
+    /vendor/yui/button/assets/skins/sam/button: { position: first }
+    /vendor/yui/menu/assets/skins/sam/menu: { position: first }
+    form: { position: first }
+    graphic: { position: first }
+    layout: { position: first }
     main: { position: last }
-    menu: {}
+    menu: { position: first }
 
-  javascripts:    [/vendor/jquery/jquery, /sfDrupalPlugin/vendor/drupal/misc/drupal, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-beta-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
+  javascripts:    [/vendor/jquery/jquery, /sfDrupalPlugin/vendor/drupal/misc/drupal, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
 
   has_layout:     on
   layout:         layout
@@ -33,6 +33,6 @@ default:
     header:       []
     sidebar:      []
     MainMenu:     [menu, mainMenu]
-    SearchSidebar: [search, sidebar]
-    BrowseSidebar: [browse, sidebar]
+    SearchBox:    [search, box]
+    BrowseBox:    [browse, box]
     ChangeLanguage: [i18n, changeLanguageList]

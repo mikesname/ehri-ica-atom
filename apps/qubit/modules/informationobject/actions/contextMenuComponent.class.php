@@ -76,11 +76,11 @@ class InformationObjectContextMenuComponent extends sfComponent
     // Get Creators
     $this->creators = null;
     $this->creatorOptions = null;
-    if (count($creators = $this->informationObject->getCreators()) < 1)
+    if (0 == count($creators = $this->informationObject->getCreators(array('cultureFallback' => true))))
     {
       foreach ($this->informationObject->getAncestors() as $ancestor)
       {
-        if (count($creators = $ancestor->getCreators()) >= 1)
+        if (0 < count($creators = $ancestor->getCreators(array('cultureFallback' => true))))
         {
           $creatorOptions['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor));
           $creatorOptions['id'] = 'creatorsLink';

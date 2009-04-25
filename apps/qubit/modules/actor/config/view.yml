@@ -1,6 +1,7 @@
 editContactInformationSuccess:
   components:
     sidebar: []
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
 
 editIsaarSuccess:
   javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]

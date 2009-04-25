@@ -18,7 +18,7 @@
  * @package    symfony
  * @subpackage view
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfViewCacheManager.class.php 11794 2008-09-26 09:05:48Z fabien $
+ * @version    SVN: $Id: sfViewCacheManager.class.php 17217 2009-04-11 14:30:16Z Kris.Wallsmith $
  */
 class sfViewCacheManager
 {
@@ -359,6 +359,12 @@ class sfViewCacheManager
   /**
    * Returns true if the current content is cacheable.
    *
+   * Possible break in backward compatibility: If the sf_lazy_cache_key
+   * setting is turned on in settings.yml, this method is not used when
+   * initially checking a partial's cacheability.
+   *
+   * @see sfPartialView, isActionCacheable()
+   *
    * @param  string $internalUri  Internal uniform resource identifier
    *
    * @return bool true, if the content is cacheable otherwise false
@@ -379,6 +385,35 @@ class sfViewCacheManager
     else if (isset($this->cacheConfig[$params['module']]['DEFAULT']))
     {
       return ($this->cacheConfig[$params['module']]['DEFAULT']['lifeTime'] > 0);
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns true if the action is cacheable.
+   * 
+   * @param  string $moduleName A module name
+   * @param  string $actionName An action or partial template name
+   * 
+   * @return boolean True if the action is cacheable
+   * 
+   * @see isCacheable()
+   */
+  public function isActionCacheable($moduleName, $actionName)
+  {
+    if (count($_GET) || count($_POST))
+    {
+      return false;
+    }
+
+    if (isset($this->cacheConfig[$moduleName][$actionName]))
+    {
+      return $this->cacheConfig[$moduleName][$actionName]['lifeTime'] > 0;
+    }
+    else if (isset($this->cacheConfig[$moduleName]['DEFAULT']))
+    {
+      return $this->cacheConfig[$moduleName]['DEFAULT']['lifeTime'] > 0;
     }
 
     return false;
@@ -611,7 +646,34 @@ class sfViewCacheManager
    */
   public function computeCacheKey(array $parameters)
   {
-    return isset($parameters['sf_cache_key']) ? $parameters['sf_cache_key'] : md5(serialize($parameters));
+    if (isset($parameters['sf_cache_key']))
+    {
+      return $parameters['sf_cache_key'];
+    }
+
+    if (sfConfig::get('sf_logging_enabled'))
+    {
+      $this->dispatcher->notify(new sfEvent($this, 'application.log', array('Generate cache key')));
+    }
+
+    return md5(serialize($parameters));
+  }
+
+  /**
+   * Checks that the supplied parameters include a cache key.
+   * 
+   * If no 'sf_cache_key' parameter is present one is added to the array as
+   * it is passed by reference.
+   * 
+   * @param  array  $parameters An array of parameters
+   * 
+   * @return string The cache key
+   */
+  public function checkCacheKey(array & $parameters)
+  {
+    $parameters['sf_cache_key'] = $this->computeCacheKey($parameters);
+
+    return $parameters['sf_cache_key'];
   }
 
   /**
@@ -868,7 +930,7 @@ class sfViewCacheManager
     return '
       <div id="main_'.$id.'" class="sfWebDebugActionCache" style="border: 1px solid #f00">
       <div id="sub_main_'.$id.'" class="sfWebDebugCache" style="background-color: '.$bgColor.'; border-right: 1px solid #f00; border-bottom: 1px solid #f00;">
-      <div style="height: 16px; padding: 2px"><a href="#" onclick="sfWebDebugToggle(\'sub_main_info_'.$id.'\'); return false;"><strong>cache information</strong></a>&nbsp;<a href="#" onclick="sfWebDebugToggle(\'sub_main_'.$id.'\'); document.getElementById(\'main_'.$id.'\').style.border = \'none\'; return false;">'.image_tag(sfConfig::get('sf_web_debug_web_dir').'/images/close.png').'</a>&nbsp;</div>
+      <div style="height: 16px; padding: 2px"><a href="#" onclick="sfWebDebugToggle(\'sub_main_info_'.$id.'\'); return false;"><strong>cache information</strong></a>&nbsp;<a href="#" onclick="sfWebDebugToggle(\'sub_main_'.$id.'\'); document.getElementById(\'main_'.$id.'\').style.border = \'none\'; return false;">'.image_tag(sfConfig::get('sf_web_debug_web_dir').'/images/close.png', array('alt' => 'close')).'</a>&nbsp;</div>
         <div style="padding: 2px; display: none" id="sub_main_info_'.$id.'">
         [uri]&nbsp;'.htmlspecialchars($event['uri'], ENT_QUOTES, sfConfig::get('sf_charset')).'<br />
         [life&nbsp;time]&nbsp;'.$this->getLifeTime($event['uri']).'&nbsp;seconds<br />

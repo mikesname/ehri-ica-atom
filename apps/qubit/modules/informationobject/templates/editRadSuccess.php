@@ -2,13 +2,16 @@
 <?php use_helper('Javascript') ?>
 
 <div class="pageTitle"><?php echo __('edit archival description - RAD'); ?></div>
-<form method="post" action="<?php echo url_for($sf_data->getRaw('postAction')) ?>" enctype="multipart/form-data" id="editForm">
-  <?php echo object_input_hidden_tag($informationObject, 'getId') ?>
+<?php if (isset($sf_request->id)): ?>
+  <form method="post" action="<?php echo url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $sf_request->id)) ?>" enctype="multipart/form-data" id="editForm">
+<?php else: ?>
+  <form method="post" action="<?php echo url_for(array('module' => 'informationobject', 'action' => 'create')) ?>" enctype="multipart/form-data" id="editForm">
+<?php endif; ?>
   <?php echo input_hidden_tag('collection_type_id', QubitTerm::ARCHIVAL_MATERIAL_ID) ?>
 
 <?php if ($label = QubitRad::getLabel($informationObject, array('sourceCulture' => true))): ?>
   <div class="formHeader">
-    <?php echo link_to($label, 'informationobject/showRad/?id='.$informationObject->getId()) ?>
+    <?php echo link_to($label, array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->getId())) ?>
   </div>
 <?php else: ?>
   <table class="list" style="height: 25px;"><thead><tr><th>&nbsp;</th></tr></table>
@@ -209,33 +212,32 @@
       </tr>
       <?php if(count($actorEvents)): ?>
       <?php foreach ($actorEvents as $actorEvent): ?>
-      <tr>
+      <tr id="<?php echo 'actorEvent_'.$actorEvent->getId() ?>" class="<?php echo 'related_obj_'.$actorEvent->getId() ?>">
+        <td><div>
         <?php if ($actorEvent->getActor()): ?>
-          <td>
-            <?php echo render_title($actorEvent->getActor()) ?>
-          </td>
-        <?php else: ?>
-          <td></td>
+          <?php echo render_title($actorEvent->getActor()) ?>
         <?php endif; ?>
+        </div></td>
+        <td><div>
         <?php if ($actorEvent->getActor()): ?>
-        <td>
           <?php echo $actorEvent->getType()->getRole() ?>
-        </td>
         <?php else: ?>
-          <td><?php echo $actorEvent->getType() ?></td>
+          <?php echo $actorEvent->getType() ?>
         <?php endif; ?>
-        <td><?php echo $actorEvent->getDateDisplay(array('cultureFallback' => 'true')) ?></td>
-        <td style="text-align: right">
-          <!-- <a href="javascript:editActorEventDialog(<?php echo $actorEvent->getId()?>)"><?php echo image_tag('pencil', 'align=top') ?></a> -->
-          <?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteEvent?eventId='.$actorEvent->getId().'&returnTemplate=rad') ?>
-        </td>
+        </div></td>
+        <td><div>
+          <?php echo $actorEvent->getDateDisplay(array('cultureFallback' => 'true')) ?>
+        </div></td>
+        <td style="text-align: right"><div>
+          <input type="checkbox" name="deleteEvents[<?php echo $actorEvent->getId() ?>]" value="delete" class="multiDelete" />
+        </div></td>
       </tr>
       <?php endforeach; ?>
       <?php endif; ?>
     </table>
 
     <!-- add new creation event yui dialog object -->
-    <?php echo include_partial('newActorEventDialog') ?>
+    <?php echo include_partial('actorEventDialog') ?>
 
     <div class="form-item">
       <fieldset id="newActorEventFields" style="border: 1px solid #cccccc; padding: 1px; background: #fff">
@@ -245,38 +247,38 @@
       <!-- NOTE: The newActorEventDialog script cuts this *entire*          -->
       <!-- "newActorEvent" table and pastes it in a YUI dialog object.      -->
       <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
-      <table id="newActorEvent" class="inline">
+      <table id="actorEvent" class="inline">
         <tr>
           <td colspan ="2" class="headerCell" style="width: 55%;"><?php echo __('name'); ?></td>
           <td class="headerCell" style="width: 40%;"><i><?php echo __('or'); ?> </i><?php echo __('add new name'); ?></td>
         </tr>
         <tr>
           <td colspan ="2">
-            <?php echo select_tag('newActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
+            <?php echo select_tag('editActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
               array('include_blank' => true, 'cultureFallback' => true))) ?>
           </td>
-          <td class="noline"><?php echo input_tag('newActorEvent[newActorAuthorizedName]') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[newActorName]') ?></td>
         </tr>
         <tr>
           <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
         </tr>
         <tr>
-          <td colspan="2"><?php echo select_tag('newActorEvent[eventTypeId]', options_for_select($actorEventTypes, $defaultActorEventType))?></td>
-          <td><?php echo select_tag('newActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
+          <td colspan="2"><?php echo select_tag('editActorEvent[eventTypeId]', options_for_select($actorEventTypes, $defaultActorEventType))?></td>
+          <td><?php echo select_tag('editActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
         </tr>
         <tr>
           <td class="headerCell"><?php echo __('year'); ?></td><td class="headerCell"><?php echo __('end year'); ?></td>
           <td class="headerCell"><?php echo __('date display (defaults to date range)'); ?></td></tr>
         <tr>
-          <td><?php echo input_tag('newActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('newActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('newActorEvent[dateDisplay]') ?></td>
+          <td><?php echo input_tag('editActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td><?php echo input_tag('editActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td><?php echo input_tag('editActorEvent[dateDisplay]') ?></td>
         </tr>
         <tr>
           <td colspan="3" class="headerCell"><?php echo __('note'); ?></td>
         </tr>
         <tr>
-          <td colspan="3"><?php echo input_tag('newActorEvent[description]') ?></td>
+          <td colspan="3"><?php echo input_tag('editActorEvent[description]') ?></td>
         </tr>
       </table>
       </fieldset>
@@ -580,7 +582,7 @@
 
     <?php include_partial('addAccessPointTermDialog') ?>
     <div class="form-item" id="subjectAccessPoints">
-      <label for="subject_id"><?php echo __('subject access points'); ?><span id="addSubjectAccessPointLink" style="font-weight:normal"></span></label>
+      <label for="subject_id"><?php echo __('subject access points'); ?><?php if($editTaxonomyCredentials): ?><span id="addSubjectAccessPointLink" style="font-weight:normal"></span><?php endif; ?></label>
       <?php if ($subjectAccessPoints): ?>
         <?php foreach ($subjectAccessPoints as $subject): ?>
           <?php echo $subject->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$subject->getId().'&returnTemplate=rad') ?><br/>
@@ -590,7 +592,7 @@
     </div>
 
     <div class="form-item" id="placeAccessPoints">
-      <label for="place_id"><?php echo __('place access points'); ?><span id="addPlaceAccessPointLink" style="font-weight:normal"></span></label>
+      <label for="place_id"><?php echo __('place access points'); ?><?php if($editTaxonomyCredentials): ?><span id="addPlaceAccessPointLink" style="font-weight:normal"></span><?php endif; ?></label>
       <?php if ($placeAccessPoints): ?>
         <?php foreach ($placeAccessPoints as $place): ?>
           <?php echo $place->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$place->getId().'&returnTemplate=rad') ?><br/>
@@ -727,35 +729,35 @@ EOF
   <div id="button-block">
     <div class="menu-action">
       <?php if ($informationObject->getId()): ?>
-
-      <?php if (($descendantCount = count($informationObject->getDescendants())) > 0): ?>
-           <?php $deleteWarning = __('Warning: this archival description has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this archival description?', array ('%1%' => $descendantCount)) ?>
-           &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
+        <?php if (($descendantCount = count($informationObject->getDescendants())) > 0): ?>
+          <?php $deleteWarning = __('Warning: this archival description has %1% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this archival description?', array ('%1%' => $descendantCount)) ?>
+          &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
         <?php else: ?>
-        <?php $deleteWarning = __('Are you sure you want to delete this archival description permanently?'); ?>
-        <?php if ($digitalObjectCount > 0): ?>
-          <?php $deleteWarning .= ' '.__('This will also delete the related %1%.', array('%1%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
-        <?php endif; ?>
-        &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
+          <?php $deleteWarning = __('Are you sure you want to delete this archival description permanently?'); ?>
+          <?php if ($digitalObjectCount > 0): ?>
+            <?php $deleteWarning .= ' '.__('This will also delete the related %1%.', array('%1%'=>sfConfig::get('app_ui_label_digitalobject'))); ?>
+          <?php endif; ?>
+
+          &nbsp;<?php echo link_to(__('delete'), 'informationobject/delete?id='.$informationObject->getId(), 'post=true&confirm='.$deleteWarning) ?>
         <?php endif; ?>
 
-         &nbsp;<?php echo link_to(__('cancel'), 'informationobject/show?id='.$informationObject->getId()) ?>
+        &nbsp;<?php echo link_to(__('cancel'), array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->getId())) ?>
       <?php else: ?>
-        &nbsp;<?php echo link_to(__('cancel'), 'informationobject/list') ?>
+        &nbsp;<?php echo link_to(__('cancel'), array('module' => 'informationobject', 'action' => 'list')) ?>
       <?php endif; ?>
 
       <?php if ($informationObject->getId()): ?>
-        <?php echo my_submit_tag(__('save'), array('style' => 'width: auto;')) ?>
+        <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
       <?php else: ?>
-        <?php echo my_submit_tag(__('create'), array('style' => 'width: auto;')) ?>
+        <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
       <?php endif; ?>
     </div>
 
     <?php // Don't show add/list buttons for new info objects ?>
     <?php if ($informationObject->getId()): ?>
     <div class="menu-extra">
-      <?php echo link_to(__('add new'), 'informationobject/createRad'); ?>
-      <?php echo link_to(__('list all'), 'informationobject/list'); ?>
+      <?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create')) ?>
+      <?php echo link_to(__('list all'), array('module' => 'informationobject', 'action' => 'list')); ?>
     </div>
     <?php endif; ?>
   </div>

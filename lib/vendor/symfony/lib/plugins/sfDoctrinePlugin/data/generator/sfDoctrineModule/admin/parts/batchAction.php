@@ -1,5 +1,7 @@
   public function executeBatch(sfWebRequest $request)
   {
+    $request->checkCSRFProtection();
+
     if (!$ids = $request->getParameter('ids'))
     {
       $this->getUser()->setFlash('error', 'You must at least select one item.');

@@ -95,7 +95,10 @@ abstract class BaseContactInformation implements ArrayAccess
     $criteria = new Criteria;
     $criteria->add(QubitContactInformation::ID, $id);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    if (1 == count($query = self::get($criteria, $options)))
+    {
+      return $query[0];
+    }
   }
 
   public static function doDelete(Criteria $criteria, $connection = null)

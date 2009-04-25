@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfYamlInline.class.php 10880 2008-08-14 08:13:36Z hartym $
+ * @version    SVN: $Id: sfYamlInline.class.php 16177 2009-03-11 08:32:48Z fabien $
  */
 class sfYamlInline
 {
@@ -75,8 +75,8 @@ class sfYamlInline
       case is_numeric($value):
         return is_infinite($value) ? str_ireplace('INF', '.Inf', strval($value)) : (is_string($value) ? "'$value'" : $value);
       case false !== strpos($value, "\n"):
-        return sprintf('"%s"', str_replace(array('"', "\r\n", "\n"), array('\\"', '\n', '\n'), $value));
-      case preg_match('/[ \s \' " \: \{ \} \[ \] , & \*]/x', $value):
+        return sprintf('"%s"', str_replace(array('"', "\n", "\r"), array('\\"', '\n', '\r'), $value));
+      case preg_match('/[ \s \' " \: \{ \} \[ \] , & \* \#]/x', $value):
         return sprintf("'%s'", str_replace('\'', '\'\'', $value));
       case '' == $value:
         return "''";
@@ -215,7 +215,7 @@ class sfYamlInline
     if ('"' == $delimiter)
     {
       // evaluate the string
-      $buffer = str_replace('\\n', "\n", $buffer);
+      $buffer = str_replace(array('\\n', '\\r'), array("\n", "\r"), $buffer);
     }
 
     return $buffer;

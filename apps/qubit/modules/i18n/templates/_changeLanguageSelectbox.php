@@ -2,7 +2,7 @@
   <form action="<?php echo url_for($sf_data->getRaw('sf_context')->getRouting()->getCurrentInternalUri()) ?>">
           <?php echo select_tag('sf_culture', options_for_select($enabledI18nLanguages, $sf_user->getCulture()), array('class' => 'selectbox')) ?>
           <div style="">
-            <?php echo my_submit_tag(__('change language')) ?>
+            <?php echo submit_tag(__('change language'), array('class' => 'form-submit')) ?>
           </div>
   </form>
 </div>

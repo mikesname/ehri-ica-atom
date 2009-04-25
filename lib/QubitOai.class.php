@@ -31,6 +31,40 @@
 class QubitOai
 {
   /**
+   * Mail error report
+   *
+   * @param string $msg an error message
+   * @return bool true for message sent properly
+   */
+
+  public static function mailErrors($msg)
+  {
+    $to      = QubitOai::getAdminEmail();
+    $from    = $to;
+    $subject = 'Qubit OAI-PMH Harvest';
+    $message = $msg;
+    $headers = "From: {QubitOai::getAdminEmail()}\r\nX-Mailer: PHP/".phpversion();
+    $params = sprintf('-oi -f %s', $from);
+    return mail($to, $subject, $message, $headers, $params);
+  }
+
+  /**
+   * Admin email finder
+   *
+   * @return string the administrator email
+   */
+  public static function getAdminEmail()
+  {
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitUser::ID, QubitUserRoleRelation::USER_ID);
+    $criteria->addJoin(QubitUserRoleRelation::ROLE_ID, QubitRole::ID);
+    $criteria->add(QubitRole::NAME, 'administrator');
+    $criteria->addAscendingOrderByColumn(QubitUser::ID);
+    $users = QubitUser::get($criteria);
+    return trim($users[0]->getEmail());
+  }
+
+  /**
    * Check that all supplied keys are valid for the provided request
    *
    * @param array    $keys submited request's keys
@@ -277,6 +311,137 @@ class QubitOai
   {
     preg_match('/^.*_([0-9]+)$/', $identifier, $result);
     return $result[1];
+  }
+
+  /**
+   * Validate that an xml extract is valid
+   *
+   * @param string $xml, an xml string to validate
+   * @return boolean true if valid
+   */
+  public static function validate($xml)
+  {
+    $dom = new DOMDocument;
+    $dom->loadXML($xml);
+    return true;
+    if ($dom->schemaValidate($xml))
+    {
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Extracts a resumption token from a response
+   *
+   * @param string $oaiResponse, an xml string from which to extract the resumption token
+   * @return string the resumption token, or false if it does not exist
+   */
+  public static function getResumptionToken($oaiResponse)
+  {
+    $oaiXML = new DOMDocument;
+    $oaiSimple = simplexml_load_string($oaiResponse);
+    $oaiSimple->registerXPathNamespace('c', 'http://www.openarchives.org/OAI/2.0/');
+    $oaiSimpleRes = $oaiSimple->xpath('//c:ListRecords/c:resumptionToken');
+
+    $oaiSimpleRes = $oaiSimple->ListRecords->resumptionToken;
+    if ($oaiSimpleRes == '')
+    {
+      return false;
+    }
+    return $oaiSimpleRes;
+  }
+
+  public static function importRecords($records)
+  {
+    return true;
+  }
+
+  /*
+   * modified helper methods from (http://www.php.net/manual/en/ref.dom.php):
+   *
+   * - create a DOMDocument from a file
+   * - parse the namespaces in it
+   * - create a XPath object with all the namespaces registered
+   *  - load the schema locations
+   *  - validate the file on the main schema (the one without prefix)
+   */
+  public static function loadXML($XMLString)
+  {
+    libxml_use_internal_errors(true);
+
+    // FIXME: trap possible load validation errors (just suppress for now)
+    //$err_level = error_reporting(0);
+
+    $doc = new DOMDocument('1.0', 'UTF-8');
+
+    // enforce all XML parsing rules and validation
+    $doc->validateOnParse = true;
+    $doc->resolveExternals = true;
+
+    $doc->formatOutput = false;
+    $doc->preserveWhitespace = false;
+
+    $doc->loadXML($XMLString);
+
+    $xsi = false;
+    $doc->namespaces = array();
+    $doc->xpath = new DOMXPath($doc);
+
+    // pass along any XML errors that have been generated
+    $doc->libxmlerrors = libxml_get_errors();
+
+    // if the document didn't parse correctly, stop right here
+    if (empty($doc->documentElement))
+    {
+      return $doc;
+    }
+
+    //error_reporting($err_level);
+
+    // look through the entire document for namespaces
+    $re = '/xmlns:([^=]+)="([^"]+)"/';
+    preg_match_all($re, $XMLString, $mat, PREG_SET_ORDER);
+
+    foreach ($mat as $xmlns)
+    {
+      $pre = $xmlns[1];
+      $uri = $xmlns[2];
+
+      $doc->namespaces[$pre] = $uri;
+
+      if ($pre == '')
+      {
+        $pre = 'noname';
+      }
+      $doc->xpath->registerNamespace($pre, $uri);
+    }
+
+    if (!isset($doc->namespaces['']))
+    {
+      $doc->namespaces[''] = $doc->documentElement->lookupnamespaceURI(null);
+    }
+
+    if ($xsi)
+    {
+      $doc->schemaLocations = array();
+      $lst = $doc->xpath->query('//@$xsi:schemaLocation');
+      foreach ($lst as $el)
+      {
+        $re = "{[\\s\n\r]*([^\\s\n\r]+)[\\s\n\r]*([^\\s\n\r]+)}";
+        preg_match_all($re, $el->nodeValue, $mat);
+        for ($i = 0; $i < count($mat[0]); $i++)
+        {
+          $value = $mat[2][$i];
+          $doc->schemaLocations[$mat[1][$i]] = $value;
+        }
+      }
+
+      // validate document against default namespace schema
+      $doc->schemaValidate($doc->schemaLocations[$doc->namespaces['']]);
+    }
+
+    return $doc;
   }
 
 }

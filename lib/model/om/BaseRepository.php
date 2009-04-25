@@ -61,7 +61,10 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     $criteria = new Criteria;
     $criteria->add(QubitRepository::ID, $id);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    if (1 == count($query = self::get($criteria, $options)))
+    {
+      return $query[0];
+    }
   }
 
   public function __construct()

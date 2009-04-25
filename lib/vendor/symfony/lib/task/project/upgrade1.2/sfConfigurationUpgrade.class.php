@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfConfigurationUpgrade.class.php 12880 2008-11-10 14:31:21Z nicolas $
+ * @version    SVN: $Id: sfConfigurationUpgrade.class.php 13493 2008-11-29 15:36:41Z fabien $
  */
 class sfConfigurationUpgrade extends sfUpgrade
 {
@@ -31,6 +31,18 @@ class sfConfigurationUpgrade extends sfUpgrade
         $this->logSection('config', sprintf('Migrating %s', $file));
         file_put_contents($file, $content);
       }
+    }
+
+    // update embedded symfony CLI
+    $file = sfConfig::get('sf_root_dir').'/symfony';
+    $content = file_get_contents($file);
+
+    if (preg_match('/ProjectConfiguration/', $content))
+    {
+      $content = str_replace("\$configuration = new ProjectConfiguration();\n", '', $content);
+      $content = str_replace("\$configuration->getSymfonyLibDir()", 'sfCoreAutoload::getInstance()->getBaseDir()', $content);
+      $this->logSection('config', sprintf('Migrating %s', $file));
+      file_put_contents($file, $content);
     }
   }
 }

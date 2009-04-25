@@ -13,9 +13,12 @@ if (sfConfig::get('sf_web_debug'))
   $this->dispatcher->connect('debug.web.load_panels', array('sfWebDebugPanelDoctrine', 'listenToAddPanelEvent'));
 }
 
+require_once sfConfig::get('sfDoctrinePlugin_doctrine_lib_path', dirname(__FILE__).'/../lib/vendor/doctrine/Doctrine.php');
+spl_autoload_register(array('Doctrine', 'autoload'));
+
 $manager = Doctrine_Manager::getInstance();
 $manager->setAttribute('export', 'all');
-$manager->setAttribute('validate', true);
+$manager->setAttribute('validate', 'all');
 $manager->setAttribute('recursive_merge_fixtures', true);
 $manager->setAttribute('auto_accessor_override', true);
 $manager->setAttribute('autoload_table_classes', true);

@@ -1,6 +1,6 @@
 autoload:
-  doctrine:
-    name:           doctrine core classes
-    ext:            .php
-    path:           <?php echo realpath(dirname(__FILE__) . '/../lib') . "\n"; ?>
-    recursive:      on
+  sfDoctrinePlugin_lib:
+    name:       sfDoctrinePlugin lib
+    path:       %SF_SYMFONY_LIB_DIR%/plugins/sfDoctrinePlugin/lib
+    recursive:  true
+    exclude:    [doctrine]

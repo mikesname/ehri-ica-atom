@@ -2,18 +2,25 @@
 
 /*
  * This file is part of the symfony package.
- * (c) 2004-2006 Fabien Potencier <fabien.potencier@symfony-project.com>
- * 
+ * (c) Fabien Potencier <fabien.potencier@symfony-project.com>
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(121, new lime_output_color());
+$t = new lime_test(133, new lime_output_color());
 
 class sfPatternRoutingTest extends sfPatternRouting
 {
+  public function initialize(sfEventDispatcher $dispatcher, sfCache $cache = null, $options = array())
+  {
+    parent::initialize($dispatcher, $cache, $options);
+
+    $this->options['context']['host'] = 'localhost';
+  }
+
   public function parse($url)
   {
     $parameters = parent::parse($url);
@@ -24,7 +31,39 @@ class sfPatternRoutingTest extends sfPatternRouting
 
   public function getCurrentRouteName()
   {
-    return $this->current_route_name;
+    return $this->currentRouteName;
+  }
+
+  public function isRouteLoaded($name)
+  {
+    return isset($this->routes[$name]) && is_object($this->routes[$name]);
+  }
+}
+
+class sfAlwaysAbsoluteRoute extends sfRoute
+{
+  public function generate($params, $context = array(), $absolute = false)
+  {
+    $url = parent::generate($params, $context, $absolute);
+
+    return 'http://'.$context['host'].$url;
+  }
+}
+
+class sfLocalmemCache extends sfNoCache
+{
+  protected
+    $cache = array();
+
+  public function get($key, $default = null)
+  {
+    return array_key_exists($key, $this->cache) ? $this->cache[$key] : $default;
+  }
+
+  public function set($key, $value, $lifetime = null)
+  {
+    $this->cache[$key] = $value;
+    return true;
   }
 }
 
@@ -135,7 +174,7 @@ $url4 = '/foo4/default/index4/foo.bar';
 $t->is($r->generate('', array('module' => 'default', 'action' => 'index0', 'param0' => 'foo0')), $url0, '->generate() creates URL suffixed by "sf_suffix" parameter');
 $t->is($r->generate('', array('module' => 'default', 'action' => 'index1', 'param1' => 'foo1')), $url1, '->generate() creates URL with no suffix when route ends with .');
 $t->is($r->generate('', array('module' => 'default', 'action' => 'index2', 'param2' => 'foo2')), $url2, '->generate() creates URL with no suffix when route ends with /');
-$t->is($r->generate('', array('module' => 'default', 'action' => 'index3',  'param3'  => 'foo3'),  '/', '/', '='), $url3,  '->generate() creates URL with special suffix when route ends with .suffix');
+$t->is($r->generate('', array('module' => 'default', 'action' => 'index3', 'param3'  => 'foo3')), $url3,  '->generate() creates URL with special suffix when route ends with .suffix');
 $t->is($r->generate('', array('module' => 'default', 'action' => 'index4', 'param4' => 'foo', 'param_5' => 'bar')), $url4, '->generate() creates URL with no special suffix when route ends with .:suffix');
 
 $t->is($r->parse($url0), array('module' => 'default', 'action' => 'index0', 'param0' => 'foo0'), '->parse() finds route from URL suffixed by "sf_suffix"');
@@ -158,16 +197,16 @@ $t->is($r->parse($url), $params, '->parse() does not take query string into acco
 $t->diag('default values');
 $r->clearRoutes();
 $r->connect('test', new sfRoute('/:module/:action', array('module' => 'default', 'action' => 'index')));
-$t->is($r->generate('', array('module' => 'default')), '/default/index', 
+$t->is($r->generate('', array('module' => 'default')), '/default/index',
     '->generate() creates URL for route with missing parameter if parameter is set in the default values');
-$t->is($r->parse('/default'), array('module' => 'default', 'action' => 'index'), 
+$t->is($r->parse('/default'), array('module' => 'default', 'action' => 'index'),
     '->parse()    finds route for URL   with missing parameter if parameter is set in the default values');
 
 $r->clearRoutes();
 $r->connect('test', new sfRoute('/:module/:action/:foo', array('module' => 'default', 'action' => 'index', 'foo' => 'bar')));
-$t->is($r->generate('', array('module' => 'default')), '/default/index/bar', 
+$t->is($r->generate('', array('module' => 'default')), '/default/index/bar',
     '->generate() creates URL for route with more than one missing parameter if default values are set');
-$t->is($r->parse('/default'), array('module' => 'default', 'action' => 'index', 'foo' => 'bar'), 
+$t->is($r->parse('/default'), array('module' => 'default', 'action' => 'index', 'foo' => 'bar'),
     '->parse()    finds route for URL   with more than one missing parameter if default values are set');
 
 $r->clearRoutes();
@@ -448,6 +487,51 @@ $t->is($r->getCurrentInternalUri(), 'foo/bar?a=b&bar=foo', '->getCurrentInternal
 $r->parse('/module/action/2');
 $t->is($r->getCurrentInternalUri(true), '@test2?id=2', '->getCurrentInternalUri() returns the internal URI for last parsed URL');
 
+// Lazy routes config cache
+$t->diag('Lazy Routes Config Cache');
+$dispatcher = new sfEventDispatcher();
+$dispatcher->connect('routing.load_configuration', 'configureRouting');
+function configureRouting($event)
+{
+    $event->getSubject()->connect('first',  new sfRoute('/first'));
+    $event->getSubject()->connect('second', new sfRoute('/', array()));
+}
+$cache = new sfLocalmemCache();
+//
+// cache-in
+$rCached = new sfPatternRoutingTest($dispatcher, $cache, array_merge($options, array('lazy_routes_deserialize' => true)));
+$rCached->parse('/first');
+$t->isnt($rCached->findRoute('/first'), false, '->findRoute() finds the route with lazy config cache activated');
+$t->is($rCached->findRoute('/no/match/found'), null, '->findRoute() returns null on non-matching route');
+//
+// cache-hit
+$rCached = new sfPatternRoutingTest($dispatcher, $cache, array_merge($options, array('lazy_routes_deserialize' => true)));
+$rCached->parse('/first');
+$t->isnt($rCached->findRoute('/first'), false, '->findRoute() finds the route with lazy config cache activated');
+$t->is($rCached->isRouteLoaded('second'), false, 'The second route is not loaded');
+$t->is($rCached->findRoute('/no/match/found2'), null, '->findRoute() returns null on non-matching route');
+$t->is($rCached->isRouteLoaded('second'), true, 'The last route is loaded after a full routes scan');
+$rCached = new sfPatternRoutingTest($dispatcher, $cache, array_merge($options, array('lazy_routes_deserialize' => true)));
+$t->is($rCached->generate('second'), '/', '->generate() works on a lazy route');
+$rCached = new sfPatternRoutingTest($dispatcher, $cache, array_merge($options, array('lazy_routes_deserialize' => true)));
+$routes = $rCached->getRoutes();
+try
+{
+  foreach ($routes as $route)
+  {
+    if (!is_object($route))
+    {
+      throw new Exception();
+    }
+  }
+  $t->pass('->getRoutes() does not return lazy routes');
+}
+catch (Exception $e)
+{
+  $t->fail('->getRoutes() does not return lazy routes');
+}
+
+
 // these tests are against r7363
 $t->is($r->getCurrentInternalUri(false), 'foo/bar?id=2', '->getCurrentInternalUri() returns the internal URI for last parsed URL');
 $t->is($r->getCurrentInternalUri(true), '@test2?id=2', '->getCurrentInternalUri() returns the internal URI for last parsed URL');
@@ -470,6 +554,14 @@ $t->is($parameters,
        '->findRoute() returns information about matching route');
 $t->is($rCached->getCurrentInternalUri(), 'default/index', '->findRoute() does not change the internal URI of sfPatternRouting');
 $t->is($rCached->findRoute('/no/match/found'), null, '->findRoute() returns null on non-matching route');
+
+// current internal uri is reset after negative match
+$r->clearRoutes();
+$r->connect('test', new sfRoute('/test', array('bar' => 'foo')));
+$r->parse('/test');
+$r->parse('/notfound');
+$t->is($r->getCurrentInternalUri(), null, '->getCurrentInternalUri() reseted after negative match');
+$t->is($r->getCurrentRouteName(), null, '->getCurrentRouteName() reseted after negative match');
 
 // defaults
 $t->diag('defaults');
@@ -537,3 +629,8 @@ $t->is($r->parse($url), $params, 'parse /customer/:param1/:action/* route');
 $r->clearRoutes();
 $r->connect('test', new sfRoute('/customer/:id/:id_name', array('module' => 'default')));
 $t->is($r->generate('', array('id' => 2, 'id_name' => 'fabien')), '/customer/2/fabien', '->generate() first replaces the longest variable names');
+
+$r->clearRoutes();
+$r->connect('default', new sfAlwaysAbsoluteRoute('/:module/:action'));
+$t->is($r->generate('', array('module' => 'foo', 'action' => 'bar')), 'http://localhost/foo/bar', '->generate() allows route to generate absolute urls');
+$t->is($r->generate('', array('module' => 'foo', 'action' => 'bar'), true), 'http://localhost/foo/bar', '->generate() does not double-absolutize urls');

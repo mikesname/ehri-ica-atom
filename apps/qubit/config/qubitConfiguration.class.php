@@ -9,7 +9,7 @@ class qubitConfiguration extends sfApplicationConfiguration
   public function getDecoratorDirs()
   {
     $dirs = array();
-    $dirs = array_merge($dirs, $this->getPluginSubPaths('/templates')); // plugins
+    $dirs = array_merge($dirs, sfConfig::get('sf_decorator_dirs'));
     $dirs[] = sfConfig::get('sf_app_template_dir');
 
     return $dirs;

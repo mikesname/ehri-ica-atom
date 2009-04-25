@@ -17,7 +17,7 @@
  * @subpackage doctrine
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Jonathan H. Wage <jonwage@gmail.com>
- * @version    SVN: $Id: sfDoctrineRecord.class.php 13270 2008-11-23 02:43:11Z Jonathan.Wage $
+ * @version    SVN: $Id: sfDoctrineRecord.class.php 15828 2009-02-26 20:14:18Z Jonathan.Wage $
  */
 abstract class sfDoctrineRecord extends Doctrine_Record
 {
@@ -174,13 +174,15 @@ abstract class sfDoctrineRecord extends Doctrine_Record
           if ($table->hasField($underScored))
           {
             $entityName = $underScored;
-          } else {
+          } else if ($table->hasField(strtolower($name))) {
             $entityName = strtolower($name);
+          } else {
+            $entityName = $underScored;
           }
         }
 
         return call_user_func_array(
-          array($this, 'parent::' . $verb),
+          array($this, $verb),
           array_merge(array($entityName), $arguments)
         );
       } else {

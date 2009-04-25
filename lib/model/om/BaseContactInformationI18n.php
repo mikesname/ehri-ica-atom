@@ -76,7 +76,10 @@ abstract class BaseContactInformationI18n implements ArrayAccess
     $criteria->add(QubitContactInformationI18n::ID, $id);
     $criteria->add(QubitContactInformationI18n::CULTURE, $culture);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    if (1 == count($query = self::get($criteria, $options)))
+    {
+      return $query[0];
+    }
   }
 
   public static function doDelete(Criteria $criteria, $connection = null)

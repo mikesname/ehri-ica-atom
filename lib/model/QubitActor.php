@@ -49,8 +49,7 @@ class QubitActor extends BaseActor
 
     // Do fallback
     $context = sfContext::getInstance();
-    $culture = $context->getUser()->getCulture();
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $culture, $options);
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $options);
 
     return QubitActor::get($criteria);
   }
@@ -86,7 +85,7 @@ class QubitActor extends BaseActor
    * @param array    $options array of optional function parameters
    * @return QubitQuery collection of QubitInformationObject objects
    */
-  public static function getList($culture, $options=array())
+  public static function getList($options=array())
   {
     $criteria = new Criteria;
 
@@ -102,6 +101,16 @@ class QubitActor extends BaseActor
     if (isset($options['collectionType']))
     {
       $criteria->add(QubitInformationObject::COLLECTION_TYPE_ID, $options['collectionType']);
+    }
+
+    // Get culture for list
+    if (isset($options['culture']))
+    {
+      $culture = $options['culture'];
+    }
+    else
+    {
+      $culture = sfContext::getInstance()->getUser()->getCulture();
     }
 
     // Add criteria to exclude actors that are users or repository objects
@@ -135,7 +144,7 @@ class QubitActor extends BaseActor
     {
       // Return a QubitQuery object
       $options = array('returnClass'=>'QubitActor');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $culture, $options);
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
     }
     else
     {
@@ -399,6 +408,24 @@ class QubitActor extends BaseActor
     $criteria->addJoin(QubitEvent::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
     $criteria->addAscendingOrderByColumn(QubitEvent::TYPE_ID);
 
+    // Sort info objects alphabetically (w/ fallback)
+    $criteria->addAscendingOrderByColumn('title');
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+
     return QubitEvent::get($criteria);
+  }
+
+  /**
+   * Add search criteria for find records updated in last $numberOfDays
+   *
+   * @param Criteria $criteria current search criteria
+   * @param string $cutoff earliest date to show
+   * @return Criteria modified criteria object
+   */
+  public static function addRecentUpdatesCriteria($criteria, $cutoff)
+  {
+    $criteria->add(QubitActor::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
+
+    return $criteria;
   }
 }

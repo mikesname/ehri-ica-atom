@@ -46,7 +46,7 @@ class QubitObjectTermRelation extends BaseObjectTermRelation
       SearchIndex::updateTranslatedLanguages($this->getObject());
     }
   }
-  
+
   /**
    * Get a list of objects related to the given $termId
    *
@@ -63,9 +63,9 @@ class QubitObjectTermRelation extends BaseObjectTermRelation
     $criteria->add(QubitObject::CLASS_NAME, $className);
     $criteria->addJoin(QubitObject::ID, QubitObjectTermRelation::OBJECT_ID);
     $criteria->add(QubitObjectTermRelation::TERM_ID, $termId);
-    
+
     $page = isset($options['page']) ? $options['page'] : 1;
-    
+
     switch($className)
     {
       case 'QubitInformationObject':
@@ -126,5 +126,19 @@ class QubitObjectTermRelation extends BaseObjectTermRelation
     $pager->init();
     
     return $pager;
+  }
+
+  /**
+   * Get first ObjectTermRelation with given $objectId
+   *
+   * @param integer $objectId foreign key to object
+   * @return QubitObjectTermRelation object
+   */
+  public static function getOneByObjectId($objectId)
+  {
+    $c = new Criteria;
+    $c->add(QubitObjectTermRelation::OBJECT_ID, $objectId, Criteria::EQUAL);
+
+    return QubitObjectTermRelation::getOne($c);
   }
 }
