@@ -59,6 +59,7 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: Erschließung
       en: 'archival description'
       es: 'Descripción archivística'
       fr: 'description archivistique'
@@ -73,11 +74,14 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: Normdaten
       en: 'authority record'
-      es: 'registro de autoridade'
+      es: 'Registro de autoridad'
       fr: 'fichier d''autorité'
+      it: 'record di autorità'
       nl: 'geautoriseerd bestand'
       pt: 'registro de autoridade'
+      sl: 'normativni zapisi'
   QubitSetting_13:
     name: creator
     scope: ui_label
@@ -100,6 +104,7 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: Aufbewahrungsort
       en: 'archival institution'
       es: 'Institución archivística '
       fr: 'institution de conservation'
@@ -144,13 +149,14 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: Sammlung
       en: fonds
       es: fundo
       fr: collection
       it: collezione
       nl: collectie
       pt: fundo/coleção
-      sl: zbirka
+      sl: zbirke
   QubitSetting_18:
     name: holdings
     scope: ui_label
