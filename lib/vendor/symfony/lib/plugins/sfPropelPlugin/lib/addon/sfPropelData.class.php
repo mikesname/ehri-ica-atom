@@ -15,7 +15,7 @@
  * @package    symfony
  * @subpackage propel
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPropelData.class.php 16948 2009-04-03 15:52:30Z fabien $
+ * @version    SVN: $Id: sfPropelData.class.php 17426 2009-04-19 20:52:15Z FabianLange $
  */
 class sfPropelData extends sfData
 {
@@ -369,7 +369,7 @@ $dumpData['QubitTaxonomy'] = array();
       $resultsSets = array();
       if ($hasParent)
       {
-        $resultsSets = $this->fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $fixColumn);
+        $resultsSets[] = $this->fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $fixColumn);
       }
       else
       {
@@ -527,16 +527,19 @@ $dumpData['QubitTaxonomy'] = array();
 
   protected function fixOrderingOfForeignKeyDataInSameTable($resultsSets, $tableName, $column, $in = null)
   {
-    $stmt = $this->con->prepare('
-      SELECT *
-      FROM '.constant('Qubit'.$tableName.'::TABLE_NAME').'
-      WHERE '.strtolower($column->getName()).' '.(is_null($in) ? 'IS NULL' : 'IN ('.$in.')'));
+    $sql = sprintf('SELECT * FROM %s WHERE %s %s',
+                   constant('Qubit'.$tableName.'::TABLE_NAME'),
+                   strtolower($column->getName()),
+                   is_null($in) ? 'IS NULL' : 'IN ('.$in.')');
+    $stmt = $this->con->prepare($sql);
+
     $stmt->execute();
 
     $in = array();
-    foreach ($resultsSets[] = $stmt->fetchAll(PDO::FETCH_ASSOC) as $row)
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
     {
       $in[] = "'".$row[strtolower($column->getRelatedColumnName())]."'";
+      $resultsSets[] = $row;
     }
 
     if ($in = implode(', ', $in))

@@ -43,30 +43,11 @@ class siteSettingsFilter extends sfFilter
     // overwrite/populate settings into sfConfig object
     sfConfig::add($settings);
 
-    $this->setSiteTitle();
-
     // Set routing default parameters so that links to create, edit and show actions
     // get routed to default actions
     $this->context->getRouting()->setDefaultParameters(array('informationobject_template' => sfConfig::get('app_default_template_informationobject'), 'actor_template' => sfConfig::get('app_default_template_actor'), 'repository_template' => sfConfig::get('app_default_template_repository')));
 
     // execute next filter
     $filterChain->execute();
-  }
-
-  protected function setSiteTitle()
-  {
-    $title = strip_tags(sfConfig::get('app_site_information_site_title'));
-    $desc  = strip_tags(sfConfig::get('app_site_information_site_description'));
-
-    if (strlen($title) && strlen($desc))
-    {
-      $title = $title.' - '.$desc;
-    }
-    else
-    {
-      $title .= $desc;
-    }
-
-    $this->getContext()->getResponse()->setTitle($title);
   }
 }

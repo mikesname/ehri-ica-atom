@@ -24,7 +24,7 @@
     <td><div class="default-translation" style="overflow: auto; width: 200px; valign: top;"><?php echo nl2br($staticPage->getContent(array('culture' => 'en'))) ?></div></td>
     <td valign="top"><?php echo textarea_tag('static_page_content'.$staticPage->getId(), $staticPage->getContent(), array('size' => '30x20', 'style' => 'font-size: 11px;'))?></td>
     </tr>
-    <tr><td colspan="3"><div style="float: right; margin: 3px 8px 0 0;"><?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?></div></td></tr>
+    <tr><td colspan="3"><div style="float: right; margin: 3px 8px 0 0;"><?php echo submit_tag(__('save')) ?></div></td></tr>
   </tbody>
 </table>
 </fieldset>
@@ -51,7 +51,7 @@
     <td><?php echo input_tag('taxonomy_'.$taxonomy->getId(), $taxonomy->getName())?></td>
     </tr>
   <?php endforeach; ?>
-    <tr><td colspan="3"><div style="float: right; margin: 3px 8px 0 0;"><?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?></div></td></tr>
+    <tr><td colspan="3"><div style="float: right; margin: 3px 8px 0 0;"><?php echo submit_tag(__('save')) ?></div></td></tr>
   </tbody>
 </table>
 </fieldset>
@@ -81,7 +81,7 @@
      <?php endforeach; ?>
   </tbody>
 </table>
-<div style="float: right; margin: 3px 8px 0 0;"><?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?></div>
+<div style="float: right; margin: 3px 8px 0 0;"><?php echo submit_tag(__('save')) ?></div>
 </fieldset>
 <?php endforeach; ?>
 

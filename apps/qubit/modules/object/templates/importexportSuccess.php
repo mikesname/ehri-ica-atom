@@ -15,7 +15,7 @@
     <td><?php echo input_file_tag('file', array('size' => '30px')) ?></td>
     <td width="100px">
       <div style="float: right; margin: 3px 8px 0 0">
-        <?php echo submit_tag(__('upload'), array('class' => 'form-submit')) ?>
+        <?php echo submit_tag(__('upload')) ?>
       </div>
     </td>
   </tr>
@@ -54,12 +54,12 @@
   </td>
   <td style="text-align: right;">
     <?php echo select_tag('format', options_for_select(
-      array('dc' => 'Dublin Core','ead' => 'EAD 2002'),
+      array('dc' => 'Dublin Core 1.1','ead' => 'EAD 2002', 'mods' => 'MODS 3.3'),
       null, array('include_blank' => true))); ?>
   </td>
   <td width="100px">
     <div style="float: right; margin: 3px 3px 0 0;">
-      <?php echo submit_tag(__('export'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('export')) ?>
     </div>
   </td>
 </tr>

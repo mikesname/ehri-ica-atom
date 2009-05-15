@@ -137,6 +137,61 @@ text-decoration: underline;
 border-left: none;
 }
 
+
+/*****************************************/
+/*           MENU - OPTIONS LIST         */
+/*****************************************/
+
+.options-list
+{
+margin: 0;
+padding: 3px 0 10px 0;
+height: 12px;
+background-color: transparent;
+border: 0;
+float: left;
+}
+
+.options-list a
+{
+float: left;
+height: 12px;
+padding: 0 4px 0 4px;
+margin: 0;
+text-decoration: none;
+display: block;
+text-align: center;
+font: normal 11px/12px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
+background:  transparent;
+border: 0;
+border-left: 1px solid #cccccc;
+color: #999999;
+}
+
+.options-list a:link
+{
+background: transparent;
+color: #999999;
+text-decoration: none;
+}
+
+.options-list a:hover
+{
+background: #000000;
+color: #ffffff;
+}
+
+.options-list a.active
+{
+text-decoration: underline;
+}
+
+.options-list a:first-child
+{
+border-left: none;
+}
+
+
 /*****************************************/
 /*           MENU -  MAIN                */
 /*****************************************/
@@ -149,10 +204,7 @@ border-left: none;
   padding: 0;
   height: 28px;
   background-color: #ffffff;
-  border-top: 0;
-  border-bottom: 1px solid #999999;
-  border-left: 1px solid #999999;
-  border-right: 1px solid #999999;
+  border: 1px solid #999999;
   position: relative;
 }
 

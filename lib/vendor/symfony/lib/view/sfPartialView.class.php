@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage view
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPartialView.class.php 17347 2009-04-15 23:42:20Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfPartialView.class.php 17468 2009-04-21 07:21:38Z fabien $
  */
 class sfPartialView extends sfPHPView
 {
@@ -141,8 +141,6 @@ class sfPartialView extends sfPHPView
     {
       return null;
     }
-
-    $this->viewCache->registerConfiguration($this->moduleName);
 
     $this->cacheKey = $this->viewCache->checkCacheKey($this->partialVars);
     if ($retval = $this->viewCache->getPartialCache($this->moduleName, $this->actionName, $this->cacheKey))

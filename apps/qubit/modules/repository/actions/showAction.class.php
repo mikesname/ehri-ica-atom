@@ -25,7 +25,7 @@ class RepositoryShowAction extends sfAction
     $this->forward404Unless($this->repository);
 
     $this->languageCodes = $this->repository->getProperties($name = 'language_of_repository_description');
-    $this->scriptCodes = $this->repository->getProperties($name= 'script_of_repository_description');
+    $this->scriptCodes = $this->repository->getProperties($name = 'script_of_repository_description');
 
     $this->otherNames = $this->repository->getOtherNames();
 
@@ -34,9 +34,9 @@ class RepositoryShowAction extends sfAction
 
     $this->contactInformation = $this->repository->getContactInformation();
 
-    //determine if user has edit priviliges
+    // Determine if user has edit priviliges
     $this->editCredentials = false;
-    if ($this->getUser()->hasCredential('administrator'))
+    if (SecurityPriviliges::editCredentials($this->getUser(), 'repository'))
     {
       $this->editCredentials = true;
     }

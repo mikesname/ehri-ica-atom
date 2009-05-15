@@ -18,7 +18,7 @@
  * @package    symfony
  * @subpackage view
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfViewCacheManager.class.php 17217 2009-04-11 14:30:16Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfViewCacheManager.class.php 17477 2009-04-21 08:30:59Z fabien $
  */
 class sfViewCacheManager
 {
@@ -185,9 +185,9 @@ class sfViewCacheManager
     {
       $request = $this->context->getRequest();
       $hostName = $request->getHost();
-      $hostName = preg_replace('/[^a-z0-9]/i', '_', $hostName);
-      $hostName = strtolower(preg_replace('/_+/', '_', $hostName));
     }
+    $hostName = preg_replace('/[^a-z0-9]/i', '_', $hostName);
+    $hostName = strtolower(preg_replace('/_+/', '_', $hostName));
 
     $cacheKey = sprintf('/%s/%s/%s', $hostName, $vary, $cacheKey);
 
@@ -343,6 +343,8 @@ class sfViewCacheManager
   {
     list($route_name, $params) = $this->controller->convertUrlStringToParameters($internalUri);
 
+    $this->registerConfiguration($params['module']);
+
     $value = $defaultValue;
     if (isset($this->cacheConfig[$params['module']][$params['action']][$key]))
     {
@@ -378,6 +380,8 @@ class sfViewCacheManager
 
     list($route_name, $params) = $this->controller->convertUrlStringToParameters($internalUri);
 
+    $this->registerConfiguration($params['module']);
+
     if (isset($this->cacheConfig[$params['module']][$params['action']]))
     {
       return ($this->cacheConfig[$params['module']][$params['action']]['lifeTime'] > 0);
@@ -406,6 +410,8 @@ class sfViewCacheManager
     {
       return false;
     }
+
+    $this->registerConfiguration($moduleName);
 
     if (isset($this->cacheConfig[$moduleName][$actionName]))
     {

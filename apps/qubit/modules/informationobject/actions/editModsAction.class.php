@@ -36,56 +36,38 @@ class InformationObjectEditModsAction extends InformationObjectEditAction
     parent::execute($request);
 
     // add MODS specific commands
-    $this->modsSubTitles = $this->informationObject->getNotesByTaxonomy(array('taxonomyId' => QubitTaxonomy::MODS_TITLE_TYPE_ID));
-    $this->modsSubTitleTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::MODS_TITLE_TYPE_ID);
-
-    $this->actorEventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID, array('displayNote' => true));
-    $this->actorEvents = $this->informationObject->getActorEvents();
+    $this->modsTypes = QubitMods::getTypes($this->informationObject);
   }
 
-  public function updateNotes()
+  protected function processForm()
   {
-    // update MODS subtitles
-    if (0 < strlen($modsSubTitle = $this->getRequestParameter('mods_subtitle')))
+    parent::processForm();
+
+    // $this->updateModsProperties();
+    $this->updateModsTypes();
+  }
+
+
+  public function updateMODSProperties()
+  {
+  }
+
+  protected function updateModsTypes()
+  {
+    if ($mods_type_ids = $this->getRequestParameter('mods_type_id'))
     {
-      $this->informationObject->setNote(array('userId' => $this->getUser()->getAttribute('user_id'), 'note' => $modsSubTitle, 'noteTypeId' => $this->getRequestParameter('mods_subtitle_type')));
+      // Make sure that $dc_type_id is an array, even if it's only got one value
+      $mods_type_ids = (is_array($mods_type_ids)) ? $mods_type_ids : array($mods_type_ids);
+
+      foreach ($mods_type_ids as $mods_type_id)
+      {
+        if (intval($mods_type_id))
+        {
+          $this->informationObject->addTermRelation($mods_type_id, QubitTaxonomy::MODS_RESOURCE_TYPE_ID);
+          $this->foreignKeyUpdate = true;
+        }
+      }
     }
   }
 
-  public function updateActorEvents()
-  {
-    if (is_array($this->getRequestParameter('addActor')))
-    {
-      $actorFormData = $this->getRequestParameter('addActor');
-      $actorEvent = new QubitEvent;
-      $saveEvent = false;
-
-      // Use existing actor if one is selected (overrides new actor creation)
-      if (0 < strlen($actorFormData['actorId']))
-      {
-        $actorEvent->setActorId($actorFormData['actorId']);
-        $saveEvent = true;
-      }
-
-      // or, create a new actor and associate with Actor Event
-      else if (0 < strlen($actorFormData['newActorName']))
-      {
-        // Create actor
-        $actor = new QubitActor;
-        $actor->setAuthorizedFormOfName($actorFormData['newActorName']);
-        $actor->save();
-
-        // Assign actor to event
-        $actorEvent->setActorId($actor->getId());
-        $saveEvent = true;
-      }
-
-      if ($saveEvent)
-      {
-        $actorEvent->setInformationObjectId($this->informationObject->getId());
-        $actorEvent->setTypeId($actorFormData['eventTypeId']);
-        $actorEvent->save();
-      }
-    }
-  }
 }

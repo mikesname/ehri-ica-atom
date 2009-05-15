@@ -3,7 +3,7 @@ QubitSetting:
     name: version
     editable: 0
     deleteable: 0
-    value: 'ICA-AtoM 1.0.6-beta'
+    value: 'ICA-AtoM 1.0.7-beta'
   QubitSetting_2:
     name: upload_dir
     editable: 0
@@ -24,16 +24,6 @@ QubitSetting:
     editable: 1
     deleteable: 0
     value: 1
-  QubitSetting_6:
-    name: site_title
-    scope: site_information
-    editable: 1
-    deleteable: 0
-  QubitSetting_7:
-    name: site_description
-    scope: site_information
-    editable: 1
-    deleteable: 0
   QubitSetting_8:
     name: informationobject
     scope: default_template

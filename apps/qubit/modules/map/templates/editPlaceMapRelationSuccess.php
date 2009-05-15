@@ -74,9 +74,9 @@
   <?php endif; ?>
 <?php endif; ?>
     <?php if ($placeMapRelation->getId()): ?>
-      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('save')) ?>
     <?php else: ?>
-      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('create')) ?>
     <?php endif; ?>
 </form>
 </div>

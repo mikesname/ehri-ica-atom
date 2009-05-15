@@ -8,11 +8,45 @@
 
 
 /*********************************************************
-                WEBSITE NAME & LOGO
+                SITE HEADER
 **********************************************************/
+#site-header {
+  overflow: hidden;
+  padding-top: 5px;
+}
+
+#logo {
+  float: left;
+  padding-top: 10px;
+  padding-right: 10px;
+  padding-bottom: 2000px;
+  margin-bottom: -2000px;
+  overflow: hidden;
+}
+
+#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
+  border: 0;
+  color: #ffffff;
+  background-color: transparent;
+  text-decoration: none;
+  padding: 0;
+  margin: 0;
+}
+
+#logo img {
+  margin: 0 0 0 0;
+}
+
+#site-info {
+  padding-bottom: 2000px;
+  margin-bottom: -2000px;
+  float: left;
+  overflow: auto;
+}
+
 #website-name {
-  font: bold 54px verdana, georgia, garamond, serif;
-  letter-spacing: 0.15ex;
+  font: bold 44px verdana, georgia, garamond, serif;
+  letter-spacing: 0.10ex;
   color: #FC6E3C;
   border: 0;
   margin-bottom: 3px;
@@ -30,22 +64,8 @@
 #website-description {
   color: #04025C;
   font: 12px georgia, garamond, serif;
-  margin: 10px 0 0 20px;
+  margin: 5px 0 0 5px;
   padding: 0;
-}
-
-#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
-  border: 0;
-  color: #ffffff;
-  background-color: transparent;
-  text-decoration: none;
-  padding: 0;
-  margin: 0;
-  float: right;
-}
-
-#logo img {
-  margin: 0 0 0 0;
 }
 
 /*********************************************************
@@ -54,7 +74,7 @@
 .versionNumber {
   float: right;
   color: #999999;
-  margin: 10px 5px 0 0;
+  margin: 1px 2px 0 0;
   background: transparent;
   z-index: 1;
 }

@@ -25,71 +25,20 @@
  * @version    svn: $Id$
  * @author     David Juhasz <david@artefactual.com
  */
-class QubitMigrate103to104
+class QubitMigrate103to104 extends QubitMigrate
 {
   private $taxonomyActorRoleKey;
-  private $data;
-
-  public function __construct($data)
-  {
-    $this->data = $data;
-  }
-
-  /**
-   * Do migration of data from 1.0.3 to 1.0.4
-   *
-   * @return array modified data
-   */
-  public function execute()
-  {
-    $this->alterData();
-
-    return $this->getData();
-  }
-
-  /**
-   * Getter for migration data
-   *
-   * @return array arrayized yaml data
-   */
-  public function getData()
-  {
-    return $this->data;
-  }
-
-  /**
-   * Wrapper for QubitMigrateData::findRowKeyForColumnValue() method.
-   *
-   * @param string $className
-   * @param string $searchColumn
-   * @param string $searchKey
-   * @return string key for matched row
-   */
-  private function getRowKey($className, $searchColumn, $searchKey)
-  {
-    return QubitMigrateData::findRowKeyForColumnValue(
-      $this->data[$className], $searchColumn, $searchKey);
-  }
-
-  /**
-   * Convienience method for grabbing a QubitTerm row key based on the value of
-   * the 'id' column
-   *
-   * @param string $searchKey
-   * @return string key for matched row
-   */
-  private function getTermKey($searchKey)
-  {
-    return $this->getRowKey('QubitTerm', 'id',  $searchKey);
-  }
 
   /**
    * Controller for calling methods to alter data
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterData()
+  protected function alterData()
   {
+    // Delete stub object
+    $this->deleteStubObjects();
+
     // Alter qubit classes (order is important!)
     $this->alterQubitActors();
     $this->alterQubitEvents();
@@ -101,6 +50,16 @@ class QubitMigrate103to104
     $this->alterQubitTerms();
     $this->alterQubitNotes();  // Must come after QubitTerms
 
+    return $this;
+  }
+
+  /**
+   * Call all sort methods
+   *
+   * @return QubitMigrate104to105 this object
+   */
+  protected function sortData()
+  {
     // Sort objects within classes
     $this->sortQubitInformationObjects();
     $this->sortQubitTerms();
@@ -129,7 +88,7 @@ class QubitMigrate103to104
    */
   private function alterQubitEvents()
   {
-    // Delete "stub" QubitEvent objects that has BOTH no related info object
+    // Delete QubitEvent objects that have BOTH no related info object
     // AND no related actor (either one is enough for the event to be valid)
     foreach ($this->data['QubitEvent'] as $key => $event)
     {
@@ -199,30 +158,6 @@ class QubitMigrate103to104
   }
 
   /**
-   * Alter QubitObjectTermRelation data
-   *
-   * @return QubitMigrate103to104 this object
-   */
-  private function alterQubitObjectTermRelations()
-  {
-    // Remove blank "stub" QubitObjectTermRelation objects
-    foreach ($this->data['QubitObjectTermRelation'] as $key => $row)
-    {
-      if (!isset($row['object_id']) || !isset($row['term_id']))
-      {
-        unset($this->data['QubitObjectTermRelation'][$key]);
-      }
-    }
-
-    // If there are no QubitObjectTermRelation objects left, remove the section
-    if ($this->data['QubitObjectTermRelation'] == array())
-    {
-      unset($this->data['QubitObjectTermRelation']);
-    }
-    return $this;
-  }
-
-  /**
    * Alter QubitProperty data
    *
    * @return QubitMigrate103to104 this object
@@ -254,7 +189,7 @@ class QubitMigrate103to104
     {
       if ($page['permalink'] == 'homepage' || $page['permalink'] == 'about')
       {
-        array_walk($this->data['QubitStaticPage'][$key]['content'], create_function('&$x','$x=str_replace(\'1.0.3\', \'1.0.4\', $x);'));
+        array_walk($this->data['QubitStaticPage'][$key]['content'], create_function('&$x', '$x=str_replace(\'1.0.3\', \'1.0.4\', $x);'));
       }
     }
 
@@ -320,7 +255,7 @@ class QubitMigrate103to104
       'source_culture' => 'en',
       'value' => array('en' => 'isdiah')
     );
-    QubitMigrateData::array_insert($this->data['QubitSetting'], $defaultTemplateIndex, $defaultTemplates);
+    QubitMigrate::array_insert($this->data['QubitSetting'], $defaultTemplateIndex, $defaultTemplates);
 
     $this->data['QubitSetting']['QubitSetting_multi_repository'] = array(
       'name' => 'multi_repository',
@@ -412,14 +347,14 @@ class QubitMigrate103to104
     // share analogous primary keys 12 vs. 112)
     if ($existenceKey = $this->getTermExistenceKey())
     {
-      $existenceArrayKeyIndex = QubitMigrateData::getArrayKeyIndex($this->data['QubitTerm'], $existenceKey);
+      $existenceArrayKeyIndex = QubitMigrate::getArrayKeyIndex($this->data['QubitTerm'], $existenceKey);
       $subjectTerm = $this->data['QubitTerm'][$existenceKey];
       $subjectTerm['id'] = '<?php echo QubitTerm::SUBJECT_ID."\n" ?>';
       $subjectTerm['name'] = array(
         'en'=>'Subject', 'fr' => 'Sujet', 'nl' => 'Onderwerp', 'pt' => 'Assunto');
 
       // Splice SUBJECT_ID term into data array where EXISTENCE_ID lives now
-      QubitMigrateData::array_insert($this->data['QubitTerm'], $existenceArrayKeyIndex, array('QubitTerm_subject' => $subjectTerm));
+      QubitMigrate::array_insert($this->data['QubitTerm'], $existenceArrayKeyIndex, array('QubitTerm_subject' => $subjectTerm));
 
       // Delete existence term
       unset($this->data['QubitTerm'][$existenceKey]);
@@ -820,7 +755,7 @@ class QubitMigrate103to104
         {
           if ($newRow['lft'] > $row['lft'])
           {
-            QubitMigrateData::array_insert($newList, $i, array($key => $row));
+            QubitMigrate::array_insert($newList, $i, array($key => $row));
             break;
           }
           $i++;
@@ -883,30 +818,30 @@ class QubitMigrate103to104
       'HAS_PHYSICAL_OBJECT_ID'
     );
 
-      // Restack array with Constant values at top
-      $qubitTermArray = $this->data['QubitTerm'];
-      foreach ($qubitTermConstantIds as $key => $constantName)
-      {
-        foreach ($qubitTermArray as $key => $term)
-        {
-          if ($term['id'] == '<?php echo QubitTerm::'.$constantName.'."\n" ?>')
-          {
-            $newTermArray[$key] = $term;
-            unset($qubitTermArray[$key]);
-            break;
-          }
-        }
-      }
-
-      // Append remaining (variable id) terms to the end of the new array
+    // Restack array with Constant values at top
+    $qubitTermArray = $this->data['QubitTerm'];
+    foreach ($qubitTermConstantIds as $key => $constantName)
+    {
       foreach ($qubitTermArray as $key => $term)
       {
-        $newTermArray[$key] = $term;
+        if ($term['id'] == '<?php echo QubitTerm::'.$constantName.'."\n" ?>')
+        {
+          $newTermArray[$key] = $term;
+          unset($qubitTermArray[$key]);
+          break;
+        }
       }
+    }
 
-      $this->data['QubitTerm'] = $newTermArray;
+    // Append remaining (variable id) terms to the end of the new array
+    foreach ($qubitTermArray as $key => $term)
+    {
+      $newTermArray[$key] = $term;
+    }
 
-      return $this;
+    $this->data['QubitTerm'] = $newTermArray;
+
+    return $this;
   }
 
   /**

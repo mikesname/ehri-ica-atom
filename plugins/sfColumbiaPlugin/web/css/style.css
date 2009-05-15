@@ -90,9 +90,9 @@
                 WEBSITE NAME & LOGO
 **********************************************************/
 
-#site-info
+#header-block
 {
-  padding: 30px 0 0 50px;
+  padding: 10px 0 0 0;
   clear: both;
   width: 770px;
   text-align: left;
@@ -104,13 +104,13 @@
 
 #website-name
 {
-  font: bold 48px georgia, garamond, serif;
-  letter-spacing: 0.15ex;
+  font: bold 44px georgia, garamond, serif;
+  letter-spacing: 0.10ex;
   border: 0;
   margin: 0 0 5px 0;
   padding: 3px 3px 10px 3px;
   background-color: white;
-  width: 360px;
+  max-width: 430px;
   text-align: center;
   display: block;
   -moz-border-radius: 10px;
@@ -135,7 +135,7 @@
   text-align: center;
   letter-spacing: -0.1ex;
   background-color: white;
-  width: 360px;
+  max-width: 430px;
   -moz-border-radius: 10px;
   border: 2px solid #083852;
 }
@@ -208,7 +208,7 @@ h1.search
 .versionNumber {
   float: right;
   color: #cccccc;
-  margin: 18px 50px 0 0;
+  margin: 18px 3px 0 0;
   background: transparent;
   z-index: 1;
 }
@@ -251,7 +251,7 @@ border: 0;
 .language-list a:link, .language-list a:visited
 {
 background: transparent;
-color: #999999;
+color: #DAEEF8;
 text-decoration: none;
 }
 
@@ -263,8 +263,8 @@ color: #ffffff;
 
 .language-list a.active
 {
-text-decoration: underline;
 color: #ffffff;
+font-weight: bold;
 }
 
 /*****************************************/
@@ -284,7 +284,7 @@ color: #ffffff;
 .menu-quick-links a:link, .menu-quick-links a:visited
 {
   background: transparent;
-  color: #999999;
+  color: #DAEEF8;
   text-decoration: none;
 }
 
@@ -296,7 +296,7 @@ color: #ffffff;
 
 .menu-quick-links a.active
 {
-  text-decoration: underline;
+  font-weight: bold;
   color: #ffffff;
 }
 
@@ -388,8 +388,8 @@ color: #ffffff;
 {
   margin: 0 auto 0 auto;
   width: 770px;
-  padding: 0px 0 0 30px;
-  height: 25px;
+  padding: 0px 0 0 5px;
+  height: 27px;
   background: transparent;
   border: 0;
   position: relative;
@@ -400,8 +400,8 @@ color: #ffffff;
   float:left;
   height: 15px;
   border: 1px solid transparent;
-  padding: 7px 20px 5px 20px;
-  margin: 3px 10px 0 10px;
+  padding: 7px 10px 5px 10px;
+  margin: 5px 3px 0 3px;
   color: #083852;
   text-decoration: none;
   display: block;
@@ -497,6 +497,9 @@ background-color: #ffffff;
   left: 650px;
   z-index: 5;
   border: 2px solid #0A5F8C;
+
+  filter: alpha(opacity=80);
+  opacity: 0.8;
 }
 
 .menu-browse #label
@@ -660,4 +663,15 @@ a.currentTextNode
 .ygtvlabel:hover {
   background-color: #083852;
   color: #ffffff;
+}
+
+/*******************************************************/
+/*                                                     */
+/*                  TRANSPARENCY                       */
+/*                                                     */
+/*******************************************************/
+
+.transparent {
+  filter:alpha(opacity=80);
+  opacity: 0.8;
 }

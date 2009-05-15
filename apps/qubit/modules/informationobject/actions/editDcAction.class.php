@@ -38,6 +38,7 @@ class InformationObjectEditDcAction extends InformationObjectEditAction
     // add Dublin Core specific commands
     $this->dcEventTypes = QubitTerm::getDcEventTypeList();
     $this->dcRelation = $this->informationObject->getPropertyByName('information_object_relation', array('scope'=>'dc'));
+    $this->dcTypes = QubitDc::getDcTypes($this->informationObject);
   }
 
   protected function processForm()
@@ -46,10 +47,30 @@ class InformationObjectEditDcAction extends InformationObjectEditAction
 
     // Update Dc Properties
     $this->updateDcProperties();
+    $this->updateDcTypes();
   }
 
   protected function updateDcProperties()
   {
     $this->informationObject->saveProperty('information_object_relation', $this->getRequestParameter('dc_relation'), array('scope'=>'dc'));
   }
+
+  protected function updateDcTypes()
+  {
+    if ($dc_type_ids = $this->getRequestParameter('dc_type_id'))
+    {
+      // Make sure that $dc_type_id is an array, even if it's only got one value
+      $dc_type_ids = (is_array($dc_type_ids)) ? $dc_type_ids : array($dc_type_ids);
+
+      foreach ($dc_type_ids as $dc_type_id)
+      {
+        if (intval($dc_type_id))
+        {
+          $this->informationObject->addTermRelation($dc_type_id, QubitTaxonomy::DC_TYPE_ID);
+          $this->foreignKeyUpdate = true;
+        }
+      }
+    }
+  }
+
 }

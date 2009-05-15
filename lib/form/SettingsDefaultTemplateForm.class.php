@@ -35,6 +35,7 @@ class SettingsDefaultTemplateForm extends sfForm
     $informationObjectTemplates = array(
       'isad' => __('ISAD(G), 2nd ed. International Council on Archives'),
       'dc' => __('Dublin Core, Version 1.1. Dublin Core Metadata Initiative'),
+      'mods' => __('MODS, Version 3.3. U.S. Library of Congress'),
       'rad' => __('RAD, July 2008 version. Canadian Council of Archives'),
     );
 

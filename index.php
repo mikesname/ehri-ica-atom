@@ -6,9 +6,19 @@
 // probably a sibling of the URL of this file.  Try to redirect the web browser
 // to the production frontend.
 
-$path = preg_replace('/\/[^\/]+\.php5?$/', null, isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : (isset($_SERVER['ORIG_SCRIPT_NAME']) ? $_SERVER['ORIG_SCRIPT_NAME'] : null));
+// Copied from sfInstallPlguinConfiguration::initialize()
+foreach (array('SCRIPT_NAME', 'ORIG_SCRIPT_NAME') as $key)
+{
+  if (isset($_SERVER[$key]))
+  {
+    $scriptName = $_SERVER[$key];
 
-$webUrl = $path.'/web/index.php';
+    break;
+  }
+}
 
+$webUrl = preg_replace('/\/[^\/]+\.php5?$/', '/web/index.php', $scriptName);
+
+// Copied from sfWebController::redirect()
 header('Location: '.$webUrl);
-echo '<html><head><meta http-equiv="refresh" content="0;url='.htmlspecialchars($webUrl, ENT_QUOTES, sfConfig::get('sf_charset')).'"/></head></html>';
+echo '<html><head><meta http-equiv="refresh" content="0;url='.htmlspecialchars($webUrl, ENT_QUOTES).'"/></head></html>';

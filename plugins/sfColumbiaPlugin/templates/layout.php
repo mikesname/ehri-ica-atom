@@ -11,7 +11,6 @@
 
     <div id="header">
 
-
     <div id="header-top">
       <?php include_component_slot('header') ?>
     <div class="menu-top">
@@ -23,25 +22,22 @@
 
     <div id="header-middle">
 
-    <div id="site-info">
+    <div id="header-block">
     <?php include_component_slot('BrowseBox') ?>
 
-    <div id="logo"><?php echo link_to(image_tag('/sfColumbiaPlugin/images/logo', array('alt' => sfConfig::get('app_name', 'Qubit'))),
-      array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
-    <?php if (strlen(sfConfig::get('app_site_information_site_title'))): ?>
-      <div id="website-name">
-      <?php echo link_to(__(sfConfig::get('app_site_information_site_title')),
-        array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
+    <?php if (sfConfig::get('app_toggleTitle')): ?>
+      <div id="website-name" class="transparent">
+        <?php echo link_to(__(sfConfig::get('app_siteTitle')), array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
+       </div>
+    <?php endif; ?>
+
+    <?php if (sfConfig::get('app_toggleDescription')): ?>
+      <div id="website-description" class="transparent">
+        <?php echo __(sfConfig::get('app_siteDescription')) ?>
       </div>
     <?php endif; ?>
 
-    <?php if (strlen(sfConfig::get('app_site_information_site_description'))): ?>
-    <div id="website-description">
-      <?php echo __(sfConfig::get('app_site_information_site_description')); ?>
-    </div>
-    <?php endif; ?>
-
-    </div> <!-- close site-info -->
+    </div> <!-- close header-block -->
     </div> <!-- close header-middle -->
 
     <div id="header-bottom">

@@ -23,42 +23,45 @@ class TermBrowseAction extends sfAction
   {
     //determine if user has edit priviliges
     $this->editCredentials = SecurityPriviliges::editCredentials($this->getUser(), 'term');
-    
+
     $this->culture = $this->getUser()->getCulture();
 
     if (null !== $this->getRequestParameter('termId'))
     {
       $options = array();
-      
+
       $this->termId = $this->getRequestParameter('termId');
       $this->term = QubitTerm::getById($this->termId);
       $this->forward404Unless(isset($this->term));
-      
+
       $options['culture'] = $this->culture;
 
       $this->sortColumn = $this->getRequestParameter('sortColumn', 'title');
       $options['sortColumn'] = $this->sortColumn;
-      
+
       $this->sortDirection = $this->getRequestParameter('sortDirection', 'ascending');
       $options['sortDirection'] = $this->sortDirection;
-      
+
       $this->page = $this->getRequestParameter('page', 1);
       $options['page'] = $this->page;
 
       $this->informationObjects = QubitObjectTermRelation::getTermBrowseList($this->termId, 'QubitInformationObject', $options);
+
+      // determine if system is set to "multi-repository"
+      $this->multiRepository = (sfConfig::get('app_multi_repository') !== '0');
 
       $this->setTemplate('browseTerm');
     }
     else
     {
       $options = array();
-      
+
       // Do cultural fallback
       $options['cultureFallback'] = true;
-      
+
       $this->sort = $this->getRequestParameter('sort', 'termNameUp');
       $options['sort'] = $this->sort;
-      
+
       // Get taxonomy id (default to "Subjects" taxonomy)
       if ($this->getRequestParameter('taxonomyId'))
       {
@@ -69,7 +72,7 @@ class TermBrowseAction extends sfAction
         $this->taxonomyId = QubitTaxonomy::SUBJECT_ID;
       }
       $options['taxonomyId'] = $this->taxonomyId;
-    
+
       // Get taxonomy object and term list
       $this->taxonomy = QubitTaxonomy::getById($this->taxonomyId);
       $this->terms = QubitTerm::getBrowseList($this->culture, new Criteria, $options);

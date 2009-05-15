@@ -6,7 +6,7 @@
 <tr>
   <td colspan="2" class="headerCell">
   <?php if ($editCredentials): ?>
-    <?php echo link_to(render_title(QubitDc::getLabel($informationObject)), 'informationobject/editDc/?id='.$informationObject->getId()); ?>
+    <?php echo link_to(render_title(QubitDc::getLabel($informationObject)), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())); ?>
   <?php else: ?>
     <?php echo render_title(QubitDc::getLabel($informationObject)); ?>
   <?php endif; ?>
@@ -84,12 +84,12 @@
 <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (count($materialTypes) > 0) : ?>
-<?php foreach ($materialTypes as $materialType): ?>
+<?php if (count($dcTypes) > 0) : ?>
+<?php foreach ($dcTypes as $dcType): ?>
   <tr>
     <th><?php echo __('type'); ?></th>
     <td>
-      <?php echo $materialType->getTerm() ?><br />
+      <?php echo $dcType ?><br />
     </td>
   </tr>
 <?php endforeach; ?>
@@ -128,33 +128,27 @@
 <?php endif; ?>
 
 <?php if (count($languageCodes) > 0) : ?>
-<tr>
-<th><?php echo __('language'); ?></th>
-<td>
-      <?php foreach ($languageCodes as $languageCode): ?>
+  <?php foreach ($languageCodes as $languageCode): ?>
+    <tr><th><?php echo __('language'); ?></th><td>
     <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))); ?><br />
+    </td></tr>
   <?php endforeach; ?>
-</td></tr>
 <?php endif; ?>
 
 <?php if (count($subjectAccessPoints) > 0) : ?>
-<tr>
-<th><?php echo __('subject'); ?></th>
-<td>
   <?php foreach ($subjectAccessPoints as $subject): ?>
+    <tr><th><?php echo __('subject'); ?></th><td>
     <?php echo link_to($subject->getTerm(), 'term/browse?termId='.$subject->getTermId()); ?><br />
+    </td></tr>
   <?php endforeach; ?>
-</td></tr>
 <?php endif; ?>
 
 <?php if (count($placeAccessPoints) > 0) : ?>
-<tr>
-<th><?php echo __('coverage'); ?></th>
-<td>
   <?php foreach ($placeAccessPoints as $place): ?>
+    <tr><th><?php echo __('coverage'); ?></th><td>
     <?php echo link_to($place->getTerm(), 'term/browse?termId='.$place->getTermId()); ?><br />
+    </td></tr>
   <?php endforeach; ?>
-</td></tr>
 <?php endif; ?>
 
 <?php if (strlen($value = $informationObject->getLocationOfOriginals(array('cultureFallback' => true))) > 0) : ?>

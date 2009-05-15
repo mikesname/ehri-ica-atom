@@ -19,16 +19,16 @@
 
     <div id="header">
       <div id="logo-floater">
-        <h1><?php echo image_tag('logo', array('alt' => sfConfig::get('app_name', 'Qubit'), 'id' => 'logo')) ?><div><?php echo sfConfig::get('app_name', 'Qubit') ?></div></h1>
+        <h1><?php echo image_tag('logo', array('alt' => $sf_response->getTitle(), 'id' => 'logo')) ?><div><?php echo $sf_response->getTitle() ?></div></h1>
       </div>
     </div>
 
     <div class="sidebar">
       <ol class="task-list">
-        <li<?php switch ($sf_request->getParameter('action')): case 'check': ?> class="active"<?php break; case 'configure': case 'load': case 'finish': ?> class="done"<?php endswitch; ?>>Check system</li>
-        <li<?php switch ($sf_request->getParameter('action')): case 'configure': ?> class="active"<?php break; case 'load': case 'finish': ?> class="done"<?php endswitch; ?>>Configure database</li>
-        <li<?php switch ($sf_request->getParameter('action')): case 'load': ?> class="active"<?php break; case 'finish': ?> class="done"<?php endswitch; ?>>Load data</li>
-        <li<?php switch ($sf_request->getParameter('action')): case 'finish': ?> class="active"<?php endswitch; ?>>Finish install</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'checkSystem': ?> class="active"<?php break; case 'configureDatabase': case 'loadData': case 'configureSite': case 'finishInstall': ?> class="done"<?php endswitch; ?>>Check system</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'configureDatabase': ?> class="active"<?php break; case 'loadData': case 'configureSite': case 'finishInstall': ?> class="done"<?php endswitch; ?>>Configure database</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'loadData': ?> class="active"<?php break; case 'configureSite': case 'finishInstall': ?> class="done"<?php endswitch; ?>>Load data</li>
+        <li<?php switch ($sf_request->getParameter('action')): case 'configureSite': ?> class="active"<?php break; case 'finishInstall': ?> class="done"<?php endswitch; ?>>Configure site</li>
       </ol>
     </div>
 

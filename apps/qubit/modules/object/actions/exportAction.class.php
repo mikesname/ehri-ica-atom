@@ -22,6 +22,14 @@ class ObjectExportAction extends sfAction
   // export an object w/relations as an XML document with selected schema
   public function execute($request)
   {
+    $this->baseObject = QubitObject::getById($request->id);
+
+    // Check that object exists and that it is not the root
+    if (!isset($this->baseObject) || !isset($this->baseObject->parent))
+    {
+      $this->forward404();
+    }
+
     $this->forward404Unless($this->getRequestParameter('format'));
 
     // load the export config for this schema if it exists
@@ -31,44 +39,33 @@ class ObjectExportAction extends sfAction
       $this->schemaConfig = sfYaml::load($exportConfig);
     }
 
-    // use Symfony templates to render the export XML
-    $this->setLayout(false);
-    $xmlView = $this->getController()->getView($this->getModuleName(), $this->getActionName(), sfView::SUCCESS);
-    $xmlView->setDirectory(sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'export');
-
-    // create the base object(s) we're exporting for the schema
-    $this->baseObject = QubitObject::getById($this->getRequestParameter('id'));
-    $xmlView->baseObject = eval('return '.$this->baseObject->getClassName()."::getById(\$this->getRequestParameter('id'));");
-
-    // check that we have a valid base object with the given ID
-    $this->forward404Unless($xmlView->baseObject);
-
     // set the XML template to use for export
     if (!empty($this->schemaConfig['templateXML']))
     {
-      $templateFile = $this->schemaConfig['templateXML'];
+      $this->setTemplate($this->schemaConfig['templateXML']);
     }
     else
     {
-      $templateFile = $this->getRequestParameter('format').'.xml';
+      $this->setTemplate($this->getRequestParameter('format'));
     }
 
-    if (!file_exists($xmlView->getDirectory().DIRECTORY_SEPARATOR.$templateFile))
+    $request->setRequestFormat('xml');
+
+    if (!extension_loaded('xsl'))
     {
-
-      // error condition, unknown schema or no export template
-      $this->setLayout(null);
-      $this->errors = $this->getContext()->getI18N()->__('unknown schema or export format: "%format%"', array('%format%' => $this->getRequestParameter('format')));
-      return sfView::ERROR;
+      return;
     }
-    $xmlView->setTemplate($xmlView->getDirectory().DIRECTORY_SEPARATOR.$templateFile);
+
+    // Copied from sfExecutionFilter::executeView()
+    $view = $this->getController()->getView($this->moduleName, $this->actionName, sfView::SUCCESS);
+    $view->getAttributeHolder()->add($this->varHolder->getAll());
 
     // create a new DOM document to export
     $this->exportDOM = new DOMDocument('1,0', 'UTF-8');
     $this->exportDOM->encoding = 'UTF-8';
     $this->exportDOM->formatOutput = true;
     $this->exportDOM->preserveWhiteSpace = false;
-    $this->exportDOM->loadXML($xmlView->render());
+    $this->exportDOM->loadXML($view->render());
 
     // if no XSLs are specified, use the default one
     if (empty($this->schemaConfig['processXSLT']))
@@ -109,10 +106,6 @@ class ObjectExportAction extends sfAction
     }
 
     // send final XML out to the browser
-    header('Content-type: text/xml');
-    // TEMPORARY: remove for production
-    //    header('Content-Disposition: attachment; filename="'.strtoupper($this->getRequestParameter('format')).'-'.$this->baseObject->getClassName().'-'.$this->getRequestParameter('id').'.xml"');
-    echo $this->exportDOM->saveXML();
-    exit;
+    return $this->renderText($this->exportDOM->saveXML());
   }
 }

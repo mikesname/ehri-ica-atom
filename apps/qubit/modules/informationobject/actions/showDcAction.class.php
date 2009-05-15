@@ -35,6 +35,9 @@ class InformationObjectShowDcAction extends InformationObjectShowAction
     // run the core informationObject show action commands
     parent::execute($request);
 
+    // add DC specific commands
+    $this->dcTypes = QubitDc::getTypes($this->informationObject);
+
     if ($relation = $this->informationObject->getPropertyByName('information_object_relation'))
     {
       if (strlen($relation->getValue()) > 0)

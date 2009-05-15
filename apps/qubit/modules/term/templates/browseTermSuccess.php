@@ -22,9 +22,19 @@
 <?php if ($informationObject->getCollectionRoot()->getId() !== $informationObject->getId()): ?>
   <?php if (is_null($rootTitle = $informationObject->getCollectionRoot()->getTitle())) $rootTitle = $informationObject->getCollectionRoot()->getTitle(array('sourceCulture' => true)); ?>
   <br />
-  <?php echo __('Part of: ')?>
-  <?php echo link_to($rootTitle, 'informationobject/show?id='.$informationObject->getCollectionRoot()->getId()) ?></td>
+  <?php echo __('Part of').': ' ?>
+  <?php echo link_to($rootTitle, 'informationobject/show?id='.$informationObject->getCollectionRoot()->getId()) ?>
 <?php endif; ?>
+
+<?php if ($multiRepository): ?>
+  <?php if ($repository = $informationObject->getRepository(array('inherit' => true))): ?>
+     <br />
+     <?php echo __('Repository').': ' ?>
+       <?php echo link_to($repository, array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId())) ?>
+  <?php endif; ?>
+<?php endif; ?>
+
+</td>
 
 </td></tr>
 <?php endforeach; ?>

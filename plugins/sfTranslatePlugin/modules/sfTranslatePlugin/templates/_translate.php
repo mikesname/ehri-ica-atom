@@ -27,7 +27,7 @@
       </div>
       <div class="translation">
       </div>
-      <?php echo submit_tag(__('save translation'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('save translation')) ?>
     </form>
   </div>
 </div>

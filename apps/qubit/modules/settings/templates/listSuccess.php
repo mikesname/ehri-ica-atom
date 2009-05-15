@@ -18,7 +18,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+          <?php echo submit_tag(__('save')) ?>
         </div>
       </td>
     </tr>
@@ -68,7 +68,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+          <?php echo submit_tag(__('save')) ?>
         </div>
       </td>
     </tr>
@@ -96,7 +96,7 @@
         <td>&nbsp;</td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+            <?php echo submit_tag(__('save')) ?>
           </div>
         </td>
       </tr>
@@ -138,7 +138,7 @@
         <td>&nbsp;</td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+            <?php echo submit_tag(__('save')) ?>
           </div>
         </td>
       </tr>
@@ -186,7 +186,7 @@
         </td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo submit_tag(__('add'), array('class' => 'form-submit')) ?>
+            <?php echo submit_tag(__('add')) ?>
           </div>
         </td>
       </tr>
@@ -213,7 +213,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+          <?php echo submit_tag(__('save')) ?>
         </div>
       </td>
     </tr>

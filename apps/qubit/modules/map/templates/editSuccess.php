@@ -48,9 +48,9 @@
   &nbsp;<?php echo link_to(__('cancel'), 'map/list') ?>
 <?php endif; ?>
     <?php if ($map->getId()): ?>
-      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('save')) ?>
     <?php else: ?>
-      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('create')) ?>
     <?php endif; ?>
 </div>
 </form>

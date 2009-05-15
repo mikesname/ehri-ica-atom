@@ -238,12 +238,9 @@ EOF;
 
     $htaccessPath = sfConfig::get('sf_web_dir').'/.htaccess';
 
-    // TODO: no_script_name should be a genUrl() option
-    sfConfig::set('sf_no_script_name', false);
-    $url = sfContext::getInstance()->getController()->genUrl(array('module' => 'sfInstallPlugin', 'action' => 'callback'));
+    $url = sfContext::getInstance()->getRouting()->s('context', sfContext::getInstance()->getRequest()->s('sf_no_script_name', false)->getRequestContext())->generate(null, array('module' => 'sfInstallPlugin', 'action' => 'callback'));
 
-    sfConfig::set('sf_no_script_name', true);
-    $noScriptNameUrl = sfContext::getInstance()->getController()->genUrl(array('module' => 'sfInstallPlugin', 'action' => 'callback'));
+    $noScriptNameUrl = sfContext::getInstance()->getRouting()->s('context', sfContext::getInstance()->getRequest()->s('sf_no_script_name', true)->getRequestContext())->generate(null, array('module' => 'sfInstallPlugin', 'action' => 'callback'));
 
     // Remember if the .htaccess file already exists
     $htaccessExists = file_exists($htaccessPath);

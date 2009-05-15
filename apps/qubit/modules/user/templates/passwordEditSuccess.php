@@ -25,7 +25,7 @@
 <?php else: ?>
   &#160;<?php echo link_to(__('cancel'), 'user/show?id='.$user->getId()) ?>
 <?php endif; ?>
-<?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+<?php echo submit_tag(__('save')) ?>
 </div>
 
 </form>

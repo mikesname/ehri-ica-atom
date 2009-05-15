@@ -71,7 +71,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
   {
     $criteria->setLimit(1);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    return self::get($criteria, $options)->__get(0, array('defaultValue' => null));
   }
 
   public static function getById($id, array $options = array())
@@ -109,19 +109,21 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     $this->tables[] = Propel::getDatabaseMap(QubitDigitalObject::DATABASE_NAME)->getTable(QubitDigitalObject::TABLE_NAME);
   }
 
-  public function offsetExists($offset, array $options = array())
+  public function __isset($name)
   {
-    if (parent::offsetExists($offset, $options))
+    $args = func_get_args();
+
+    if (call_user_func_array(array($this, 'parent::__isset'), $args))
     {
       return true;
     }
 
-    if ('ancestors' == $offset)
+    if ('ancestors' == $name)
     {
       return true;
     }
 
-    if ('descendants' == $offset)
+    if ('descendants' == $name)
     {
       return true;
     }
@@ -129,14 +131,22 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     return false;
   }
 
-  public function offsetGet($offset, array $options = array())
+  public function __get($name)
   {
-    if (null !== $value = parent::offsetGet($offset, $options))
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
     {
       return $value;
     }
 
-    if ('ancestors' == $offset)
+    if ('ancestors' == $name)
     {
       if (!isset($this->values['ancestors']))
       {
@@ -156,7 +166,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       return $this->values['ancestors'];
     }
 
-    if ('descendants' == $offset)
+    if ('descendants' == $name)
     {
       if (!isset($this->values['descendants']))
       {
@@ -196,7 +206,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     if (isset($this->values['parentId']))
     {
       // Get the "original" parentId before any updates
-      $rowOffset = 0; 
+      $offset = 0; 
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -204,10 +214,10 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
         {
           if ('parentId' == $column->getPhpName())
           {
-            $originalParentId = $this->row[$rowOffset];
+            $originalParentId = $this->row[$offset];
             break;
           }
-          $rowOffset++;
+          $offset++;
         }
       }
       
@@ -384,7 +394,7 @@ unset($this->values['rgt']);
       $delta = $this->rgt - $this->lft + 1;
     }
 
-    if (null === $parent = $this->offsetGet('parent', array('connection' => $connection)))
+    if (null === $parent = $this->__get('parent', array('connection' => $connection)))
     {
       $statement = $connection->prepare('
         SELECT MAX('.QubitDigitalObject::RGT.')

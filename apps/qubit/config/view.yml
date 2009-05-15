@@ -3,8 +3,8 @@ default:
     content-type: text/html
 
   metas:
-    #title:        symfony project
-    #description:  symfony project
+    title:        ICA-AtoM
+    description:  Open archival description system
     #keywords:     symfony, project
     #language:     en
     #robots:       index, follow

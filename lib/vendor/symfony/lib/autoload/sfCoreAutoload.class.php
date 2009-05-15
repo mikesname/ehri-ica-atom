@@ -11,7 +11,7 @@
 /**
  * The current symfony version.
  */
-define('SYMFONY_VERSION', '1.2.6-DEV');
+define('SYMFONY_VERSION', '1.2.7-DEV');
 
 /**
  * sfCoreAutoload class.
@@ -22,7 +22,7 @@ define('SYMFONY_VERSION', '1.2.6-DEV');
  * @package    symfony
  * @subpackage autoload
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCoreAutoload.class.php 16834 2009-03-31 21:49:50Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfCoreAutoload.class.php 17692 2009-04-27 19:27:06Z Kris.Wallsmith $
  */
 class sfCoreAutoload
 {
@@ -301,6 +301,7 @@ class sfCoreAutoload
   'sfStreamLogger' => 'log',
   'sfVarLogger' => 'log',
   'sfWebDebugLogger' => 'log',
+  'sfPearConfig' => 'plugin',
   'sfPearDownloader' => 'plugin',
   'sfPearEnvironment' => 'plugin',
   'sfPearFrontendPlugin' => 'plugin',

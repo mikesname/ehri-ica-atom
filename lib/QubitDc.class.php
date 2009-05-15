@@ -164,9 +164,9 @@ class QubitDc
       $dcType[] = $collectionType;
     }
     */
-    if (count($materialTypes = $informationObject->getMaterialTypes()) > 0)
+    if (count(QubitDc::getDcTypes($informationObject)) > 0)
     {
-      foreach ($materialTypes as $type)
+      foreach (QubitDc::getDcTypes($informationObject) as $type)
       {
         $dcType[] = $type->getTerm();
       }
@@ -177,6 +177,11 @@ class QubitDc
     }
 
     return $dcType;
+  }
+
+  public static function getDcTypes($informationObject, array $options = array())
+  {
+    return $informationObject->getTermRelations(QubitTaxonomy::DC_TYPE_ID);
   }
 
   public static function getFormats($informationObject, array $options = array())

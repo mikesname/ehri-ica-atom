@@ -51,7 +51,7 @@ abstract class BaseHistoricalEvent extends QubitTerm implements ArrayAccess
   {
     $criteria->setLimit(1);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    return self::get($criteria, $options)->__get(0, array('defaultValue' => null));
   }
 
   public static function getById($id, array $options = array())

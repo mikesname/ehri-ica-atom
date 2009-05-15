@@ -48,9 +48,9 @@
     &#160;<?php echo link_to(__('cancel'), 'staticpage/list') ?>
   <?php endif; ?>
     <?php if ($staticPage->getId()): ?>
-      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('save')) ?>
     <?php else: ?>
-      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('create')) ?>
     <?php endif; ?>
 </div>
 

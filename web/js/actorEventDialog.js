@@ -76,7 +76,7 @@ function populateActorEventDialog(data)
   }
 
   // Select correct place in selectbox
-  var eventTypeIdOption = dialog.find('select[name="editActorEvent[eventTypeId]"] option[value=' + data.eventTypeId + ']');
+  var eventTypeIdOption = dialog.find('select[name="editActorEvent[eventTypeId]"] option[value=' + data.typeId + ']');
   if (eventTypeIdOption.length > 0)
   {
     eventTypeIdOption.get(0).selected = true;

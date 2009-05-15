@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfTask.class.php 12533 2008-11-01 13:33:00Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfTask.class.php 17474 2009-04-21 08:17:09Z fabien $
  */
 abstract class sfTask
 {
@@ -262,7 +262,7 @@ abstract class sfTask
 
       if ($argument->isArray())
       {
-        $arguments[] = '... [nameN]';
+        $arguments[] = sprintf('... [%sN]', $argument->getName());
       }
     }
 

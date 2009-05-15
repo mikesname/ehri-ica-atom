@@ -861,7 +861,7 @@ function input_date_tag($name, $value = null, $options = array())
  */
 function submit_tag($value = 'Save changes', $options = array())
 {
-  return tag('input', array_merge(array('type' => 'submit', 'value' => $value), _convert_options_to_javascript(_convert_options($options))));
+  return tag('input', array_merge(array('class' => 'form-submit', 'type' => 'submit', 'value' => $value), _convert_options_to_javascript(_convert_options($options))));
 }
 
 /**

@@ -107,6 +107,13 @@ QubitMenu:
       pt: termo
       sl: izraz
     path: term/list
+  QubitMenu_mainmenu_addedit_recentUpdates:
+    parent_id: QubitMenu_mainmenu_addedit
+    source_culture: en
+    name: 'recent updates'
+    label:
+      en: 'Recent updates'
+    path: search/recentUpdates
   QubitMenu_mainmenu_importexport_importexport:
     parent_id: QubitMenu_mainmenu_importexport
     source_culture: en
@@ -171,13 +178,27 @@ QubitMenu:
     label:
       en: Menus
     path: menu/list
-  QubitMenu_mainmenu_admin_recentUpdates:
+  QuitMenu_mainmenu_admin_plugins:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
-    name: 'recent updates'
+    name: themes
     label:
-      en: 'Recent updates'
-    path: search/recentUpdates
+      en: Themes
+    path: sfPluginAdminPlugin/index
+  QubitMenu_mainmenu_admin_plugins_list:
+    parent_id: QuitMenu_mainmenu_admin_plugins
+    name: list
+    path: sfPluginAdminPlugin/index
+    source_culture: en
+    label:
+      en: list
+  QubitMenu_mainmenu_admin_plugins_configure:
+    parent_id: QuitMenu_mainmenu_admin_plugins
+    name: configure
+    path: sfThemePlugin/index
+    source_culture: en
+    label:
+      en: configure
   QubitMenu_quicklinks_home:
     parent_id: QubitMenu_quicklinks
     source_culture: en

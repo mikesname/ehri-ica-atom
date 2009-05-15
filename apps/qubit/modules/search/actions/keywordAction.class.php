@@ -55,8 +55,8 @@ class SearchKeywordAction extends sfAction
       //set default page
       $page = 1;
     }
-      $this->results = new QubitSearchPager($hits, $page);
 
+    $this->results = new QubitSearchPager($hits, $page);
   }
 
   public function handleError()

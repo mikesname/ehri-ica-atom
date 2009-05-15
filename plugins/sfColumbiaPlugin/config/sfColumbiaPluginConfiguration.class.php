@@ -19,6 +19,15 @@
 
 class sfColumbiaPluginConfiguration extends sfPluginConfiguration
 {
+  /**
+   * @see sfPluginConfiguration
+   */
+  public function configure()
+  {
+    $this->summary = 'Fixed width theme in shades of blue, with header image from Columbia Street, New Westminster (1907).';
+    $this->version = '1.0.0';
+  }
+
   public function contextLoadFactories(sfEvent $event)
   {
     $context = $event->getSubject();

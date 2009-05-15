@@ -253,32 +253,32 @@
           <td class="headerCell" style="width: 40%;"><i><?php echo __('or'); ?> </i><?php echo __('add new name'); ?></td>
         </tr>
         <tr>
-          <td colspan ="2">
+          <td colspan ="2" class="noline">
             <?php echo select_tag('editActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
               array('include_blank' => true, 'cultureFallback' => true))) ?>
           </td>
           <td class="noline"><?php echo input_tag('editActorEvent[newActorName]') ?></td>
         </tr>
         <tr>
-          <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
+          <td colspan="2" class="noline" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
         </tr>
         <tr>
-          <td colspan="2"><?php echo select_tag('editActorEvent[eventTypeId]', options_for_select($actorEventTypes, $defaultActorEventType))?></td>
-          <td><?php echo select_tag('editActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
+          <td colspan="2" class="noline"><?php echo select_tag('editActorEvent[eventTypeId]', options_for_select($actorEventTypes, $defaultActorEventType))?></td>
+          <td class="noline"><?php echo select_tag('editActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
         </tr>
         <tr>
           <td class="headerCell"><?php echo __('year'); ?></td><td class="headerCell"><?php echo __('end year'); ?></td>
           <td class="headerCell"><?php echo __('date display (defaults to date range)'); ?></td></tr>
         <tr>
-          <td><?php echo input_tag('editActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('editActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('editActorEvent[dateDisplay]') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[dateDisplay]') ?></td>
         </tr>
         <tr>
           <td colspan="3" class="headerCell"><?php echo __('note'); ?></td>
         </tr>
         <tr>
-          <td colspan="3"><?php echo input_tag('editActorEvent[description]') ?></td>
+          <td colspan="3" class="noline"><?php echo input_tag('editActorEvent[description]') ?></td>
         </tr>
       </table>
       </fieldset>
@@ -747,9 +747,9 @@ EOF
       <?php endif; ?>
 
       <?php if ($informationObject->getId()): ?>
-        <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+        <?php echo submit_tag(__('save')) ?>
       <?php else: ?>
-        <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
+        <?php echo submit_tag(__('create')) ?>
       <?php endif; ?>
     </div>
 

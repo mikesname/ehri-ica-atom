@@ -188,18 +188,6 @@ class SearchIndex
     $doc->addField(Zend_Search_Lucene_Field::Unstored('locationofcopies', strtolower($informationObject->getLocationOfCopies(array('culture' => $language))), $encoding));
     $doc->addField(Zend_Search_Lucene_Field::Unstored('relatedunitsofdescription', strtolower($informationObject->getRelatedUnitsOfDescription(array('culture' => $language))), $encoding));
 
-    // COLLECTION ROOT
-    if ($informationObject->getCollectionRoot())
-    {
-      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectionid', $informationObject->getCollectionRoot()->getId()));
-      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectiontitle', $informationObject->getCollectionRoot()->getTitle(), $encoding));
-    }
-    else
-    {
-      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectionid', null));
-      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('collectiontitle', null));
-    }
-
     // SUBJECTS
     $subjectField = Zend_Search_Lucene_Field::Unstored('subject', strtolower($informationObject->getSubjectsString($language)), $encoding);
     //boost the hit relevance for the subject field

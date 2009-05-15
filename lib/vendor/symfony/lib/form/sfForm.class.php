@@ -61,7 +61,9 @@ class sfForm implements ArrayAccess, Iterator, Countable
     $this->errorSchema     = new sfValidatorErrorSchema($this->validatorSchema);
 
 $name = rand();
+
 $formatter = new sfDrupalWidgetFormSchemaFormatter($this->widgetSchema);
+$formatter->form = $this;
 
 $this->widgetSchema->addFormFormatter($name, $formatter);
 $this->widgetSchema->setFormFormatterName($name);

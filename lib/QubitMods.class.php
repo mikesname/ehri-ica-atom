@@ -28,8 +28,92 @@
 
 class QubitMods
 {
+  public static function getLabel($informationObject, array $options = array())
+  {
+    sfLoader::loadHelpers('Text');
+
+    $label = $informationObject->getLevelOfDescription();
+
+    if ($informationObject->getIdentifier())
+    {
+      $label .= ' '.$informationObject->getIdentifier();
+    }
+
+    if ($label)
+    {
+      $label .= ' - ';
+    }
+
+    if (strlen($title = $informationObject->getTitle()) < 1)
+    {
+      $title = $informationObject->getTitle(array('sourceCulture' => true));
+    }
+
+    $label .= $title;
+
+    if (isset($options['truncate']))
+    {
+      $label = truncate_text($label, $options['truncate']);
+    }
+
+    return $label;
+  }
+
   public static function getIdentifier($informationObject, array $options = array())
   {
     return QubitIsad::getReferenceCode($informationObject);
   }
+
+  public static function getTypes($informationObject, array $options = array())
+  {
+    return $informationObject->getTermRelations(QubitTaxonomy::MODS_RESOURCE_TYPE_ID);
+  }
+
+  public static function getNames($informationObject, array $options = array())
+  {
+    $nameEvents = array();
+    $actorEvents = $informationObject->getActorEvents();
+    foreach ($actorEvents as $event)
+    {
+      if ($event->getActorId())
+      {
+        $nameEvents[] = $event;
+      }
+    }
+
+    return $nameEvents;
+  }
+
+  public static function getLanguageCodes($informationObject, array $options = array())
+  {
+    return $informationObject->getProperties($name = 'information_object_language');
+  }
+
+  public static function getDigitalObject($informationObject, array $options = array())
+  {
+    $digitalObject = $informationObject->getDigitalObject();
+    if (isset($digitalObject))
+    {
+
+      return $digitalObject;
+    }
+    else
+    {
+
+      return null;
+    }
+  }
+
+  public static function getLocationUrl($informationObject, array $options = array())
+  {
+    if ($digitalObject = $informationObject->getDigitalObject())
+    {
+      return 'http://'.$options['request']->getHost().$options['request']->getRelativeUrlRoot().$digitalObject->getFullPath();
+    }
+    else
+    {
+      return null;
+    }
+  }
+
 }

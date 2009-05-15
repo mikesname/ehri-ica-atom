@@ -24,7 +24,7 @@
   <fieldset class="collapsible collapsed">
 <?php endif; ?>
 
-    <legend><?php echo __('resource metadata'); ?></legend>
+    <legend><?php echo __('Dublin Core elements'); ?></legend>
 
     <div class="form-item">
       <label for="identifier"><?php echo __('identifier'); ?></label>
@@ -39,7 +39,7 @@
       <?php echo object_input_tag($informationObject, 'getTitle', array('size' => 20)) ?>
     </div>
 
-    <label for="actors"><?php echo __('creator').', '.__('publisher').', '.__('contributor'); ?></label>
+    <label for="actors"><?php echo __('creator').', '.__('publisher').', '.__('contributor').'   '.__('and/or dates'); ?></label>
     <table id="actorEvents" class="inline" style="margin-top: 1px;">
       <tr>
         <th style="width: 35%;"><?php echo __('Name') ?></th>
@@ -86,49 +86,49 @@
       <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
       <table id="actorEvent" class="inline">
         <tr>
-          <td colspan ="2" class="headerCell" style="width: 55%;"><?php echo __('name'); ?></td>
+          <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('name'); ?></td>
           <td class="headerCell" style="width: 40%;"><i><?php echo __('or'); ?> </i><?php echo __('add new name'); ?></td>
         </tr>
         <tr>
-          <td colspan ="2">
+          <td colspan ="2" class="noline">
             <?php echo select_tag('editActorEvent[actorId]', QubitActor::getOptionsForSelectList(QubitTerm::CREATION_ID,
               array('include_blank' => true, 'cultureFallback' => true))) ?>
           </td>
-          <td><?php echo input_tag('editActorEvent[newActorName]') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[newActorName]') ?></td>
         </tr>
         <tr>
           <td colspan="2" class="headerCell" style="width: 55%;"><?php echo __('event type') ?></td><td class="headerCell" style="width: 40%;"><?php echo __('place') ?></td>
         </tr>
         <tr>
-          <td colspan="2"><?php echo select_tag('editActorEvent[eventTypeId]', options_for_select($dcEventTypes, $defaultActorEventType))?></td>
-          <td><?php echo select_tag('editActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
+          <td colspan="2" class="noline"><?php echo select_tag('editActorEvent[eventTypeId]', options_for_select($dcEventTypes, $defaultActorEventType))?></td>
+          <td class="noline"><?php echo select_tag('editActorEvent[placeId]', options_for_select($actorEventPlaces))?></td>
         </tr>
         <tr>
           <td class="headerCell"><?php echo __('year'); ?></td><td class="headerCell"><?php echo __('end year'); ?></td>
           <td class="headerCell"><?php echo __('date display (defaults to date range)'); ?></td></tr>
         <tr>
-          <td><?php echo input_tag('editActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('editActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
-          <td><?php echo input_tag('editActorEvent[dateDisplay]') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[year]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[endYear]', '', 'maxlength=4 style="width:35px;"') ?></td>
+          <td class="noline"><?php echo input_tag('editActorEvent[dateDisplay]') ?></td>
         </tr>
         <tr>
           <td colspan="3" class="headerCell"><?php echo __('note'); ?></td>
         </tr>
         <tr>
-          <td colspan="3"><?php echo input_tag('editActorEvent[description]') ?></td>
+          <td colspan="3" class="noline"><?php echo input_tag('editActorEvent[description]') ?></td>
         </tr>
       </table>
       </fieldset>
     </div>
 
     <div class="form-item">
-      <label for="material_type_id"><?php echo __('type'); ?></label>
-      <?php if ($materialTypes): ?>
-        <?php foreach ($materialTypes as $material): ?>
-          <?php echo $material->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$material->getId().'&returnTemplate=dc') ?><br/>
+      <label for="dc_type_id"><?php echo __('type'); ?></label>
+      <?php if ($dcTypes): ?>
+        <?php foreach ($dcTypes as $dcType): ?>
+          <?php echo $dcType->getTerm() ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), 'informationobject/deleteTermRelation?TermRelationId='.$dcType->getId().'&returnTemplate=dc') ?><br/>
         <?php endforeach; ?>
       <?php endif; ?>
-      <?php echo object_select_tag($newMaterialType, 'getTermId', array('name' => 'material_type_id', 'id' => 'material_type_id', 'include_blank' => true, 'peer_method' => 'getMaterialTypes', 'class'=>'multiInstance')) ?>
+      <?php echo select_tag('dc_type_id', options_for_select(QubitTerm::getOptionsForSelectList(QubitTaxonomy::DC_TYPE_ID), null, array('include_blank' => true)), array('class'=>'multiInstance')) ?>
     </div>
 
     <div class="form-item">
@@ -313,9 +313,9 @@ EOF
     <?php endif; ?>
 
     <?php if ($informationObject->getId()): ?>
-      <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('save')) ?>
     <?php else: ?>
-      <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('create')) ?>
     <?php endif; ?>
   </div>
 

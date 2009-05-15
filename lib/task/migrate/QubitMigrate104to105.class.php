@@ -25,73 +25,19 @@
  * @version    svn: $Id$
  * @author     David Juhasz <david@artefactual.com
  */
-class QubitMigrate104to105
+class QubitMigrate104to105 extends QubitMigrate
 {
-  private $data;
-
-  public function __construct($data)
-  {
-    $this->data = $data;
-  }
-
-  /**
-   * Do migration of data from 1.0.3 to 1.0.4
-   *
-   * @return array modified data
-   */
-  public function execute()
-  {
-    $this->alterData();
-    $this->sortData();
-
-    return $this->getData();
-  }
-
-  /**
-   * Getter for migration data
-   *
-   * @return array arrayized yaml data
-   */
-  public function getData()
-  {
-    return $this->data;
-  }
-
-  /**
-   * Wrapper for QubitMigrateData::findRowKeyForColumnValue() method.
-   *
-   * @param string $className
-   * @param string $searchColumn
-   * @param string $searchKey
-   * @return string key for matched row
-   */
-  private function getRowKey($className, $searchColumn, $searchKey)
-  {
-    return QubitMigrateData::findRowKeyForColumnValue(
-    $this->data[$className], $searchColumn, $searchKey);
-  }
-
-  /**
-   * Convienience method for grabbing a QubitTerm row key based on the value of
-   * the 'id' column
-   *
-   * @param string $searchKey
-   * @return string key for matched row
-   */
-  private function getTermKey($searchKey)
-  {
-    return $this->getRowKey('QubitTerm', 'id', $searchKey);
-  }
-
   /**
    * Controller for calling methods to alter data
    *
    * @return QubitMigrate104to105 this object
    */
-  private function alterData()
+  protected function alterData()
   {
+    // Delete "stub" objects
+    $this->deleteStubObjects();
+
     // Alter qubit classes (methods ordered alphabetically)
-    $this->alterQubitEvents();
     $this->alterQubitInformationObjects();
     $this->alterQubitSettings();
     $this->alterQubitStaticPages();
@@ -106,7 +52,7 @@ class QubitMigrate104to105
    *
    * @return QubitMigrate104to105 this object
    */
-  public function sortData()
+  protected function sortData()
   {
     // Sort objects within classes
     $this->sortQubitInformationObjects();
@@ -114,25 +60,6 @@ class QubitMigrate104to105
 
     // Sort classes
     $this->sortClasses();
-
-    return $this;
-  }
-
-  /**
-   * Alter QubitEvent data
-   *
-   * @return QubitMigrate104to105 this object
-   */
-  private function alterQubitEvents()
-  {
-    // Delete "stub" QubitEvent objects that have no valid "event type"
-    foreach ($this->data['QubitEvent'] as $key => $event)
-    {
-      if (!isset($event['type_id']))
-      {
-        unset($this->data['QubitEvent'][$key]);
-      }
-    }
 
     return $this;
   }
@@ -147,7 +74,7 @@ class QubitMigrate104to105
     // Initialize oai_identifier auto-increment column with root Info Object
     if ($rootInfoObjectKey = $this->getRowKey('QubitInformationObject', 'lft', '1'))
     {
-      $this->data['QubitInformationObject'][$rootInfoObjectKey]['local_oai_identifier'] = '10001';
+      $this->data['QubitInformationObject'][$rootInfoObjectKey]['oai_local_identifier'] = '10001';
     }
 
     return $this;
@@ -504,7 +431,7 @@ class QubitMigrate104to105
         {
           if ($newRow['lft'] > $row['lft'])
           {
-            QubitMigrateData::array_insert($newList, $i, array($key => $row));
+            QubitMigrate::array_insert($newList, $i, array($key => $row));
             break;
           }
           $i++;

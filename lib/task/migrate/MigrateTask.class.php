@@ -27,11 +27,13 @@
  */
 class UpgradeTask extends sfBaseTask
 {
-  // Qubit Generic Icon list
+  // list of migratable versions
   private $validVersions = array(
     '1.0.3',
     '1.0.4',
-    '1.0.5'
+    '1.0.5',
+    '1.0.6',
+    '1.0.7'
   );
 
   /**
@@ -93,7 +95,7 @@ EOF;
     $this->initialVersion = $this->getDataVersion($data);
     $this->logSection('migrate', 'Initial data version '.$this->initialVersion);
 
-    $migrator = new QubitMigrateData($data);
+    $migrator = new QubitMigrator($data);
 
     // Incrementally call the upgrade task for each intervening version from
     // initial version to the target version
@@ -113,6 +115,14 @@ EOF;
           case '1.0.4':
             $migrator->migrate104to105();
             $this->logSection('migrate', 'Data migrated to version 1.0.5');
+            break;
+          case '1.0.5':
+            $migrator->migrate105to106();
+            $this->logSection('migrate', 'Data migrated to version 1.0.6');
+            break;
+          case '1.0.6':
+            $migrator->migrate106to107();
+            $this->logSection('migrate', 'Data migrated to version 1.0.7');
             break;
         }
       }

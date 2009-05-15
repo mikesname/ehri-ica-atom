@@ -453,7 +453,7 @@ EOF;
   {
     \$criteria->setLimit(1);
 
-    return self::get(\$criteria, \$options)->offsetGet(0, array('defaultValue' => null));
+    return self::get(\$criteria, \$options)->__get(0, array('defaultValue' => null));
   }
 
 EOF;
@@ -655,14 +655,14 @@ EOF;
     {
       $script .= <<<EOF
 
-  protected function rowOffsetGet(\$offset, \$rowOffset, array \$options = array())
+  protected function rowOffsetGet(\$name, \$offset)
   {
-    if (array_key_exists(\$offset, \$this->values))
+    if (array_key_exists(\$name, \$this->values))
     {
-      return \$this->values[\$offset];
+      return \$this->values[\$name];
     }
 
-    if (!array_key_exists(\$rowOffset, \$this->row))
+    if (!array_key_exists(\$offset, \$this->row))
     {
       if (\$this->new)
       {
@@ -672,7 +672,7 @@ EOF;
       \$this->refresh();
     }
 
-    return \$this->row[\$rowOffset];
+    return \$this->row[\$offset];
   }
 
 EOF;
@@ -680,15 +680,37 @@ EOF;
 
     $script .= <<<EOF
 
-  public function offsetExists(\$offset, array \$options = array())
+  public function __isset(\$name)
   {
 
 EOF;
 
+    if (isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+    \$args = func_get_args();
+
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+    \$options = array();
+    if (1 < count(\$args))
+    {
+      \$options = \$args[1];
+    }
+
+
+EOF;
+    }
+
     if (isset($this->inheritanceFk))
     {
       $script .= <<<EOF
-    if (parent::offsetExists(\$offset, \$options))
+    if (call_user_func_array(array(\$this, 'parent::__isset'), \$args))
     {
       return true;
     }
@@ -699,22 +721,22 @@ EOF;
     if (!isset($this->inheritanceFk))
     {
       $script .= <<<EOF
-    \$rowOffset = 0;
+    \$offset = 0;
     foreach (\$this->tables as \$table)
     {
       foreach (\$table->getColumns() as \$column)
       {
-        if (\$offset == \$column->getPhpName())
+        if (\$name == \$column->getPhpName())
         {
-          return null !== \$this->rowOffsetGet(\$offset, \$rowOffset, \$options);
+          return null !== \$this->rowOffsetGet(\$name, \$offset);
         }
 
-        if (\$offset.'Id' == \$column->getPhpName())
+        if (\$name.'Id' == \$column->getPhpName())
         {
-          return null !== \$this->rowOffsetGet(\$offset.'Id', \$rowOffset, \$options);
+          return null !== \$this->rowOffsetGet(\$name.'Id', \$offset);
         }
 
-        \$rowOffset++;
+        \$offset++;
       }
     }
 
@@ -725,12 +747,12 @@ EOF;
     {
       $script .= <<<EOF
 
-    if (\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetExists(\$offset, \$options))
+    if (call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options), '__isset'), \$args))
     {
       return true;
     }
 
-    if (!empty(\$options['cultureFallback']) && \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->offsetExists(\$offset, \$options))
+    if (!empty(\$options['cultureFallback']) && call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options), '__isset'), \$args))
     {
       return true;
     }
@@ -742,12 +764,12 @@ EOF;
     {
       $script .= <<<EOF
 
-    if ('ancestors' == \$offset)
+    if ('ancestors' == \$name)
     {
       return true;
     }
 
-    if ('descendants' == \$offset)
+    if ('descendants' == \$name)
     {
       return true;
     }
@@ -766,9 +788,11 @@ EOF;
     {
       $script .= <<<EOF
 
-  public function __isset(\$name)
+  public function offsetExists(\$offset)
   {
-    return \$this->offsetExists(\$name);
+    \$args = func_get_args();
+
+    return call_user_func_array(array(\$this, '__isset'), \$args);
   }
 
 EOF;
@@ -776,15 +800,37 @@ EOF;
 
     $script .= <<<EOF
 
-  public function offsetGet(\$offset, array \$options = array())
+  public function __get(\$name)
   {
 
 EOF;
 
+    if (isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n') || isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
+    {
+      $script .= <<<EOF
+    \$args = func_get_args();
+
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n') || isset($this->nestedSetLeftColumn) && isset($this->nestedSetRightColumn))
+    {
+      $script .= <<<EOF
+    \$options = array();
+    if (1 < count(\$args))
+    {
+      \$options = \$args[1];
+    }
+
+
+EOF;
+    }
+
     if (isset($this->inheritanceFk))
     {
       $script .= <<<EOF
-    if (null !== \$value = parent::offsetGet(\$offset, \$options))
+    if (null !== \$value = call_user_func_array(array(\$this, 'parent::__get'), \$args))
     {
       return \$value;
     }
@@ -795,24 +841,24 @@ EOF;
     if (!isset($this->inheritanceFk))
     {
       $script .= <<<EOF
-    \$rowOffset = 0;
+    \$offset = 0;
     foreach (\$this->tables as \$table)
     {
       foreach (\$table->getColumns() as \$column)
       {
-        if (\$offset == \$column->getPhpName())
+        if (\$name == \$column->getPhpName())
         {
-          return \$this->rowOffsetGet(\$offset, \$rowOffset, \$options);
+          return \$this->rowOffsetGet(\$name, \$offset);
         }
 
-        if (\$offset.'Id' == \$column->getPhpName())
+        if (\$name.'Id' == \$column->getPhpName())
         {
           \$relatedTable = \$column->getTable()->getDatabaseMap()->getTable(\$column->getRelatedTableName());
 
-          return call_user_func(array(\$relatedTable->getClassName(), 'getBy'.ucfirst(\$relatedTable->getColumn(\$column->getRelatedColumnName())->getPhpName())), \$this->rowOffsetGet(\$offset.'Id', \$rowOffset));
+          return call_user_func(array(\$relatedTable->getClassName(), 'getBy'.ucfirst(\$relatedTable->getColumn(\$column->getRelatedColumnName())->getPhpName())), \$this->rowOffsetGet(\$name.'Id', \$offset));
         }
 
-        \$rowOffset++;
+        \$offset++;
       }
     }
 
@@ -823,17 +869,17 @@ EOF;
     {
       $script .= <<<EOF
 
-    if (null !== \$value = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetGet(\$offset, \$options))
+    if (null !== \$value = call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options), '__get'), \$args))
     {
       if (!empty(\$options['cultureFallback']) && 1 > strlen(\$value))
       {
-        \$value = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->offsetGet(\$offset, \$options);
+        \$value = call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options), '__get'), \$args);
       }
 
       return \$value;
     }
 
-    if (!empty(\$options['cultureFallback']) && null !== \$value = \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options)->offsetGet(\$offset, \$options))
+    if (!empty(\$options['cultureFallback']) && null !== \$value = call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(array('sourceCulture' => true) + \$options), '__get'), \$args))
     {
       return \$value;
     }
@@ -845,7 +891,7 @@ EOF;
     {
       $script .= <<<EOF
 
-    if ('ancestors' == \$offset)
+    if ('ancestors' == \$name)
     {
       if (!isset(\$this->values['ancestors']))
       {
@@ -865,7 +911,7 @@ EOF;
       return \$this->values['ancestors'];
     }
 
-    if ('descendants' == \$offset)
+    if ('descendants' == \$name)
     {
       if (!isset(\$this->values['descendants']))
       {
@@ -897,96 +943,30 @@ EOF;
     {
       $script .= <<<EOF
 
-  public function __get(\$name)
+  public function offsetGet(\$offset)
   {
-    return \$this->offsetGet(\$name);
+    \$args = func_get_args();
+
+    return call_user_func_array(array(\$this, '__get'), \$args);
   }
 
 EOF;
     }
 
     if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
-    {
-      $script .= <<<EOF
-
-  public function offsetSet(\$offset, \$value, array \$options = array())
-  {
-
-EOF;
-    }
-
-    if (isset($this->inheritanceFk) && $this->getTable()->getAttribute('isI18n'))
-    {
-      $script .= <<<EOF
-    parent::offsetSet(\$offset, \$value, \$options);
-
-EOF;
-    }
-
-    if (!isset($this->inheritanceFk))
-    {
-      $script .= <<<EOF
-    \$rowOffset = 0;
-    foreach (\$this->tables as \$table)
-    {
-      foreach (\$table->getColumns() as \$column)
-      {
-        if (\$offset == \$column->getPhpName())
-        {
-          \$this->values[\$offset] = \$value;
-        }
-
-        if (\$offset.'Id' == \$column->getPhpName())
-        {
-          \$relatedTable = \$column->getTable()->getDatabaseMap()->getTable(\$column->getRelatedTableName());
-
-          \$this->values[\$offset.'Id'] = \$value->offsetGet(\$relatedTable->getColumn(\$column->getRelatedColumnName())->getPhpName(), \$options);
-        }
-
-        \$rowOffset++;
-      }
-    }
-
-EOF;
-    }
-
-    if ($this->getTable()->getAttribute('isI18n'))
-    {
-      $script .= <<<EOF
-
-    \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetSet(\$offset, \$value, \$options);
-
-EOF;
-    }
-
-    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
-    {
-      $script .= <<<EOF
-
-    return \$this;
-  }
-
-EOF;
-    }
-
-    if (!isset($this->inheritanceFk))
     {
       $script .= <<<EOF
 
   public function __set(\$name, \$value)
   {
-    return \$this->offsetSet(\$name, \$value);
-  }
+    \$args = func_get_args();
 
-EOF;
+    \$options = array();
+    if (2 < count(\$args))
+    {
+      \$options = \$args[2];
     }
 
-    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
-    {
-      $script .= <<<EOF
-
-  public function offsetUnset(\$offset, array \$options = array())
-  {
 
 EOF;
     }
@@ -994,7 +974,7 @@ EOF;
     if (isset($this->inheritanceFk) && $this->getTable()->getAttribute('isI18n'))
     {
       $script .= <<<EOF
-    parent::offsetUnset(\$offset, \$options);
+    call_user_func_array(array(\$this, 'parent::__set'), \$args);
 
 EOF;
     }
@@ -1002,22 +982,24 @@ EOF;
     if (!isset($this->inheritanceFk))
     {
       $script .= <<<EOF
-    \$rowOffset = 0;
+    \$offset = 0;
     foreach (\$this->tables as \$table)
     {
       foreach (\$table->getColumns() as \$column)
       {
-        if (\$offset == \$column->getPhpName())
+        if (\$name == \$column->getPhpName())
         {
-          \$this->values[\$offset] = null;
+          \$this->values[\$name] = \$value;
         }
 
-        if (\$offset.'Id' == \$column->getPhpName())
+        if (\$name.'Id' == \$column->getPhpName())
         {
-          \$this->values[\$offset.'Id'] = null;
+          \$relatedTable = \$column->getTable()->getDatabaseMap()->getTable(\$column->getRelatedTableName());
+
+          \$this->values[\$name.'Id'] = \$value->__get(\$relatedTable->getColumn(\$column->getRelatedColumnName())->getPhpName(), \$options);
         }
 
-        \$rowOffset++;
+        \$offset++;
       }
     }
 
@@ -1028,7 +1010,7 @@ EOF;
     {
       $script .= <<<EOF
 
-    \$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options)->offsetUnset(\$offset, \$options);
+    call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options), '__set'), \$args);
 
 EOF;
     }
@@ -1047,9 +1029,102 @@ EOF;
     {
       $script .= <<<EOF
 
+  public function offsetSet(\$offset, \$value)
+  {
+    \$args = func_get_args();
+
+    return call_user_func_array(array(\$this, '__set'), \$args);
+  }
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
   public function __unset(\$name)
   {
-    return \$this->offsetUnset(\$name);
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+    \$args = func_get_args();
+
+    \$options = array();
+    if (1 < count(\$args))
+    {
+      \$options = \$args[1];
+    }
+
+
+EOF;
+    }
+
+    if (isset($this->inheritanceFk) && $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+    call_user_func_array(array(\$this, 'parent::__unset'), \$args);
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+    \$offset = 0;
+    foreach (\$this->tables as \$table)
+    {
+      foreach (\$table->getColumns() as \$column)
+      {
+        if (\$name == \$column->getPhpName())
+        {
+          \$this->values[\$name] = null;
+        }
+
+        if (\$name.'Id' == \$column->getPhpName())
+        {
+          \$this->values[\$name.'Id'] = null;
+        }
+
+        \$offset++;
+      }
+    }
+
+EOF;
+    }
+
+    if ($this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    call_user_func_array(array(\$this->getCurrent{$this->getRefFkPhpNameAffix($this->i18nFk)}(\$options), '__unset'), \$args);
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk) || $this->getTable()->getAttribute('isI18n'))
+    {
+      $script .= <<<EOF
+
+    return \$this;
+  }
+
+EOF;
+    }
+
+    if (!isset($this->inheritanceFk))
+    {
+      $script .= <<<EOF
+
+  public function offsetUnset(\$offset)
+  {
+    \$args = func_get_args();
+
+    return call_user_func_array(array(\$this, '__unset'), \$args);
   }
 
 EOF;
@@ -1166,17 +1241,17 @@ EOF;
       \$affectedRows += \$this->update(\$connection);
     }
 
-    \$rowOffset = 0;
+    \$offset = 0;
     foreach (\$this->tables as \$table)
     {
       foreach (\$table->getColumns() as \$column)
       {
         if (array_key_exists(\$column->getPhpName(), \$this->values))
         {
-          \$this->row[\$rowOffset] = \$this->values[\$column->getPhpName()];
+          \$this->row[\$offset] = \$this->values[\$column->getPhpName()];
         }
 
-        \$rowOffset++;
+        \$offset++;
       }
     }
 
@@ -1261,7 +1336,7 @@ EOF;
       \$connection = QubitTransactionFilter::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
     }
 
-    \$rowOffset = 0;
+    \$offset = 0;
     foreach (\$this->tables as \$table)
     {
       \$criteria = new Criteria;
@@ -1285,7 +1360,7 @@ EOF;
           \$criteria->add(\$column->getFullyQualifiedName(), \$this->values[\$column->getPhpName()]);
         }
 
-        \$rowOffset++;
+        \$offset++;
       }
 
       if (null !== \$id = $this->basePeerClassName::doInsert(\$criteria, \$connection))
@@ -1336,7 +1411,7 @@ EOF;
     if (isset(\$this->values['parentId']))
     {
       \/\/ Get the "original" parentId before any updates
-      \$rowOffset = 0; 
+      \$offset = 0; 
       \$originalParentId = null;
       foreach (\$this->tables as \$table)
       {
@@ -1344,10 +1419,10 @@ EOF;
         {
           if ('parentId' == \$column->getPhpName())
           {
-            \$originalParentId = \$this->row[\$rowOffset];
+            \$originalParentId = \$this->row[\$offset];
             break;
           }
-          \$rowOffset++;
+          \$offset++;
         }
       }
       
@@ -1380,7 +1455,7 @@ EOF;
       \$connection = QubitTransactionFilter::getConnection({$this->getPeerClassName()}::DATABASE_NAME);
     }
 
-    \$rowOffset = 0;
+    \$offset = 0;
     foreach (\$this->tables as \$table)
     {
       \$criteria = new Criteria;
@@ -1402,10 +1477,10 @@ EOF;
 
         if (\$column->isPrimaryKey())
         {
-          \$selectCriteria->add(\$column->getFullyQualifiedName(), \$this->row[\$rowOffset]);
+          \$selectCriteria->add(\$column->getFullyQualifiedName(), \$this->row[\$offset]);
         }
 
-        \$rowOffset++;
+        \$offset++;
       }
 
       if (\$criteria->size() > 0)
@@ -1780,7 +1855,7 @@ unset(\$this->values['{$this->getColumnVarName($this->nestedSetRightColumn)}']);
       \$delta = \$this->{$this->getColumnVarName($this->nestedSetRightColumn)} - \$this->{$this->getColumnVarName($this->nestedSetLeftColumn)} + 1;
     }
 
-    if (null === \${$this->getFkVarName($this->selfFk)} = \$this->offsetGet('{$this->getFkPhpName($this->selfFk)}', array('connection' => \$connection)))
+    if (null === \${$this->getFkVarName($this->selfFk)} = \$this->__get('{$this->getFkPhpName($this->selfFk)}', array('connection' => \$connection)))
     {
       \$statement = \$connection->prepare('
         SELECT MAX('.{$this->getColumnConstant($this->nestedSetRightColumn)}.')
@@ -1907,7 +1982,7 @@ EOF;
     {
       \$args = array_merge(array(strtolower(substr(\$name, 3, 1)).substr(\$name, 4)), \$args);
 
-      return call_user_func_array(array(\$this, 'offset'.ucfirst(substr(\$name, 0, 3))), \$args);
+      return call_user_func_array(array(\$this, '__'.substr(\$name, 0, 3)), \$args);
     }
 
     throw new sfException('Call to undefined method '.get_class(\$this).'::'.\$name);

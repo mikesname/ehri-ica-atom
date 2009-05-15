@@ -16,7 +16,7 @@ require_once(dirname(__FILE__).'/sfGeneratorBaseTask.class.php');
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfGenerateAppTask.class.php 17041 2009-04-06 13:37:11Z fabien $
+ * @version    SVN: $Id: sfGenerateAppTask.class.php 17427 2009-04-20 06:48:42Z fabien $
  */
 class sfGenerateAppTask extends sfGeneratorBaseTask
 {
@@ -118,7 +118,7 @@ EOF;
     $finder = sfFinder::type('file')->name('settings.yml');
     $this->getFilesystem()->replaceTokens($finder->in($appDir.'/config'), '##', '##', array(
       'NO_SCRIPT_NAME'    => $firstApp ? 'on' : 'off',
-      'CSRF_SECRET'       => sfYamlInline::dump(sfYamlInline::parseScalar($options['csrf-secret'])),
+      'CSRF_SECRET'       => sfYamlInline::dump($options['csrf-secret']),
       'ESCAPING_STRATEGY' => sfYamlInline::dump((boolean) sfYamlInline::parseScalar($options['escaping-strategy'])),
     ));
 

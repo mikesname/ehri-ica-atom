@@ -36,5 +36,15 @@ class InformationObjectShowModsAction extends InformationObjectShowAction
     parent::execute($request);
 
     // add MODS specific commands
+    $this->modsTypes = QubitMods::getTypes($this->informationObject);
+    if ($digitalObject = $this->informationObject->getDigitalObject())
+    {
+      $this->locationUrl = 'http://'.$request->getHost().$request->getRelativeUrlRoot().$digitalObject->getFullPath();
+    }
+    else
+    {
+      $this->locationUrl = null;
+    }
+
   }
 }

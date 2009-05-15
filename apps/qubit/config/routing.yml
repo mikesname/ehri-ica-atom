@@ -130,6 +130,9 @@ oai_harvester_delete:
   requirements:
     repositoryId: \d+
 
+oai_requests:
+  url: /oai/request
+  param: { module: oai, action: oai }
 
 default:
   url:   /:module/:action/*

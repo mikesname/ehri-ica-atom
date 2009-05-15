@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage cache
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfXCacheCache.class.php 17339 2009-04-15 18:43:09Z fabien $
+ * @version    SVN: $Id: sfXCacheCache.class.php 17478 2009-04-21 08:33:47Z fabien $
  */
 class sfXCacheCache extends sfCache
 {
@@ -105,7 +105,7 @@ class sfXCacheCache extends sfCache
 
     for ($i = 0, $max = xcache_count(XC_TYPE_VAR); $i < $max; $i++)
     {
-      if (!xcache_clear_cache(XC_TYPE_VAR, $i))
+      if (false === xcache_clear_cache(XC_TYPE_VAR, $i))
       {
         return false;
       }

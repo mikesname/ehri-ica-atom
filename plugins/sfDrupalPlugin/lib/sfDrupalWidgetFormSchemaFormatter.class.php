@@ -21,4 +21,17 @@ class sfDrupalWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
 
     return parent::formatRow($label, $field, $errors, $help, $hiddenFields);
   }
+
+  public function generateLabelName($name)
+  {
+    $label = parent::generateLabelName($name);
+
+    $validatorSchema = $this->form->getValidatorSchema();
+    if (isset($validatorSchema[$name]) && $validatorSchema[$name]->getOption('required'))
+    {
+      $label .= '<span class="form-required" title="This field is required.">*</span>';
+    }
+
+    return $label;
+  }
 }

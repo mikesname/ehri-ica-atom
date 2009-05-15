@@ -69,7 +69,7 @@ abstract class BaseRightsTermRelation implements ArrayAccess
   {
     $criteria->setLimit(1);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    return self::get($criteria, $options)->__get(0, array('defaultValue' => null));
   }
 
   public static function getById($id, array $options = array())
@@ -108,14 +108,14 @@ abstract class BaseRightsTermRelation implements ArrayAccess
   protected
     $values = array();
 
-  protected function rowOffsetGet($offset, $rowOffset, array $options = array())
+  protected function rowOffsetGet($name, $offset)
   {
-    if (array_key_exists($offset, $this->values))
+    if (array_key_exists($name, $this->values))
     {
-      return $this->values[$offset];
+      return $this->values[$name];
     }
 
-    if (!array_key_exists($rowOffset, $this->row))
+    if (!array_key_exists($offset, $this->row))
     {
       if ($this->new)
       {
@@ -125,125 +125,141 @@ abstract class BaseRightsTermRelation implements ArrayAccess
       $this->refresh();
     }
 
-    return $this->row[$rowOffset];
+    return $this->row[$offset];
   }
 
-  public function offsetExists($offset, array $options = array())
+  public function __isset($name)
   {
-    $rowOffset = 0;
+    $offset = 0;
     foreach ($this->tables as $table)
     {
       foreach ($table->getColumns() as $column)
       {
-        if ($offset == $column->getPhpName())
+        if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($offset, $rowOffset, $options);
+          return null !== $this->rowOffsetGet($name, $offset);
         }
 
-        if ($offset.'Id' == $column->getPhpName())
+        if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($offset.'Id', $rowOffset, $options);
+          return null !== $this->rowOffsetGet($name.'Id', $offset);
         }
 
-        $rowOffset++;
+        $offset++;
       }
     }
 
     return false;
   }
 
-  public function __isset($name)
+  public function offsetExists($offset)
   {
-    return $this->offsetExists($name);
-  }
+    $args = func_get_args();
 
-  public function offsetGet($offset, array $options = array())
-  {
-    $rowOffset = 0;
-    foreach ($this->tables as $table)
-    {
-      foreach ($table->getColumns() as $column)
-      {
-        if ($offset == $column->getPhpName())
-        {
-          return $this->rowOffsetGet($offset, $rowOffset, $options);
-        }
-
-        if ($offset.'Id' == $column->getPhpName())
-        {
-          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
-
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($offset.'Id', $rowOffset));
-        }
-
-        $rowOffset++;
-      }
-    }
+    return call_user_func_array(array($this, '__isset'), $args);
   }
 
   public function __get($name)
   {
-    return $this->offsetGet($name);
-  }
-
-  public function offsetSet($offset, $value, array $options = array())
-  {
-    $rowOffset = 0;
+    $offset = 0;
     foreach ($this->tables as $table)
     {
       foreach ($table->getColumns() as $column)
       {
-        if ($offset == $column->getPhpName())
+        if ($name == $column->getPhpName())
         {
-          $this->values[$offset] = $value;
+          return $this->rowOffsetGet($name, $offset);
         }
 
-        if ($offset.'Id' == $column->getPhpName())
+        if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          $this->values[$offset.'Id'] = $value->offsetGet($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
         }
 
-        $rowOffset++;
+        $offset++;
       }
     }
+  }
 
-    return $this;
+  public function offsetGet($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__get'), $args);
   }
 
   public function __set($name, $value)
   {
-    return $this->offsetSet($name, $value);
-  }
+    $args = func_get_args();
 
-  public function offsetUnset($offset, array $options = array())
-  {
-    $rowOffset = 0;
+    $options = array();
+    if (2 < count($args))
+    {
+      $options = $args[2];
+    }
+
+    $offset = 0;
     foreach ($this->tables as $table)
     {
       foreach ($table->getColumns() as $column)
       {
-        if ($offset == $column->getPhpName())
+        if ($name == $column->getPhpName())
         {
-          $this->values[$offset] = null;
+          $this->values[$name] = $value;
         }
 
-        if ($offset.'Id' == $column->getPhpName())
+        if ($name.'Id' == $column->getPhpName())
         {
-          $this->values[$offset.'Id'] = null;
+          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
+
+          $this->values[$name.'Id'] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
         }
 
-        $rowOffset++;
+        $offset++;
       }
     }
 
     return $this;
   }
 
+  public function offsetSet($offset, $value)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__set'), $args);
+  }
+
   public function __unset($name)
   {
-    return $this->offsetUnset($name);
+    $offset = 0;
+    foreach ($this->tables as $table)
+    {
+      foreach ($table->getColumns() as $column)
+      {
+        if ($name == $column->getPhpName())
+        {
+          $this->values[$name] = null;
+        }
+
+        if ($name.'Id' == $column->getPhpName())
+        {
+          $this->values[$name.'Id'] = null;
+        }
+
+        $offset++;
+      }
+    }
+
+    return $this;
+  }
+
+  public function offsetUnset($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__unset'), $args);
   }
 
   protected
@@ -288,17 +304,17 @@ abstract class BaseRightsTermRelation implements ArrayAccess
       $affectedRows += $this->update($connection);
     }
 
-    $rowOffset = 0;
+    $offset = 0;
     foreach ($this->tables as $table)
     {
       foreach ($table->getColumns() as $column)
       {
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $this->row[$rowOffset] = $this->values[$column->getPhpName()];
+          $this->row[$offset] = $this->values[$column->getPhpName()];
         }
 
-        $rowOffset++;
+        $offset++;
       }
     }
 
@@ -317,7 +333,7 @@ abstract class BaseRightsTermRelation implements ArrayAccess
       $connection = QubitTransactionFilter::getConnection(QubitRightsTermRelation::DATABASE_NAME);
     }
 
-    $rowOffset = 0;
+    $offset = 0;
     foreach ($this->tables as $table)
     {
       $criteria = new Criteria;
@@ -341,7 +357,7 @@ abstract class BaseRightsTermRelation implements ArrayAccess
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
-        $rowOffset++;
+        $offset++;
       }
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
@@ -368,7 +384,7 @@ abstract class BaseRightsTermRelation implements ArrayAccess
       $connection = QubitTransactionFilter::getConnection(QubitRightsTermRelation::DATABASE_NAME);
     }
 
-    $rowOffset = 0;
+    $offset = 0;
     foreach ($this->tables as $table)
     {
       $criteria = new Criteria;
@@ -390,10 +406,10 @@ abstract class BaseRightsTermRelation implements ArrayAccess
 
         if ($column->isPrimaryKey())
         {
-          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$rowOffset]);
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$offset]);
         }
 
-        $rowOffset++;
+        $offset++;
       }
 
       if ($criteria->size() > 0)
@@ -463,7 +479,7 @@ abstract class BaseRightsTermRelation implements ArrayAccess
     {
       $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
 
-      return call_user_func_array(array($this, 'offset'.ucfirst(substr($name, 0, 3))), $args);
+      return call_user_func_array(array($this, '__'.substr($name, 0, 3)), $args);
     }
 
     throw new sfException('Call to undefined method '.get_class($this).'::'.$name);

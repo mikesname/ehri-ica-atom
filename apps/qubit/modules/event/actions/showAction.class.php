@@ -21,58 +21,27 @@ class EventShowAction extends sfAction
 {
   public function execute($request)
   {
-    if (true || $request->isXmlHttpRequest())
+    $event = QubitEvent::getById($request->id);
+
+    if (!isset($event))
     {
-      $criteria = new Criteria;
-      $criteria->add(QubitEvent::ID, $request->getParameter('id'), Criteria::EQUAL);
-
-      $actorEvent = QubitEvent::getOne($criteria);
-
-      if (null !== $actorEvent)
-      {
-        $properties['id'] = $actorEvent->getId();
-        $properties['actorId'] = $actorEvent->getActorId();
-        $properties['eventTypeId'] = $actorEvent->getTypeId();
-        $properties['placeId'] = $actorEvent->getPlaceId();
-
-        if ($actorEvent->getStartDate() != '0000-00-00')
-        {
-          $properties['year'] = date('Y', strtotime($actorEvent->getStartDate()));
-        }
-        else
-        {
-          $properties['year'] = '';
-        }
-
-        if ($actorEvent->getEndDate() != '0000-00-00')
-        {
-          $properties['endYear'] = date('Y', strtotime($actorEvent->getEndDate()));
-        }
-        else
-        {
-          $properties['endYear'] = '';
-        }
-
-        $properties['dateDisplay'] = $actorEvent->getDateDisplay();
-        $properties['description'] = $actorEvent->getDescription();
-
-        // Build JSON string
-        $jsonStr = '( {';
-        foreach ($properties as $key => $val)
-        {
-          $jsonStr .= ' "'.$key.'": "'.$val.'", ';
-        }
-        $jsonStr = substr($jsonStr, 0, -2); // Chop trailing ", "
-        $jsonStr .= ' } )';
-
-        return $this->renderText($jsonStr);
-      }
-      else
-      {
-        return $this->renderText('{}');
-      }
+      $this->forward404();
     }
 
-    return $this->renderText('');
+    $properties = array();
+    $properties['id'] = $event->id;
+
+    $properties['actorId'] = $event->actorId;
+    $properties['placeId'] = $event->placeId;
+    $properties['typeId'] = $event->typeId;
+
+    $this->context->getConfiguration()->loadHelpers('Date');
+    $properties['year'] = format_date($event->startDate, 'yyyy');
+    $properties['endYear'] = format_date($event->endDate, 'yyyy');
+
+    $properties['dateDisplay'] = $event->dateDisplay;
+    $properties['description'] = $event->description;
+
+    return $this->renderText(json_encode($properties));
   }
 }

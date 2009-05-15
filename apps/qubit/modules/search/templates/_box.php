@@ -4,7 +4,7 @@
       <?php echo input_tag('query', $sf_request->getParameter('query'), 'class="textbox"') ?>
     </div>
     <div>
-      <?php echo submit_tag(__('search'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('search')) ?>
     </div>
   </form>
 </div>

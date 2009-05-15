@@ -1,2 +1,5 @@
-configureSuccess:
+configureDatabaseSuccess:
   javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+
+configureSiteSuccess:
+  javascripts: [/sfDrupalPlugin/vendor/drupal/modules/user/user]

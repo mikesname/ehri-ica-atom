@@ -271,4 +271,12 @@ abstract class sfRequest
     $this->parameterHolder = clone $this->parameterHolder;
     $this->attributeHolder = clone $this->attributeHolder;
   }
+
+  public function s($name, $value)
+  {
+    $clone = clone $this;
+    $clone->options[$name] = $value;
+
+    return $clone;
+  }
 }

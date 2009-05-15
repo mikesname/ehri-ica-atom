@@ -73,6 +73,7 @@ class QubitSocket
     curl_setopt($this->sock, CURLOPT_CONNECTTIMEOUT, $timeout);
     curl_setopt($this->sock, CURLOPT_FOLLOWLOCATION, true);
     curl_setopt($this->sock, CURLOPT_MAXREDIRS, $this->max_redirects);
+    curl_setopt($this->sock, CURLOPT_SSL_VERIFYPEER, false);
   }
 
   public function get_headers()
@@ -171,6 +172,8 @@ class QubitSocket
     curl_setopt($this->sock, CURLOPT_MAXREDIRS, $this->max_redirects);
     curl_setopt($this->sock, CURLOPT_URL, $this->url);
     curl_setopt($this->sock, CURLOPT_FILE, $file_handle);
+    curl_setopt($this->sock, CURLOPT_SSL_VERIFYPEER, false);
+
     curl_exec($this->sock);
 
     $retour = curl_getinfo($this->sock, CURLINFO_HEADER_OUT);

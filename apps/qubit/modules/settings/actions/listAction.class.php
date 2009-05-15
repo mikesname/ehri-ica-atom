@@ -241,8 +241,8 @@ class SettingsListAction extends sfAction
   protected function populateSiteInformationForm()
   {
     // Get site information settings
-    $this->siteTitle = (null !== $siteTitle = QubitSetting::getSettingByName('site_title')) ? $siteTitle : new QubitSetting;
-    $this->siteDescription = (null !== $siteDescription = QubitSetting::getSettingByName('site_description')) ? $siteDescription : new QubitSetting;
+    $this->siteTitle = (null !== $siteTitle = QubitSetting::getSettingByName('siteTitle')) ? $siteTitle : new QubitSetting;
+    $this->siteDescription = (null !== $siteDescription = QubitSetting::getSettingByName('siteDescription')) ? $siteDescription : new QubitSetting;
 
     // Set defaults values
     $this->siteInformationForm->setDefaults(array(
@@ -262,24 +262,24 @@ class SettingsListAction extends sfAction
 
     // Get Site Title
     $siteTitle = $thisForm->getValue('site_title');
-    $siteTitleSetting = QubitSetting::getSettingByName('site_title');
+    $siteTitleSetting = QubitSetting::getSettingByName('siteTitle');
 
     // Create new QubitSetting if site_title doesn't already exist
     if (null === $siteTitleSetting)
     {
-      $siteTitleSetting = QubitSetting::createNewSetting('site_title', null, array('scope'=>'site_information', 'deleteable'=>false));
+      $siteTitleSetting = QubitSetting::createNewSetting('siteTitle', null, array('scope'=>'site_information', 'deleteable'=>false));
     }
     $siteTitleSetting->setValue($siteTitle);
     $siteTitleSetting->save();
 
     // Save Site Description
     $siteDescription = $thisForm->getValue('site_description');
-    $siteDescSetting = QubitSetting::getSettingByName('site_description');
+    $siteDescSetting = QubitSetting::getSettingByName('siteDescription');
 
     // Create new QubitSetting if site_description doesn't already exist
     if (null === $siteDescSetting)
     {
-      $siteDescSetting = QubitSetting::createNewSetting('site_description', null, array('scope'=>'site_information', 'deleteable'=>false));
+      $siteDescSetting = QubitSetting::createNewSetting('siteDescription', null, array('scope'=>'site_information', 'deleteable'=>false));
     }
     $siteDescSetting->setValue($siteDescription);
     $siteDescSetting->save();

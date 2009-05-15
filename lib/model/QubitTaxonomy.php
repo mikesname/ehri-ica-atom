@@ -42,7 +42,8 @@ class QubitTaxonomy extends BaseTaxonomy
   //CCA Rules for Archival Description (RAD) taxonomies
   const RAD_NOTE_ID = 21;
   const RAD_TITLE_NOTE_ID = 22;
-  const MODS_TITLE_TYPE_ID = 23;
+  const MODS_RESOURCE_TYPE_ID = 23;
+  const DC_TYPE_ID = 24;
 
   public function __toString()
   {

@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage filter
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCacheFilter.class.php 13564 2008-11-30 21:34:25Z fabien $
+ * @version    SVN: $Id: sfCacheFilter.class.php 17468 2009-04-21 07:21:38Z fabien $
  */
 class sfCacheFilter extends sfFilter
 {
@@ -70,9 +70,6 @@ class sfCacheFilter extends sfFilter
 
   public function executeBeforeExecution()
   {
-    // register our cache configuration
-    $this->cacheManager->registerConfiguration($this->context->getModuleName());
-
     $uri = $this->routing->getCurrentInternalUri();
 
     if (is_null($uri))

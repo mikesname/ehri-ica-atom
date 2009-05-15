@@ -5,19 +5,21 @@
 
 <?php foreach ($results->getHits() as $hit): ?>
   <div class="search-results" style="padding-top: 5px;">
-    <h3><?php echo link_to($hit->display_title, 'informationobject/show?id='.$hit->informationObjectId) ?></h3>
+    <h3><?php echo link_to($hit->display_title, array('module' => 'informationobject', 'action' => 'show', 'id' => $hit->informationObjectId)) ?></h3>
 
     <div class="CRUD_summary">
     <?php if ($hit->display_scopeandcontent): ?>
       <?php echo truncate_text($hit->display_scopeandcontent, 250) ?><br />
     <?php endif; ?>
-    <?php if ($hit->collectionid !== $hit->informationObjectId) : ?>
-      <?php echo __('Part of').': '.link_to($hit->collectiontitle, 'informationobject/show?id='.$hit->collectionid) ?><br />
+
+    <?php $informationObject = QubitInformationObject::getById($hit->informationObjectId) ?>
+    <?php if ($informationObject->getCollectionRoot()->id != $informationObject->id): ?>
+      <?php echo __('Part of').': '.link_to(render_title($informationObject->getCollectionRoot()), array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->getCollectionRoot()->id)) ?><br />
     <?php endif; ?>
-    
+
     <?php $repository = (0 < $hit->repositoryid) ? QubitRepository::getById($hit->repositoryid) : null ?>
     <?php if (null !== $repository && 0 < sfConfig::get('app_multi_repository')) : ?>
-      <?php echo __('Repository').': '.link_to($repository->getAuthorizedFormOfName(array('cultureFallback' => true)), 
+      <?php echo __('Repository').': '.link_to($repository->getAuthorizedFormOfName(array('cultureFallback' => true)),
         array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId())) ?><br />
     <?php endif; ?>
     </div>
@@ -28,13 +30,13 @@
 <?php if ($results->haveToPaginate()): ?>
   <div class="pager">
     <?php if ($results->getCurrentPage() != 1): ?>
-      <?php echo link_to('< '.__('previous'), 'search/keyword?query='.urlencode($sf_data->getRaw('query')).'&page='.($results->getCurrentPage() -1)) ?>
+      <?php echo link_to('< '.__('previous'), array('module' => 'search', 'action' => 'keyword', 'query' => urlencode($sf_data->getRaw('query')), 'page' => ($results->getCurrentPage() -1))) ?>
     <?php endif; ?>
   <?php foreach ($results->getPages() as $page): ?>
-    <?php echo ($page == $results->getCurrentPage()) ? '<strong>'.$page.'</strong>' : link_to($page, 'search/keyword?query='.urlencode($sf_data->getRaw('query')).'&page='.$page) ?>
+    <?php echo ($page == $results->getCurrentPage()) ? '<strong>'.$page.'</strong>' : link_to($page, array('module' => 'search', 'action' => 'keyword', 'query' => urlencode($sf_data->getRaw('query')), 'page' => $page)) ?>
   <?php endforeach; ?>
   <?php if (count($results->getPages()) > $results->getCurrentPage()): ?>
-    <?php echo link_to(__('next').' >', 'search/keyword?query='.urlencode($sf_data->getRaw('query')).'&page='.($results->getCurrentPage() +1)) ?>
+    <?php echo link_to(__('next').' >', array('module' => 'search', 'action' => 'keyword', 'query' => urlencode($sf_data->getRaw('query')), 'page' => ($results->getCurrentPage() +1))) ?>
   <?php endif; ?>
   </div>
 <?php endif; ?>

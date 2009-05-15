@@ -44,7 +44,7 @@ ICA-AtoM is web-based archival description software that is based on Internation
   <dependencies>
     <required>
       <php>
-        <min>5.2.1</min>
+        <min>5.2.4</min>
       </php>
       <pearinstaller>
         <min>1.4.1</min>
@@ -53,9 +53,6 @@ ICA-AtoM is web-based archival description software that is based on Internation
     <optional>
       <extension>
         <name>mbstring</name>
-      </extension>
-      <extension>
-        <name>xsl</name>
       </extension>
     </optional>
   </dependencies>

@@ -29,9 +29,11 @@ class sfPluginAdminPluginIndexAction extends sfAction
     foreach ($pluginPaths as $name => $path)
     {
       $className = $name.'Configuration';
-      if (sfConfig::get('sf_plugins_dir') == substr($path, 0, strlen(sfConfig::get('sf_plugins_dir'))) && is_readable($path = $path.'/config/'.$className.'.class.php'))
+      if (sfConfig::get('sf_plugins_dir') == substr($path, 0, strlen(sfConfig::get('sf_plugins_dir'))) && is_readable($classPath = $path.'/config/'.$className.'.class.php'))
       {
-        require_once $path;
+        $this->installPluginAssets($name, $path);
+
+        require_once $classPath;
         $this->plugins[$name] = new $className($configuration);
       }
     }
@@ -45,11 +47,6 @@ class sfPluginAdminPluginIndexAction extends sfAction
 
       if ($this->form->isValid())
       {
-        foreach ($this->plugins as $name => $plugin)
-        {
-          $this->installPluginAssets($name, $plugin->getRootDir());
-        }
-
         if (1 != count($query))
         {
           $setting = new QubitSetting;

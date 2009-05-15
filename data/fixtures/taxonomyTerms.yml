@@ -244,13 +244,20 @@ QubitTaxonomy:
       sl: 'RAD naslov opombe'
     note:
       en: 'Title note types that occur specifically within the Canadian Council of Archives'' ''Rules for Archival Description (RAD)'''
-  QubitTaxonomy_mods_title_type:
+  QubitTaxonomy_mods_resource_type:
     source_culture: en
-    id: <?php echo QubitTaxonomy::MODS_TITLE_TYPE_ID."\n" ?>
+    id: <?php echo QubitTaxonomy::MODS_RESOURCE_TYPE_ID."\n" ?>
     name:
-      en: 'MODS Title Type'
+      en: 'MODS Resource Type'
     note:
-      en: 'Alternate title types that occur specifically within The Library of Congress'' ''Metadata Object Description Schema (MODS)'''
+      en: 'Fixed values for the typeOfResource element as prescribed by the The Library of Congress'' ''Metadata Object Description Schema (MODS)'''
+  QubitTaxonomy_dc_type:
+    source_culture: en
+    id: <?php echo QubitTaxonomy::DC_TYPE_ID."\n" ?>
+    name:
+      en: 'Dublin Core Types'
+    note:
+      en: 'Fixed values for the DC Type element as prescribed by the DCMI Type Vocabulary'
 QubitTerm:
   QubitTerm_111:
     taxonomy_id: QubitTaxonomy_10
@@ -684,46 +691,11 @@ QubitTerm:
       nl: 'Andere naam'
       pt: 'Outra forma do nome'
       sl: 'Drugo ime'
-  QubitTerm_144:
-    taxonomy_id: QubitTaxonomy_10
-    source_culture: en
-    name:
-      de: Entwicklung
-      en: Authoring
-      fr: Auteur
-      it: Scrittura
-      pt: Autoria
-      sl: Avtoriziranje
-  QubitTerm_145:
-    taxonomy_id: QubitTaxonomy_10
-    source_culture: en
-    name:
-      de: Herausgabe
-      en: Editing
-      fr: Edition
-      it: Correzione
-      pt: Edição
-      sl: Urejanje
   QubitTerm_146:
     taxonomy_id: QubitTaxonomy_10
     source_culture: en
     name:
-      de: Übersetzung
-      en: Translation
-      fr: Traduction
-      it: Traduzione
-      pt: Tradução
-      sl: Prevajanje
-  QubitTerm_147:
-    taxonomy_id: QubitTaxonomy_10
-    source_culture: en
-    name:
-      de: Zusammenstellung
-      en: Compilation
-      fr: Compilation
-      it: Compilazione
-      pt: Compilação
-      sl: Kompilacija
+      en: Reproduction
   QubitTerm_148:
     taxonomy_id: QubitTaxonomy_10
     source_culture: en
@@ -1672,26 +1644,121 @@ QubitTerm:
       en: 'Attributions and conjectures'
       fr: 'Attributions et conjectures'
       sl: 'Pripisovanja in domneve'
-  QubitTerm_mods_title_type_abbreviated:
-    taxonomy_id: QubitTaxonomy_mods_title_type
+  QubitTerm_mods_resource_type_text:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
     source_culture: en
     name:
-      en: abbreviated
-  QubitTerm_mods_title_type_translated:
-    taxonomy_id: QubitTaxonomy_mods_title_type
+      en: text
+  QubitTerm_mods_resource_type_cartographic:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
     source_culture: en
     name:
-      en: translated
-  QubitTerm_mods_title_type_alternative:
-    taxonomy_id: QubitTaxonomy_mods_title_type
+      en: cartographic
+  QubitTerm_mods_resource_type_notated_music:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
     source_culture: en
     name:
-      en: alternative
-  QubitTerm_mods_title_type_uniform:
-    taxonomy_id: QubitTaxonomy_mods_title_type
+      en: notated music
+  QubitTerm_mods_resource_type_sound_recording:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
     source_culture: en
     name:
-      en: uniform
+      en: sound recording
+  QubitTerm_mods_resource_type_sound_recording_musical:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: sound recording - musical
+  QubitTerm_mods_resource_type_sound_recording_nonmusical:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: sound recording - nonmusical
+  QubitTerm_mods_resource_type_sound_recording_stillimage:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: still image
+  QubitTerm_mods_resource_type_sound_recording_movingimage:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: moving image
+  QubitTerm_mods_resource_type_sound_recording_three_dimensional_object:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: three dimensional object
+  QubitTerm_mods_resource_type_sound_recording_software_multimedia:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: software, multimedia
+  QubitTerm_mods_resource_type_sound_recording_software_mixed_material:
+    taxonomy_id: QubitTaxonomy_mods_resource_type
+    source_culture: en
+    name:
+      en: mixed material
+  QubitTerm_dc_type_collection:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: collection
+  QubitTerm_dc_type_dataset:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: dataset
+  QubitTerm_dc_type_event:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: event
+  QubitTerm_dc_type_image:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: image
+  QubitTerm_dc_type_interactive_resource:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: interactive resource
+  QubitTerm_dc_type_moving_image:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: moving image
+  QubitTerm_dc_type_physical_object:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: physical object
+  QubitTerm_dc_type_service:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: service
+  QubitTerm_dc_type_software:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: software
+  QubitTerm_dc_type_sound:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: sound
+  QubitTerm_dc_type_still_image:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: still image
+  QubitTerm_dc_type_text:
+    taxonomy_id: QubitTaxonomy_dc_type
+    source_culture: en
+    name:
+      en: text
 QubitNote:
   QubitNote_1:
     object_id: QubitTerm_111
@@ -1704,6 +1771,12 @@ QubitNote:
       fr: Producteur
       nl: Vervaardiger
       pt: Produtor
+  creationSource:
+    object_id: QubitTerm_111
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'ISAD(G) 3.2.1, 3.1.3; DC 1.1 core element (Creator); Rules for Archival Description 1.4B'
   QubitNote_2:
     object_id: QubitTerm_112
     type_id: QubitTerm_122
@@ -1725,6 +1798,12 @@ QubitNote:
       fr: Détenteur
       nl: Beheerder
       pt: Custodiador
+  custodySource:
+    object_id: QubitTerm_113
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'Rules for Archival Description 1.7C'
   QubitNote_4:
     object_id: QubitTerm_114
     type_id: QubitTerm_122
@@ -1736,6 +1815,12 @@ QubitNote:
       fr: Éditeur
       nl: Uitgever
       pt: Publicador
+  publicationSource:
+    object_id: QubitTerm_114
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'DC 1.1 element (Publisher); Rules for Archival Description 1.4, 1.8B8'
   QubitNote_5:
     object_id: QubitTerm_115
     type_id: QubitTerm_122
@@ -1747,6 +1832,12 @@ QubitNote:
       fr: Collaborateur
       nl: Contribuant
       pt: Colaborador
+  contributionSource:
+    object_id: QubitTerm_115
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'DC 1.1 element (Contributor)'
   QubitNote_6:
     object_id: QubitTerm_117
     type_id: QubitTerm_122
@@ -1757,6 +1848,12 @@ QubitNote:
       fr: Collectionneur
       nl: Verzamelaar
       pt: Coletor
+  collectionSource:
+    object_id: QubitTerm_117
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'Rules for Archival Description 1.4A6, 1.8B8a'
   QubitNote_7:
     object_id: QubitTerm_Accumulation
     type_id: QubitTerm_122
@@ -1764,34 +1861,25 @@ QubitNote:
     source_culture: en
     content:
       en: Accumulator
-  QubitNote_8:
-    object_id: QubitTerm_144
-    type_id: QubitTerm_122
-    scope: QubitTerm
+  accumulationSource:
+    object_id: QubitTerm_Accumulation
+    type_id: QubitTerm_120
     source_culture: en
     content:
-      en: Author
-  QubitNote_9:
-    object_id: QubitTerm_145
-    type_id: QubitTerm_122
-    scope: QubitTerm
-    source_culture: en
-    content:
-      en: Editor
+      en: 'ISAD(G) 3.1.3; Rules for Archival Description 1.4A6, 1.8B8a'
   QubitNote_10:
     object_id: QubitTerm_146
     type_id: QubitTerm_122
     scope: QubitTerm
     source_culture: en
     content:
-      en: Translator
-  QubitNote_11:
-    object_id: QubitTerm_147
-    type_id: QubitTerm_122
-    scope: QubitTerm
+      en: Reproducer
+  reproductionSource:
+    object_id: QubitTerm_146
+    type_id: QubitTerm_120
     source_culture: en
     content:
-      en: Compiler
+      en: 'Rules for Archival Description 1.4A5'
   QubitNote_12:
     object_id: QubitTerm_149
     type_id: QubitTerm_122
@@ -1799,6 +1887,12 @@ QubitNote:
     source_culture: en
     content:
       en: Broadcaster
+  broadcastingSource:
+    object_id: QubitTerm_149
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'Rules for Archival Description 8.4F'
   QubitNote_13:
     object_id: QubitTerm_148
     type_id: QubitTerm_122
@@ -1806,6 +1900,12 @@ QubitNote:
     source_culture: en
     content:
       en: Distributor
+  distributionSource:
+    object_id: QubitTerm_148
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'Rules for Archival Description 1.4, 1.8B8'
   QubitNote_14:
     object_id: QubitTerm_150
     type_id: QubitTerm_122
@@ -1813,3 +1913,9 @@ QubitNote:
     source_culture: en
     content:
       en: Manufacturer
+  manufacturingSource:
+    object_id: QubitTerm_150
+    type_id: QubitTerm_120
+    source_culture: en
+    content:
+      en: 'Rules for Archival Description 1.4G'

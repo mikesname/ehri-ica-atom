@@ -22,25 +22,29 @@
     </div> <!--close header-top -->
 
     <div id="header-middle">
+    <div id="site-header">
 
     <?php if (sfConfig::get('app_toggleLogo')): ?>
-    <div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_name', 'Qubit'))),
+    <div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_siteTitle'))),
       array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
     <?php endif; ?>
 
+    <div id="site-info">
     <?php if (sfConfig::get('app_toggleTitle')): ?>
     <div id="website-name">
-      <?php echo link_to(__(sfConfig::get('app_site_information_site_title')),
+      <?php echo link_to(__(sfConfig::get('app_siteTitle')),
         array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
     </div>
     <?php endif; ?>
 
     <?php if (sfConfig::get('app_toggleDescription')): ?>
     <div id="website-description">
-      <?php echo __(sfConfig::get('app_site_information_site_description')); ?>
+      <?php echo __(sfConfig::get('app_siteDescription')); ?>
     </div>
     <?php endif; ?>
+    </div> <!-- close site-info -->
 
+    </div> <!-- close site-header -->
     </div> <!-- close header-middle -->
 
     <div id="header-bottom">

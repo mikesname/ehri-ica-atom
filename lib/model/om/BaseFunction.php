@@ -51,7 +51,7 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
   {
     $criteria->setLimit(1);
 
-    return self::get($criteria, $options)->offsetGet(0, array('defaultValue' => null));
+    return self::get($criteria, $options)->__get(0, array('defaultValue' => null));
   }
 
   public static function getById($id, array $options = array())
@@ -72,19 +72,27 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
     $this->tables[] = Propel::getDatabaseMap(QubitFunction::DATABASE_NAME)->getTable(QubitFunction::TABLE_NAME);
   }
 
-  public function offsetExists($offset, array $options = array())
+  public function __isset($name)
   {
-    if (parent::offsetExists($offset, $options))
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    if (call_user_func_array(array($this, 'parent::__isset'), $args))
     {
       return true;
     }
 
-    if ($this->getCurrentfunctionI18n($options)->offsetExists($offset, $options))
+    if (call_user_func_array(array($this->getCurrentfunctionI18n($options), '__isset'), $args))
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && $this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options)->offsetExists($offset, $options))
+    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
     {
       return true;
     }
@@ -92,43 +100,67 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
     return false;
   }
 
-  public function offsetGet($offset, array $options = array())
+  public function __get($name)
   {
-    if (null !== $value = parent::offsetGet($offset, $options))
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
     {
       return $value;
     }
 
-    if (null !== $value = $this->getCurrentfunctionI18n($options)->offsetGet($offset, $options))
+    if (null !== $value = call_user_func_array(array($this->getCurrentfunctionI18n($options), '__get'), $args))
     {
       if (!empty($options['cultureFallback']) && 1 > strlen($value))
       {
-        $value = $this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options);
+        $value = call_user_func_array(array($this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
 
-    if (!empty($options['cultureFallback']) && null !== $value = $this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options)->offsetGet($offset, $options))
+    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentfunctionI18n(array('sourceCulture' => true) + $options), '__get'), $args))
     {
       return $value;
     }
   }
 
-  public function offsetSet($offset, $value, array $options = array())
+  public function __set($name, $value)
   {
-    parent::offsetSet($offset, $value, $options);
+    $args = func_get_args();
 
-    $this->getCurrentfunctionI18n($options)->offsetSet($offset, $value, $options);
+    $options = array();
+    if (2 < count($args))
+    {
+      $options = $args[2];
+    }
+
+    call_user_func_array(array($this, 'parent::__set'), $args);
+
+    call_user_func_array(array($this->getCurrentfunctionI18n($options), '__set'), $args);
 
     return $this;
   }
 
-  public function offsetUnset($offset, array $options = array())
+  public function __unset($name)
   {
-    parent::offsetUnset($offset, $options);
+    $args = func_get_args();
 
-    $this->getCurrentfunctionI18n($options)->offsetUnset($offset, $options);
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    call_user_func_array(array($this, 'parent::__unset'), $args);
+
+    call_user_func_array(array($this->getCurrentfunctionI18n($options), '__unset'), $args);
 
     return $this;
   }

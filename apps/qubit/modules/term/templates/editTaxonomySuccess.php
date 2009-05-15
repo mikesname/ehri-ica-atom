@@ -90,9 +90,9 @@
   &nbsp;<?php echo link_to(__('cancel'), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>
 <?php endif; ?>
 <?php if ($term->getId()): ?>
-  <?php echo submit_tag(__('save'), array('class' => 'form-submit')) ?>
+  <?php echo submit_tag(__('save')) ?>
 <?php else: ?>
-  <?php echo submit_tag(__('create'), array('class' => 'form-submit')) ?>
+  <?php echo submit_tag(__('create')) ?>
 <?php endif; ?>
 </div>
 

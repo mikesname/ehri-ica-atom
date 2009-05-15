@@ -8,7 +8,7 @@ editRadSuccess:
   javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
 
 editModsSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, multiDelete, multiInstanceInput, multiInstanceSelect]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
 
 listSuccess:
   components:

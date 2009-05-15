@@ -288,4 +288,12 @@ abstract class sfRouting
   public function shutdown()
   {
   }
+
+  public function s($name, $value)
+  {
+    $clone = clone $this;
+    $clone->options[$name] = $value;
+
+    return $clone;
+  }
 }

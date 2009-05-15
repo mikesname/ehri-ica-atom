@@ -4,7 +4,7 @@
       <?php echo select_tag('browseList', $sf_data->getRaw('optionsForSelect'), array('class' => 'selectbox')); ?>
     </div>
     <div>
-      <?php echo submit_tag(__('browse'), array('class' => 'form-submit')) ?>
+      <?php echo submit_tag(__('browse')) ?>
     </div>
   </form>
 </div>

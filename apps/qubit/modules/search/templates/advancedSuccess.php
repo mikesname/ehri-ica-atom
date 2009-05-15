@@ -4,7 +4,7 @@
 <?php echo form_tag('search/advanced', 'id=searchform') ?>
 <table><tr>
 <td><?php echo input_tag('search_query', $query, 'class="textbox"'); ?></td>
-<td><?php echo submit_tag('search', array('class' => 'form-submit')) ?></td>
+<td><?php echo submit_tag('search') ?></td>
 </tr></table>
 </form>
 </div>

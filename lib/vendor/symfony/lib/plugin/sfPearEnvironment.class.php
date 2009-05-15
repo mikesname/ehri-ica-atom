@@ -26,7 +26,7 @@ require_once 'PEAR/Installer.php';
  * @package    symfony
  * @subpackage plugin
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPearEnvironment.class.php 17125 2009-04-08 04:04:03Z dwhittle $
+ * @version    SVN: $Id: sfPearEnvironment.class.php 17450 2009-04-20 17:37:49Z fabien $
  */
 class sfPearEnvironment
 {
@@ -242,7 +242,7 @@ class sfPearEnvironment
    */
   public function initializeConfiguration($pluginDir, $cacheDir)
   {
-    $this->config = PEAR_Config::singleton();
+    $this->config = $GLOBALS['_PEAR_Config_instance'] = new sfPearConfig();
 
     // change the configuration for use
     $this->config->set('php_dir',  $pluginDir);
