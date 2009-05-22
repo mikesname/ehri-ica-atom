@@ -30,6 +30,8 @@
  */
 class QubitInformationObject extends BaseInformationObject
 {
+  const ROOT_ID = 1;
+
   /**
    * When cast as a string, return  i18n-ized object title with fallback to
    * source culture

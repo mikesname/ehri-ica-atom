@@ -1,18 +1,3 @@
-editSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
-
-all:
-  components:
-    sidebar: [informationobject, contextMenu]
-    
-listSuccess:
-  components:
-    sidebar: []
-
-browseSuccess:    
-  components:
-    sidebar: []
-    
 showFullScreenSuccess:
   layout: layout_fullscreen
   components:

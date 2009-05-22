@@ -144,6 +144,8 @@ class QubitXmlImport
           $xsltProc->importStyleSheet($xslDOM);
 
           $importDOM->loadXML($xsltProc->transformToXML($importDOM));
+          unset($xslDOM);
+          unset($xsltProc);
         }
         else
         {
@@ -174,7 +176,8 @@ class QubitXmlImport
       foreach ($nodeList as $domNode)
       {
         // create a new object
-        eval('$currentObject = new Qubit'.$mapping['Object'].';');
+        $class = 'Qubit'.$mapping['Object'];
+        $currentObject = new $class;
 
         // we need to save the object to get an ID
         $currentObject->save();
@@ -182,7 +185,7 @@ class QubitXmlImport
         // set the rootObject to use for initial display in successful import
         if (!$qubitXmlImport->rootObject)
         {
-          $qubitXmlImport->rootObject = $currentObject;
+          $qubitXmlImport->rootObject =& $currentObject;
         }
 
         // write the ID onto the current XML node for tracking
@@ -202,6 +205,7 @@ class QubitXmlImport
         {
           // parent ID comes from last node in the list because XPath forces forward document order
           $parentId = $parentNodes->item($parentNodes->length - 1)->getAttribute('xml:id');
+          unset($parentNodes);
 
           if (!empty($parentId) && is_callable(array($currentObject, 'setParentId')))
           {
@@ -244,7 +248,7 @@ class QubitXmlImport
               // set the parameters for the method call
               if (empty($methodMap['Parameters']))
               {
-                $parameters = $nodeValue;
+                $parameters = array($nodeValue);
               }
               else
               {
@@ -275,14 +279,17 @@ class QubitXmlImport
                   }
                   else
                   {
+                    // NB: this will throw warnings when DOM is accessed directly from mapping and returns null objects
                     eval('$parameters[] = '.$parameter.';');
                   }
                 }
               }
 
               // invoke the object and method defined in the schema map
-              eval("return call_user_func_array(array(&\$currentObject, \$methodMap['Method']), \$parameters);");
+              call_user_func_array(array( & $currentObject, $methodMap['Method']), $parameters);
             }
+
+            unset($nodeList2);
           }
         }
 

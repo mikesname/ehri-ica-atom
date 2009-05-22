@@ -722,76 +722,29 @@ class InformationObjectEditAction extends sfAction
     }
 
     // Do digital object upload
-    $uploadFiles = $this->request->getFileName('upload_file');
-    $fileErrors  = $this->request->getFileError('upload_file');
-    if (count($uploadFiles))
+    if (is_array($uploadedFiles = $this->request->getFile('upload_file')))
     {
-      foreach ($uploadFiles as $usageId => $filename)
+      foreach ($uploadedFiles['name'] as $usageId => $filename)
       {
-        if ($fileErrors[$usageId] && strlen($filename))
+        if ($uploadedFiles['error'][$usageId])
         {
-          $this->hasWarning = true;
-
           continue;
         }
 
-        if (strlen(!$filename))
+        if (!file_exists($tmpFile = $uploadedFiles['tmp_name'][$usageId]))
         {
           continue; // Skip to next $uploadFile if no valid filename
         }
 
-        // Upload file and return meta-data about it
-        if (!$uploadFile = QubitDigitalObject::uploadAsset($this->request, $this->informationObject, $usageId))
-        {
-
-          return sfView::ERROR;  // exit loop if upload fails
-        }
-
-        // Create digital object in database
-        $newDigitalObject = new QubitDigitalObject;
-        $newDigitalObject->setName($uploadFile['name']);
-        $newDigitalObject->setPath($uploadFile['path']);
-        $newDigitalObject->setByteSize($uploadFile['size']);
-        $newDigitalObject->setUsageId($usageId);
-
-        // Set parent
-        if ($usageId == QubitTerm::MASTER_ID)
-        {
-          // If this is a master digital object upload, info object is parent
-          $newDigitalObject->setInformationObjectId($this->informationObject->getId());
-        }
-        else
-        {
-          // If this is a reference or thumbnail representation for a digital object,
-          // then digital object is parent
-          $newDigitalObject->setParentId($this->informationObject->getDigitalObject()->getId());
-        }
-
-        // Set Mime Type & File Type
-        $newDigitalObject->setMimeAndMediaType();
-        $newDigitalObject->save();
-
-        $newDigitalObject->setPageCount();
-        if ($newDigitalObject->getPageCount() > 1)
-        {
-          // If DO is a compound object, then create child objects and set to
-          // display as compound object (with pager)
-          $newDigitalObject->createCompoundChildren();
-          $this->informationObject->setDisplayAsCompoundObject(1);
-          $newDigitalObject->createThumbnail();
-        }
-        else
-        {
-          // If DO is a single object, create various representations based on
-          // intended usage
-          $newDigitalObject->createRepresentations($usageId);
-        }
+        // Upload asset and create digital object
+        $asset = new QubitAsset($filename, file_get_contents($tmpFile));
+        $digitalObject = QubitDigitalObject::create($this->informationObject, $asset, array('usageId' => $usageId));
 
         // If this is a new information object with no title, set title to name
         // of digital object
         if ($this->request->getParameter('action') == 'update' && $this->informationObject->getTitle(array('cultureFallback'=>true)) == null && $usageId == QubitTerm::MASTER_ID)
         {
-          $this->informationObject->setTitle($newDigitalObject->getName());
+          $this->informationObject->setTitle($digitalObject->getName());
           $this->informationObject->save();
         }
 

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="sl" datatype="plaintext" original="messages" date="2009-03-02T13:11:43Z" product-name="messages">
+  <file source-language="EN" target-language="sl" datatype="plaintext" original="messages" date="2009-05-20T14:13:54Z" product-name="messages">
     <body>
-      <trans-unit id="1">
-        <source>log out</source>
-        <target>izhod</target>
-      </trans-unit>
       <trans-unit id="2">
         <source>%1% profile</source>
         <target>%1% profil</target>
@@ -13,18 +9,6 @@
       <trans-unit id="3">
         <source>log in</source>
         <target>prijava</target>
-      </trans-unit>
-      <trans-unit id="4">
-        <source>about</source>
-        <target>o tem</target>
-      </trans-unit>
-      <trans-unit id="5">
-        <source>home</source>
-        <target>domov</target>
-      </trans-unit>
-      <trans-unit id="6">
-        <source>open information management toolkit</source>
-        <target/>
       </trans-unit>
       <trans-unit id="8">
         <source>title</source>
@@ -134,25 +118,13 @@
         <source>note type</source>
         <target>opombe tipa</target>
       </trans-unit>
-      <trans-unit id="45">
-        <source>title note</source>
-        <target>opombe naslova</target>
-      </trans-unit>
       <trans-unit id="46">
         <source>rules or conventions</source>
         <target>pravila in dogovori</target>
       </trans-unit>
-      <trans-unit id="47">
-        <source>version</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="48">
         <source>level of description</source>
         <target>nivo popisa</target>
-      </trans-unit>
-      <trans-unit id="49">
-        <source>next upper level of description</source>
-        <target/>
       </trans-unit>
       <trans-unit id="50">
         <source>extent and medium</source>
@@ -162,10 +134,6 @@
         <source>context area</source>
         <target>območje konteksta</target>
       </trans-unit>
-      <trans-unit id="52">
-        <source>creation context</source>
-        <target>kontekst ustvarjanja</target>
-      </trans-unit>
       <trans-unit id="53">
         <source>creator</source>
         <target>ustvarjalec</target>
@@ -174,25 +142,9 @@
         <source>or</source>
         <target>ali</target>
       </trans-unit>
-      <trans-unit id="55">
-        <source>add new creator name</source>
-        <target>dodaj novo ime ustvarjalca</target>
-      </trans-unit>
-      <trans-unit id="56">
-        <source>creation year</source>
-        <target>leto nastanka</target>
-      </trans-unit>
-      <trans-unit id="57">
-        <source>end year (if range)</source>
-        <target>končno leto (v obdobju)</target>
-      </trans-unit>
       <trans-unit id="58">
         <source>date display (defaults to date range)</source>
         <target>prikaz datuma (prednastavljno za obdobje)</target>
-      </trans-unit>
-      <trans-unit id="60">
-        <source>administrative/biographical history</source>
-        <target>administrativna/bigografska preteklost</target>
       </trans-unit>
       <trans-unit id="61">
         <source>archival history</source>
@@ -238,10 +190,6 @@
         <source>conditions governing reproduction</source>
         <target>pogoji izdelave reprodukcij</target>
       </trans-unit>
-      <trans-unit id="74">
-        <source>physical characteristics</source>
-        <target>fizične značilnosti</target>
-      </trans-unit>
       <trans-unit id="75">
         <source>finding aids</source>
         <target>informativno pomagalo</target>
@@ -249,10 +197,6 @@
       <trans-unit id="76">
         <source>location of originals</source>
         <target>nahajališče originalov</target>
-      </trans-unit>
-      <trans-unit id="77">
-        <source>location of copies</source>
-        <target>nahajališče kopij</target>
       </trans-unit>
       <trans-unit id="78">
         <source>related units of description</source>
@@ -310,25 +254,9 @@
         <source>add new %1%</source>
         <target>dodaj nov zapis %1%</target>
       </trans-unit>
-      <trans-unit id="94">
-        <source>list all %1%</source>
-        <target>izpiši vse %1%</target>
-      </trans-unit>
       <trans-unit id="95">
         <source>list %1%</source>
         <target>seznam: %1%</target>
-      </trans-unit>
-      <trans-unit id="96">
-        <source>edit information object</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="100">
-        <source>edition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="104">
-        <source>extent</source>
-        <target>obseg</target>
       </trans-unit>
       <trans-unit id="105">
         <source>name</source>
@@ -338,14 +266,6 @@
         <source>language</source>
         <target>jezik</target>
       </trans-unit>
-      <trans-unit id="116">
-        <source>add new information object</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="117">
-        <source>list all information objects</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="118">
         <source>Inherited from %ancestor%</source>
         <target>Podedovano od %ancestor%</target>
@@ -353,10 +273,6 @@
       <trans-unit id="120">
         <source>identifier</source>
         <target>identifikator</target>
-      </trans-unit>
-      <trans-unit id="124">
-        <source>alternate title</source>
-        <target>nadomestni naslov</target>
       </trans-unit>
       <trans-unit id="125">
         <source>view %1%</source>
@@ -376,10 +292,6 @@
       </trans-unit>
       <trans-unit id="129">
         <source>select a file to import</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="130">
-        <source>file</source>
         <target/>
       </trans-unit>
       <trans-unit id="131">
@@ -466,10 +378,6 @@
         <source>In an upcoming version of the software this page will list all newly added or revised content that requires translation.</source>
         <target>V prihodnjih verizjah programa bo na tej strani seznam novo dodanih ali spremenjenih vsebin, ki zahtevajo prevod.</target>
       </trans-unit>
-      <trans-unit id="159">
-        <source>change</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="160">
         <source>user interface translation</source>
         <target>vmesnik za prevod</target>
@@ -533,18 +441,6 @@
       <trans-unit id="177">
         <source>static pages</source>
         <target>statična stran</target>
-      </trans-unit>
-      <trans-unit id="178">
-        <source>list staticpage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="179">
-        <source>edit staticpage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="180">
-        <source>view staticpage</source>
-        <target/>
       </trans-unit>
       <trans-unit id="181">
         <source>settings</source>
@@ -626,26 +522,6 @@
         <source>browse</source>
         <target>brskaj</target>
       </trans-unit>
-      <trans-unit id="202">
-        <source>user interface</source>
-        <target>uporabniški vmesnik</target>
-      </trans-unit>
-      <trans-unit id="203">
-        <source>default content</source>
-        <target>prednastavljena vsebina</target>
-      </trans-unit>
-      <trans-unit id="204">
-        <source>new content</source>
-        <target>nova vsebina</target>
-      </trans-unit>
-      <trans-unit id="205">
-        <source>translate</source>
-        <target>prevedi</target>
-      </trans-unit>
-      <trans-unit id="206">
-        <source>admin</source>
-        <target>administrator</target>
-      </trans-unit>
       <trans-unit id="207">
         <source>type</source>
         <target>tip</target>
@@ -681,14 +557,6 @@
       <trans-unit id="215">
         <source>functions occupations activities</source>
         <target/>
-      </trans-unit>
-      <trans-unit id="216">
-        <source>mandates or sources of authority</source>
-        <target>pristojnosti ali viri </target>
-      </trans-unit>
-      <trans-unit id="217">
-        <source>internal structures or genealogy</source>
-        <target>notranja struktura ali rodoslovje</target>
       </trans-unit>
       <trans-unit id="218">
         <source>general context</source>
@@ -790,14 +658,6 @@
         <source>year</source>
         <target>leto</target>
       </trans-unit>
-      <trans-unit id="243">
-        <source>end year &lt;br /&gt;(if range)</source>
-        <target>konec leta &lt;br /&gt;(če je obdobje)</target>
-      </trans-unit>
-      <trans-unit id="244">
-        <source>date display &lt;br /&gt;(defaults to date range)</source>
-        <target>datum &lt;br /&gt;(privzeto za obdobje)</target>
-      </trans-unit>
       <trans-unit id="245">
         <source>functions, occupations and activities</source>
         <target>funkcije, poslanstve, aktivnosti</target>
@@ -870,10 +730,6 @@
         <source>role</source>
         <target>vloga</target>
       </trans-unit>
-      <trans-unit id="265">
-        <source>permissions scope</source>
-        <target>dovoljenja območja</target>
-      </trans-unit>
       <trans-unit id="266">
         <source>reset password: %1%</source>
         <target>ponastavi geslo: %1%</target>
@@ -888,18 +744,6 @@
       </trans-unit>
       <trans-unit id="269">
         <source>you must provide an email address</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="270">
-        <source>your password is required</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="271">
-        <source>you must provide a valid email address</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="272">
-        <source>this account does not exist or you entered a wrong password</source>
         <target/>
       </trans-unit>
       <trans-unit id="273">
@@ -1078,10 +922,6 @@
         <source>the existing term values are required by the application to operate correctly</source>
         <target/>
       </trans-unit>
-      <trans-unit id="332">
-        <source>bibliographic citation</source>
-        <target>bibliografska navedba</target>
-      </trans-unit>
       <trans-unit id="333">
         <source>date</source>
         <target>datum</target>
@@ -1089,10 +929,6 @@
       <trans-unit id="334">
         <source>coverage</source>
         <target>obseg</target>
-      </trans-unit>
-      <trans-unit id="335">
-        <source>medium</source>
-        <target>medij</target>
       </trans-unit>
       <trans-unit id="336">
         <source>format</source>
@@ -1106,22 +942,6 @@
         <source>publisher</source>
         <target>založnik</target>
       </trans-unit>
-      <trans-unit id="339">
-        <source>provenance</source>
-        <target>provinenca</target>
-      </trans-unit>
-      <trans-unit id="340">
-        <source>accrual method</source>
-        <target>metoda prirasta</target>
-      </trans-unit>
-      <trans-unit id="341">
-        <source>accrual periodicity</source>
-        <target>periodičnost prirasta</target>
-      </trans-unit>
-      <trans-unit id="342">
-        <source>accrual policy</source>
-        <target>politika prirasta</target>
-      </trans-unit>
       <trans-unit id="343">
         <source>rights</source>
         <target>pravice</target>
@@ -1129,10 +949,6 @@
       <trans-unit id="344">
         <source>subject</source>
         <target>oseba</target>
-      </trans-unit>
-      <trans-unit id="345">
-        <source>subject - spatial</source>
-        <target>subjekt - prostorski</target>
       </trans-unit>
       <trans-unit id="346">
         <source>edit (Dublin Core)</source>
@@ -1146,17 +962,9 @@
         <source>Sorry, you do not have permission to make %1% language translations</source>
         <target/>
       </trans-unit>
-      <trans-unit id="350">
-        <source>help</source>
-        <target>pomoč</target>
-      </trans-unit>
       <trans-unit id="351">
         <source>Browse for '%1%' in '%2%' returned %3% results</source>
         <target>Poizvedovanje '%1%' v '%2%' vrne %3% zadetkov</target>
-      </trans-unit>
-      <trans-unit id="352">
-        <source>Part of: </source>
-        <target>Del:</target>
       </trans-unit>
       <trans-unit id="353">
         <source>browse all %1%</source>
@@ -1182,14 +990,6 @@
         <source>parent level</source>
         <target>izhodiščni nivo</target>
       </trans-unit>
-      <trans-unit id="359">
-        <source>Creator</source>
-        <target>Ustvarjalec</target>
-      </trans-unit>
-      <trans-unit id="360">
-        <source>Creation date(s)</source>
-        <target>Datum(i) ustvarjanja</target>
-      </trans-unit>
       <trans-unit id="361">
         <source>script of material</source>
         <target>zapis o gradivu</target>
@@ -1210,14 +1010,6 @@
         <source>name access points</source>
         <target>ime vhodne točke</target>
       </trans-unit>
-      <trans-unit id="366">
-        <source>Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?</source>
-        <target>Opozorilo: ta %1% ima %2% potomcev. Če boš nadaljeval, bodo nižji nivoji prav tako izbrisani. Ali si prepričan, da želis izbrisati %1%?</target>
-      </trans-unit>
-      <trans-unit id="367">
-        <source>Are you sure you want to delete this %1% permanently?</source>
-        <target>Ali želiš popolnoma izbirisati %1%</target>
-      </trans-unit>
       <trans-unit id="369">
         <source>language of description</source>
         <target>jezik opisa</target>
@@ -1225,22 +1017,6 @@
       <trans-unit id="370">
         <source>script of description</source>
         <target>zapis o opisu</target>
-      </trans-unit>
-      <trans-unit id="371">
-        <source>unable to parse XML file: malformed or unresolvable entities</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="372">
-        <source>libxml error %code% on line %line% in input file: %message%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="373">
-        <source>unknown schema or import format: "%format%"</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="374">
-        <source>unknown schema or export format: "%format%"</source>
-        <target/>
       </trans-unit>
       <trans-unit id="375">
         <source>export an XML file</source>
@@ -1284,14 +1060,6 @@
       </trans-unit>
       <trans-unit id="385">
         <source>Add a new %1% representation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="386">
-        <source>auto-generate</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="387">
-        <source>usage type</source>
         <target/>
       </trans-unit>
       <trans-unit id="388">
@@ -1346,10 +1114,6 @@
         <source>records management and collecting policies</source>
         <target>politika upravljanja in zbiranja dokumentov</target>
       </trans-unit>
-      <trans-unit id="404">
-        <source>finding aids, guides, publications</source>
-        <target>informativna pomagala, vodniki publikacije</target>
-      </trans-unit>
       <trans-unit id="405">
         <source>accessibility</source>
         <target>dostopnost</target>
@@ -1362,14 +1126,6 @@
         <source>institution responsible identifier</source>
         <target>identifikator pristojne ustanove</target>
       </trans-unit>
-      <trans-unit id="408">
-        <source>languages of institution description</source>
-        <target>jezik opisa ustanove</target>
-      </trans-unit>
-      <trans-unit id="409">
-        <source>scripts of institution description</source>
-        <target>zapis o opisu ustanove</target>
-      </trans-unit>
       <trans-unit id="410">
         <source>view digital object</source>
         <target>pogled v digitalni objekt</target>
@@ -1377,10 +1133,6 @@
       <trans-unit id="411">
         <source>view digital object master</source>
         <target>pogled v izvorni digitalni objekt</target>
-      </trans-unit>
-      <trans-unit id="412">
-        <source>edit physical object</source>
-        <target/>
       </trans-unit>
       <trans-unit id="413">
         <source>edit (ISDIAH)</source>
@@ -1525,10 +1277,6 @@
       <trans-unit id="448">
         <source>edit archival description</source>
         <target>uredi arhivski zapis</target>
-      </trans-unit>
-      <trans-unit id="449">
-        <source>add new archival description</source>
-        <target>dodaj nov arhivski opis</target>
       </trans-unit>
       <trans-unit id="450">
         <source>title proper</source>
@@ -2022,18 +1770,6 @@
         <source>&lt;i&gt;or&lt;/i&gt; Auto-generate a new representation from master image</source>
         <target/>
       </trans-unit>
-      <trans-unit id="573">
-        <source>unable to load import XSL filter: "%importXSL%"</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="574">
-        <source>non-existent class defined in import mapping: "%class%"</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="575">
-        <source>non-existent method defined in import mapping: "%method%"</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="576">
         <source>view authority record</source>
         <target/>
@@ -2070,24 +1806,12 @@
         <source>Error! The update form contained no post data.  This error may be a result of attempting to upload a file that exceeds the max POST size of %1%.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="585">
-        <source>Please chose one of the links below, or click the "back" button on your browser to return to the previous page.</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="586">
         <source>Return to the create/edit form</source>
         <target/>
       </trans-unit>
       <trans-unit id="587">
         <source>Go to the homepage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="588">
-        <source>view MODS record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="589">
-        <source>edit MODS record</source>
         <target/>
       </trans-unit>
       <trans-unit id="590">
@@ -2104,10 +1828,6 @@
       </trans-unit>
       <trans-unit id="593">
         <source>edit archival description - ISAD(G)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="594">
-        <source>title note(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="595">
@@ -2136,10 +1856,6 @@
       </trans-unit>
       <trans-unit id="601">
         <source>edit resource metadata - Dublin Core</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="602">
-        <source>resource metadata</source>
         <target/>
       </trans-unit>
       <trans-unit id="603">
@@ -2276,6 +1992,262 @@
       </trans-unit>
       <trans-unit id="636">
         <source>edit %1% - ISDIAH</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="637">
+        <source>MODS, Version 3.3. U.S. Library of Congress</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="638">
+        <source>URI</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="639">
+        <source>URI to the OAI-PMH port of the Repository to be added</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="640">
+        <source>Mandates/Sources of authority</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="641">
+        <source>Internal structures/Genealogy</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="642">
+        <source>rules and/or conventions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="643">
+        <source>No import file selected, or the selected file exceeds the maximum upload size.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="644">
+        <source>Finding Aid</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="645">
+        <source>date (Created)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="646">
+        <source>date (Issued)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="647">
+        <source>date (Other)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="648">
+        <source>type of resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="649">
+        <source>internet media type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="650">
+        <source>access condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="651">
+        <source>URL</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="652">
+        <source>Physical Location</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="653">
+        <source>Please choose one of the links below, or click the "back" button on your browser to return to the previous page.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="654">
+        <source>date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="655">
+        <source>immediate source of acquisition or transfer</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="656">
+        <source>physical characteristics and technical requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="657">
+        <source>existence and location of originals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="658">
+        <source>existence and location of copies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="659">
+        <source>description control area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="660">
+        <source>archivist's note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="661">
+        <source>start year</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="662">
+        <source>date display</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="663">
+        <source>Name of creator(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="664">
+        <source>Select a creator name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="665">
+        <source>or, type a new name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="666">
+        <source>Publication notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="667">
+        <source>Notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="668">
+        <source>Archivist's Notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="669">
+        <source>Dublin Core elements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="670">
+        <source>and/or dates</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="671">
+        <source>edit resource metadata - MODS</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="672">
+        <source>MODS elements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="673">
+        <source> and/or Origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="674">
+        <source>related item</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="675">
+        <source>Parallel form(s) of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="676">
+        <source>Other form(s) of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="677">
+        <source>finding aids, guides and publications</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="678">
+        <source>languages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="679">
+        <source>scripts</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="680">
+        <source>parallel form of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="681">
+        <source>other form of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="682">
+        <source>Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="683">
+        <source>recent updates</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="684">
+        <source>Show updates to %1% in the last %2% days</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="685">
+        <source>Repository Harvest</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="686">
+        <source>Repository: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="687">
+        <source>Repository harvested successfuly</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="688">
+        <source>No new records</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="689">
+        <source> Records Imported</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="690">
+        <source>Error found in record: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="691">
+        <source>XML: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="692">
+        <source>An error occured during harvest</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="693">
+        <source>Click here to return to harvester main page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="694">
+        <source>Repository Insertion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="695">
+        <source>Repository could not be added because it already exists.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="696">
+        <source>Errors while trying to add Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="697">
+        <source>Repository Deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="698">
+        <source>deleted</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="699">
+        <source>Add New Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="700">
+        <source>Add</source>
         <target/>
       </trans-unit>
     </body>

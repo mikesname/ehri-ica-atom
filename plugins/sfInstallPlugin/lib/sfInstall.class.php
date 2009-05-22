@@ -542,6 +542,7 @@ EOF;
   public static function loadRoot()
   {
     $object = new QubitInformationObject;
+    $object->setId(QubitInformationObject::ROOT_ID);
     $object->save();
   }
 

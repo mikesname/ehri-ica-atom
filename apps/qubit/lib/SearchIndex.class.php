@@ -139,6 +139,13 @@ class SearchIndex
       //include an i18n fallback for proper search result display in case the title field was not translated
       $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('sourceCulture' => true)), $encoding));
     }
+    // Store an unindexed, case-sensitive label for use in hit display
+    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_label', QubitIsad::getLabel($informationObject, array('culture' => $language)), $encoding));
+
+    // LEVEL OF DESCRIPTION
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('levelofdescription', strtolower($informationObject->getLevelOfDescription(array('culture' => $language))), $encoding));
+    //store an unindexed, case-sensitive copy of the scope & content field for use in hit display
+    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_levelofdescription', $informationObject->getLevelOfDescription(array('culture' => $language)), $encoding));
 
     // CREATOR
     $creatorField = Zend_Search_Lucene_Field::Unstored('creator', strtolower($informationObject->getCreatorsNameString($language)), $encoding);

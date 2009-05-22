@@ -280,6 +280,126 @@ class QubitDigitalObject extends BaseDigitalObject
   }
 
   /**
+   * Create a digital object representation of an asset
+   *
+   * @param mixed parent object (digital object or information object)
+   * @param QubitAsset asset to represent
+   * @param array options array of optional paramaters
+   * @return QubitDigitalObject
+   */
+  public static function create($parent, $asset, $options = array())
+  {
+    switch (get_class($parent))
+    {
+      case 'QubitDigitalObject':
+        $parentInformationObject = $parent->getTopAncestorOrSelf()->getInformationObject;
+        break;
+      case 'QubitInformationObject':
+        $parentInformationObject = $parent;
+        break;
+      default:
+        var_dump(get_class($parent));
+    }
+
+    // Fail if no valid path to information object found
+    if (null === $parentInformationObject || 'QubitInformationObject' != get_class($parentInformationObject))
+    {
+      throw sfException('Parent object is not a valid object');
+    }
+
+    // Fail if filename is empty
+    if (0 == strlen($asset->getName()))
+    {
+      throw sfException('Not a valid filename');
+    }
+
+    // Get usage type id (default to MASTER)
+    $usageId = (isset($options['usageId'])) ? $options['usageId'] : QubitTerm::MASTER_ID;
+
+    // Fail if asssets intended usage is a reference or thumbnail object and
+    // it's *not* an image mimetype
+    $isImage = QubitDigitalObject::isImageFile($asset->getName());
+    if (($usageId == QubitTerm::REFERENCE_ID || $usageId == QubitTerm::THUMBNAIL_ID) && $isImage === false)
+    {
+      throw sfException('Reference or thumbnail asset must be mime-type image/*');
+    }
+
+    // Get clean file name (no bad chars)
+    $cleanFileName = self::sanitizeFilename($asset->getName());
+
+    // Upload paths for this information object / digital object
+    $infoObjectPath = QubitDigitalObject::getAssetPathfromParent($parentInformationObject);
+    $filePath       = sfConfig::get('sf_web_dir').$infoObjectPath.'/';
+    $relativePath   = $infoObjectPath.'/';
+    $filePathName   = $filePath.$cleanFileName;
+
+    // make the target directory if necessary
+    // NB: this will always return false if the path exists
+    if (!file_exists($filePath))
+    {
+      mkdir($filePath, 0755, true);
+    }
+
+    // Write file
+    if (false === file_put_contents($filePathName, $asset->getContents()))
+    {
+      throw sfException('File write to '.$filePathName.' failed');
+    }
+
+    // set file permissions
+    if (!chmod($filePathName, 0644))
+    {
+      throw sfException('Failed to set permissions on '.$filePathName);
+    }
+
+    // Iterate through new directories and set permissions (mkdir() won't do this properly)
+    $pathToDir = sfConfig::get('sf_web_dir');
+    foreach (explode('/', $infoObjectPath) as $dir)
+    {
+      $pathToDir .= '/'.$dir;
+      chmod($pathToDir, 0755);
+    }
+
+    // Save digital object in database
+    $digitalObject = new QubitDigitalObject;
+    $digitalObject->setName($cleanFileName);
+    $digitalObject->setPath($relativePath);
+    $digitalObject->setByteSize(filesize($filePathName));
+    $digitalObject->setUsageId($usageId);
+
+    if ('QubitDigitalObject' == get_class($parent))
+    {
+      $digitalObject->setParentId($parent->getId());
+    }
+    else if ('QubitInformationObject' == get_class($parent))
+    {
+      $digitalObject->setInformationObjectId($parent->getId());
+    }
+
+    $digitalObject->setMimeAndMediaType();
+    $digitalObject->save();
+
+    // Create child objects (derivatives)
+    if ($digitalObject->getPageCount() > 1)
+    {
+      // If DO is a compound object, then create child objects and set to
+      // display as compound object (with pager)
+      $digitalObject->createCompoundChildren();
+      $parentInformationObject->setDisplayAsCompoundObject(1);
+      $digitalObject->createThumbnail();
+    }
+    else
+    {
+      // If DO is a single object, create various representations based on
+      // intended usage
+      $digitalObject->createRepresentations($usageId);
+    }
+
+    return $digitalObject;
+  }
+
+
+  /**
    * Populate a digital object from a resource pointed to by a URI
    * This is for, eg. importing encoded digital objects from XML
    *
@@ -487,73 +607,6 @@ class QubitDigitalObject extends BaseDigitalObject
     }
 
     return true;
-  }
-
-  /**
-   * Save digitalObject asset (file) to the appropriate directory
-   *
-   * @param sfRequest $request current sfRequest object
-   * @param informationObject $informationObject associated informationObject
-   * @param integer $usageId intended usage (master, reference, thumbnail)
-   * @return mixed array of file metadata on sucess, false on failure
-   */
-  public static function uploadAsset($request, $informationObject, $usageId)
-  {
-    $uploadFiles = $request->getFiles('upload_file');
-    $filename = $uploadFiles[$usageId]['name'];
-
-    // Fail if upload file not specified
-    if (!$filename)
-    {
-      return false;
-    }
-
-    // Don't upload this file if it's intended usage is a reference or thumbnail object
-    // and it's *not* an image mimetype
-    $isImage = QubitDigitalObject::isImageFile($filename);
-    if (($usageId == QubitTerm::REFERENCE_ID || $usageId == QubitTerm::THUMBNAIL_ID) && $isImage === false)
-    {
-      return false;
-    }
-
-    // Get clean file name (no bad chars)
-    $cleanFileName = self::sanitizeFilename($filename);
-
-    // Upload paths for this information object / digital object
-    $infoObjectPath    = QubitDigitalObject::getAssetPathfromParent($informationObject);
-    $uploadPath        = sfConfig::get('sf_web_dir').$infoObjectPath.'/';
-    $relativePath      = $infoObjectPath.'/';
-
-    // Upload the file
-    if (!$request->moveFile('upload_file['.$usageId.']', $uploadPath.$cleanFileName, 0644, true, 0755))
-    {
-      return false; // File creation error
-    }
-
-    // Iterate through new directories and set permissions
-    // (bug in sfWebRequest::moveFile() only sets permissions properly on final directory)
-    $pathToDir = sfConfig::get('sf_web_dir');
-    foreach (explode('/', $infoObjectPath) as $dir)
-    {
-      $pathToDir .= '/'.$dir;
-
-      // Don't set permissions on base uploads directory
-      if ($pathToDir != sfConfig::get('sf_upload_dir'))
-      {
-        chmod($pathToDir, 0755);
-      }
-    }
-
-    // Capture and return file data
-    $fileData = array(
-      'name'=>$cleanFileName,
-      'path'=>$relativePath,
-      'fullpath'=>$relativePath.$cleanFileName,
-      'size'=>$uploadFiles[$usageId]['size'],
-      'mime-type-request'=>$uploadFiles[$usageId]['type'], // passed from webserver? may be incorrect
-    );
-
-    return $fileData;
   }
 
   /**
@@ -791,8 +844,11 @@ class QubitDigitalObject extends BaseDigitalObject
   {
     $suffix = array( 'B', 'KB', 'MB', 'GB', 'TB' );
     $bytes = $this->getByteSize();
-    for ($i = 0; $bytes >= 1024 && $i < (count($suffix) - 1); $bytes /= 1024, $i++)
+    $i = 0;
+    while ($bytes >= 1024 && $i < (count($suffix) - 1))
     {
+      $bytes /= 1024;
+      $i++;
     }
 
     return round($bytes, 2).' '.$suffix[$i];
@@ -937,7 +993,7 @@ class QubitDigitalObject extends BaseDigitalObject
       }
     }
 
-    if ($this->getMediaType() == 'video')
+    if ($this->getMediaTypeId() == QubitTerm::VIDEO_ID)
     {
       if ($usageId == QubitTerm::MASTER_ID)
       {
@@ -1623,7 +1679,7 @@ class QubitDigitalObject extends BaseDigitalObject
     }
 
     // Do conversion to jpeg
-    $cmd = 'ffmpeg -i '.$originalPath.' -vcodec jpeg -vframes 1 -an -f rawvideo -s '.$width.'x'.$height.' '.$newPath;
+    $cmd = 'ffmpeg -i '.$originalPath.' -vframes 1 -an -f image2 -s '.$width.'x'.$height.' '.$newPath;
     exec($cmd.' 2>&1', $stdout, $returnValue);
 
     // If return value is non-zero, an error occured

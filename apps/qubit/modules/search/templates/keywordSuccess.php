@@ -5,7 +5,8 @@
 
 <?php foreach ($results->getHits() as $hit): ?>
   <div class="search-results" style="padding-top: 5px;">
-    <h3><?php echo link_to($hit->display_title, array('module' => 'informationobject', 'action' => 'show', 'id' => $hit->informationObjectId)) ?></h3>
+
+    <h3><?php echo link_to($hit->display_label, array('module' => 'informationobject', 'action' => 'show', 'id' => $hit->informationObjectId)) ?></h3>
 
     <div class="CRUD_summary">
     <?php if ($hit->display_scopeandcontent): ?>

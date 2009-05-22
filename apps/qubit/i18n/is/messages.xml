@@ -1,33 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="is" datatype="plaintext" original="messages" date="2009-03-02T13:10:51Z" product-name="messages">
+  <file source-language="EN" target-language="is" datatype="plaintext" original="messages" date="2009-05-20T14:12:35Z" product-name="messages">
     <body>
-      <trans-unit id="1">
-        <source>log out</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="2">
         <source>%1% profile</source>
         <target/>
       </trans-unit>
       <trans-unit id="3">
         <source>log in</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="4">
-        <source>help</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="5">
-        <source>about</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="6">
-        <source>home</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="7">
-        <source>open information management toolkit</source>
         <target/>
       </trans-unit>
       <trans-unit id="8">
@@ -118,10 +98,6 @@
         <source>or</source>
         <target/>
       </trans-unit>
-      <trans-unit id="30">
-        <source>auto-generate</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="31">
         <source>upload</source>
         <target/>
@@ -134,10 +110,6 @@
         <source>title</source>
         <target/>
       </trans-unit>
-      <trans-unit id="34">
-        <source>usage type</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="35">
         <source>download movie</source>
         <target/>
@@ -146,32 +118,12 @@
         <source>browse %1%s</source>
         <target/>
       </trans-unit>
-      <trans-unit id="37">
-        <source>unknown schema or export format: "%format%"</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="38">
-        <source>unable to parse XML file: malformed or unresolvable entities</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="39">
-        <source>libxml error %code% on line %line% in input file: %message%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="40">
-        <source>unknown schema or import format: "%format%"</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="41">
         <source>import an XML file</source>
         <target/>
       </trans-unit>
       <trans-unit id="42">
         <source>select a file to import</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="43">
-        <source>file</source>
         <target/>
       </trans-unit>
       <trans-unit id="44">
@@ -226,14 +178,6 @@
         <source>year</source>
         <target/>
       </trans-unit>
-      <trans-unit id="57">
-        <source>end year &lt;br /&gt;(if range)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="58">
-        <source>date display &lt;br /&gt;(defaults to date range)</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="59">
         <source>history</source>
         <target/>
@@ -248,14 +192,6 @@
       </trans-unit>
       <trans-unit id="62">
         <source>functions, occupations and activities</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="63">
-        <source>mandates or sources of authority</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="64">
-        <source>internal structures or genealogy</source>
         <target/>
       </trans-unit>
       <trans-unit id="65">
@@ -336,10 +272,6 @@
       </trans-unit>
       <trans-unit id="84">
         <source>add new %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="85">
-        <source>list all %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="86">
@@ -558,10 +490,6 @@
         <source>Browse for '%1%' in '%2%' returned %3% results</source>
         <target/>
       </trans-unit>
-      <trans-unit id="140">
-        <source>Part of: </source>
-        <target/>
-      </trans-unit>
       <trans-unit id="141">
         <source>browse all %1%</source>
         <target/>
@@ -590,28 +518,12 @@
         <source>identifier</source>
         <target/>
       </trans-unit>
-      <trans-unit id="148">
-        <source>alternate title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="149">
-        <source>bibliographic citation</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="150">
         <source>date</source>
         <target/>
       </trans-unit>
       <trans-unit id="151">
         <source>coverage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="152">
-        <source>extent</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="153">
-        <source>medium</source>
         <target/>
       </trans-unit>
       <trans-unit id="154">
@@ -626,24 +538,8 @@
         <source>publisher</source>
         <target/>
       </trans-unit>
-      <trans-unit id="157">
-        <source>provenance</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="158">
         <source>description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="159">
-        <source>accrual method</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="160">
-        <source>accrual periodicity</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="161">
-        <source>accrual policy</source>
         <target/>
       </trans-unit>
       <trans-unit id="162">
@@ -658,20 +554,12 @@
         <source>subject</source>
         <target/>
       </trans-unit>
-      <trans-unit id="165">
-        <source>subject - spatial</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="166">
         <source>repository</source>
         <target/>
       </trans-unit>
       <trans-unit id="167">
         <source>reference code</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="168">
-        <source>edition</source>
         <target/>
       </trans-unit>
       <trans-unit id="169">
@@ -726,20 +614,12 @@
         <source>script of material</source>
         <target/>
       </trans-unit>
-      <trans-unit id="182">
-        <source>physical characteristics</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="183">
         <source>finding aids</source>
         <target/>
       </trans-unit>
       <trans-unit id="184">
         <source>location of originals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="185">
-        <source>location of copies</source>
         <target/>
       </trans-unit>
       <trans-unit id="186">
@@ -770,10 +650,6 @@
         <source>script of description</source>
         <target/>
       </trans-unit>
-      <trans-unit id="193">
-        <source>title note</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="194">
         <source>parent level</source>
         <target/>
@@ -782,36 +658,8 @@
         <source>context area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="196">
-        <source>creation context</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="197">
-        <source>add new creator name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="198">
-        <source>creation year</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="199">
-        <source>end year (if range)</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="200">
         <source>date display (defaults to date range)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="201">
-        <source>Creator</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="202">
-        <source>Creation date(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="203">
-        <source>administrative/biographical history</source>
         <target/>
       </trans-unit>
       <trans-unit id="204">
@@ -850,48 +698,16 @@
         <source>scripts of archival description</source>
         <target/>
       </trans-unit>
-      <trans-unit id="213">
-        <source>Warning: this %1% has %2% descendants. If you proceed, these lower levels will also be deleted. Are you sure you want to delete this %1%?</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="214">
-        <source>Are you sure you want to delete this %1% permanently?</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="215">
         <source>This will also delete the related %1%.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="216">
-        <source>edit information object</source>
         <target/>
       </trans-unit>
       <trans-unit id="217">
         <source>title notes</source>
         <target/>
       </trans-unit>
-      <trans-unit id="218">
-        <source>version</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="219">
-        <source>next upper level of description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="220">
-        <source>add new information object</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="221">
-        <source>list all information objects</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="222">
         <source>Inherited from %ancestor%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="223">
-        <source>change</source>
         <target/>
       </trans-unit>
       <trans-unit id="224">
@@ -1126,26 +942,6 @@
         <source>add</source>
         <target/>
       </trans-unit>
-      <trans-unit id="282">
-        <source>user interface</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="283">
-        <source>default content</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="284">
-        <source>new content</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="285">
-        <source>translate</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="286">
-        <source>admin</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="287">
         <source>add/edit place</source>
         <target/>
@@ -1266,10 +1062,6 @@
         <source>role</source>
         <target/>
       </trans-unit>
-      <trans-unit id="317">
-        <source>permissions scope</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="318">
         <source>list all users</source>
         <target/>
@@ -1292,18 +1084,6 @@
       </trans-unit>
       <trans-unit id="323">
         <source>you must provide an email address</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="324">
-        <source>your password is required</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="325">
-        <source>you must provide a valid email address</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="326">
-        <source>this account does not exist or you entered a wrong password</source>
         <target/>
       </trans-unit>
       <trans-unit id="327">
@@ -1418,10 +1198,6 @@
         <source>archival and other holdings</source>
         <target/>
       </trans-unit>
-      <trans-unit id="355">
-        <source>finding aids, guides, publications</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="356">
         <source>access area</source>
         <target/>
@@ -1456,14 +1232,6 @@
       </trans-unit>
       <trans-unit id="364">
         <source>institution responsible identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="365">
-        <source>languages of institution description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="366">
-        <source>scripts of institution description</source>
         <target/>
       </trans-unit>
       <trans-unit id="367">
@@ -1512,10 +1280,6 @@
       </trans-unit>
       <trans-unit id="378">
         <source>edit archival description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="379">
-        <source>add new archival description</source>
         <target/>
       </trans-unit>
       <trans-unit id="380">
@@ -2006,18 +1770,6 @@
         <source>&lt;i&gt;or&lt;/i&gt; Auto-generate a new representation from master image</source>
         <target/>
       </trans-unit>
-      <trans-unit id="502">
-        <source>unable to load import XSL filter: "%importXSL%"</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="503">
-        <source>non-existent class defined in import mapping: "%class%"</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="504">
-        <source>non-existent method defined in import mapping: "%method%"</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="505">
         <source>view authority record</source>
         <target/>
@@ -2054,24 +1806,12 @@
         <source>Error! The update form contained no post data.  This error may be a result of attempting to upload a file that exceeds the max POST size of %1%.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="514">
-        <source>Please chose one of the links below, or click the "back" button on your browser to return to the previous page.</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="515">
         <source>Return to the create/edit form</source>
         <target/>
       </trans-unit>
       <trans-unit id="516">
         <source>Go to the homepage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="517">
-        <source>view MODS record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="518">
-        <source>edit MODS record</source>
         <target/>
       </trans-unit>
       <trans-unit id="519">
@@ -2088,10 +1828,6 @@
       </trans-unit>
       <trans-unit id="522">
         <source>edit archival description - ISAD(G)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="523">
-        <source>title note(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="524">
@@ -2120,10 +1856,6 @@
       </trans-unit>
       <trans-unit id="530">
         <source>edit resource metadata - Dublin Core</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="531">
-        <source>resource metadata</source>
         <target/>
       </trans-unit>
       <trans-unit id="532">
@@ -2260,6 +1992,262 @@
       </trans-unit>
       <trans-unit id="565">
         <source>edit %1% - ISDIAH</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="566">
+        <source>MODS, Version 3.3. U.S. Library of Congress</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="567">
+        <source>URI</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="568">
+        <source>URI to the OAI-PMH port of the Repository to be added</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="569">
+        <source>Mandates/Sources of authority</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="570">
+        <source>Internal structures/Genealogy</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="571">
+        <source>rules and/or conventions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="572">
+        <source>No import file selected, or the selected file exceeds the maximum upload size.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="573">
+        <source>Finding Aid</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="574">
+        <source>date (Created)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="575">
+        <source>date (Issued)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="576">
+        <source>date (Other)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="577">
+        <source>type of resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="578">
+        <source>internet media type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="579">
+        <source>access condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="580">
+        <source>URL</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="581">
+        <source>Physical Location</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="582">
+        <source>Please choose one of the links below, or click the "back" button on your browser to return to the previous page.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="583">
+        <source>date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="584">
+        <source>immediate source of acquisition or transfer</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="585">
+        <source>physical characteristics and technical requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="586">
+        <source>existence and location of originals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="587">
+        <source>existence and location of copies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="588">
+        <source>description control area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="589">
+        <source>archivist's note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="590">
+        <source>start year</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="591">
+        <source>date display</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="592">
+        <source>Name of creator(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="593">
+        <source>Select a creator name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="594">
+        <source>or, type a new name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="595">
+        <source>Publication notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="596">
+        <source>Notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="597">
+        <source>Archivist's Notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="598">
+        <source>Dublin Core elements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="599">
+        <source>and/or dates</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="600">
+        <source>edit resource metadata - MODS</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="601">
+        <source>MODS elements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="602">
+        <source> and/or Origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="603">
+        <source>related item</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="604">
+        <source>Parallel form(s) of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="605">
+        <source>Other form(s) of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="606">
+        <source>finding aids, guides and publications</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="607">
+        <source>languages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="608">
+        <source>scripts</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="609">
+        <source>parallel form of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="610">
+        <source>other form of name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="611">
+        <source>Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="612">
+        <source>recent updates</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="613">
+        <source>Show updates to %1% in the last %2% days</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="614">
+        <source>Repository Harvest</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="615">
+        <source>Repository: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="616">
+        <source>Repository harvested successfuly</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="617">
+        <source>No new records</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="618">
+        <source> Records Imported</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="619">
+        <source>Error found in record: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="620">
+        <source>XML: </source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="621">
+        <source>An error occured during harvest</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="622">
+        <source>Click here to return to harvester main page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="623">
+        <source>Repository Insertion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="624">
+        <source>Repository could not be added because it already exists.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="625">
+        <source>Errors while trying to add Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="626">
+        <source>Repository Deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="627">
+        <source>deleted</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="628">
+        <source>Add New Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="629">
+        <source>Add</source>
         <target/>
       </trans-unit>
     </body>
