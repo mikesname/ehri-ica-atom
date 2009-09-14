@@ -61,7 +61,7 @@ QubitMenu:
     source_culture: en
     name: 'archival description'
     label:
-      en: 'Archival description'
+      en: 'Archival descriptions'
       es: 'Descripción archivística'
       fr: 'description archivistique'
       it: 'descrizione archivistica'
@@ -74,7 +74,7 @@ QubitMenu:
     source_culture: en
     name: 'authority record'
     label:
-      en: 'Authority record'
+      en: 'Authority records'
       es: 'Registro de autoridad'
       fr: 'fichier d''autorité'
       it: 'record di autorità'
@@ -87,7 +87,7 @@ QubitMenu:
     source_culture: en
     name: 'archival institution'
     label:
-      en: 'Archival institution'
+      en: 'Archival institutions'
       es: 'Institución archivística'
       fr: 'institution de conservation'
       it: 'istituzione archivistica'
@@ -100,7 +100,7 @@ QubitMenu:
     source_culture: en
     name: term
     label:
-      en: Term
+      en: Terms
       fr: terme
       it: termine
       nl: term

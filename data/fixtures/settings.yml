@@ -50,7 +50,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Erschließung
-      en: 'archival description'
+      en: 'archival descriptions'
       es: 'Descripción archivística'
       fr: 'description archivistique'
       it: 'descrizione archivistica'
@@ -65,7 +65,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Normdaten
-      en: 'authority record'
+      en: 'authority records'
       es: 'Registro de autoridad'
       fr: 'fichier d''autorité'
       it: 'record di autorità'
@@ -80,7 +80,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Urheber/Bestandsbildner
-      en: creator
+      en: creators
       es: produtor
       fr: 'producteur d''archives'
       it: 'soggetto produttore'
@@ -95,7 +95,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Aufbewahrungsort
-      en: 'archival institution'
+      en: 'archival institutions'
       es: 'Institución archivística'
       fr: 'institution de conservation'
       it: 'istituzione archivistica'
@@ -110,7 +110,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Begriff
-      en: term
+      en: terms
       es: Término
       fr: terme
       it: termine
@@ -125,7 +125,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Gegenstand
-      en: subject
+      en: subjects
       es: termo
       fr: sujet
       it: soggetto
@@ -142,7 +142,7 @@ QubitSetting:
       de: Sammlung
       en: fonds
       es: fundo
-      fr: collection
+      fr: collections
       it: collezione
       nl: collectie
       pt: fundo/coleção
@@ -170,7 +170,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Ort
-      en: place
+      en: places
       es: place
       fr: lieu
       it: luogo
@@ -185,7 +185,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Name
-      en: name
+      en: names
       es: name
       fr: nom
       it: nome
@@ -200,7 +200,7 @@ QubitSetting:
     source_culture: en
     value:
       de: 'Digitales Objekt'
-      en: 'digital object'
+      en: 'digital objects'
       es: 'digital object'
       fr: 'objet numérique'
       it: 'oggetto digitale'
@@ -230,7 +230,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Medientyp
-      en: 'media type'
+      en: 'media types'
       es: 'media type'
       fr: 'type de support'
       it: 'tipo di media'
@@ -245,7 +245,7 @@ QubitSetting:
     source_culture: en
     value:
       de: Materialart
-      en: 'material type'
+      en: 'material types'
       fr: 'type de document'
       it: 'tipo di materiale'
       pt: 'gênero documental'
