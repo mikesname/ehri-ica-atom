@@ -1,30 +1,43 @@
-﻿<div class="pageTitle"><?php echo __('add/edit term'); ?></div>
+<?php include_partial('termNameAutoComplete', array('term' => $term))?>
 
-<?php echo form_tag('term/update') ?>
+<div class="pageTitle"><?php echo __('add/edit term'); ?></div>
 
-<?php echo object_input_hidden_tag($term, 'getId') ?>
-
-<table class="detail">
-<tr><td colspan="2" class="headerCell">
-<?php if (!$term->getName()): ?>
-  <?php echo $term->getName(array('sourceCulture' => true)) ?>
+<div class="formHeader">
+<?php if(0 < $term->getId()): ?>
+  <?php echo $term->getName(array('cultureFallback' => true)) ?>
 <?php else: ?>
-  <?php echo $term->getName(); ?>
+  <?php echo __('new term') ?>
 <?php endif; ?>
-</td></tr>
-</table>
+</div>
+
+<?php if (isset($sf_request->id)): ?>
+<form method="post" action="<?php echo url_for(array('module' => 'term', 'action' => 'edit', 'id' => $sf_request->id)) ?>" id="editForm">
+<?php else: ?>
+<form method="post" action="<?php echo url_for(array('module' => 'term', 'action' => 'create', 'taxonomyId' => $term->getTaxonomy()->getId())) ?>" id="editForm">
+<?php endif; ?>
+  <fieldset class="collapsible">
+    <legend><?php echo __('definition'); ?></legend>
 
     <div class="form-item">
-      <label for="term name"><?php echo __('term name'); ?></label>
+      <label for="term name">
+        <?php echo __('term name'); ?>
+        <?php echo ($term->isProtected()) ? image_tag('lock_mini') : '' ?>
+      </label>
+      <?php if($term->isProtected()): ?>
+        <?php echo object_input_tag($term, 'getName', array('class' => 'disabled', 'disabled' => 'disabled')) ?>
+      <?php else: ?>
       <?php if (strlen($sourceCultureValue = $term->getName(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $term->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
+        <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
       <?php endif; ?>
-      <?php echo object_input_tag($term, 'getName', array ('size' => 80)) ?>
+        <?php echo object_input_tag($term, 'getName', array ('size' => 80)) ?>
+      <?php endif; ?>
     </div>
 
     <div class="form-item">
-     <label for="taxonomy"><?php echo __('taxonomy'); ?></label>
-    <?php echo object_select_tag($term, 'getTaxonomyId', array ('related_class' => 'QubitTaxonomy', 'peer_method' => 'getEditableTaxonomies')) ?>
+      <label for="taxonomy">
+        <?php echo __('taxonomy'); ?>
+      </label>
+      <?php echo $term->getTaxonomy()->getName(array('cultureFallback' => 'true')) ?>
     </div>
 
     <div class="form-item">
@@ -37,7 +50,7 @@
       <?php if ($scopeNotes): ?>
         <?php foreach ($scopeNotes as $scopeNote): ?>
           <?php echo $scopeNote->getContent(array('cultureFallback' => 'true')) ?>
-          <?php echo link_to(image_tag('delete', 'align=top'), 'term/deleteNote?noteId='.$scopeNote->getId()) ?><br />
+          <?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'term', 'action' => 'deleteNote', 'noteId' => $scopeNote->getId())) ?><br />
         <?php endforeach; ?>
       <?php endif; ?>
 
@@ -49,7 +62,7 @@
        <?php if ($sourceNotes): ?>
         <?php foreach ($sourceNotes as $sourceNote): ?>
           <?php echo $sourceNote->getContent(array('cultureFallback' => 'true')) ?>
-          <?php echo link_to(image_tag('delete', 'align=top'), 'term/deleteNote?noteId='.$sourceNote->getId()) ?><br />
+          <?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'term', 'action' => 'deleteNote', 'noteId' => $sourceNote->getId())) ?><br />
         <?php endforeach; ?>
       <?php endif; ?>
 
@@ -60,54 +73,79 @@
        <?php if ($displayNotes): ?>
         <?php foreach ($displayNotes as $displayNote): ?>
           <?php echo $displayNote->getContent(array('cultureFallback' => 'true')) ?>
-          <?php echo link_to(image_tag('delete', 'align=top'), 'term/deleteNote?noteId='.$displayNote->getId()) ?><br />
+          <?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'term', 'action' => 'deleteNote', 'noteId' => $displayNote->getId())) ?><br />
         <?php endforeach; ?>
       <?php endif; ?>
 
       <?php echo input_tag('new_display_note') ?>
     </div>
+  </fieldset>
 
+  <fieldset class="collapsible collapsed">
+    <legend><?php echo __('relationships') ?></legend>
+
+    <div class="form-item">
+      <label for="display note"><?php echo __('broad term'); ?></label>
+      <div id="broadTermAutoComplete" style="padding-bottom:2em; width:95%">
+        <input id="parentId" type="hidden" name="parentId" value="<?php echo $term->parentId ?>" />
+        <input id="broadTermAcInput" type="text" name="broadTerm" value="<?php echo $parent->getName(array('cultureFallback' => true)) ?>" />
+        <div id="broadTermAcList"></div>
+      </div>
+    </div>
+
+    <table class="inline" id="relatedTerms">
+      <caption><?php echo __('related terms'); ?></caption>
+      <tr>
+        <th style="width: 50%"><?php echo __('related term'); ?></th>
+        <th style="width: 40%"><?php echo __('relationship type'); ?></th>
+        <th style="width: 10%; text-align: center"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+      </tr>
+      <?php if (0 < count($termRelations)): ?>
+      <?php foreach ($termRelations as $termRelation): ?>
+      <tr id="<?php echo 'relation_'.$termRelation->getId() ?>" class="<?php echo 'related_obj_'.$termRelation->getId() ?>">
+        <td>
+        <?php if ($termRelation->getObjectId() == $term->getId()): ?>
+          <?php echo $termRelation->getSubject()->getName(array('cultureFallback' => true)) ?>
+        <?php else: ?>
+          <?php echo $termRelation->getObject()->getName(array('cultureFallback' => true)) ?>
+        <?php endif; ?>
+        </td>
+        <td>
+          <?php echo select_tag('related_term_type['.$termRelation->id.']',
+            options_for_select($termRelationTypes, $relationTypeMatrix[$termRelation->id])) ?>
+        </td>
+        <td style="text-align: center">
+          <input type="checkbox" name="deleteRelation[<?php echo $termRelation->id ?>]" value="delete" class="multiDelete" />
+        </td>
+      </tr>
+      <?php endforeach; ?>
+      <?php endif; ?>
+      <tr id="newRelatedTerm0">
+        <td>
+          <div id="relatedTermAutoComplete" style="padding-bottom:2em; width:95%">
+            <input id="relatedTermAcInput" type="text" name="new_related_term[0]" />
+            <div id="relatedTermAcList"></div>
+          </div>
+        </td>
+        <td>
+          <?php echo select_tag('related_term_type[new0]', options_for_select($sf_data->getRaw('termRelationTypes'))) ?>
+        </td>
+        <td style="text-align: center">
+          <button class="delete-small" onclick="deleteNewRtRow(0); return false;" />
+        </td>
+      </tr>
+    </table>
+  </fieldset>
 
 <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
 <div id="button-block-bump"></div>
 
-<div id="button-block">
-
-<div class="menu-action">
-<?php if ($term->getId()): ?>
-  <?php if($relatedEventCount > 0): ?>
-  <?php $confirmString = __('WARNING: Deleting this term will DELETE %1% events. Are you sure you want to delete these related events forever?', array('%1%' => $relatedEventCount)) ?>
-  <?php elseif ($relatedObjectCount > 0): ?>
-  <?php $confirmString = __('This term is linked to %1% other objects, are you sure you want to remove this term from *all* of these objects?', array('%1%' => $relatedObjectCount)) ?>
+<ul class="actions">
+  <?php if ($term->getId()): ?>
+    <li><?php echo link_to(__('Cancel'), array('module' => 'term', 'action' => 'show', 'id' => $term->id)) ?></li>
+    <?php echo submit_tag(__('Save')) ?>
   <?php else: ?>
-  <?php $confirmString = __('Are you sure?') ?>
+    <li><?php echo link_to(__('Cancel'), array('module' => 'term', 'action' => 'list', 'taxonomyId' => $term->taxonomyId)) ?></li>
+    <?php echo submit_tag(__('Create')) ?>
   <?php endif; ?>
-  &nbsp;<?php echo link_to(__('delete'), 'term/delete?id='.$term->getId(), 'post=true&confirm='.$confirmString) ?>
-  &nbsp;<?php echo link_to(__('cancel'), 'term/list') ?>
-<?php else: ?>
-  &nbsp;<?php echo link_to(__('cancel'), 'term/list') ?>
-<?php endif; ?>
-    <?php if ($term->getId()): ?>
-      <?php echo submit_tag(__('save')) ?>
-    <?php else: ?>
-      <?php echo submit_tag(__('create')) ?>
-    <?php endif; ?>
-</div>
-
-<?php if ($term->getId()): ?>
-  <?php if ($taxonomyName): ?>
-    <div class="menu-extra"><?php echo link_to(__('add new %1%', array('%1%' =>$taxonomyName)), 'term/create?taxonomyId='.$taxonomyId) ?></div>
-  <?php else: ?>
-    <div class="menu-extra"><?php echo link_to( __('add new term'), 'term/create') ?></div>
-  <?php endif; ?>
-<?php endif; ?>
-
-<div class="menu-extra">
-<?php echo link_to(__('list all taxonomies'), 'term/list?taxonomyId=0') ?>
-<?php if ($term->getTaxonomyId()): ?>
-  <?php echo link_to(__('list only %1%', array('%1%' =>$term->getTaxonomy())), 'term/list?taxonomyId='.$term->getTaxonomyId()) ?>
-<?php endif; ?>
-</div>
-</div>
-
-</form>
+</ul>

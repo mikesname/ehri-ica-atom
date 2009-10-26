@@ -16,8 +16,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     PARENT_ID = 'q_actor.PARENT_ID',
     LFT = 'q_actor.LFT',
     RGT = 'q_actor.RGT',
-    CREATED_AT = 'q_actor.CREATED_AT',
-    UPDATED_AT = 'q_actor.UPDATED_AT',
     SOURCE_CULTURE = 'q_actor.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
@@ -35,8 +33,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitActor::PARENT_ID);
     $criteria->addSelectColumn(QubitActor::LFT);
     $criteria->addSelectColumn(QubitActor::RGT);
-    $criteria->addSelectColumn(QubitActor::CREATED_AT);
-    $criteria->addSelectColumn(QubitActor::UPDATED_AT);
     $criteria->addSelectColumn(QubitActor::SOURCE_CULTURE);
 
     return $criteria;
@@ -94,22 +90,58 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (call_user_func_array(array($this, 'parent::__isset'), $args))
+    try
+    {
+      return call_user_func_array(array($this, 'QubitObject::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('actorsRelatedByparentId' == $name)
     {
       return true;
     }
 
-    if (call_user_func_array(array($this->getCurrentactorI18n($options), '__isset'), $args))
+    if ('actorI18ns' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentactorI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    if ('actorNames' == $name)
     {
       return true;
     }
 
-    return false;
+    if ('contactInformations' == $name)
+    {
+      return true;
+    }
+
+    if ('events' == $name)
+    {
+      return true;
+    }
+
+    if ('rightsActorRelations' == $name)
+    {
+      return true;
+    }
+
+    try
+    {
+      if (!$value = call_user_func_array(array($this->getCurrentactorI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentactorI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __get($name)
@@ -122,25 +154,130 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
+    try
     {
-      return $value;
+      return call_user_func_array(array($this, 'QubitObject::__get'), $args);
+    }
+    catch (sfException $e)
+    {
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentactorI18n($options), '__get'), $args))
+    if ('actorsRelatedByparentId' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['actorsRelatedByparentId']))
       {
-        $value = call_user_func_array(array($this->getCurrentactorI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['actorsRelatedByparentId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['actorsRelatedByparentId'] = self::getactorsRelatedByparentIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['actorsRelatedByparentId'];
+    }
+
+    if ('actorI18ns' == $name)
+    {
+      if (!isset($this->refFkValues['actorI18ns']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['actorI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['actorI18ns'] = self::getactorI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['actorI18ns'];
+    }
+
+    if ('actorNames' == $name)
+    {
+      if (!isset($this->refFkValues['actorNames']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['actorNames'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['actorNames'] = self::getactorNamesById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['actorNames'];
+    }
+
+    if ('contactInformations' == $name)
+    {
+      if (!isset($this->refFkValues['contactInformations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['contactInformations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['contactInformations'] = self::getcontactInformationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['contactInformations'];
+    }
+
+    if ('events' == $name)
+    {
+      if (!isset($this->refFkValues['events']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['events'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['events'] = self::geteventsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['events'];
+    }
+
+    if ('rightsActorRelations' == $name)
+    {
+      if (!isset($this->refFkValues['rightsActorRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rightsActorRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rightsActorRelations'] = self::getrightsActorRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rightsActorRelations'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentactorI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentactorI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentactorI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -153,7 +290,7 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       $options = $args[2];
     }
 
-    call_user_func_array(array($this, 'parent::__set'), $args);
+    call_user_func_array(array($this, 'QubitObject::__set'), $args);
 
     call_user_func_array(array($this->getCurrentactorI18n($options), '__set'), $args);
 
@@ -170,27 +307,35 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    call_user_func_array(array($this, 'parent::__unset'), $args);
+    call_user_func_array(array($this, 'QubitObject::__unset'), $args);
 
     call_user_func_array(array($this->getCurrentactorI18n($options), '__unset'), $args);
 
     return $this;
   }
 
+  public function clear()
+  {
+    foreach ($this->actorI18ns as $actorI18n)
+    {
+      $actorI18n->clear();
+    }
+
+    return parent::clear();
+  }
+
   public function save($connection = null)
   {
-    $affectedRows = 0;
-
-    $affectedRows += parent::save($connection);
+    parent::save($connection);
 
     foreach ($this->actorI18ns as $actorI18n)
     {
-      $actorI18n->setid($this->id);
+      $actorI18n->id = $this->id;
 
-      $affectedRows += $actorI18n->save($connection);
+      $actorI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public static function addJoinentityTypeCriteria(Criteria $criteria)
@@ -241,26 +386,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     return self::addactorsRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $actorsRelatedByparentId = null;
-
-  public function getactorsRelatedByparentId(array $options = array())
-  {
-    if (!isset($this->actorsRelatedByparentId))
-    {
-      if (!isset($this->id))
-      {
-        $this->actorsRelatedByparentId = QubitQuery::create();
-      }
-      else
-      {
-        $this->actorsRelatedByparentId = self::getactorsRelatedByparentIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->actorsRelatedByparentId;
-  }
-
   public static function addactorI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitActorI18n::ID, $id);
@@ -279,26 +404,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
   public function addactorI18nsCriteria(Criteria $criteria)
   {
     return self::addactorI18nsCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $actorI18ns = null;
-
-  public function getactorI18ns(array $options = array())
-  {
-    if (!isset($this->actorI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->actorI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->actorI18ns = self::getactorI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->actorI18ns;
   }
 
   public static function addactorNamesCriteriaById(Criteria $criteria, $id)
@@ -321,26 +426,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     return self::addactorNamesCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $actorNames = null;
-
-  public function getactorNames(array $options = array())
-  {
-    if (!isset($this->actorNames))
-    {
-      if (!isset($this->id))
-      {
-        $this->actorNames = QubitQuery::create();
-      }
-      else
-      {
-        $this->actorNames = self::getactorNamesById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->actorNames;
-  }
-
   public static function addcontactInformationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitContactInformation::ACTOR_ID, $id);
@@ -359,26 +444,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
   public function addcontactInformationsCriteria(Criteria $criteria)
   {
     return self::addcontactInformationsCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $contactInformations = null;
-
-  public function getcontactInformations(array $options = array())
-  {
-    if (!isset($this->contactInformations))
-    {
-      if (!isset($this->id))
-      {
-        $this->contactInformations = QubitQuery::create();
-      }
-      else
-      {
-        $this->contactInformations = self::getcontactInformationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->contactInformations;
   }
 
   public static function addeventsCriteriaById(Criteria $criteria, $id)
@@ -401,26 +466,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     return self::addeventsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $events = null;
-
-  public function getevents(array $options = array())
-  {
-    if (!isset($this->events))
-    {
-      if (!isset($this->id))
-      {
-        $this->events = QubitQuery::create();
-      }
-      else
-      {
-        $this->events = self::geteventsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->events;
-  }
-
   public static function addrightsActorRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitRightsActorRelation::ACTOR_ID, $id);
@@ -441,26 +486,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     return self::addrightsActorRelationsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $rightsActorRelations = null;
-
-  public function getrightsActorRelations(array $options = array())
-  {
-    if (!isset($this->rightsActorRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->rightsActorRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->rightsActorRelations = self::getrightsActorRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->rightsActorRelations;
-  }
-
   public function getCurrentactorI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -473,16 +498,12 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->actorI18ns[$options['culture']]))
+    $actorI18ns = $this->actorI18ns->indexBy('culture');
+    if (!isset($actorI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $actorI18n = QubitActorI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $actorI18n = new QubitActorI18n;
-        $actorI18n->setculture($options['culture']);
-      }
-      $this->actorI18ns[$options['culture']] = $actorI18n;
+      $actorI18ns[$options['culture']] = new QubitActorI18n;
     }
 
-    return $this->actorI18ns[$options['culture']];
+    return $actorI18ns[$options['culture']];
   }
 }

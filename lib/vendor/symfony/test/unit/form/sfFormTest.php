@@ -10,13 +10,67 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(140, new lime_output_color());
+$t = new lime_test(145, new lime_output_color());
 
 class FormTest extends sfForm
 {
   public function getCSRFToken($secret = null)
   {
     return "*$secret*";
+  }
+}
+
+class TestForm1 extends FormTest
+{
+  public function configure()
+  {
+    $this->disableCSRFProtection();
+    $this->setWidgets(array(
+      'a' => new sfWidgetFormInput(),
+      'b' => new sfWidgetFormInput(),
+      'c' => new sfWidgetFormInput(),
+    ));
+    $this->setValidators(array(
+      'a' => new sfValidatorString(array('min_length' => 2)),
+      'b' => new sfValidatorString(array('max_length' => 3)),
+      'c' => new sfValidatorString(array('max_length' => 1000)),
+    ));
+    $this->getWidgetSchema()->setLabels(array(
+      'a' => '1_a',
+      'b' => '1_b',
+      'c' => '1_c',
+    ));
+    $this->getWidgetSchema()->setHelps(array(
+      'a' => '1_a',
+      'b' => '1_b',
+      'c' => '1_c',
+    ));
+  }
+}
+
+class TestForm2 extends FormTest
+{
+  public function configure()
+  {
+    $this->disableCSRFProtection();
+    $this->setWidgets(array(
+      'c' => new sfWidgetFormTextarea(),
+      'd' => new sfWidgetFormTextarea(),
+    ));
+    $this->setValidators(array(
+      'c' => new sfValidatorPass(),
+      'd' => new sfValidatorString(array('max_length' => 5)),
+    ));
+    $this->getWidgetSchema()->setLabels(array(
+      'c' => '2_c',
+      'd' => '2_d',
+    ));
+    $this->getWidgetSchema()->setHelps(array(
+      'c' => '2_c',
+      'd' => '2_d',
+    ));
+    $this->validatorSchema->setPreValidator(new sfValidatorPass());
+    $this->validatorSchema->setPostValidator(new sfValidatorPass());
   }
 }
 
@@ -68,6 +122,10 @@ sfForm::enableCSRFProtection('*mygreatsecret*');
 $f = new FormTest();
 $f->setDefaults(array('first_name' => 'Fabien'));
 $t->is($f->getDefault('_csrf_token'), $f->getCSRFToken('*mygreatsecret*'), '->getDefaults() keeps the CSRF token default value');
+
+$f = new FormTest(array(), array(), false);
+$f->setDefaults(array('first_name' => 'Fabien'));
+$t->is(array_key_exists('_csrf_token', $f->getDefaults()), false, '->setDefaults() does not set the CSRF token if CSRF is disabled');
 sfForm::disableCSRFProtection();
 
 // ->getName()
@@ -486,6 +544,20 @@ $t->is($w['author'][sfForm::getCSRFFieldName()], null, '->embedForm() removes th
 $t->is($w['author']->generateName('first_name'), 'article[author][first_name]', '->embedForm() changes the name format to reflect the embedding');
 $t->is($w['author']['company']->generateName('name'), 'article[author][company][name]', '->embedForm() changes the name format to reflect the embedding');
 
+// tests for ticket #4754
+$f1 = new TestForm1();
+$f2 = new TestForm2();
+$f1->embedForm('f2', $f2);
+$t->is($f1['f2']['c']->render(), '<textarea rows="4" cols="30" name="f2[c]" id="f2_c"></textarea>', '->embedForm() generates a correct id in embedded form fields');
+$t->is($f1['f2']['c']->renderLabel(), '<label for="f2_c">2_c</label>', '->embedForm() generates a correct label id correctly in embedded form fields');
+
+// tests for ticket #4754
+$f1 = new TestForm1();
+$f2 = new TestForm2();
+$f1->embedForm('f2', $f2);
+$t->is($f1['f2']['c']->render(), '<textarea rows="4" cols="30" name="f2[c]" id="f2_c"></textarea>', '->embedForm() generates a correct id in embedded form fields');
+$t->is($f1['f2']['c']->renderLabel(), '<label for="f2_c">2_c</label>', '->embedForm() generates a correct label id correctly in embedded form fields');
+
 // ->embedFormForEach()
 $t->diag('->embedFormForEach()');
 $article->embedFormForEach('authors', $author, 2, null, null, array('id_format' => '%s_id'), array('class' => 'embedded'));
@@ -703,60 +775,6 @@ $t->ok($a1->getErrorSchema()->getMessage() == $a->getErrorSchema()->getMessage()
 
 // mergeForm()
 $t->diag('mergeForm()');
-
-class TestForm1 extends FormTest
-{
-  public function configure()
-  {
-    $this->disableCSRFProtection();
-    $this->setWidgets(array(
-      'a' => new sfWidgetFormInput(),
-      'b' => new sfWidgetFormInput(),
-      'c' => new sfWidgetFormInput(),
-    ));
-    $this->setValidators(array(
-      'a' => new sfValidatorString(array('min_length' => 2)),
-      'b' => new sfValidatorString(array('max_length' => 3)),
-      'c' => new sfValidatorString(array('max_length' => 1000)),
-    ));
-    $this->getWidgetSchema()->setLabels(array(
-      'a' => '1_a',
-      'b' => '1_b',
-      'c' => '1_c',
-    ));
-    $this->getWidgetSchema()->setHelps(array(
-      'a' => '1_a',
-      'b' => '1_b',
-      'c' => '1_c',
-    ));
-  }
-}
-
-class TestForm2 extends FormTest
-{
-  public function configure()
-  {
-    $this->disableCSRFProtection();
-    $this->setWidgets(array(
-      'c' => new sfWidgetFormTextarea(),
-      'd' => new sfWidgetFormTextarea(),
-    ));
-    $this->setValidators(array(
-      'c' => new sfValidatorPass(),
-      'd' => new sfValidatorString(array('max_length' => 5)),
-    ));
-    $this->getWidgetSchema()->setLabels(array(
-      'c' => '2_c',
-      'd' => '2_d',
-    ));
-    $this->getWidgetSchema()->setHelps(array(
-      'c' => '2_c',
-      'd' => '2_d',
-    ));
-    $this->validatorSchema->setPreValidator(new sfValidatorPass());
-    $this->validatorSchema->setPostValidator(new sfValidatorPass());
-  }
-}
 
 $f1 = new TestForm1();
 $f2 = new TestForm2();

@@ -21,34 +21,39 @@ class ActorDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $actor = QubitActor::getById($this->getRequestParameter('id'));
+    $this->form = new sfForm;
 
-    $this->forward404Unless($actor);
+    $this->actor = QubitActor::getById($request->id);
 
-    foreach ($actor->getEvents() as $event)
+    if (!isset($this->actor))
     {
-      if (is_null($event->getInformationObjectId()))
+      $this->forward404();
+    }
+
+    if ($request->isMethod('delete'))
+    {
+      foreach ($this->actor->events as $event)
       {
-        $event->delete();
-      }
-      else
-      {
-        if (is_null($event->getTypeId()))
+        if (isset($event->informationObject) && isset($event->type))
         {
-          //Event is only relevant in relation to Actor object, therefore it can be deleted
-          $event->delete();
+          unset($event->actor);
+
+          $event->save();
         }
         else
         {
-          //Event is relevant even without Actor object (e.g. creation date range), therefore it cannot be deleted
-          $event->setActorId(null);
-          $event->save();
+          $event->delete();
         }
       }
+
+      foreach (QubitRelation::getRelationsBySubjectOrObjectId($this->actor->id) as $relation)
+      {
+        $relation->delete();
+      }
+
+      $this->actor->delete();
+
+      $this->redirect(array('module' => 'actor', 'action' => 'list'));
     }
-
-    $actor->delete();
-
-    return $this->redirect('actor/list');
   }
 }

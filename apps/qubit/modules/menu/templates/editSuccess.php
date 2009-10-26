@@ -108,16 +108,11 @@
   
   <div id="button-block">
     <div class="menu-action">
-      <?php if (!$menu->isProtected()): ?>
-      &nbsp;<?php echo link_to(__('delete'), 'menu/delete?id='.$menu->getId(), 'post=true&confirm='.__('this action will delete this menu and all it\'s descendants. Are you sure?')) ?>
-      <?php endif; ?>
       &nbsp;<?php echo link_to(__('cancel'), 'menu/list?page='.$page) ?>
+      <?php if (!$menu->isProtected()): ?>
+      <?php echo link_to(__('delete'), 'menu/delete?id='.$menu->getId(), 'post=true&confirm='.__('this action will delete this menu and all it\'s descendants. Are you sure?')) ?>
+      <?php endif; ?>
       <?php echo submit_tag(__('save')) ?>
-    </div>
-
-    <div class="menu-extra">
-      <?php echo link_to(__('add new'), 'menu/create'); ?>
-      <?php echo link_to(__('list all'), 'menu/list?page='.$page); ?>
     </div>
   </div>
 </form>

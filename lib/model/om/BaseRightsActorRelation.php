@@ -10,9 +10,7 @@ abstract class BaseRightsActorRelation extends QubitObject implements ArrayAcces
     ID = 'q_rights_actor_relation.ID',
     RIGHTS_ID = 'q_rights_actor_relation.RIGHTS_ID',
     ACTOR_ID = 'q_rights_actor_relation.ACTOR_ID',
-    TYPE_ID = 'q_rights_actor_relation.TYPE_ID',
-    CREATED_AT = 'q_rights_actor_relation.CREATED_AT',
-    UPDATED_AT = 'q_rights_actor_relation.UPDATED_AT';
+    TYPE_ID = 'q_rights_actor_relation.TYPE_ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -24,8 +22,6 @@ abstract class BaseRightsActorRelation extends QubitObject implements ArrayAcces
     $criteria->addSelectColumn(QubitRightsActorRelation::RIGHTS_ID);
     $criteria->addSelectColumn(QubitRightsActorRelation::ACTOR_ID);
     $criteria->addSelectColumn(QubitRightsActorRelation::TYPE_ID);
-    $criteria->addSelectColumn(QubitRightsActorRelation::CREATED_AT);
-    $criteria->addSelectColumn(QubitRightsActorRelation::UPDATED_AT);
 
     return $criteria;
   }

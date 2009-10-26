@@ -33,11 +33,11 @@ class ActorDeleteContactInformationAction extends sfAction
   //right now contact information is only created and deleted via the repository module
   if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
     {
-      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->actorId));
+      $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->actorId));
     }
   else
     {
-      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->actorId));
+      $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->actorId));
     }
   }
 }

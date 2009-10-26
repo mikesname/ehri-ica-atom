@@ -27,10 +27,10 @@
  */
 class PhysicalObjectUpdateAction extends sfAction
 {
-  
+
   /**
    * Main
-   * 
+   *
    * @param sfRequest $request
    */
   public function execute($request)
@@ -44,25 +44,21 @@ class PhysicalObjectUpdateAction extends sfAction
       $physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('id'));
       $this->forward404Unless($physicalObject);
     }
-    
+
     // Update objects
     $this->updateContainerAttributes($physicalObject);
-    
+
     // Redirect to information object edit page
     if ($this->hasRequestParameter('next'))
     {
-      // Make the $next parameter into an absolute URL because redirect() expects
-      // an absolute URL or an array containing module and action
-      // (Pre-pend code copied from sfWebController->genUrl() method)  
-      $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
-      return $this->redirect($next);
+      $this->redirect($request->next);
     }
-    
-    // Default redirect  
-    return $this->redirect('physicalobject/edit?id='.$physicalObject->getId());
-  } 
-  
-  
+
+    // Default redirect
+    $this->redirect('physicalobject/edit?id='.$physicalObject->getId());
+  }
+
+
   /**
    * Update container attributes
    *
@@ -72,7 +68,7 @@ class PhysicalObjectUpdateAction extends sfAction
   {
     $physicalObject->setName($this->getRequestParameter('name'));
     $physicalObject->setLocation($this->getRequestParameter('location'));
-    
+
     // Set typeId to null if option "0" (blank) selected
     if ($this->getRequestParameter('typeId') === '')
     {

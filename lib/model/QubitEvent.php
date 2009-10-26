@@ -17,24 +17,67 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Represent the time, place and/or agent of events in an artifact's history 
+ *
+ * @package    qubit
+ * @subpackage event
+ * @version    svn: $Id$
+ * @author     Peter Van Garderen <peter@artefactual.com>
+ * @author     Jack Bates <jack@artefactual.com>
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class QubitEvent extends BaseEvent
 {
+  public $indexOnSave = true;
+
+  /**
+   * Additional save functionality, e.g. update search index
+   *
+   * @param mixed $connection provide a database connection
+   * @return QubitInformationObject self-reference
+   */
   public function save($connection = null)
   {
-    // TODO: $cleanInformationObject = $this->getInformationObject()->clean();
-    $cleanInformationObjectId = $this->columnValues['information_object_id'];
+    // TODO: $cleanInformationObject = $this->informationObject->clean;
+    $cleanInformationObjectId = $this->__get('informationObjectId', array('clean' => true));
 
     parent::save($connection);
 
-    if ($cleanInformationObjectId != $this->getInformationObjectId() && QubitInformationObject::getById($cleanInformationObjectId) !== null)
+    if ($this->indexOnSave)
     {
-      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanInformationObjectId));
+      if ($this->informationObjectId != $cleanInformationObjectId && null !== QubitInformationObject::getById($cleanInformationObjectId))
+      {
+        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanInformationObjectId));
+      }
+
+      if (isset($this->informationObject))
+      {
+        SearchIndex::updateTranslatedLanguages($this->informationObject);
+      }
     }
 
-    if ($this->getInformationObject() !== null)
+    return $this;
+  }
+
+  /**
+   * Flag whether to update the search index when saving this object
+   *
+   * @param boolean $bool flag value
+   * @return QubitEvent self-reference
+   */
+  public function setIndexOnSave($bool)
+  {
+    if ($bool)
     {
-      SearchIndex::updateTranslatedLanguages($this->getInformationObject());
+      $this->indexOnSave = true;
     }
+    else
+    {
+      $this->indexOnSave = false;
+    }
+
+    return $this;
   }
 
   public function delete($connection = null)

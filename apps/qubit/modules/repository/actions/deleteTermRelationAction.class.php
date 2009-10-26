@@ -31,11 +31,11 @@ class RepositoryDeleteTermRelationAction extends sfAction
 
     if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
     {
-      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->repositoryId));
+      $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->repositoryId));
     }
     else
     {
-      return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->repositoryId));
+      $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->repositoryId));
     }
   }
 }

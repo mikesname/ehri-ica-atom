@@ -15,7 +15,8 @@ abstract class BaseMenu implements ArrayAccess
     CREATED_AT = 'q_menu.CREATED_AT',
     UPDATED_AT = 'q_menu.UPDATED_AT',
     SOURCE_CULTURE = 'q_menu.SOURCE_CULTURE',
-    ID = 'q_menu.ID';
+    ID = 'q_menu.ID',
+    SERIAL_NUMBER = 'q_menu.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -28,6 +29,7 @@ abstract class BaseMenu implements ArrayAccess
     $criteria->addSelectColumn(QubitMenu::UPDATED_AT);
     $criteria->addSelectColumn(QubitMenu::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitMenu::ID);
+    $criteria->addSelectColumn(QubitMenu::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -36,20 +38,28 @@ abstract class BaseMenu implements ArrayAccess
     $menus = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$menus[$id = (int) $row[8]]))
+    $keys = array();
+    $keys['id'] = $row[8];
+
+    $key = serialize($keys);
+    if (!isset(self::$menus[$key]))
     {
       $menu = new QubitMenu;
-      $menu->new = false;
+
+      $menu->keys = $keys;
       $menu->row = $row;
 
-      self::$menus[$id] = $menu;
+      $menu->new = false;
+
+      self::$menus[$key] = $menu;
     }
 
-    return self::$menus[$id];
+    return self::$menus[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -127,13 +137,19 @@ abstract class BaseMenu implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -143,7 +159,18 @@ abstract class BaseMenu implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitMenu::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitMenu::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -166,26 +193,39 @@ abstract class BaseMenu implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    if (call_user_func_array(array($this->getCurrentmenuI18n($options), '__isset'), $args))
+    if ('menusRelatedByparentId' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentmenuI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    if ('menuI18ns' == $name)
     {
       return true;
+    }
+
+    try
+    {
+      if (!$value = call_user_func_array(array($this->getCurrentmenuI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentmenuI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
     }
 
     if ('ancestors' == $name)
@@ -198,7 +238,7 @@ abstract class BaseMenu implements ArrayAccess
       return true;
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -225,33 +265,65 @@ abstract class BaseMenu implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentmenuI18n($options), '__get'), $args))
+    if ('menusRelatedByparentId' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['menusRelatedByparentId']))
       {
-        $value = call_user_func_array(array($this->getCurrentmenuI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['menusRelatedByparentId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['menusRelatedByparentId'] = self::getmenusRelatedByparentIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['menusRelatedByparentId'];
+    }
+
+    if ('menuI18ns' == $name)
+    {
+      if (!isset($this->refFkValues['menuI18ns']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['menuI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['menuI18ns'] = self::getmenuI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['menuI18ns'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentmenuI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentmenuI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentmenuI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
 
     if ('ancestors' == $name)
@@ -293,6 +365,8 @@ abstract class BaseMenu implements ArrayAccess
 
       return $this->values['descendants'];
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -386,29 +460,23 @@ abstract class BaseMenu implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    foreach ($this->menuI18ns as $menuI18n)
+    {
+      $menuI18n->clear();
+    }
+
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitMenu::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitMenu::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -417,15 +485,13 @@ abstract class BaseMenu implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -447,18 +513,16 @@ abstract class BaseMenu implements ArrayAccess
 
     foreach ($this->menuI18ns as $menuI18n)
     {
-      $menuI18n->setid($this->id);
+      $menuI18n->id = $this->id;
 
-      $affectedRows += $menuI18n->save($connection);
+      $menuI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     $this->updateNestedSet($connection);
 
     if (!isset($connection))
@@ -495,23 +559,21 @@ abstract class BaseMenu implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     // Update nested set keys only if parent id has changed
     if (isset($this->values['parentId']))
     {
@@ -561,6 +623,11 @@ abstract class BaseMenu implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -574,11 +641,11 @@ abstract class BaseMenu implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -588,19 +655,17 @@ abstract class BaseMenu implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
-    $this->refresh(array('connection' => $connection));
+    $this->clear();
     $this->deleteFromNestedSet($connection);
 
     $criteria = new Criteria;
     $criteria->add(QubitMenu::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	
@@ -642,26 +707,6 @@ abstract class BaseMenu implements ArrayAccess
     return self::addmenusRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $menusRelatedByparentId = null;
-
-  public function getmenusRelatedByparentId(array $options = array())
-  {
-    if (!isset($this->menusRelatedByparentId))
-    {
-      if (!isset($this->id))
-      {
-        $this->menusRelatedByparentId = QubitQuery::create();
-      }
-      else
-      {
-        $this->menusRelatedByparentId = self::getmenusRelatedByparentIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->menusRelatedByparentId;
-  }
-
   public static function addmenuI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitMenuI18n::ID, $id);
@@ -682,26 +727,6 @@ abstract class BaseMenu implements ArrayAccess
     return self::addmenuI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $menuI18ns = null;
-
-  public function getmenuI18ns(array $options = array())
-  {
-    if (!isset($this->menuI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->menuI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->menuI18ns = self::getmenuI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->menuI18ns;
-  }
-
   public function getCurrentmenuI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -714,17 +739,13 @@ abstract class BaseMenu implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->menuI18ns[$options['culture']]))
+    $menuI18ns = $this->menuI18ns->indexBy('culture');
+    if (!isset($menuI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $menuI18n = QubitMenuI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $menuI18n = new QubitMenuI18n;
-        $menuI18n->setculture($options['culture']);
-      }
-      $this->menuI18ns[$options['culture']] = $menuI18n;
+      $menuI18ns[$options['culture']] = new QubitMenuI18n;
     }
 
-    return $this->menuI18ns[$options['culture']];
+    return $menuI18ns[$options['culture']];
   }
 
   public function addAncestorsCriteria(Criteria $criteria)
@@ -776,7 +797,7 @@ unset($this->values['rgt']);
     }
     else
     {
-      $parent->refresh(array('connection' => $connection));
+      $parent->clear();
 
       if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
       {

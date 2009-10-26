@@ -29,6 +29,6 @@ class MapDeletePlaceMapRelationAction extends sfAction
 
   $placeMapRelation->delete();
 
-    return $this->redirect('map/edit?id='.$mapId);
+    $this->redirect('map/edit?id='.$mapId);
   }
 }

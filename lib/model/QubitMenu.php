@@ -32,7 +32,7 @@ class QubitMenu extends BaseMenu
 
   // 3rd generation constant ids
   const ADD_EDIT_ID = 4;
-  const IMPORT_EXPORT_ID = 5;
+  const IMPORT_ID = 5;
   const TRANSLATE_ID = 6;
   const ADMIN_ID = 7;
 
@@ -141,14 +141,6 @@ class QubitMenu extends BaseMenu
     $currentUrl = url_for($currentModule.'/'.$currentAction);
     $isSelected = false;
 
-    // If passed $url matches the url for this menu AND is not the base url
-    // for the application (url_for()), return true
-    $menuUrl = $this->getPath(array('getUrl' => true, 'resolveAlias' => true));
-    if ($menuUrl == $currentUrl && $currentUrl != url_for(''))
-    {
-      $isSelected = true;
-    }
-
     // Yucky Hack: Don't display "static" menu as selected when displaying a
     // staticpage (See FIXME below)
     if ($currentModule == 'staticpage' && $currentAction == 'static')
@@ -156,11 +148,27 @@ class QubitMenu extends BaseMenu
 
       return false;
     }
-    // Yucky Hack, Part Deux: Don't display any active menu options when displaying search results
-    if ($currentModule == 'search' && $currentAction == 'keyword')
+    // Yucky Hack, Part Deux: Don't display any active menu options when
+    // displaying search results
+    if ($currentModule == 'search' && $currentAction == 'search')
     {
 
       return false;
+    }
+    // 'Hacks 3: Return of the Hack' Select the 'archival description' button
+    // when uploading digital object
+    if ($currentModule == 'digitalobject' && $currentAction == 'edit')
+    {
+
+      return ($this->getPath() == 'informationobject/list');
+    }
+
+    // If passed $url matches the url for this menu AND is not the base url
+    // for the application (url_for()), return true
+    $menuUrl = $this->getPath(array('getUrl' => true, 'resolveAlias' => true));
+    if ($menuUrl == $currentUrl && $currentUrl != url_for(''))
+    {
+      $isSelected = true;
     }
 
     /***

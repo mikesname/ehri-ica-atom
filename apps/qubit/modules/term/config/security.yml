@@ -13,6 +13,10 @@ edit:
 list:
   is_secure:   off
 
+move:
+  is_secure:  on
+  credentials: [[ contributor, editor, administrator ]]
+
 show:
   is_secure:  off
 

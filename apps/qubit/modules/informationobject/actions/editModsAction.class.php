@@ -28,46 +28,87 @@
 
 class InformationObjectEditModsAction extends InformationObjectEditAction
 {
-  public function execute($request)
+  // Arrays are not allowed in class constants
+  public static
+    $NAMES = array(
+      'accessConditions',
+      'identifier',
+      'language',
+      'subjectAccessPoints',
+      'title',
+      'types',
+      'repository',
+      'publicationStatus');
+
+  protected function addField($name)
   {
-    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'mods');
+    parent::addField($name);
 
-    // run the core informationObject edit action commands
-    parent::execute($request);
-
-    // add MODS specific commands
-    $this->modsTypes = QubitMods::getTypes($this->informationObject);
-  }
-
-  protected function processForm()
-  {
-    parent::processForm();
-
-    // $this->updateModsProperties();
-    $this->updateModsTypes();
-  }
-
-
-  public function updateMODSProperties()
-  {
-  }
-
-  protected function updateModsTypes()
-  {
-    if ($mods_type_ids = $this->getRequestParameter('mods_type_id'))
+    switch ($name)
     {
-      // Make sure that $dc_type_id is an array, even if it's only got one value
-      $mods_type_ids = (is_array($mods_type_ids)) ? $mods_type_ids : array($mods_type_ids);
+      case 'types':
+        $criteria = new Criteria;
+        $this->informationObject->addObjectTermRelationsRelatedByObjectIdCriteria($criteria);
+        QubitObjectTermRelation::addJoinTermCriteria($criteria);
+        $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MODS_RESOURCE_TYPE_ID);
 
-      foreach ($mods_type_ids as $mods_type_id)
-      {
-        if (intval($mods_type_id))
+        $values = array();
+        foreach ($this->relations = QubitObjectTermRelation::get($criteria) as $relation)
         {
-          $this->informationObject->addTermRelation($mods_type_id, QubitTaxonomy::MODS_RESOURCE_TYPE_ID);
-          $this->foreignKeyUpdate = true;
+          $values[] = $this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $relation->term->id));
         }
-      }
+
+        $this->form->setDefault('types', $values);
+        $this->form->setValidator('types', new sfValidatorPass);
+
+        $choices = array();
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::MODS_RESOURCE_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $term->id))] = $term;
+        }
+
+        $this->form->setWidget('types', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+
+        break;
     }
   }
 
+  protected function processField($field)
+  {
+    switch ($field->getName())
+    {
+      case 'types':
+        $filtered = $flipped = array();
+        foreach ($this->form->getValue('types') as $value)
+        {
+          $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $value));
+          $filtered[$params['id']] = $flipped[$params['id']] = $params['id'];
+        }
+
+        foreach ($this->relations as $relation)
+        {
+          if (isset($flipped[$relation->term->id]))
+          {
+            unset($filtered[$relation->term->id]);
+          }
+          else
+          {
+            $relation->delete();
+          }
+        }
+
+        foreach ($filtered as $id)
+        {
+          $relation = new QubitObjectTermRelation;
+          $relation->termId = $id;
+
+          $this->informationObject->objectTermRelationsRelatedByobjectId[] = $relation;
+        }
+
+        break;
+
+      default:
+        parent::processField($field);
+    }
+  }
 }

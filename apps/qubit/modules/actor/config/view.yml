@@ -1,14 +1,28 @@
+deleteSuccess:
+  components:
+    sidebar: []
+    BrowseBox: []
+    MainMenu: []
+    SearchBox: []
+
 editContactInformationSuccess:
   components:
     sidebar: []
   javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
 
 editIsaarSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea]
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceSelect, multiInstanceInput]
 
 listSuccess:
+  javascripts:
   components:
     sidebar: []
+
+autocompleteSuccess:
+  javascripts: [-*]
+  components:
+    sidebar: []
+  stylesheets: [-*]
 
 all:
   components:

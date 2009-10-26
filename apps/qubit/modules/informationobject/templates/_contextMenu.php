@@ -15,7 +15,7 @@ EOF
       <div class="label">
         <?php echo sfConfig::get('app_ui_label_repository') ?>
       </div>
-      <?php echo link_to(render_title($repository), 'repository/show?id='.$repository->getId(), $sf_data->getRaw('repositoryOptions')) ?>
+      <?php echo link_to(render_title($repository), array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId()), $sf_data->getRaw('repositoryOptions')) ?>
     <?php endif; ?>
 
     <?php if (count($creators) > 0): ?>
@@ -29,7 +29,7 @@ EOF
       </div>
       <ul>
         <?php foreach ($creators as $creator): ?>
-          <li><?php echo link_to(render_title($creator), 'actor/show?id='.$creator->getId(), $sf_data->getRaw('creatorOptions')) ?></li>
+          <li><?php echo link_to(render_title($creator), array('module' => 'actor', 'action' => 'show', 'id' => $creator->getId()), $sf_data->getRaw('creatorOptions')) ?></li>
         <?php endforeach; ?>
       </ul>
     <?php endif; ?>
@@ -48,5 +48,13 @@ EOF
     <?php if (count($physicalObjects)): ?>
       <?php include_component('physicalobject', 'contextMenu', array('physicalObjects' => $physicalObjects, 'informationObject' => $informationObject)) ?>
     <?php endif; ?>
+    <div class="label"><?php echo __('export') ?></div>
+    <ul><li><?php echo link_to(__('Dublin Core 1.1 XML'), array('module' => 'informationobject', 'action' => 'showDc', 'id' => $informationObject->id, 'sf_format' => 'xml')) ?></li>
+    <li><?php echo link_to(__('EAD 2002 XML'), array('module' => 'informationobject', 'action' => 'showEad', 'id' => $informationObject->id, 'sf_format' => 'xml')) ?></li>
+    <?php if ((sfContext::getInstance()->getActionName() == 'showMods') || (sfContext::getInstance()->getActionName() == 'editMods')): ?>
+    <li><?php echo link_to(__('MODS 3.3 XML'), array('module' => 'informationobject', 'action' => 'showMods', 'id' => $informationObject->id, 'sf_format' => 'xml')) ?></li>
+    <?php endif; ?>
+    </ul>
+
   </div>
 </div>

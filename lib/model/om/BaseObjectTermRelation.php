@@ -11,9 +11,7 @@ abstract class BaseObjectTermRelation extends QubitObject implements ArrayAccess
     OBJECT_ID = 'q_object_term_relation.OBJECT_ID',
     TERM_ID = 'q_object_term_relation.TERM_ID',
     START_DATE = 'q_object_term_relation.START_DATE',
-    END_DATE = 'q_object_term_relation.END_DATE',
-    CREATED_AT = 'q_object_term_relation.CREATED_AT',
-    UPDATED_AT = 'q_object_term_relation.UPDATED_AT';
+    END_DATE = 'q_object_term_relation.END_DATE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -26,8 +24,6 @@ abstract class BaseObjectTermRelation extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitObjectTermRelation::TERM_ID);
     $criteria->addSelectColumn(QubitObjectTermRelation::START_DATE);
     $criteria->addSelectColumn(QubitObjectTermRelation::END_DATE);
-    $criteria->addSelectColumn(QubitObjectTermRelation::CREATED_AT);
-    $criteria->addSelectColumn(QubitObjectTermRelation::UPDATED_AT);
 
     return $criteria;
   }

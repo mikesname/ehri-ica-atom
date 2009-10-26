@@ -39,6 +39,3 @@
 <?php endforeach; ?>
 </tbody>
 </table>
-<div class="menu-action" style="padding-top: 10px;">
-<?php echo link_to (__('add new menu'), 'menu/create') ?>
-</div>

@@ -8,12 +8,18 @@ abstract class BaseObject implements ArrayAccess
     TABLE_NAME = 'q_object',
 
     CLASS_NAME = 'q_object.CLASS_NAME',
-    ID = 'q_object.ID';
+    CREATED_AT = 'q_object.CREATED_AT',
+    UPDATED_AT = 'q_object.UPDATED_AT',
+    ID = 'q_object.ID',
+    SERIAL_NUMBER = 'q_object.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitObject::CLASS_NAME);
+    $criteria->addSelectColumn(QubitObject::CREATED_AT);
+    $criteria->addSelectColumn(QubitObject::UPDATED_AT);
     $criteria->addSelectColumn(QubitObject::ID);
+    $criteria->addSelectColumn(QubitObject::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -22,20 +28,28 @@ abstract class BaseObject implements ArrayAccess
     $objects = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$objects[$id = (int) $row[1]]))
+    $keys = array();
+    $keys['id'] = $row[3];
+
+    $key = serialize($keys);
+    if (!isset(self::$objects[$key]))
     {
       $object = new $row[0];
-      $object->new = false;
+
+      $object->keys = $keys;
       $object->row = $row;
 
-      self::$objects[$id] = $object;
+      $object->new = false;
+
+      self::$objects[$key] = $object;
     }
 
-    return self::$objects[$id];
+    return self::$objects[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -98,13 +112,19 @@ abstract class BaseObject implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -114,7 +134,18 @@ abstract class BaseObject implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitObject::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitObject::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -122,6 +153,14 @@ abstract class BaseObject implements ArrayAccess
 
   public function __isset($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -129,19 +168,59 @@ abstract class BaseObject implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    return false;
+    if ('notes' == $name)
+    {
+      return true;
+    }
+
+    if ('objectTermRelationsRelatedByobjectId' == $name)
+    {
+      return true;
+    }
+
+    if ('propertys' == $name)
+    {
+      return true;
+    }
+
+    if ('rightss' == $name)
+    {
+      return true;
+    }
+
+    if ('relationsRelatedBysubjectId' == $name)
+    {
+      return true;
+    }
+
+    if ('relationsRelatedByobjectId' == $name)
+    {
+      return true;
+    }
+
+    if ('statuss' == $name)
+    {
+      return true;
+    }
+
+    if ('aclPermissions' == $name)
+    {
+      return true;
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -153,6 +232,14 @@ abstract class BaseObject implements ArrayAccess
 
   public function __get($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -160,19 +247,157 @@ abstract class BaseObject implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
+
+    if ('notes' == $name)
+    {
+      if (!isset($this->refFkValues['notes']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['notes'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['notes'] = self::getnotesById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['notes'];
+    }
+
+    if ('objectTermRelationsRelatedByobjectId' == $name)
+    {
+      if (!isset($this->refFkValues['objectTermRelationsRelatedByobjectId']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['objectTermRelationsRelatedByobjectId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['objectTermRelationsRelatedByobjectId'] = self::getobjectTermRelationsRelatedByobjectIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['objectTermRelationsRelatedByobjectId'];
+    }
+
+    if ('propertys' == $name)
+    {
+      if (!isset($this->refFkValues['propertys']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['propertys'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['propertys'] = self::getpropertysById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['propertys'];
+    }
+
+    if ('rightss' == $name)
+    {
+      if (!isset($this->refFkValues['rightss']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rightss'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rightss'] = self::getrightssById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rightss'];
+    }
+
+    if ('relationsRelatedBysubjectId' == $name)
+    {
+      if (!isset($this->refFkValues['relationsRelatedBysubjectId']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['relationsRelatedBysubjectId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['relationsRelatedBysubjectId'] = self::getrelationsRelatedBysubjectIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['relationsRelatedBysubjectId'];
+    }
+
+    if ('relationsRelatedByobjectId' == $name)
+    {
+      if (!isset($this->refFkValues['relationsRelatedByobjectId']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['relationsRelatedByobjectId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['relationsRelatedByobjectId'] = self::getrelationsRelatedByobjectIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['relationsRelatedByobjectId'];
+    }
+
+    if ('statuss' == $name)
+    {
+      if (!isset($this->refFkValues['statuss']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['statuss'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['statuss'] = self::getstatussById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['statuss'];
+    }
+
+    if ('aclPermissions' == $name)
+    {
+      if (!isset($this->refFkValues['aclPermissions']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['aclPermissions'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['aclPermissions'] = self::getaclPermissionsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['aclPermissions'];
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -254,29 +479,18 @@ abstract class BaseObject implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitObject::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitObject::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -285,15 +499,13 @@ abstract class BaseObject implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -313,13 +525,11 @@ abstract class BaseObject implements ArrayAccess
     $this->new = false;
     $this->values = array();
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitObject::DATABASE_NAME);
@@ -354,23 +564,21 @@ abstract class BaseObject implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitObject::DATABASE_NAME);
@@ -393,6 +601,11 @@ abstract class BaseObject implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -406,11 +619,11 @@ abstract class BaseObject implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -420,16 +633,14 @@ abstract class BaseObject implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitObject::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	
@@ -464,26 +675,6 @@ abstract class BaseObject implements ArrayAccess
     return self::addnotesCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $notes = null;
-
-  public function getnotes(array $options = array())
-  {
-    if (!isset($this->notes))
-    {
-      if (!isset($this->id))
-      {
-        $this->notes = QubitQuery::create();
-      }
-      else
-      {
-        $this->notes = self::getnotesById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->notes;
-  }
-
   public static function addobjectTermRelationsRelatedByobjectIdCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitObjectTermRelation::OBJECT_ID, $id);
@@ -502,26 +693,6 @@ abstract class BaseObject implements ArrayAccess
   public function addobjectTermRelationsRelatedByobjectIdCriteria(Criteria $criteria)
   {
     return self::addobjectTermRelationsRelatedByobjectIdCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $objectTermRelationsRelatedByobjectId = null;
-
-  public function getobjectTermRelationsRelatedByobjectId(array $options = array())
-  {
-    if (!isset($this->objectTermRelationsRelatedByobjectId))
-    {
-      if (!isset($this->id))
-      {
-        $this->objectTermRelationsRelatedByobjectId = QubitQuery::create();
-      }
-      else
-      {
-        $this->objectTermRelationsRelatedByobjectId = self::getobjectTermRelationsRelatedByobjectIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->objectTermRelationsRelatedByobjectId;
   }
 
   public static function addpropertysCriteriaById(Criteria $criteria, $id)
@@ -544,26 +715,6 @@ abstract class BaseObject implements ArrayAccess
     return self::addpropertysCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $propertys = null;
-
-  public function getpropertys(array $options = array())
-  {
-    if (!isset($this->propertys))
-    {
-      if (!isset($this->id))
-      {
-        $this->propertys = QubitQuery::create();
-      }
-      else
-      {
-        $this->propertys = self::getpropertysById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->propertys;
-  }
-
   public static function addrightssCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitRights::OBJECT_ID, $id);
@@ -582,26 +733,6 @@ abstract class BaseObject implements ArrayAccess
   public function addrightssCriteria(Criteria $criteria)
   {
     return self::addrightssCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $rightss = null;
-
-  public function getrightss(array $options = array())
-  {
-    if (!isset($this->rightss))
-    {
-      if (!isset($this->id))
-      {
-        $this->rightss = QubitQuery::create();
-      }
-      else
-      {
-        $this->rightss = self::getrightssById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->rightss;
   }
 
   public static function addrelationsRelatedBysubjectIdCriteriaById(Criteria $criteria, $id)
@@ -624,26 +755,6 @@ abstract class BaseObject implements ArrayAccess
     return self::addrelationsRelatedBysubjectIdCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $relationsRelatedBysubjectId = null;
-
-  public function getrelationsRelatedBysubjectId(array $options = array())
-  {
-    if (!isset($this->relationsRelatedBysubjectId))
-    {
-      if (!isset($this->id))
-      {
-        $this->relationsRelatedBysubjectId = QubitQuery::create();
-      }
-      else
-      {
-        $this->relationsRelatedBysubjectId = self::getrelationsRelatedBysubjectIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->relationsRelatedBysubjectId;
-  }
-
   public static function addrelationsRelatedByobjectIdCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitRelation::OBJECT_ID, $id);
@@ -664,24 +775,44 @@ abstract class BaseObject implements ArrayAccess
     return self::addrelationsRelatedByobjectIdCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $relationsRelatedByobjectId = null;
-
-  public function getrelationsRelatedByobjectId(array $options = array())
+  public static function addstatussCriteriaById(Criteria $criteria, $id)
   {
-    if (!isset($this->relationsRelatedByobjectId))
-    {
-      if (!isset($this->id))
-      {
-        $this->relationsRelatedByobjectId = QubitQuery::create();
-      }
-      else
-      {
-        $this->relationsRelatedByobjectId = self::getrelationsRelatedByobjectIdById($this->id, array('self' => $this) + $options);
-      }
-    }
+    $criteria->add(QubitStatus::OBJECT_ID, $id);
 
-    return $this->relationsRelatedByobjectId;
+    return $criteria;
+  }
+
+  public static function getstatussById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addstatussCriteriaById($criteria, $id);
+
+    return QubitStatus::get($criteria, $options);
+  }
+
+  public function addstatussCriteria(Criteria $criteria)
+  {
+    return self::addstatussCriteriaById($criteria, $this->id);
+  }
+
+  public static function addaclPermissionsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitAclPermission::OBJECT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getaclPermissionsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addaclPermissionsCriteriaById($criteria, $id);
+
+    return QubitAclPermission::get($criteria, $options);
+  }
+
+  public function addaclPermissionsCriteria(Criteria $criteria)
+  {
+    return self::addaclPermissionsCriteriaById($criteria, $this->id);
   }
 
   public function __call($name, $args)

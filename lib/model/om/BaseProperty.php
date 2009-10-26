@@ -13,7 +13,8 @@ abstract class BaseProperty implements ArrayAccess
     CREATED_AT = 'q_property.CREATED_AT',
     UPDATED_AT = 'q_property.UPDATED_AT',
     SOURCE_CULTURE = 'q_property.SOURCE_CULTURE',
-    ID = 'q_property.ID';
+    ID = 'q_property.ID',
+    SERIAL_NUMBER = 'q_property.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -24,6 +25,7 @@ abstract class BaseProperty implements ArrayAccess
     $criteria->addSelectColumn(QubitProperty::UPDATED_AT);
     $criteria->addSelectColumn(QubitProperty::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitProperty::ID);
+    $criteria->addSelectColumn(QubitProperty::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -32,20 +34,28 @@ abstract class BaseProperty implements ArrayAccess
     $propertys = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$propertys[$id = (int) $row[6]]))
+    $keys = array();
+    $keys['id'] = $row[6];
+
+    $key = serialize($keys);
+    if (!isset(self::$propertys[$key]))
     {
       $property = new QubitProperty;
-      $property->new = false;
+
+      $property->keys = $keys;
       $property->row = $row;
 
-      self::$propertys[$id] = $property;
+      $property->new = false;
+
+      self::$propertys[$key] = $property;
     }
 
-    return self::$propertys[$id];
+    return self::$propertys[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -106,13 +116,19 @@ abstract class BaseProperty implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -122,7 +138,18 @@ abstract class BaseProperty implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitProperty::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitProperty::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -145,29 +172,37 @@ abstract class BaseProperty implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    if (call_user_func_array(array($this->getCurrentpropertyI18n($options), '__isset'), $args))
+    if ('propertyI18ns' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentpropertyI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    try
     {
-      return true;
+      if (!$value = call_user_func_array(array($this->getCurrentpropertyI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentpropertyI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -194,34 +229,51 @@ abstract class BaseProperty implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentpropertyI18n($options), '__get'), $args))
+    if ('propertyI18ns' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['propertyI18ns']))
       {
-        $value = call_user_func_array(array($this->getCurrentpropertyI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['propertyI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['propertyI18ns'] = self::getpropertyI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['propertyI18ns'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentpropertyI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentpropertyI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentpropertyI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -315,29 +367,23 @@ abstract class BaseProperty implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    foreach ($this->propertyI18ns as $propertyI18n)
+    {
+      $propertyI18n->clear();
+    }
+
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitProperty::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitProperty::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -346,15 +392,13 @@ abstract class BaseProperty implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -376,18 +420,16 @@ abstract class BaseProperty implements ArrayAccess
 
     foreach ($this->propertyI18ns as $propertyI18n)
     {
-      $propertyI18n->setid($this->id);
+      $propertyI18n->id = $this->id;
 
-      $affectedRows += $propertyI18n->save($connection);
+      $propertyI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitProperty::DATABASE_NAME);
@@ -422,23 +464,21 @@ abstract class BaseProperty implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitProperty::DATABASE_NAME);
@@ -461,6 +501,11 @@ abstract class BaseProperty implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -474,11 +519,11 @@ abstract class BaseProperty implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -488,16 +533,14 @@ abstract class BaseProperty implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitProperty::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	
@@ -539,26 +582,6 @@ abstract class BaseProperty implements ArrayAccess
     return self::addpropertyI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $propertyI18ns = null;
-
-  public function getpropertyI18ns(array $options = array())
-  {
-    if (!isset($this->propertyI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->propertyI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->propertyI18ns = self::getpropertyI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->propertyI18ns;
-  }
-
   public function getCurrentpropertyI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -571,17 +594,13 @@ abstract class BaseProperty implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->propertyI18ns[$options['culture']]))
+    $propertyI18ns = $this->propertyI18ns->indexBy('culture');
+    if (!isset($propertyI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $propertyI18n = QubitPropertyI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $propertyI18n = new QubitPropertyI18n;
-        $propertyI18n->setculture($options['culture']);
-      }
-      $this->propertyI18ns[$options['culture']] = $propertyI18n;
+      $propertyI18ns[$options['culture']] = new QubitPropertyI18n;
     }
 
-    return $this->propertyI18ns[$options['culture']];
+    return $propertyI18ns[$options['culture']];
   }
 
   public function __call($name, $args)

@@ -48,7 +48,7 @@
     </div> <!-- close header-middle -->
 
     <div id="header-bottom">
-    <?php if ($sf_user->hasCredential('administrator' or 'editor' or 'contributor' or 'translator')): ?>
+    <?php if ($sf_user->hasCredential('authenticated')): ?>
     <?php include_component_slot('MainMenu') ?>
     <?php endif; ?>
     </div> <!-- close header-bottom -->
@@ -59,14 +59,18 @@
 
     <div id="context-column">
 
+    <?php if (has_component_slot('SearchBox') || has_component_slot('BrowseBox')): ?>
     <div class="context-column-box">
     <?php include_component_slot('SearchBox') ?>
     <?php include_component_slot('BrowseBox') ?>
     </div>
+    <?php endif;?>
 
+    <?php if (has_component_slot('sidebar')): ?>
     <div id="sidebar">
       <?php include_component_slot('sidebar') ?>
     </div>
+    <?php endif; ?>
 
     </div> <!-- close context-column" -->
 
@@ -86,6 +90,10 @@
     </div> <!-- close body-page -->
     <div id="body-banner-bottom">
       <?php include_component_slot('bottomBanner') ?>
+
+      <div class="logos">
+      <?php echo link_to(image_tag('xhtml10', array('alt' => 'This page is valid XHTML 1.0')), 'http://validator.w3.org/check?'.http_build_query(array('uri' => $sf_request->getUri().'?'.http_build_query(array(session_name() => session_id())), 'ss' => 1))) ?>
+      </div>
     </div>
   </body>
 </html>

@@ -20,9 +20,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     CHECKSUM_TYPE_ID = 'q_digital_object.CHECKSUM_TYPE_ID',
     PARENT_ID = 'q_digital_object.PARENT_ID',
     LFT = 'q_digital_object.LFT',
-    RGT = 'q_digital_object.RGT',
-    CREATED_AT = 'q_digital_object.CREATED_AT',
-    UPDATED_AT = 'q_digital_object.UPDATED_AT';
+    RGT = 'q_digital_object.RGT';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -44,8 +42,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitDigitalObject::PARENT_ID);
     $criteria->addSelectColumn(QubitDigitalObject::LFT);
     $criteria->addSelectColumn(QubitDigitalObject::RGT);
-    $criteria->addSelectColumn(QubitDigitalObject::CREATED_AT);
-    $criteria->addSelectColumn(QubitDigitalObject::UPDATED_AT);
 
     return $criteria;
   }
@@ -113,7 +109,20 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
   {
     $args = func_get_args();
 
-    if (call_user_func_array(array($this, 'parent::__isset'), $args))
+    try
+    {
+      return call_user_func_array(array($this, 'QubitObject::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('digitalObjectsRelatedByparentId' == $name)
+    {
+      return true;
+    }
+
+    if ('placeMapRelations' == $name)
     {
       return true;
     }
@@ -128,7 +137,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       return true;
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __get($name)
@@ -141,9 +150,46 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
+    try
     {
-      return $value;
+      return call_user_func_array(array($this, 'QubitObject::__get'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('digitalObjectsRelatedByparentId' == $name)
+    {
+      if (!isset($this->refFkValues['digitalObjectsRelatedByparentId']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['digitalObjectsRelatedByparentId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['digitalObjectsRelatedByparentId'] = self::getdigitalObjectsRelatedByparentIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['digitalObjectsRelatedByparentId'];
+    }
+
+    if ('placeMapRelations' == $name)
+    {
+      if (!isset($this->refFkValues['placeMapRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['placeMapRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['placeMapRelations'] = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['placeMapRelations'];
     }
 
     if ('ancestors' == $name)
@@ -185,23 +231,21 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
 
       return $this->values['descendants'];
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     $this->updateNestedSet($connection);
 
-    $affectedRows += parent::insert($connection);
+    parent::insert($connection);
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     // Update nested set keys only if parent id has changed
     if (isset($this->values['parentId']))
     {
@@ -229,9 +273,9 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       }
     }
 
-    $affectedRows += parent::update($connection);
+    parent::update($connection);
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -241,14 +285,12 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
-    $this->refresh(array('connection' => $connection));
+    $this->clear();
     $this->deleteFromNestedSet($connection);
 
-    $affectedRows += parent::delete($connection);
+    parent::delete($connection);
 
-    return $affectedRows;
+    return $this;
   }
 
   public static function addJoininformationObjectCriteria(Criteria $criteria)
@@ -306,26 +348,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     return self::adddigitalObjectsRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $digitalObjectsRelatedByparentId = null;
-
-  public function getdigitalObjectsRelatedByparentId(array $options = array())
-  {
-    if (!isset($this->digitalObjectsRelatedByparentId))
-    {
-      if (!isset($this->id))
-      {
-        $this->digitalObjectsRelatedByparentId = QubitQuery::create();
-      }
-      else
-      {
-        $this->digitalObjectsRelatedByparentId = self::getdigitalObjectsRelatedByparentIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->digitalObjectsRelatedByparentId;
-  }
-
   public static function addplaceMapRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitPlaceMapRelation::MAP_ICON_IMAGE_ID, $id);
@@ -344,26 +366,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
   public function addplaceMapRelationsCriteria(Criteria $criteria)
   {
     return self::addplaceMapRelationsCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $placeMapRelations = null;
-
-  public function getplaceMapRelations(array $options = array())
-  {
-    if (!isset($this->placeMapRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->placeMapRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->placeMapRelations = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->placeMapRelations;
   }
 
   public function addAncestorsCriteria(Criteria $criteria)
@@ -415,7 +417,7 @@ unset($this->values['rgt']);
     }
     else
     {
-      $parent->refresh(array('connection' => $connection));
+      $parent->clear();
 
       if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
       {

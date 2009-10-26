@@ -84,22 +84,38 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
       $options = $args[1];
     }
 
-    if (call_user_func_array(array($this, 'parent::__isset'), $args))
+    try
+    {
+      return call_user_func_array(array($this, 'QubitTerm::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('placeI18ns' == $name)
     {
       return true;
     }
 
-    if (call_user_func_array(array($this->getCurrentplaceI18n($options), '__isset'), $args))
+    if ('placeMapRelations' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentplaceI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    try
     {
-      return true;
+      if (!$value = call_user_func_array(array($this->getCurrentplaceI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentplaceI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __get($name)
@@ -112,25 +128,62 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
       $options = $args[1];
     }
 
-    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
+    try
     {
-      return $value;
+      return call_user_func_array(array($this, 'QubitTerm::__get'), $args);
+    }
+    catch (sfException $e)
+    {
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentplaceI18n($options), '__get'), $args))
+    if ('placeI18ns' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['placeI18ns']))
       {
-        $value = call_user_func_array(array($this->getCurrentplaceI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['placeI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['placeI18ns'] = self::getplaceI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['placeI18ns'];
+    }
+
+    if ('placeMapRelations' == $name)
+    {
+      if (!isset($this->refFkValues['placeMapRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['placeMapRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['placeMapRelations'] = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['placeMapRelations'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentplaceI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentplaceI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentplaceI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -143,7 +196,7 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
       $options = $args[2];
     }
 
-    call_user_func_array(array($this, 'parent::__set'), $args);
+    call_user_func_array(array($this, 'QubitTerm::__set'), $args);
 
     call_user_func_array(array($this->getCurrentplaceI18n($options), '__set'), $args);
 
@@ -160,27 +213,35 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
       $options = $args[1];
     }
 
-    call_user_func_array(array($this, 'parent::__unset'), $args);
+    call_user_func_array(array($this, 'QubitTerm::__unset'), $args);
 
     call_user_func_array(array($this->getCurrentplaceI18n($options), '__unset'), $args);
 
     return $this;
   }
 
+  public function clear()
+  {
+    foreach ($this->placeI18ns as $placeI18n)
+    {
+      $placeI18n->clear();
+    }
+
+    return parent::clear();
+  }
+
   public function save($connection = null)
   {
-    $affectedRows = 0;
-
-    $affectedRows += parent::save($connection);
+    parent::save($connection);
 
     foreach ($this->placeI18ns as $placeI18n)
     {
-      $placeI18n->setid($this->id);
+      $placeI18n->id = $this->id;
 
-      $affectedRows += $placeI18n->save($connection);
+      $placeI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public static function addJoincountryCriteria(Criteria $criteria)
@@ -217,26 +278,6 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
     return self::addplaceI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $placeI18ns = null;
-
-  public function getplaceI18ns(array $options = array())
-  {
-    if (!isset($this->placeI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->placeI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->placeI18ns = self::getplaceI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->placeI18ns;
-  }
-
   public static function addplaceMapRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitPlaceMapRelation::PLACE_ID, $id);
@@ -257,26 +298,6 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
     return self::addplaceMapRelationsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $placeMapRelations = null;
-
-  public function getplaceMapRelations(array $options = array())
-  {
-    if (!isset($this->placeMapRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->placeMapRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->placeMapRelations = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->placeMapRelations;
-  }
-
   public function getCurrentplaceI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -289,16 +310,12 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->placeI18ns[$options['culture']]))
+    $placeI18ns = $this->placeI18ns->indexBy('culture');
+    if (!isset($placeI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $placeI18n = QubitPlaceI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $placeI18n = new QubitPlaceI18n;
-        $placeI18n->setculture($options['culture']);
-      }
-      $this->placeI18ns[$options['culture']] = $placeI18n;
+      $placeI18ns[$options['culture']] = new QubitPlaceI18n;
     }
 
-    return $this->placeI18ns[$options['culture']];
+    return $placeI18ns[$options['culture']];
   }
 }

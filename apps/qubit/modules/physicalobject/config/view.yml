@@ -1,2 +1,8 @@
+deleteSuccess:
+  components:
+    BrowseBox: []
+    MainMenu: []
+    SearchBox: []
+
 editSuccess:
   javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]

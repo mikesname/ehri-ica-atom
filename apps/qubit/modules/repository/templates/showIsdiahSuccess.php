@@ -1,17 +1,11 @@
-﻿<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_repository')))?></div>
+<div class="pageTitle"><?php echo __('view %1%', array('%1%' => sfConfig::get('app_ui_label_repository')))?></div>
 
 <table class="detail">
 <tbody>
 
-<?php if ($editCredentials): ?>
   <tr><td colspan="2" class="headerCell">
-  <?php echo link_to(render_title($repository), array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())) ?>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'repository'), render_title($repository), array('module' => 'repository', 'action' => 'edit', 'id' => $repository->id), array('title' => __('Edit repository'))) ?>
   </td></tr>
-<?php else: ?>
-  <tr><td colspan="2" class="headerCell">
-  <?php echo $repository ?>
-  </td></tr>
-<?php endif; ?>
 
 <?php if ($repository->getIdentifier()): ?>
   <tr><th><?php echo __('identifier')?></th>
@@ -251,25 +245,23 @@
 <?php endif; ?>
 
 <?php if (count($notes) > 0): ?>
-  <tr><th><?php echo __('notes')?>:
-  </th><td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note->getType()->getName(array('cultureFallback' => true)).': '.$note->getContent(array('cultureFallback' => true)) ?>
-    <br />
+      <tr><th><?php echo $note->getType()->getName(array('cultureFallback' => true)) ?></th>
+      <td><?php echo $note->getContent(array('cultureFallback' => true)) ?></td></tr>
   <?php endforeach; ?>
-  </td></tr>
 <?php endif; ?>
 
 </tbody>
 </table>
 
-<?php if ($editCredentials): ?>
-<div class="menu-action">
-<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))), array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())) ?>
-</div>
-
-<div class="menu-extra">
-  <?php echo link_to(__('add new'), array('module' => 'repository', 'action' => 'create')) ?>
-  <?php echo link_to(__('list all'), array('module' => 'repository', 'action' => 'list')) ?>
-</div>
-<?php endif; ?>
+<ul class="actions">
+  <?php if (SecurityPriviliges::editCredentials($sf_user, 'repository')): ?>
+    <li><?php echo link_to(__('Edit'), array('module' => 'repository', 'action' => 'edit', 'id' => $repository->id), array('title' => __(''))) ?></li><?php endif; ?>
+  <?php if (SecurityPriviliges::editCredentials($sf_user, 'repository')): ?>
+    <li><?php echo link_to(__('Delete'), array('module' => 'repository', 'action' => 'delete', 'id' => $repository->id), array('title' => __(''))) ?></li><?php endif; ?>
+  <br /><div class="menu-extra">
+  <?php if (SecurityPriviliges::editCredentials($sf_user, 'repository')): ?>
+    <li><?php echo link_to(__('Add new'), array('module' => 'repository', 'action' => 'create'), array('title' => __(''))) ?></li><?php endif; ?>
+  <li><?php echo link_to(__('List all'), array('module' => 'repository', 'action' => 'list')) ?></li>
+  </div>
+</ul>

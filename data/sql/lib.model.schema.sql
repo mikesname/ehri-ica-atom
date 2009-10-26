@@ -21,8 +21,6 @@ CREATE TABLE `q_actor`
 	`parent_id` INTEGER,
 	`lft` INTEGER,
 	`rgt` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_actor_FK_1`
@@ -74,6 +72,7 @@ CREATE TABLE `q_actor_i18n`
 	`revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_actor_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -96,6 +95,7 @@ CREATE TABLE `q_actor_name`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_actor_name_FI_1` (`actor_id`),
 	CONSTRAINT `q_actor_name_FK_1`
@@ -122,6 +122,7 @@ CREATE TABLE `q_actor_name_i18n`
 	`note` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_actor_name_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -154,6 +155,7 @@ CREATE TABLE `q_contact_information`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_contact_information_FI_1` (`actor_id`),
 	CONSTRAINT `q_contact_information_FK_1`
@@ -177,6 +179,7 @@ CREATE TABLE `q_contact_information_i18n`
 	`note` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_contact_information_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -207,8 +210,6 @@ CREATE TABLE `q_digital_object`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_digital_object_FK_1`
 		FOREIGN KEY (`id`)
@@ -256,8 +257,6 @@ CREATE TABLE `q_event`
 	`type_id` INTEGER  NOT NULL,
 	`information_object_id` INTEGER,
 	`actor_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_event_FK_1`
@@ -294,6 +293,7 @@ CREATE TABLE `q_event_i18n`
 	`date_display` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_event_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -356,6 +356,7 @@ CREATE TABLE `q_function_i18n`
 	`revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_function_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -410,8 +411,6 @@ CREATE TABLE `q_information_object`
 	`description_identifier` VARCHAR(255),
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	UNIQUE KEY `q_information_object_U_1` (`oai_local_identifier`),
@@ -480,6 +479,7 @@ CREATE TABLE `q_information_object_i18n`
 	`revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_information_object_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -500,6 +500,7 @@ CREATE TABLE `q_map`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -516,6 +517,7 @@ CREATE TABLE `q_map_i18n`
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_map_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -541,6 +543,7 @@ CREATE TABLE `q_menu`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_menu_FI_1` (`parent_id`),
 	CONSTRAINT `q_menu_FK_1`
@@ -562,6 +565,7 @@ CREATE TABLE `q_menu_i18n`
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_menu_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -589,6 +593,7 @@ CREATE TABLE `q_note`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_note_FI_1` (`object_id`),
 	CONSTRAINT `q_note_FK_1`
@@ -622,6 +627,7 @@ CREATE TABLE `q_note_i18n`
 	`content` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_note_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -639,7 +645,10 @@ DROP TABLE IF EXISTS `q_object`;
 CREATE TABLE `q_object`
 (
 	`class_name` VARCHAR(255),
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -657,8 +666,6 @@ CREATE TABLE `q_object_term_relation`
 	`term_id` INTEGER  NOT NULL,
 	`start_date` DATE,
 	`end_date` DATE,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_object_term_relation_FK_1`
 		FOREIGN KEY (`id`)
@@ -688,6 +695,7 @@ CREATE TABLE `q_permission`
 	`module` VARCHAR(255),
 	`action` VARCHAR(255),
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -706,6 +714,7 @@ CREATE TABLE `q_permission_scope`
 	`role_id` INTEGER,
 	`user_id` INTEGER,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_permission_scope_FI_1` (`permission_id`),
 	CONSTRAINT `q_permission_scope_FK_1`
@@ -738,8 +747,6 @@ CREATE TABLE `q_physical_object`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_physical_object_FK_1`
@@ -771,6 +778,7 @@ CREATE TABLE `q_physical_object_i18n`
 	`location` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_physical_object_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -824,6 +832,7 @@ CREATE TABLE `q_place_i18n`
 	`postal_code` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_place_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -846,8 +855,6 @@ CREATE TABLE `q_place_map_relation`
 	`map_icon_image_id` INTEGER,
 	`map_icon_description` TEXT,
 	`type_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_place_map_relation_FK_1`
 		FOREIGN KEY (`id`)
@@ -889,6 +896,7 @@ CREATE TABLE `q_property`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_property_FI_1` (`object_id`),
 	CONSTRAINT `q_property_FK_1`
@@ -909,6 +917,7 @@ CREATE TABLE `q_property_i18n`
 	`value` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_property_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -931,6 +940,7 @@ CREATE TABLE `q_rights`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_rights_FI_1` (`object_id`),
 	CONSTRAINT `q_rights_FK_1`
@@ -958,8 +968,6 @@ CREATE TABLE `q_relation`
 	`type_id` INTEGER,
 	`start_date` DATE,
 	`end_date` DATE,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_relation_FK_1`
 		FOREIGN KEY (`id`)
@@ -1043,6 +1051,7 @@ CREATE TABLE `q_repository_i18n`
 	`desc_revision_history` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_repository_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1062,6 +1071,7 @@ CREATE TABLE `q_rights_i18n`
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_rights_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1082,8 +1092,6 @@ CREATE TABLE `q_rights_actor_relation`
 	`rights_id` INTEGER  NOT NULL,
 	`actor_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_rights_actor_relation_FK_1`
 		FOREIGN KEY (`id`)
@@ -1121,6 +1129,7 @@ CREATE TABLE `q_rights_term_relation`
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_rights_term_relation_FI_1` (`rights_id`),
 	CONSTRAINT `q_rights_term_relation_FK_1`
@@ -1149,6 +1158,7 @@ CREATE TABLE `q_role`
 (
 	`name` VARCHAR(255),
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -1164,6 +1174,7 @@ CREATE TABLE `q_role_permission_relation`
 	`role_id` INTEGER  NOT NULL,
 	`permission_id` INTEGER  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_role_permission_relation_FI_1` (`role_id`),
 	CONSTRAINT `q_role_permission_relation_FK_1`
@@ -1192,6 +1203,7 @@ CREATE TABLE `q_setting`
 	`deleteable` TINYINT default 0,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -1207,6 +1219,7 @@ CREATE TABLE `q_setting_i18n`
 	`value` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_setting_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1225,8 +1238,6 @@ CREATE TABLE `q_static_page`
 (
 	`id` INTEGER  NOT NULL,
 	`permalink` VARCHAR(255),
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_static_page_FK_1`
@@ -1248,10 +1259,45 @@ CREATE TABLE `q_static_page_i18n`
 	`content` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_static_page_i18n_FK_1`
 		FOREIGN KEY (`id`)
 		REFERENCES `q_static_page` (`id`)
+		ON DELETE CASCADE
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- q_status
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `q_status`;
+
+
+CREATE TABLE `q_status`
+(
+	`object_id` INTEGER  NOT NULL,
+	`type_id` INTEGER,
+	`status_id` INTEGER,
+	`created_at` DATETIME  NOT NULL,
+	`updated_at` DATETIME  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
+	PRIMARY KEY (`id`),
+	INDEX `q_status_FI_1` (`object_id`),
+	CONSTRAINT `q_status_FK_1`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `q_object` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_status_FI_2` (`type_id`),
+	CONSTRAINT `q_status_FK_2`
+		FOREIGN KEY (`type_id`)
+		REFERENCES `q_term` (`id`)
+		ON DELETE CASCADE,
+	INDEX `q_status_FI_3` (`status_id`),
+	CONSTRAINT `q_status_FK_3`
+		FOREIGN KEY (`status_id`)
+		REFERENCES `q_term` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
@@ -1274,6 +1320,7 @@ CREATE TABLE `q_system_event`
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_system_event_FI_1` (`type_id`),
 	CONSTRAINT `q_system_event_FK_1`
@@ -1299,6 +1346,7 @@ CREATE TABLE `q_taxonomy`
 	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -1315,6 +1363,7 @@ CREATE TABLE `q_taxonomy_i18n`
 	`note` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_taxonomy_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1337,8 +1386,6 @@ CREATE TABLE `q_term`
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `q_term_FK_1`
@@ -1368,6 +1415,7 @@ CREATE TABLE `q_term_i18n`
 	`name` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
 	CONSTRAINT `q_term_i18n_FK_1`
 		FOREIGN KEY (`id`)
@@ -1408,6 +1456,7 @@ CREATE TABLE `q_user_role_relation`
 	`user_id` INTEGER  NOT NULL,
 	`role_id` INTEGER  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_user_role_relation_FI_1` (`user_id`),
 	CONSTRAINT `q_user_role_relation_FK_1`
@@ -1437,6 +1486,7 @@ CREATE TABLE `q_oai_repository`
 	`earliest_timestamp` DATETIME,
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`)
 )Type=InnoDB;
 
@@ -1458,6 +1508,7 @@ CREATE TABLE `q_oai_harvest`
 	`metadataPrefix` VARCHAR(255),
 	`set` VARCHAR(255),
 	`created_at` DATETIME  NOT NULL,
+	`serial_number` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
 	INDEX `q_oai_harvest_FI_1` (`oai_repository_id`),
 	CONSTRAINT `q_oai_harvest_FK_1`

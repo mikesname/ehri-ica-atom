@@ -89,16 +89,19 @@ class QubitMigrate
   protected function deleteStubObjects()
   {
     // Delete "stub" QubitEvent objects that have no valid "event type"
-    foreach ($this->data['QubitEvent'] as $key => $event)
+    if (isset($this->data['QubitEvent']) && is_array($this->data['QubitEvent']))
     {
-      if (!isset($event['type_id']))
+      foreach ($this->data['QubitEvent'] as $key => $event)
       {
-        unset($this->data['QubitEvent'][$key]);
-
-        // Also delete related QubitObjectTermRelation object (if any)
-        while ($objectTermRelationKey = $this->getRowKey('QubitObjectTermRelation', 'object_id', $key))
+        if (!isset($event['type_id']))
         {
-          unset($this->data['QubitObjectTermRelation'][$objectTermRelationKey]);
+          unset($this->data['QubitEvent'][$key]);
+
+          // Also delete related QubitObjectTermRelation object (if any)
+          while ($objectTermRelationKey = $this->getRowKey('QubitObjectTermRelation', 'object_id', $key))
+          {
+            unset($this->data['QubitObjectTermRelation'][$objectTermRelationKey]);
+          }
         }
       }
     }
@@ -110,11 +113,14 @@ class QubitMigrate
     }
 
     // Remove blank "stub" QubitObjectTermRelation objects
-    foreach ($this->data['QubitObjectTermRelation'] as $key => $row)
+    if (isset($this->data['QubitObjectTermRelation']) && is_array($this->data['QubitObjectTermRelation']))
     {
-      if (!isset($row['object_id']) || !isset($row['term_id']))
+      foreach ($this->data['QubitObjectTermRelation'] as $key => $row)
       {
-        unset($this->data['QubitObjectTermRelation'][$key]);
+        if (!isset($row['object_id']) || !isset($row['term_id']))
+        {
+          unset($this->data['QubitObjectTermRelation'][$key]);
+        }
       }
     }
 
@@ -178,8 +184,78 @@ class QubitMigrate
    */
   public static function array_insert(&$array, $position, $insert_array)
   {
-    $first_array = array_splice ($array, 0, $position);
-    $array = array_merge ($first_array, $insert_array, $array);
+    $first_array = array_splice($array, 0, $position);
+    $array = array_merge($first_array, $insert_array, $array);
+  }
+
+  /**
+   * Insert a non-hierarchical $newData into an existing dataset ($originalData),
+   * which contains nested set columns (but is also non-hierarchical in
+   * structure), before the row specified by $pivotKey.  Update lft and rgt
+   * values appropriately.
+   *
+   * @param array $originalData The existing YAML dataset array
+   * @param string $pivotKey key of row that should follow the inserted data
+   * @param array $newData data to insert in $originalData
+   */
+  protected static function insertBeforeNestedSet(array &$originalData, $pivotKey, array $newData)
+  {
+    // If pivotKey doesn't exist, then just return a simple array merge
+    if (!isset($originalData[$pivotKey]))
+    {
+
+      return array_merge($originalData, $newData);
+    }
+
+    $pivotIndex = null;
+    $pivotLft = null;
+    $width = count($newData) * 2;
+
+    // Get index ($i) of pivot row and it's left value (if any)
+    $i = 0;
+    foreach ($originalData as $key => $row)
+    {
+      if ($pivotKey == $key)
+      {
+        $pivotIndex = $i;
+        if (isset($originalData[$key]['lft']))
+        {
+          $pivotLft = $originalData[$key]['lft'];
+        }
+        break;
+      }
+      $i++;
+    }
+
+    // If a left value was found, then set merged values for lft & rgt columns
+    if (null !== $pivotIndex)
+    {
+      // Loop through $newData and assign lft & rgt values
+      $j = 0;
+      foreach ($newData as &$row)
+      {
+        $row['lft'] = $pivotLft + ($j * 2);
+        $row['rgt'] = $pivotLft + ($j * 2) + 1;
+        $j++;
+      }
+
+      // Bump existing lft & rgt values
+      foreach ($originalData as &$row)
+      {
+        if ($pivotLft <= $row['lft'])
+        {
+          $row['lft'] += $width;
+        }
+
+        if ($pivotLft < $row['rgt'])
+        {
+          $row['rgt'] += $width;
+        }
+      }
+    }
+
+    // Merge $newData into $originalData
+    QubitMigrate::array_insert($originalData, $i, $newData);
   }
 
   /**

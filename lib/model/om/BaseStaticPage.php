@@ -9,8 +9,6 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
 
     ID = 'q_static_page.ID',
     PERMALINK = 'q_static_page.PERMALINK',
-    CREATED_AT = 'q_static_page.CREATED_AT',
-    UPDATED_AT = 'q_static_page.UPDATED_AT',
     SOURCE_CULTURE = 'q_static_page.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
@@ -21,8 +19,6 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
 
     $criteria->addSelectColumn(QubitStaticPage::ID);
     $criteria->addSelectColumn(QubitStaticPage::PERMALINK);
-    $criteria->addSelectColumn(QubitStaticPage::CREATED_AT);
-    $criteria->addSelectColumn(QubitStaticPage::UPDATED_AT);
     $criteria->addSelectColumn(QubitStaticPage::SOURCE_CULTURE);
 
     return $criteria;
@@ -80,22 +76,33 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (call_user_func_array(array($this, 'parent::__isset'), $args))
+    try
+    {
+      return call_user_func_array(array($this, 'QubitObject::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('staticPageI18ns' == $name)
     {
       return true;
     }
 
-    if (call_user_func_array(array($this->getCurrentstaticPageI18n($options), '__isset'), $args))
+    try
     {
-      return true;
+      if (!$value = call_user_func_array(array($this->getCurrentstaticPageI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentstaticPageI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentstaticPageI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
-    {
-      return true;
-    }
-
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __get($name)
@@ -108,25 +115,45 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
+    try
     {
-      return $value;
+      return call_user_func_array(array($this, 'QubitObject::__get'), $args);
+    }
+    catch (sfException $e)
+    {
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentstaticPageI18n($options), '__get'), $args))
+    if ('staticPageI18ns' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['staticPageI18ns']))
       {
-        $value = call_user_func_array(array($this->getCurrentstaticPageI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['staticPageI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['staticPageI18ns'] = self::getstaticPageI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['staticPageI18ns'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentstaticPageI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentstaticPageI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentstaticPageI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -139,7 +166,7 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
       $options = $args[2];
     }
 
-    call_user_func_array(array($this, 'parent::__set'), $args);
+    call_user_func_array(array($this, 'QubitObject::__set'), $args);
 
     call_user_func_array(array($this->getCurrentstaticPageI18n($options), '__set'), $args);
 
@@ -156,27 +183,35 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    call_user_func_array(array($this, 'parent::__unset'), $args);
+    call_user_func_array(array($this, 'QubitObject::__unset'), $args);
 
     call_user_func_array(array($this->getCurrentstaticPageI18n($options), '__unset'), $args);
 
     return $this;
   }
 
+  public function clear()
+  {
+    foreach ($this->staticPageI18ns as $staticPageI18n)
+    {
+      $staticPageI18n->clear();
+    }
+
+    return parent::clear();
+  }
+
   public function save($connection = null)
   {
-    $affectedRows = 0;
-
-    $affectedRows += parent::save($connection);
+    parent::save($connection);
 
     foreach ($this->staticPageI18ns as $staticPageI18n)
     {
-      $staticPageI18n->setid($this->id);
+      $staticPageI18n->id = $this->id;
 
-      $affectedRows += $staticPageI18n->save($connection);
+      $staticPageI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public static function addstaticPageI18nsCriteriaById(Criteria $criteria, $id)
@@ -199,26 +234,6 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
     return self::addstaticPageI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $staticPageI18ns = null;
-
-  public function getstaticPageI18ns(array $options = array())
-  {
-    if (!isset($this->staticPageI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->staticPageI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->staticPageI18ns = self::getstaticPageI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->staticPageI18ns;
-  }
-
   public function getCurrentstaticPageI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -231,16 +246,12 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->staticPageI18ns[$options['culture']]))
+    $staticPageI18ns = $this->staticPageI18ns->indexBy('culture');
+    if (!isset($staticPageI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $staticPageI18n = QubitStaticPageI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $staticPageI18n = new QubitStaticPageI18n;
-        $staticPageI18n->setculture($options['culture']);
-      }
-      $this->staticPageI18ns[$options['culture']] = $staticPageI18n;
+      $staticPageI18ns[$options['culture']] = new QubitStaticPageI18n;
     }
 
-    return $this->staticPageI18ns[$options['culture']];
+    return $staticPageI18ns[$options['culture']];
   }
 }

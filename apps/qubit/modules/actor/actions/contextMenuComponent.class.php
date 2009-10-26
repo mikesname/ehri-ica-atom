@@ -34,8 +34,6 @@ class ActorContextMenuComponent extends sfComponent
     {
       $this->actor = QubitActor::getById($request->getParameter('id'));
 
-      $this->repository = QubitRepository::getById($request->getParameter('id'));
-
       if (null !== $this->actor)
       {
         $this->informationObjectRelations = $this->actor->getInformationObjectRelations();
@@ -51,7 +49,6 @@ class ActorContextMenuComponent extends sfComponent
     else
     {
       $this->relatedInfoObjects = null;
-      $this->repository = null;
     }
 
     // Don't show anything if there are no related info objects or repository

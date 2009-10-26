@@ -18,7 +18,7 @@ form
   border: 0;
 }
 
-form input
+form input, .yui-skin-sam .yui-ac-input
 {
   width: 95%;
   padding: 0 3px 3px 3px;
@@ -49,15 +49,22 @@ form textarea
   border: 1px solid #a3a3a3;
 }
 
+
+form ul.radio_list
+{
+  padding: 0;
+  margin: 0;
+  list-style-image: none;
+}
+
 form ul.radio_list li
 {
   background: none;
-  display: inline;
-  padding: 0 5px 0 0;
+  padding: 0;
   list-style-type: none;
 }
 
-form ul.radio_list label
+form ul.radio_list li label
 {
   display: inline;
   font-weight: normal;
@@ -227,12 +234,6 @@ label:first-letter
 /*********************************************************
                 SIDEBAR FORM
 **********************************************************/
-.sidebarForm
-{
-margin: 0;
-padding: 0;
-border: 0;
-}
 
 #search-sidebar, #browse-sidebar
 {
@@ -267,7 +268,7 @@ border: 0;
   background: #CCCCCC;
 }
 
-#browse-sidebar .selectbox
+#browse-sidebar select
 {
   background-color: #FFFFFF;
   border: 1px solid #A3A3A3;
@@ -275,7 +276,7 @@ border: 0;
   font: normal 12px Verdana, Arial, sans-serif;
 }
 
-#browse-sidebar .selectbox:focus
+#browse-sidebar select:focus
 {
   background: #CCCCCC;
 }
@@ -298,7 +299,7 @@ padding: 0;
  vertical-align: center;
 }
 
-#language-selector .selectbox
+#language-selector select
 {
   background-color: #FFFFFF;
   border: 1px solid #a3a3a3;
@@ -310,7 +311,7 @@ padding: 0;
   color: #000000;
 }
 
-#language-selector .selectbox:focus
+#language-selector select:focus
 {
 background: #cccccc;
 }
@@ -407,7 +408,7 @@ min-width: 130px;
 
 
 /*********************************************************
-                FORM ERROR
+                       FORM ERROR
 **********************************************************/
 
 .form_error
@@ -436,4 +437,84 @@ min-width: 130px;
   color: #000000;
   background: #FFFFE0;
   border: 1px dashed #FFD700;
+}
+
+/*********************************************************
+                 AUTO-COMPLETE INPUTS
+**********************************************************/
+
+div.autoCompleteInput
+{
+  padding-bottom: 2em;
+  width: 99%;
+}
+
+.form-item li:hover
+{
+  list-style-image: url(../images/delete.png);
+}
+
+/*********************************************************
+                LIST TEMPLATES SEARCH
+**********************************************************/
+
+#list-search
+{
+  margin: 30px 10px 10px 10px;
+  padding: 5px 3px 3px 3px;
+  height: 27px;
+  width: 95%;
+  background-color: #FF9933;
+  border: 1px solid #999999;
+}
+
+#list-search input#query
+{
+  float: left;
+  width: 250px;
+  font-size: 14px;
+}
+
+#list-search .form-submit, #list-search .form-submit:hover
+{
+  float: none;
+  font: 11px Verdana, Arial, sans-serif;
+  margin: 0 0 0 10px;
+  padding: 3px 3px 6px 3px;
+}
+
+#list-search .textbox
+{
+  background-color: #FFFFFF;
+  border: 1px solid #A3A3A3;
+  font: bold 20px Verdana, Arial, sans-serif;
+}
+
+#list-search .textbox:focus
+{
+  background: #CCCCCC;
+}
+
+/*********************************************************
+                ADMIN INFO
+**********************************************************/
+
+.admin-info
+{
+  background-color: #A0A9BC;
+  border: 1px solid #000000;
+  padding: 5px;
+}
+
+.admin-info table
+{
+  border-collapse: separate;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.admin-info .form-item label
+{
+  color: #000000;
 }

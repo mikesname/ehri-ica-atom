@@ -82,7 +82,8 @@
 /*********************************************************
                 GENERAL TEXT STYLING
 **********************************************************/
-body {
+body, .yui-skin-sam .yui-ac
+{
   font: normal 11px verdana, lucida, sans-serif;
   color: #000000;
 }
@@ -107,17 +108,25 @@ img.static_page {
 
 /*headers*/
 h1 {
+  font: bold 25px/ 25px Lucida Sans Unicode, Lucida Grande, sans-serif;
+  color: #cccccc;
+  letter-spacing: -2px;
+  padding: 3px 10px 2px 0;
+  border: 0;
+  margin: 0;
+  text-align: right;
+}
+
+h1#first {
   font: bold 20px georgia, garamond, serif;
   margin: 15px 0 0 0;
   padding: 2px 2px 2px 4px;
   color: #ffffff;
+  letter-spacing: 0;
+  text-align: left;
   background-color: #006699;
   border-bottom: 1px solid #000066;
   border-top: 1px solid #000066;
-}
-
-h1#first {
-  margin: 0;
 }
 
 h1#page-title {
@@ -230,6 +239,10 @@ button.delete-small {
   height: 16px;
   border: none;
   vertical-align: top;
+}
+
+.required_field:after {
+  content: '*';
 }
 
 /*********************************************************
@@ -359,7 +372,7 @@ button.delete-small {
 **********************************************************/
 table.detail {
   width: 99%;
-  margin: 0;
+  margin: 0 0 50px 0;
   /*border-collapse: collapse;*/
   overflow: hidden;
   border: 0x solid #999999;
@@ -396,14 +409,6 @@ table.detail label {
   color: #ffffff;
   text-align: right;
   display: inline;
-}
-
-table.detail label.required_field:after {
-  content: '*';
-}
-
-table.detail th:after {
-  content: ":";
 }
 
 table.detail th:first-letter {
@@ -459,6 +464,20 @@ table.detail td ul li {
   margin: 0px;
 }
 
+/* create a headercell div to match style/use but without a table */
+.headerCell {
+  padding: 4px;
+  vertical-align: top;
+  text-align: left;
+  font: bold 18px/ 18px georgia, verdana, sans-serif;
+  border: 0;
+  border-bottom: 1px solid #999999;
+  border-top: 2px solid #999999;
+  color: #000033;
+  background-color: #FF9D3C;
+  height: 20px;
+}
+
 /*********************************************************
               INLINE TABLES
 **********************************************************/
@@ -467,7 +486,16 @@ table.inline {
   border: 0;
 }
 
-table.inline td.headerCell,table.inline th {
+table.inline caption {
+  color: #999;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+}
+
+table.inline td.headerCell,
+table.inline th {
   border: none;
   background-color: #cccccc;
   color: #ffffff;
@@ -475,6 +503,12 @@ table.inline td.headerCell,table.inline th {
   font-weight: bold;
   text-align: left;
   width: 15%;
+}
+
+table.inline td.headerCell label,
+table.inline th label
+{
+  color: #ffffff;
 }
 
 table.inline thead tr {
@@ -530,6 +564,10 @@ span.note {
   font-size: 9px;
   font-style: italic;
   margin-left: 10px;
+}
+
+span.note2 {
+  color: #999;
 }
 
 /*********************************************************
@@ -712,6 +750,16 @@ table.list td.headerCell-name {
   background-position: top left;
 }
 
+table.list td ul {
+  padding: 0 0 0 16px;
+  margin: 0;
+}
+
+table.list td ul li {
+  padding: 0px;
+  margin: 0px;
+}
+
 /*********************************************************
                TABLE FILTER
 **********************************************************/
@@ -809,6 +857,14 @@ div.digitalObjectRep {
 
 div.digitalObjectDesc img {
   float: right;
+}
+
+div.multiFileUpload
+{
+  border: 1px solid #bbb;
+  padding: 2px;
+  margin: 2px 2px 12px 2px;
+  overflow: auto;
 }
 
 /*********************************************************
@@ -917,4 +973,30 @@ ul.validation_error li
   background: url(../images/exclamation.png) no-repeat 1px;
   padding: 0.1em 0.1em 0.1em 20px;
   margin: 0;
+}
+
+/*********************************************************
+             FLASHES
+**********************************************************/
+
+div.flash_notice
+{
+  background-color: #cfc;
+  border: 1px solid #ada;
+  padding: 5px;
+  color: #060;
+  font: bold 14px georgia, serif;
+}
+
+
+/*********************************************************
+             LOGOS
+**********************************************************/
+
+.logos
+{
+  position: fixed;
+  bottom: 7px;
+  right: 10px;
+  z-index: 90;
 }

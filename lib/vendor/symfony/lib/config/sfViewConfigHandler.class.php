@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage config
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfViewConfigHandler.class.php 9085 2008-05-20 01:53:23Z Carl.Vondrick $
+ * @version    SVN: $Id: sfViewConfigHandler.class.php 17858 2009-05-01 21:22:50Z FabianLange $
  */
 class sfViewConfigHandler extends sfYamlConfigHandler
 {
@@ -154,7 +154,7 @@ class sfViewConfigHandler extends sfYamlConfigHandler
   /**
    * Adds a layout statement statement to the data.
    *
-   * @param  string $viewName The view name
+   * @param string $viewName The view name
    *
    * @return string The PHP statement
    */
@@ -208,7 +208,7 @@ EOF;
   /**
    * Adds http metas and metas statements to the data.
    *
-   * @param string $viewName  The view name
+   * @param string $viewName The view name
    *
    * @return string The PHP statement
    */
@@ -238,71 +238,41 @@ EOF;
    */
   protected function addHtmlAsset($viewName = '')
   {
-    $data = array();
-    $omit = array();
-    $delete = array();
-    $delete_all = false;
-
     // Merge the current view's stylesheets with the app's default stylesheets
     $stylesheets = $this->mergeConfigValue('stylesheets', $viewName);
-    $tmp = array();
-    foreach ((array) $stylesheets as $key => $stylesheet)
-    {
-      $position = '';
-      if (is_array($stylesheet))
-      {
-        $options = $stylesheet;
-        $stylesheet = $key;
-        if (isset($options['position']))
-        {
-          $position = $options['position'];
-          unset($options['position']);
-        }
-      }
-      else
-      {
-        $options = array();
-      }
-
-      if ('-*' == $stylesheet)
-      {
-        $tmp = array();
-      }
-      else if ('-' == $stylesheet[0])
-      {
-        unset($tmp[substr($stylesheet, 1)]);
-      }
-      else
-      {
-        $tmp[$stylesheet] = sprintf("  \$response->addStylesheet('%s', '%s', %s);", $stylesheet, $position, str_replace("\n", '', var_export($options, true)));
-      }
-    }
-
-    $data = array_merge($data, array_values($tmp));
-
-    $omit = array();
-    $delete_all = false;
+    $css = $this->addAssets('Stylesheet', $stylesheets);
 
     // Merge the current view's javascripts with the app's default javascripts
     $javascripts = $this->mergeConfigValue('javascripts', $viewName);
+    $js = $this->addAssets('Javascript', $javascripts);
+
+    return implode("\n", array_merge($css, $js))."\n";
+  }
+
+  /**
+   * Creates a list of add$Type PHP statements for the given type and config.
+   *
+   * @param string $type of asset. Requires an sfWebResponse->add$Type(string, string, array) method
+   *
+   * @return array ist of add$Type PHP statements
+   */
+  private function addAssets($type, $assets){
     $tmp = array();
-    foreach ((array) $javascripts as $js)
+    foreach ((array) $assets as $key => $options)
     {
       $position = '';
-      if (is_array($js))
+      if (is_string($options))
       {
-        $key = key($js);
-        $options = $js[$key];
+        $key = $options;
+        $options = array();
+      }
+      else
+      {
         if (isset($options['position']))
         {
           $position = $options['position'];
           unset($options['position']);
         }
-      }
-      else
-      {
-        $key = $js;
-        $options = array();
       }
 
       if ('-*' == $key)
@@ -315,13 +285,10 @@ EOF;
       }
       else
       {
-        $tmp[$key] = sprintf("  \$response->addJavascript('%s', '%s', %s);", $key, $position, str_replace("\n", '', var_export($options, true)));
+        $tmp[$key] = sprintf("  \$response->add%s('%s', '%s', %s);", $type, $key, $position, str_replace("\n", '', var_export($options, true)));
       }
     }
-
-    $data = array_merge($data, array_values($tmp));
-
-    return implode("\n", $data)."\n";
+    return array_values($tmp);
   }
 
   /**

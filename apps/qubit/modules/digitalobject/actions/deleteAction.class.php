@@ -33,13 +33,24 @@ class DigitalObjectDeleteAction extends sfAction
     $this->forward404Unless($digitalObject);
 
     // Get related information object by first grabbing top-level digital object
-    $informationObject = $digitalObject->getTopAncestorOrSelf()->getInformationObject();
-    $this->forward404Unless($informationObject);
+    $parent = $digitalObject->getParent();
+    if (null == $parent)
+    {
+      $informationObject = $digitalObject->getInformationObject();
+      $this->forward404Unless($informationObject);
+    }
 
     //delete the digital object record from the database
     $digitalObject->delete();
 
     // Redirect to edit page for parent Info Object
-    return $this->redirect('informationobject/edit?id='.$informationObject->getId());
+    if (null !== $parent)
+    {
+      $this->redirect(array('module' => 'digitalobject', 'action' => 'edit', 'id' => $parent->id));
+    }
+    else
+    {
+      $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->id));
+    }
   }
 }

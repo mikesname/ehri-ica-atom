@@ -1,2 +1,11 @@
 listSuccess:
   javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+
+editSuccess:
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, multiDelete, multiInstanceInput]
+  components:
+    sidebar: [term, contextMenu]
+
+showSuccess:
+  components:
+    sidebar: [term, contextMenu]

@@ -87,4 +87,13 @@ class QubitMigrator
 
     return $this;
   }
+
+  public function migrate107to108()
+  {
+    $migrator = new QubitMigrate107to108($this->data);
+    $this->data = $migrator->execute();
+    $this->dataModified = true;
+
+    return $this;
+  }
 }

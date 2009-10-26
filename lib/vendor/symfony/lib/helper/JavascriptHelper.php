@@ -84,6 +84,8 @@
   {
     if (!is_null($content))
     {
+      require_once dirname(__FILE__).'/TagHelper.php';
+
       return content_tag('script', javascript_cdata_section($content), array('type' => 'text/javascript'));
     }
     else

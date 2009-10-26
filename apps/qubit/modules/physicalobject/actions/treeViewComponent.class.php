@@ -50,7 +50,7 @@ class PhysicalObjectTreeViewComponent extends sfComponent
 
     $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin');
 
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/vendor/jquery');
     $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('qubit');
     $this->getResponse()->addJavaScript('yui/yahoo-dom-event/yahoo-dom-event');

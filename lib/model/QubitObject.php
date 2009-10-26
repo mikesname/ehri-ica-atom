@@ -19,4 +19,152 @@
 
 class QubitObject extends BaseObject
 {
+  public function save($connection = null)
+  {
+    parent::save($connection);
+
+    // Save updated objectTermRelations
+    foreach ($this->objectTermRelationsRelatedByobjectId as $relation)
+    {
+      $relation->setIndexOnSave(false);
+      $relation->object = $this;
+
+      try
+      {
+        $relation->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    // Save updated notes
+    foreach ($this->notes as $note)
+    {
+      $note->setIndexOnSave(false);
+      $note->object = $this;
+
+      try
+      {
+        $note->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    // Save updated object relations
+    foreach ($this->relationsRelatedByobjectId as $relation)
+    {
+      $relation->setIndexOnSave(false);
+      $relation->object = $this;
+
+      try
+      {
+        $relation->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    // Save updated subject relations
+    foreach ($this->relationsRelatedBysubjectId as $relation)
+    {
+      $relation->setIndexOnSave(false);
+      $relation->subject = $this;
+
+      try
+      {
+        $relation->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    return $this;
+  }
+
+  /********************
+        Status
+  *********************/
+
+  public function setStatus($options = array())
+  {
+    $status = $this->getStatus(array('typeId' => $options['typeId']));
+    // only create a new status object if type is not already set
+    if ($status === null)
+    {
+      $status = new QubitStatus;
+      $status->setTypeId($options['typeId']);
+    }
+    $status->setStatusId($options['statusId']);
+    $this->statuss[] = $status;
+
+    return $this;
+  }
+
+  public function getStatus($options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitStatus::OBJECT_ID, $this->getId());
+    $criteria->add(QubitStatus::TYPE_ID, $options['typeId']);
+
+    return QubitStatus::getOne($criteria);
+  }
+
+
+  /********************
+        Notes
+  *********************/
+
+  public function setNote(array $options = array())
+  {
+    $newNote = new QubitNote;
+    $newNote->setObject($this);
+    $newNote->setScope($this->getClassName());
+    $newNote->setUserId($options['userId']);
+    $newNote->setContent($options['note']);
+    $newNote->setTypeId($options['noteTypeId']);
+
+    $this->notes[] = $newNote;
+  }
+
+  public function getNotesByType(array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
+    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
+    if (isset($options['noteTypeId']))
+    {
+      $criteria->add(QubitNote::TYPE_ID, $options['noteTypeId']);
+    }
+    if (isset($options['exclude']))
+    {
+      // Turn exclude string into an array
+      $excludes = (is_array($options['exclude'])) ? $options['exclude'] : array($options['exclude']);
+
+      foreach ($excludes as $exclude)
+      {
+        $criteria->addAnd(QubitNote::TYPE_ID, $exclude, Criteria::NOT_EQUAL);
+      }
+    }
+
+    return QubitNote::get($criteria);
+  }
+
+  public function getNotesByTaxonomy(array $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
+    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
+    if (isset($options['taxonomyId']))
+    {
+      $criteria->add(QubitTerm::TAXONOMY_ID, $options['taxonomyId']);
+    }
+
+    return QubitNote::get($criteria);
+  }
+
 }

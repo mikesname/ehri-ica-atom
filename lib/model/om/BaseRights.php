@@ -12,7 +12,8 @@ abstract class BaseRights implements ArrayAccess
     CREATED_AT = 'q_rights.CREATED_AT',
     UPDATED_AT = 'q_rights.UPDATED_AT',
     SOURCE_CULTURE = 'q_rights.SOURCE_CULTURE',
-    ID = 'q_rights.ID';
+    ID = 'q_rights.ID',
+    SERIAL_NUMBER = 'q_rights.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -22,6 +23,7 @@ abstract class BaseRights implements ArrayAccess
     $criteria->addSelectColumn(QubitRights::UPDATED_AT);
     $criteria->addSelectColumn(QubitRights::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitRights::ID);
+    $criteria->addSelectColumn(QubitRights::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -30,20 +32,28 @@ abstract class BaseRights implements ArrayAccess
     $rightss = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$rightss[$id = (int) $row[5]]))
+    $keys = array();
+    $keys['id'] = $row[5];
+
+    $key = serialize($keys);
+    if (!isset(self::$rightss[$key]))
     {
       $rights = new QubitRights;
-      $rights->new = false;
+
+      $rights->keys = $keys;
       $rights->row = $row;
 
-      self::$rightss[$id] = $rights;
+      $rights->new = false;
+
+      self::$rightss[$key] = $rights;
     }
 
-    return self::$rightss[$id];
+    return self::$rightss[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -104,13 +114,19 @@ abstract class BaseRights implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -120,7 +136,18 @@ abstract class BaseRights implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitRights::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitRights::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -143,29 +170,47 @@ abstract class BaseRights implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    if (call_user_func_array(array($this->getCurrentrightsI18n($options), '__isset'), $args))
+    if ('rightsI18ns' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentrightsI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    if ('rightsActorRelations' == $name)
     {
       return true;
     }
 
-    return false;
+    if ('rightsTermRelations' == $name)
+    {
+      return true;
+    }
+
+    try
+    {
+      if (!$value = call_user_func_array(array($this->getCurrentrightsI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentrightsI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -192,34 +237,85 @@ abstract class BaseRights implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentrightsI18n($options), '__get'), $args))
+    if ('rightsI18ns' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['rightsI18ns']))
       {
-        $value = call_user_func_array(array($this->getCurrentrightsI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rightsI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rightsI18ns'] = self::getrightsI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rightsI18ns'];
+    }
+
+    if ('rightsActorRelations' == $name)
+    {
+      if (!isset($this->refFkValues['rightsActorRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rightsActorRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rightsActorRelations'] = self::getrightsActorRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rightsActorRelations'];
+    }
+
+    if ('rightsTermRelations' == $name)
+    {
+      if (!isset($this->refFkValues['rightsTermRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rightsTermRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rightsTermRelations'] = self::getrightsTermRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rightsTermRelations'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentrightsI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentrightsI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentrightsI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -313,29 +409,23 @@ abstract class BaseRights implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    foreach ($this->rightsI18ns as $rightsI18n)
+    {
+      $rightsI18n->clear();
+    }
+
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitRights::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitRights::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -344,15 +434,13 @@ abstract class BaseRights implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -374,18 +462,16 @@ abstract class BaseRights implements ArrayAccess
 
     foreach ($this->rightsI18ns as $rightsI18n)
     {
-      $rightsI18n->setid($this->id);
+      $rightsI18n->id = $this->id;
 
-      $affectedRows += $rightsI18n->save($connection);
+      $rightsI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitRights::DATABASE_NAME);
@@ -420,23 +506,21 @@ abstract class BaseRights implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitRights::DATABASE_NAME);
@@ -459,6 +543,11 @@ abstract class BaseRights implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -472,11 +561,11 @@ abstract class BaseRights implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -486,16 +575,14 @@ abstract class BaseRights implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitRights::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	
@@ -544,26 +631,6 @@ abstract class BaseRights implements ArrayAccess
     return self::addrightsI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $rightsI18ns = null;
-
-  public function getrightsI18ns(array $options = array())
-  {
-    if (!isset($this->rightsI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->rightsI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->rightsI18ns = self::getrightsI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->rightsI18ns;
-  }
-
   public static function addrightsActorRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitRightsActorRelation::RIGHTS_ID, $id);
@@ -582,26 +649,6 @@ abstract class BaseRights implements ArrayAccess
   public function addrightsActorRelationsCriteria(Criteria $criteria)
   {
     return self::addrightsActorRelationsCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $rightsActorRelations = null;
-
-  public function getrightsActorRelations(array $options = array())
-  {
-    if (!isset($this->rightsActorRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->rightsActorRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->rightsActorRelations = self::getrightsActorRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->rightsActorRelations;
   }
 
   public static function addrightsTermRelationsCriteriaById(Criteria $criteria, $id)
@@ -624,26 +671,6 @@ abstract class BaseRights implements ArrayAccess
     return self::addrightsTermRelationsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $rightsTermRelations = null;
-
-  public function getrightsTermRelations(array $options = array())
-  {
-    if (!isset($this->rightsTermRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->rightsTermRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->rightsTermRelations = self::getrightsTermRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->rightsTermRelations;
-  }
-
   public function getCurrentrightsI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -656,17 +683,13 @@ abstract class BaseRights implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->rightsI18ns[$options['culture']]))
+    $rightsI18ns = $this->rightsI18ns->indexBy('culture');
+    if (!isset($rightsI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $rightsI18n = QubitRightsI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $rightsI18n = new QubitRightsI18n;
-        $rightsI18n->setculture($options['culture']);
-      }
-      $this->rightsI18ns[$options['culture']] = $rightsI18n;
+      $rightsI18ns[$options['culture']] = new QubitRightsI18n;
     }
 
-    return $this->rightsI18ns[$options['culture']];
+    return $rightsI18ns[$options['culture']];
   }
 
   public function __call($name, $args)

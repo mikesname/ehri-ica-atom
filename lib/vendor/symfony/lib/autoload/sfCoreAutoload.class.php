@@ -11,7 +11,7 @@
 /**
  * The current symfony version.
  */
-define('SYMFONY_VERSION', '1.2.7-DEV');
+define('SYMFONY_VERSION', '1.2.9-DEV');
 
 /**
  * sfCoreAutoload class.
@@ -22,7 +22,7 @@ define('SYMFONY_VERSION', '1.2.7-DEV');
  * @package    symfony
  * @subpackage autoload
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCoreAutoload.class.php 17692 2009-04-27 19:27:06Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfCoreAutoload.class.php 20163 2009-07-13 18:11:33Z FabianLange $
  */
 class sfCoreAutoload
 {
@@ -88,7 +88,7 @@ class sfCoreAutoload
   /**
    * Handles autoloading of classes.
    *
-   * @param  string  $class  A class name.
+   * @param string $class A class name.
    *
    * @return boolean Returns true if the class has been loaded
    */
@@ -109,10 +109,10 @@ class sfCoreAutoload
    *
    * @return base directory
    */
-   public function getBaseDir()
-   {
-     return $this->baseDir;
-   }
+  public function getBaseDir()
+  {
+    return $this->baseDir;
+  }
 
   /**
    * Rebuilds the association array between class names and paths.

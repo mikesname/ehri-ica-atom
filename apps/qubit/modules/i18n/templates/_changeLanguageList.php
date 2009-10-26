@@ -1,9 +1,7 @@
-﻿<div class="language-list">
-  <?php foreach ($enabledI18nLanguages as $key => $language): ?>
-    <?php if ($key == $sf_user->getCulture()): ?>
-      <?php echo link_to($language, $sf_data->getRaw('sf_context')->getRouting()->getCurrentInternalUri(), array('query_string' => 'sf_culture='.$key, 'class' => 'active')) ?>
-    <?php else: ?>
-      <?php echo link_to($language, $sf_data->getRaw('sf_context')->getRouting()->getCurrentInternalUri(), array('query_string' => 'sf_culture='.$key)) ?>
+<ul class="language-list">
+  <?php foreach (sfConfig::getAll() as $name => $value): ?>
+    <?php if ('app_i18n_languages' == substr($name, 0, 18)): ?>
+      <li<?php if ($sf_user->getCulture() == $value): ?> class="active"<?php endif; ?>><?php echo link_to(format_language($value, $value), array('sf_culture' => $value) + $sf_request->getParameterHolder()->getAll()) ?></li>
     <?php endif; ?>
   <?php endforeach; ?>
-</div>
+</ul>

@@ -1,32 +1,20 @@
-﻿<div class="pageTitle"><?php echo __('view resource metadata'); ?></div>
+<div class="pageTitle"><?php echo __('view resource metadata') ?></div>
 
 <table class="detail">
 <tbody>
 
 <tr>
   <td colspan="2" class="headerCell">
-  <?php if ($editCredentials): ?>
-    <?php echo link_to(render_title(QubitDc::getLabel($informationObject)), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())); ?>
-  <?php else: ?>
-    <?php echo render_title(QubitDc::getLabel($informationObject)); ?>
-  <?php endif; ?>
+    <?php echo link_to_if(QubitAcl::check($informationObject, QubitAclAction::UPDATE_ID), render_title(QubitMods::getLabel($informationObject)), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->id), array('title' => __('Edit resource metadata'))) ?>
   </td>
 </tr>
 
-<?php if ($showCompoundDigitalObject): ?>
-  <tr>
-    <td colspan="2">
-      <div style="text-align: center">
-      <?php include_component('digitalobject', 'showCompound', array('informationObject'=>$informationObject)); ?>
-      </div>
-    </td>
-  </tr>
-<?php elseif (isset($digitalObject)): ?>
+<?php if (null !== $digitalObject): ?>
   <tr>
     <td colspan="2">
       <div style="text-align: center">
       <?php include_component('digitalobject', 'show', array(
-        'digitalObject'=>$digitalObject, 'usageType'=>QubitTerm::REFERENCE_ID, 'link'=>$digitalObjectLink)); ?>
+        'digitalObject' => $informationObject->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID, 'link' => $digitalObjectLink)) ?>
       </div>
     </td>
   </tr>
@@ -34,7 +22,7 @@
 
 <?php if ($identifier = $informationObject->getIdentifier()): ?>
   <tr>
-  <th><?php echo __('identifier'); ?></th>
+  <th><?php echo __('identifier') ?></th>
   <td><?php echo $identifier ?>
   </td>
   </tr>
@@ -42,150 +30,159 @@
 
 <?php if ($title = $informationObject->getTitle()): ?>
   <tr>
-  <th><?php echo __('title'); ?></th>
+  <th><?php echo __('title') ?></th>
   <td><?php echo $title ?>
   </td>
   </tr>
 <?php endif; ?>
 
-<?php if (count($nameAccessPoints) > 0 ) : ?>
-  <?php foreach ($nameAccessPoints as $name): ?>
-    <tr><th><?php echo __('name'); ?></th>
+<?php if (0 < count($nameAccessPoints) ): ?>
+  <tr>
+    <th>
+      <?php echo __('name access points') ?>
+    </th><td>
+      <ul>
+        <?php foreach ($nameAccessPoints as $relation): ?>
+          <?php if ('QubitEvent' == get_class($relation)): ?>
+          <li>
+            <?php echo link_to(render_title($relation->actor), array('module' => 'actor', 'action' => 'show', 'id' => $relation->actorId)) ?>
+            <span class="note2">(<?php echo $relation->type->getRole()?>)</span>
+          </li>
+          <?php else: ?>
+          <li><?php echo link_to(render_title($relation->object), array('module' => 'actor', 'action' => 'show', 'id' => $relation->object->id)) ?></li>
+          <?php endif; ?>
+        <?php endforeach; ?>
+      </ul>
+    </td>
+  </tr>
+<?php endif; ?>
+
+<?php if (0 < count($informationObject->getDates())): ?>
+  <?php foreach ($informationObject->getDates() as $date): ?>
+    <tr>
+      <th>
+        <?php echo __('date') ?>
+      </th>
       <td>
-        <?php echo link_to(render_title($name->getActor()), 'actor/show?id='.$name->getActorId()) ?>
-        <?php echo ' ('.$name->getType()->getRole().')' ?>
+        <?php echo date_display($date) ?>
+        <div style="margin-left: 10px;">
+        <span class="note2"><?php echo __('Type').': '.$date->getType() ?></span><br />
+        <?php if (($date->getActorId()) & ($role = $date->getType()->getRole())): ?>
+        <span class="note2"><?php echo $role.': '.$date->getActor() ?></span>
+        <?php endif; ?>
+        <?php if ($place=$date->getPlace()): ?>
+          <span class="note2"><?php echo __('Place') ?>: <?php echo $place ?></span><br />
+        <?php endif; ?>
+        <?php if ($note=$date->getDescription()): ?>
+          <span class="note2"><?php echo __('Note').': '.$note ?></span>
+        <?php endif; ?>
+        </div>
       </td>
     </tr>
   <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (count($informationObject->getDates()) > 0) : ?>
-  <?php foreach ($informationObject->getDates() as $date): ?>
-    <tr><th>
-    <?php if ($date->getTypeId() == QubitTerm::CREATION_ID): ?>
-      <?php echo __('date (Created)'); ?></th><td>
-      <?php echo $date->getDateDisplay(array('cultureFallback' => true)) ?>
-      </td></tr>
-    <?php elseif ($date->getTypeId() == QubitTerm::PUBLICATION_ID): ?>
-      <?php echo __('date (Issued)'); ?></th><td>
-      <?php echo $date->getDateDisplay(array('cultureFallback' => true)) ?>
-      </td></tr>
-    <?php else: ?>
-      <?php echo __('date (Other)'); ?></th><td>
-      <?php echo $date->getDateDisplay(array('cultureFallback' => true)) ?>
-      <?php echo ' ('.$date->getType().')' ?>
-      </td></tr>
-    <?php endif; ?>
-
-    <?php if ($place = $date->getPlace()): ?>
-      <tr><th><?php echo __('place') ?></th>
-      <td><?php echo $place ?></td></tr>
-    <?php endif; ?>
-  <?php endforeach; ?>
-<?php endif; ?>
-
-<?php if (count($modsTypes) > 0) : ?>
-<?php foreach ($modsTypes as $modsType): ?>
+<?php if (0 < count(QubitMods::getTypes($informationObject))): ?>
+<?php foreach (QubitMods::getTypes($informationObject) as $type): ?>
   <tr>
-    <th><?php echo __('type of resource'); ?></th>
+    <th><?php echo __('type of resource') ?></th>
     <td>
-      <?php echo $modsType->getTerm() ?><br />
+      <?php echo $type->getTerm() ?>
     </td>
   </tr>
 <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (count($languageCodes) > 0) : ?>
-  <?php foreach ($languageCodes as $languageCode): ?>
-    <tr><th><?php echo __('language'); ?></th><td>
-    <?php echo format_language($languageCode->getValue(array('sourceCulture'=>true))); ?><br />
+<?php if (0 < count($informationObject->language)): ?>
+  <?php foreach ($informationObject->language as $code): ?>
+    <tr><th><?php echo __('language') ?></th><td>
+    <?php echo format_language($code) ?>
     </td></tr>
   <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (isset($digitalObject)): ?>
-  <?php if ($digitalObject->getMimeType()): ?>
+<?php if (0 < count($informationObject->digitalObjects)): ?>
+  <?php if ($informationObject->digitalObjects[0]->getMimeType()): ?>
     <tr>
-    <th><?php echo __('internet media type'); ?></th>
-    <td><?php echo $digitalObject->getMimeType(); ?></td>
+    <th><?php echo __('internet media type') ?></th>
+    <td><?php echo $informationObject->digitalObjects[0]->getMimeType() ?></td>
     </tr>
   <?php endif; ?>
 <?php endif; ?>
 
-<?php if (count($subjectAccessPoints) > 0) : ?>
-  <?php foreach ($subjectAccessPoints as $subject): ?>
-    <tr><th><?php echo __('subject'); ?></th><td>
-    <?php echo link_to($subject->getTerm(), 'term/browse?termId='.$subject->getTermId()); ?><br />
+<?php if (0 < count($informationObject->getSubjectAccessPoints())): ?>
+  <?php foreach ($informationObject->getSubjectAccessPoints() as $subject): ?>
+    <tr><th><?php echo __('subject') ?></th><td>
+    <?php echo link_to($subject->term, array('module' => 'term', 'action' => 'browse', 'termId' => $subject->term->id)) ?>
     </td></tr>
   <?php endforeach; ?>
 <?php endif; ?>
 
-<?php if (strlen($value = $informationObject->getAccessConditions(array('cultureFallback' => true))) > 0) : ?>
+<?php if (0 < strlen($value = $informationObject->getAccessConditions(array('cultureFallback' => true)))): ?>
 <tr>
-<th><?php echo __('access condition'); ?></th>
-<td><?php echo nl2br($value); ?></td>
+<th><?php echo __('access condition') ?></th>
+<td><?php echo nl2br($value) ?></td>
 </tr>
 <?php endif; ?>
 
-<?php if (isset($digitalObject)): ?>
-  <tr><th><?php echo __('URL'); ?></th>
-  <td><?php echo link_to($locationUrl, $locationUrl) ?></td>
+<?php if (0 < count($informationObject->digitalObjects)): ?>
+  <tr><th><?php echo __('URL') ?></th>
+  <td><?php echo link_to(null, public_path($informationObject->digitalObjects[0]->getFullPath(), true)) ?></td>
   </tr>
 <?php endif; ?>
 
 <?php if ($repository = $informationObject->getRepository()): ?>
-  <tr><th><?php echo __('Physical Location'); ?></th>
-  <td><?php if($repository->getIdentifier()):?>
-    <?php echo $repository->getIdentifier().' - ' ?>
+  <tr><th><?php echo __('Physical Location') ?></th>
+  <td><?php if ($repository->getIdentifier()): ?>
+    <?php echo $repository->getIdentifier() ?> -
   <?php endif; ?>
-  <?php echo link_to($repository->__toString(), array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId())) ?>
+  <?php echo link_to(render_title($repository), array('module' => 'repository', 'action' => 'show', 'id' => $repository->id)) ?>
   <?php if ($contactInformation = $repository->getPrimaryContact()): ?>
-     <br /><?php echo $contactInformation->getCity() ?><?php if ($contactInformation->getCity()): ?><?php echo ', '?><?php endif; ?>
-    <?php echo $contactInformation->getRegion() ?><?php if ($contactInformation->getRegion() && $contactInformation->getCountryCode()): ?><?php echo ', ' ?><?php endif; ?>
+     <br /><?php echo $contactInformation->getCity() ?><?php if ($contactInformation->getCity()): ?>, <?php endif; ?>
+    <?php echo $contactInformation->getRegion() ?><?php if ($contactInformation->getRegion() && $contactInformation->getCountryCode()): ?>, <?php endif; ?>
     <?php echo format_country($contactInformation->getCountryCode()) ?>
   <?php endif; ?>
   </td></tr>
 <?php endif; ?>
 
-
 <!--  Digital Object metadata -->
-<?php if (isset($digitalObject)): ?>
+<?php if (0 < count($informationObject->digitalObjects)): ?>
   <tr><td colspan="2" class="subHeaderCell">
     <?php echo __('digital object metadata') ?>
   </td></tr>
 
-  <?php if ($digitalObject->getName()): ?>
+  <?php if ($informationObject->digitalObjects[0]->getName()): ?>
   <tr>
-    <th><?php echo __('filename'); ?></th>
-    <td><?php echo $digitalObject->getName(); ?></td>
+    <th><?php echo __('filename') ?></th>
+    <td><?php echo $informationObject->digitalObjects[0]->getName() ?></td>
   </tr>
   <?php endif; ?>
 
-  <?php if ($digitalObject->getMediaType()): ?>
+  <?php if ($informationObject->digitalObjects[0]->getMediaType()): ?>
   <tr>
-    <th><?php echo __('media type'); ?></th>
-    <td><?php echo $digitalObject->getMediaType(); ?></td>
+    <th><?php echo __('media type') ?></th>
+    <td><?php echo $informationObject->digitalObjects[0]->getMediaType() ?></td>
   </tr>
   <?php endif; ?>
 
-  <?php if ($digitalObject->getMimeType()): ?>
+  <?php if ($informationObject->digitalObjects[0]->getMimeType()): ?>
   <tr>
-    <th><?php echo __('mime-type'); ?></th>
-    <td><?php echo $digitalObject->getMimeType(); ?></td>
+    <th><?php echo __('mime-type') ?></th>
+    <td><?php echo $informationObject->digitalObjects[0]->getMimeType() ?></td>
   </tr>
   <?php endif; ?>
 
-  <?php if ($digitalObject->getHRfileSize()): ?>
+  <?php if ($informationObject->digitalObjects[0]->getByteSize()): ?>
   <tr>
-    <th><?php echo __('filesize'); ?></th>
-    <td><?php echo $digitalObject->getHRfileSize(); ?></td>
+    <th><?php echo __('filesize') ?></th>
+    <td><?php echo hr_filesize($informationObject->digitalObjects[0]->getByteSize()) ?></td>
   </tr>
   <?php endif; ?>
 
-  <?php if ($digitalObject->getCreatedAt()): ?>
+  <?php if ($informationObject->digitalObjects[0]->getCreatedAt()): ?>
   <tr>
-    <th><?php echo __('uploaded'); ?></th>
-    <td><?php echo $digitalObject->getCreatedAt(); ?></td>
+    <th><?php echo __('uploaded') ?></th>
+    <td><?php echo $informationObject->digitalObjects[0]->getCreatedAt() ?></td>
   </tr>
   <?php endif; ?>
 <?php endif; ?>
@@ -193,15 +190,4 @@
 </tbody>
 </table>
 
-<?php if ($editCredentials): ?>
-<div class="menu-action">
-  <?php echo link_to (__('edit resource metadata'), array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())) ?>
-</div>
-<?php endif; ?>
-
-<div class="menu-extra">
-<?php if ($editCredentials): ?>
-  <?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create')); ?>
-<?php endif; ?>
-  <?php echo link_to(__('list all'), array('module' => 'informationobject', 'action' => 'list')); ?>
-</div>
+<?php echo get_partial('actions', array('informationObject' => $informationObject)) ?>

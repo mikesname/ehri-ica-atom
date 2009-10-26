@@ -1,5 +1,27 @@
+<?php use_helper('Javascript') ?>
+
+<?php echo javascript_tag(<<<EOF
+Drupal.behaviors.sfPluginAdminPlugin = {
+  attach: function (context) {
+    $('input[name=\'enabled[]\']').click(function() {
+      if (!$(this).is(':checked'))
+      {
+        $(this).removeAttr('checked');
+      }
+      else
+      {
+        $('input[name=\'enabled[]\']').removeAttr('checked');
+        $(this).attr('checked', 'checked');
+      }
+    });
+  }
+};
+EOF
+) ?>
+
 <div class="options-list"><a class="active">list</a><?php echo link_to('configure', array('module' => 'sfThemePlugin')) ?></div>
 
+<div class="pageTitle"><?php echo __('list themes'); ?></div>
 
 <?php echo $form->renderFormTag(url_for(array('module' => 'sfPluginAdminPlugin'))) ?>
   <?php echo $form->renderGlobalErrors() ?>

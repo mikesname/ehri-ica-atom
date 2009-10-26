@@ -41,6 +41,6 @@ class DigitalObjectUpdateAction extends sfAction
     $digitalObject->save();
 
     // Return to edit page
-    return $this->redirect('digitalobject/edit?id='.$digitalObject->getId());
+    $this->redirect('digitalobject/edit?id='.$digitalObject->getId());
   }
 }

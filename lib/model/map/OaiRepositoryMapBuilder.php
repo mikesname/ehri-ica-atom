@@ -47,5 +47,7 @@ class OaiRepositoryMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
 
+		$tMap->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null);
+
 	} 
 } 

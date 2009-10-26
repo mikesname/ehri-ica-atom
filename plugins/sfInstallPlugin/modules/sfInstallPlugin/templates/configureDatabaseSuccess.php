@@ -20,7 +20,7 @@
         To set up your database, enter the following information.
       </p>
     </div>
-    <?php echo $form->databaseName->renderRow() ?>
+    <?php echo $form->databaseName->help('The name of the <em>MySQL</em> database your data will be stored in.  It must exist on your server before '.$sf_response->getTitle().' can be installed.')->renderRow() ?>
     <?php echo $form->databaseUsername->renderRow() ?>
     <?php echo $form->databasePassword->renderRow() ?>
   </fieldset>
@@ -32,9 +32,9 @@
         These options are only necessary for some sites.  If you're not sure what you should enter here, leave the default settings or check with your hosting provider.
       </p>
     </div>
-    <?php echo $form->databaseHost->renderRow() ?>
-    <?php echo $form->databasePort->renderRow() ?>
-    <?php echo $form->tablePrefix->renderRow() ?>
+    <?php echo $form->databaseHost->help('If your database is located on a different server, change this.')->renderRow() ?>
+    <?php echo $form->databasePort->help('If your database server is listening on a non-standard port, enter its number.')->renderRow() ?>
+    <?php echo $form->tablePrefix->help('If more than one application will be sharing this database, enter a table prefix such as <em>'.strtolower($sf_response->getTitle()).'_</em> for your site here.')->renderRow() ?>
   </fieldset>
 
   <input class="form-submit" type="submit" value="Save and continue"/>

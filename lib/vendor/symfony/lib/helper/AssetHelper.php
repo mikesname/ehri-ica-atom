@@ -16,7 +16,7 @@
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
- * @version    SVN: $Id: AssetHelper.php 17078 2009-04-07 11:10:14Z FabianLange $
+ * @version    SVN: $Id: AssetHelper.php 21387 2009-08-24 11:41:17Z fabien $
  */
 
 /**
@@ -37,9 +37,9 @@
  *    => <link rel="alternate" type="application/rss+xml" title="My RSS" href="http://www.curenthost.com/module/feed" />
  * </code>
  *
- * @param  string $type         feed type ('rss', 'atom')
- * @param  string $url          'module/action' or '@rule' of the feed
- * @param  array  $tag_options  additional HTML compliant <link> tag parameters
+ * @param string $type        feed type ('rss', 'atom')
+ * @param string $url         'module/action' or '@rule' of the feed
+ * @param array  $tag_options additional HTML compliant <link> tag parameters
  *
  * @return string XHTML compliant <link> tag
  */
@@ -67,8 +67,8 @@ function auto_discovery_link_tag($type = 'rss', $url = '', $tag_options = array(
  * - file name, like "myscript.js", that gets expanded to "/js/myscript.js"
  * - file name without extension, like "myscript", that gets expanded to "/js/myscript.js"
  *
- * @param  string $source    asset name
- * @param  bool   $absolute  return absolute path ?
+ * @param string $source   asset name
+ * @param bool   $absolute return absolute path ?
  *
  * @return string file path to the JavaScript file
  * @see    javascript_include_tag
@@ -90,8 +90,8 @@ function javascript_path($source, $absolute = false)
  *       <script language="JavaScript" type="text/javascript" src="/elsewhere/cools.js"></script>
  * </code>
  *
- * @param  string asset names
- * @param  array additional HTML compliant <link> tag parameters
+ * @param string asset names
+ * @param array additional HTML compliant <link> tag parameters
  *
  * @return string XHTML compliant <script> tag(s)
  * @see    javascript_path
@@ -155,8 +155,8 @@ function javascript_include_tag()
  * - file name, like "style.css", that gets expanded to "/css/style.css"
  * - file name without extension, like "style", that gets expanded to "/css/style.css"
  *
- * @param  string $source    asset name
- * @param  bool   $absolute  return absolute path ?
+ * @param string $source   asset name
+ * @param bool   $absolute return absolute path ?
  *
  * @return string file path to the stylesheet file
  * @see    stylesheet_tag
@@ -188,55 +188,34 @@ function stylesheet_path($source, $absolute = false)
  *       <link href="/css/stylish.css" media="screen" rel="stylesheet" type="text/css" />
  * </code>
  *
- * @param  string asset names
- * @param  array additional HTML compliant <link> tag parameters
+ * @param string asset names
+ * @param array  additional HTML compliant <link> tag parameters
  *
  * @return string XHTML compliant <link> tag(s)
  * @see    stylesheet_path
  */
-function stylesheet_tag()
+function stylesheet_tag($source, $options = array())
 {
-  $sources = func_get_args();
-  $sourceOptions = (func_num_args() > 1 && is_array($sources[func_num_args() - 1])) ? array_pop($sources) : array();
-
-  $html = '';
-  foreach ($sources as $source)
+  if (!is_array($options))
   {
-    $absolute = false;
-    if (isset($sourceOptions['absolute']))
-    {
-      unset($sourceOptions['absolute']);
-      $absolute = true;
-    }
-
-    $condition = null;
-    if (isset($sourceOptions['condition']))
-    {
-      $condition = $sourceOptions['condition'];
-      unset($sourceOptions['condition']);
-    }
-
-    if (!isset($sourceOptions['raw_name']))
-    {
-      $source = stylesheet_path($source, $absolute);
-    }
-    else
-    {
-      unset($sourceOptions['raw_name']);
-    }
-
-    $options = array_merge(array('rel' => 'stylesheet', 'type' => 'text/css', 'media' => 'screen', 'href' => $source), $sourceOptions);
-    $tag = tag('link', $options);
-
-    if (!is_null($condition))
-    {
-      $tag = comment_as_conditional($condition, $tag);
-    }
-
-    $html .= $tag."\n";
+    $options = array();
   }
 
-  return $html;
+  $options += array('absolute' => false);
+
+  if (empty($options['raw_name']))
+  {
+    $source = stylesheet_path($source, $options['absolute']);
+  }
+
+  $tag = tag('link', array_diff_key($options + array('rel' => 'stylesheet', 'type' => 'text/css', 'media' => 'screen', 'href' => $source), array('absolute' => 'abosolute', 'condition' => 'condition', 'raw_name' => 'raw_name')));
+
+  if (isset($options['condition']))
+  {
+    $tag = comment_as_conditional($options['condition'], $tag);
+  }
+
+  return $tag."\n";
 }
 
 /**
@@ -262,7 +241,7 @@ function use_javascript($js, $position = '', $options = array())
 /**
  * Decorates the current template with a given layout.
  *
- * @param mixed $layout  The layout name or path or false to disable the layout
+ * @param mixed $layout The layout name or path or false to disable the layout
  */
 function decorate_with($layout)
 {
@@ -290,8 +269,8 @@ function decorate_with($layout)
  * - file name, like "rss.gif", that gets expanded to "/images/rss.gif"
  * - file name without extension, like "logo", that gets expanded to "/images/logo.png"
  *
- * @param  string $source    asset name
- * @param  bool   $absolute  return absolute path ?
+ * @param string $source   asset name
+ * @param bool   $absolute return absolute path ?
  *
  * @return string file path to the image file
  * @see    image_tag
@@ -317,8 +296,8 @@ function image_path($source, $absolute = false)
  *    => <img src="/my_images/image.gif" alt="Alternative text" width="100" height="200" />
  * </code>
  *
- * @param  string $source   image asset name
- * @param  array  $options  additional HTML compliant <img> tag parameters
+ * @param string $source  image asset name
+ * @param array  $options additional HTML compliant <img> tag parameters
  *
  * @return string XHTML compliant <img> tag
  * @see    image_path
@@ -560,11 +539,11 @@ function include_stylesheets()
  *
  * The helper automatically adds the sf_format to the internal URI, so you don't have to.
  *
- * @param  string $uri       The internal URI for the dynamic javascript
- * @param  bool   $absolute  Whether to generate an absolute URL
- * @param  array  $options   An array of options
+ * @param string $uri      The internal URI for the dynamic javascript
+ * @param bool   $absolute Whether to generate an absolute URL
+ * @param array  $options  An array of options
  *
- * @return string  XHTML compliant <script> tag(s)
+ * @return string XHTML compliant <script> tag(s)
  * @see    javascript_include_tag
  */
 function dynamic_javascript_include_tag($uri, $absolute = false, $options = array())
@@ -612,6 +591,19 @@ function _dynamic_path($uri, $format, $absolute = false)
 /**
  * Returns <script> tags for all javascripts associated with the given form.
  *
+ * The scripts are set by implementing the getJavaScripts() method in the
+ * corresponding widget.
+ *
+ * <code>
+ * class MyWidget extends sfWidgetForm
+ * {
+ *   public function getJavaScripts()
+ *   {
+ *     return array('/path/to/a/file.js');
+ *   }
+ * }
+ * </code>
+ *
  * @return string <script> tags
  */
 function get_javascripts_for_form(sfForm $form)
@@ -637,6 +629,19 @@ function include_javascripts_for_form(sfForm $form)
 
 /**
  * Returns <link> tags for all stylesheets associated with the given form.
+ *
+ * The stylesheets are set by implementing the getStyleSheets() method in the
+ * corresponding widget.
+ *
+ * <code>
+ * class MyWidget extends sfWidgetForm
+ * {
+ *   public function getStyleSheets()
+ *   {
+ *     return array('/path/to/a/file.css');
+ *   }
+ * }
+ * </code>
  *
  * @return string <link> tags
  */

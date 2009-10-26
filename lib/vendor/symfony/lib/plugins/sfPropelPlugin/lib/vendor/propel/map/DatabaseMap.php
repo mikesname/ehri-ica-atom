@@ -62,25 +62,38 @@ class DatabaseMap {
 	public function __construct($name)
 	{
 		$this->name = $name;
+    $pluginMapDirs = array();
 
-$finder = sfFinder::type('file')->name('*.php');
-foreach ($finder->in(sfConfig::get('sf_lib_dir').'/model/map') as $path)
-{
-  require_once $path;
-}
+    $finder = sfFinder::type('file')->name('*.php');
+    
+    // Get directory names that contain table maps for plugins 
+    foreach(ProjectConfiguration::getActive()->getPlugins() as $enabledPlugin)
+    {
+      $mapPath = sfConfig::get('sf_plugins_dir').'/'.$enabledPlugin.'/lib/model/map/';
+      $maps = sfFinder::type('file')->name('*.php')->in($mapPath);
+      if (is_array($maps) && 0 < count($maps))
+      {
+        $pluginMapDirs[] = $mapPath;
+      }
+    }
 
-foreach (get_declared_classes() as $className)
-{
-  $class = new ReflectionClass($className);
-  if ($class->implementsInterface('MapBuilder'))
-  {
-    $pattern = array('/MapBuilder$/', '/(.)([A-Z])/');
-    $replacement = array(null, '\\1_\\2');
-    $tableName = 'q_'.strtolower(preg_replace($pattern, $replacement, $className));
+    foreach ($finder->in(array_merge(array(sfConfig::get('sf_lib_dir').'/model/map'), $pluginMapDirs)) as $path)
+    {
+      require_once $path;
+    }
 
-    $this->addTableBuilder($tableName, new $className);
-  }
-}
+    foreach (get_declared_classes() as $className)
+    {
+      $class = new ReflectionClass($className);
+      if ($class->implementsInterface('MapBuilder'))
+      {
+        $pattern = array('/MapBuilder$/', '/(.)([A-Z])/');
+        $replacement = array(null, '\\1_\\2');
+        $tableName = 'q_'.strtolower(preg_replace($pattern, $replacement, $className));
+
+        $this->addTableBuilder($tableName, new $className);
+      }
+    }
 	}
 
 	/**

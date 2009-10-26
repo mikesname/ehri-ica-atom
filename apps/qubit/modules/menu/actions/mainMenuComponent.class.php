@@ -45,7 +45,7 @@ class MenuMainMenuComponent extends sfComponent
     $this->versionNumberVisibility = ($this->adminMenu->isDescendantSelected()) ? 'visible' : 'hidden';
     $this->showSecondaryMenu = ($currentUrl != url_for('')) ? true : false;
     // Yucky Hack: Don't display secondary menu options when displaying search results
-    if ($currentModule == 'search' && $currentAction == 'keyword')
+    if ($currentModule == 'search' && $currentAction == 'search')
     {
       $this->showSecondaryMenu = false;
     }

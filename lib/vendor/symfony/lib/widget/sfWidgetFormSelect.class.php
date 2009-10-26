@@ -49,8 +49,11 @@ class sfWidgetFormSelect extends sfWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    $null = null;
     if ($this->getOption('multiple'))
     {
+      $null = $this->renderTag('input', array('name' => $name, 'type' => 'hidden'));
+
       $attributes['multiple'] = 'multiple';
 
       if ('[]' != substr($name, -2))
@@ -65,7 +68,7 @@ class sfWidgetFormSelect extends sfWidgetForm
       $choices = $choices->call();
     }
 
-    return $this->renderContentTag('select', "\n".implode("\n", $this->getOptionsForSelect($value, $choices))."\n", array_merge(array('name' => $name), $attributes));
+    return $null.$this->renderContentTag('select', "\n".implode("\n", $this->getOptionsForSelect($value, $choices))."\n", array_merge(array('name' => $name), $attributes));
   }
 
   /**

@@ -56,6 +56,12 @@ class QubitMods
       $label = truncate_text($label, $options['truncate']);
     }
 
+    $publicationStatus = $informationObject->getPublicationStatus();
+    if ($publicationStatus->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID)
+    {
+      $label .= ' ('.$publicationStatus->status.')';
+    }
+
     return $label;
   }
 

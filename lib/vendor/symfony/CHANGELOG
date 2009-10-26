@@ -3,6 +3,189 @@ See the UPGRADE_TO_1_2 file for more information about upgrading your projects f
 
 All the new features are documented in the What's new? tutorial (http://www.symfony-project.org/tutorial/1_2/whats-new)
 
+Version 1.2.8
+-------------
+
+This release rolls back the security fix from 1.2.6/1.2.7:
+
+"These changes have been done to plug a security hole in the symfonyadmin generator (more information on the symfony blog:
+http://www.symfony-project.org/blog/2009/04/27/symfony-1-2-6-security-fix).But a lot of people complained because it
+causes more harm than good. The fix disables for instance the possibility to have custom partials. Moreover, the problem
+also exists in a normal form if you don't use the "echo $form" construct and if you forget to display some non-required
+fields in the template. After some discussion with the core team members, it appears that there is no way to "fix" the
+problem for the developer. We thought that we would be able to provide something, but the reality is that we cannot.
+Is it a problem? We think it is not a big problem as the circumstances under which there can be an exploit are
+extremely rare or even inexistent as if you are vulnerable, it also means that your database data will be corrupted in some
+way (read the next section for more information). As a matter of fact, all frameworks around are vulnerable and have the
+exact same problem. We already provide more advanced security features for the form framework than anyother framework
+around, but we cannot go any further. Security is also a developer matter, and too much magic is sometimes a bad thing.
+Here is the exact circumstances under which you might be vulnerable: A field is vulnerable only if you forget to display
+its widget inthe template and only if it has a non-required validator. Then, an attacker could potentially inject a valid
+value for this field, and it will be saved with the rest of the object. But two things greatly mitigate the issue: first,
+if you forget to display a field, each time you save the form, its value will be lost. So, most of the time, you will be
+aware of the problem because the data in the database will be corrupted. Second, the attacker need to know the exact field
+name, which is not easy as no information is contained in the HTML."
+
+  * [20144]: fixed phpdoc for sfTesterForm (closes #6813)
+ * [20142]: fixed simple_format_text having problems with certain linebreaks. patch by Maxim Oleinik (closes#6824)
+ * [20053]: fixed autoload order, enhanced performances of tasks autoloading
+ * [20049]: fixed tasks autoloading order, added tests for proof
+ * [20048]: added phpdoc for compat exceptions (closes #6781)
+ * [20047]: fixed phpDoc (closes #6796)
+ * [20042]: applied patch from gimler, adding more tests for sfWebRequest (closes #6797)
+ * [20026]: Fixing sfValidatorDoctrineChoice to get alias from query instead of hardcoding a (closes #6740)
+ * [19996]: Adding missing french translations for admin gen (closes #6749)
+ * [19980]: fixed the order where the tasks was loaded (fixes #4766, #5348), plus fixed case when sfToolkit::getPhpCli() could misbehave with custom user PATH
+ * [19912]: calling dataDir statically as it should be in sfCultureInfo (fixes #6604)
+ * [19911]: added check in sfActions that prefents infinite recursion in the execute method when the action name is empty (fixes #6710)
+ * [19850]: fixed PHPdoc typo
+ * [19819]: reverted the changesets that removed the non-visible fields in the admin generator (see security note above)
+ * [19777]: fixed warnings when trying to load a non-valid XML file with the XLIFF i18n message source class (closes #6728)
+ * [19701]: fixed sfMemcacheCache set() method (closes #6696)
+ * [19468]: fixed routing for PHP 5.3.0RC4
+ * [19442]: fixed default value for max forwards in sfController (closes #6675)
+ * [19411]: fixed PHPDoc return values (closes #6667)
+ * [19410]: added check for php 5.2.9 which has a bug in array_unique to check_configuration.php (refs #6211)
+ * [19310]: fixed JavascriptHelper call to insert Element in update_element_function() when using the position attribute (closes #6638)
+ * [19297]: added support for Office 2007 for file uploads (closes #6635)
+ * [19256]: fixed generateCacheKey does not coverts dots to underscorse in user given hostname (closes #6252)
+ * [19244]: fixed admin gen CSS (closes #6596)
+ * [19243]: added some missing PHPDoc (closes #6620)
+ * [19217]: fixed class name case
+ * [19112]: added missing PHPDoc
+ * [18955]: fixed case insensitivity of module name when checking module.yml for a partial view class
+ * [18835]: fixed a bug on Propel/Doctrine route generation
+ * [18746]: fixed test plan for CLI tasks (closes #6545)
+ * [18734]: fixed loading order of tasks (refs #5348)
+ * [18726]: fixed typo (closes #6538)
+ * [18669]: fixed sfBrowser::click() when several links and buttons have the same value (closes #6470 - patch from gimler)
+ * [18666]: updated lime to 1.0.6
+ * [18607]: fixed format_currency returns Exponents (closes #5715)
+ * [18606]: fixed format_currency returns Exponents (closes #5715)
+ * [18498]: fixed invalid assumption that empty dates evaluate to false
+ * [18492]: fixed exception page should execute html/javascript code when using html format - closes #5743
+ * [18322]: merged in some minor PHPdoc changes from the yaml component
+ * [18164]: fixed error message when an UPLOAD_ERR_INI_SIZE occurs on an uploaded file (closes #6453)
+ * [18136]: fixed return value from test:* tasks
+ * [18135]: added some missing phpdoc information
+ * [18131]: fixed typo in phpdoc (closes #6440)
+ * [18104]: strengthened web debug styles
+ * [18089]: fixed sfPager::getLinks() to always return integers (closes #6428)
+ * [18047]: fixed bad assumption about internal array pointer in sfModelGeneratorConfiguration (closes #6423)
+ * [18033]: added Basque translation for admin generator (fixes #6421, thanks Javier.Eguiluz)
+ * [18030]: added more information to the error message when a plugin dependency is not installed
+ * [17975]: fixed sfWebRequest::getFiles() (closes #6389)
+
+Doctrine Plugin:
+
+ * [19987]: Fixing issue with magic accessors/getters when using camel case with relationships (closes #6178)
+ * [19985]: sfDoctrinePlugin: Throwing exception if default culture has not been set (closes #6707)
+ * [19982]: sfDoctrinePlugin: adding missing phpdoc blocks to sfWidgetFormDoctrineChoice::configure() (closes #6637)
+ * [19406]: Updating sfDoctrinePlugin to use Doctrine 1.0.10
+ * [19274]: Fixes issue with different format of indexes not being properly handled in generated forms (closes #6614)
+ * [19272]: Fixes one issue with file uploads in doctrine (closes #6617)
+ * [19268]: Fix for camel case columns accessors and mutators (closes #6403)
+ * [19267]: Fixes issue with crud 404 error message (closes #6469)
+ * [19265]: Fixes issue with sfDoctrinePager::getResults() not allowing Doctrine hydration type constants (closes #6612)
+ * [18971]: sfDoctrinePlugin: Fixing issue where application option was not passed to load data task
+
+
+Propel Plugin:
+
+ * [18694]: fixed problem with propel:data-dump task under some Linux distro (closes #5717)
+
+
+
+Version 1.2.7
+-------------
+
+Contains the security fis from 1.2.6. Please read http://www.symfony-project.org/blog/2009/04/27/symfony-1-2-6-security-fix for more information.
+
+ * [17861]: MCE Texteditor now can align images correctly (closes #5745) 
+ * [17860]: wrapped fill-in fix for FCK Texteditor in sf_10_compat check (closes #732)
+ * [17858]: fixed some codeing standards (fixes #6376 - patch from gimler)
+ * [17857]: allows overriding the sfFinder returned by a subclass of sfFinder::type method (fixes #6378) 
+ * [17749]: fixed some PHPDoc (closes #6371 - patch from gimler)
+ * [17711]: added test that proves that passing a position to stylesheets and javascripts in view.yml is possible (refs #6242)
+ * [17709]: fixed accidental unset of fields included in admin generator with partial or component flag
+ * [17704]: fixed typo in sfFilterConfigHandler.class.php
+ * [17699]: moved functional tests for the 1.0 admin generator in a specific directory
+ * [17587]: fixed rare occassion when a widget schema is paired with a simple validator error rather than a validator error schema
+ * [17586]: fixed removal of form fields in the admin generator when fields are nested into multiple fieldsets
+ * [17583]: fixed wrong PHPDoc type hinting (reported by nicolas)
+ * [17581]: fixed r17579: regression when display is set to [ ] (which is default, and equivalent to "all")
+ * [17580]: typo in coding standards (from r17579)
+ * [17579]: __security fix: removes unused fields in the form to avoid data injection by forging false form fields values.__
+ * [17519]: fixed session_write_close is not called in sfDatabaseSessionStorage::shutdown (#6216) 
+ * [17478]: fixed sfXCacheCache::clean() (closes #6245)
+ * [17477]: fixed generateCacheKey does not coverts dots to underscorse in user given hostname (closes #6252)
+ * [17474]: fixed sfTask::getSynopsis() returns incorrect description for arrays of arguments (closes #6280)
+ * [17473]: made some small performance optimization on widgets and validators (closes #6311)
+ * [17468]: fixed cache manager when the cache partial or component is not from the same module as the same action (closes #6265, #5814)
+ * [17467]: fixed default parameters management for routes (refs #6309)
+ * [17466]: fixed default parameters management for routes (refs #6309)
+ * [17450]: fixed plugin:install task when the plugin has some dependencies
+ * [17440]: applied the other patch from #5811 with the compat option (closes #5811 - patch from rs)
+ * [17438]: fixed lazy_routes_deserialize still unserializes every route (closes #6309)
+ * [17402]: added more tests to sfObjectRouteCollection (refs #5851)
+ * [17401]: added sfObjectRouteCollection tests (refs #5851)
+ * [17398]: fixed possible php error, added unit tests
+ * [17384]: fixed confirm dialog does not work in ie6 (closes #4152)
+ * [17382]: fixed inconsistency of routes with generate_shortest_url option enabled (closes #6185) + added more routing tests 
+ * [17372]: removed unneeded dependency on sfConfig in sfWebRequest
+ * [17357]: doSelectWithI18n no longer accidentally modifies the Criteria passed to it (fixes #6243)
+ * [17347]: fixed restoration of response object if an exception is thrown
+ * [17339]: re-added the sfXCacheCache::getCacheInfo() method to keep BC
+ * [17297]: fixed throw_global_error default value noted in api doc to match the actual default
+ * [17217]: Added `sf_lazy_cache_key` setting to address possible backward compatibility break. This must be turned on in `settings.yml` to enable the performance optimization of r16905 and r16907.
+ * [17127]: added more unit tests for sfCacheSessionStorage
+ * [17125]: removed unused include (for PHP 5.3/PEAR 1.8.0 compat)
+ * [17109]: removed reliance on default symfony route, all routing calls are by route name (closes #6236)
+ * [17078]: fixed api description of include_http_metas()
+ * [17068]: fixed __clone() in all choice widgets (closes #4417)
+ * [17064]: fixed xcache cache class (closes #4115)
+ * [17063]: fixed generated links (refs #5851)
+ * [17047]: fixed autoloading configuration cache behaves differently on Windows and Linux (closes #6232)
+ * [17045]: added application/x-zip for Firefox 3 in the compat plugin (refs #6191)
+ * [17044]: fixed mime-type map in sfValidatorFile (closes #5808, #6191)
+ * [17043]: fixed single group in sfWidgetFormSelectCheckbox (closes #6230)
+ * [17042]: removed files that were needed when Propel and Doctrine were not bundled with Symfony
+ * [17027]: added a test for format_currency (refs #5715)
+ * [17023]: fixed management in sfWebRequest and sfForm (closes #4273, #5075)
+ * [16949]: added a new lazy_routes_deserialize optimization option
+ * [16942]: removed the web debug toolbar when the response status code is in the 3xx range (closes #6153)
+ * [16938]: fixed internal URI is not reset after a negative match (closes #6228 - patch from rs)
+ * [16929]: optimized route serialization when using a file cache backend (patch from rs)
+ * [16912]: fixed bug in the pattern routing optimization
+ * [16911]: fixed routing slowness for big numbers of routes (closes #6222 - patch from rs)
+ * [16905]: Avoided unnecessary calls to `md5(serialize())` by moving determination of whether a partial is cacheable to before the cache key is generated. BIG optimization when `sf_cache`==true. Will be backported to 1.0. (closes #5814)
+ * [16899]: optimized windows rename() problem hack (based on a patch from Agavi)
+ * [16897]: replaced getmypid() by tempnam() in cache classes to be thread-safe (thanks to David Zulke for the tip, refs #6132)
+ * [16847]: removed @error suppression in sfFileCache. Now it should work on all platforms. What a pity that PHP doesnt handle this :-( (closes #6132)
+ * [16834]: fixed flag upon unregistering of core autoloader
+ * [16733]: fix doubled-code
+ * [16711]: fixed invalid string length assumption
+
+Doctrine Plugin:
+
+ * [17253]: Fixed testing of null columns in sfTesterDoctrine (handled natively by Propel).
+ * [16964]: sfDoctrinePlugin: fixing sfValidatorDoctrineChoiceMany and reverting change to make it equal to Propel (closes #4511)
+ * [16959]: sfDoctrinePlugin: Fixes issue where m2m relationships are all unlinked then readded (closes #6192)
+ * [16953]: sfDoctrinePlugin: Fixing case sensitive typo
+ * [16952]: sfDoctrinePlugin: Fixes issue with generated accessors not using camel case (closes #6178)
+
+Propel Plugin:
+
+ * [17747]: added the filter dir from sfPropelPlugin fixtures in the repo
+ * [17701]: renamed sfPropel functional tests backend application
+ * [17700]: renamed sfPropel functional tests backend application
+ * [17426]: fixed propel 1.3 self referencing table data loading for fixtures (closes #5022)
+ * [17296]: fixed Propel query log doesn't work properly on queries with over 9 bindings (closes #5882)
+ * [16976]: fixed Propel forms, filters, and admin generator when column names contain uppercase letters (closes #6151, #6187, #5030, #5610, #2855)
+ * [16948]: replace all getColumnName() occurrences to getName() as getColumnName() is deprecated in Propel 1.3
+
+
+
 Version 1.2.6
 -------------
 

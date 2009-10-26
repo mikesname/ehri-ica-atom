@@ -20,7 +20,7 @@
  * @author     Sean Kerr <sean@code-box.org>
  * @version    SVN: $Id: sfRequest.class.php 12660 2008-11-05 11:32:23Z fabien $
  */
-abstract class sfRequest
+abstract class sfRequest implements ArrayAccess
 {
   const GET    = 'GET';
   const POST   = 'POST';
@@ -132,24 +132,77 @@ abstract class sfRequest
     $this->method = strtoupper($method);
   }
 
+  /**
+   * Returns true if the request parameter exists (implements the ArrayAccess interface).
+   *
+   * @param  string $name The name of the request parameter
+   *
+   * @return Boolean true if the request parameter exists, false otherwise
+   */
   public function __isset($name)
   {
     return $this->parameterHolder->has($name);
   }
 
+  public function offsetExists($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__isset'), $args);
+  }
+
+  /**
+   * Returns the request parameter associated with the name (implements the ArrayAccess interface).
+   *
+   * @param  string $name  The offset of the value to get
+   *
+   * @return mixed The request parameter if exists, null otherwise
+   */
   public function __get($name)
   {
     return $this->parameterHolder->get($name);
   }
 
+  public function offsetGet($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__get'), $args);
+  }
+
+  /**
+   * Sets the request parameter associated with the offset (implements the ArrayAccess interface).
+   *
+   * @param string $offset The parameter name
+   * @param string $value The parameter value
+   */
   public function __set($name, $value)
   {
     return $this->parameterHolder->set($name, $value);
   }
 
+  public function offsetSet($offset, $value)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__set'), $args);
+  }
+
+  /**
+   * Removes a request parameter.
+   *
+   * @param string $offset The parameter name
+   */
   public function __unset($name)
   {
     return $this->parameterHolder->remove($name);
+  }
+
+  public function offsetUnset($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__unset'), $args);
   }
 
   /**
@@ -260,7 +313,10 @@ abstract class sfRequest
     $event = $this->dispatcher->notifyUntil(new sfEvent($this, 'request.method_not_found', array('method' => $method, 'arguments' => $arguments)));
     if (!$event->isProcessed())
     {
-      throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+      $clone = clone $this;
+      $clone->options[$method] = $arguments[0];
+
+      return $clone;
     }
 
     return $event->getReturnValue();
@@ -270,13 +326,5 @@ abstract class sfRequest
   {
     $this->parameterHolder = clone $this->parameterHolder;
     $this->attributeHolder = clone $this->attributeHolder;
-  }
-
-  public function s($name, $value)
-  {
-    $clone = clone $this;
-    $clone->options[$name] = $value;
-
-    return $clone;
   }
 }

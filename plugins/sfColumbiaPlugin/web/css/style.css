@@ -450,6 +450,11 @@ font-weight: bold;
   background: #F1F9FC;
 }
 
+.actions
+{
+  background: #F1F9FC;
+}
+
 /****************************************************/
 /*            MENU - ACTION                         */
 /****************************************************/
@@ -609,16 +614,17 @@ background-color: #ffffff;
 /*           searchbox                   */
 /*****************************************/
 
-#searchbox
+#search-sidebar
 {
   background: transparent url(../images/searchbox.gif) repeat scroll 0 0;
   background-repeat: repeat-y;
   height: 42px;
   margin: 0 auto 0 auto;
+  padding: 0;
   width: 770px;
 }
 
-#searchbox .box
+#search-sidebar .textbox
 {
   width: 360px;
   height: auto;
@@ -629,22 +635,31 @@ background-color: #ffffff;
   margin: 5px;
 }
 
-#searchbox .box:focus
+#search-sidebar .textbox:focus
 {
   background: transparent;
 }
 
-#searchbox .searchbox-submit
+#search-sidebar .form-submit, #search-sidebar .form-submit:hover
 {
   background: transparent url(../images/searchbox-button.gif) repeat scroll 0 0;;
   background-repeat: repeat-y;
+  color: transparent;
   width: 38px;
   height: 33px;
   border: 0;
   margin: 4px 4px 2px 0;
   position: relative;
-  bottom: 39px;
-  left: 380px;
+  left: 220px;
+}
+
+/*********************************************************
+                LIST TEMPLATES SEARCH
+**********************************************************/
+
+#list-search
+{
+  background-color: #F1F9FC;
 }
 
 

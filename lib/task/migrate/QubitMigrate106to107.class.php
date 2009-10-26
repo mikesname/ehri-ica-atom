@@ -73,7 +73,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function addModsResourceTaxonomyTerms()
+  protected function addModsResourceTaxonomyTerms()
   {
     // Add MODS resource type taxonomy
     $this->data['QubitTaxonomy']['QubitTaxonomy_mods_resource_type'] = array(
@@ -148,7 +148,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function addDcTypeTaxonomyTerms()
+  protected function addDcTypeTaxonomyTerms()
   {
     // Add DC type taxonomy
     $this->data['QubitTaxonomy']['QubitTaxonomy_dc_type'] = array(
@@ -228,7 +228,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function alterQubitMenus()
+  protected function alterQubitMenus()
   {
     // Remove themes menu
     if ($themesMenuKey = $this->getRowKey('QubitMenu', 'name', 'themes'))
@@ -273,7 +273,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function alterQubitNotes()
+  protected function alterQubitNotes()
   {
     // Add source notes (with Term constant)
     $this->data['QubitNote']['QubitNote_creationSource'] = array(
@@ -350,7 +350,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function alterQubitSettings()
+  protected function alterQubitSettings()
   {
     // Rename "site_title" setting -> "siteTitle"
     if ($siteTitleKey = $this->getRowKey('QubitSetting', 'name', 'site_title'))
@@ -396,7 +396,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function alterQubitStaticPages()
+  protected function alterQubitStaticPages()
   {
     // Update version number
     foreach ($this->data['QubitStaticPage'] as $key => $page)
@@ -415,7 +415,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function alterQubitTerms()
+  protected function alterQubitTerms()
   {
     // Get key for 'Event Type' taxonomy key
     $eventTypeTaxonomyKey = $this->getRowKey('QubitTaxonomy', 'id', '<?php echo QubitTaxonomy::EVENT_TYPE_ID."\n" ?>');
@@ -526,7 +526,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function sortQubitInformationObjects()
+  protected function sortQubitInformationObjects()
   {
     QubitMigrate::sortByLft($this->data['QubitInformationObject']);
 
@@ -539,7 +539,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function sortQubitTerms()
+  protected function sortQubitTerms()
   {
     $qubitTermConstantIds = array(
       //EventType taxonomy
@@ -622,7 +622,7 @@ class QubitMigrate106to107 extends QubitMigrate
    *
    * @return QubitMigrate106to107 this object
    */
-  private function sortClasses()
+  protected function sortClasses()
   {
     $ormSortOrder = array(
       'QubitTaxonomy',

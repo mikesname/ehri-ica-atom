@@ -1,16 +1,87 @@
+deleteSuccess:
+  components:
+    sidebar: []
+    BrowseBox: []
+    MainMenu: []
+    SearchBox: []
+
 editDcSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
+  stylesheets:
+    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
+  javascripts:
+    - /vendor/yui/datasource/datasource-min
+    - /vendor/yui/connection/connection-min
+    - /vendor/yui/animation/animation-min
+    - /vendor/yui/autocomplete/autocomplete-min
+    - autocomplete
+    - /sfDrupalPlugin/vendor/drupal/misc/collapse
+    - /sfDrupalPlugin/vendor/drupal/misc/textarea
+    - multiDelete
+    - multiInstanceInput
+    - multiInstanceSelect
+    - multiRow
+    - select
 
 editIsadSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
-
-editRadSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
+  stylesheets:
+    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
+    edit:
+  javascripts:
+    - /vendor/yui/datasource/datasource-min
+    - /vendor/yui/connection/connection-min
+    - /vendor/yui/animation/animation-min
+    - /vendor/yui/autocomplete/autocomplete-min
+    - autocomplete
+    - /sfDrupalPlugin/vendor/drupal/misc/collapse
+    - /sfDrupalPlugin/vendor/drupal/misc/textarea
+    - multiDelete
+    - multiInstanceInput
+    - multiInstanceSelect
+    - multiRow
+    - select
 
 editModsSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceInput, multiInstanceSelect]
+  stylesheets:
+    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
+  javascripts:
+    - /vendor/yui/datasource/datasource-min
+    - /vendor/yui/connection/connection-min
+    - /vendor/yui/animation/animation-min
+    - /vendor/yui/autocomplete/autocomplete-min
+    - autocomplete
+    - /sfDrupalPlugin/vendor/drupal/misc/collapse
+    - /sfDrupalPlugin/vendor/drupal/misc/textarea
+    - multiDelete
+    - multiInstanceInput
+    - multiInstanceSelect
+    - multiRow
+    - select
+
+editPhysicalObjectsSuccess:
+  javascripts:
+    - multiDelete
+  components:
+    sidebar: []
+
+editRadSuccess:
+  stylesheets:
+    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
+  javascripts:
+    - /vendor/yui/datasource/datasource-min
+    - /vendor/yui/connection/connection-min
+    - /vendor/yui/animation/animation-min
+    - /vendor/yui/autocomplete/autocomplete-min
+    - autocomplete
+    - /sfDrupalPlugin/vendor/drupal/misc/collapse
+    - /sfDrupalPlugin/vendor/drupal/misc/textarea
+    - multiDelete
+    - multiInstanceInput
+    - multiInstanceSelect
+    - multiRow
+    - select
 
 listSuccess:
+  javascripts: [actions]
   components:
     sidebar: []
 

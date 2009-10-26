@@ -47,7 +47,7 @@ class DigitalObjectShowImageComponent extends sfComponent
     // If representation is not a valid digital object, return a generic icon
     if (!$this->representation)
     {
-       $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType());
+       $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
     }
   }
 }

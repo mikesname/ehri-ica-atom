@@ -1,18 +1,11 @@
-﻿<div class="pageTitle"><?php echo __('view authority record') ?></div>
+<div class="pageTitle"><?php echo __('view authority record') ?></div>
 
 <table class="detail">
 <tbody>
 
-<?php $name = render_title($actor->getAuthorizedFormOfName(array('cultureFallback' => true))) ?>
-<?php if ($editCredentials): ?>
   <tr><td colspan="2" class="headerCell">
-  <?php echo link_to($name, array('module' => 'actor', 'action' => 'edit', 'id' => $actor->getId())) ?>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'actor'), render_title($actor), array('module' => 'actor', 'action' => 'edit', 'id' => $actor->id), array('title' => __('Edit authority record'))) ?>
   </td></tr>
-<?php else: ?>
-  <tr><td colspan="2" class="headerCell">
-  <?php echo $name ?>
-  </td></tr>
-<?php endif; ?>
 
 <?php if ($actor->getEntityTypeId()): ?>
   <tr><th><?php echo __('type of entity') ?></th><td>
@@ -87,10 +80,71 @@
   <td><?php echo nl2br($value) ?></td></tr>
 <?php endif; ?>
 
-<?php if ($relatedActors): ?>
-  <tr><th><?php echo _('related corporate bodies persons families') ?></th><td>
-  <?php echo $relatedActors ?>
-  </td></tr>
+<?php if (0 < count($actorRelations)): ?>
+  <?php foreach ($actorRelations as $actorRelation): ?>
+  <tr>
+    <th><?php echo _('related entity') ?></th>
+    <td>
+      <?php if ($actor->getId() == $actorRelation->getObjectId()): ?>
+        <?php $relatedActor = $actorRelation->getSubject() ?>
+        <?php echo link_to($relatedActor->getAuthorizedFormOfName(array('cultureFallback' => true)),
+        array('module' => 'actor', 'action' => 'show', 'id' => $actorRelation->getSubjectId())) ?>
+        <?php if ($existence = $relatedActor->getDatesOfExistence(array('cultureFallback' => true))): ?><span class="note2"> (<?php echo $existence ?>)</span><?php endif; ?>
+      <?php else: ?>
+        <?php $relatedActor = $actorRelation->getObject() ?>
+        <?php echo link_to($relatedActor->getAuthorizedFormOfName(array('cultureFallback' => true)),
+        array('module' => 'actor', 'action' => 'show', 'id' => $actorRelation->getObjectId())) ?>
+        <?php if ($existence = $relatedActor->getDatesOfExistence(array('cultureFallback' => true))): ?><span class="note2"> (<?php echo $existence ?>)</span><?php endif; ?>
+      <?php endif; ?>
+
+      <table class="detail" style="margin-top: 5px;">
+        <?php if (0 < strlen($relatedActor->getCorporateBodyIdentifiers())): ?>
+        <tr>
+          <th style="text-align: left; padding: 1px;"><?php echo __('identifier of the related entity') ?></th>
+        </tr>
+        <tr>
+          <td><?php echo $relatedActor->getCorporateBodyIdentifiers() ?></td>
+        </tr>
+        <?php endif; ?>
+
+        <?php if (0 < $actorRelation->getTypeId()): ?>
+        <tr>
+          <th style="text-align: left; padding: 1px;"><?php echo __('category of the relationship') ?></th>
+        </tr>
+        <tr>
+          <td><?php echo $actorRelation->getType()->getName() ?></td>
+        </tr>
+        <?php endif; ?>
+
+        <?php if (null !== ($dateDisplayNote = $actorRelation->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID)) || 0 < count($dateArray = $actorRelation->getDates())): ?>
+        <tr>
+          <th style="text-align: left; padding: 1px;"><?php echo __('dates of the relationship') ?></th>
+        </tr>
+        <tr>
+          <td>
+          <?php if (null !== $dateDisplayNote && 0 < strlen($dateDisplay = $dateDisplayNote->getContent(array('cultureFallback' => true)))): ?>
+            <?php echo $dateDisplay ?>
+          <?php elseif (2 == count($dateArray)): ?>
+            <?php echo __('%1% - %2%', array('%1%' => collapse_date($dateArray['start']), '%2%' => collapse_date($dateArray['end']))); ?>
+          <?php else: ?>
+            <?php echo collapse_date(array_shift($dateArray)) ?>
+          <?php endif; ?>
+          </td>
+        </tr>
+        <?php endif; ?>
+
+        <?php if (null !== ($descriptionNote = $actorRelation->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID))): ?>
+        <tr>
+          <th style="text-align: left; padding: 1px;"><?php echo __('description of relationship') ?></th>
+        </tr>
+        <tr>
+          <td><?php echo $descriptionNote->getContent(array('cultureFallback' => true)) ?></td>
+        </tr>
+        <?php endif; ?>
+      </table>
+    </td>
+  </tr>
+  <?php endforeach; ?>
 <?php endif; ?>
 
 <?php if ($actor->getDescriptionIdentifier()): ?>
@@ -148,25 +202,22 @@
 <?php endif; ?>
 
 <?php if (count($notes) > 0): ?>
-  <tr><th><?php echo __('notes')?>:
-  </th><td>
   <?php foreach ($notes as $note): ?>
-    <?php echo $note->getType()->getName(array('cultureFallback' => true)).': '.$note->getContent(array('cultureFallback' => true)) ?>
-    <br />
+      <tr><th><?php echo $note->getType()->getName(array('cultureFallback' => true)) ?></th>
+      <td><?php echo $note->getContent(array('cultureFallback' => true)) ?></td></tr>
   <?php endforeach; ?>
-  </td></tr>
 <?php endif; ?>
 
 </tbody>
 </table>
 
-<?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'actor', 'action' => 'update'))): ?>
-<div class="menu-action">
-<?php echo link_to(__('edit %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))), array('module' => 'actor', 'action' => 'edit', 'id' => $actor->getId())) ?>
-</div>
-
-<div class="menu-extra">
-  <?php echo link_to(__('add new'), array('module' => 'actor', 'action' => 'create')) ?>
-  <?php echo link_to(__('list all'), array('module' => 'actor', 'action' => 'list')) ?>
-</div>
-<?php endif; ?>
+<ul class="actions">
+  <?php if (SecurityPriviliges::editCredentials($sf_user, 'actor')): ?>
+    <li><?php echo link_to(__('Edit'), array('module' => 'actor', 'action' => 'edit', 'id' => $actor->id), array('title' => __(''))) ?></li><?php endif; ?>
+  <?php if (SecurityPriviliges::editCredentials($sf_user, 'actor')): ?>
+    <li><?php echo link_to(__('Delete'), array('module' => 'actor', 'action' => 'delete', 'id' => $actor->id), array('title' => __(''))) ?></li><?php endif; ?>
+  <br /><div class="menu-extra">
+  <?php if (SecurityPriviliges::editCredentials($sf_user, 'actor')): ?>
+    <li><?php echo link_to(__('Add new'), array('module' => 'actor', 'action' => 'create'), array('title' => __(''))) ?></li><?php endif; ?>
+  <li><?php echo link_to(__('List all'), array('module' => 'actor', 'action' => 'list'), array('title' => __(''))) ?></li>
+</ul>

@@ -39,23 +39,14 @@
 <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
 <div id="button-block-bump"></div>
 
-<div id="button-block" style="height: 8em;">
+<div id="button-block">
 <div class="menu-action">
+  <?php echo link_to(__('Cancel'), 'staticpage/list') ?>
   <?php if ($staticPage->getId()): ?>
-    &#160;<?php echo link_to(__('delete'), 'staticpage/delete?id='.$staticPage->getId(), 'post=true&confirm='.__('are you sure?')) ?>
-    &#160;<?php echo link_to(__('cancel'), 'staticpage/list') ?>
+    <?php echo submit_tag(__('Save')) ?>
   <?php else: ?>
-    &#160;<?php echo link_to(__('cancel'), 'staticpage/list') ?>
+    <?php echo submit_tag(__('Create')) ?>
   <?php endif; ?>
-    <?php if ($staticPage->getId()): ?>
-      <?php echo submit_tag(__('save')) ?>
-    <?php else: ?>
-      <?php echo submit_tag(__('create')) ?>
-    <?php endif; ?>
-</div>
-
-<div class="menu-extra" style="padding-top: 5px;">
-<?php echo link_to(__('add new static page'), 'staticpage/create') ?>
 </div>
 
 </div>

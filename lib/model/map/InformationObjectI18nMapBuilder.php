@@ -79,5 +79,7 @@ class InformationObjectI18nMapBuilder implements MapBuilder {
 
 		$tMap->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7);
 
+		$tMap->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null);
+
 	} 
 } 

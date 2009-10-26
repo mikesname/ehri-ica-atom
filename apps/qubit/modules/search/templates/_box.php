@@ -1,7 +1,7 @@
 <div id="search-sidebar">
-  <?php echo form_tag('search/keyword', 'class=sidebarForm') ?>
+  <form action="<?php echo url_for(array('module' => 'search', 'action' => 'search')) ?>">
     <div>
-      <?php echo input_tag('query', $sf_request->getParameter('query'), 'class="textbox"') ?>
+      <?php echo input_tag('query', $sf_request->query, array('class' => 'textbox')) ?>
     </div>
     <div>
       <?php echo submit_tag(__('search')) ?>

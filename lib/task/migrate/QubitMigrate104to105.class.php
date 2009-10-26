@@ -69,7 +69,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function alterQubitInformationObjects()
+  protected function alterQubitInformationObjects()
   {
     // Initialize oai_identifier auto-increment column with root Info Object
     if ($rootInfoObjectKey = $this->getRowKey('QubitInformationObject', 'lft', '1'))
@@ -85,7 +85,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function alterQubitSettings()
+  protected function alterQubitSettings()
   {
     // Add new settings
     $this->data['QubitSetting']['QubitSetting_oai_enabled'] = array(
@@ -114,7 +114,6 @@ class QubitMigrate104to105 extends QubitMigrate
     );
     $this->data['QubitSetting']['QubitSetting_inherit_code_informationobject'] = array(
       'name' => 'inherit_code_informationobject',
-      'scope' => 'oai',
       'editable' => '1',
       'deleteable' => '0',
       'source_culture' => 'en',
@@ -148,7 +147,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function alterQubitStaticPages()
+  protected function alterQubitStaticPages()
   {
     // Update version number
     foreach ($this->data['QubitStaticPage'] as $key => $page)
@@ -167,7 +166,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function alterQubitMenus()
+  protected function alterQubitMenus()
   {
     $this->data['QubitMenu']['QubitMenu_root'] = array(
       'id' => '<?php echo QubitMenu::ROOT_ID."\n" ?>'
@@ -344,7 +343,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function alterQubitTerms()
+  protected function alterQubitTerms()
   {
     // Get "Note" taxonomy key
     $taxonomyNoteTypeKey = $this->getRowKey('QubitTaxonomy', 'id', '<?php echo QubitTaxonomy::NOTE_TYPE_ID."\n" ?>');
@@ -408,7 +407,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function sortQubitInformationObjects()
+  protected function sortQubitInformationObjects()
   {
     $newList = array();
     $highLft = 0;
@@ -448,7 +447,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function sortQubitTerms()
+  protected function sortQubitTerms()
   {
     $qubitTermConstantIds = array(
     //EventType taxonomy
@@ -528,7 +527,7 @@ class QubitMigrate104to105 extends QubitMigrate
    *
    * @return QubitMigrate104to105 this object
    */
-  private function sortClasses()
+  protected function sortClasses()
   {
     $ormSortOrder = array(
       'QubitTaxonomy',

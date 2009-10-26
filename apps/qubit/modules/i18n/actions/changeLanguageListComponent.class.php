@@ -21,31 +21,5 @@ class I18nChangeLanguageListComponent extends sfComponent
 {
   public function execute($request)
   {
-    // loop through application settings and extract enabled i18n languages
-    $enabledI18nLanguages = array();
-    foreach (sfConfig::getAll() as $setting => $value)
-    {
-      if (0 === strpos($setting, 'app_i18n_languages'))
-      {
-        $enabledI18nLanguages[$value] = format_language($value, $value);
-      }
-    }
-
-    /*
-    // don't include the current locale language in list
-    foreach ($enabledI18nLanguages as $key => $language)
-    {
-      if ($key == $this->getUser()->getCulture())
-      {
-        unset($enabledI18nLanguages[$key]);
-        break;
-      }
-    }
-    */
-
-    // sort languages by alpha code to look pretty
-    ksort($enabledI18nLanguages);
-
-    $this->enabledI18nLanguages = $enabledI18nLanguages;
   }
 }

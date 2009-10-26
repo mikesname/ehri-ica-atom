@@ -16,7 +16,7 @@
  * @subpackage user
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfBasicSecurityUser.class.php 11694 2008-09-21 08:26:37Z fabien $
+ * @version    SVN: $Id: sfBasicSecurityUser.class.php 21875 2009-09-11 05:54:39Z fabien $
  */
 class sfBasicSecurityUser extends sfUser implements sfSecurityUser
 {
@@ -52,7 +52,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
   /**
    * Removes a credential.
    *
-   * @param  mixed credential
+   * @param  mixed $credential credential
    */
   public function removeCredential($credential)
   {
@@ -216,7 +216,7 @@ class sfBasicSecurityUser extends sfUser implements sfSecurityUser
   /**
    * Returns the timestamp of the last user request.
    *
-   * @param  int
+   * @return  int
    */
   public function getLastRequestTime()
   {

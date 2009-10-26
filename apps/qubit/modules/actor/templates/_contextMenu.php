@@ -1,11 +1,5 @@
 <div class="context-column-box">
   <div class="contextMenu">
-  <?php if ($repository): ?>
-    <div class="label">
-      <?php echo __('%1% information', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?>
-    </div>
-    <?php echo link_to(render_title($repository), 'repository/show?id='.$repository->getId()) ?>
-  <?php endif; ?>
 
   <?php if ($relatedInfoObjects): ?>
     <?php foreach ($relatedInfoObjects as $role => $relations): ?>

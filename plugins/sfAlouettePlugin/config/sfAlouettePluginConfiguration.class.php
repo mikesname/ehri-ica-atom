@@ -32,7 +32,7 @@ class sfAlouettePluginConfiguration extends sfPluginConfiguration
   {
     $context = $event->getSubject();
 
-    $context->getResponse()->addStylesheet('/sfAlouettePlugin/css/style.css');
+    $context->response->addStylesheet('/sfAlouettePlugin/css/style', 'last');
   }
 
   /**

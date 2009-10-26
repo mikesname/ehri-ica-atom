@@ -35,17 +35,17 @@ class ActorDeleteOtherNameAction extends sfAction
       // (Pre-pend code copied from sfWebController->genUrl() method)
       $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
 
-      return $this->redirect($next);
+      $this->redirect($next);
     }
     else
     {
       if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
       {
-        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
+        $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
       }
       else
       {
-        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
+        $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
       }
     }
   }

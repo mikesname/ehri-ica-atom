@@ -61,7 +61,7 @@ class QubitCultureFallback
    * @param string $column name
    * @return string SQL case statement
    */
-  private static function getfallbackCaseStmt($column)
+  protected static function getfallbackCaseStmt($column)
   {
     $fallbackCaseStmt  = '(CASE WHEN (current.'.$column.' IS NOT NULL AND current.'.$column.' <> \'\') THEN current.'.$column;
     $fallbackCaseStmt .= ' ELSE source.'.$column.' END)';

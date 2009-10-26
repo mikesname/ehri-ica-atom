@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage routing
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfRoute.class.php 17382 2009-04-17 00:28:46Z dwhittle $
+ * @version    SVN: $Id: sfRoute.class.php 19468 2009-06-23 07:14:37Z fabien $
  */
 class sfRoute implements Serializable
 {
@@ -33,7 +33,8 @@ class sfRoute implements Serializable
     $defaults          = array(),
     $requirements      = array(),
     $tokens            = array(),
-    $customToken       = false;
+    $customToken       = false,
+    $params            = array();
 
   /**
    * Constructor.
@@ -180,7 +181,7 @@ class sfRoute implements Serializable
     }
 
     // check that $params does not override a default value that is not a variable
-    foreach ($defaults as $key => $value)
+    foreach ($this->params as $key => $value)
     {
       if (!isset($this->variables[$key]) && $tparams[$key] != $value)
       {
@@ -239,12 +240,12 @@ class sfRoute implements Serializable
     }
 
     // replace extra parameters if the route contains *
-    $url = $this->generateStarParameter($url, $defaults, $tparams);
+    $url = $this->generateStarParameter($url, $defaults, $params);
 
     if ($this->options['extra_parameters_as_query_string'] && !$this->hasStarParameter())
     {
       // add a query string if needed
-      if ($extra = array_diff_key($params, $this->variables, $defaults))
+      if ($extra = array_diff_assoc(array_diff_key($params, $this->variables), $this->defaults))
       {
         $url .= '?'.http_build_query($extra);
       }
@@ -644,7 +645,13 @@ class sfRoute implements Serializable
     // compute some regexes
     $this->options['variable_prefix_regex']    = '(?:'.implode('|', array_map(create_function('$a', 'return preg_quote($a, \'#\');'), $this->options['variable_prefixes'])).')';
     $this->options['segment_separators_regex'] = '(?:'.implode('|', array_map(create_function('$a', 'return preg_quote($a, \'#\');'), $this->options['segment_separators'])).')';
-    $this->options['variable_content_regex']   = '[^'.implode('', array_map(create_function('$a', 'return str_replace(\'-\', \'\-\', preg_quote($a, \'#\'));'), $this->options['segment_separators'])).']+';
+
+    // as of PHP 5.3.0, preg_quote automatically quotes dashes "-" (see http://bugs.php.net/bug.php?id=47229)
+    $this->options['variable_content_regex'] = '[^'.implode('', array_map(
+      version_compare(PHP_VERSION, '5.3.0RC4', '>=') ?
+        create_function('$a', 'return preg_quote($a, \'#\');') :
+        create_function('$a', 'return str_replace(\'-\', \'\-\', preg_quote($a, \'#\'));')
+      , $this->options['segment_separators'])).']+';
   }
 
   protected function parseStarParameter($star)
@@ -676,7 +683,7 @@ class sfRoute implements Serializable
     }
 
     $tmp = array();
-    foreach (array_diff_key($parameters, $this->variables, $defaults) as $key => $value)
+    foreach (array_diff_assoc(array_diff_key($parameters, $this->variables), $this->defaults) as $key => $value)
     {
       if (is_array($value))
       {
@@ -717,9 +724,23 @@ class sfRoute implements Serializable
       {
         $this->defaults[$value] = true;
       }
+      else if (is_array($value))
+      {
+        unset($this->defaults[$key]);
+
+        if (isset($value['default']))
+        {
+          $this->defaults[$key] = $value['default'];
+        }
+
+        if (isset($value['pattern']))
+        {
+          $this->requirements[$key] = $value['pattern'];
+        }
+      }
       else
       {
-        $this->defaults[$key] = urldecode($value);
+        $this->defaults[$key] = $this->params[$key] = urldecode($value);
       }
     }
   }
@@ -749,7 +770,7 @@ class sfRoute implements Serializable
   protected function fixSuffix()
   {
     $length = strlen($this->pattern);
-    
+
     if ($length > 0 && '/' == $this->pattern[$length - 1])
     {
       // route ends by / (directory)
@@ -778,11 +799,11 @@ class sfRoute implements Serializable
     // always serialize compiled routes
     $this->compile();
 
-    return serialize(array($this->tokens, $this->defaultParameters, $this->defaultOptions, $this->compiled, $this->options, $this->pattern, $this->regex, $this->variables, $this->defaults, $this->requirements));
+    return serialize(array($this->tokens, $this->defaultParameters, $this->defaultOptions, $this->compiled, $this->options, $this->pattern, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->params));
   }
 
   public function unserialize($data)
   {
-    list($this->tokens, $this->defaultParameters, $this->defaultOptions, $this->compiled, $this->options, $this->pattern, $this->regex, $this->variables, $this->defaults, $this->requirements) = unserialize($data);
+    list($this->tokens, $this->defaultParameters, $this->defaultOptions, $this->compiled, $this->options, $this->pattern, $this->regex, $this->variables, $this->defaults, $this->requirements, $this->params) = unserialize($data);
   }
 }

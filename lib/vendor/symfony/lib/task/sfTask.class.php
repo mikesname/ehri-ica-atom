@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage task
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfTask.class.php 17474 2009-04-21 08:17:09Z fabien $
+ * @version    SVN: $Id: sfTask.class.php 21875 2009-09-11 05:54:39Z fabien $
  */
 abstract class sfTask
 {
@@ -66,6 +66,8 @@ abstract class sfTask
    *
    * @param sfCommandManager $commandManager  An sfCommandManager instance
    * @param mixed            $options         The command line options
+   *
+   * @return integer 0 if everything went fine, or an error code
    */
   public function runFromCLI(sfCommandManager $commandManager, $options = null)
   {
@@ -80,6 +82,8 @@ abstract class sfTask
    *
    * @param array $arguments  An array of arguments
    * @param array $options    An array of options
+   *
+   * @return integer 0 if everything went fine, or an error code
    */
   public function run($arguments = array(), $options = array())
   {
@@ -164,7 +168,7 @@ abstract class sfTask
   /**
    * Returns the task namespace.
    *
-   * @param string The task namespace
+   * @return string The task namespace
    */
   public function getNamespace()
   {
@@ -244,7 +248,7 @@ abstract class sfTask
   /**
    * Returns the synopsis for the task.
    *
-   * @param string The synopsis
+   * @return string The synopsis
    */
   public function getSynopsis()
   {
@@ -329,8 +333,8 @@ abstract class sfTask
   /**
    * Logs a message as a block of text.
    *
-   * @param string|array $message The message to display in the block
-   * @param string       $style   The style to use
+   * @param string|array $messages The message to display in the block
+   * @param string       $style    The style to use
    */
   public function logBlock($messages, $style)
   {
@@ -414,8 +418,10 @@ abstract class sfTask
   /**
    * Executes the current task.
    *
-   * @param array $arguments  An array of arguments
-   * @param array $options    An array of options
+   * @param array    $arguments  An array of arguments
+   * @param array    $options    An array of options
+   *
+   * @return integer 0 if everything went fine, or an error code
    */
    abstract protected function execute($arguments = array(), $options = array());
 

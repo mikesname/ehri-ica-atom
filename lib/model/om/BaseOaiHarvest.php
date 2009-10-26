@@ -15,7 +15,8 @@ abstract class BaseOaiHarvest implements ArrayAccess
     LAST_HARVEST_ATTEMPT = 'q_oai_harvest.LAST_HARVEST_ATTEMPT',
     METADATAPREFIX = 'q_oai_harvest.METADATAPREFIX',
     SET = 'q_oai_harvest.SET',
-    CREATED_AT = 'q_oai_harvest.CREATED_AT';
+    CREATED_AT = 'q_oai_harvest.CREATED_AT',
+    SERIAL_NUMBER = 'q_oai_harvest.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -28,6 +29,7 @@ abstract class BaseOaiHarvest implements ArrayAccess
     $criteria->addSelectColumn(QubitOaiHarvest::METADATAPREFIX);
     $criteria->addSelectColumn(QubitOaiHarvest::SET);
     $criteria->addSelectColumn(QubitOaiHarvest::CREATED_AT);
+    $criteria->addSelectColumn(QubitOaiHarvest::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -36,20 +38,28 @@ abstract class BaseOaiHarvest implements ArrayAccess
     $oaiHarvests = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$oaiHarvests[$id = (int) $row[0]]))
+    $keys = array();
+    $keys['id'] = $row[0];
+
+    $key = serialize($keys);
+    if (!isset(self::$oaiHarvests[$key]))
     {
       $oaiHarvest = new QubitOaiHarvest;
-      $oaiHarvest->new = false;
+
+      $oaiHarvest->keys = $keys;
       $oaiHarvest->row = $row;
 
-      self::$oaiHarvests[$id] = $oaiHarvest;
+      $oaiHarvest->new = false;
+
+      self::$oaiHarvests[$key] = $oaiHarvest;
     }
 
-    return self::$oaiHarvests[$id];
+    return self::$oaiHarvests[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -110,13 +120,19 @@ abstract class BaseOaiHarvest implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -126,7 +142,18 @@ abstract class BaseOaiHarvest implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitOaiHarvest::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitOaiHarvest::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -134,6 +161,14 @@ abstract class BaseOaiHarvest implements ArrayAccess
 
   public function __isset($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -141,19 +176,19 @@ abstract class BaseOaiHarvest implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -165,6 +200,14 @@ abstract class BaseOaiHarvest implements ArrayAccess
 
   public function __get($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -172,19 +215,21 @@ abstract class BaseOaiHarvest implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -266,29 +311,18 @@ abstract class BaseOaiHarvest implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitOaiHarvest::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitOaiHarvest::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -297,15 +331,13 @@ abstract class BaseOaiHarvest implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -325,13 +357,11 @@ abstract class BaseOaiHarvest implements ArrayAccess
     $this->new = false;
     $this->values = array();
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitOaiHarvest::DATABASE_NAME);
@@ -366,23 +396,21 @@ abstract class BaseOaiHarvest implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitOaiHarvest::DATABASE_NAME);
@@ -405,6 +433,11 @@ abstract class BaseOaiHarvest implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -418,11 +451,11 @@ abstract class BaseOaiHarvest implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -432,16 +465,14 @@ abstract class BaseOaiHarvest implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitOaiHarvest::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	

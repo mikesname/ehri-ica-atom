@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage filter
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfCacheFilter.class.php 17468 2009-04-21 07:21:38Z fabien $
+ * @version    SVN: $Id: sfCacheFilter.class.php 17858 2009-05-01 21:22:50Z FabianLange $
  */
 class sfCacheFilter extends sfFilter
 {
@@ -28,8 +28,8 @@ class sfCacheFilter extends sfFilter
   /**
    * Initializes this Filter.
    *
-   * @param sfContext $context      The current application context
-   * @param array     $parameters   An associative array of initialization parameters
+   * @param sfContext $context    The current application context
+   * @param array     $parameters An associative array of initialization parameters
    *
    * @return bool true, if initialization completes successfully, otherwise false
    *
@@ -129,7 +129,7 @@ class sfCacheFilter extends sfFilter
   /**
    * Sets cache expiration headers.
    *
-   * @param string An internal URI
+   * @param string $uri An internal URI
    */
   protected function setCacheExpiration($uri)
   {
@@ -157,7 +157,7 @@ class sfCacheFilter extends sfFilter
   /**
    * Sets cache validation headers.
    *
-   * @param string An internal URI
+   * @param string $uri An internal URI
    */
 
   protected function setCacheValidation($uri)

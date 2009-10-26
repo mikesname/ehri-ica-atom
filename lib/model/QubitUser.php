@@ -34,20 +34,23 @@ class QubitUser extends BaseUser
     $this->setSha1Password(sha1($salt.$password));
   }
 
-  public function getRoles()
+  public function getAclGroups()
   {
-    $roles = array();
-    foreach ($this->getUserRoleRelations() as $relation)
+    // Add all users to 'authenticated' group
+    $authenticatedGroup = QubitAclGroup::getById(QubitAclGroup::AUTHENTICATED_ID);
+
+    $groups = array($authenticatedGroup);
+    foreach ($this->getAclUserGroups() as $userGroup)
     {
-      $roles[] = $relation->getRole();
+      $groups[] = $userGroup->getGroup();
     }
 
-    return $roles;
+    return $groups;
   }
 
   public function getUserCredentials()
   {
-    return $this->getRoles();
+    return $this->getAclGroups();
   }
 
   public static function getList($options=array())
@@ -102,5 +105,46 @@ class QubitUser extends BaseUser
     }
 
     return ($validCreds) ? $user : null;
+  }
+
+  /**
+   * Check if user belongs to *any* of the checkGroup(s) listed
+   *
+   * @param mixed $groups - integer value for group id, or array of group ids
+   * @return boolean
+   */
+  public function hasGroup($checkGroups)
+  {
+    $hasGroup = false;
+
+    // Cast $checkGroups as an array
+    if (!is_array($checkGroups))
+    {
+      $checkGroups = array($checkGroups);
+    }
+
+    // A user is always part of the authenticated group
+    if (in_array(QubitAclGroup::AUTHENTICATED_ID, $checkGroups))
+    {
+
+      return true;
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitAclUserGroup::USER_ID, $this->id, Criteria::EQUAL);
+
+    if (0 < count($userGroups = QubitAclUserGroup::get($criteria)))
+    {
+      foreach ($userGroups as $userGroup)
+      {
+        if (in_array(intval($userGroup->groupId), $checkGroups))
+        {
+          $hasGroup = true;
+          break;
+        }
+      }
+    }
+
+    return $hasGroup;
   }
 } // User

@@ -5,7 +5,6 @@
 <div id="progress" />
 <?php use_javascript('/sfDrupalPlugin/vendor/drupal/misc/progress') ?>
 <?php $checkHtaccessUrl = json_encode(url_for(array('module' => 'sfInstallPlugin', 'action' =>  'checkHtaccess'))) ?>
-<?php $checkSearchIndexUrl = json_encode(url_for(array('module' => 'sfInstallPlugin', 'action' =>  'checkSearchIndex'))) ?>
 <?php echo javascript_tag(<<<EOF
 progress = new Drupal.progressBar('checkSystem');
 progress.setProgress(-1, 'Check system');
@@ -16,14 +15,7 @@ jQuery.ajax({
   complete: function (request)
     {
       $('#progress').after(request.responseText);
-      progress.setProgress(50, 'Check search index');
-      jQuery.ajax({
-        url: $checkSearchIndexUrl,
-        complete: function (request)
-          {
-            $('#progress').after(request.responseText);
-            progress.setProgress(100, 'Check system');
-          } });
+      progress.setProgress(100, 'Check system');
     } });
 EOF
 ) ?>

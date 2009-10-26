@@ -51,5 +51,7 @@ class OaiHarvestMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
 
+		$tMap->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null);
+
 	} 
 } 

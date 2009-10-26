@@ -17,37 +17,90 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Represent relations between data objects as a subject-action-object
+ * triplet.
+ *
+ * @package    qubit
+ * @subpackage relation
+ * @version    svn: $Id$
+ * @author     Jack Bates <jack@artefactual.com>
+ * @author     David Juhasz <david@artefactual.com>
+ */
 class QubitRelation extends BaseRelation
 {
+  protected $indexOnSave = true;
+
+  /**
+   * Additional save functionality (e.g. update search index)
+   *
+   * @param mixed $connection a database connection object
+   * @return QubitInformationObject self-reference
+   */
   public function save($connection = null)
   {
-    // TODO: $cleanObject = $this->getObject()->clean();
-    $cleanObjectId = $this->columnValues['object_id'];
+    // TODO: $cleanObject = $this->object->clean;
+    $cleanObjectId = $this->__get('objectId', array('clean' => true));
 
-    // TODO: $cleanSubject = $this->getSubject()->clean();
-    $cleanSubjectId = $this->columnValues['subject_id'];
+    // TODO: $cleanSubject = $this->subject->clean;
+    $cleanSubjectId = $this->__get('subjectId', array('clean' => true));
 
     parent::save($connection);
 
-    if ($cleanObjectId != $this->getObjectId() && QubitInformationObject::getById($cleanObjectId) !== null)
+    if ($this->indexOnSave())
     {
-      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+      if ($this->objectId != $cleanObjectId && null !== QubitInformationObject::getById($cleanObjectId))
+      {
+        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+      }
+
+      if ($this->subjectId != $cleanSubjectId && null != QubitInformationObject::getById($cleanSubjectId))
+      {
+        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanSubjectId));
+      }
+
+      if ($this->object instanceof QubitInformationObject)
+      {
+        SearchIndex::updateTranslatedLanguages($this->object);
+      }
+
+      if ($this->subject instanceof QubitInformationObject)
+      {
+        SearchIndex::updateTranslatedLanguages($this->subject);
+      }
     }
 
-    if ($cleanSubjectId != $this->getSubjectId() && QubitInformationObject::getById($cleanSubjectId) !== null)
+    return $this;
+  }
+
+  /**
+   * Flag whether to update the search index when saving this object
+   *
+   * @param boolean $bool flag value
+   * @return QubitInformationObject self-reference
+   */
+  public function setIndexOnSave($bool)
+  {
+    if ($bool)
     {
-      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanSubjectId));
+      $this->indexOnSave = true;
+    }
+    else
+    {
+      $this->indexOnSave = false;
     }
 
-    if ($this->getObject() instanceof QubitInformationObject)
-    {
-      SearchIndex::updateTranslatedLanguages($this->getObject());
-    }
+    return $this;
+  }
 
-    if ($this->getSubject() instanceof QubitInformationObject)
-    {
-      SearchIndex::updateTranslatedLanguages($this->getSubject());
-    }
+  /**
+   * Update search index on save?
+   *
+   * @return boolean current flag
+   */
+  public function indexOnSave()
+  {
+    return $this->indexOnSave;
   }
 
   public function delete($connection = null)
@@ -70,7 +123,7 @@ class QubitRelation extends BaseRelation
    * QubitObject identified by primary key $id.
    *
    * @param integer $id primary key of "object" QubitObject
-   * @param integer $typeId filter by predicate
+   * @param array   $options optional parameters
    * @return QubitQuery collection of QubitRelation objects
    */
   public static function getRelationsByObjectId($id, $options = array())
@@ -91,10 +144,10 @@ class QubitRelation extends BaseRelation
    * QubitObject identified by primary key $id.
    *
    * @param integer $id primary key of "subject" QubitObject
-   * @param integer $typeId filter by predicate
+   * @param array   $options optional parameters
    * @return QubitQuery collection of QubitRelation objects
    */
-  public static function getRelationsBySubjectId($id, $typeId=null, $options=array())
+  public static function getRelationsBySubjectId($id, $options=array())
   {
     $criteria = new Criteria;
     $criteria->add(QubitRelation::SUBJECT_ID, $id);
@@ -105,6 +158,34 @@ class QubitRelation extends BaseRelation
     }
 
     return QubitRelation::get($criteria, $options);
+  }
+
+  /**
+   * Get all relations from/to given object $id
+   *
+   * @param integer $id primary key of object
+   * @param array   $options optional parameters
+   * @return QubitQuery collection of QubitRelation objects
+   */
+  public static function getRelationsBySubjectOrObjectId($id, $options=array())
+  {
+    $criteria = new Criteria;
+
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::OBJECT_ID, $id, Criteria::EQUAL);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::SUBJECT_ID, $id, Criteria::EQUAL);
+    $criterion1->addOr($criterion2);
+
+    // If restricting by relation type
+    if (isset($options['typeId']))
+    {
+      $criterion3 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, $options['typeId'], Criteria::EQUAL);
+      $criterion1->addAnd($criterion3);
+    }
+
+    $criteria->add($criterion1);
+    $criteria->addAscendingOrderByColumn(QubitRelation::TYPE_ID);
+
+    return QubitRelation::get($criteria);
   }
 
   /**
@@ -151,5 +232,115 @@ class QubitRelation extends BaseRelation
     }
 
     return call_user_func(array($className, 'get'), $criteria, $options);
+  }
+
+  /**
+   * Get opposite vertex of relation 
+   *
+   * @param integer $referenceId primary key of reference object
+   * @return mixed other object in relationship 
+   */
+  public function getOpposedObject($referenceId)
+  {
+    $opposite = null;
+    if ($this->subjectId == $referenceId)
+    {
+      $opposite = $this->getObject();
+    }
+    else if ($this->objectId == $referenceId)
+    {
+      $opposite = $this->getSubject();
+    }
+
+    return $opposite;
+  }
+
+  /**
+   * Add a related note for this object
+   *
+   * @param string $note text of note
+   * @param integer $noteTypeId QubitTerm constant describing note
+   * @return QubitNote new note object
+   */
+  public function addNote($text, $noteTypeId)
+  {
+    // Don't create a note with a blank text or a null noteTypeId
+    if (0 == strlen($text) || null == $noteTypeId)
+    {
+      return;
+    }
+
+    $newNote = new QubitNote;
+    $newNote->setObjectId($this->getId());
+    $newNote->setScope('QubitRelation');
+    $newNote->setContent($text);
+    $newNote->setTypeId($noteTypeId);
+    $newNote->save();
+
+    return $newNote;
+  }
+
+  /**
+   * Update an related note
+   *
+   * @param string $note text of note
+   * @param integer $noteTypeId QubitTerm constant describing note
+   * @return QubitNote note object
+   */
+  public function updateNote($text, $noteTypeId)
+  {
+    if (null === ($currentNote = $this->getNoteByTypeId($noteTypeId)))
+    {
+
+      return $this->addNote($text, $noteTypeId);
+    }
+    else if (0 == strlen($text))
+    {
+      // If $text is blank, then delete note object
+      $currentNote->delete();
+    }
+    else
+    {
+      $currentNote->setContent($text);
+      $currentNote->save();
+
+      return $currentNote;
+    }
+  }
+
+  /**
+   * Get a note related to this object filtered by TYPE_ID column
+   *
+   * @param integer $noteTypeId note type
+   * @return QubitNote found note
+   */
+  public function getNoteByTypeId($noteTypeId)
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitNote::OBJECT_ID, $this->getId(), Criteria::EQUAL);
+    $criteria->add(QubitNote::TYPE_ID, $noteTypeId, Criteria::EQUAL);
+
+    return QubitNote::getOne($criteria);
+  }
+
+  /**
+   * Get start and end date as an array
+   *
+   * @return array start date and/or end date
+   */
+  public function getDates()
+  {
+    $dateArray = array();
+    if (null !== $this->getStartDate())
+    {
+      $dateArray['start'] = $this->getStartDate();
+    }
+
+    if (null !== $this->getEndDate())
+    {
+      $dateArray['end'] = $this->getEndDate();
+    }
+
+    return $dateArray;
   }
 }

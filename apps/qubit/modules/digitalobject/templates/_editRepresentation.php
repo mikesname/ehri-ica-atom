@@ -22,16 +22,6 @@
     </td>
     <td style="padding: 0px; margin: 0px;">
       <table style="width: 350px; padding: 0px; margin: 0px">
-        <?php if ($representation->getUsageId() == QubitTerm::MASTER_ID): ?>
-        <tr> 
-          <td style="border: 0px none">
-            <label for="mediatype"><?php echo __('media type'); ?></label>
-            <?php echo object_select_tag($digitalObject, 'getMediaTypeId',
-              array('related_class' => 'QubitTerm', 'peer_method' => 'getMediaTypes'
-              )) ?>
-          </td>
-        </tr>
-        <?php endif; ?>
         <tr>
           <td>
             <label for="filename"><?php echo __('filename'); ?></label>
@@ -41,7 +31,7 @@
         <tr>
           <td>
             <label for="filesize"><?php echo __('filesize'); ?></label>
-            <?php echo $representation->getHRfileSize(); ?>
+            <?php echo hr_filesize($representation->getByteSize()); ?>
           </td>
         </tr>
       </table>

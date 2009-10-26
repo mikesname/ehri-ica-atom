@@ -18,6 +18,23 @@
  */
 class sfWidgetFormInputFile extends sfWidgetFormInput
 {
+  protected function getBytes($value)
+  {
+    $value = trim($value);
+    switch (strtolower($value[strlen($value) - 1]))
+    {
+      // The 'G' modifier is available since PHP 5.1.0
+      case 'g':
+        $value *= 1024;
+      case 'm':
+        $value *= 1024;
+      case 'k':
+        $value *= 1024;
+    }
+
+    return $value;
+  }
+
   /**
    * @param array $options     An array of options
    * @param array $attributes  An array of default HTML attributes
@@ -30,5 +47,19 @@ class sfWidgetFormInputFile extends sfWidgetFormInput
 
     $this->setOption('type', 'file');
     $this->setOption('needs_multipart', true);
+
+    $size = min($this->getBytes(ini_get('post_max_size')), $this->getBytes(ini_get('upload_max_filesize')));
+    foreach (array('bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB') as $unit)
+    {
+      // 0.9# if > 1000, ### if < 1000
+      if (1000 > $size)
+      {
+        break;
+      }
+
+      $size /= 1024;
+    }
+
+    $this->addOption('help', 'The maximum size of file uploads is '.round($size, 2).' '.$unit.'.');
   }
 }

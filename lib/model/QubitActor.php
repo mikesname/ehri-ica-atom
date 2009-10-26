@@ -37,6 +37,58 @@ class QubitActor extends BaseActor
     return (string) $authorizedFormOfName;
   }
 
+  public function updateLuceneIndex()
+  {
+    $search = new QubitSearch;
+    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->id, 'id'));
+
+    foreach ($search->getEngine()->getIndex()->find($query) as $hit)
+    {
+      $search->getEngine()->getIndex()->delete($hit->id);
+    }
+
+    foreach ($this->actorI18ns as $actorI18n)
+    {
+      $doc = new Zend_Search_Lucene_Document;
+
+      $doc->addField(Zend_Search_Lucene_Field::Keyword('id', $this->id));
+      $doc->addField(Zend_Search_Lucene_Field::Keyword('className', $this->className));
+
+      $doc->addField(Zend_Search_Lucene_Field::Keyword('culture', $actorI18n->culture));
+
+      if (isset($actorI18n->authorizedFormOfName))
+      {
+        $doc->addField(Zend_Search_Lucene_Field::UnStored('authorizedFormOfName', $actorI18n->authorizedFormOfName));
+      }
+
+      $search->getEngine()->getIndex()->addDocument($doc);
+    }
+
+    $search->getEngine()->getIndex()->commit();
+  }
+
+  public function save($connection = null)
+  {
+    parent::save($connection);
+
+    $this->updateLuceneIndex();
+
+    return $this;
+  }
+
+  public function delete($connection = null)
+  {
+    $search = new QubitSearch;
+    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->id, 'id'));
+
+    foreach ($search->getEngine()->getIndex()->find($query) as $hit)
+    {
+      $search->getEngine()->getIndex()->delete($hit->id);
+    }
+
+    return parent::delete($connection);
+  }
+
   public static function getAllExceptUsers($options = array())
   {
     //returns all Actor objects except those that are
@@ -296,17 +348,6 @@ class QubitActor extends BaseActor
     return QubitProperty::get($criteria);
   }
 
-  public function setActorNote($userId, $note, $noteTypeId)
-  {
-    $newNote = new QubitNote;
-    $newNote->setObjectId($this->getId());
-    $newNote->setScope('QubitActor');
-    $newNote->setUserId($userId);
-    $newNote->setContent($note);
-    $newNote->setTypeId($noteTypeId);
-    $newNote->save();
-  }
-
   public function getActorNotes()
   {
     $criteria = new Criteria;
@@ -394,11 +435,27 @@ class QubitActor extends BaseActor
     return null;
   }
 
-  public function getRelatedActors()
+  /**
+   * Get actor-to-actor relations linked to this actor
+   *
+   * @return QubitQuery collection of QubitRelation objects
+   */
+  public function getActorRelations()
   {
-    //TO DO
+    $criteria = new Criteria;
 
-    return null;
+    $criteria->addJoin(QubitRelation::TYPE_ID, QubitTerm::ID, Criteria::INNER_JOIN);
+
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::OBJECT_ID, $this->getId(), Criteria::EQUAL);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::SUBJECT_ID, $this->getId(), Criteria::EQUAL);
+    $criterion3 = $criteria->getNewCriterion(QubitTerm::TAXONOMY_ID, QubitTaxonomy::ACTOR_RELATION_TYPE_ID, Criteria::EQUAL);
+    $criterion1->addOr($criterion2);
+    $criterion1->addAnd($criterion3);
+    $criteria->add($criterion1);
+    $criteria->addAscendingOrderByColumn(QubitRelation::TYPE_ID);
+    $criteria->addDescendingOrderByColumn(QubitRelation::START_DATE);
+
+    return QubitRelation::get($criteria);
   }
 
   public function getInformationObjectRelations()
@@ -427,5 +484,27 @@ class QubitActor extends BaseActor
     $criteria->add(QubitActor::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
 
     return $criteria;
+  }
+
+  /**
+   * Search for an actor by the AUTHORIZED_FORM_OF_NAME i18n column. Optionally
+   * limit search to a specific culture.
+   *
+   * @param string $name search string
+   * @param array $options optional parameters
+   * @return QubitActor found actor
+   */
+  public static function getByAuthorizedFormOfName($name, $options = array())
+  {
+    $criteria = new Criteria();
+    $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID, Criteria::INNER_JOIN);
+    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $name, Criteria::EQUAL);
+
+    if (isset($options['culture']))
+    {
+      $criteria->addAnd(QubitActorI18n::CULTURE, $options['culture'], Criteria::EQUAL);
+    }
+
+    return QubitActor::getOne($criteria, $options);
   }
 }

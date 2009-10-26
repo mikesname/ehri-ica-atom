@@ -40,6 +40,6 @@ class MapUpdatePlaceMapRelationAction extends sfAction
 
     $placeMapRelation->save();
 
-    return $this->redirect('map/edit?id='.$placeMapRelation->getMapId());
+    $this->redirect('map/edit?id='.$placeMapRelation->getMapId());
   }
 }

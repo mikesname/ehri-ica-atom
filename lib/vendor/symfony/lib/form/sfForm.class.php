@@ -18,7 +18,7 @@
  * @package    symfony
  * @subpackage form
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfForm.class.php 17023 2009-04-06 06:15:22Z fabien $
+ * @version    SVN: $Id: sfForm.class.php 20298 2009-07-19 10:43:11Z fabien $
  */
 class sfForm implements ArrayAccess, Iterator, Countable
 {
@@ -47,9 +47,9 @@ class sfForm implements ArrayAccess, Iterator, Countable
   /**
    * Constructor.
    *
-   * @param array  $defaults    An array of field default values
-   * @param array  $options     An array of options
-   * @param string $CRFSSecret  A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
+   * @param array  $defaults   An array of field default values
+   * @param array  $options    An array of options
+   * @param string $CSRFSecret A CSRF secret (false to disable CSRF protection, null to use the global CSRF secret)
    */
   public function __construct($defaults = array(), $options = array(), $CSRFSecret = null)
   {
@@ -120,7 +120,7 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Renders the widget schema associated with this form.
    *
-   * @param  array  $attributes  An array of HTML attributes
+   * @param array $attributes An array of HTML attributes
    *
    * @return string The rendered widget schema
    */
@@ -132,8 +132,8 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Renders the widget schema using a specific form formatter
    *
-   * @param  string  $formatterName  The form formatter name
-   * @param  array   $attributes     An array of HTML attributes
+   * @param string $formatterName The form formatter name
+   * @param array  $attributes    An array of HTML attributes
    *
    * @return string The rendered widget schema
    */
@@ -204,8 +204,8 @@ $this->widgetSchema->setFormFormatterName($name);
    *
    * It triggers the validator schema validation.
    *
-   * @param array $taintedValues  An array of input values
-   * @param array $taintedFiles   An array of uploaded files (in the $_FILES or $_GET format)
+   * @param array $taintedValues An array of input values
+   * @param array $taintedFiles  An array of uploaded files (in the $_FILES or $_GET format)
    */
   public function bind(array $taintedValues = null, array $taintedFiles = null)
   {
@@ -320,8 +320,8 @@ $this->widgetSchema->setFormFormatterName($name);
    *
    * If the form is not bound, it will return null.
    *
-   * @param  string  $field  The name of the value required
-   * @return string  The cleaned value
+   * @param string $field The name of the value required
+   * @return string The cleaned value
    */
   public function getValue($field)
   {
@@ -358,9 +358,9 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Embeds a sfForm into the current form.
    *
-   * @param string $name       The field name
-   * @param sfForm $form       A sfForm instance
-   * @param string $decorator  A HTML decorator for the embedded form
+   * @param string $name      The field name
+   * @param sfForm $form      A sfForm instance
+   * @param string $decorator A HTML decorator for the embedded form
    */
   public function embedForm($name, sfForm $form, $decorator = null)
   {
@@ -390,14 +390,14 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Embeds a sfForm into the current form n times.
    *
-   * @param string  $name             The field name
-   * @param sfForm  $form             A sfForm instance
-   * @param integer $n                The number of times to embed the form
-   * @param string  $decorator        A HTML decorator for the main form around embedded forms
-   * @param string  $innerDecorator   A HTML decorator for each embedded form
-   * @param array   $options          Options for schema
-   * @param array   $attributes       Attributes for schema
-   * @param array   $labels           Labels for schema
+   * @param string  $name           The field name
+   * @param sfForm  $form           A sfForm instance
+   * @param integer $n              The number of times to embed the form
+   * @param string  $decorator      A HTML decorator for the main form around embedded forms
+   * @param string  $innerDecorator A HTML decorator for each embedded form
+   * @param array   $options        Options for schema
+   * @param array   $attributes     Attributes for schema
+   * @param array   $labels         Labels for schema
    */
   public function embedFormForEach($name, sfForm $form, $n, $decorator = null, $innerDecorator = null, $options = array(), $attributes = array(), $labels = array())
   {
@@ -458,9 +458,9 @@ $this->widgetSchema->setFormFormatterName($name);
    * Merges current form widget and validator schemas with the ones from the
    * sfForm object passed as parameter. Please note it also merge defaults.
    *
-   * @param  sfForm   $form      The sfForm instance to merge with current form
+   * @param sfForm $form The sfForm instance to merge with current form
    *
-   * @throws LogicException      If one of the form has already been bound
+   * @throws LogicException If one of the form has already been bound
    */
   public function mergeForm(sfForm $form)
   {
@@ -569,7 +569,7 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Gets a validator for the given field name.
    *
-   * @param  string      $name      The field name
+   * @param string $name The field name
    *
    * @return sfValidator $validator The validator
    */
@@ -634,7 +634,7 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Gets a widget for the given field name.
    *
-   * @param  string       $name      The field name
+   * @param string $name The field name
    *
    * @return sfWidgetForm $widget The widget
    */
@@ -762,7 +762,7 @@ $this->widgetSchema->setFormFormatterName($name);
   {
     $this->defaults = is_null($defaults) ? array() : $defaults;
 
-    if (self::$CSRFProtection)
+    if ($this->isCSRFProtected())
     {
       $this->setDefault(self::$CSRFFieldName, $this->getCSRFToken(self::$CSRFSecret));
     }
@@ -815,7 +815,7 @@ $this->widgetSchema->setFormFormatterName($name);
    * If you want to change the algorithm used to compute the token, you
    * can override this method.
    *
-   * @param  string $secret The secret string to use (null to use the current secret)
+   * @param string $secret The secret string to use (null to use the current secret)
    *
    * @return string A token string
    */
@@ -909,8 +909,8 @@ $this->widgetSchema->setFormFormatterName($name);
    * and converts PUT and DELETE methods to a hidden field
    * for later processing.
    *
-   * @param  string $url         The URL for the action
-   * @param  array  $attributes  An array of HTML attributes
+   * @param string $url        The URL for the action
+   * @param array  $attributes An array of HTML attributes
    *
    * @return string An HTML representation of the opening form tag
    */
@@ -942,7 +942,7 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Returns true if the bound field exists (implements the ArrayAccess interface).
    *
-   * @param  string $name The name of the bound field
+   * @param string $name The name of the bound field
    *
    * @return Boolean true if the widget exists, false otherwise
    */
@@ -961,9 +961,9 @@ $this->widgetSchema->setFormFormatterName($name);
   /**
    * Returns the form field associated with the name (implements the ArrayAccess interface).
    *
-   * @param  string $name  The offset of the value to get
+   * @param string $name The offset of the value to get
    *
-   * @return sfFormField   A form field instance
+   * @return sfFormField A form field instance
    */
   public function __get($name)
   {
@@ -1125,7 +1125,7 @@ $this->widgetSchema->setFormFormatterName($name);
    *
    * It's safe to pass an already converted array, in which case this method just returns the original array unmodified.
    *
-   * @param  array $taintedFiles An array representing uploaded file information
+   * @param array $taintedFiles An array representing uploaded file information
    *
    * @return array An array of re-ordered uploaded file information
    */

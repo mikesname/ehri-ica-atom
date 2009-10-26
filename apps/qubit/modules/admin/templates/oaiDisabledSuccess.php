@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"></div>
+<div class="pageTitle"></div>
 
 <div style="text-align: center;">
   <?php echo image_tag('cancel48.png') ?>

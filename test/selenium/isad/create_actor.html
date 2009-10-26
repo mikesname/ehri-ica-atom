@@ -1,0 +1,592 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>create_actor.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">create_actor.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[2]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list persons/organizations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>entity_type_id</td>
+	<td>label=Person</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorized_form_of_name</td>
+	<td>Mr. Bean</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_name</td>
+	<td>Bobby Bean</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>new_name_type_id</td>
+	<td>label=Pseudonym</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_name_note</td>
+	<td>Not used much</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>corporate_body_identifiers</td>
+	<td>n/a</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dates_of_existence</td>
+	<td>1945-2009</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>history</td>
+	<td>History field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>places</td>
+	<td>Places field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>legal_status</td>
+	<td>Legal status field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>functions</td>
+	<td>Functions, occupations and activities field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>mandates</td>
+	<td>Mandates/sources of authority field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>internal_structures</td>
+	<td>Internal structures/genealogy field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>general_context</td>
+	<td>General context field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description_identifier</td>
+	<td>Authority record identifier field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>institution_responsible_identifier</td>
+	<td>institution identifier field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rules</td>
+	<td>Rule and conventions field</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_status_id</td>
+	<td>label=Revised</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_detail_id</td>
+	<td>label=Full</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>revision_history</td>
+	<td>Dates of creation, revision and deletion field</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>language_code</td>
+	<td>label=Aleut</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//option[@value='ale']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>script_code</td>
+	<td>label=Bopomofo</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//option[@value='Bopo']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sources</td>
+	<td>Sources field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_maintenance_note</td>
+	<td>Maintenance notes field</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>type of entity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>authorized form of name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>other names</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>identifiers</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>dates of existence</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>history</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>legal status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>functions occupations activities</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mandates/Sources of authority</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Internal structures/Genealogy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>general context</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>authority record identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>institution identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>rules and/or conventions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>detail</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>dates of creation revision deletion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>language of authority record</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>script of authority record</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>sources</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Person</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Bobby Bean (Pseudonym)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>--Not used much</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>n/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1945-2009</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>History field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Places field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Legal status field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Functions, occupations and activities field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mandates/sources of authority field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Internal structures/genealogy field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>General context field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Authority record identifier field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>institution identifier field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Rule and conventions field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Revised</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Full</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Dates of creation, revision and deletion field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Aleut</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Bopomofo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sources field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance notes field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list persons/organizations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Person</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>actorNameAcInput</td>
+	<td>Little Bean</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>editActorRelation_categoryId</td>
+	<td>label=family</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editActorRelation_description</td>
+	<td>Little Bean is Mr. Bean's dog</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editActorRelation_startDate</td>
+	<td>1996</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editActorRelation_endDate</td>
+	<td>2009</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>yui-gen0-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>related entity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Little Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>category of the relationship</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>dates of the relationship</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>description of relationship</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>family</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1996 - 2009</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Little Bean is Mr. Bean's dog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Little Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Little Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>authorized form of name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>related entity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>identifier of the related entity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>n/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>category of the relationship</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>family</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>dates of the relationship</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1996 - 2009</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>description of relationship</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Little Bean is Mr. Bean's dog</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

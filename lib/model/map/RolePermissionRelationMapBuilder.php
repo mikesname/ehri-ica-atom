@@ -39,5 +39,7 @@ class RolePermissionRelationMapBuilder implements MapBuilder {
 
 		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
 
+		$tMap->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null);
+
 	} 
 } 

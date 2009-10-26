@@ -19,7 +19,7 @@
 
 function select_script_tag($name, $selected = null, $options = array())
 {
-  $c = new sfCultureInfo(sfContext::getInstance()->getUser()->getCulture());
+  $c = sfCultureInfo::getInstance(sfContext::getInstance()->getUser()->getCulture());
   $scripts = $c->getScripts();
 
   if ($script_option = _get_option($options, 'scripts'))
@@ -42,16 +42,61 @@ function select_script_tag($name, $selected = null, $options = array())
 
 function format_script($script_iso, $culture = null)
 {
-  $c = new sfCultureInfo($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
+  $c = sfCultureInfo::getInstance($culture === null ? sfContext::getInstance()->getUser()->getCulture() : $culture);
   $scripts = $c->getScripts();
 
   if (!isset($scripts[$script_iso]))
   {
-    $c = new sfCultureInfo(sfConfig::get('sf_default_culture'));
+    $c = sfCultureInfo::getInstance(sfConfig::get('sf_default_culture'));
     $scripts = $c->getScripts();
   }
 
   return isset($scripts[$script_iso]) ? $scripts[$script_iso] : '';
+}
+
+function render_field($field, $object, array $options = array())
+{
+  $options += array('name' => $field->getName());
+
+  $div = null;
+  if (isset($object) && sfContext::getInstance()->user->getCulture() != $object->sourceCulture && 0 < strlen($source = $object->__get($options['name'], array('sourceCulture' => true))))
+  {
+    $div = <<<EOF
+<div class="default-translation">
+  $source
+</div>
+
+EOF;
+  }
+
+  unset($options['name']);
+
+  return <<<EOF
+<div class="form-item">
+  {$field->renderLabel()}
+  $div
+  {$field->render($options)}
+  {$field->renderHelp()}
+</div>
+
+EOF;
+}
+
+function render_show($label, $value)
+{
+  if (0 < strlen($value))
+  {
+    return <<<EOF
+<tr>
+  <th>
+    $label
+  </th><td>
+    $value
+  </td>
+</tr>
+
+EOF;
+  }
 }
 
 function render_title($object)
@@ -74,7 +119,7 @@ function object_select_tree($object, $method, array $options = array())
 {
   $response = sfContext::getInstance()->getResponse();
 
-  $response->addJavaScript('/vendor/jquery/jquery');
+  $response->addJavaScript('/vendor/jquery');
   $response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
   $response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
   $response->addJavaScript('/vendor/yui/element/element-min');
@@ -270,7 +315,7 @@ function string_wrap($longString, $width, $maxLines=3, $whiteSpaceChars = array(
  */
 function hr_filesize($val)
 {
-  $units = array('B', 'KB', 'MB', 'GB');
+  $units = array('B', 'KiB', 'MiB', 'GiB', 'TiB');
   for ($i = 0; $i < count($units); $i++)
   {
     if ($val / pow(1024, $i + 1) < 1)
@@ -283,23 +328,34 @@ function hr_filesize($val)
 }
 
 /**
- * Format a date string for display
+ * Collapse unknown or irrelevant month/day (i.e. set to '00')
  *
- * @param string $format see date() formatting strings
- * @param string $date human-readable date (not unix timestamp)
- * @return string formatted date
+ * @param string $date original, full ISO-8601 date
+ * @return string date collapsed to relevent terms
  */
-function format_date($format, $date)
+function collapse_date($date)
 {
-  $date = strtotime($date);
-  if (null == $date || 0 == $date)
-  {
-    $date = '';
-  }
-  else
-  {
-    $date = date($format, $date);
-  }
+  $date = str_replace('-00', '', $date);
 
   return $date;
+}
+
+function date_display($dateObject)
+{
+  $dateDisplay = '';
+
+  if (0 < strlen($dateObject->getDateDisplay(array('cultureFallback' => true))))
+  {
+    $dateDisplay = $dateObject->getDateDisplay(array('cultureFallback' => true));
+  }
+  else if (0 < strlen($dateObject->getStartDate()) && 0 < strlen($dateObject->getEndDate()))
+  {
+    $dateDisplay = collapse_date($dateObject->getStartDate()).' - '.collapse_date($dateObject->getEndDate());
+  }
+  else if (0 < strlen($dateObject->getStartDate()))
+  {
+    $dateDisplay = collapse_date($dateObject->getStartDate());
+  }
+
+  return $dateDisplay;
 }

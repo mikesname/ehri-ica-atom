@@ -506,6 +506,11 @@ class sfContext
     }
   }
 
+  public function __get($name)
+  {
+    return $this->get($name);
+  }
+
   public function __set($name, $value)
   {
     return $this->set($name, $value);

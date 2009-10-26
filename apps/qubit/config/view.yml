@@ -17,13 +17,13 @@ default:
     /sfDrupalPlugin/vendor/drupal/themes/garland/print: { media: print, position: first }
     /vendor/yui/button/assets/skins/sam/button: { position: first }
     /vendor/yui/menu/assets/skins/sam/menu: { position: first }
-    form: { position: first }
-    graphic: { position: first }
-    layout: { position: first }
+    form:
+    graphic:
+    layout:
     main: { position: last }
-    menu: { position: first }
+    menu:
 
-  javascripts:    [/vendor/jquery/jquery, /sfDrupalPlugin/vendor/drupal/misc/drupal, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
+  javascripts:    [/vendor/jquery, /sfDrupalPlugin/vendor/drupal/misc/drupal, qubit, /vendor/yui/yahoo-dom-event/yahoo-dom-event, /vendor/yui/element/element-min, /vendor/yui/button/button-min, /vendor/yui/container/container_core-min, /vendor/yui/menu/menu-min]
 
   has_layout:     on
   layout:         layout

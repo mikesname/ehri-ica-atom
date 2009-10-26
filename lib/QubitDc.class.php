@@ -58,6 +58,12 @@ class QubitDc
       $label = truncate_text($label, $options['truncate']);
     }
 
+    $publicationStatus = $informationObject->getPublicationStatus();
+    if ($publicationStatus->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID)
+    {
+      $label .= ' ('.$publicationStatus->status.')';
+    }
+
     return $label;
   }
 
@@ -89,9 +95,18 @@ class QubitDc
     {
       $dcSubject[] = $subjectAccessPoint->getTerm();
     }
-    foreach ($informationObject->getActors($options = array('eventTypeId' => QubitTerm::SUBJECT_ID)) as $nameAccessPoint)
+
+    // Add name access points
+    $criteria = new Criteria;
+    $criteria = $informationObject->addrelationsRelatedBysubjectIdCriteria($criteria);
+    $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
+
+    if (0 < count($nameAccessPointRelations = QubitRelation::get($criteria)))
     {
-      $dcSubject[] = $nameAccessPoint;
+      foreach ($nameAccessPointRelations as $nameAccessPointRelation)
+      {
+        $dcSubject[] = $nameAccessPointRelation->object;
+      }
     }
 
     return $dcSubject;
@@ -125,7 +140,7 @@ class QubitDc
     }
   }
 
-  private static function getDcEvents($informationObject, array $options = array())
+  protected static function getDcEvents($informationObject, array $options = array())
   {
     // Because simple Dublin Core cannot qualify the dc:date or dc:coverage elements, we only return a limited
     // set of Events. Just those that are related to creation/origination.

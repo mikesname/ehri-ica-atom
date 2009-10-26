@@ -31,14 +31,23 @@ class RepositoryEditAction extends sfAction
 {
   public function execute($request)
   {
+    $this->form = new sfForm;
+
     $this->repository = new QubitRepository;
 
     if (isset($request->id))
     {
-      if (null === $this->repository = QubitRepository::getById($request->id))
+      $this->repository = QubitRepository::getById($request->id);
+
+      if (!isset($this->repository))
       {
         $this->forward404();
       }
+
+      // Add optimistic lock
+      $this->form->setDefault('serialNumber', $this->repository->serialNumber);
+      $this->form->setValidator('serialNumber', new sfValidatorInteger);
+      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
     }
 
     $this->contactInformation = $this->repository->getContactInformation();
@@ -58,11 +67,10 @@ class RepositoryEditAction extends sfAction
     $this->scriptCodes = $this->repository->getProperties($name = 'script_of_repository_description');
 
     //Notes
-    $this->notes = $this->repository->getRepositoryNotes();
-    $this->noteTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::NOTE_TYPE_ID);
+    $this->maintenanceNotes = $this->repository->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
 
     // Add javascript libraries to allow multiple instance select boxes
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/vendor/jquery');
     $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('multiInstanceSelect');
 
@@ -71,7 +79,7 @@ class RepositoryEditAction extends sfAction
       $this->processForm();
 
       // return to show template
-      return $this->redirect(array('module' => 'repository', 'action' => 'show', 'id' => $this->repository->getId()));
+      $this->redirect(array('module' => 'repository', 'action' => 'show', 'id' => $this->repository->getId()));
     }
   }
 
@@ -82,8 +90,14 @@ class RepositoryEditAction extends sfAction
     $this->updateOtherNames();
     $this->updateTermOneToManyRelations();
     $this->updateProperties();
+    $this->updateNotes();
+
+    $this->repository->save();
+
     $this->updateContactInformation();
-    $this->updateRepositoryNotes();
+
+    // delete related objects marked for deletion
+    $this->deleteNotes();
   }
 
   public function updateActorAttributes()
@@ -92,7 +106,6 @@ class RepositoryEditAction extends sfAction
     $this->repository->setHistory($this->getRequestParameter('history'));
     $this->repository->setMandates($this->getRequestParameter('mandates'));
     $this->repository->setInternalStructures($this->getRequestParameter('internal_structures'));
-    $this->repository->save();
   }
 
   public function updateRepositoryAttributes()
@@ -114,8 +127,6 @@ class RepositoryEditAction extends sfAction
     $this->repository->setDescRules($this->getRequestParameter('desc_rules'));
     $this->repository->setDescSources($this->getRequestParameter('desc_sources'));
     $this->repository->setDescRevisionHistory($this->getRequestParameter('desc_revision_history'));
-
-    $this->repository->save();
   }
 
   public function updateTermOneToManyRelations()
@@ -146,8 +157,6 @@ class RepositoryEditAction extends sfAction
     {
       $this->repository->setDescDetailId(null);
     }
-
-    $this->repository->save();
   }
 
   public function updateProperties()
@@ -235,11 +244,34 @@ class RepositoryEditAction extends sfAction
     }
   }
 
-  public function updateRepositoryNotes()
+  public function updateNotes()
   {
-    if ($this->getRequestParameter('note'))
+    // Update maintenance notes (multiple)
+    foreach ((array) $this->getRequestParameter('new_maintenance_note') as $newNote)
     {
-      $this->repository->setRepositoryNote($this->getUser()->getAttribute('user_id'), $this->getRequestParameter('note'), $this->getRequestParameter('note_type_id'));
+      if (0 < strlen($newNote))
+      {
+        $this->repository->setNote(array('userId' => $userId, 'note' => $newNote, 'noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
+      }
+    }
+  }
+
+  /**
+   * Delete related notes marked for deletion.
+   *
+   * @param sfRequest request object
+   */
+  public function deleteNotes()
+  {
+    if (is_array($deleteNotes = $this->request->getParameter('delete_notes')) && count($deleteNotes))
+    {
+      foreach ($deleteNotes as $noteId => $doDelete)
+      {
+        if ($doDelete == 'delete' && !is_null($deleteNote = QubitNote::getById($noteId)))
+        {
+          $deleteNote->delete();
+        }
+      }
     }
   }
 }

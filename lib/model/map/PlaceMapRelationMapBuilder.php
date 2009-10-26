@@ -45,9 +45,5 @@ class PlaceMapRelationMapBuilder implements MapBuilder {
 
 		$tMap->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
-
-		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
-
 	} 
 } 

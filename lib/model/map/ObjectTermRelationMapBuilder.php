@@ -43,9 +43,5 @@ class ObjectTermRelationMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('END_DATE', 'endDate', 'DATE', false, null);
 
-		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
-
-		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
-
 	} 
 } 

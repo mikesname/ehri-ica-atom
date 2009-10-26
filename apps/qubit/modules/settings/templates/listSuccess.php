@@ -1,4 +1,4 @@
-﻿<div class="pageTitle"><?php echo __('site settings'); ?></div>
+<div class="pageTitle"><?php echo __('site settings'); ?></div>
 
 <!-- Global settings table -->
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('global') ?></div>
@@ -173,8 +173,9 @@
           <?php echo format_language($setting->getName()) ?>
         </td>
         <td>
-          <?php if ($setting->isDeleteable()): ?>
-            <?php echo link_to(image_tag('delete', 'valign=top'), 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
+          <?php if ($setting->deleteable): ?>
+
+            <?php echo link_to('x', 'settings/delete?id='.$setting->getId(), array('post' => 'true', 'confirm' => __('are you sure?'))) ?>
           <?php endif; ?>
         </td>
       </tr>
@@ -182,7 +183,7 @@
 
       <tr>
         <td colspan="2">
-          <?php echo select_tag('language_code', options_for_select($sf_data->getRaw('availableLanguages'))) ?>
+            <?php echo select_language_tag('language_code', null, array('include_blank' => true)) ?>
         </td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
@@ -195,10 +196,10 @@
   </form>
 </fieldset>
 
-<!-- OAI Harvesting settings -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('OAI harvesting') ?></div>
+<!-- OAI Repository settings -->
+<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('OAI Repository') ?></div>
 <fieldset class="collapsible collapsed">
-  <legend><?php echo __('OAI harvesting') ?></legend>
+  <legend><?php echo __('OAI Repository') ?></legend>
   <form action="<?php echo url_for('settings/list') ?>" method="POST">
   <table class="list">
   <thead>
@@ -208,7 +209,7 @@
     </tr>
   </thead>
   <tbody>
-    <?php echo $oaiHarvestingForm ?>
+    <?php echo $oaiRepositoryForm ?>
     <tr>
       <td>&nbsp;</td>
       <td>

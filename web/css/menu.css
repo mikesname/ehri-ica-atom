@@ -1,4 +1,4 @@
-﻿/*********************************************************
+/*********************************************************
                 ABOUT: menu.css
 **********************************************************/
 
@@ -25,7 +25,7 @@
   margin: 0;
 }
 
-.menu-quick-links li
+.language-list li, .menu-quick-links li
 {
   float: left;
   background: none;
@@ -68,12 +68,12 @@
   color: #ffffff;
 }
 
-.menu-quick-links a.active
+.language-list li.active a, .menu-quick-links a.active
 {
-  border-bottom: 3px solid #999999;
+  border-bottom: 2px solid #999999;
 }
 
-.menu-quick-links li:first-child
+.language-list li:first-child, .menu-quick-links li:first-child
 {
   border-left: none;
 }
@@ -321,7 +321,7 @@ float:left;
 height: 15px;
 border: 0;
 padding: 0 0 3px 0;
-margin: 3px 15px 0 15px;
+margin: 3px 7px 0 7px;
 color: #ffffff;
 text-decoration: none;
 display: block;
@@ -420,13 +420,12 @@ width: 500px;
 border: 3px solid #999999;
 background: #FF9D3C;
 position: fixed;
-margin-top: 20px;
 bottom:30px;
 height: auto;
-padding-bottom: 10px;
 line-height:1em;
 overflow:hidden;
 z-index:98;
+padding: 10px 0px;
 }
 
 #button-block-bump
@@ -442,9 +441,7 @@ border: 0;
 
 .menu-action
 {
-margin: 5px 0 5px 0;
 border: 0px solid #000000;
-height: 40px;
 }
 
 .menu-action a:link, .menu-action a:visited, .menu-action a:active
@@ -527,10 +524,9 @@ width: 15px;
 
 .menu-extra
 {
-margin: 5px 0 0 0;
 border: 0px solid #000000;
-height: 25px;
 clear: both;
+padding: 5px 0;
 }
 
 .menu-extra a:link, .menu-extra a:visited, .menu-extra a:active
@@ -728,4 +724,61 @@ color: #000000;
 background: #ffffff;
 border-right: 3px solid #999999;
 border-bottom: 3px solid #999999;
+}
+
+.actions
+{
+  background:#FF9D3C none repeat scroll 0 0;
+  border:3px solid #999999;
+  bottom:2em;
+  height:auto;
+  line-height:1em;
+  margin-top:20px;
+  overflow:hidden;
+  padding: 5px;
+  position:fixed;
+  width:500px;
+  z-index:98;
+}
+
+ul.actions li
+{
+  display: inline;
+}
+
+.actions a, .actions .form-submit
+{
+  background-color: #000;
+  border-bottom: 3px solid #999;
+  border-right: 3px solid #999;
+  color: #fff;
+  display: block;
+  float: left;
+  font: normal 15px/15px georgia, serif;
+  margin: 3px;
+  padding: 3px 8px;
+}
+
+.actions a:hover, .actions .form-submit:hover
+{
+  background-color: #fff;
+  color: #000;
+}
+
+/* Use trick from l10n_client.js to allow scrolling past fixed position element
+ */
+
+body
+{
+  border-bottom: 3em solid #fff;
+}
+
+.list img
+{
+  visibility: hidden;
+}
+
+.list :hover > img
+{
+  visibility: visible;
 }

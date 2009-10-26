@@ -16,7 +16,7 @@
  * @subpackage controller
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfWebController.class.php 16711 2009-03-29 13:03:54Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfWebController.class.php 17858 2009-05-01 21:22:50Z FabianLange $
  */
 abstract class sfWebController extends sfController
 {
@@ -167,10 +167,10 @@ abstract class sfWebController extends sfController
   /**
    * Redirects the request to another URL.
    *
-   * @param string $url         An existing URL
-   * @param int    $delay       A delay in seconds before redirecting. This is only needed on
-   *                            browsers that do not support HTTP headers
-   * @param int    $statusCode  The status code
+   * @param string $url        An existing URL
+   * @param int    $delay      A delay in seconds before redirecting. This is only needed on
+   *                           browsers that do not support HTTP headers
+   * @param int    $statusCode The status code
    */
   public function redirect($url, $delay = 0, $statusCode = 302)
   {

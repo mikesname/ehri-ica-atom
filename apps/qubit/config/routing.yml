@@ -1,138 +1,299 @@
 homepage:
   url:   /
-  param: { module: staticpage, action: static, permalink: homepage }
+  param:
+    module: staticpage
+    action: static
+    permalink: homepage
 
 permalink:
   url:   /page/:permalink
-  param: { module: staticpage, action: static }
+  param:
+    module: staticpage
+    action: static
 
 default_index:
   url:   /:module
-  param: { action: index }
+  param:
+    action: index
 
 createDc:
   url: /:module/create/dc
-  param: { action: editDc }
+  param:
+    action: editDc
+    informationobject_template: dc
 
 editDc:
   url: /:module/edit/dc/:id
-  param: { action: editDc }
+  param:
+    action: editDc
+    informationobject_template: dc
 
 showDc:
   url: /:module/show/dc/:id
-  param: { action: showDc }
+  param:
+    action: showDc
+    informationobject_template: dc
+
+showEad:
+  url: /:module/show/ead/:id
+  param:
+    action: showEad
+    informationobject_template: ead
 
 createIsaar:
   url: /:module/create/isaar
-  param: { action: editIsaar }
+  param:
+    action: editIsaar
+    actor_template: isaar
 
 editIsaar:
   url: /:module/edit/isaar/:id
-  param: { action: editIsaar }
+  param:
+    action: editIsaar
+    actor_template: isaar
 
 showIsaar:
   url: /:module/show/isaar/:id
-  param: { action: showIsaar }
+  param:
+    action: showIsaar
+    actor_template: isaar
 
 createIsad:
   url: /:module/create/isad
-  param: { action: editIsad }
+  param:
+    action: editIsad
+    informationobject_template: isad
 
 editIsad:
   url: /:module/edit/isad/:id
-  param: { action: editIsad }
+  param:
+    action: editIsad
+    informationobject_template: isad
 
 showIsad:
   url: /:module/show/isad/:id
-  param: { action: showIsad }
+  param:
+    action: showIsad
+    informationobject_template: isad
 
 createIsdiah:
   url: /:module/create/isdiah
-  param: { action: editIsdiah }
+  param:
+    action: editIsdiah
+    repository_template: isdiah
 
 editIsdiah:
   url: /:module/edit/isdiah/:id
-  param: { action: editIsdiah }
+  param:
+    action: editIsdiah
+    repository_template: isdiah
 
 showIsdiah:
   url: /:module/show/isdiah/:id
-  param: { action: showIsdiah }
+  param:
+    action: showIsdiah
+    repository_template: isdiah
 
 createMods:
   url: /:module/create/mods
-  param: { action: editMods }
+  param:
+    action: editMods
+    informationobject_template: mods
 
 editMods:
   url: /:module/edit/mods/:id
-  param: { action: editMods }
+  param:
+    action: editMods
+    informationobject_template: mods
 
 showMods:
   url: /:module/show/mods/:id
-  param: { action: showMods }
+  param:
+    action: showMods
+    informationobject_template: mods
 
 createRad:
   url: /:module/create/rad
-  param: { action: editRad }
+  param:
+    action: editRad
+    informationobject_template: rad
 
 editRad:
   url: /:module/edit/rad/:id
-  param: { action: editRad }
+  param:
+    action: editRad
+    informationobject_template: rad
 
 showRad:
   url: /:module/show/rad/:id
-  param: { action: showRad }
+  param:
+    action: showRad
+    informationobject_template: rad
 
 actorCreate:
   url: /actor/create/:actor_template
-  param: { module: actor, action: create }
+  param:
+    module: actor
+    action: create
+
+actorDelete:
+  url: /actor/delete/:id
+  param:
+    module: actor
+    action: delete
 
 actorEdit:
   url: /actor/edit/:actor_template/:id
-  param: { module: actor, action: edit }
+  param:
+    module: actor
+    action: edit
 
 actorShow:
   url: /actor/show/:actor_template/:id
-  param: { module: actor, action: show }
+  param:
+    module: actor
+    action: show
 
-informationObjectCreate:
-  url: /informationobject/create/:informationobject_template
-  param: { module: informationobject, action: create }
+digitalObjectEdit:
+  url: /digitalobject/edit/:id
+  param:
+    module: digitalobject
+    action: edit
+
+createDigitalObject:
+  url: /digitalobject/create
+  param:
+    module: digitalobject
+    action: edit
+
+digitalObjectCreate:
+  url: /digitalobject/create
+  param:
+    module: digitalobject
+    action: create
+
+informationObjectDelete:
+  url: /informationobject/delete/:id
+  param:
+    module: informationobject
+    action: delete
 
 informationObjectEdit:
   url: /informationobject/edit/:informationobject_template/:id
-  param: { module: informationobject, action: edit }
+  param:
+    module: informationobject
+    action: edit
+
+informationObjectEditPhysicalObjects:
+  url: /informationobject/editPhysicalObjects/:id
+  param:
+    module: informationobject
+    action: editPhysicalObjects
+
+informationObjectList:
+  url: /informationobject/list/:id
+  param:
+    module: informationobject
+    action: list
+    id: <?php echo QubitInformationObject::ROOT_ID ?>
+
+informationObjectMove:
+  url: /informationobject/move/:id
+  param:
+    module: informationobject
+    action: move
 
 informationObjectShow:
   url: /informationobject/show/:informationobject_template/:id
-  param: { module: informationobject, action: show }
+  param:
+    module: informationobject
+    action: show
+
+physicalObjectDelete:
+  url: /physicalobject/delete/:id
+  param:
+    module: physicalobject
+    action: delete
+
+physicalObjectEdit:
+  url: /physicalobject/edit/:id
+  param:
+    module: physicalobject
+    action: edit
 
 repositoryCreate:
   url: /repository/create/:repository_template
-  param: { module: repository, action: create }
+  param:
+    module: repository
+    action: create
+
+repositoryDelete:
+  url: /repository/delete/:id
+  param:
+    module: repository
+    action: delete
 
 repositoryEdit:
   url: /repository/edit/:repository_template/:id
-  param: { module: repository, action: edit }
+  param:
+    module: repository
+    action: edit
 
 repositoryShow:
   url: /repository/show/:repository_template/:id
-  param: { module: repository, action: show }
+  param:
+    module: repository
+    action: show
+
+termEdit:
+  url: /term/edit/:id
+  param:
+    module: term
+    action: edit
+
+termCreate:
+  url: /term/create/*
+  param:
+    module: term
+    action: edit
+
+termMove:
+  url: /term/move/:id
+  param:
+    module: term
+    action: move
 
 oai_harvester_harvest_all_sets:
   url: /oai/harvest/:type/:harvestId/*
-  param: { module: oai, action: harvesterHarvest }
-  requirements:
-    harvestId: \d+
+  param:
+    module: oai
+    action: harvesterHarvest
+    harvestId: { pattern: \d+ }
 
 oai_harvester_delete:
   url: /oai/deleteRepository/:repositoryId/*
-  param: { module: oai, action: harvesterDelete }
-  requirements:
-    repositoryId: \d+
+  param:
+    module: oai
+    action: harvesterDelete
+    repositoryId: { pattern: \d+ }
 
 oai_requests:
   url: /oai/request
-  param: { module: oai, action: oai }
+  param:
+    module: oai
+    action: oai
+    
+userEdit:
+  url: /user/edit/:id
+  param:
+    module: user
+    action: edit
+
+userCreate:
+  url: /user/create
+  param:
+    module: user
+    action: edit
 
 default:
   url:   /:module/:action/*

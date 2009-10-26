@@ -28,12 +28,13 @@
 class UpgradeTask extends sfBaseTask
 {
   // list of migratable versions
-  private $validVersions = array(
+  protected $validVersions = array(
     '1.0.3',
     '1.0.4',
     '1.0.5',
     '1.0.6',
-    '1.0.7'
+    '1.0.7',
+    '1.0.8'
   );
 
   /**
@@ -123,6 +124,10 @@ EOF;
           case '1.0.6':
             $migrator->migrate106to107();
             $this->logSection('migrate', 'Data migrated to version 1.0.7');
+            break;
+          case '1.0.7':
+            $migrator->migrate107to108();
+            $this->logSection('migrate', 'Data migrated to version 1.0.8');
             break;
         }
       }

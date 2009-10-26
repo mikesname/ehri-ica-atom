@@ -68,7 +68,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function alterQubitMenus()
+  protected function alterQubitMenus()
   {
     // Add 'recent updates' menu
     if (false === $this->getRowKey('QubitMenu', 'name', 'recent updates'))
@@ -143,7 +143,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function alterQubitSettings()
+  protected function alterQubitSettings()
   {
     if (false === $this->getRowKey('QubitSetting', 'name', 'toggleDescription'))
     {
@@ -186,7 +186,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function alterQubitStaticPages()
+  protected function alterQubitStaticPages()
   {
     // Update version number
     foreach ($this->data['QubitStaticPage'] as $key => $page)
@@ -205,7 +205,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function alterQubitTerms()
+  protected function alterQubitTerms()
   {
     // Get "Actor name type" taxonomy key
     $taxonomyActorNameTypeKey = $this->getRowKey('QubitTaxonomy', 'id', '<?php echo QubitTaxonomy::ACTOR_NAME_TYPE_ID."\n" ?>');
@@ -253,7 +253,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function sortQubitInformationObjects()
+  protected function sortQubitInformationObjects()
   {
     QubitMigrate::sortByLft($this->data['QubitInformationObject']);
 
@@ -266,7 +266,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function sortQubitTerms()
+  protected function sortQubitTerms()
   {
     $qubitTermConstantIds = array(
       //EventType taxonomy
@@ -349,7 +349,7 @@ class QubitMigrate105to106 extends QubitMigrate
    *
    * @return QubitMigrate105to106 this object
    */
-  private function sortClasses()
+  protected function sortClasses()
   {
     $ormSortOrder = array(
       'QubitTaxonomy',

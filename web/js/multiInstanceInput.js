@@ -1,3 +1,6 @@
+// author David Juhasz <david@artefactual.com>
+// author Jesús García Crespo <correo@sevein.com>
+
 // Add string method for removing trailing numeric characters
 String.prototype.trimTrailingDigits = function()
 {
@@ -79,13 +82,6 @@ function multiInstanceInputTr(thisElement)
   // String to select all elements in this set
   var setSelector = "[name='" + elementName + "']";
 
-  // Remove element if blank and it's not the only element in the set
-  if ('' == thisElement.val() && $(setSelector).length > 1) {
-    thisRow.find('td').wrapInner('<div class="niceHide"></div>');
-    $('div.niceHide').hide('normal', function () { thisRow.remove() } );
-    // NOTE: rest of script executes before thisElement.remove is called due to hide('slow') delay!
-  }
-
   // If the last element is not blank, then add a new blank element
   var lastElement = $(setSelector).eq(($(setSelector).length) - 1);
   if (lastElement.val() != '') {
@@ -95,7 +91,7 @@ function multiInstanceInputTr(thisElement)
     newElement.attr('name', elementName);
 
     var newRow = thisRow.clone(true);
-    newRow.find('input').eq(0).replaceWith(newElement);
+    newRow.find('input, textarea').eq(0).replaceWith(newElement);
     newRow.find('td').wrapInner('<div class="niceShow" style="display:none"></div>');
 
     // Insert after last row
@@ -130,7 +126,7 @@ function multiInstanceInputTr(thisElement)
 
 function addDeleteIconTd(thisElement)
 {
-  thisElement.parents('td').eq(0).next('td').html('<button name="delete" class="delete-small" onclick="removeTr(this); return false;" />');
+  thisElement.parents('tr').find('td:last').html('<button name="delete" class="delete-small" onclick="removeTr(this); return false;" />');
 }
 
 function removeTr(thisElement)

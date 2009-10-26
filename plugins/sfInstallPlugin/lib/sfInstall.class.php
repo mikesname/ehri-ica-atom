@@ -157,7 +157,7 @@ class sfInstall
   // TODO: Use sfWebBrowserPlugin
   protected static function get($url)
   {
-    $request = sfContext::getInstance()->getRequest();
+    $request = sfContext::getInstance()->request;
 
     // TODO: Error handling
     $handle = fsockopen($request->getHost(), 80, $null, $null, 5);
@@ -188,7 +188,7 @@ Options +FollowSymLinks +ExecCGI
 
 EOF;
 
-    $relativeUrlRoot = sfContext::getInstance()->getRequest()->getRelativeUrlRoot();
+    $relativeUrlRoot = sfContext::getInstance()->request->getRelativeUrlRoot();
 
     $rewriteBase = 'RewriteBase '.$relativeUrlRoot;
     if ('/' === $relativeUrlRoot)
@@ -238,9 +238,9 @@ EOF;
 
     $htaccessPath = sfConfig::get('sf_web_dir').'/.htaccess';
 
-    $url = sfContext::getInstance()->getRouting()->s('context', sfContext::getInstance()->getRequest()->s('sf_no_script_name', false)->getRequestContext())->generate(null, array('module' => 'sfInstallPlugin', 'action' => 'callback'));
+    $url = sfContext::getInstance()->routing->context(sfContext::getInstance()->request->sf_no_script_name(false)->getRequestContext())->generate(null, array('module' => 'sfInstallPlugin', 'action' => 'callback'));
 
-    $noScriptNameUrl = sfContext::getInstance()->getRouting()->s('context', sfContext::getInstance()->getRequest()->s('sf_no_script_name', true)->getRequestContext())->generate(null, array('module' => 'sfInstallPlugin', 'action' => 'callback'));
+    $noScriptNameUrl = sfContext::getInstance()->routing->context(sfContext::getInstance()->request->sf_no_script_name(true)->getRequestContext())->generate(null, array('module' => 'sfInstallPlugin', 'action' => 'callback'));
 
     // Remember if the .htaccess file already exists
     $htaccessExists = file_exists($htaccessPath);
@@ -374,59 +374,6 @@ EOF;
     return $settingsYml;
   }
 
-  // TODO: Move to sfSearchPlugin
-  protected static function getSearchIndexes()
-  {
-    $searchIndexes = array();
-
-    $finder = sfFinder::type('file')->name('*.class.php');
-
-    foreach ($finder->in(sfConfig::get('sf_lib_dir').'/search') as $path)
-    {
-      require_once $path;
-    }
-
-    // Copied from sfCommandApplication::registerTasks()
-    foreach (get_declared_classes() as $className)
-    {
-      $class = new ReflectionClass($className);
-      if ($class->isSubclassOf('xfIndexSingle'))
-      {
-        $searchIndex = new $className;
-        $searchIndexes[$searchIndex->getName()] = $searchIndex;
-      }
-    }
-
-    return $searchIndexes;
-  }
-
-  // TODO: Break this up so we can send status to the user immediately
-  public static function checkSearchIndex()
-  {
-    $searchIndex = array();
-
-    $dispatcher = sfContext::getInstance()->getEventDispatcher();
-    $formatter = new sfAnsiColorFormatter;
-
-    chdir(sfConfig::get('sf_root_dir'));
-
-    foreach (self::getSearchIndexes() as $index)
-    {
-      $populate = new xfPopulateTask($dispatcher, $formatter);
-
-      try
-      {
-        $populate->run(array($index->getName()));
-      }
-      catch (Exception $e)
-      {
-        $searchIndex[] = $e;
-      }
-    }
-
-    return $searchIndex;
-  }
-
   /**
    * Check that memory_limit ini value meets Qubit's minimum requirements
    * (currently 64 MB)
@@ -506,13 +453,13 @@ EOF;
     sfConfig::set('sf_debug', $saveDebug);
     sfConfig::set('sf_logging_enabled', $saveLoggingEnabled);
 
+    $databaseManager = sfContext::getInstance()->databaseManager;
+
+    // FIXME: Currently need to reload after configuring the database
+    $databaseManager->loadConfiguration();
+
     try
     {
-      $databaseManager = sfContext::getInstance()->getDatabaseManager();
-
-      // FIXME: Currently need to reload after configuring the database
-      $databaseManager->loadConfiguration();
-
       sfContext::getInstance()->getDatabaseConnection('propel');
     }
     catch (Exception $e)

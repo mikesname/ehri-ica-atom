@@ -84,22 +84,38 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
       $options = $args[1];
     }
 
-    if (call_user_func_array(array($this, 'parent::__isset'), $args))
+    try
+    {
+      return call_user_func_array(array($this, 'QubitActor::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('informationObjects' == $name)
     {
       return true;
     }
 
-    if (call_user_func_array(array($this->getCurrentrepositoryI18n($options), '__isset'), $args))
+    if ('repositoryI18ns' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentrepositoryI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    try
     {
-      return true;
+      if (!$value = call_user_func_array(array($this->getCurrentrepositoryI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentrepositoryI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __get($name)
@@ -112,25 +128,62 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
       $options = $args[1];
     }
 
-    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
+    try
     {
-      return $value;
+      return call_user_func_array(array($this, 'QubitActor::__get'), $args);
+    }
+    catch (sfException $e)
+    {
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentrepositoryI18n($options), '__get'), $args))
+    if ('informationObjects' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['informationObjects']))
       {
-        $value = call_user_func_array(array($this->getCurrentrepositoryI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['informationObjects'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['informationObjects'] = self::getinformationObjectsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['informationObjects'];
+    }
+
+    if ('repositoryI18ns' == $name)
+    {
+      if (!isset($this->refFkValues['repositoryI18ns']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['repositoryI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['repositoryI18ns'] = self::getrepositoryI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['repositoryI18ns'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentrepositoryI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentrepositoryI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentrepositoryI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -143,7 +196,7 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
       $options = $args[2];
     }
 
-    call_user_func_array(array($this, 'parent::__set'), $args);
+    call_user_func_array(array($this, 'QubitActor::__set'), $args);
 
     call_user_func_array(array($this->getCurrentrepositoryI18n($options), '__set'), $args);
 
@@ -160,27 +213,35 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
       $options = $args[1];
     }
 
-    call_user_func_array(array($this, 'parent::__unset'), $args);
+    call_user_func_array(array($this, 'QubitActor::__unset'), $args);
 
     call_user_func_array(array($this->getCurrentrepositoryI18n($options), '__unset'), $args);
 
     return $this;
   }
 
+  public function clear()
+  {
+    foreach ($this->repositoryI18ns as $repositoryI18n)
+    {
+      $repositoryI18n->clear();
+    }
+
+    return parent::clear();
+  }
+
   public function save($connection = null)
   {
-    $affectedRows = 0;
-
-    $affectedRows += parent::save($connection);
+    parent::save($connection);
 
     foreach ($this->repositoryI18ns as $repositoryI18n)
     {
-      $repositoryI18n->setid($this->id);
+      $repositoryI18n->id = $this->id;
 
-      $affectedRows += $repositoryI18n->save($connection);
+      $repositoryI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public static function addJointypeCriteria(Criteria $criteria)
@@ -224,26 +285,6 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     return self::addinformationObjectsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $informationObjects = null;
-
-  public function getinformationObjects(array $options = array())
-  {
-    if (!isset($this->informationObjects))
-    {
-      if (!isset($this->id))
-      {
-        $this->informationObjects = QubitQuery::create();
-      }
-      else
-      {
-        $this->informationObjects = self::getinformationObjectsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->informationObjects;
-  }
-
   public static function addrepositoryI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitRepositoryI18n::ID, $id);
@@ -264,26 +305,6 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     return self::addrepositoryI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $repositoryI18ns = null;
-
-  public function getrepositoryI18ns(array $options = array())
-  {
-    if (!isset($this->repositoryI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->repositoryI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->repositoryI18ns = self::getrepositoryI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->repositoryI18ns;
-  }
-
   public function getCurrentrepositoryI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -296,16 +317,12 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->repositoryI18ns[$options['culture']]))
+    $repositoryI18ns = $this->repositoryI18ns->indexBy('culture');
+    if (!isset($repositoryI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $repositoryI18n = QubitRepositoryI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $repositoryI18n = new QubitRepositoryI18n;
-        $repositoryI18n->setculture($options['culture']);
-      }
-      $this->repositoryI18ns[$options['culture']] = $repositoryI18n;
+      $repositoryI18ns[$options['culture']] = new QubitRepositoryI18n;
     }
 
-    return $this->repositoryI18ns[$options['culture']];
+    return $repositoryI18ns[$options['culture']];
   }
 }

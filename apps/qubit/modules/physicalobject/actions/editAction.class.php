@@ -43,7 +43,7 @@ class PhysicalObjectEditAction extends sfAction
     $this->nextAction = null;
     if ($this->hasRequestParameter('next'))
     {
-      $this->nextAction = urldecode($this->getRequestParameter('next'));
+      $this->nextAction = $this->getRequestParameter('next');
     }
   }
 }

@@ -30,32 +30,63 @@ class ActorListAction extends sfAction
 {
   public function execute($request)
   {
-    $options = array();
-
-    // Set culture and cultural fallback flag
-    $this->culture = $this->getUser()->getCulture();
-    $options['cultureFallback'] = true; // Do cultural fallback
-
-    // Set sort
-    $this->sort = $this->getRequestParameter('sort', 'nameUp');
-    $options['sort'] = $this->sort;
-
-    // Set current page
-    $this->page = $this->getRequestParameter('page', 1);
-    $options['page'] = $this->page;
-
-    // Set role
-    $this->role = $this->getRequestParameter('role', 'all');
-    $options['role'] = $this->role;
-
-    // Get results
-    $this->actors = QubitActor::getList($options);
-
-    //determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'actor'))
+    $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($request->getPathInfoPrefix(), '/').'/', null, $request->getHttpHeader('Referer')));
+    if ($request->isXmlHttpRequest() && 'actor' == $params['module'])
     {
-      $this->editCredentials = true;
+      return $this->ajaxResponse($request);
     }
+    else
+    {
+      $this->htmlResponse($request);
+    }
+  }
+
+  protected function ajaxResponse($request)
+  {
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID, Criteria::INNER_JOIN);
+    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
+    $criteria->add(QubitActorI18n::CULTURE, $this->getUser()->getCulture(), Criteria::EQUAL);
+
+    // Exclude the calling actor from the list
+    if (0 < strlen ($notId = $request->getParameter('not')))
+    {
+      $criteria->add(QubitActor::ID, $notId, Criteria::NOT_EQUAL);
+    }
+    $criteria->addAscendingOrderByColumn(QubitActorI18n::AUTHORIZED_FORM_OF_NAME);
+    $criteria->setLimit(10);
+
+    $actors = QubitActor::get($criteria);
+    foreach ($actors as $actor)
+    {
+      $results[] = array('id' => $actor->id, 'name' => $actor->authorizedFormOfName);
+    }
+
+    return $this->renderText(json_encode(array('Results' => $results)));
+  }
+
+  protected function htmlResponse($request)
+  {
+    $search = new QubitSearch;
+    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitActor', 'className'));
+
+    if (isset($request->query))
+    {
+      $query = new Zend_Search_Lucene_Search_Query_Boolean(array($query, Zend_Search_Lucene_Search_QueryParser::parse($request->query)));
+    }
+
+    $this->pager = new QubitSearchPager;
+    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->setPage($request->page);
+
+    $ids = array();
+    foreach ($this->pager->getResults() as $hit)
+    {
+      $ids[] = $hit->getDocument()->id;
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitActor::ID, $ids, Criteria::IN);
+    $this->actors = QubitActor::get($criteria);
   }
 }

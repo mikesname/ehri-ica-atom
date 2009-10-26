@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage cache
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfXCacheCache.class.php 17478 2009-04-21 08:33:47Z fabien $
+ * @version    SVN: $Id: sfXCacheCache.class.php 17858 2009-05-01 21:22:50Z FabianLange $
  */
 class sfXCacheCache extends sfCache
 {
@@ -50,7 +50,7 @@ class sfXCacheCache extends sfCache
     
     $set = $this->getBaseValue($key);
     
-    if(!is_array($set) || !array_key_exists('data', $set))
+    if (!is_array($set) || !array_key_exists('data', $set))
     {
       
       return $default;
@@ -121,7 +121,7 @@ class sfXCacheCache extends sfCache
   {
     $set = $this->getBaseValue($key);
     
-    if(!is_array($set) || !array_key_exists('ctime', $set))
+    if (!is_array($set) || !array_key_exists('ctime', $set))
     {
       
       return 0;
@@ -138,7 +138,7 @@ class sfXCacheCache extends sfCache
     
     $set = $this->getBaseValue($key);
     
-    if(!is_array($set) || !array_key_exists('timeout', $set))
+    if (!is_array($set) || !array_key_exists('timeout', $set))
     {
       
       return 0;

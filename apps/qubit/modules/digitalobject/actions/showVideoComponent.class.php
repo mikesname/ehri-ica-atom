@@ -35,12 +35,11 @@ class DigitalObjectShowVideoComponent extends sfComponent
    */
   public function execute($request)
   {
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/vendor/jquery');
     $this->getResponse()->addJavaScript('/vendor/flowplayer/flashembed.min.js');
-    $this->getResponse()->addJavaScript('/vendor/flowplayer/flow.embed.js');
     $this->getResponse()->addStylesheet('flowPlayer');
 
-    $this->pathToFlowPlayer = public_path('flowplayer/FlowPlayerDark.swf');
+    $this->pathToFlowPlayer = public_path('flowplayer/flowplayer.swf');
 
     // Get representation by usage type
     $this->representation = $this->digitalObject->getRepresentationByUsage($this->usageType);
@@ -51,20 +50,27 @@ class DigitalObjectShowVideoComponent extends sfComponent
       $this->representation = $parent->getRepresentationByUsage($this->usageType);
     }
 
+    // Set up display of video in flowplayer
+    if ($this->representation)
+    {
+      // If this is a reference movie, get the thumbnail representation for the
+      // place holder image
+      $this->showFlashPlayer = true;
+      if ($this->usageType == QubitTerm::REFERENCE_ID)
+      {
+        $this->thumbnail = $this->digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+      }
+
+      list($this->width, $this->height) = QubitDigitalObject::getImageMaxDimensions($this->usageType);
+
+      // For javascript_tag()
+      $this->representationFullPath = public_path($this->representation->getFullPath());
+    }
     // If representation is not a valid digital object, return a generic icon
-    if (!$this->representation)
+    else
     {
-      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType());
+      $this->showFlashPlayer = false;
+      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
     }
-
-    // If this is a reference movie, get the thumbnail representation for the
-    // place holder image
-    if ($this->usageType == QubitTerm::REFERENCE_ID)
-    {
-      $this->thumbnail = $this->digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
-    }
-
-    list($this->width, $this->height) = QubitDigitalObject::getImageMaxDimensions($this->usageType);
-
   }
 }

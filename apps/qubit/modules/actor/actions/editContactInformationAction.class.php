@@ -21,7 +21,7 @@ class ActorEditContactInformationAction extends sfAction
 {
   public function execute($request)
   {
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/vendor/jquery');
     $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
 
     $this->contactInformation = QubitContactInformation::getById($this->getRequestParameter('id'));
@@ -43,11 +43,11 @@ class ActorEditContactInformationAction extends sfAction
       if ($this->getRequestParameter('repositoryReroute'))
       {
         //set redirect if contactInformation edit was called from the repository module
-        return $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->getRequestParameter('repositoryReroute')));
+        $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->getRequestParameter('repositoryReroute')));
       }
       else
       {
-        return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $contactInformation->getActorId()));
+        $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $contactInformation->getActorId()));
       }
     }
   } //close execute()

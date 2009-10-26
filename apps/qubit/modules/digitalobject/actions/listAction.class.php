@@ -32,16 +32,6 @@ class DigitalObjectListAction extends sfAction
    */
   public function execute($request)
   {
-    if ($this->getRequestParameter('sort'))
-    {
-      $this->sort = $this->getRequestParameter('sort');
-    }
-    else
-    {
-      //default sort column for list view
-      $this->sort = 'nameUp';
-    }
-
     // Build funky join query to get a count of top level digital objects
     // for each media type (term)
     $criteria = new Criteria;
@@ -49,23 +39,7 @@ class DigitalObjectListAction extends sfAction
     $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
     $criteria->addAsColumn('hits', 'COUNT('.QubitDigitalObject::ID.')');
     $criteria->addGroupByColumn(QubitTerm::ID);
-
-    // Sort the list
-    switch ($this->sort)
-    {
-      case 'nameUp':
-        $criteria->addAscendingOrderByColumn('name');
-        break;
-      case 'nameDown':
-        $criteria->addDescendingOrderByColumn('name');
-        break;
-      case 'hitsUp':
-        $criteria->addAscendingOrderByColumn('hits');
-        break;
-      case 'hitsDown':
-        $criteria->addDescendingOrderByColumn('hits');
-        break;
-    }
+    $criteria->addAscendingOrderByColumn('name');
 
     // Add I18n fallback
     $options = array();

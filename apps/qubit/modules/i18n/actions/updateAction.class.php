@@ -54,6 +54,6 @@ class I18nUpdateAction extends sfAction
       }
     }
 
-  return $this->redirect('i18n/listDefaultContentTranslation');
+  $this->redirect('i18n/listDefaultContentTranslation');
   }
 }

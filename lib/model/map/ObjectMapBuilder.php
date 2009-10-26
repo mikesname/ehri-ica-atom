@@ -35,7 +35,13 @@ class ObjectMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('CLASS_NAME', 'className', 'VARCHAR', false, 255);
 
+		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
+
+		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
+
 		$tMap->addPrimaryKey('ID', 'id', 'INTEGER', true, null);
+
+		$tMap->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null);
 
 	} 
 } 

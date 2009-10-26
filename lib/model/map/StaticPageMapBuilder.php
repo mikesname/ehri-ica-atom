@@ -37,10 +37,6 @@ class StaticPageMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('PERMALINK', 'permalink', 'VARCHAR', false, 255);
 
-		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
-
-		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
-
 		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
 	} 

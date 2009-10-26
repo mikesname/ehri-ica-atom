@@ -138,7 +138,7 @@ margin: 0;
 
 #main {
 clear: both;
-margin: 0 0 10px 0;
+margin: 0 0 40px 0;
 padding: 0;
 border: 0;
 }
@@ -147,7 +147,6 @@ border: 0;
 #context-column float and the #content-two-column padding */
 
 #context-column {
-clear: both;
 float: right;
 width: 240px;
 padding: 0;
@@ -170,7 +169,6 @@ border: 1px solid #999999;
 margin: 0;
 padding: 0;
 border: 0;
-overflow: hidden;
 width: 510px;
 
 }
@@ -188,8 +186,6 @@ overflow: hidden;
 border: 0;
 padding: 0;
 margin: 0 0 10px 0;
-clear: both;
-
 }
 
 

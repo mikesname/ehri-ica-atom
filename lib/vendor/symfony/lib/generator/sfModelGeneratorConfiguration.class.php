@@ -6,7 +6,7 @@
  * @package    symfony
  * @subpackage generator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfModelGeneratorConfiguration.class.php 17586 2009-04-24 18:25:44Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfModelGeneratorConfiguration.class.php 21864 2009-09-10 16:44:16Z fabien $
  */
 class sfModelGeneratorConfiguration
 {
@@ -209,11 +209,11 @@ class sfModelGeneratorConfiguration
   /**
    * Gets the configuration for a given field.
    *
-   * @param  string  $key     The configuration key (title.list.name for example)
-   * @param  mixed   $default The default value if none has been defined
-   * @param  Boolean $escaped Whether to escape single quote (false by default)
+   * @param string  $key     The configuration key (title.list.name for example)
+   * @param mixed   $default The default value if none has been defined
+   * @param Boolean $escaped Whether to escape single quote (false by default)
    *
-   * @return mixed           The configuration value
+   * @return mixed The configuration value
    */
   public function getValue($key, $default = null, $escaped = false)
   {
@@ -239,7 +239,7 @@ class sfModelGeneratorConfiguration
    * If no filter.display parameter is passed in the configuration,
    * all the fields from the form are returned (dynamically).
    *
-   * @param array An array of fields
+   * @param sfForm $form The form with the fields
    */
   public function getFormFilterFields(sfForm $form)
   {
@@ -286,7 +286,8 @@ class sfModelGeneratorConfiguration
    * If no form.display parameter is passed in the configuration,
    * all the fields from the form are returned (dynamically).
    *
-   * @param array An array of fields
+   * @param sfForm $form    The form with the fields
+   * @param string $context The display context
    */
   public function getFormFields(sfForm $form, $context)
   {
@@ -303,13 +304,18 @@ class sfModelGeneratorConfiguration
       $fields = array();
 
       // with fieldsets?
-      if (!is_array(current($fieldsets)))
+      if (!is_array(reset($fieldsets)))
       {
         $fieldsets = array('NONE' => $fieldsets);
       }
 
       foreach ($fieldsets as $fieldset => $names)
       {
+        if (!$names)
+        {
+          continue;
+        }
+
         $fields[$fieldset] = array();
 
         foreach ($names as $name)
@@ -383,34 +389,9 @@ class sfModelGeneratorConfiguration
     return $default;
   }
 
-  /**
-   * Removes visible fields not included for display.
-   *
-   * @param sfForm $form
-   */
-  protected function fixFormFields(sfForm $form)
+  protected function mapFieldName(sfModelGeneratorConfigurationField $field)
   {
-    $method = sprintf('get%sDisplay', $form->isNew() ? 'New' : 'Edit');
-    if (!$display = $this->$method())
-    {
-      $display = $this->getFormDisplay();
-    }
-
-    if ($display)
-    {
-      if (is_array(current($display)))
-      {
-        $display = call_user_func_array('array_merge', array_values($display));
-      }
-
-      foreach ($form as $name => $field)
-      {
-        if (!$field->isHidden() && !in_array($name, $display))
-        {
-          unset($form[$name]);
-        }
-      }
-    }
+    return $field->getName();
   }
 
   protected function fixActionParameters($action, $parameters)

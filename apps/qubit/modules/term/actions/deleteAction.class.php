@@ -22,31 +22,24 @@ class TermDeleteAction extends sfAction
   public function execute($request)
   {
     $term = QubitTerm::getById($this->getRequestParameter('id'));
+    $this->forward404If(null == $term, 'That term does not exist');
+    $taxonomyId = $term->taxonomyId;
 
-    $this->forward404Unless($term);
+    // don't delete protected terms
+    if ($term->isProtected())
+    {
+      $this->forward('admin', 'termPermission');
+    }
 
-  //make sure a locked term value is not updated
-/*
-  $termRestriction = $term->getTaxonomy()->getTermUse();
-  if ($termRestriction == 'admin')
-    {
-    $this->forward('admin','TermPermission');
-    }
-  else if ($term->getLocked())
-    {
-    $this->forward('admin','TermPermission');
-    }
-*/
     $term->delete();
-    
-    if ($this->getRequestParameter('taxonomyId'))
+
+    if (null != $taxonomyId)
     {
-      return $this->redirect('term/list?taxonomyId='.$this->getRequestParameter('taxonomyId'));
+      $this->redirect(array('module' => 'term', 'action' => 'list', 'taxonomyId' => $taxonomyId));
     }
     else
     {
-      return $this->redirect('term/list');
+      $this->redirect(array('module' => 'term', 'action' => 'list'));
     }
-  
   }
 }

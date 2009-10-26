@@ -27,21 +27,21 @@ QubitMenu:
       pt: adicionar/editar
       sl: 'uporabniški vmesnik'
     path: informationobject/list
-  QubitMenu_mainmenu_importexport:
-    id: <?php echo QubitMenu::IMPORT_EXPORT_ID."\n" ?>
+  QubitMenu_mainmenu_import:
+    id: <?php echo QubitMenu::IMPORT_ID."\n" ?>
     parent_id: QubitMenu_mainmenu
     source_culture: en
-    name: import/export
+    name: import
     label:
-      en: Import/export
-      es: importar/exportar
-      fa: 'وارد كردن/صادر كردن'
-      fr: importer/exporter
-      it: importa/esporta
-      nl: import/export
-      pt: importar/exportar
-      sl: uvoz/izvoz
-    path: object/importexport
+      en: Import
+      es: importar
+      fa: 'وارد كردن'
+      fr: importer
+      it: importa
+      nl: import
+      pt: importar
+      sl: uvoz
+    path: object/importSelect
   QubitMenu_mainmenu_admin:
     id: <?php echo QubitMenu::ADMIN_ID."\n" ?>
     parent_id: QubitMenu_mainmenu
@@ -101,7 +101,7 @@ QubitMenu:
     name: term
     label:
       en: Terms
-      fr: terme
+      fr: descripteurs
       it: termine
       nl: term
       pt: termo
@@ -113,21 +113,33 @@ QubitMenu:
     name: 'recent updates'
     label:
       en: 'Recent updates'
+      fr: 'dernières modifications'
     path: search/recentUpdates
-  QubitMenu_mainmenu_importexport_importexport:
-    parent_id: QubitMenu_mainmenu_importexport
+  QubitMenu_mainmenu_import_xml:
+    parent_id: QubitMenu_mainmenu_import
     source_culture: en
-    name: import/export
+    name: 'import xml'
     label:
-      en: Import/export
-      es: importar/exportar
-      fa: 'وارد كردن/صادر كردن'
-      fr: importer/exporter
-      it: importa/esporta
-      nl: import/export
-      pt: importar/exportar
-      sl: uvoz/izvoz
-    path: object/importexport
+      en: XML
+    path: object/importSelect
+  QubitMenu_mainmenu_import_digitalobjects:
+    parent_id: QubitMenu_mainmenu_import
+    path: digitalobject/multiFileUpload
+    source_culture: en
+    name: 'import digital objects'
+    label:
+      en: 'Digital objects'
+    description:
+      en: 'Import multiple digital objects'
+  QubitMenu_mainmenu_import_oai:
+    parent_id: QubitMenu_mainmenu_import
+    path: oai/harvesterList
+    source_culture: en
+    name: 'import oai'
+    label:
+      en: OAI
+    description:
+      en: 'Import objects using OAI harvesting'
   QubitMenu_mainmenu_admin_users:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
@@ -142,6 +154,16 @@ QubitMenu:
       pt: usuários
       sl: uporabniki
     path: user/list
+  QubitMenu_mainmenu_admin_users_users:
+    parent_id: QubitMenu_mainmenu_admin_users
+    source_culture: en
+    name: users
+    path: user/list
+  QubitMenu_mainmenu_admin_users_groups:
+    parent_id: QubitMenu_mainmenu_admin_users
+    source_culture: en
+    name: users
+    path: aclGroup/list
   QubitMenu_mainmenu_admin_staticpages:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
@@ -156,6 +178,37 @@ QubitMenu:
       pt: 'páginas estáticas'
       sl: 'statična stran'
     path: staticpage/list
+  QubitMenu_mainmenu_admin_menu:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: menu
+    label:
+      en: Menus
+      fr: menus
+    path: menu/list
+  QuitMenu_mainmenu_admin_plugins:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: themes
+    label:
+      en: Themes
+      fr: Thèmes
+    path: sfPluginAdminPlugin/index
+  QubitMenu_mainmenu_admin_plugins_list:
+    parent_id: QuitMenu_mainmenu_admin_plugins
+    name: list
+    path: sfPluginAdminPlugin/index
+    source_culture: en
+    label:
+      en: List
+  QubitMenu_mainmenu_admin_plugins_configure:
+    parent_id: QuitMenu_mainmenu_admin_plugins
+    name: configure
+    path: sfThemePlugin/index
+    source_culture: en
+    label:
+      en: Configure
+      fr: configurer
   QubitMenu_mainmenu_admin_settings:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
@@ -171,39 +224,12 @@ QubitMenu:
       pt: configurações
       sl: nastavitve
     path: settings/list
-  QubitMenu_mainmenu_admin_menu:
-    parent_id: QubitMenu_mainmenu_admin
-    source_culture: en
-    name: menu
-    label:
-      en: Menus
-    path: menu/list
-  QuitMenu_mainmenu_admin_plugins:
-    parent_id: QubitMenu_mainmenu_admin
-    source_culture: en
-    name: themes
-    label:
-      en: Themes
-    path: sfPluginAdminPlugin/index
-  QubitMenu_mainmenu_admin_plugins_list:
-    parent_id: QuitMenu_mainmenu_admin_plugins
-    name: list
-    path: sfPluginAdminPlugin/index
-    source_culture: en
-    label:
-      en: list
-  QubitMenu_mainmenu_admin_plugins_configure:
-    parent_id: QuitMenu_mainmenu_admin_plugins
-    name: configure
-    path: sfThemePlugin/index
-    source_culture: en
-    label:
-      en: configure
   QubitMenu_quicklinks_home:
     parent_id: QubitMenu_quicklinks
     source_culture: en
     name: home
     label:
+      de: Startseite
       en: Home
       es: inicio
       fa: 'صفحه اصلي'
@@ -212,6 +238,7 @@ QubitMenu:
       nl: home
       pt: inicio
       sl: domov
+    path: staticpage/static?permalink=homepage
   QubitMenu_quicklinks_about:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -241,14 +268,15 @@ QubitMenu:
       nl: help
       pt: ajuda
       sl: pomoč
-    path: 'http://www.ica-atom.org/docs/index.php?title=User_manual'
+    path: 'http://ica-atom.org/docs/index.php?title=User_manual'
   QubitMenu_quicklinks_myProfile:
     parent_id: QubitMenu_quicklinks
     source_culture: en
     name: 'my profile'
     label:
       en: 'My profile'
-    path: %profile%
+      fr: 'mon profil'
+    path: '%profile%'
   QubitMenu_quicklinks_login:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -268,6 +296,7 @@ QubitMenu:
     source_culture: en
     name: logout
     label:
+      de: Abmelden
       en: 'Log out'
       es: 'cerrar sesión'
       fa: خروج

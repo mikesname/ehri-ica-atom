@@ -27,4 +27,19 @@
  */
 class QubitOaiHarvest extends BaseOaiHarvest
 {
+
+  /**
+   * Get last harvest for a repository
+   * @var int id, the id for the repository
+   * @return date the last harvest date for that repository 
+   */
+  public static function getLastHarvestByID($id)
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitOaiHarvest::OAI_REPOSITORY_ID, $id);
+    $criteria->addDescendingOrderByColumn(QubitOaiHarvest::LAST_HARVEST);
+    $harvests = self::get($criteria);
+    return $harvests[0];
+  }
+
 }

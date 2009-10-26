@@ -32,6 +32,6 @@ class MenuDeleteAction extends sfAction
     }
     // TODO: else populate an error?
 
-    return $this->redirect('menu/list');
+    $this->redirect('menu/list');
   }
 }

@@ -32,7 +32,7 @@ class sfColumbiaPluginConfiguration extends sfPluginConfiguration
   {
     $context = $event->getSubject();
 
-    $context->getResponse()->addStylesheet('/sfColumbiaPlugin/css/style.css');
+    $context->response->addStylesheet('/sfColumbiaPlugin/css/style', 'last');
   }
 
   /**

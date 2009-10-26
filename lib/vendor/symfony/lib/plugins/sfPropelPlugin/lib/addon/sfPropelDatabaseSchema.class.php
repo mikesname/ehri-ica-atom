@@ -564,7 +564,7 @@ class sfPropelDatabaseSchema
     foreach ($this->getTables() as $table => $columns)
     {
       $has_primary_key = false;
-
+      $inheritance = null;
       foreach ($columns as $column => $attributes)
       {
         if ($attributes == null)
@@ -627,6 +627,11 @@ class sfPropelDatabaseSchema
             {
               $has_primary_key = true;
             }
+
+            if (isset($attributes['inheritanceKey']))
+            {
+              $inheritance = $column;
+            }
           }
         }
       }
@@ -640,6 +645,14 @@ class sfPropelDatabaseSchema
         'primaryKey'    => true,
         'autoIncrement' => true
         );
+      }
+
+      if (!isset($inheritance))
+      {
+        // Add serial_number column
+        $this->setIfNotSet($this->database[$table], 'serial_number', array(
+          'required' => true,
+          'type' => 'integer'));
       }
     }
   }

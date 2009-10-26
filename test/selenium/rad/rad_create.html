@@ -1,0 +1,952 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>rad_create.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">rad_create.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[3]/ul/li[5]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=default template</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>default_template_informationobject</td>
+	<td>label=RAD, July 2008 version. Canadian Council of Archives</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='content-two-column']/div/fieldset[3]/div/form/table/tbody/tr[4]/td[2]/div/input</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=title and statement of responsibility area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>001</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>RAD fonds</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select[@id='types']</td>
+	<td>label=Architectural drawing</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select[@id='types']</td>
+	<td>label=Architectural drawing</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//select[@id='types']/option[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select[@id='types']</td>
+	<td>label=Multiple media</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//select[@id='types']/option[6]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>alternateTitle</td>
+	<td>Parallel title field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>otherTitleInformation</td>
+	<td>Other title information field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>titleStatementOfResponsibility</td>
+	<td>Statement of responsibility field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rad_title_note</td>
+	<td>Title based on provenance of fonds</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>rad_title_note_type</td>
+	<td>label=Source of title proper</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>levelOfDescription</td>
+	<td>label=Fonds</td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>repository</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='titleAndStatementOfResponsibilityArea']/div/div[9]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=dates of creation area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>newEventActor</td>
+	<td>Mr. Bean</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEvent_startDate</td>
+	<td>1966</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEvent_endDate</td>
+	<td>1977</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEvent_description</td>
+	<td>Here is an event note</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>yui-gen0-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Fonds 001 - RAD fonds (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>title proper</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>general material designation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>title notes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>level of description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>repository</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>reference code</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>date</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Architectural drawing</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Multiple media</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Parallel title field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Other title information field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Statement of responsibility field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Source of title proper: Title based on provenance of fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1966 - 1977</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Type: Creation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Note: Here is an event note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>holdings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=fonds for import</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=RAD fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=RAD fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=edition area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>edition</td>
+	<td>Ed. stmt</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editionStatementOfResponsibility</td>
+	<td>Stmt of resp</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=class of material specific details area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>statementOfScaleCartographic</td>
+	<td>Stmt of scale</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>statementOfProjection</td>
+	<td>Stmt of projection</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>statementOfCoordinates</td>
+	<td>Stmt of corrdinates</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>statementOfScaleArchitectural</td>
+	<td>Stmt of scale arch</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>issuingJurisdictionAndDenomination</td>
+	<td>Issuing jur</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=physical description area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>extentAndMedium</td>
+	<td>6 m of textual records</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=publisher's series area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>titleProperOfPublishersSeries</td>
+	<td>Title proper of p's series</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>parallelTitleOfPublishersSeries</td>
+	<td>Parallel title of p's series</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>otherTitleInformationOfPublishersSeries</td>
+	<td>Other title information of p's series</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>statementOfResponsibilityRelatingToPublishersSeries</td>
+	<td>Statements of responsbility relating to p's series</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>numberingWithinPublishersSeries</td>
+	<td>Numbering within p's series</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>noteOnPublishersSeries</td>
+	<td>Note on p's series</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>edition statement</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>edition statement of responsibility</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>statement of scale (cartographic)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>statement of projection (cartographic)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>statement of coordinates (cartographic)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>statement of scale (architectural)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>physical description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>title proper of publisher's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>other title information of publisher's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>statement of responsibility relating to publisher's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>numbering within publisher's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Note on publisher's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Ed. stmt</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Stmt of resp</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Stmt of scale</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Stmt of projection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Stmt of corrdinates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Stmt of scale arch</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>6 m of textual records</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Title proper of p's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Other title information of p's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Statements of responsbility relating to p's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Numbering within p's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Note on p's series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=archival description area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>archivalHistory</td>
+	<td>Cust hist</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>scopeAndContent</td>
+	<td>Sc &amp; Co</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=notes area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>physicalCharacteristics</td>
+	<td>Phys cond note</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>acquisition</td>
+	<td>Immed source note</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>arrangement</td>
+	<td>arr note</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>locationOfOriginals</td>
+	<td>Loc of origs</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>locationOfCopies</td>
+	<td>Avail of oth formats</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>accessConditions</td>
+	<td>Rest. access</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reproductionConditions</td>
+	<td>Terms gov'ning use</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>findingAids</td>
+	<td>Find. aids</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>relatedUnitsOfDescription</td>
+	<td>Assoc mat.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>accruals</td>
+	<td>accrs</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rad_note</td>
+	<td>Here's a conservation note</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>rad_note_type</td>
+	<td>label=Conservation</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=standard number area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>standardNumber</td>
+	<td>7877</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>custodial history</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>scope and content</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>physical condition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>immediate source of acquisition</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>arrangement</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>location of originals</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>availability of other formats</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>restrictions on access</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>terms governing use, reproduction, and publication</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>finding aids</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>associated / related material</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>accruals</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>other notes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>standard number</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Cust hist</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sc &amp; Co</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Phys cond note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Immed source note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>arr note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Loc of origs</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Avail of oth formats</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Rest. access</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Terms gov'ning use</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Find. aids</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Assoc mat.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>accrs</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Conservation: Here's a conservation note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>7877</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=notes area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>//fieldset[@id='notesArea']/div/div[4]/input[2]</td>
+	<td>Afar</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='notesArea']/div/div[4]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>//fieldset[@id='notesArea']/div/div[5]/input[2]</td>
+	<td>Bopomofo</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='notesArea']/div/div[5]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=control area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>descriptionIdentifier</td>
+	<td>Desc id</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>institutionResponsibleIdentifier</td>
+	<td>Inst id</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rules</td>
+	<td>Rules/conventions</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>descriptionStatus</td>
+	<td>label=Revised</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>descriptionDetail</td>
+	<td>label=Partial</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>revisionHistory</td>
+	<td>Dates of creat etc.</td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>//form[@id='editForm']/fieldset[11]/div/div[7]/input[2]</td>
+	<td>English</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='editForm']/fieldset[11]/div/div[7]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>typeAndWait</td>
+	<td>//form[@id='editForm']/fieldset[11]/div/div[8]/input[2]</td>
+	<td>Latin</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='editForm']/fieldset[11]/div/div[8]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sources</td>
+	<td>Srcs</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>language of material</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>script of material</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Afar</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Bopomofo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>description record identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>institution identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>rules or conventions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>detail</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>dates of creation, revision and deletion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>language of description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>script of description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>sources</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Desc id</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Inst id</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Rules/conventions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Revised</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Partial</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Dates of creat etc.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>English</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Latin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Srcs</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

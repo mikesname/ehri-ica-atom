@@ -51,7 +51,7 @@ class RepositoryEditIsdiahAction extends RepositoryEditAction
    *
    * @param sfWebRequest $request
    */
-  private function updateActorNames()
+  protected function updateActorNames()
   {
     foreach ((array) $this->getRequestParameter('parallel_form_of_name') as $parallelFormOfName)
     {
@@ -75,7 +75,7 @@ class RepositoryEditIsdiahAction extends RepositoryEditAction
    *
    * @param sfWebRequest $request
    */
-  private function deleteActorNames()
+  protected function deleteActorNames()
   {
     if ($this->request->hasParameter('delete_parallel_names'))
     {

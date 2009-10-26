@@ -31,11 +31,11 @@ class ActorDeleteTermRelationAction extends sfAction
 
     if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
     {
-      return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
+      $this->redirect(array('module' => 'actor', 'action' => 'edit', 'actor_template' => $template, 'id' => $this->actorId));
     }
     else
     {
-      return $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
+      $this->redirect(array('module' => 'actor', 'action' => 'edit', 'id' => $this->actorId));
     }
   }
 }

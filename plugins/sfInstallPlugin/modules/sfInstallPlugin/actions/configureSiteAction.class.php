@@ -1,17 +1,51 @@
 <?php
 
 /*
+ * This file is part of Qubit Toolkit.
+ *
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 class sfInstallPluginConfigureSiteAction extends sfAction
 {
   public function execute($request)
   {
-    $this->form = new sfInstallConfigureSiteForm;
+    $this->form = new sfForm;
+
+    $this->form->setValidator('confirmPassword', new sfValidatorString(array('required' => true)));
+    $this->form->setWidget('confirmPassword', new sfWidgetFormInputPassword);
+
+    $this->form->setValidator('email', new sfValidatorEmail(array('required' => true)));
+    $this->form->setWidget('email', new sfWidgetFormInput);
+
+    $this->form->setValidator('password', new sfValidatorString(array('required' => true)));
+    $this->form->setWidget('password', new sfWidgetFormInputPassword);
+
+    $this->form->setValidator('siteDescription', new sfValidatorString);
+    $this->form->setWidget('siteDescription', new sfWidgetFormInput);
+
+    $this->form->setValidator('siteTitle', new sfValidatorString(array('required' => true)));
+    $this->form->setWidget('siteTitle', new sfWidgetFormInput);
+
+    $this->form->setValidator('username', new sfValidatorString(array('required' => true)));
+    $this->form->setWidget('username', new sfWidgetFormInput);
+
+    $this->form->getValidatorSchema()->setPostValidator(new sfValidatorSchemaCompare('password', '==', 'confirmPassword'));
 
     if ($request->isMethod('post'))
     {
-      $this->form->bind($request->getParameter('configure'));
+      $this->form->bind($request->getPostParameters());
 
       if ($this->form->isValid())
       {
@@ -31,10 +65,10 @@ class sfInstallPluginConfigureSiteAction extends sfAction
         $user->setPassword($this->form->getValue('password'));
         $user->save();
 
-        $relation = new QubitUserRoleRelation;
-        $relation->userId = $user->id;
-        $relation->roleId = QubitRole::ADMINISTRATOR_ID;
-        $relation->save();
+        $aclUserGroup = new QubitAclUserGroup;
+        $aclUserGroup->userId = $user->id;
+        $aclUserGroup->groupId = QubitAclGroup::ADMINISTRATOR_ID;
+        $aclUserGroup->save();
 
         $this->redirect(array('module' => 'sfInstallPlugin', 'action' => 'finishInstall'));
       }

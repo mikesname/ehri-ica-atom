@@ -9,13 +9,15 @@ abstract class BasePermission implements ArrayAccess
 
     MODULE = 'q_permission.MODULE',
     ACTION = 'q_permission.ACTION',
-    ID = 'q_permission.ID';
+    ID = 'q_permission.ID',
+    SERIAL_NUMBER = 'q_permission.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitPermission::MODULE);
     $criteria->addSelectColumn(QubitPermission::ACTION);
     $criteria->addSelectColumn(QubitPermission::ID);
+    $criteria->addSelectColumn(QubitPermission::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -24,20 +26,28 @@ abstract class BasePermission implements ArrayAccess
     $permissions = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$permissions[$id = (int) $row[2]]))
+    $keys = array();
+    $keys['id'] = $row[2];
+
+    $key = serialize($keys);
+    if (!isset(self::$permissions[$key]))
     {
       $permission = new QubitPermission;
-      $permission->new = false;
+
+      $permission->keys = $keys;
       $permission->row = $row;
 
-      self::$permissions[$id] = $permission;
+      $permission->new = false;
+
+      self::$permissions[$key] = $permission;
     }
 
-    return self::$permissions[$id];
+    return self::$permissions[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -98,13 +108,19 @@ abstract class BasePermission implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -114,7 +130,18 @@ abstract class BasePermission implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitPermission::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitPermission::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -122,6 +149,14 @@ abstract class BasePermission implements ArrayAccess
 
   public function __isset($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -129,19 +164,29 @@ abstract class BasePermission implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    return false;
+    if ('permissionScopes' == $name)
+    {
+      return true;
+    }
+
+    if ('rolePermissionRelations' == $name)
+    {
+      return true;
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -153,6 +198,14 @@ abstract class BasePermission implements ArrayAccess
 
   public function __get($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -160,19 +213,55 @@ abstract class BasePermission implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
+
+    if ('permissionScopes' == $name)
+    {
+      if (!isset($this->refFkValues['permissionScopes']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['permissionScopes'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['permissionScopes'] = self::getpermissionScopesById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['permissionScopes'];
+    }
+
+    if ('rolePermissionRelations' == $name)
+    {
+      if (!isset($this->refFkValues['rolePermissionRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rolePermissionRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rolePermissionRelations'] = self::getrolePermissionRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rolePermissionRelations'];
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -254,29 +343,18 @@ abstract class BasePermission implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitPermission::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitPermission::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -285,15 +363,13 @@ abstract class BasePermission implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -313,13 +389,11 @@ abstract class BasePermission implements ArrayAccess
     $this->new = false;
     $this->values = array();
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitPermission::DATABASE_NAME);
@@ -354,23 +428,21 @@ abstract class BasePermission implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitPermission::DATABASE_NAME);
@@ -393,6 +465,11 @@ abstract class BasePermission implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -406,11 +483,11 @@ abstract class BasePermission implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -420,16 +497,14 @@ abstract class BasePermission implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitPermission::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	
@@ -464,26 +539,6 @@ abstract class BasePermission implements ArrayAccess
     return self::addpermissionScopesCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $permissionScopes = null;
-
-  public function getpermissionScopes(array $options = array())
-  {
-    if (!isset($this->permissionScopes))
-    {
-      if (!isset($this->id))
-      {
-        $this->permissionScopes = QubitQuery::create();
-      }
-      else
-      {
-        $this->permissionScopes = self::getpermissionScopesById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->permissionScopes;
-  }
-
   public static function addrolePermissionRelationsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitRolePermissionRelation::PERMISSION_ID, $id);
@@ -502,26 +557,6 @@ abstract class BasePermission implements ArrayAccess
   public function addrolePermissionRelationsCriteria(Criteria $criteria)
   {
     return self::addrolePermissionRelationsCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $rolePermissionRelations = null;
-
-  public function getrolePermissionRelations(array $options = array())
-  {
-    if (!isset($this->rolePermissionRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->rolePermissionRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->rolePermissionRelations = self::getrolePermissionRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->rolePermissionRelations;
   }
 
   public function __call($name, $args)

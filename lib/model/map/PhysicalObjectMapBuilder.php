@@ -43,10 +43,6 @@ class PhysicalObjectMapBuilder implements MapBuilder {
 
 		$tMap->addColumn('RGT', 'rgt', 'INTEGER', true, null);
 
-		$tMap->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null);
-
-		$tMap->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null);
-
 		$tMap->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7);
 
 	} 

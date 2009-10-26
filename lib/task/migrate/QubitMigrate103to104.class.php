@@ -27,7 +27,7 @@
  */
 class QubitMigrate103to104 extends QubitMigrate
 {
-  private $taxonomyActorRoleKey;
+  protected $taxonomyActorRoleKey;
 
   /**
    * Controller for calling methods to alter data
@@ -75,7 +75,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 $this object
    */
-  private function alterQubitActors()
+  protected function alterQubitActors()
   {
     // NOTE: 'dates_of_existence' data is added to QubitActor objects in
     // The alterQubitEvents() method.
@@ -86,7 +86,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitEvents()
+  protected function alterQubitEvents()
   {
     // Delete QubitEvent objects that have BOTH no related info object
     // AND no related actor (either one is enough for the event to be valid)
@@ -162,7 +162,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitProperties()
+  protected function alterQubitProperties()
   {
     // re-map QubitProperty 'value' column to i18n table
     foreach ($this->data['QubitProperty'] as $key => $property)
@@ -182,7 +182,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitStaticPages()
+  protected function alterQubitStaticPages()
   {
     // Update version number
     foreach ($this->data['QubitStaticPage'] as $key => $page)
@@ -201,7 +201,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitSettings()
+  protected function alterQubitSettings()
   {
     // Remove old QubitSettings for default templates
     $i = 0;
@@ -306,7 +306,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitTaxonomy()
+  protected function alterQubitTaxonomy()
   {
     // Add new QubitTaxonomy objects
     $this->data['QubitTaxonomy']['QubitTaxonomy_MaterialType'] = array(
@@ -341,7 +341,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitTerms()
+  protected function alterQubitTerms()
   {
     // Swap Term EXISTENCE_ID for SUBJECT_ID in the Event type taxonomy (they
     // share analogous primary keys 12 vs. 112)
@@ -603,7 +603,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function alterQubitNotes()
+  protected function alterQubitNotes()
   {
     // Add new Qubit Display Notes
     $this->data['QubitNote']['QubitNote_accumulator'] = array(
@@ -732,7 +732,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function sortQubitInformationObjects()
+  protected function sortQubitInformationObjects()
   {
     $newList = array();
     $highLft = 0;
@@ -772,7 +772,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function sortQubitTerms()
+  protected function sortQubitTerms()
   {
     $qubitTermConstantIds = array(
     //EventType taxonomy
@@ -849,7 +849,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return QubitMigrate103to104 this object
    */
-  private function sortClasses()
+  protected function sortClasses()
   {
     $ormSortOrder = array(
       'QubitTaxonomy',
@@ -903,7 +903,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return string key for the Taxonomy in $this->data array
    */
-  private function getTaxonomyActorRoleKey()
+  protected function getTaxonomyActorRoleKey()
   {
     if (!isset($this->taxonomyActorRoleKey))
     {
@@ -918,7 +918,7 @@ class QubitMigrate103to104 extends QubitMigrate
    *
    * @return string key in $this->data array
    */
-  private function getTermExistenceKey()
+  protected function getTermExistenceKey()
   {
     if (!isset($this->termExistenceKey))
     {

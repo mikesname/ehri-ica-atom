@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage generator
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfModelGenerator.class.php 17063 2009-04-06 22:29:34Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfModelGenerator.class.php 18498 2009-05-20 16:41:48Z Kris.Wallsmith $
  */
 abstract class sfModelGenerator extends sfGenerator
 {
@@ -181,9 +181,9 @@ abstract class sfModelGenerator extends sfGenerator
    *
    * This method is ORM dependant.
    *
-   * @param string  $column     The column name
-   * @param boolean $developed  true if you want developped method names, false otherwise
-   * @param string  $prefix     The prefix value
+   * @param string  $column    The column name
+   * @param boolean $developed true if you want developped method names, false otherwise
+   * @param string  $prefix    The prefix value
    *
    * @return string PHP code
    */
@@ -194,9 +194,9 @@ abstract class sfModelGenerator extends sfGenerator
   /**
    * Returns HTML code for an action link.
    *
-   * @param string  $actionName   The action name
-   * @param array   $params       The parameters
-   * @param boolean $pk_link      Whether to add a primary key link or not
+   * @param string  $actionName The action name
+   * @param array   $params     The parameters
+   * @param boolean $pk_link    Whether to add a primary key link or not
    *
    * @return string HTML code
    */
@@ -212,8 +212,8 @@ abstract class sfModelGenerator extends sfGenerator
   /**
    * Wraps content with a credential condition.
    *
-   * @param string  $content  The content
-   * @param array   $params   The parameters
+   * @param string $content The content
+   * @param array  $params  The parameters
    *
    * @return string HTML code
    */
@@ -261,7 +261,7 @@ EOF;
     }
     else if ('Date' == $field->getType())
     {
-      $html = sprintf("$html ? format_date(%s, \"%s\") : '&nbsp;'", $html, $field->getConfig('date_format', 'f'));
+      $html = sprintf("false !== strtotime($html) ? format_date(%s, \"%s\") : '&nbsp;'", $html, $field->getConfig('date_format', 'f'));
     }
     else if ('Boolean' == $field->getType())
     {

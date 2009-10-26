@@ -57,6 +57,12 @@ class QubitIsad
       $label = truncate_text($label, $options['truncate']);
     }
 
+    $publicationStatus = $informationObject->getPublicationStatus();
+    if ($publicationStatus !== null && $publicationStatus->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID)
+    {
+      $label .= ' ('.$publicationStatus->status.')';
+    }
+
     //TODO: will return an array, only display first one?
     /*
     if ($informationObject->getDates($eventType = 'creation'))

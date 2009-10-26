@@ -396,7 +396,7 @@ Listing 16-14 - Sample Task, in `lib/task/testHelloTask.class.php`
         $this->briefDescription = 'Says hello';
       }
 
-      protected function execute()
+      protected function execute($arguments = array(), $options = array())
       {
         // your code here
         $this->log('Hello, world!');
@@ -457,7 +457,11 @@ Listing 16-15 - More Complete Sample Task, in `lib/task/mySecondTask.class.php`
 
 For more examples on the abilities of the task system, check the source of existing symfony tasks.
 
-If you declare a task with the same name as an existing task, your class overrides the existing task. That means that a plugin can override a symfony task, and that a project can override a plugin task and a symfony task. Add to that the ability to extend an existing task class, and you have a very extensible command line system!
+If you create a class in a lib/task folder with the same name as an 
+existing task, your class overrides the existing task. That means that a 
+plugin can override a symfony task, and that a project can override a 
+plugin task and a symfony task. Add to that the ability to extend an
+existing task class, and you have a very extensible command line system!
 
 Populating a Database
 ---------------------
@@ -676,6 +680,12 @@ By default, a disabled application displays the `$sf_symfony_lib_dir/exception/d
 The `project:enable` task reenables the application and clears the cache.
 
     > php symfony project:enable APPLICATION_NAME ENVIRONMENT_NAME
+
+>**CAUTION**
+>`project:disable` currently has no effect if the `check_lock` parameter is not
+>set to `on` in settings.yml.
+
+-
 
 >**SIDEBAR**
 >Displaying an unavailable page when clearing the cache

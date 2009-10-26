@@ -1,0 +1,164 @@
+QubitAclGroup:
+  QubitAclGroup_ROOT:
+    id: <?php echo QubitAclGroup::ROOT_ID."\n" ?>
+  QubitAclGroup_anonymous:
+    id: <?php echo QubitAclGroup::ANONYMOUS_ID."\n" ?>
+    parent_id: QubitAclGroup_ROOT
+    name:
+      en: anonymous
+  QubitAclGroup_authenticated:
+    id: <?php echo QubitAclGroup::AUTHENTICATED_ID."\n" ?>
+    parent_id: QubitAclGroup_anonymous
+    name:
+      en: authenticated
+  QubitAclGroup_administrator:
+    id: <?php echo QubitAclGroup::ADMINISTRATOR_ID."\n" ?>
+    parent_id: QubitAclGroup_authenticated
+    name:
+      en: administrator
+  QubitAclGroup_editor:
+    id: <?php echo QubitAclGroup::EDITOR_ID."\n" ?>
+    parent_id: QubitAclGroup_authenticated
+    name:
+      en: editor
+  QubitAclGroup_contributor:
+    id: <?php echo QubitAclGroup::CONTRIBUTOR_ID."\n" ?>
+    parent_id: QubitAclGroup_authenticated
+    name:
+      en: contributor
+  QubitAclGroup_translator:
+    id: <?php echo QubitAclGroup::TRANSLATOR_ID."\n" ?>
+    parent_id: QubitAclGroup_authenticated
+    name:
+      en: translator
+QubitAclAction:
+  QubitAclAction_create:
+    id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
+    name:
+      en: create
+  QubitAclAction_read:
+    id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    name:
+      en: read
+  QubitAclAction_update:
+    id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    name:
+      en: update
+  QubitAclAction_delete:
+    id: <?php echo QubitAclAction::DELETE_ID."\n" ?>
+    name:
+      en: delete
+  QubitAclAction_view_draft:
+    id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    name:
+      en: 'view draft'
+  QubitAclAction_publish:
+    id: <?php echo QubitAclAction::PUBLISH_ID."\n" ?>
+    name:
+      en: publish
+QubitAclPermission:
+  QubitAclPermission_anonymous_read:
+    group_id: QubitAclGroup_anonymous
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_authenticated_read:
+    group_id: QubitAclGroup_authenticated
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_admin_create:
+    group_id: QubitAclGroup_administrator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_admin_read:
+    group_id: QubitAclGroup_administrator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_admin_update:
+    group_id: QubitAclGroup_administrator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_admin_delete:
+    group_id: QubitAclGroup_administrator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::DELETE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_admin_view_draft:
+    group_id: QubitAclGroup_administrator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_admin_publish:
+    group_id: QubitAclGroup_administrator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::PUBLISH_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_editor_create:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_editor_read:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_editor_update:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_editor_delete:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::DELETE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_editor_view_draft:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_editor_publish:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::PUBLISH_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_contributor_create:
+    group_id: QubitAclGroup_contributor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_contributor_read:
+    group_id: QubitAclGroup_contributor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_contributor_update:
+    group_id: QubitAclGroup_contributor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_contributor_view_draft:
+    group_id: QubitAclGroup_contributor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_translator_read:
+    group_id: QubitAclGroup_translator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_translator_update:
+    group_id: QubitAclGroup_translator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    grant_deny: 1
+  QubitAclPermission_translator_view_draft:
+    group_id: QubitAclGroup_translator
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    grant_deny: 1

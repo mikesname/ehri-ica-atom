@@ -1,3 +1,6 @@
+editSuccess:
+  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+
 showFullScreenSuccess:
   layout: layout_fullscreen
   components:

@@ -2,14 +2,11 @@ delete:
   is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
 
-edit:
+update:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
-
-show:
-  is_secure:  off
-
-update:
+  
+multiFileUpload:
   is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
 

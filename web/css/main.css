@@ -17,7 +17,6 @@ body,
 }
 
 /* Drop decoration, margin, and padding from lists in the context menu */
-/* FIXME: Is there a Drupal class for such undecorated lists? */
 
 .contextMenu ul
 {
@@ -70,16 +69,6 @@ body,
   list-style-image: none;
   margin: 0;
   padding: 0;
-}
-
-/* Drupal system.css sets position: relative, which causes parts of YUI menus
- * which overflow the fieldset to disappear */
-/* TODO: Is this a bug in YUI menus?  Perhaps if position is relative, menu
- * parts should not overflow the fieldset? */
-
-html.js fieldset.collapsible
-{
-  position: static;
 }
 
 /* Translation interface customizations */
@@ -140,4 +129,11 @@ html.js fieldset.collapsible
 #menu-main, .menu-quick-links, .menu-secondary
 {
   text-transform: lowercase;
+}
+
+/* Fix YUI autocomplete */
+
+.yui-skin-sam .yui-ac, .yui-skin-sam .yui-ac-input
+{
+  position: static;
 }

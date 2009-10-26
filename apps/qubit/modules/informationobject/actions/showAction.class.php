@@ -25,7 +25,7 @@
  * @version    svn: $Id$
  * @author     Peter Van Garderen <peter@artefactual.com>
  * @author     Jack Bates <jack@artefactual.com>
- * @author     David Juhasz <david@artefactual.com> 
+ * @author     David Juhasz <david@artefactual.com>
  */
 class InformationObjectShowAction extends sfAction
 {
@@ -39,68 +39,58 @@ class InformationObjectShowAction extends sfAction
       $this->forward404();
     }
 
+    // Check user authorization
+    if (!QubitAcl::check($this->informationObject, QubitAclAction::READ_ID))
+    {
+      QubitAcl::forwardUnauthorized();
+    }
+
     // HACK: populate information object from ORM
     $request->setAttribute('informationObject', $this->informationObject);
 
-    // Determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
-    {
-      $this->editCredentials = true;
-    }
-
-    // Events
-    $this->actorEvents = $this->informationObject->getActorEvents();
-    $this->creators = $this->informationObject->getCreators();
-
-    // Properties
-    $this->languageCodes = $this->informationObject->getProperties($name = 'information_object_language');
-    $this->scriptCodes = $this->informationObject->getProperties($name = 'information_object_script');
-    $this->descriptionLanguageCodes = $this->informationObject->getProperties($name = 'language_of_information_object_description');
-    $this->descriptionScriptCodes = $this->informationObject->getProperties($name = 'script_of_information_object_description');
-
-    // Notes
-    $this->notes = $this->informationObject->getNotes();
-
     // Access points
-    $this->subjectAccessPoints = $this->informationObject->getSubjectAccessPoints();
-    $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
     $this->nameAccessPoints = array();
-    $actorEvents = $this->informationObject->getActorEvents();
-    foreach ($actorEvents as $event)
+    foreach ($this->informationObject->getActorEvents() as $event)
     {
-      if ($event->getActorId())
+      if (isset($event->actorId))
       {
         $this->nameAccessPoints[] = $event;
       }
     }
+    foreach ($this->informationObject->relationsRelatedBysubjectId as $relation)
+    {
+      if (QubitTerm::NAME_ACCESS_POINT_ID == $relation->typeId)
+      {
+        $this->nameAccessPoints[] = $relation;
+      }
+    }
 
-    // Material types
-    $this->materialTypes = $this->informationObject->getMaterialTypes();
+    // Get *one* digital object (relationship must be 1-to-1)
+    $this->digitalObject = null;
+    if (null != ($digitalObjects = $this->informationObject->digitalObjects))
+    {
+      $this->digitalObject = $digitalObjects[0];
+    }
 
     // Physical objects
     $this->physicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->informationObject->getId(),
       array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
-    // Digital object
-    $this->digitalObject = $this->informationObject->getDigitalObject();
-
-    // Display reference as compound digital object?
-    $this->showCompoundDigitalObject = $this->informationObject->showAsCompoundDigitalObject(QubitTerm::REFERENCE_ID);
-
     // Only show link to view/download master copy of digital object if
     // the user has edit credentials OR it's a text object (to allow reading)
     $this->digitalObjectLink = null;
-    if (null !== $this->digitalObject && ($this->editCredentials || $this->digitalObject->getMediaTypeId() == QubitTerm::TEXT_ID))
+    if (0 < count($this->informationObject->digitalObjects)
+      && (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject')
+        || QubitTerm::TEXT_ID == $this->informationObject->digitalObjects[0]->getMediaTypeId()))
     {
-      if ($this->digitalObject->isImage())
+      if ($this->informationObject->digitalObjects[0]->isImage())
       {
-        $this->digitalObjectLink = 'digitalobject/showFullScreen?id='.$this->digitalObject->getId();
+        $this->digitalObjectLink = 'digitalobject/showFullScreen?id='.$this->informationObject->digitalObjects[0]->getId();
       }
       else
       {
         // Build a fully qualified URL to this digital object asset
-        $this->digitalObjectLink = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->digitalObject->getFullPath();
+        $this->digitalObjectLink = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->informationObject->digitalObjects[0]->getFullPath();
       }
     }
   }

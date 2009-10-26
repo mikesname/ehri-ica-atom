@@ -21,12 +21,91 @@ class DigitalObjectUploadAction extends sfAction
 {
   public function execute($request)
   {
-    foreach ($_FILES as $fieldName => $file)
+    sfLoader::loadHelpers('Qubit');
+
+    $uploadFiles = array();
+
+    foreach ($_FILES as $file)
     {
-      $filename = sfConfig::get('sf_web_dir').'/'.$file['name'];
-      move_uploaded_file($file['tmp_name'], sfConfig::get('sf_web_dir').'/'.$file['name']);
+      // Tmp dir
+      $tmpDir = sfConfig::get('sf_upload_dir').'/tmp';
+      if (!file_exists($tmpDir))
+      {
+        mkdir($tmpDir);
+        chmod($tmpDir, 0775);
+      }
+
+      // Get file extension
+      $extension = substr($file['name'], strrpos($file['name'], '.'));
+
+      // Get a unique file name (to avoid clashing file names)
+      $tmpFileName = null;
+      $tmpFilePath = null;
+      while (file_exists($tmpFilePath) || null === $tmpFileName)
+      {
+        $uniqueString = substr(md5(time().$file['name']), 0, 8);
+        $tmpFileName = 'TMP'.$uniqueString.$extension;
+        $tmpFilePath = $tmpDir.'/'.$tmpFileName;
+      }
+
+      // Thumbnail name
+      $thumbName = 'THB'.$uniqueString.'.jpg';
+      $thumbPath = $tmpDir.'/'.$thumbName;
+
+      // Move file to web/uploads/tmp directory
+      if (!move_uploaded_file($file['tmp_name'], $tmpFilePath))
+      {
+        $errorMessage = $this->getContext()->getI18N()->__('File %1% could not be moved to %2%', array('%1%' => $file['name'], '%2%' => $tmpDir));
+        $uploadFiles[] = array('error' => $errorMessage);
+        continue;
+      }
+
+      $tmpFileMd5sum = md5_file($tmpFilePath);
+      $tmpFileMimeType = QubitDigitalObject::deriveMimeType($tmpFileName);
+
+      if ($canThumbnail = QubitDigitalObject::canThumbnailMimeType($tmpFileMimeType) || QubitDigitalObject::isVideoFile($tmpFilePath))
+      {
+        $resizedObject;
+
+        if (QubitDigitalObject::isImageFile($tmpFilePath) || $tmpFileMimeType == 'application/pdf')
+        {
+          $resizedObject = QubitDigitalObject::resizeImage($tmpFilePath, 150, 150);
+        }
+        else if (QubitDigitalObject::isVideoFile($tmpFilePath))
+        {
+          $resizedObject = QubitDigitalObject::createThumbnailFromVideo($tmpFilePath, 150, 150);
+        }
+
+        if (0 < strlen($resizedObject))
+        {
+          file_put_contents($thumbPath, $resizedObject);
+          chmod($thumbPath, 0644);
+        }
+
+        // Show a warning message if object couldn't be thumbnailed when it is supposed to be possible
+        if (!file_exists($thumbPath) && 0 >= filesize($thumbPath))
+        {
+          $warning = $this->getContext()->getI18N()->__('File %1% could not be thumbnailed', array('%1%' => $file['name']));
+        }
+      }
+      else
+      {
+        $thumbName = '../../images/'.QubitDigitalObject::getGenericIconPath($tmpFileMimeType, QubitTerm::THUMBNAIL_ID);
+      }
+
+      $uploadFiles[] = array(
+        'name' => $file['name'],
+        'tmpName' => $tmpFileName,
+        'md5sum' => $tmpFileMd5sum,
+        'thumb' => $thumbName,
+        'size' => hr_filesize($file['size']),
+        'canThumbnail' => $canThumbnail,
+        'warning' => $warning
+      );
     }
 
-    return $this->renderText($this->getRequest()->getRelativeUrlRoot().'/'.$file['name']);
+    // Pass file data back to caller for processing on form submit
+    $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
+    return $this->renderText(json_encode($uploadFiles));
   }
 }

@@ -30,22 +30,25 @@ class TermBrowseAction extends sfAction
     {
       $options = array();
 
-      $this->termId = $this->getRequestParameter('termId');
-      $this->term = QubitTerm::getById($this->termId);
+      $this->term = QubitTerm::getById($this->request->termId);
       $this->forward404Unless(isset($this->term));
 
-      $options['culture'] = $this->culture;
-
-      $this->sortColumn = $this->getRequestParameter('sortColumn', 'title');
-      $options['sortColumn'] = $this->sortColumn;
-
-      $this->sortDirection = $this->getRequestParameter('sortDirection', 'ascending');
-      $options['sortDirection'] = $this->sortDirection;
-
       $this->page = $this->getRequestParameter('page', 1);
-      $options['page'] = $this->page;
 
-      $this->informationObjects = QubitObjectTermRelation::getTermBrowseList($this->termId, 'QubitInformationObject', $options);
+      $criteria = new Criteria;
+      $criteria->add(QubitObject::CLASS_NAME, 'QubitInformationObject');
+      $criteria->addJoin(QubitObject::ID, QubitInformationObject::ID);
+      $criteria->addJoin(QubitObject::ID, QubitObjectTermRelation::OBJECT_ID);
+      $criteria->add(QubitObjectTermRelation::TERM_ID, $this->term->id);
+
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+      $criteria->addAscendingOrderByColumn('title');
+
+      // Page results
+      $this->pager = new QubitPager('QubitInformationObject');
+      $this->pager->setCriteria($criteria);
+      $this->pager->setPage($this->page);
+      $this->pager->init();
 
       // determine if system is set to "multi-repository"
       $this->multiRepository = (sfConfig::get('app_multi_repository') !== '0');
@@ -54,13 +57,8 @@ class TermBrowseAction extends sfAction
     }
     else
     {
-      $options = array();
-
-      // Do cultural fallback
-      $options['cultureFallback'] = true;
-
+      $this->page = $this->getRequestParameter('page', 1);
       $this->sort = $this->getRequestParameter('sort', 'termNameUp');
-      $options['sort'] = $this->sort;
 
       // Get taxonomy id (default to "Subjects" taxonomy)
       if ($this->getRequestParameter('taxonomyId'))
@@ -71,11 +69,47 @@ class TermBrowseAction extends sfAction
       {
         $this->taxonomyId = QubitTaxonomy::SUBJECT_ID;
       }
-      $options['taxonomyId'] = $this->taxonomyId;
 
       // Get taxonomy object and term list
       $this->taxonomy = QubitTaxonomy::getById($this->taxonomyId);
-      $this->terms = QubitTerm::getBrowseList($this->culture, new Criteria, $options);
+      $this->forward404If(null === $this->taxonomy);
+
+      $criteria = new Criteria;
+      $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
+
+      // Add joins to get count of information objects related via object
+      // term relation. The 'object2' alias is necessary because the query
+      // silently adds a join on (QubitTerm::ID = QubitObject::ID).
+      $criteria->addAlias('object2', QubitObject::TABLE_NAME);
+      $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::INNER_JOIN);
+      $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, 'object2.id', Criteria::INNER_JOIN);
+      $criteria->add('object2.class_name', 'QubitInformationObject');
+      $criteria->addAsColumn('hits', 'COUNT('.QubitTerm::ID.')');
+      $criteria->addGroupByColumn(QubitTerm::ID);
+
+      switch($this->sort)
+      {
+        case 'hitsUp' :
+          $criteria->addAscendingOrderByColumn('hits');
+          break;
+        case 'hitsDown' :
+          $criteria->addDescendingOrderByColumn('hits');
+          break;
+        case 'termNameDown' :
+          $criteria->addDescendingOrderByColumn('name');
+          break;
+        case 'termNameUp' :
+        default :
+          $criteria->addAscendingOrderByColumn('name');
+      }
+
+      // Do culture fallback
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+
+      $this->pager = new QubitPager('QubitTerm');
+      $this->pager->setCriteria($criteria);
+      $this->pager->setPage($this->page);
+      $this->pager->init();
 
       $this->setTemplate('browseTaxonomy');
     }

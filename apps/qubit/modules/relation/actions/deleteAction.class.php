@@ -41,6 +41,6 @@ class RelationDeleteAction extends sfAction
     // Do delete
     $this->relation->delete();
      
-    return $this->redirect($next);
+    $this->redirect($next);
   }
 }

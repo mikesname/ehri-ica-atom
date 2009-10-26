@@ -28,16 +28,11 @@ class ActorShowAction extends sfAction
     $this->notes = $this->actor->getActorNotes();
 
     $this->languageCodes = $this->actor->getProperties($name = 'language_of_actor_description');
-    $this->scriptCodes = $this->actor->getProperties($name= 'script_of_actor_description');
+    $this->scriptCodes = $this->actor->getProperties($name = 'script_of_actor_description');
 
     $this->datesOfChanges = $this->actor->getDatesOfChanges();
-    $this->relatedActors = $this->actor->getRelatedActors();
 
-    //determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'actor'))
-    {
-      $this->editCredentials = true;
-    }
+    //Actor Relations
+    $this->actorRelations = $this->actor->getActorRelations();
   }
 }

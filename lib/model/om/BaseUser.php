@@ -70,6 +70,174 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     $this->tables[] = Propel::getDatabaseMap(QubitUser::DATABASE_NAME)->getTable(QubitUser::TABLE_NAME);
   }
 
+  public function __isset($name)
+  {
+    $args = func_get_args();
+
+    try
+    {
+      return call_user_func_array(array($this, 'QubitActor::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('notes' == $name)
+    {
+      return true;
+    }
+
+    if ('permissionScopes' == $name)
+    {
+      return true;
+    }
+
+    if ('systemEvents' == $name)
+    {
+      return true;
+    }
+
+    if ('userRoleRelations' == $name)
+    {
+      return true;
+    }
+
+    if ('aclPermissions' == $name)
+    {
+      return true;
+    }
+
+    if ('aclUserGroups' == $name)
+    {
+      return true;
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+  }
+
+  public function __get($name)
+  {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    try
+    {
+      return call_user_func_array(array($this, 'QubitActor::__get'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('notes' == $name)
+    {
+      if (!isset($this->refFkValues['notes']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['notes'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['notes'] = self::getnotesById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['notes'];
+    }
+
+    if ('permissionScopes' == $name)
+    {
+      if (!isset($this->refFkValues['permissionScopes']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['permissionScopes'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['permissionScopes'] = self::getpermissionScopesById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['permissionScopes'];
+    }
+
+    if ('systemEvents' == $name)
+    {
+      if (!isset($this->refFkValues['systemEvents']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['systemEvents'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['systemEvents'] = self::getsystemEventsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['systemEvents'];
+    }
+
+    if ('userRoleRelations' == $name)
+    {
+      if (!isset($this->refFkValues['userRoleRelations']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['userRoleRelations'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['userRoleRelations'] = self::getuserRoleRelationsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['userRoleRelations'];
+    }
+
+    if ('aclPermissions' == $name)
+    {
+      if (!isset($this->refFkValues['aclPermissions']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['aclPermissions'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['aclPermissions'] = self::getaclPermissionsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['aclPermissions'];
+    }
+
+    if ('aclUserGroups' == $name)
+    {
+      if (!isset($this->refFkValues['aclUserGroups']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['aclUserGroups'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['aclUserGroups'] = self::getaclUserGroupsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['aclUserGroups'];
+    }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+  }
+
   public static function addnotesCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitNote::USER_ID, $id);
@@ -88,26 +256,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
   public function addnotesCriteria(Criteria $criteria)
   {
     return self::addnotesCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $notes = null;
-
-  public function getnotes(array $options = array())
-  {
-    if (!isset($this->notes))
-    {
-      if (!isset($this->id))
-      {
-        $this->notes = QubitQuery::create();
-      }
-      else
-      {
-        $this->notes = self::getnotesById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->notes;
   }
 
   public static function addpermissionScopesCriteriaById(Criteria $criteria, $id)
@@ -130,26 +278,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     return self::addpermissionScopesCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $permissionScopes = null;
-
-  public function getpermissionScopes(array $options = array())
-  {
-    if (!isset($this->permissionScopes))
-    {
-      if (!isset($this->id))
-      {
-        $this->permissionScopes = QubitQuery::create();
-      }
-      else
-      {
-        $this->permissionScopes = self::getpermissionScopesById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->permissionScopes;
-  }
-
   public static function addsystemEventsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitSystemEvent::USER_ID, $id);
@@ -168,26 +296,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
   public function addsystemEventsCriteria(Criteria $criteria)
   {
     return self::addsystemEventsCriteriaById($criteria, $this->id);
-  }
-
-  protected
-    $systemEvents = null;
-
-  public function getsystemEvents(array $options = array())
-  {
-    if (!isset($this->systemEvents))
-    {
-      if (!isset($this->id))
-      {
-        $this->systemEvents = QubitQuery::create();
-      }
-      else
-      {
-        $this->systemEvents = self::getsystemEventsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->systemEvents;
   }
 
   public static function adduserRoleRelationsCriteriaById(Criteria $criteria, $id)
@@ -210,23 +318,43 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     return self::adduserRoleRelationsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $userRoleRelations = null;
-
-  public function getuserRoleRelations(array $options = array())
+  public static function addaclPermissionsCriteriaById(Criteria $criteria, $id)
   {
-    if (!isset($this->userRoleRelations))
-    {
-      if (!isset($this->id))
-      {
-        $this->userRoleRelations = QubitQuery::create();
-      }
-      else
-      {
-        $this->userRoleRelations = self::getuserRoleRelationsById($this->id, array('self' => $this) + $options);
-      }
-    }
+    $criteria->add(QubitAclPermission::USER_ID, $id);
 
-    return $this->userRoleRelations;
+    return $criteria;
+  }
+
+  public static function getaclPermissionsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addaclPermissionsCriteriaById($criteria, $id);
+
+    return QubitAclPermission::get($criteria, $options);
+  }
+
+  public function addaclPermissionsCriteria(Criteria $criteria)
+  {
+    return self::addaclPermissionsCriteriaById($criteria, $this->id);
+  }
+
+  public static function addaclUserGroupsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitAclUserGroup::USER_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getaclUserGroupsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addaclUserGroupsCriteriaById($criteria, $id);
+
+    return QubitAclUserGroup::get($criteria, $options);
+  }
+
+  public function addaclUserGroupsCriteria(Criteria $criteria)
+  {
+    return self::addaclUserGroupsCriteriaById($criteria, $this->id);
   }
 }

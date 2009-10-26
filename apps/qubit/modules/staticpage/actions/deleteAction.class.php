@@ -27,6 +27,6 @@ class StaticPageDeleteAction extends sfAction
 
     $staticPage->delete();
 
-    return $this->redirect('staticpage/list');
+    $this->redirect('staticpage/list');
   }
 }

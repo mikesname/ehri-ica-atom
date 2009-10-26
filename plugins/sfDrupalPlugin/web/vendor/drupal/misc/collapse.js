@@ -52,6 +52,8 @@ Drupal.collapseScrollIntoView = function (node) {
 
 Drupal.behaviors.collapse = {
   attach: function(context) {
+    $(location.hash, context).removeClass('collapsed');
+
     $('fieldset.collapsible > legend:not(.collapse-processed)', context).each(function() {
       var fieldset = $(this.parentNode);
       // Expand if there are errors inside

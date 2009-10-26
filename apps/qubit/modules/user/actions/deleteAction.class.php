@@ -27,6 +27,6 @@ class UserDeleteAction extends sfAction
 
     $user->delete();
 
-    return $this->redirect('user/list');
+    $this->redirect('user/list');
   }
 }

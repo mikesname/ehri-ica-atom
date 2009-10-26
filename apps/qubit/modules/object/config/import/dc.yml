@@ -25,7 +25,7 @@
 # filter for importing Dublin Core (dc) records
 
 information_object:
-  XPath:  "/dc | /dublinCore | /metadata"
+  XPath:  "/dc | /dublinCore | /metadata | /record"
   Object:  InformationObject
   # define an axis for the parent object; if no node is matched here, the object is rooted if possible
   Parent:  "ancestor::record"

@@ -12,9 +12,7 @@ abstract class BasePlaceMapRelation extends QubitObject implements ArrayAccess
     MAP_ID = 'q_place_map_relation.MAP_ID',
     MAP_ICON_IMAGE_ID = 'q_place_map_relation.MAP_ICON_IMAGE_ID',
     MAP_ICON_DESCRIPTION = 'q_place_map_relation.MAP_ICON_DESCRIPTION',
-    TYPE_ID = 'q_place_map_relation.TYPE_ID',
-    CREATED_AT = 'q_place_map_relation.CREATED_AT',
-    UPDATED_AT = 'q_place_map_relation.UPDATED_AT';
+    TYPE_ID = 'q_place_map_relation.TYPE_ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -28,8 +26,6 @@ abstract class BasePlaceMapRelation extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitPlaceMapRelation::MAP_ICON_IMAGE_ID);
     $criteria->addSelectColumn(QubitPlaceMapRelation::MAP_ICON_DESCRIPTION);
     $criteria->addSelectColumn(QubitPlaceMapRelation::TYPE_ID);
-    $criteria->addSelectColumn(QubitPlaceMapRelation::CREATED_AT);
-    $criteria->addSelectColumn(QubitPlaceMapRelation::UPDATED_AT);
 
     return $criteria;
   }

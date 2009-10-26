@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage routing
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPatternRouting.class.php 17467 2009-04-21 06:19:26Z fabien $
+ * @version    SVN: $Id: sfPatternRouting.class.php 17746 2009-04-29 11:41:08Z fabien $
  */
 class sfPatternRouting extends sfRouting
 {
@@ -366,7 +366,7 @@ class sfPatternRouting extends sfRouting
     // fetch from cache
     if (!is_null($this->cache))
     {
-      $cacheKey = 'generate_'.$name.'_'.md5(serialize(array_merge($this->defaultParameters, $params))).'_'.md5(serialize($this->options['context']));
+      $cacheKey = 'generate_'.$name.'_'.md5(serialize(array($this->defaultParameters, $params))).'_'.md5(serialize($this->options['context']));
       if ($this->options['lookup_cache_dedicated_keys'] && $url = $this->cache->get('symfony.routing.data.'.$cacheKey))
       {
         return $this->fixGeneratedUrl($url, $absolute);
@@ -591,7 +591,7 @@ class sfPatternRouting extends sfRouting
   protected function normalizeUrl($url)
   {
     // an URL should start with a '/', mod_rewrite doesn't respect that, but no-mod_rewrite version does.
-    if ('/' != $url[0])
+    if ('/' != substr($url, 0, 1))
     {
       $url = '/'.$url;
     }

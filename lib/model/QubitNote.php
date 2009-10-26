@@ -19,6 +19,8 @@
 
 class QubitNote extends BaseNote
 {
+  public $indexOnSave = true;
+
   public function __toString()
   {
     if (null === $content = $this->getContent())
@@ -31,20 +33,45 @@ class QubitNote extends BaseNote
 
   public function save($connection = null)
   {
-    // TODO: $cleanObject = $this->getObject()->clean();
-    $cleanObjectId = $this->columnValues['object_id'];
+    // TODO: $cleanObject = $this->object->clean;
+    $cleanObjectId = $this->__get('objectId', array('clean' => true));
 
     parent::save($connection);
 
-    if ($cleanObjectId != $this->getObjectId() && QubitInformationObject::getById($cleanObjectId) !== null)
+    if ($this->indexOnSave)
     {
-      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+      if ($this->objectId != $cleanObjectId && null !== QubitInformationObject::getById($cleanObjectId))
+      {
+        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+      }
+
+      if ($this->object instanceof QubitInformationObject)
+      {
+        SearchIndex::updateTranslatedLanguages($this->object);
+      }
     }
 
-    if ($this->getObject() instanceof QubitInformationObject)
+    return $this;
+  }
+
+  /**
+   * Flag whether to update the search index when saving this object
+   *
+   * @param boolean $bool flag value
+   * @return QubitNote self-reference
+   */
+  public function setIndexOnSave($bool)
+  {
+    if ($bool)
     {
-      SearchIndex::updateTranslatedLanguages($this->getObject());
+      $this->indexOnSave = true;
     }
+    else
+    {
+      $this->indexOnSave = false;
+    }
+
+    return $this;
   }
 
   public function delete($connection = null)

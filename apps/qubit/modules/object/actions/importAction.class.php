@@ -29,6 +29,7 @@ class ObjectImportAction extends sfAction
 {
   public function execute($request)
   {
+    $this->timer = new QubitTimer;
     $options = array();
 
     // should we do strict validation? (recommended)

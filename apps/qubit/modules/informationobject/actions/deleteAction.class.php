@@ -21,36 +21,46 @@ class InformationObjectDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $informationObject = QubitInformationObject::getById($this->getRequestParameter('id'));
+    $this->form = new sfForm;
+
+    $this->informationObject = QubitInformationObject::getById($request->id);
 
     // Check that object exists and that it is not the root
-    if (!isset($informationObject) || !isset($informationObject->parent))
+    if (!isset($this->informationObject) || !isset($this->informationObject->parent))
     {
       $this->forward404();
     }
 
-    //retrieve all descendants to be deleted along with this informationObject
-    $informationObjects = $informationObject->getDescendants()->andSelf()->orderBy('rgt');
-
-    foreach ($informationObjects as $deleteInformationObject)
+    // Check user authorization
+    if (!QubitAcl::check(QubitInformationObject::getRoot(), QubitAclAction::DELETE_ID))
     {
-      // Delete related digitalObjects
-      $this->deleteDigitalObjects($deleteInformationObject);
-
-      //delete the information object record from the database
-      $deleteInformationObject->delete();
+      QubitAcl::forwardUnauthorized();
     }
 
-    return $this->redirect(array('module' => 'informationobject', 'action' => 'list'));
-  }
+    $request->setAttribute('informationObject', $this->informationObject);
 
-  private function deleteDigitalObjects($informationObject)
-  {
-    if ($digitalObjects = $informationObject->getDigitalObjects())
+    if ($request->isMethod('delete'))
     {
-      foreach ($digitalObjects as $digitalObject)
+      $parentId = $this->informationObject->parentId;
+
+      foreach ($this->informationObject->descendants->andSelf()->orderBy('rgt') as $descendant)
       {
-        $digitalObject->delete();
+        // Delete related digitalObjects
+        foreach ($descendant->digitalObjects as $digitalObject)
+        {
+          $digitalObject->delete();
+        }
+
+        $descendant->delete();
+      }
+
+      if (QubitInformationObject::ROOT_ID != $parentId)
+      {
+        $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $parentId));
+      }
+      else
+      {
+        $this->redirect(array('module' => 'informationobject', 'action' => 'list'));
       }
     }
   }

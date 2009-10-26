@@ -165,8 +165,8 @@ class QubitRepository extends BaseRepository
    */
   public static function addGetOnlyRepositoryCriteria($criteria)
   {
-    $criteria->add(QubitRepository::ID, null, Criteria::ISNOTNULL);
-    $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::INNER_JOIN);
+    $criteria->addJoin(QubitRepository::ID, QubitObject::ID);
+    $criteria->add(QubitObject::CLASS_NAME, 'QubitRepository');
 
     return $criteria;
   }
@@ -254,10 +254,7 @@ class QubitRepository extends BaseRepository
       $options = array('returnClass'=>'QubitRepository');
       $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
     }
-    else
-    {
-      // Do straight joins without fallback
-    }
+    // TODO: add straight joins without fallback
 
     // Page results
     $pager = new QubitPager('QubitRepository');
@@ -331,5 +328,30 @@ class QubitRepository extends BaseRepository
     $criteria->add(QubitRepository::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
 
     return $criteria;
+  }
+
+  /**************
+  Import methods
+  ***************/
+
+  public function setTypeByName($term)
+  {
+    // see if type term already exists
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+    $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::REPOSITORY_TYPE_ID);
+    $criteria->add(QubitTermI18n::NAME, $term);
+    if ($existingTerm = QubitTerm::getOne($criteria))
+    {
+      $this->setTypeId($existingTerm->getId());
+    }
+    else
+    {
+      $newTerm = new QubitTerm;
+      $newTerm->setTaxonomyId(QubitTaxonomy::REPOSITORY_TYPE_ID);
+      $newTerm->setName($term);
+      $newTerm->save();
+      $this->setTypeId($newTerm->getId());
+    }
   }
 }

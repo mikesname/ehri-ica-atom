@@ -39,11 +39,29 @@ class QubitTaxonomy extends BaseTaxonomy
   const PHYSICAL_OBJECT_TYPE_ID = 18;
   const RELATION_TYPE_ID = 19;
   const MATERIAL_TYPE_ID = 20;
-  //CCA Rules for Archival Description (RAD) taxonomies
-  const RAD_NOTE_ID = 21;
-  const RAD_TITLE_NOTE_ID = 22;
+  const RAD_NOTE_ID = 21; //CCA Rules for Archival Description (RAD) taxonomies
+  const RAD_TITLE_NOTE_ID = 22; //CCA Rules for Archival Description (RAD) taxonomies
   const MODS_RESOURCE_TYPE_ID = 23;
   const DC_TYPE_ID = 24;
+  const ACTOR_RELATION_TYPE_ID = 25;
+  const RELATION_NOTE_TYPE_ID = 26;
+  const TERM_RELATION_TYPE_ID = 27;
+  const ROOT_ID = 28;
+  const STATUS_TYPE_ID = 29;
+  const PUBLICATION_STATUS_ID = 30;
+
+  public static $lockedTaxonomies = array(
+    self::QUBIT_SETTING_LABEL_ID,
+    self::COLLECTION_TYPE_ID,
+    self::DIGITAL_OBJECT_USAGE_ID,
+    self::MEDIA_TYPE_ID,
+    self::RELATION_TYPE_ID,
+    self::RELATION_NOTE_TYPE_ID,
+    self::TERM_RELATION_TYPE_ID,
+    self::ROOT_ID,
+    self::STATUS_TYPE_ID,
+    self::PUBLICATION_STATUS_ID
+  );
 
   public function __toString()
   {
@@ -55,10 +73,17 @@ class QubitTaxonomy extends BaseTaxonomy
     return (string) $this->getName();
   }
 
+  public static function addEditableTaxonomyCriteria($criteria)
+  {
+    $criteria->add(QubitTaxonomy::ID, self::$lockedTaxonomies, Criteria::NOT_IN);
+
+    return $criteria;
+  }
+
   public static function getEditableTaxonomies()
   {
     $criteria = new Criteria;
-    $criteria->add(QubitTaxonomy::ID, array(QubitTaxonomy::QUBIT_SETTING_LABEL_ID, QubitTaxonomy::COLLECTION_TYPE_ID), Criteria::NOT_IN);
+    $criteria = self::addEditableTaxonomyCriteria($criteria);
 
     // Add criteria to sort by name with culture fallback
     $criteria->addAscendingOrderByColumn('name');
@@ -67,5 +92,4 @@ class QubitTaxonomy extends BaseTaxonomy
 
     return QubitTaxonomy::get($criteria);
   }
-
 }

@@ -12,8 +12,6 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     PARENT_ID = 'q_physical_object.PARENT_ID',
     LFT = 'q_physical_object.LFT',
     RGT = 'q_physical_object.RGT',
-    CREATED_AT = 'q_physical_object.CREATED_AT',
-    UPDATED_AT = 'q_physical_object.UPDATED_AT',
     SOURCE_CULTURE = 'q_physical_object.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
@@ -27,8 +25,6 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitPhysicalObject::PARENT_ID);
     $criteria->addSelectColumn(QubitPhysicalObject::LFT);
     $criteria->addSelectColumn(QubitPhysicalObject::RGT);
-    $criteria->addSelectColumn(QubitPhysicalObject::CREATED_AT);
-    $criteria->addSelectColumn(QubitPhysicalObject::UPDATED_AT);
     $criteria->addSelectColumn(QubitPhysicalObject::SOURCE_CULTURE);
 
     return $criteria;
@@ -103,19 +99,35 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (call_user_func_array(array($this, 'parent::__isset'), $args))
+    try
+    {
+      return call_user_func_array(array($this, 'QubitObject::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('physicalObjectsRelatedByparentId' == $name)
     {
       return true;
     }
 
-    if (call_user_func_array(array($this->getCurrentphysicalObjectI18n($options), '__isset'), $args))
+    if ('physicalObjectI18ns' == $name)
     {
       return true;
     }
 
-    if (!empty($options['cultureFallback']) && call_user_func_array(array($this->getCurrentphysicalObjectI18n(array('sourceCulture' => true) + $options), '__isset'), $args))
+    try
     {
-      return true;
+      if (!$value = call_user_func_array(array($this->getCurrentphysicalObjectI18n($options), '__isset'), $args) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentphysicalObjectI18n(array('sourceCulture' => true) + $options), '__isset'), $args);
+      }
+
+      return $value;
+    }
+    catch (sfException $e)
+    {
     }
 
     if ('ancestors' == $name)
@@ -128,7 +140,7 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       return true;
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __get($name)
@@ -141,24 +153,59 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    if (null !== $value = call_user_func_array(array($this, 'parent::__get'), $args))
+    try
     {
-      return $value;
+      return call_user_func_array(array($this, 'QubitObject::__get'), $args);
+    }
+    catch (sfException $e)
+    {
     }
 
-    if (null !== $value = call_user_func_array(array($this->getCurrentphysicalObjectI18n($options), '__get'), $args))
+    if ('physicalObjectsRelatedByparentId' == $name)
     {
-      if (!empty($options['cultureFallback']) && 1 > strlen($value))
+      if (!isset($this->refFkValues['physicalObjectsRelatedByparentId']))
       {
-        $value = call_user_func_array(array($this->getCurrentphysicalObjectI18n(array('sourceCulture' => true) + $options), '__get'), $args);
+        if (!isset($this->id))
+        {
+          $this->refFkValues['physicalObjectsRelatedByparentId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['physicalObjectsRelatedByparentId'] = self::getphysicalObjectsRelatedByparentIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['physicalObjectsRelatedByparentId'];
+    }
+
+    if ('physicalObjectI18ns' == $name)
+    {
+      if (!isset($this->refFkValues['physicalObjectI18ns']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['physicalObjectI18ns'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['physicalObjectI18ns'] = self::getphysicalObjectI18nsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['physicalObjectI18ns'];
+    }
+
+    try
+    {
+      if (1 > strlen($value = call_user_func_array(array($this->getCurrentphysicalObjectI18n($options), '__get'), $args)) && !empty($options['cultureFallback']))
+      {
+        return call_user_func_array(array($this->getCurrentphysicalObjectI18n(array('sourceCulture' => true) + $options), '__get'), $args);
       }
 
       return $value;
     }
-
-    if (!empty($options['cultureFallback']) && null !== $value = call_user_func_array(array($this->getCurrentphysicalObjectI18n(array('sourceCulture' => true) + $options), '__get'), $args))
+    catch (sfException $e)
     {
-      return $value;
     }
 
     if ('ancestors' == $name)
@@ -200,6 +247,8 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
 
       return $this->values['descendants'];
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -212,7 +261,7 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       $options = $args[2];
     }
 
-    call_user_func_array(array($this, 'parent::__set'), $args);
+    call_user_func_array(array($this, 'QubitObject::__set'), $args);
 
     call_user_func_array(array($this->getCurrentphysicalObjectI18n($options), '__set'), $args);
 
@@ -229,44 +278,48 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       $options = $args[1];
     }
 
-    call_user_func_array(array($this, 'parent::__unset'), $args);
+    call_user_func_array(array($this, 'QubitObject::__unset'), $args);
 
     call_user_func_array(array($this->getCurrentphysicalObjectI18n($options), '__unset'), $args);
 
     return $this;
   }
 
+  public function clear()
+  {
+    foreach ($this->physicalObjectI18ns as $physicalObjectI18n)
+    {
+      $physicalObjectI18n->clear();
+    }
+
+    return parent::clear();
+  }
+
   public function save($connection = null)
   {
-    $affectedRows = 0;
-
-    $affectedRows += parent::save($connection);
+    parent::save($connection);
 
     foreach ($this->physicalObjectI18ns as $physicalObjectI18n)
     {
-      $physicalObjectI18n->setid($this->id);
+      $physicalObjectI18n->id = $this->id;
 
-      $affectedRows += $physicalObjectI18n->save($connection);
+      $physicalObjectI18n->save($connection);
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     $this->updateNestedSet($connection);
 
-    $affectedRows += parent::insert($connection);
+    parent::insert($connection);
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     // Update nested set keys only if parent id has changed
     if (isset($this->values['parentId']))
     {
@@ -294,9 +347,9 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       }
     }
 
-    $affectedRows += parent::update($connection);
+    parent::update($connection);
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -306,14 +359,12 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
-    $this->refresh(array('connection' => $connection));
+    $this->clear();
     $this->deleteFromNestedSet($connection);
 
-    $affectedRows += parent::delete($connection);
+    parent::delete($connection);
 
-    return $affectedRows;
+    return $this;
   }
 
   public static function addJointypeCriteria(Criteria $criteria)
@@ -350,26 +401,6 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     return self::addphysicalObjectsRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $physicalObjectsRelatedByparentId = null;
-
-  public function getphysicalObjectsRelatedByparentId(array $options = array())
-  {
-    if (!isset($this->physicalObjectsRelatedByparentId))
-    {
-      if (!isset($this->id))
-      {
-        $this->physicalObjectsRelatedByparentId = QubitQuery::create();
-      }
-      else
-      {
-        $this->physicalObjectsRelatedByparentId = self::getphysicalObjectsRelatedByparentIdById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->physicalObjectsRelatedByparentId;
-  }
-
   public static function addphysicalObjectI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitPhysicalObjectI18n::ID, $id);
@@ -390,26 +421,6 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     return self::addphysicalObjectI18nsCriteriaById($criteria, $this->id);
   }
 
-  protected
-    $physicalObjectI18ns = null;
-
-  public function getphysicalObjectI18ns(array $options = array())
-  {
-    if (!isset($this->physicalObjectI18ns))
-    {
-      if (!isset($this->id))
-      {
-        $this->physicalObjectI18ns = QubitQuery::create();
-      }
-      else
-      {
-        $this->physicalObjectI18ns = self::getphysicalObjectI18nsById($this->id, array('self' => $this) + $options);
-      }
-    }
-
-    return $this->physicalObjectI18ns;
-  }
-
   public function getCurrentphysicalObjectI18n(array $options = array())
   {
     if (!empty($options['sourceCulture']))
@@ -422,17 +433,13 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       $options['culture'] = sfPropel::getDefaultCulture();
     }
 
-    if (!isset($this->physicalObjectI18ns[$options['culture']]))
+    $physicalObjectI18ns = $this->physicalObjectI18ns->indexBy('culture');
+    if (!isset($physicalObjectI18ns[$options['culture']]))
     {
-      if (!isset($this->id) || null === $physicalObjectI18n = QubitPhysicalObjectI18n::getByIdAndCulture($this->id, $options['culture'], $options))
-      {
-        $physicalObjectI18n = new QubitPhysicalObjectI18n;
-        $physicalObjectI18n->setculture($options['culture']);
-      }
-      $this->physicalObjectI18ns[$options['culture']] = $physicalObjectI18n;
+      $physicalObjectI18ns[$options['culture']] = new QubitPhysicalObjectI18n;
     }
 
-    return $this->physicalObjectI18ns[$options['culture']];
+    return $physicalObjectI18ns[$options['culture']];
   }
 
   public function addAncestorsCriteria(Criteria $criteria)
@@ -484,7 +491,7 @@ unset($this->values['rgt']);
     }
     else
     {
-      $parent->refresh(array('connection' => $connection));
+      $parent->clear();
 
       if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
       {

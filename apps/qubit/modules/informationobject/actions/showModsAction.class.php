@@ -28,23 +28,4 @@
 
 class InformationObjectShowModsAction extends InformationObjectShowAction
 {
-  public function execute($request)
-  {
-    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'mods');
-
-    // run the core informationObject show action commands
-    parent::execute($request);
-
-    // add MODS specific commands
-    $this->modsTypes = QubitMods::getTypes($this->informationObject);
-    if ($digitalObject = $this->informationObject->getDigitalObject())
-    {
-      $this->locationUrl = 'http://'.$request->getHost().$request->getRelativeUrlRoot().$digitalObject->getFullPath();
-    }
-    else
-    {
-      $this->locationUrl = null;
-    }
-
-  }
 }

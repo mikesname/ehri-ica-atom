@@ -44,6 +44,7 @@ class SettingsGlobalForm extends sfForm
       'reference_image_maxwidth' => new sfWidgetFormInput,
       'hits_per_page' => new sfWidgetFormInput,
       'inherit_code_informationobject' => new sfWidgetFormSelectRadio(array('choices'=>array(1=>'yes', 0=>'no')), array('class'=>'radio')),
+      'sort_treeview_informationobject' => new sfWidgetFormSelectRadio(array('choices'=>array('none'=>'none', 'title'=>'title', 'identifierTitle'=> 'identifier - title')), array('class'=>'radio')),
       'multi_repository' => new sfWidgetFormSelectRadio(array('choices'=>array(1=>'yes', 0=>'no')), array('class'=>'radio'))
     ));
 
@@ -54,6 +55,7 @@ class SettingsGlobalForm extends sfForm
       'reference_image_maxwidth' => __('maximum image width (pixels)'),
       'hits_per_page' => __('results per page'),
       'inherit_code_informationobject' => __('inherit reference code (information object)'),
+      'sort_treeview_informationobject' => __('sort treeview (information object)'),
       'multi_repository' => __('multiple repositories')
     ));
 
@@ -64,6 +66,7 @@ class SettingsGlobalForm extends sfForm
       'reference_image_maxwidth' => __('The maximum width for derived reference images'),
       'hits_per_page' => __('The number of records shown per page on list pages'),
       'inherit_code_informationobject' => __('When set to &quot;yes&quot;, the reference code string will be built using the information object identifier plus the identifiers of all its ancestors'),
+      'sort_treeview_informationobject' => __('Determines whether to sort siblings in the information object treeview control and, if so, what sort criteria to use'),
       'multi_repository' => __('When set to &quot;no&quot;, the repository name is excluded from certain displays because it will be too repetitive')
     ));
 
@@ -97,8 +100,9 @@ class SettingsGlobalForm extends sfForm
 
     $this->validatorSchema['version'] = new sfValidatorString(array('required' => false));
     $this->validatorSchema['upload_dir'] = new sfValidatorString(array('required' => false));
-    $this->validatorSchema['multi_repository'] = new sfValidatorInteger(array('required' => false));
     $this->validatorSchema['inherit_code_informationobject'] = new sfValidatorInteger(array('required' => false));
+    $this->validatorSchema['sort_treeview_informationobject'] = new sfValidatorString(array('required' => false));
+    $this->validatorSchema['multi_repository'] = new sfValidatorInteger(array('required' => false));
 
     // Set decorator
     $decorator = new QubitWidgetFormSchemaFormatterList($this->widgetSchema);

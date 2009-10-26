@@ -35,7 +35,7 @@ class sfTranslatePluginTranslateComponent extends sfComponent
 
     ksort($this->messages);
 
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/vendor/jquery');
     $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/textarea');
     $this->getResponse()->addJavaScript('/sfTranslatePlugin/js/l10n_client');

@@ -23,16 +23,28 @@ class TermShowAction extends sfAction
   {
     $this->term = QubitTerm::getById($this->getRequestParameter('id'));
     $this->forward404Unless($this->term);
-  
-    $this->scopeNotes = $this->term->getNotesByType($noteTypeId = QubitTerm::SCOPE_NOTE_ID, $exclude = null);
-    $this->sourceNotes = $this->term->getNotesByType($noteTypeId = QubitTerm::SOURCE_NOTE_ID, $exclude = null);
-  
+    $request->setAttribute('term', $this->term);
+
+    $this->scopeNotes = $this->term->getNotesByType($options = array('noteTypeId' => QubitTerm::SCOPE_NOTE_ID));
+    $this->sourceNotes = $this->term->getNotesByType($options = array('noteTypeId' => QubitTerm::SOURCE_NOTE_ID));
+    $this->displayNotes = $this->term->getNotesByType($options = array('noteTypeId' => QubitTerm::DISPLAY_NOTE_ID));
+
+    $this->children = $this->term->getChildren(array('sortBy' => 'name'));
+
+    $this->uses    = QubitRelation::getRelationsByObjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_EQUIVALENCE_ID));
+    $this->useFors = QubitRelation::getRelationsBySubjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_EQUIVALENCE_ID));
+    $this->associateRelations = QubitRelation::getRelationsBySubjectOrObjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_ASSOCIATIVE_ID));
+
+    // Count related object for delete confirmation
+    $this->relatedObjectCount = $this->term->getRelatedObjectCount();
+    $this->relatedEventCount = $this->term->getRelatedEventCount();
+    $this->descendantCount = count($this->term->getDescendants());
+
     //determine if user has edit priviliges
     $this->editCredentials = false;
     if (SecurityPriviliges::editCredentials($this->getUser(), 'term'))
     {
       $this->editCredentials = true;
     }
-  
   }
 }

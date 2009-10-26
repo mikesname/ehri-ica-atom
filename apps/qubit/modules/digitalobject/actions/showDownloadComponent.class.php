@@ -45,13 +45,13 @@ class DigitalObjectShowDownloadComponent extends sfComponent
         break;
       case QubitTerm::MASTER_ID:
       default:
-        $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType());
+        $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
     }
 
     // If no representation found, then default to generic rep
     if (!$this->representation)
     {
-      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType());
+      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
     }
 
     // Build a fully qualified URL to this digital object asset

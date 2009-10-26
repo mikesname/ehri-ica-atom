@@ -33,10 +33,10 @@ class SettingsDeleteAction extends sfAction
     // TODO: else populate an error?
 
     $this->refreshSettings();
-    return $this->redirect('settings/list');
+    $this->redirect('settings/list');
   }
 
-  private function refreshSettings()
+  protected function refreshSettings()
   {
     // clear the file cache containing the settings
     $fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));

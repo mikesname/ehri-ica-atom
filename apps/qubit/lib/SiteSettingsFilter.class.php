@@ -43,10 +43,6 @@ class siteSettingsFilter extends sfFilter
     // overwrite/populate settings into sfConfig object
     sfConfig::add($settings);
 
-    // Set routing default parameters so that links to create, edit and show actions
-    // get routed to default actions
-    $this->context->getRouting()->setDefaultParameters(array('informationobject_template' => sfConfig::get('app_default_template_informationobject'), 'actor_template' => sfConfig::get('app_default_template_actor'), 'repository_template' => sfConfig::get('app_default_template_repository')));
-
     // execute next filter
     $filterChain->execute();
   }

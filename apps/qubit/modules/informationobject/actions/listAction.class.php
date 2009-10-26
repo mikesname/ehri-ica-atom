@@ -25,7 +25,6 @@
  */
 class InformationObjectListAction extends sfAction
 {
-
   /**
    * Display a paginated hitlist of information objects (top-level only)
    *
@@ -33,55 +32,70 @@ class InformationObjectListAction extends sfAction
    */
   public function execute($request)
   {
-    $options = array();
-    $this->repositoryId = 0;
+    if ($request->isXmlHttpRequest())
+    {
+      return $this->ajaxResponse($request);
+    }
+    else
+    {
+      $this->htmlResponse($request);
+    }
+  }
 
-    // HACK: Get root information object for _contextMenu partial
+  protected function ajaxResponse($request)
+  {
     $criteria = new Criteria;
-    $criteria->add(QubitInformationObject::PARENT_ID);
-    $root = QubitInformationObject::getOne($criteria);
-    $request->setAttribute('informationObject', $root);
+    $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID, Criteria::INNER_JOIN);
+    $criteria->add(QubitInformationObjectI18n::TITLE, $request->query.'%', Criteria::LIKE);
+    $criteria->add(QubitInformationObjectI18n::CULTURE, $this->getUser()->getCulture(), Criteria::EQUAL);
+    $criteria->addAscendingOrderByColumn(QubitInformationObjectI18n::TITLE);
+    $criteria->setLimit(10);
 
-    // Set parent id to the root node id
-    $options['parentId'] = $root->getId();
-
-    // Set culture and cultural fallback flag
-    $this->culture = $this->getUser()->getCulture();
-    $options['cultureFallback'] = true; // Do cultural fallback
-
-    // Set sort
-    $this->sort = $this->getRequestParameter('sort', 'titleUp');
-    $options['sort'] = $this->sort;
-
-    // Set current page
-    $this->page = $this->getRequestParameter('page', 1);
-    $options['page'] = $this->page;
-
-    // Filter by repository
-    if ($this->getRequestParameter('repository'))
+    $informationObjects = QubitInformationObject::get($criteria);
+    foreach ($informationObjects as $informationObject)
     {
-      $this->repositoryId = $this->getRequestParameter('repository');
-      $options['repositoryId'] = $this->repositoryId;
+      $results[] = array('id' => $informationObject->id, 'name' => $informationObject->title);
     }
 
-    // Filter by collection type
-    if ($this->getRequestParameter('collectionType'))
+    return $this->renderText(json_encode(array('Results' => $results)));
+  }
+
+  protected function htmlResponse($request)
+  {
+    $this->informationObject = QubitInformationObject::getById($request->id);
+
+    if (!isset($this->informationObject))
     {
-      $this->collectionType = $this->getRequestParameter('collectionType');
-      $options['collectionType'] = $this->collectionType;
+      $this->forward404();
     }
 
-    // Get QubitQuery collection of information objects (with pagination, fallback and sorting)
-    $this->informationObjects = QubitInformationObject::getList($options);
+    $request->setAttribute('informationObject', $this->informationObject);
 
-    //determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
+    $search = new QubitSearch;
+
+    $query = new Zend_Search_Lucene_Search_Query_Boolean;
+    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($request->id, 'parentId')), true);
+
+    if (isset($request->query))
     {
-      $this->editCredentials = true;
+      $query = $request->query;
     }
 
-    // determine if system is set to "multi-repository"
-    $this->multiRepository = (sfConfig::get('app_multi_repository') !== '0');
+    $query = QubitAcl::searchFilterByRepository($query, QubitAclAction::READ_ID);
+    $query = QubitAcl::searchFilterDrafts($query);
+
+    $this->pager = new QubitSearchPager;
+    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->setPage($request->page);
+
+    $ids = array();
+    foreach ($this->pager->getResults() as $hit)
+    {
+      $ids[] = $hit->getDocument()->id;
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitInformationObject::ID, $ids, Criteria::IN);
+    $this->informationObjects = QubitInformationObject::get($criteria);
   }
 }

@@ -28,7 +28,7 @@
  */
 class QubitXmlImport
 {
-  private
+  protected
     $errors = null,
     $rootObject = null;
 
@@ -49,7 +49,7 @@ class QubitXmlImport
     $qubitXmlImport = new QubitXmlImport;
 
     // load the XML document into a DOMXML object
-    $importDOM = self::loadXML($xmlStream, $options);
+    $importDOM = self::loadXML($xmlStream, $options = array('strictXmlParsing' => false));
 
     // if we were unable to parse the XML file at all
     if (empty($importDOM->documentElement))
@@ -87,8 +87,8 @@ class QubitXmlImport
       'dc' => 'dc',
       'dublinCore' => 'dc',
       'metadata' => 'dc',
-      'mets' => 'mets',
-      'mods' => 'mods',
+      //'mets' => 'mets',
+      //'mods' => 'mods',
       'ead' => 'ead',
       'add' => 'alouette'
     );
@@ -110,6 +110,17 @@ class QubitXmlImport
       if (array_key_exists($descriptor, $validSchemas))
       {
         $importSchema = $validSchemas[$descriptor];
+      }
+    }
+
+    // just validate EAD import for now until we can get StrictXMLParsing working for all schemas in the self::LoadXML function. Having problems right now loading schemas.
+    if ('ead' == $importSchema)
+    {
+      $importDOM->validate();
+      // if libxml threw errors, populate them to show in the template
+      foreach (libxml_get_errors() as $libxmlerror)
+      {
+        $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
       }
     }
 
@@ -157,6 +168,46 @@ class QubitXmlImport
       $importDOM->xpath = new DOMXPath($importDOM);
     }
 
+    // switch source culture if langusage is set in an EAD document
+    if ($importSchema == 'ead')
+    sfLoader::loadHelpers(array('I18N'));
+    {
+      if (is_object($langusage = $importDOM->xpath->query('//eadheader/profiledesc/langusage/language/@langcode')))
+      {
+        $sf_user = sfContext::getInstance()->getUser();
+        $currentCulture = $sf_user->getCulture();
+        $langCodeConvertor = new fbISO639_Map;
+        foreach ($langusage as $language)
+        {
+          $isocode = trim(preg_replace('/[\n\r\s]+/', ' ', $language->nodeValue));
+          // convert to Symfony culture code
+          if (!$twoCharCode = strtolower($langCodeConvertor->getID2($isocode)))
+          {
+            $twoCharCode = $isocode;
+          }
+          // Check to make sure that the selected language is supported with a Symfony i18n data file.
+          // If not it will cause a fatal error in the Language List component on every response.
+          try
+          {
+            format_language($twoCharCode, $twoCharCode);
+          }
+          catch (Exception $e)
+          {
+            $qubitXmlImport->errors[] = __('EAD "langmaterial" is set to').': "'.$isocode.'". '.__('This language is currently not supported.');
+            continue;
+          }
+
+          if ($currentCulture !== $twoCharCode)
+          {
+            $qubitXmlImport->errors[] = __('EAD "langmaterial" is set to').': "'.$isocode.'" ('.format_language($twoCharCode, 'en').'). '.__('Your XML document has been saved in this language and your user interface has just been switched to this language.');
+          }
+          $sf_user->setCulture($twoCharCode);
+          // can only set to one language, so have to break once the first valid language is encountered
+          break;
+        }
+      }
+    }
+
     unset($qubitXmlImport->schemaMap['processXSLT']);
 
     // go through schema map and populate objects/properties
@@ -179,17 +230,11 @@ class QubitXmlImport
         $class = 'Qubit'.$mapping['Object'];
         $currentObject = new $class;
 
-        // we need to save the object to get an ID
-        $currentObject->save();
-
         // set the rootObject to use for initial display in successful import
         if (!$qubitXmlImport->rootObject)
         {
-          $qubitXmlImport->rootObject =& $currentObject;
+          $qubitXmlImport->rootObject = $currentObject;
         }
-
-        // write the ID onto the current XML node for tracking
-        $domNode->setAttribute('xml:id', $currentObject->getId());
 
         // if a parent path is specified, try to parent the node
         if (empty($mapping['Parent']))
@@ -237,56 +282,77 @@ class QubitXmlImport
 
           if (is_object($nodeList2))
           {
-            foreach ($nodeList2 as $domNode2)
+
+            switch($name)
             {
-              // normalize the node text (trim whitespace manually); NB: this will strip any child elements, eg. HTML tags
-              $nodeValue = trim(preg_replace('/[\n\r\s]+/', ' ', $domNode2->nodeValue));
-
-              // if you want the full XML from the node, use this
-              $nodeXML = $domNode2->ownerDocument->saveXML($domNode2);
-
-              // set the parameters for the method call
-              if (empty($methodMap['Parameters']))
-              {
-                $parameters = array($nodeValue);
-              }
-              else
-              {
-                $parameters = array();
-                foreach ((array) $methodMap['Parameters'] as $parameter)
+              // hack: some multi-value elements (e.g. 'languages') need to get passed as one array instead of individual nodes values
+              case 'languages':
+                $langCodeConvertor = new fbISO639_Map;
+                $value = array();
+                foreach ($nodeList2 as $nodeee)
                 {
-                  // if the parameter begins with %, evaluate it as an XPath expression relative to the current node
-                  if ('%' == substr($parameter, 0, 1))
+                  if ($twoCharCode = $langCodeConvertor->getID2($nodeee->nodeValue))
                   {
-                    // evaluate the XPath expression
-                    $xPath = substr($parameter, 1);
-                    $result = $importDOM->xpath->query($xPath, $domNode2);
-
-                    if ($result->length > 1)
-                    {
-                      // convert nodelist into an array
-                      foreach ($result as $element)
-                      {
-                        $resultArray[] = $element->nodeValue;
-                      }
-                      $parameters[] = $resultArray;
-                    }
-                    else
-                    {
-                      // pass the node value unaltered; this provides an alternative to $nodeValue above
-                      $parameters[] = $result->item(0)->nodeValue;
-                    }
+                    $value[] = strtolower($twoCharCode);
                   }
                   else
                   {
-                    // NB: this will throw warnings when DOM is accessed directly from mapping and returns null objects
-                    eval('$parameters[] = '.$parameter.';');
+                    $value[] = $nodeee->nodeValue;
                   }
                 }
-              }
+                $currentObject->language = $value;
+                break;
+              default:
+                foreach ($nodeList2 as $domNode2)
+                {
+                  // normalize the node text (trim whitespace manually); NB: this will strip any child elements, eg. HTML tags
+                  $nodeValue = trim(preg_replace('/[\n\r\s]+/', ' ', $domNode2->nodeValue));
 
-              // invoke the object and method defined in the schema map
-              call_user_func_array(array( & $currentObject, $methodMap['Method']), $parameters);
+                  // if you want the full XML from the node, use this
+                  $nodeXML = $domNode2->ownerDocument->saveXML($domNode2);
+                  // set the parameters for the method call
+                  if (empty($methodMap['Parameters']))
+                  {
+                    $parameters = array($nodeValue);
+                  }
+                  else
+                  {
+                    $parameters = array();
+                    foreach ((array) $methodMap['Parameters'] as $parameter)
+                    {
+                      // if the parameter begins with %, evaluate it as an XPath expression relative to the current node
+                      if ('%' == substr($parameter, 0, 1))
+                      {
+                        // evaluate the XPath expression
+                        $xPath = substr($parameter, 1);
+                        $result = $importDOM->xpath->query($xPath, $domNode2);
+
+                        if ($result->length > 1)
+                        {
+                          // convert nodelist into an array
+                          foreach ($result as $element)
+                          {
+                            $resultArray[] = $element->nodeValue;
+                          }
+                          $parameters[] = $resultArray;
+                        }
+                        else
+                        {
+                          // pass the node value unaltered; this provides an alternative to $nodeValue above
+                          $parameters[] = $result->item(0)->nodeValue;
+                        }
+                      }
+                      else
+                      {
+                        // NB: this will throw warnings when DOM is accessed directly from mapping and returns null objects
+                        eval('$parameters[] = '.$parameter.';');
+                      }
+                    }
+                  }
+
+                  // invoke the object and method defined in the schema map
+                  call_user_func_array(array( & $currentObject, $methodMap['Method']), $parameters);
+                }
             }
 
             unset($nodeList2);
@@ -295,6 +361,9 @@ class QubitXmlImport
 
         // save the object after it's fully-populated
         $currentObject->save();
+
+        // write the ID onto the current XML node for tracking
+        $domNode->setAttribute('xml:id', $currentObject->getId());
       }
     }
 
@@ -314,7 +383,7 @@ class QubitXmlImport
    * @param array $options optional parameters
    * @return DOMDocument an object representation of the XML document
    */
-  private static function loadXML($xmlStream, $options = array())
+  protected static function loadXML($xmlStream, $options = array())
   {
     libxml_use_internal_errors(true);
 

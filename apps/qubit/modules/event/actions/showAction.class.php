@@ -21,6 +21,8 @@ class EventShowAction extends sfAction
 {
   public function execute($request)
   {
+    sfLoader::loadHelpers(array('Qubit'));
+
     $event = QubitEvent::getById($request->id);
 
     if (!isset($event))
@@ -31,13 +33,19 @@ class EventShowAction extends sfAction
     $properties = array();
     $properties['id'] = $event->id;
 
+    $properties['resourceTitle'] = $event->getInformationObject()->getTitle();
     $properties['actorId'] = $event->actorId;
-    $properties['placeId'] = $event->placeId;
+
+    $properties['placeId'] = null;
+    if ($place = $event->getPlace())
+    {
+      $properties['placeId'] = $place->id;
+    }
     $properties['typeId'] = $event->typeId;
 
     $this->context->getConfiguration()->loadHelpers('Date');
-    $properties['year'] = format_date($event->startDate, 'yyyy');
-    $properties['endYear'] = format_date($event->endDate, 'yyyy');
+    $properties['startDate'] = collapse_date($event->startDate);
+    $properties['endDate'] = collapse_date($event->endDate);
 
     $properties['dateDisplay'] = $event->dateDisplay;
     $properties['description'] = $event->description;

@@ -29,22 +29,29 @@ class PhysicalObjectDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $physicalObject = QubitPhysicalObject::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($physicalObject);
+    $this->form = new sfForm;
 
-    $this->forward404Unless($this->hasRequestParameter('next'));
+    $this->physicalObject = QubitPhysicalObject::getById($request->id);
 
-    // Get related information objects (if any)
-    $informationObjects = QubitRelation::getRelatedObjectsBySubjectId('QubitInformationObject', $physicalObject->getId(),
-      array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    if (!isset($this->physicalObject))
+    {
+      $this->forward404();
+    }
 
-    // Delete physical object record from the database
-    $physicalObject->delete();
+    $criteria = new Criteria;
+    $criteria->add(QubitRelation::SUBJECT_ID, $this->physicalObject->id);
+    $criteria->addJoin(QubitRelation::OBJECT_ID, QubitInformationObject::ID);
+    $this->informationObjects = QubitInformationObject::get($criteria);
 
-    // Make the $next parameter into an absolute URL because redirect() expects
-    // an absolute URL or an array containing module and action
-    // (Pre-pend code copied from sfWebController->genUrl() method)
-    $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
-    return $this->redirect($next);
+    $this->form->setValidator('next', new sfValidatorUrl);
+    $this->form->setWidget('next', new sfWidgetFormInputHidden);
+
+    $this->form->bind($request->getGetParameters());
+    if ($request->isMethod('delete'))
+    {
+      $this->physicalObject->delete();
+
+      $this->redirect($request->next);
+    }
   }
 }

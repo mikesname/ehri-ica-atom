@@ -43,8 +43,6 @@ class sfValidatorString extends sfValidatorBase
 
     $this->addOption('max_length');
     $this->addOption('min_length');
-
-    $this->setOption('empty_value', '');
   }
 
   /**

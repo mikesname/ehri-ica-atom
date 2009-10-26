@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage view
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfPartialView.class.php 17468 2009-04-21 07:21:38Z fabien $
+ * @version    SVN: $Id: sfPartialView.class.php 17749 2009-04-29 11:54:22Z fabien $
  */
 class sfPartialView extends sfPHPView
 {
@@ -51,7 +51,7 @@ class sfPartialView extends sfPHPView
   }
 
   /**
-   * @param array $partialvars
+   * @param array $partialVars
    */
   public function setPartialVars(array $partialVars)
   {

@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>create_repository.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">create_repository.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[3]/a</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>AFV</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorized_form_of_name</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>parallel_form_of_name</td>
+	<td>Archives of the Lower Mainland</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>other_form_of_name</td>
+	<td>Lower Mainland Archives</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>type_id</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>type_id</td>
+	<td>label=Religious</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>view repositories</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>authorized form of name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Lower Mainland</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Lower Mainland Archives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>AFV</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Lower Mainland</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Lower Mainland Archives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Religious</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>street_address</td>
+	<td>1234 Sunshine Road</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>city</td>
+	<td>Sunshine</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>region</td>
+	<td>BC</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>country_code</td>
+	<td>label=Canada</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>postal_code</td>
+	<td>X0X 0X0</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>telephone</td>
+	<td>604-123-4567</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax</td>
+	<td>604-234-5678</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>sunshine@archives.ca</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>website</td>
+	<td>www.sunshine.ca</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contact_person</td>
+	<td>Miss Sunshine</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>primary_contact</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contact_type</td>
+	<td>Primary address</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contact_information_note</td>
+	<td>Contact note</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Contact information</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Primary address (primary contact)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1234 Sunshine Road</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sunshine</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>BC</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Canada</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>X0X 0X0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>telephone: 604-123-4567</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>fax: 604-234-5678</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>sunshine@archives.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=exact:http://www.sunshine.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>contact person: Miss Sunshine</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Contact note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>history</td>
+	<td>History field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>geocultural_context</td>
+	<td>Geographical and cultural context field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>mandates</td>
+	<td>Mandates/Sources of authority field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>internal_structures</td>
+	<td>Administrative structure field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>collecting_policies</td>
+	<td>Records management and collecting policies field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>buildings</td>
+	<td>Buildings field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>holdings</td>
+	<td>Archival and other holdings field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>finding_aids</td>
+	<td>Finding aids, guides and publications field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>opening_times</td>
+	<td>Opening times field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>access_conditions</td>
+	<td>Conditions and requirements field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>disabled_access</td>
+	<td>Accessibility field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>research_services</td>
+	<td>Research services field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reproduction_services</td>
+	<td>Reproduction services field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>public_facilities</td>
+	<td>Public areas field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>desc_identifier</td>
+	<td>Description identifier field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>desc_institution_identifier</td>
+	<td>Institution responsible identifier field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>desc_rules</td>
+	<td>Rules or conventions field</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>desc_status_id</td>
+	<td>label=Final</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>desc_detail_id</td>
+	<td>label=Partial</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>desc_revision_history</td>
+	<td>Dates of creation, revision and deletion field</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>language_code</td>
+	<td>label=Apache Languages</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//option[@value='apa']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>script_code</td>
+	<td>label=Ethiopic</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//option[@value='Ethi']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>desc_sources</td>
+	<td>Sources field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>new_maintenance_note</td>
+	<td>Maintenance notes field</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>history</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>geographical and cultural context</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mandates/Sources of authority</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>structure</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>records management and collecting policies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>buildings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>holdings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>finding aids, guides and publications</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>opening times</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>access conditions and requirements</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>accessibility</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>research services</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>reproduction services</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>public areas</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>description identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>institution identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>rules or conventions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>level of detail</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>dates of creation, revision and deletion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>languages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>scripts</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>sources</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance notes field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>History field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Geographical and cultural context field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mandates/Sources of authority field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Administrative structure field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Records management and collecting policies field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Buildings field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archival and other holdings field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Finding aids, guides and publications field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Opening times field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Conditions and requirements field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Accessibility field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Research services field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Reproduction services field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Public areas field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Description identifier field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Institution responsible identifier field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Rules or conventions field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Final</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Partial</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Dates of creation, revision and deletion field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Apache Languages</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Ethiopic</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sources field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance notes field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list repositories</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Religious</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Canada</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>country</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Canada</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

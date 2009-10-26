@@ -28,7 +28,7 @@
     </div>
 
     <?php echo $form->username->renderRow() ?>
-    <?php echo $form->email->renderRow(null, 'E-mail address') ?>
+    <?php echo $form->email->label('E-mail address')->renderRow() ?>
 
     <div>
       <?php $settings = json_encode(array('password' => array('strengthTitle' => 'Password strength:', 'hasWeaknesses' => 'To make your password stronger:', 'tooShort' => 'Make it at least six characters', 'addLowerCase' => 'Add lowercase letters', 'addUpperCase' => 'Add uppercase letters', 'addNumbers' => 'Add numbers', 'addPunctuation' => 'Add punctuation', 'sameAsUsername' => 'Make it different from your username', 'confirmSuccess' => 'yes', 'confirmFailure' => 'no', 'confirmTitle' => 'Passwords match:', 'username' => ''))) ?>

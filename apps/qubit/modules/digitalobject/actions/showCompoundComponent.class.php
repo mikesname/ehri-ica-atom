@@ -34,10 +34,11 @@ class DigitalObjectShowCompoundComponent extends sfComponent
    */
   public function execute($request)
   {
-    // Make sure that this 'display_as_compound_object' is set to yes
-    $displayAsCompoundProp = QubitProperty::getOneByObjectIdAndName($this->informationObject->getId(), 'display_as_compound_object');
+    // Make sure that this 'displayAsCompound' is set to yes
+    $displayAsCompoundProp = QubitProperty::getOneByObjectIdAndName($this->digitalObject->id, 'displayAsCompound');
     $this->isCompoundDigitalObject = (is_null($displayAsCompoundProp)) ? false : true;
-    $this->masterDigitalObject = $this->informationObject->getDigitalObject();
+    $this->masterDigitalObject = $this->digitalObject;
+    $this->informationObject = $this->digitalObject->informationObject;
 
     //determine if user has edit priviliges
     $this->editCredentials = false;
@@ -49,7 +50,7 @@ class DigitalObjectShowCompoundComponent extends sfComponent
     // Find all digital objects of child info objects
     $criteria = new Criteria;
     $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitInformationObject::PARENT_ID, $this->informationObject->getId(), Criteria::EQUAL);
+    $criteria->add(QubitInformationObject::PARENT_ID, $this->digitalObject->informationObjectId, Criteria::EQUAL);
 
     // Show two results on page with pager
     $this->page = $request->getParameter('page', 1);
@@ -82,7 +83,14 @@ class DigitalObjectShowCompoundComponent extends sfComponent
     }
 
     // Link for prev/next page
-    $this->currentObjectRoute = 'informationobject/show?id='.$this->informationObject->getId();
+    if ('informationobject' == sfContext::getInstance()->getModuleName())
+    {
+      $this->currentObjectRoute = array('module' => 'informationobject', 'action' => 'show', 'id' => $this->informationObject->id);
+    }
+    else if ('digitalobject' == sfContext::getInstance()->getModuleName())
+    {
+      $this->currentObjectRoute = array('module' => 'digitalobject', 'action' => 'edit', 'id' => $this->digitalObject->id);
+    }
 
     $this->pager = $pager;
   }

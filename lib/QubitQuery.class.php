@@ -93,7 +93,7 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
           $objects = array();
           foreach ($this->objects as $object)
           {
-            $objects[call_user_func(array($object, 'get'.$this->indexByName))] = $object;
+            $objects[$object[$this->indexByName]] = $object;
           }
 
           $this->objects = $objects;
@@ -183,9 +183,17 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
 
   public function __get($name)
   {
+    if ('transient' === $name)
+    {
+      return $this->objects;
+    }
+
     list ($objects, $sorted) = $this->getObjects($this);
 
-    return $this->objects[$name];
+    if (isset($this->objects[$name]))
+    {
+      return $this->objects[$name];
+    }
   }
 
   public function offsetGet($offset)
@@ -195,8 +203,33 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
     return call_user_func_array(array($this, '__get'), $args);
   }
 
+  public function __set($name, $value)
+  {
+    if (null === $name)
+    {
+      $this->objects[] = $value;
+    }
+
+    if (isset($this->indexByName))
+    {
+      $value[$this->indexByName] = $name;
+      $this->objects[$name] = $value;
+
+      // HACK
+      if (isset($this->parent))
+      {
+        $this->parent[] = $value;
+      }
+    }
+
+    return $this;
+  }
+
   public function offsetSet($offset, $value)
   {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__set'), $args);
   }
 
   public function offsetUnset($offset)

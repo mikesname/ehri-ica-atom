@@ -16,7 +16,7 @@
  * @package    symfony
  * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWidgetFormSchema.class.php 17587 2009-04-24 18:41:19Z Kris.Wallsmith $
+ * @version    SVN: $Id: sfWidgetFormSchema.class.php 21875 2009-09-11 05:54:39Z fabien $
  */
 class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 {
@@ -34,8 +34,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     $formFormatters = array(),
     $options        = array(),
     $fields         = array(),
-    $positions      = array(),
-    $helps          = array();
+    $positions      = array();
 
   /**
    * Constructor.
@@ -55,6 +54,8 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    * @param array $attributes An array of default HTML attributes
    * @param array $labels     An array of HTML labels
    * @param array $helps      An array of help texts
+   *
+   * @throws InvalidArgumentException when the passed fields not null or array
    *
    * @see sfWidgetForm
    */
@@ -78,14 +79,14 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
     }
 
     $this->setLabels($labels);
-    $this->helps = $helps;
+    $this->setHelps($helps);
   }
 
   /**
    * Sets the default value for a field.
    *
-   * @param string The field name
-   * @param string The default value (required - the default value is here because PHP do not allow signature changes with inheritance)
+   * @param string $name  The field name
+   * @param string $value The default value (required - the default value is here because PHP do not allow signature changes with inheritance)
    */
   public function setDefault($name, $value = null)
   {
@@ -95,7 +96,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Gets the default value of a field.
    *
-   * @param  string The field name (required - the default value is here because PHP do not allow signature changes with inheritance)
+   * @param string $name The field name (required - the default value is here because PHP do not allow signature changes with inheritance)
    *
    * @return string The default value
    */
@@ -107,9 +108,9 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets the default values for the widget.
    *
-   * @param array The default values for the widget
+   * @param array $values The default values for the widget
    */
-  public function setDefaults($values)
+  public function setDefaults(array $values)
   {
     foreach ($this->fields as $name => $widget)
     {
@@ -123,7 +124,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Returns the defaults values for the widget schema.
    *
-   * @param array An array of default values
+   * @return array An array of default values
    */
   public function getDefaults()
   {
@@ -140,8 +141,8 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Adds a form formatter.
    *
-   * @param string                      $name       The formatter name
-   * @param sfWidgetFormSchemaFormatter $formatter  An sfWidgetFormSchemaFormatter instance
+   * @param string                      $name      The formatter name
+   * @param sfWidgetFormSchemaFormatter $formatter An sfWidgetFormSchemaFormatter instance
    */
   public function addFormFormatter($name, sfWidgetFormSchemaFormatter $formatter)
   {
@@ -173,7 +174,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    * }
    * </pre>
    *
-   * @param string $name  New default formatter name
+   * @param string $name New default formatter name
    */
   static public function setDefaultFormFormatterName($name)
   {
@@ -183,7 +184,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets the form formatter name to use when rendering the widget schema.
    *
-   * @param string $name  The form formatter name
+   * @param string $name The form formatter name
    */
   public function setFormFormatterName($name)
   {
@@ -205,7 +206,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * @return sfWidgetFormSchemaFormatter sfWidgetFormSchemaFormatter instance
    *
-   * @throws InvalidArgumentException
+   * @throws InvalidArgumentException when the form formatter not exists
    */
   public function getFormFormatter()
   {
@@ -240,7 +241,9 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * However, you CAN use other variations, such as actions[%s] (note the s).
    *
-   * @param string $format  The format string (must contain a %s for the name placeholder)
+   * @param string $format The format string (must contain a %s for the name placeholder)
+   *
+   * @throws InvalidArgumentException when no %s exists in the format
    */
   public function setNameFormat($format)
   {
@@ -267,7 +270,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *
    * @param array $labels  An array of label names
    */
-  public function setLabels($labels)
+  public function setLabels(array $labels)
   {
     foreach ($this->fields as $name => $widget)
     {
@@ -298,8 +301,10 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets a label.
    *
-   * @param string $name   The field name
-   * @param string $value  The label name (required - the default value is here because PHP do not allow signature changes with inheritance)
+   * @param string $name  The field name
+   * @param string $value The label name (required - the default value is here because PHP do not allow signature changes with inheritance)
+   *
+   * @throws InvalidArgumentException when you try to set a label on a none existing widget
    */
   public function setLabel($name, $value = null)
   {
@@ -325,6 +330,8 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    * @param  string $name  The field name (required - the default value is here because PHP do not allow signature changes with inheritance)
    *
    * @return string The label name or an empty string if it is not defined
+   *
+   * @throws InvalidArgumentException when you try to get a label for a none existing widget
    */
   public function getLabel($name = null)
   {
@@ -347,44 +354,87 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets the help texts to render for each field.
    *
-   * @param array $helps  An array of help texts
+   * @param array $helps An array of help texts
    */
-  public function setHelps($helps)
+  public function setHelps(array $helps)
   {
-    $this->helps = $helps;
+    foreach ($this->fields as $name => $widget)
+    {
+      if (array_key_exists($name, $helps))
+      {
+        $widget->setHelp($helps[$name]);
+      }
+    }
   }
 
   /**
-   * Sets the help texts.
+   * Gets the help texts.
    *
    * @return array An array of help texts
    */
   public function getHelps()
   {
-    return $this->helps;
+    $helps = array();
+
+    foreach ($this->fields as $name => $widget)
+    {
+      $helps[$name] = $widget->getHelp();
+    }
+
+    return $helps;
   }
 
   /**
    * Sets a help text.
    *
-   * @param string $name  The field name
-   * @param string $help  The help text
+   * @param string $name The field name
+   * @param string $value The help name (required - the default value is here because PHP do not allow signature changes with inheritance)
+   *
+   * @throws InvalidArgumentException when you try to set a help on a none existing widget
    */
-  public function setHelp($name, $help)
+  public function setHelp($name, $value = null)
   {
-    $this->helps[$name] = $help;
+    if (2 == func_num_args())
+    {
+      if (!isset($this->fields[$name]))
+      {
+        throw new InvalidArgumentException(sprintf('Unable to set the help on an unexistant widget ("%s").', $name));
+      }
+
+      $this->fields[$name]->setHelp($value);
+    }
+    else
+    {
+      // set the help for this widget schema
+      parent::setHelp($name);
+    }
   }
 
   /**
-   * Gets a text help by field name.
+   * Gets a help text by field name.
    *
-   * @param  string $name  The field name
+   * @param string $name The field name (required - the default value is here because PHP do not allow signature changes with inheritance)
    *
    * @return string The help text or an empty string if it is not defined
+   *
+   * @throws InvalidArgumentException when you try to get a help for a none existing widget
    */
-  public function getHelp($name)
+  public function getHelp($name = null)
   {
-    return array_key_exists($name, $this->helps) ? $this->helps[$name] : '';
+    if (1 == func_num_args())
+    {
+      if (!isset($this->fields[$name]))
+      {
+        throw new InvalidArgumentException(sprintf('Unable to get the help on an unexistant widget ("%s").', $name));
+      }
+
+      return $this->fields[$name]->getHelp();
+    }
+    else
+    {
+      // help for this widget schema
+      return parent::getHelp();
+    }
   }
 
   /**
@@ -418,7 +468,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
       $javascripts = array_merge($javascripts, $field->getJavaScripts());
     }
 
-    return $javascripts;
+    return array_unique($javascripts);
   }
 
   /**
@@ -442,12 +492,14 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Renders a field by name.
    *
-   * @param  string  $name        The field name
-   * @param  string  $value       The field value
-   * @param  array   $attributes  An array of HTML attributes to be merged with the current HTML attributes
-   * @param  array   $attributes  An array of errors for the field
+   * @param string $name       The field name
+   * @param string $value      The field value
+   * @param array  $attributes An array of HTML attributes to be merged with the current HTML attributes
+   * @param array  $errors     An array of errors for the field
    *
-   * @return string  An HTML string representing the rendered widget
+   * @return string An HTML string representing the rendered widget
+   *
+   * @throws InvalidArgumentException when the widget not exist
    */
   public function renderField($name, $value = null, $attributes = array(), $errors = array())
   {
@@ -471,12 +523,14 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Renders the widget.
    *
-   * @param  string $name        The name of the HTML widget
-   * @param  mixed  $values      The values of the widget
-   * @param  array  $attributes  An array of HTML attributes
-   * @param  array  $errors      An array of errors
+   * @param string $name       The name of the HTML widget
+   * @param mixed  $values     The values of the widget
+   * @param array  $attributes An array of HTML attributes
+   * @param array  $errors     An array of errors
    *
    * @return string An HTML representation of the widget
+   *
+   * @throws InvalidArgumentException when values type is not array|ArrayAccess
    */
   public function render($name, $values = array(), $attributes = array(), $errors = array())
   {
@@ -540,7 +594,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Gets errors that need to be included in global errors.
    *
-   * @param  array  $errors  An array of errors
+   * @param array $errors An array of errors
    *
    * @return string An HTML representation of global errors for the widget
    */
@@ -578,9 +632,9 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Generates a name.
    *
-   * @param string $name  The name
+   * @param string $name The name
    *
-   * @param string The generated name
+   * @return string The generated name
    */
   public function generateName($name)
   {
@@ -616,7 +670,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets the parent widget schema.
    *
-   * @parent sfWidgetFormSchema $parent  The parent widget schema
+   * @params sfWidgetFormSchema $parent  The parent widget schema
    */
   public function setParent(sfWidgetFormSchema $parent = null)
   {
@@ -626,7 +680,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Returns true if the schema has a field with the given name (implements the ArrayAccess interface).
    *
-   * @param  string $name  The field name
+   * @param string $name The field name
    *
    * @return bool true if the schema has a field with the given name, false otherwise
    */
@@ -638,9 +692,9 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Gets the field associated with the given name (implements the ArrayAccess interface).
    *
-   * @param  string  $name  The field name
+   * @param string $name The field name
    *
-   * @return sfWidget The sfWidget instance associated with the given name, null if it does not exist
+   * @return sfWidget|null The sfWidget instance associated with the given name, null if it does not exist
    */
   public function offsetGet($name)
   {
@@ -650,8 +704,10 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets a field (implements the ArrayAccess interface).
    *
-   * @param string   $name    The field name
-   * @param sfWidget $widget  An sfWidget instance
+   * @param string   $name   The field name
+   * @param sfWidget $widget An sfWidget instance
+   *
+   * @throws InvalidArgumentException when the field is not instance of sfWidget
    */
   public function offsetSet($name, $widget)
   {
@@ -662,7 +718,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
     if (!isset($this->fields[$name]))
     {
-      $this->positions[] = $name;
+      $this->positions[] = (string) $name;
     }
 
     $this->fields[$name] = clone $widget;
@@ -677,12 +733,12 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Removes a field by name (implements the ArrayAccess interface).
    *
-   * @param string
+   * @param string $name field name
    */
   public function offsetUnset($name)
   {
     unset($this->fields[$name]);
-    if (false !== $position = array_search($name, $this->positions))
+    if (false !== $position = array_search((string) $name, $this->positions))
     {
       unset($this->positions[$position]);
 
@@ -715,16 +771,22 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
   /**
    * Sets the positions of the fields.
    *
-   * @param array An ordered array of field names
+   * @param array $positions An ordered array of field names
+   *
+   * @throws InvalidArgumentException when not all fields set in $positions
    *
    * @see getPositions()
    */
-  public function setPositions($positions)
+  public function setPositions(array $positions)
   {
     $positions = array_values($positions);
     if (array_diff($positions, array_keys($this->fields)) || array_diff(array_keys($this->fields), $positions))
     {
       throw new InvalidArgumentException('Positions must contains all field names.');
+    }
+    foreach ($positions as &$position)
+    {
+      $position = (string) $position;
     }
 
     $this->positions = $positions;
@@ -740,12 +802,18 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
    *  * sfWidgetFormSchema::LAST
    *  * sfWidgetFormSchema::FIRST
    *
-   * @param string   The field name to move
-   * @param constant The action (see above for all possible actions)
-   * @param string   The field name used for AFTER and BEFORE actions
+   * @param string   $field  The field name to move
+   * @param constant $action The action (see above for all possible actions)
+   * @param string   $pivot  The field name used for AFTER and BEFORE actions
+   *
+   * @throws InvalidArgumentException when field not exist
+   * @throws InvalidArgumentException when relative field not exist
+   * @throws LogicException           when you try to move a field without a relative field
+   * @throws LogicException           when the $action not exist
    */
   public function moveField($field, $action, $pivot = null)
   {
+    $field = (string) $field;
     if (false === $fieldPosition = array_search($field, $this->positions))
     {
       throw new InvalidArgumentException(sprintf('Field "%s" does not exist.', $field));
@@ -755,6 +823,7 @@ class sfWidgetFormSchema extends sfWidgetForm implements ArrayAccess
 
     if (!is_null($pivot))
     {
+      $pivot = (string) $pivot;
       if (false === $pivotPosition = array_search($pivot, $this->positions))
       {
         throw new InvalidArgumentException(sprintf('Field "%s" does not exist.', $pivot));

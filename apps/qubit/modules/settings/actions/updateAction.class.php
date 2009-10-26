@@ -46,7 +46,18 @@ class SettingsUpdateAction extends sfAction
     {
       // we are adding a new language
       sfLoader::loadHelpers(array('I18N'));
-
+      // Check to make sure that the selected language is supported with a Symfony i18n data file.
+      // If not it will cause a fatal error in the Language List component on every response.
+      // Can route the user to a warning page with more info in a later release, for now just
+      // return to the settings/list template without taking any action
+      try
+      {
+        format_language($this->getRequestParameter('language_code'), $this->getRequestParameter('language_code'));
+      }
+      catch (Exception $e)
+      {
+        $this->redirect(array('module' => 'settings', 'action' => 'list'));
+      }
       $setting = new QubitSetting;
       $setting->setName($this->getRequestParameter('language_code'));
       $setting->setScope('i18n_languages');
@@ -60,7 +71,7 @@ class SettingsUpdateAction extends sfAction
 
       // go directly back, do not update anything else
       $this->refreshSettings();
-      return $this->redirect('settings/list');
+      $this->redirect('settings/list');
     }
 
     // update any existing values
@@ -82,10 +93,10 @@ class SettingsUpdateAction extends sfAction
     }
 
     $this->refreshSettings();
-    return $this->redirect('settings/list');
+    $this->redirect('settings/list');
   }
 
-  private function refreshSettings()
+  protected function refreshSettings()
   {
     // clear the file cache containing the settings
     $fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));

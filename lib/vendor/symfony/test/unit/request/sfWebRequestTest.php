@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(36, new lime_output_color());
+$t = new lime_test(49, new lime_output_color());
 
 class myRequest extends sfWebRequest
 {
@@ -136,7 +136,7 @@ $t->is($request->getForwardedFor(), null, '->getForwardedFor() returns null if t
 $_SERVER['HTTP_X_FORWARDED_FOR'] = '10.0.0.1, 10.0.0.2';
 $t->is_deeply($request->getForwardedFor(), array('10.0.0.1', '10.0.0.2'), '->getForwardedFor() returns the value from HTTP_X_FORWARDED_FOR');
 
-// methods
+// ->getMethod() 
 $t->diag('methods');
 $_SERVER['REQUEST_METHOD'] = 'POST';
 $_POST['sf_method'] = 'PUT';
@@ -152,3 +152,62 @@ $_SERVER['REQUEST_METHOD'] = 'POST';
 unset($_POST['sf_method']);
 $request = new myRequest($dispatcher);
 $t->is($request->getMethod(), 'POST', '->getMethod() returns the "sf_method" parameter value if it exists and if the method is POST');
+
+// ->getScriptName()
+$t->diag('getScriptName');
+$_SERVER['SCRIPT_NAME']      = '/frontend_test.php';
+$_SERVER['ORIG_SCRIPT_NAME'] = '/frontend_test2.php';
+$request = new myRequest($dispatcher);
+$t->is($request->getScriptName(), '/frontend_test.php', '->getScriptName() returns the script name');
+
+unset($_SERVER['SCRIPT_NAME']);
+$request = new myRequest($dispatcher);
+$t->is($request->getScriptName(), '/frontend_test2.php', '->getScriptName() returns the script name if SCRIPT_NAME not set it use ORIG_SCRIPT_NAME');
+
+unset($_SERVER['ORIG_SCRIPT_NAME']);
+$request = new myRequest($dispatcher);
+$t->is($request->getScriptName(), '', '->getScriptName() returns the script name if SCRIPT_NAME and ORIG_SCRIPT_NAME not set it return empty');
+
+// ->getPathInfo()
+$t->diag('getPathInfo');
+$_SERVER['PATH_INFO'] = '/test/klaus';
+$_SERVER['REQUEST_URI'] = '/test/klaus2';
+$request = new myRequest($dispatcher);
+$t->is($request->getPathInfo(), '/test/klaus', '->getPathInfo() returns the url path value');
+
+$_SERVER['SPECIAL'] = '/special';
+$request = new myRequest($dispatcher, array(), array(), array('path_info_key' => 'SPECIAL'));
+$t->is($request->getPathInfo(), '/special', '->getPathInfo() returns the url path value use path_info_key');
+unset($_SERVER['SPECIAL']);
+
+unset($_SERVER['PATH_INFO']);
+$_SERVER['SCRIPT_NAME'] = '/frontend_test.php';
+$_SERVER['REQUEST_URI'] = '/frontend_test.php/test/klaus2';
+$_SERVER['QUERY_STRING'] = '';
+$request = new myRequest($dispatcher);
+$t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI');
+
+$_SERVER['QUERY_STRING'] = 'test';
+$_SERVER['REQUEST_URI']  = '/frontend_test.php/test/klaus2?test';
+$request = new myRequest($dispatcher);
+$t->is($request->getPathInfo(), '/test/klaus2', '->getPathInfo() returns the url path value if it not exists use default REQUEST_URI without query');
+unset($_SERVER['QUERY_STRING']);
+
+unset($_SERVER['REQUEST_URI']);
+$request = new myRequest($dispatcher);
+$t->is($request->getPathInfo(), '/', '->getPathInfo() returns the url path value if it not exists use default /');
+
+// ->addRequestParameters() ->getRequestParameters() ->fixParameters() 
+$t->diag('getPathInfo'); 
+$request = new myRequest($dispatcher); 
+$t->is($request->getRequestParameters(), array(), '->getRequestParameters() returns the request parameters default array'); 
+ 
+$request->addRequestParameters(array('test' => 'test')); 
+$t->is($request->getRequestParameters(), array('test' => 'test'), '->getRequestParameters() returns the request parameters'); 
+ 
+$request->addRequestParameters(array('test' => 'test')); 
+$t->is($request->getRequestParameters(), array('test' => 'test'), '->getRequestParameters() returns the request parameters allready exists'); 
+ 
+$request->addRequestParameters(array('_sf_ignore_cache' => 1, 'test2' => 'test2')); 
+$t->is($request->getRequestParameters(), array('test' => 'test', 'test2' => 'test2', '_sf_ignore_cache' => 1), '->getRequestParameters() returns the request parameters check fixParameters call for special _sf_ params'); 
+$t->is($request->getAttribute('sf_ignore_cache'), 1, '->getAttribute() check special param is set as attribute'); 

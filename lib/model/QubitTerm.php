@@ -22,6 +22,7 @@
  *
  * @package    qubit
  * @subpackage model
+ * @author     Peter Van Garderen <peter@artefactual.com>
  * @author     David Juhasz <david@artefactual.com>
  * @version    SVN: $Id$
  */
@@ -30,9 +31,11 @@ class QubitTerm extends BaseTerm
   //The following Term Ids are assigned constant values because they are used
   //in application code and can't rely on database id values, since these could be changed
 
+  // ROOT term id
+  const ROOT_ID = 110;
+
   //EventType taxonomy
   const CREATION_ID = 111;
-  const SUBJECT_ID = 112;
   const CUSTODY_ID = 113;
   const PUBLICATION_ID = 114;
   const CONTRIBUTION_ID = 115;
@@ -47,8 +50,9 @@ class QubitTerm extends BaseTerm
   const ARCHIVIST_NOTE_ID = 124;
   const GENERAL_NOTE_ID = 125;
   const OTHER_DESCRIPTIVE_DATA_ID = 126;
+  const MAINTENANCE_NOTE_ID = 127;
   //CollectionType taxonomy
-  const ARCHIVAL_MATERIAL_ID = 127;
+  const ARCHIVAL_MATERIAL_ID = 128;
   const PUBLISHED_MATERIAL_ID = 129;
   const ARTEFACT_MATERIAL_ID = 130;
   //ActorEntityType taxonomy
@@ -77,12 +81,30 @@ class QubitTerm extends BaseTerm
   //Actor name type taxonomy
   const PARALLEL_FORM_OF_NAME_ID = 148;
   const OTHER_FORM_OF_NAME_ID = 149;
+  //Actor relation type taxonomy
+  const HIERARCHICAL_RELATION_ID = 150;
+  const TEMPORAL_RELATION_ID = 151;
+  const FAMILY_RELATION_ID = 152;
+  const ASSOCIATIVE_RELATION_ID = 153;
+  // Actor relation note taxonomy
+  const RELATION_NOTE_DESCRIPTION_ID = 154;
+  const RELATION_NOTE_DATE_DISPLAY_ID = 155;
+  // Term relation taxonomy
+  const TERM_RELATION_EQUIVALENCE_ID = 156;
+  const TERM_RELATION_ASSOCIATIVE_ID = 157;
+  // Status types taxonomy
+  const STATUS_TYPE_PUBLICATION_ID = 158;
+  // Publication status taxonomy
+  const PUBLICATION_STATUS_DRAFT_ID = 159;
+  const PUBLICATION_STATUS_PUBLISHED_ID = 160;
+  // Name access point
+  const NAME_ACCESS_POINT_ID = 161;
 
   public function isProtected()
   {
     //The following terms cannot be edited by users because their values are used in application logic
-    return $this->getId() == QubitTerm::CREATION_ID ||
-    $this->getId() == QubitTerm::SUBJECT_ID ||
+    return $this->getId() == QubitTerm::ROOT_ID ||
+    $this->getId() == QubitTerm::CREATION_ID ||
     $this->getId() == QubitTerm::CUSTODY_ID ||
     $this->getId() == QubitTerm::PUBLICATION_ID ||
     $this->getId() == QubitTerm::CONTRIBUTION_ID ||
@@ -96,6 +118,7 @@ class QubitTerm extends BaseTerm
     $this->getId() == QubitTerm::ARCHIVIST_NOTE_ID ||
     $this->getId() == QubitTerm::GENERAL_NOTE_ID ||
     $this->getId() == QubitTerm::OTHER_DESCRIPTIVE_DATA_ID ||
+    $this->getId() == QubitTerm::MAINTENANCE_NOTE_ID ||
     $this->getId() == QubitTerm::ARCHIVAL_MATERIAL_ID ||
     $this->getId() == QubitTerm::PUBLISHED_MATERIAL_ID ||
     $this->getId() == QubitTerm::ARTEFACT_MATERIAL_ID ||
@@ -117,9 +140,20 @@ class QubitTerm extends BaseTerm
     $this->getId() == QubitTerm::ARTEFACT_ID ||
     $this->getId() == QubitTerm::HAS_PHYSICAL_OBJECT_ID ||
     $this->getId() == QubitTerm::PARALLEL_FORM_OF_NAME_ID ||
-    $this->getId() == QubitTerm::OTHER_FORM_OF_NAME_ID;
+    $this->getId() == QubitTerm::OTHER_FORM_OF_NAME_ID ||
+    $this->getId() == QubitTerm::HIERARCHICAL_RELATION_ID ||
+    $this->getId() == QubitTerm::TEMPORAL_RELATION_ID ||
+    $this->getId() == QubitTerm::FAMILY_RELATION_ID ||
+    $this->getId() == QubitTerm::ASSOCIATIVE_RELATION_ID ||
+    $this->getId() == QubitTerm::RELATION_NOTE_DESCRIPTION_ID ||
+    $this->getId() == QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID ||
+    $this->getId() == QubitTerm::TERM_RELATION_EQUIVALENCE_ID ||
+    $this->getId() == QubitTerm::TERM_RELATION_ASSOCIATIVE_ID ||
+    $this->getId() == QubitTerm::STATUS_TYPE_PUBLICATION_ID ||
+    $this->getId() == QubitTerm::PUBLICATION_STATUS_DRAFT_ID ||
+    $this->getId() == QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID ||
+    $this->getId() == QubitTerm::NAME_ACCESS_POINT_ID;
   }
-
 
   public function __toString()
   {
@@ -131,38 +165,55 @@ class QubitTerm extends BaseTerm
     return (string) $this->getName();
   }
 
-
-  public function setNote($userId, $note, $noteTypeId)
+  public function setRoot()
   {
-    $newNote = new QubitNote;
-    $newNote->setObjectId($this->getId());
-    $newNote->setScope('QubitTerm');
-    $newNote->setUserId($userId);
-    $newNote->setContent($note);
-    $newNote->setTypeId($noteTypeId);
-    $newNote->save();
+    $this->setParentId(QubitTerm::ROOT_ID);
   }
 
-  public function getNotesByType($noteTypeId = null, $excludeNoteTypeId = null)
+  public function delete($connection = null)
   {
-    $criteria = new Criteria;
-    $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
-    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
-    if ($noteTypeId)
+    // Cascade delete descendants
+    if (0 < count($children = $this->getChildren()))
     {
-      $criteria->add(QubitNote::TYPE_ID, $noteTypeId);
-    }
-    if ($excludeNoteTypeId)
-    {
-      $criteria->add(QubitNote::TYPE_ID, $excludeNoteTypeId, Criteria::NOT_EQUAL);
+      foreach ($children as $child)
+      {
+        $child->delete($connection);
+      }
     }
 
-    return QubitNote::get($criteria);
+    // Delete relations
+    $criteria = new Criteria;
+    $cton1 = $criteria->getNewCriterion(QubitRelation::OBJECT_ID, $this->id, Criteria::EQUAL);
+    $cton2 = $criteria->getNewCriterion(QubitRelation::SUBJECT_ID, $this->id, Criteria::EQUAL);
+    $cton1->addOr($cton2);
+    $criteria->add($cton1);
+
+    if (0 < count($relations = QubitRelation::get($criteria)))
+    {
+      foreach ($relations as $relation)
+      {
+        $relation->delete($connection);
+      }
+    }
+
+    // Delete relation to objects
+    $criteria = new Criteria;
+    $criteria->add(QubitObjectTermRelation::TERM_ID, $this->id, Criteria::EQUAL);
+
+    if (0 < count($otRelations = QubitObjectTermRelation::get($criteria)))
+    {
+      foreach ($otRelations as $otRelation)
+      {
+        $otRelation->delete($connection);
+      }
+    }
+
+    parent::delete($connection);
   }
 
   public function getRole()
   {
-    $notes = $this->getNotesByType($noteTypeId = QubitTerm::DISPLAY_NOTE_ID);
+    $notes = $this->getNotesByType($options = array('noteTypeId' => QubitTerm::DISPLAY_NOTE_ID));
 
     if (count($notes) > 0)
     {
@@ -366,68 +417,6 @@ class QubitTerm extends BaseTerm
   }
 
   /**
-   * Get a sorted, localized list of terms for the"term/browse" action
-   * with an option for culture fallback values in list.
-   *
-   * @param string   $culture localize list for $culture
-   * @param Criteria $criteria Propel criteria object
-   * @param array    $options array of additonal options
-   * @return QubitQuery array of QubitTermI18n objects
-   */
-  public static function getBrowseList($culture, $criteria, $options = array())
-  {
-    $sort = (isset($options['sort'])) ? $options['sort'] : 'termNameUp';
-    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
-
-    if (isset($options['taxonomyId']))
-    {
-      $criteria->add(QubitTerm::TAXONOMY_ID, $options['taxonomyId']);
-    }
-
-    // Add joins to get count of information objects related via object
-    // term relation. The 'object2' alias is necessary because the query
-    // silently adds a join on (QubitTerm::ID = QubitObject::ID).
-    $criteria->addAlias('object2', QubitObject::TABLE_NAME);
-    $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::INNER_JOIN);
-    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, 'object2.id', Criteria::INNER_JOIN);
-    $criteria->add('object2.class_name', 'QubitInformationObject', Criteria::EQUAL);
-    $criteria->addAsColumn('hits', 'COUNT('.QubitTerm::ID.')');
-    $criteria->addGroupByColumn(QubitTerm::ID);
-
-    switch($sort)
-    {
-      case 'hitsUp' :
-        $criteria->addAscendingOrderByColumn('hits');
-        break;
-      case 'hitsDown' :
-        $criteria->addDescendingOrderByColumn('hits');
-        break;
-      case 'termNameDown' :
-        $criteria->addDescendingOrderByColumn('name');
-        break;
-      case 'termNameUp' :
-      default :
-        $criteria->addAscendingOrderByColumn('name');
-    }
-
-    // Do source culture fallback
-    if ($cultureFallback === true)
-    {
-      // Add Fallback criteria
-      $options = array();
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
-    }
-    else
-    {
-      // Do straight joins without fallback
-      $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
-      $criteria->add(QubitTermI18n::CULTURE, $culture);
-    }
-
-    return QubitTerm::get($criteria);
-  }
-
-  /**
    * Get an aggregate count of all objects related to this term
    *
    * @return integer count of related objects
@@ -448,7 +437,7 @@ class QubitTerm extends BaseTerm
     return $count;
   }
 
-  private static function executeCount($sql)
+  protected static function executeCount($sql)
   {
     $conn = Propel::getConnection();
     $stmt = $conn->prepare($sql);
@@ -690,7 +679,6 @@ class QubitTerm extends BaseTerm
     $term = QubitTerm::getById(QubitTerm::CONTRIBUTION_ID);
     $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
 
-    // TODO: include unlocked event type terms that have been added to the taxonomy
     if (isset($options['include_custom']))
     {
       $criteria = new Criteria;
@@ -698,13 +686,8 @@ class QubitTerm extends BaseTerm
       $criteria->addAscendingOrderByColumn('name');
       $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
       $terms = QubitTerm::get($criteria);
-      foreach ($terms as $term)
-      {
-        // if (term is not locked)
-        // {
-        //   $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
-        // }
-      }
+
+      // TODO: include unlocked event type terms that have been added to the taxonomy
     }
 
     return $selectList;
@@ -723,8 +706,9 @@ class QubitTerm extends BaseTerm
     $selectList = array();
     $term = QubitTerm::getById(QubitTerm::CREATION_ID);
     $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
+    $term = QubitTerm::getById(QubitTerm::ACCUMULATION_ID);
+    $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
 
-    // TODO: include unlocked event type terms that have been added to the taxonomy
     if (isset($options['include_custom']))
     {
       $criteria = new Criteria;
@@ -732,16 +716,27 @@ class QubitTerm extends BaseTerm
       $criteria->addAscendingOrderByColumn('name');
       $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
       $terms = QubitTerm::get($criteria);
-      foreach ($terms as $term)
-      {
-        // if (term is not locked)
-        // {
-        //   $selectList[$term->getId()] = $term->getName(array('cultureFallback'=>true));
-        // }
-      }
+
+      // TODO: include unlocked event type terms that have been added to the taxonomy
     }
 
     return $selectList;
+  }
+
+   /**
+   * Return the Term Objects that represent
+   * ISAD(G) events/dates
+   *
+   */
+  public static function getIsadEventTypes($options = array())
+  {
+    $list = array();
+    $term = self::getById(QubitTerm::CREATION_ID);
+    $list[] = $term;
+    $term = self::getById(QubitTerm::ACCUMULATION_ID);
+    $list[] = $term;
+
+    return $list;
   }
 
   /**
@@ -756,5 +751,88 @@ class QubitTerm extends BaseTerm
     $criteria->add(QubitTerm::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
 
     return $criteria;
+  }
+
+  /**
+   * Get all terms related to the current term by an 'equivalence' relation.
+   * Allows specifying direction of relationship.
+   *
+   * @param array @options optional parameters
+   * @return QubitQuery collection of QubitTerm objects
+   */
+  public function getEquivalentTerms($options = array())
+  {
+    $direction = (isset($options['direction'])) ? $options['direction'] : 'both';
+
+    $criteria = new Criteria;
+    $criteria->add(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::EQUAL);
+
+    switch ($direction)
+    {
+      case 'subjectToObject':
+        $criteria->add(QubitRelation::SUBJECT_ID, $this->id, Criteria::EQUAL);
+        break;
+      case 'objectToSubject':
+        $criteria->add(QubitRelation::OBJECT_ID, $this->id, Criteria::EQUAL);
+        break;
+      case 'both':
+        $cton1 = $criteria->getNewCriterion(QubitRelation::SUBJECT_ID, $this->id, Criteria::EQUAL);
+        $cton2 = $criteria->getNewCriterion(QubitRelation::OBJECT_ID, $this->id, Criteria::EQUAL);
+        $cton1->addOr($cton2);
+        $criteria->add($cton1);
+        break;
+      default:
+        return;
+    }
+
+    if (0 == count($relations = QubitRelation::get($criteria)))
+    {
+
+      return;
+    }
+
+    foreach ($relations as $relation)
+    {
+      if ($this->id == $relation->subjectId)
+      {
+        $relatedTermIds[] = $relation->objectId;
+      }
+      else
+      {
+        $relatedTermIds[] = $relation->subjectId;
+      }
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::ID, $relatedTermIds, Criteria::IN);
+
+    return QubitTerm::get($criteria);
+  }
+
+  /**
+   * Get the direct descendents of the current term
+   *
+   * @param array $options optional paramters
+   * @return QubitQuery collection of QubitTerm objects
+   */
+  public function getChildren($options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::PARENT_ID, $this->id, Criteria::EQUAL);
+
+    $sortBy = (isset($options['sortBy'])) ? $options['sortBy'] : 'lft';
+
+    switch ($sortBy)
+    {
+      case 'name':
+        $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+        $criteria->addAscendingOrderByColumn('name');
+        break;
+      case 'lft':
+      default:
+        $criteria->addAscendingOrderByColumn('lft');
+    }
+
+    return QubitTerm::get($criteria, $options);
   }
 }

@@ -47,7 +47,11 @@ class DigitalObjectShowComponent extends sfComponent
     switch ($this->digitalObject->getMediaTypeId())
     {
       case QubitTerm::IMAGE_ID:
-        if ($this->digitalObject->isWebCompatibleImageFormat())
+        if ($this->digitalObject->showAsCompoundDigitalObject($this->usageType))
+        {
+          $this->showComponent = 'showCompound';
+        }
+        else if ($this->digitalObject->isWebCompatibleImageFormat())
         {
           $this->showComponent = 'showImage';
         }
@@ -56,14 +60,21 @@ class DigitalObjectShowComponent extends sfComponent
           $this->showComponent = 'showDownload';
         }
         break;
-      //case QubitTerm::AUDIO_ID:
-        //$this->showComponent = 'showAudio';
-        //break;
+      case QubitTerm::AUDIO_ID:
+        $this->showComponent = 'showAudio';
+        break;
       case QubitTerm::VIDEO_ID:
         $this->showComponent = 'showVideo';
         break;
-      case (QubitTerm::TEXT_ID):
-        $this->showComponent = 'showText';
+      case QubitTerm::TEXT_ID:
+        if ($this->digitalObject->showAsCompoundDigitalObject($this->usageType))
+        {
+          $this->showComponent = 'showCompound';
+        }
+        else
+        {
+          $this->showComponent = 'showText';
+        }
         break;
       default:
         $this->showComponent = 'showDownload';

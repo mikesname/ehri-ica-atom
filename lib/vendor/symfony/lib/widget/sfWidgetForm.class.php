@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage widget
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWidgetForm.class.php 15112 2009-01-30 17:34:34Z fabien $
+ * @version    SVN: $Id: sfWidgetForm.class.php 17749 2009-04-29 11:54:22Z fabien $
  */
 abstract class sfWidgetForm extends sfWidget
 {
@@ -41,6 +41,7 @@ abstract class sfWidgetForm extends sfWidget
     $this->addOption('needs_multipart', false);
     $this->addOption('default', null);
     $this->addOption('label', null);
+    $this->addOption('help', null);
 
     parent::__construct($options, $attributes);
   }
@@ -48,7 +49,7 @@ abstract class sfWidgetForm extends sfWidget
   /**
    * Sets the default value for the widget.
    *
-   * @param string The default value
+   * @param string $value The default value
    */
   public function setDefault($value)
   {
@@ -68,7 +69,7 @@ abstract class sfWidgetForm extends sfWidget
   /**
    * Sets the label for the widget.
    *
-   * @param string The label
+   * @param string $value The label
    */
   public function setLabel($value)
   {
@@ -83,6 +84,26 @@ abstract class sfWidgetForm extends sfWidget
   public function getLabel()
   {
     return $this->getOption('label');
+  }
+
+  /**
+   * Sets the help for the widget.
+   *
+   * @param string $value The help
+   */
+  public function setHelp($value)
+  {
+    $this->setOption('help', $value);
+  }
+
+  /**
+   * Returns the help for the widget.
+   *
+   * @return string The help
+   */
+  public function getHelp()
+  {
+    return $this->getOption('help');
   }
 
   /**
@@ -141,8 +162,8 @@ abstract class sfWidgetForm extends sfWidget
    * The id attribute is added automatically to the array of attributes if none is specified.
    * If uses for "id_format" option to generate the id.
    *
-   * @param  string The tag name
-   * @param  array  An array of HTML attributes to be merged with the default HTML attributes
+   * @param  string $tag        The tag name
+   * @param  array  $attributes An array of HTML attributes to be merged with the default HTML attributes
    *
    * @return string An HTML tag string
    */

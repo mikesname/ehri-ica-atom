@@ -92,7 +92,7 @@ class placeActions extends sfActions
 
     $place->save();
 
-    return $this->redirect('place/edit?id='.$place->getId());
+    $this->redirect('place/edit?id='.$place->getId());
   }
 
   public function executeDelete()
@@ -103,6 +103,6 @@ class placeActions extends sfActions
 
     $place->delete();
 
-    return $this->redirect('place/list');
+    $this->redirect('place/list');
   }
 }

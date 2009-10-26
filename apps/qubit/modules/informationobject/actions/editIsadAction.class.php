@@ -23,16 +23,86 @@
  * @package    qubit
  * @subpackage informationObject - initialize an editIsad template for updating an information object
  * @author     Peter Van Garderen <peter@artefactual.com>
+ * @author     Jesús García Crespo <correo@sevein.com>
  * @version    SVN: $Id$
  */
-
 class InformationObjectEditIsadAction extends InformationObjectEditAction
 {
+  // Arrays are not allowed in class constants
+  public static
+    $NAMES = array(
+      'accessConditions',
+      'accruals',
+      'acquisition',
+      'appraisal',
+      'archivalHistory',
+      'arrangement',
+      'creators',
+      'descriptionDetail',
+      'descriptionIdentifier',
+      'extentAndMedium',
+      'findingAids',
+      'identifier',
+      'institutionResponsibleIdentifier',
+      'languageOfDescription',
+      'language',
+      'levelOfDescription',
+      'locationOfCopies',
+      'locationOfOriginals',
+      'nameAccessPoints',
+      'physicalCharacteristics',
+      'placeAccessPoints',
+      'relatedUnitsOfDescription',
+      'repository',
+      'reproductionConditions',
+      'revisionHistory',
+      'rules',
+      'scopeAndContent',
+      'scriptOfDescription',
+      'script',
+      'sources',
+      'subjectAccessPoints',
+      'descriptionStatus',
+      'publicationStatus',
+      'title');
+
+  protected function addField($name)
+  {
+    parent::addField($name);
+
+    switch ($name)
+    {
+      case 'creators':
+        $criteria = new Criteria;
+        $this->informationObject->addEventsCriteria($criteria);
+        $criteria->add(QubitEvent::ACTOR_ID, null, Criteria::ISNOTNULL);
+        $criteria->add(QubitEvent::TYPE_ID, QubitTerm::CREATION_ID);
+
+        $values = array();
+        $choices = array();
+        foreach ($this->events = QubitEvent::get($criteria) as $event)
+        {
+          $values[] = $this->context->routing->generate(null, array('module' => 'actor', 'action' => 'show', 'id' => $event->actor->id));
+          $choices[$this->context->routing->generate(null, array('module' => 'actor', 'action' => 'show', 'id' => $event->actor->id))] = $event->actor;
+        }
+
+        $this->form->setDefault('creators', $values);
+        $this->form->setValidator('creators', new sfValidatorPass);
+        $this->form->setWidget('creators', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+
+        break;
+
+      case 'appraisal':
+        $this->form->setDefault($name, $this->informationObject[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
+    }
+  }
+
   public function execute($request)
   {
-    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'isad');
-
-    // run the core informationObject edit action commands
     parent::execute($request);
 
     // Get ISAD specific event types
@@ -40,7 +110,6 @@ class InformationObjectEditIsadAction extends InformationObjectEditAction
 
     // Get event dates and creator actorEvents
     $this->eventDates = $this->informationObject->getDates();
-    $this->creatorEvents = $this->informationObject->getActorEvents(array('eventTypeId' => QubitTerm::CREATION_ID));
 
     // Split notes into "Notes" (general notes), Title notes and Publication notes
     $this->notes = $this->informationObject->getNotesByType(array('noteTypeId' => QubitTerm::GENERAL_NOTE_ID));
@@ -48,39 +117,79 @@ class InformationObjectEditIsadAction extends InformationObjectEditAction
     $this->publicationNote = $this->informationObject->getNotesByType(array('noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
   }
 
+  protected function processField($field)
+  {
+    switch ($name = $field->getName())
+    {
+      case 'creators':
+        $filtered = $flipped = array();
+        foreach ($this->form->getValue('creators') as $value)
+        {
+          $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $value));
+          $filtered[$params['id']] = $flipped[$params['id']] = $params['id'];
+        }
+
+        foreach ($this->events as $event)
+        {
+          if (isset($flipped[$event->actor->id]))
+          {
+            unset($filtered[$event->actor->id]);
+          }
+          else
+          {
+            $event->delete();
+          }
+        }
+
+        foreach ($filtered as $id)
+        {
+          $event = new QubitEvent;
+          $event->actorId = $id;
+          $event->typeId = QubitTerm::CREATION_ID;
+
+          $this->informationObject->events[] = $event;
+        }
+
+        break;
+
+      default:
+        parent::processField($field);
+    }
+  }
+
   /**
    * Update ISAD notes
    *
    * @param QubitInformationObject $informationObject
    */
-  public function updateNotes()
+  protected function updateNotes()
   {
     $userId = $this->getUser()->getAttribute('user_id');
 
-    // Update publication notes (multiple)
-    foreach ((array) $this->getRequestParameter('new_publication_note') as $newPublicationNote)
-    {
-      if (0 < strlen($newPublicationNote))
-      {
-        $this->informationObject->setNote(array('userId' => $userId, 'note' => $newPublicationNote, 'noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
-      }
-    }
-
-    // Update (general) notes (multiple)
-    foreach ((array) $this->getRequestParameter('new_note') as $newNote)
-    {
-      if (0 < strlen($newNote))
-      {
-        $this->informationObject->setNote(array('userId' => $userId, 'note' => $newNote, 'noteTypeId' => QubitTerm::GENERAL_NOTE_ID));
-      }
-    }
-
-    // Update (general) notes (multiple)
+    // Update archivist's notes (multiple)
     foreach ((array) $this->getRequestParameter('new_archivist_note') as $newArchivistNote)
     {
       if (0 < strlen($newArchivistNote))
       {
         $this->informationObject->setNote(array('userId' => $userId, 'note' => $newArchivistNote, 'noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID));
+      }
+    }
+
+    // Update publication notes (multiple)
+    foreach ((array) $this->getRequestParameter('new_publication_note') as $newNote)
+    {
+      if (0 < strlen($newNote))
+      {
+        $this->informationObject->setNote(array('userId' => $userId, 'note' => $newNote, 'noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
+      }
+    }
+
+    // Update general notes (multiple)
+    foreach ((array) $this->getRequestParameter('new_note') as $newNote)
+    {
+      if (0 < strlen($newNote))
+      {
+        $this->informationObject->setNote(array('userId' => $userId, 'note' => $newNote, 'noteTypeId' => QubitTerm::GENERAL_NOTE_ID));
       }
     }
   }
@@ -91,45 +200,33 @@ class InformationObjectEditIsadAction extends InformationObjectEditAction
    *
    * @param QubitInformationObject $informationObject
    */
-  public function updateActorEvents()
+  public function updateEvents()
   {
-    parent::updateActorEvents();
-
-    // Update creators
-    foreach ((array) $this->getRequestParameter('addCreator') as $creatorFormData)
+    // Update dates
+    foreach ($this->getRequestParameter('updateEvents') as $updateDate)
     {
-      if (0 < strlen($creatorFormData['actorId']) || 0 < strlen($creatorFormData['newName']))
+      if (isset($updateDate['id']))
       {
-        $event = new QubitEvent;
-        $event->setTypeId(QubitTerm::CREATION_ID);
-        $event->setInformationObjectId($this->informationObject->getId());
-
-        // Link actor (create a new actor if necessary)
-        if (0 < intval($actorId = $creatorFormData['actorId']) && (null != $actor = QubitActor::getById($actorId)))
+        if (null === ($event = QubitEvent::getById($updateDate['id'])))
         {
-          $event->setActorId($actor->getId());
-        }
-        else if (0 < strlen($newActorName = $creatorFormData['newName']))
-        {
-          $actor = new QubitActor;
-          $actor->setAuthorizedFormOfName($newActorName);
-          $actor->save();
-
-          $event->setActorId($actor->getId());
-        }
-
-        // Check to make sure this actor isn't already listed as a creator
-        $c = new Criteria;
-        $c->add(QubitEvent::INFORMATION_OBJECT_ID, $this->informationObject->getId(), Criteria::EQUAL);
-        $c->addAnd(QubitEvent::ACTOR_ID, $actor->getId(), Criteria::EQUAL);
-        $c->addAnd(QubitEvent::TYPE_ID, QubitTerm::CREATION_ID, Criteria::EQUAL);
-        $existingActorEvent = QubitEvent::get($c);
-
-        if (0 == count($existingActorEvent))
-        {
-          $event->save();
+          continue; // If event id isn't valid, skip this row
         }
       }
+      else if (0 < strlen($updateDate['startDate']) || 0 < strlen($updateDate['dateDisplay']))
+      {
+        $event = new QubitEvent;
+      }
+      else
+      {
+        continue;
+      }
+
+      $event->setTypeId($updateDate['typeId']);
+      $event->setStartDate(QubitDate::standardize($updateDate['startDate']));
+      $event->setEndDate(QubitDate::standardize($updateDate['endDate']));
+      $event->setDateDisplay($updateDate['dateDisplay']);
+
+      $this->informationObject->events[] = $event;
     }
   }
 }

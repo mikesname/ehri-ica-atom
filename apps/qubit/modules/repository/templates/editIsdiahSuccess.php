@@ -1,26 +1,20 @@
-﻿<?php use_helper('Javascript') ?>
+<?php use_helper('Javascript') ?>
 
 <div class="pageTitle"><?php echo __('edit %1% - ISDIAH', array('%1%' => sfConfig::get('app_ui_label_repository'))); ?></div>
 
 <?php if (isset($sf_request->id)): ?>
-  <form method="POST" action="<?php echo url_for(array('module' => 'repository', 'action' => 'edit', 'id' => $sf_request->id)) ?>">
+  <?php echo $form->renderFormTag(url_for(array('module' => 'repository', 'action' => 'edit', 'id' => $sf_request->id))) ?>
 <?php else: ?>
-  <form method="POST" action="<?php echo url_for(array('module' => 'repository', 'action' => 'create')) ?>">
+  <?php echo $form->renderFormTag(url_for(array('module' => 'repository', 'action' => 'create'))) ?>
 <?php endif; ?>
 
-  <?php if ($repository->getAuthorizedFormOfName(array('cutureFallback' => true))): ?>
-    <div class="formHeader">
-      <?php echo link_to($repository, array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId())) ?>
-    </div>
-  <?php else: ?>
-    <table class="list" style="height: 25px;"><thead><tr><th>&nbsp;</th></tr></table>
-  <?php endif; ?>
+  <?php echo $form->renderHiddenFields() ?>
 
-  <?php if ($sf_context->getActionName() == 'createIsdiah'): ?>
-  <fieldset class="collapsible">
-  <?php else : ?>
-  <fieldset class="collapsible collapsed">
-  <?php endif; ?>
+    <div class="formHeader">
+      <?php echo render_title($repository) ?>
+    </div>
+
+  <fieldset class="collapsible collapsed" id="identityArea">
 
   <legend><?php echo __('identity area'); ?></legend>
 
@@ -100,7 +94,7 @@
 
   </fieldset>
 
- <fieldset class="collapsible collapsed">
+ <fieldset class="collapsible collapsed" id="contactArea">
    <legend><?php echo __('contact area'); ?></legend>
 
    <div class="form-item">
@@ -177,7 +171,7 @@
 
   </fieldset>
 
- <fieldset class="collapsible collapsed">
+ <fieldset class="collapsible collapsed" id="descriptionArea">
     <legend><?php echo __('description area'); ?></legend>
 
     <div class="form-item">
@@ -245,7 +239,7 @@
     </div>
   </fieldset>
 
-  <fieldset class="collapsible collapsed">
+  <fieldset class="collapsible collapsed" id="accessArea">
     <legend><?php echo __('access area'); ?></legend>
 
     <div class="form-item">
@@ -273,7 +267,7 @@
     </div>
   </fieldset>
 
-  <fieldset class="collapsible collapsed">
+  <fieldset class="collapsible collapsed" id="servicesArea">
     <legend><?php echo __('services area'); ?></legend>
 
     <div class="form-item">
@@ -301,7 +295,7 @@
     </div>
   </fieldset>
 
-  <fieldset class="collapsible collapsed">
+  <fieldset class="collapsible collapsed" id="controlArea">
     <legend><?php echo __('control area'); ?></legend>
 
     <div class="form-item">
@@ -385,68 +379,40 @@
     </div>
 
     <div class="form-item">
-      <label for="notes"><?php echo __('notes'); ?></label>
       <table class="inline">
         <tr>
-          <td class="headerCell" style="width: 65%;"><?php echo __('note'); ?></td>
-          <td class="headerCell" style="width: 30%"><?php echo __('note type'); ?></td>
-          <td class="headerCell" style="width: 5%;"></td>
+          <th style="width: 90%;"><?php echo __('Maintenance Notes') ?></th>
+          <th style="width: 10%; text-align: right"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
         </tr>
-
-        <?php if(count($notes) > 0): ?>
-        <?php foreach ($notes as $note): ?>
-          <tr>
-          <td><?php echo $note->getContent(array('cultureFallback' => true)) ?><br/><span class="note"><?php echo $note->getUser() ?>, <?php echo $note->getUpdatedAt() ?></span></td>
-          <td><?php echo $note->getType() ?></td>
-          <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'),
-              array('module' => 'actor', 'action' => 'deleteNote', 'noteId' => $note->getId()),
-              array('query_string' => 'next='.url_for(array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())))
-            ) ?></td>
-          </tr>
+        <?php if ($maintenanceNotes): ?>
+        <?php foreach ($maintenanceNotes as $maintenanceNote): ?>
+        <tr class="<?php echo 'related_obj_'.$maintenanceNote->getId() ?>">
+          <td><div class="animateNicely">
+            <?php echo $maintenanceNote->getContent(array('cultureFallback' => 'true')) ?>
+          </div></td>
+          <td style="text-align: right;"><div class="animateNicely">
+            <input type="checkbox" name="delete_notes[<?php echo $maintenanceNote->getId() ?>]" value="delete" class="multiDelete" />
+          </div></td>
+        </tr>
         <?php endforeach; ?>
         <?php endif; ?>
-
-        <tr valign="top">
-        <td><?php echo input_tag('note')?></td>
-        <td><?php echo select_tag('note_type_id', options_for_select($noteTypes))?></td>
+        <tr>
+          <td><?php echo textarea_tag('new_maintenance_note', '', array('class' => 'multiInstanceTr', 'size' => '30x2')) ?></td>
+          <td style="text-align: right">&nbsp;</td>
         </tr>
       </table>
     </div>
 
   </fieldset>
 
-  <?php if ($sf_context->getActionName() == 'create'): ?>
-  <!--set initial form focus -->
-  <?php echo javascript_tag(<<<EOF
-  $('[name=authorized_form_of_name]').focus();
-EOF
-  ) ?>
-  <?php endif; ?>
-
-
-<!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
-<div id="button-block-bump"></div>
-
-<div id="button-block">
-
-  <div class="menu-action">
-    <?php if ($repository->getId()): ?>
-      &nbsp;<?php echo link_to(__('delete'), array('module' => 'repository', 'action' => 'delete', 'id' => $repository->getId()), array('post' => true, 'confirm' => __('are you sure?'))) ?>
-      &nbsp;<?php echo link_to(__('cancel'), array('module' => 'repository', 'action' => 'show', 'id' => $repository->getId())) ?>
+  <ul class="actions">
+    <?php if (isset($sf_request->id)): ?>
+      <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'show', 'id' => $repository->id)) ?></li>
+      <li><?php echo submit_tag(__('Save')) ?></li>
     <?php else: ?>
-      &nbsp;<?php echo link_to(__('cancel'), array('module' => 'repository', 'action' => 'list')) ?>
+      <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'list')) ?></li>
+      <li><?php echo submit_tag(__('Create')) ?></li>
     <?php endif; ?>
-    <?php if ($repository->getId()): ?>
-      <?php echo submit_tag(__('save')) ?>
-    <?php else: ?>
-      <?php echo submit_tag(__('create')) ?>
-    <?php endif; ?>
-  </div>
+  </ul>
+
 </form>
-
-<div class="menu-extra">
-  <?php echo link_to(__('add new'), array('module' => 'repository', 'action' => 'create')) ?>
-  <?php echo link_to(__('list all'), array('module' => 'repository', 'action' => 'list')) ?>
-</div>
-
-</div>

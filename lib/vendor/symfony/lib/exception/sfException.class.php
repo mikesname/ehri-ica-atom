@@ -18,7 +18,7 @@
  * @subpackage exception
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfException.class.php 15223 2009-02-03 12:02:45Z fabien $
+ * @version    SVN: $Id: sfException.class.php 20802 2009-08-05 09:35:44Z fabien $
  */
 class sfException extends Exception
 {
@@ -71,7 +71,7 @@ class sfException extends Exception
         }
       }
 
-      ob_start();
+      ob_start(sfConfig::get('sf_compressed') ? 'ob_gzhandler' : '');
 
       header('HTTP/1.0 500 Internal Server Error');
     }
@@ -190,11 +190,11 @@ class sfException extends Exception
   /**
    * Returns the path for the template error message.
    *
-   * @param  string  $format The request format
-   * @param  Boolean $debug  Whether to return a template for the debug mode or not
+   * @param string  $format The request format
+   * @param Boolean $debug  Whether to return a template for the debug mode or not
    *
-   * @return string|Boolean  false if the template cannot be found for the given format,
-   *                         the absolute path to the template otherwise
+   * @return string|Boolean false if the template cannot be found for the given format,
+   *                        the absolute path to the template otherwise
    */
   static public function getTemplatePathForError($format, $debug)
   {
@@ -219,8 +219,8 @@ class sfException extends Exception
   /**
    * Returns an array of exception traces.
    *
-   * @param Exception $exception  An Exception implementation instance
-   * @param string    $format     The trace format (plain or html)
+   * @param Exception $exception An Exception implementation instance
+   * @param string    $format    The trace format (plain or html)
    *
    * @return array An array of traces
    */
@@ -275,14 +275,14 @@ class sfException extends Exception
    */
   static protected function formatArrayAsHtml($values)
   {
-    return '<pre>'.htmlspecialchars(@sfYaml::Dump($values), ENT_QUOTES, sfConfig::get('sf_charset', 'UTF-8')).'</pre>';
+    return '<pre>'.self::escape(@sfYaml::dump($values)).'</pre>';
   }
 
   /**
    * Returns an excerpt of a code file around the given line number.
    *
-   * @param string $file  A file path
-   * @param int    $line  The selected line number
+   * @param string $file A file path
+   * @param int    $line The selected line number
    *
    * @return string An HTML string
    */
@@ -305,9 +305,9 @@ class sfException extends Exception
   /**
    * Formats an array as a string.
    *
-   * @param array   $args     The argument array
+   * @param array   $args   The argument array
    * @param boolean $single
-   * @param string  $format   The format string (html or plain)
+   * @param string  $format The format string (html or plain)
    *
    * @return string
    */
@@ -321,26 +321,45 @@ class sfException extends Exception
     {
       if (is_object($value))
       {
-        $result[] = ($format == 'html' ? '<em>object</em>' : 'object').'(\''.get_class($value).'\')';
+        $formattedValue = ($format == 'html' ? '<em>object</em>' : 'object').sprintf("('%s')", get_class($value));
       }
       else if (is_array($value))
       {
-        $result[] = ($format == 'html' ? '<em>array</em>' : 'array').'('.self::formatArgs($value).')';
+        $formattedValue = ($format == 'html' ? '<em>array</em>' : 'array').sprintf("(%s)", self::formatArgs($value));
       }
-      else if ($value === null)
+      else if (is_string($value))
       {
-        $result[] = $format == 'html' ? '<em>null</em>' : 'null';
+        $formattedValue = ($format == 'html' ? sprintf("'%s'", self::escape($value)) : "'$value'");
       }
-      else if (!is_int($key))
+      else if (is_null($value))
       {
-        $result[] = $format == 'html' ? "'$key' =&gt; '$value'" : "'$key' => '$value'";
+        $formattedValue = ($format == 'html' ? '<em>null</em>' : 'null');
       }
       else
       {
-        $result[] = "'".$value."'";
+        $formattedValue = $value;
       }
+      
+      $result[] = is_int($key) ? $formattedValue : sprintf("'%s' => %s", self::escape($key), $formattedValue);
     }
 
     return implode(', ', $result);
+  }
+  
+  /**
+   * Escapes a string value with html entities
+   *
+   * @param  string  $value
+   *
+   * @return string
+   */
+  static protected function escape($value)
+  {
+    if (!is_string($value))
+    {
+      return $value;
+    }
+    
+    return htmlspecialchars($value, ENT_QUOTES, sfConfig::get('sf_charset', 'UTF-8'));
   }
 }

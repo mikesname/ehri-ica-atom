@@ -61,7 +61,7 @@ class SettingsListAction extends sfAction
     $this->defaultTemplateForm = new SettingsDefaultTemplateForm;
     $this->uiLabelForm = new SettingsGenericForm(array(), array(
       'settings' => QubitSetting::getByScope('ui_label'), 'scope'=>'ui_label', 'fieldsRequired' => false));
-    $this->oaiHarvestingForm = new SettingsOaiHarvestingForm;
+    $this->oaiRepositoryForm = new SettingsOaiRepositoryForm;
 
     // Handle POST data (form submit)
     if ($request->isMethod('post'))
@@ -121,14 +121,14 @@ class SettingsListAction extends sfAction
         }
       }
 
-      // Handle OAI Harvesting form submission
-      if (null !== $request->getParameter('oai_harvesting'))
+      // Handle OAI Repository form submission
+      if (null !== $request->getParameter('oai_repository'))
       {
-        $this->oaiHarvestingForm->bind($request->getParameter('oai_harvesting'));
-        if ($this->oaiHarvestingForm->isValid())
+        $this->oaiRepositoryForm->bind($request->getParameter('oai_repository'));
+        if ($this->oaiRepositoryForm->isValid())
         {
           // Do update and redirect to avoid repeat submit wackiness
-          $this->updateOaiHarvestingSettings($this->oaiHarvestingForm);
+          $this->updateOaiRepositorySettings($this->oaiRepositoryForm);
           $this->redirect('settings/list');
         }
       }
@@ -139,7 +139,7 @@ class SettingsListAction extends sfAction
     $this->populateSiteInformationForm();
     $this->populateDefaultTemplateForm($this->defaultTemplateForm);
     $this->populateUiLabelForm($this->uiLabelForm);
-    $this->populateOaiHarvestingForm($this->oaiHarvestingForm);
+    $this->populateOaiRepositoryForm($this->oaiRepositoryForm);
 
     // Last symfony 1.0 forms holdout
     $this->i18nLanguages = QubitSetting::getByScope('i18n_languages');
@@ -159,6 +159,7 @@ class SettingsListAction extends sfAction
     $refImageMaxWidth = QubitSetting::getSettingByName('reference_image_maxwidth');
     $hitsPerPage = QubitSetting::getSettingByName('hits_per_page');
     $inheritCodeInformationObject = QubitSetting::getSettingByName('inherit_code_informationobject');
+    $sortTreeviewInformationObject = QubitSetting::getSettingByName('sort_treeview_informationobject');
     $multiRepository = QubitSetting::getSettingByName('multi_repository');
 
     // Set defaults for global form
@@ -168,6 +169,7 @@ class SettingsListAction extends sfAction
       'reference_image_maxwidth' => (isset($refImageMaxWidth)) ? $refImageMaxWidth->getValue(array('sourceCulture'=>true)) : null,
       'hits_per_page' => (isset($hitsPerPage)) ? $hitsPerPage->getValue(array('sourceCulture'=>true)) : null,
       'inherit_code_informationobject' => (isset($inheritCodeInformationObject)) ? intval($inheritCodeInformationObject->getValue(array('sourceCulture'=>true))) : 1,
+      'sort_treeview_informationobject' => (isset($sortTreeviewInformationObject)) ? $sortTreeviewInformationObject->getValue(array('sourceCulture'=>true)) : 0,
       'multi_repository' => (isset($multiRepository)) ? intval($multiRepository->getValue(array('sourceCulture'=>true))) : 1
     ));
   }
@@ -212,6 +214,16 @@ class SettingsListAction extends sfAction
 
        // Force sourceCulture update to prevent discrepency in settings between cultures
       $setting->setValue($inheritCodeInformationObjectValue, array('sourceCulture'=>true));
+      $setting->save();
+    }
+
+    // Sort Treeview (Information Object)
+    if (null !== $sortTreeviewInformationObjectValue = $thisForm->getValue('sort_treeview_informationobject'))
+    {
+      $setting = QubitSetting::getSettingByName('sort_treeview_informationobject');
+
+       // Force sourceCulture update to prevent discrepency in settings between cultures
+      $setting->setValue($sortTreeviewInformationObjectValue, array('sourceCulture'=>true));
       $setting->save();
     }
 
@@ -370,11 +382,11 @@ class SettingsListAction extends sfAction
   }
 
   /**
-   * Populate the OAI Harvesting form with database values (non-localized)
+   * Populate the OAI Repository form with database values (non-localized)
    */
-  protected function populateOaiHarvestingForm()
+  protected function populateOaiRepositoryForm()
   {
-    // Get OAI Harvesting settings
+    // Get OAI Repository settings
     $oaiEnabled = QubitSetting::getSettingByName('oai_enabled');
     $oaiRepositoryCode = QubitSetting::getSettingByName('oai_repository_code');
     $oaiRepositoryIdentifier = QubitOai::getRepositoryIdentifier();
@@ -382,7 +394,7 @@ class SettingsListAction extends sfAction
     $resumptionTokenLimit = QubitSetting::getSettingByName('resumption_token_limit');
 
     // Set defaults for global form
-    $this->oaiHarvestingForm->setDefaults(array(
+    $this->oaiRepositoryForm->setDefaults(array(
       'oai_enabled' => (isset($oaiEnabled)) ? intval($oaiEnabled->getValue(array('sourceCulture'=>true))) : 1,
       'oai_repository_code' => (isset($oaiRepositoryCode)) ? $oaiRepositoryCode->getValue(array('sourceCulture'=>true)) : null,
       'oai_repository_identifier' => $oaiRepositoryIdentifier,
@@ -392,11 +404,11 @@ class SettingsListAction extends sfAction
   }
 
   /**
-   * Update the OAI Harvesting settings in database (non-localized)
+   * Update the OAI Repository settings in database (non-localized)
    */
-  protected function updateOaiHarvestingSettings()
+  protected function updateOaiRepositorySettings()
   {
-    $thisForm = $this->oaiHarvestingForm;
+    $thisForm = $this->oaiRepositoryForm;
 
     // OAI enabled radio button
     if (null !== $oaiEnabledValue = $thisForm->getValue('oai_enabled'))

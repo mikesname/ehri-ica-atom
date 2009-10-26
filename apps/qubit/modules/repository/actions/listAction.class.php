@@ -25,43 +25,28 @@
  */
 class RepositoryListAction extends sfAction
 {
-
-  /**
-   * Show hitlist of repositories
-   *
-   * @param sfRequest $request
-   */
   public function execute($request)
   {
-    $options = array();
-    $this->country = 0;
+    $search = new QubitSearch;
+    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitRepository', 'className'));
 
-    // Set culture and cultural fallback flag
-    $options['cultureFallback'] = true; // Do cultural fallback
-
-    // Set sort
-    $this->sort = $this->getRequestParameter('sort', 'nameUp');
-    $options['sort'] = $this->sort;
-
-    // Set current page
-    $this->page = $this->getRequestParameter('page', 1);
-    $options['page'] = $this->page;
-
-    // Filter by country
-    if ($this->getRequestParameter('country'))
+    if (isset($request->query))
     {
-      $this->country = strtoupper($this->getRequestParameter('country'));
-      $options['countryCode'] = $this->country;
+      $query = new Zend_Search_Lucene_Search_Query_Boolean(array($query, Zend_Search_Lucene_Search_QueryParser::parse($request->query)));
     }
 
-    // Get repository hitlist
-    $this->repositories = QubitRepository::getList($options);
+    $this->pager = new QubitSearchPager;
+    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->setPage($request->page);
 
-    //determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'repository'))
+    $ids = array();
+    foreach ($this->pager->getResults() as $hit)
     {
-      $this->editCredentials = true;
+      $ids[] = $hit->getDocument()->id;
     }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitRepository::ID, $ids, Criteria::IN);
+    $this->repositories = QubitRepository::get($criteria);
   }
 }

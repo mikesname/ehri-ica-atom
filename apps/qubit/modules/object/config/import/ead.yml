@@ -106,8 +106,7 @@ information_object:
 
     languages:
       XPath:   "did/langmaterial/language/@langcode"
-      Method:  addProperty
-      Parameters: [$name = 'information_object_language', $nodeValue, "$options = array('scope' => 'languages', 'sourceCulture' => true)"]
+      Method:  setLangcode
 
     phystech:
       XPath:  "(phystech | descgrp/phystech)"
@@ -119,7 +118,7 @@ information_object:
 
     #TODO: check for @type attribute and pass it as note type
     note:
-      XPath:  "(note | descgrp/note)"
+      XPath:  "(note | descgrp/note | did/note)"
       Method: setNote
       Parameters: ["$options = array('note' => $nodeValue, 'noteTypeId' => QubitTerm::GENERAL_NOTE_ID)"]
 
@@ -139,17 +138,17 @@ information_object:
     controlaccess_corpname:
       XPath:   "(controlaccess/corpname | controlaccess/controlaccess/corpname)"
       Method:  setActorByName
-      Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::SUBJECT_ID, 'entity_type_id' => QubitTerm::CORPORATE_BODY_ID, 'source' => $importDOM->xpath->query('@source', $domNode2)->item(0)->nodeValue, 'rules' => $importDOM->xpath->query('@rules', $domNode2)->item(0)->nodeValue)"]
+      Parameters: [$nodeValue, "$options = array('relation_type_id' => QubitTerm::NAME_ACCESS_POINT_ID, 'entity_type_id' => QubitTerm::CORPORATE_BODY_ID, 'source' => $importDOM->xpath->query('@source', $domNode2)->item(0)->nodeValue, 'rules' => $importDOM->xpath->query('@rules', $domNode2)->item(0)->nodeValue)"]
 
     controlaccess_persname:
       XPath:   "(controlaccess/persname | controlaccess/controlaccess/persname)"
       Method:  setActorByName
-      Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::SUBJECT_ID, 'entity_type_id' => QubitTerm::PERSON_ID, 'source' => $importDOM->xpath->query('@source', $domNode2)->item(0)->nodeValue, 'rules' => $importDOM->xpath->query('@rules', $domNode2)->item(0)->nodeValue)"]
+      Parameters: [$nodeValue, "$options = array('relation_type_id' => QubitTerm::NAME_ACCESS_POINT_ID, 'entity_type_id' => QubitTerm::PERSON_ID, 'source' => $importDOM->xpath->query('@source', $domNode2)->item(0)->nodeValue, 'rules' => $importDOM->xpath->query('@rules', $domNode2)->item(0)->nodeValue)"]
 
     controlaccess_famname:
       XPath:   "(controlaccess/famname | controlaccess/controlaccess/famname)"
       Method:  setActorByName
-      Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::SUBJECT_ID, 'entity_type_id' => QubitTerm::FAMILY_ID, 'source' => $importDOM->xpath->query('@source', $domNode2)->item(0)->nodeValue, 'rules' => $importDOM->xpath->query('@rules', $domNode2)->item(0)->nodeValue)"]
+      Parameters: [$nodeValue, "$options = array('relation_type_id' => QubitTerm::NAME_ACCESS_POINT_ID, 'entity_type_id' => QubitTerm::FAMILY_ID, 'source' => $importDOM->xpath->query('@source', $domNode2)->item(0)->nodeValue, 'rules' => $importDOM->xpath->query('@rules', $domNode2)->item(0)->nodeValue)"]
 
     controlaccess_geogname:
       XPath:   "(controlaccess/geogname | controlaccess/controlaccess/geogname)"
@@ -179,7 +178,7 @@ information_object:
       Method:  setAcquisition
 
     altformavail:
-      XPath:  "(altformavail | descgrp/altformavail):
+      XPath:  "(altformavail | descgrp/altformavail)"
       Method: setLocationOfCopies
 
     appraisal:

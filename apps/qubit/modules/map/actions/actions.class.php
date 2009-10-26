@@ -21,7 +21,7 @@ class mapActions extends sfActions
 {
   public function executeIndex()
   {
-    return $this->forward('map', 'list');
+    $this->forward('map', 'list');
   }
 
   public function executeList()
@@ -63,7 +63,7 @@ class mapActions extends sfActions
 
     $map->save();
 
-    return $this->redirect('map/edit?id='.$map->getId());
+    $this->redirect('map/edit?id='.$map->getId());
   }
 
   public function executeDelete()
@@ -74,6 +74,6 @@ class mapActions extends sfActions
 
     $map->delete();
 
-    return $this->redirect('map/list');
+    $this->redirect('map/list');
   }
 }

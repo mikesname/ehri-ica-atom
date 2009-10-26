@@ -23,99 +23,18 @@
  * @author     Peter Van Garderen <peter@artefactual.com>
  * @version    svn:$Id$
  */
-
-/*
- * This class is based on PHP Array Pagination by Derek Harvey <www.lotsofcode.com>
- *
- */
-
-
-class QubitSearchPager
+class QubitSearchPager extends sfPager
 {
-  /*
-   * Class constructor
-   *
-   * @param array $hits array of objects returned as hits from Zend Lucene Search
-   * @param integer $page current page of hits to display
-   *
-   */
-  public function __construct($hits, $page)
+  public function __construct()
   {
-    // Assign the items per page variable
-    if (sfConfig::get('app_hits_per_page') > 0)
-    {
-      // get perPage limit from Admin settings
-      $this->perPage = sfConfig::get('app_hits_per_page', 10);
-    }
-    else
-    {
-      // set default perPage
-      $this->perPage = 10;
-    }
-
-    // Assign the current page
-    $this->page = $page;
-
-    // Take the length of the array
-    $this->length = count($hits);
-
-    // Get the number of pages
-    $this->pages = ceil($this->length / $this->perPage);
-
-    // Calculate the starting point
-    $this->start  = ceil(($this->page - 1) * $this->perPage);
-
-    // Set the full array of hits
-    $this->allHits = $hits;
-
-    // Set the hits in scope on current page
-    $this->hits = array_slice($hits, $this->start, $this->perPage);
+    parent::__construct(null, sfConfig::get('app_hits_per_page', 10));
   }
 
-  public function getCurrentPage()
+  public function getResults()
   {
-    return $this->page;
+    $this->nbResults = count($this->hits);
+    $this->lastPage = ceil($this->nbResults / $this->getMaxPerPage());
+
+    return array_slice($this->hits, $this->getFirstIndice() - 1, $this->getMaxPerPage());
   }
-
-  public function getPages()
-  {
-    $links = array();
-
-    for ($j = 1; $j < ($this->pages + 1); $j++)
-    {
-      $links[] = $j;
-    }
-
-    return $links;
-  }
-
-  public function haveToPaginate()
-  {
-     return count($this->allHits) > $this->perPage;
-  }
-
-  public function getHits()
-  {
-    return $this->hits;
-  }
-
-  public function getFirstHit()
-  {
-    return (($this->page - 1) * $this->perPage) + 1;
-  }
-
-  public function getLastHit()
-  {
-    if (count($this->getPages()) > $this->getCurrentPage())
-    {
-
-      return ($this->getFirstHit() + $this->perPage) - 1;
-    }
-    else
-    {
-
-      return (count($this->allHits));
-    }
-  }
-
 }

@@ -28,49 +28,131 @@
 
 class InformationObjectEditDcAction extends InformationObjectEditAction
 {
+  // Arrays are not allowed in class constants
+  public static
+    $NAMES = array(
+      'accessConditions',
+      'extentAndMedium',
+      'identifier',
+      'language',
+      'locationOfOriginals',
+      'placeAccessPoints',
+      'relation',
+      'scopeAndContent',
+      'subjectAccessPoints',
+      'title',
+      'types',
+      'repository',
+      'publicationStatus');
+
+  protected function addField($name)
+  {
+    parent::addField($name);
+
+    switch ($name)
+    {
+      case 'relation':
+        $criteria = new Criteria;
+        $this->informationObject->addPropertysCriteria($criteria);
+        $criteria->add(QubitProperty::NAME, 'relation');
+        $criteria->add(QubitProperty::SCOPE, 'dc');
+
+        if (1 == count($query = QubitProperty::get($criteria)))
+        {
+          $this->relation = $query[0];
+          $this->form->setDefault('relation', $this->relation->value);
+        }
+
+        $this->form->setValidator('relation', new sfValidatorString);
+        $this->form->setWidget('relation', new sfWidgetFormInput);
+
+        break;
+
+      case 'types':
+        $criteria = new Criteria;
+        $this->informationObject->addObjectTermRelationsRelatedByObjectIdCriteria($criteria);
+        QubitObjectTermRelation::addJoinTermCriteria($criteria);
+        $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::DC_TYPE_ID);
+
+        $values = array();
+        foreach ($this->relations = QubitObjectTermRelation::get($criteria) as $relation)
+        {
+          $values[] = $this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $relation->term->id));
+        }
+
+        $this->form->setDefault('types', $values);
+        $this->form->setValidator('types', new sfValidatorPass);
+
+        $choices = array();
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::DC_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $term->id))] = $term;
+        }
+
+        $this->form->setWidget('types', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+
+        break;
+    }
+  }
+
   public function execute($request)
   {
-    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'dc');
-
-    // run the core informationObject edit action commands
     parent::execute($request);
 
     // add Dublin Core specific commands
     $this->dcEventTypes = QubitTerm::getDcEventTypeList();
-    $this->dcRelation = $this->informationObject->getPropertyByName('information_object_relation', array('scope'=>'dc'));
-    $this->dcTypes = QubitDc::getDcTypes($this->informationObject);
   }
 
-  protected function processForm()
+  protected function processField($field)
   {
-    parent::processForm();
-
-    // Update Dc Properties
-    $this->updateDcProperties();
-    $this->updateDcTypes();
-  }
-
-  protected function updateDcProperties()
-  {
-    $this->informationObject->saveProperty('information_object_relation', $this->getRequestParameter('dc_relation'), array('scope'=>'dc'));
-  }
-
-  protected function updateDcTypes()
-  {
-    if ($dc_type_ids = $this->getRequestParameter('dc_type_id'))
+    switch ($field->getName())
     {
-      // Make sure that $dc_type_id is an array, even if it's only got one value
-      $dc_type_ids = (is_array($dc_type_ids)) ? $dc_type_ids : array($dc_type_ids);
+      case 'relation':
 
-      foreach ($dc_type_ids as $dc_type_id)
-      {
-        if (intval($dc_type_id))
+        if (!isset($this->relation))
         {
-          $this->informationObject->addTermRelation($dc_type_id, QubitTaxonomy::DC_TYPE_ID);
-          $this->foreignKeyUpdate = true;
+          $this->relation = new QubitProperty;
+          $this->relation->name = 'relation';
+          $this->relation->scope = 'dc';
+          $this->informationObject->propertys[] = $this->relation;
         }
-      }
+
+        $this->relation->value = $this->form->getValue('relation');
+
+        break;
+
+      case 'types':
+        $filtered = $flipped = array();
+        foreach ($this->form->getValue('types') as $value)
+        {
+          $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $value));
+          $filtered[$params['id']] = $flipped[$params['id']] = $params['id'];
+        }
+
+        foreach ($this->relations as $relation)
+        {
+          if (isset($flipped[$relation->term->id]))
+          {
+            unset($filtered[$relation->term->id]);
+          }
+          else
+          {
+            $relation->delete();
+          }
+        }
+
+        foreach ($filtered as $id)
+        {
+          $relation = new QubitObjectTermRelation;
+          $relation->termId = $id;
+
+          $this->informationObject->objectTermRelationsRelatedByobjectId[] = $relation;
+        }
+
+        break;
+
+      default:
+        parent::processField($field);
     }
   }
-
 }

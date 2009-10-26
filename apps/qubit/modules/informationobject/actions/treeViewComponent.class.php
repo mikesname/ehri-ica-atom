@@ -28,22 +28,24 @@ class InformationObjectTreeViewComponent extends sfComponent
       return sfView::NONE;
     }
 
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
+    $this->getResponse()->addJavaScript('/vendor/jquery');
     $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
     $this->getResponse()->addJavaScript('qubit');
     $this->getResponse()->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
     $this->getResponse()->addJavaScript('/vendor/yui/treeview/treeview-min');
+    $this->getResponse()->addJavaScript('/vendor/yui/dragdrop/dragdrop-min');
     $this->getResponse()->addJavaScript('treeView');
     $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin', 'first');
 
     $this->treeViewObjects = array();
-    foreach ($this->informationObjects->orderBy('lft') as $informationObject)
+    foreach ($this->informationObjects as $informationObject)
     {
       $treeViewObject = array();
       $treeViewObject['label'] = (string) render_title($informationObject->getLabel(array('truncate' => 50)));
       $treeViewObject['href'] = $this->getController()->genUrl('informationobject/show?id='.$informationObject->getId());
       $treeViewObject['id'] = $informationObject->getId();
       $treeViewObject['parentId'] = $informationObject->getParentId();
+      $treeViewObject['isLeaf'] = (string) !$informationObject->hasChildren();
 
       // TODO: Should be able to check equality of objects
       if ($informationObject->getId() == $this->informationObject->getId())
@@ -60,5 +62,8 @@ class InformationObjectTreeViewComponent extends sfComponent
       $this->treeViewExpands[$id = $ancestor->getId()] = $id;
     }
     $this->treeViewExpands[$id = $this->informationObject->getId()] = $id;
+
+    // Is treeView draggable?
+    $this->treeViewDraggable = QubitAcl::check(QubitInformationObject::getRoot(), QubitAclAction::UPDATE_ID) ? 'true' : 'false';
   }
 }

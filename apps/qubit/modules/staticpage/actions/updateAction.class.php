@@ -55,6 +55,6 @@ class StaticPageUpdateAction extends sfAction
 
     $staticPage->save();
 
-    return $this->redirect(array('module' => 'staticpage', 'action' => 'static', 'permalink' => $staticPage->getPermalink()));
+    $this->redirect(array('module' => 'staticpage', 'action' => 'static', 'permalink' => $staticPage->getPermalink()));
   }
 }

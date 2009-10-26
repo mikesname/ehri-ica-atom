@@ -19,22 +19,60 @@
 
 class QubitObjectTermRelation extends BaseObjectTermRelation
 {
+  // Flag for updating search index on save of objectTermRelation
+  protected $indexOnSave = true;
+
   public function save($connection = null)
   {
-    // TODO: $cleanObject = $this->getObject()->clean();
-    $cleanObjectId = $this->columnValues['object_id'];
+    // TODO: $cleanObject = $this->object->clean;
+    $cleanObjectId = $this->__get('objectId', array('clean' => true));
 
     parent::save($connection);
 
-    if ($cleanObjectId != $this->getObjectId() && QubitInformationObject::getById($cleanObjectId) !== null)
+    if ($this->indexOnSave())
     {
-      SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+      if ($this->objectId != $cleanObjectId && null !== QubitInformationObject::getById($cleanObjectId))
+      {
+        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+      }
+
+      if ($this->object instanceof QubitInformationObject)
+      {
+        SearchIndex::updateTranslatedLanguages($this->object);
+      }
     }
 
-    if ($this->getObject() instanceof QubitInformationObject)
+    return $this;
+  }
+
+  /**
+   * Flag whether to update the search index when saving this object
+   *
+   * @param boolean $bool flag value
+   * @return QubitInformationObject self-reference
+   */
+  public function setIndexOnSave($bool)
+  {
+    if ($bool)
     {
-      SearchIndex::updateTranslatedLanguages($this->getObject());
+      $this->indexOnSave = true;
     }
+    else
+    {
+      $this->indexOnSave = false;
+    }
+
+    return $this;
+  }
+
+  /**
+   * Update search index on save?
+   *
+   * @return boolean current flag
+   */
+  public function indexOnSave()
+  {
+    return $this->indexOnSave;
   }
 
   public function delete($connection = null)
@@ -45,87 +83,6 @@ class QubitObjectTermRelation extends BaseObjectTermRelation
     {
       SearchIndex::updateTranslatedLanguages($this->getObject());
     }
-  }
-
-  /**
-   * Get a list of objects related to the given $termId
-   *
-   * @param integer $termId Primary key of specified term
-   * @param string  $className type of class to return
-   * @param array   $options array of optional parameters
-   * @return sfPager paginated list of objects
-   *
-   * @todo Figure out sorting - it's a NASTY problem!
-   */
-  public static function getTermBrowseList($termId=null, $className='QubitInformationObject', $options=array())
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitObject::CLASS_NAME, $className);
-    $criteria->addJoin(QubitObject::ID, QubitObjectTermRelation::OBJECT_ID);
-    $criteria->add(QubitObjectTermRelation::TERM_ID, $termId);
-
-    $page = isset($options['page']) ? $options['page'] : 1;
-
-    switch($className)
-    {
-      case 'QubitInformationObject':
-      {
-        $criteria->addJoin(QubitObject::ID, QubitInformationObject::ID);
-        if ($options['sortColumn'])
-        {
-          if ($options['sortDirection'] == 'ascending')
-          {
-            //TODO: figure out how to dynamically add SORT_COLUMNS (will also require a join to _i18n)
-            /*
-            $criteria->addAscendingOrderByColumn('name');
-            */
-          }
-          else
-          {
-            //TODO: figure out how to dynamically add SORT_COLUMNS (will also require a join to _i18n)
-            /*
-            $criteria->addDescendingOrderByColumn('name');
-            */
-          }
-        }   
-        
-        // Page results
-        $pager = new QubitPager('QubitInformationObject');
-      
-        break;
-      }
-      case 'QubitActor':
-      {
-        $criteria->addJoin(QubitObject::ID, QubitActor::ID);
-        $pager = new QubitPager('QubitActor');
-        break;
-      }
-      case 'QubitRepository':
-      {
-        $criteria->addJoin(QubitObject::ID, QubitRepository::ID);
-        $pager = new QubitPager('QubitRepository');
-        break;
-      }
-      case 'QubitDigitalObject':
-      {
-        $criteria->addJoin(QubitObject::ID, QubitDigitalObject::ID);
-        $pager = new QubitPager('QubitDigitalObject');
-        break;
-      }
-      case 'QubitPhysicalObject':
-      {
-        $criteria->addJoin(QubitObject::ID, QubitPhysicalObject::ID);
-        $pager = new QubitPager('QubitPhysicalObject');
-        break;
-      }
-    }
-    
-    // Return paged results
-    $pager->setCriteria($criteria);
-    $pager->setPage($page);
-    $pager->init();
-    
-    return $pager;
   }
 
   /**

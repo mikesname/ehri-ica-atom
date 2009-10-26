@@ -35,11 +35,12 @@ class OaiAddRepositoryForm extends sfForm
     // The labels
     $this->widgetSchema->setLabels(array('uri' => __('URI')));
 
-    // The helpers
-    $this->widgetSchema->setHelps(array(
-        'uri' => __('URI to the OAI-PMH port of the Repository to be added')
-      )
-    );
+    // Add helper text
+    // NOTE: This is implemented in the template because it was too much
+    // trouble to integrate the helper text without rendering the whole form
+    // row due to the lack of a renderHelp() method in sfFormField.class.php
+    //
+    // $this->widgetSchema->setHelps();
 
     // The validation
     $this->validatorSchema['uri'] = new sfValidatorUrl(array( 'required' => true ));

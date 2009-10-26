@@ -73,7 +73,7 @@ function link_to1($name, $internal_uri, $options = array())
     $name = $html_options['href'];
   }
 
-  return content_tag('a', $name, $html_options);
+  return content_tag('a', $name, $html_options + array('title' => $name));
 }
 
 function url_for2($routeName, $params = array(), $absolute = false)

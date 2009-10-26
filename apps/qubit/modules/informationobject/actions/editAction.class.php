@@ -28,8 +28,352 @@
  */
 class InformationObjectEditAction extends sfAction
 {
+  protected function addField($name)
+  {
+    switch ($name)
+    {
+      case 'descriptionDetail':
+        if (null !== $this->informationObject->descriptionDetail)
+        {
+          $this->form->setDefault('descriptionDetail', $this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $this->informationObject->descriptionDetail->id)));
+        }
+        $this->form->setValidator('descriptionDetail', new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $term->id))] = $term;
+        }
+
+        $this->form->setWidget('descriptionDetail', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'descriptionStatus':
+        if (null !== $this->informationObject->descriptionStatus)
+        {
+          $this->form->setDefault('descriptionStatus', $this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $this->informationObject->descriptionStatus->id)));
+        }
+        $this->form->setValidator('descriptionStatus', new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $term->id))] = $term;
+        }
+
+        $this->form->setWidget('descriptionStatus', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'language':
+      case 'languageOfDescription':
+        $this->form->setDefault($name, $this->informationObject[$name]);
+        $this->form->setValidator($name, new sfValidatorI18nChoiceLanguage(array('multiple' => true)));
+        $this->form->setWidget($name, new sfWidgetFormI18nSelectLanguage(array('culture' => $this->context->user->getCulture(), 'multiple' => true)));
+
+        break;
+
+      case 'levelOfDescription':
+        if (null !== $this->informationObject->levelOfDescription)
+        {
+          $this->form->setDefault('levelOfDescription', $this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $this->informationObject->levelOfDescription->id)));
+        }
+        $this->form->setValidator('levelOfDescription', new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $term->id))] = $term;
+        }
+
+        $this->form->setWidget('levelOfDescription', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'publicationStatus':
+        if (null !== ($publicationStatus = $this->informationObject->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID))))
+        {
+          $this->form->setDefault('publicationStatus', $publicationStatus->statusId);
+        }
+        $this->form->setValidator('publicationStatus', new sfValidatorString);
+
+        if (QubitAcl::check($this->informationObject, QubitAclAction::PUBLISH_ID))
+        {
+          $choices = array();
+          $choices[null] = null;
+          foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::PUBLICATION_STATUS_ID) as $term)
+          {
+            $choices[$term->id] = $term->getName(array('cultureFallback' => true));
+          }
+
+          $this->form->setWidget('publicationStatus', new sfWidgetFormSelect(array('choices' => $choices)));
+        }
+        else
+        {
+          $curStatusId = $this->informationObject->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID))->statusId;
+          if (null != ($curStatus = QubitTerm::getById($curStatusId)))
+          {
+            $curStatus = $curStatus->name;
+          }
+
+          // disable widget if user does not have 'publish' permission
+          $this->form->setWidget('publicationStatus', new sfWidgetFormSelect(array('choices' => array($curStatusId => $curStatus)), array('disabled' => true)));
+        }
+
+        break;
+
+      case 'repository':
+        $choices = array();
+        if (null !== ($repository = $this->informationObject->repository))
+        {
+          $this->form->setDefault('repository', $this->context->routing->generate(null, array('module' => 'repository', 'action' => 'show', 'id' => $repository->id)));
+          $choices = array($this->context->routing->generate(null, array('module' => 'repository', 'action' => 'show', 'id' => $repository->id)) => $repository);
+        }
+        $this->form->setValidator('repository', new sfValidatorString);
+        $this->form->setWidget('repository', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        if (isset($this->request->id))
+        {
+          $this->repoAcParams = array('module' => 'repository', 'action' => 'autocomplete', 'aclAction' => QubitAclAction::UPDATE_ID);
+        }
+        else
+        {
+          $this->repoAcParams = array('module' => 'repository', 'action' => 'autocomplete', 'aclAction' => QubitAclAction::CREATE_ID);
+        }
+
+        break;
+
+      case 'script':
+      case 'scriptOfDescription':
+        $this->form->setDefault($name, $this->informationObject[$name]);
+
+        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
+
+        $this->form->setValidator($name, new sfValidatorChoice(array('choices' => array_keys($c->getScripts()), 'multiple' => true)));
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $c->getScripts(), 'multiple' => true)));
+
+        break;
+
+      case 'accessConditions':
+      case 'accruals':
+      case 'acquisition':
+      case 'archivalHistory':
+      case 'arrangement':
+      case 'extentAndMedium':
+      case 'findingAids':
+      case 'locationOfCopies':
+      case 'locationOfOriginals':
+      case 'physicalCharacteristics':
+      case 'relatedUnitsOfDescription':
+      case 'reproductionConditions':
+      case 'revisionHistory':
+      case 'rules':
+      case 'scopeAndContent':
+      case 'sources':
+        $this->form->setDefault($name, $this->informationObject[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
+
+      case 'descriptionIdentifier':
+      case 'identifier':
+      case 'institutionResponsibleIdentifier':
+      case 'title':
+        $this->form->setDefault($name, $this->informationObject[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'subjectAccessPoints':
+      case 'placeAccessPoints':
+        $criteria = new Criteria;
+        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID, Criteria::INNER_JOIN);
+        $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->informationObject->id);
+
+        switch($name)
+        {
+          case 'subjectAccessPoints':
+            $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::SUBJECT_ID);
+            break;
+          case 'placeAccessPoints':
+            $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
+            break;
+        }
+
+        $values = array();
+        $choices = array();
+        foreach (QubitObjectTermRelation::get($criteria) as $otRelation)
+        {
+          $values[] = $this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $otRelation->term->id));
+          $choices[$this->context->routing->generate(null, array('module' => 'term', 'action' => 'show', 'id' => $otRelation->term->id))] = $otRelation->term;
+        }
+
+        $this->form->setDefault($name, $values);
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+
+        break;
+      case 'nameAccessPoints':
+        $criteria = new Criteria;
+        $criteria->add(QubitRelation::SUBJECT_ID, $this->informationObject->id);
+        $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
+
+        $values = array();
+        $choices = array();
+        foreach (QubitRelation::get($criteria) as $relation)
+        {
+          $values[] = $this->context->routing->generate(null, array('module' => 'actor', 'action' => 'show', 'id' => $relation->objectId));
+          $choices[$this->context->routing->generate(null, array('module' => 'actor', 'action' => 'show', 'id' => $relation->objectId))] = $relation->getObject();
+        }
+
+        $this->form->setDefault($name, $values);
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+
+        break;
+    }
+  }
+
+  protected function processField($field)
+  {
+    switch ($name = $field->getName())
+    {
+      case 'descriptionDetail':
+      case 'descriptionStatus':
+      case 'levelOfDescription':
+      case 'parent':
+      case 'repository':
+        $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $this->form->getValue($field->getName())));
+        $this->informationObject[$field->getName().'Id'] = $params['id'];
+
+        break;
+
+      case 'subjectAccessPoints':
+      case 'placeAccessPoints':
+        $filtered = $selected = array();
+        foreach ($this->form->getValue($name) as $value)
+        {
+          $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $value));
+          $filtered[$params['id']] = $selected[$params['id']] = $params['id'];
+        }
+
+        $criteria = new Criteria;
+        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID);
+        $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->informationObject->id);
+
+        switch ($name)
+        {
+          case 'subjectAccessPoints':
+            $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::SUBJECT_ID);
+            break;
+          case 'placeAccessPoints':
+            $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
+            break;
+        }
+
+        foreach (QubitObjectTermRelation::get($criteria) as $objectTermRelation)
+        {
+          if (isset($selected[$objectTermRelation->term->id]))
+          {
+            unset($filtered[$objectTermRelation->term->id]);
+          }
+          else
+          {
+            $objectTermRelation->delete();
+          }
+        }
+
+        foreach ($filtered as $id)
+        {
+          $objectTermRelation = new QubitObjectTermRelation;
+          $objectTermRelation->termId = $id;
+
+          $this->informationObject->objectTermRelationsRelatedByobjectId[] = $objectTermRelation;
+        }
+
+        break;
+
+      case 'nameAccessPoints':
+        $filtered = $selected = array();
+        foreach ($this->form->getValue($name) as $value)
+        {
+          $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $value));
+          $filtered[$params['id']] = $selected[$params['id']] = $params['id'];
+        }
+
+        $criteria = new Criteria;
+        $criteria->add(QubitRelation::SUBJECT_ID, $this->informationObject->id);
+        $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
+
+        foreach (QubitRelation::get($criteria) as $relation)
+        {
+          if (isset($selected[$relation->objectId]))
+          {
+            unset($filtered[$relation->objectId]);
+          }
+          else
+          {
+            $relation->delete();
+          }
+        }
+
+        foreach ($filtered as $id)
+        {
+          $relation = new QubitRelation;
+          $relation->objectId = $id;
+          $relation->typeId = QubitTerm::NAME_ACCESS_POINT_ID;
+
+          $this->informationObject->relationsRelatedBysubjectId[] = $relation;
+        }
+
+        break;
+
+      default:
+        $this->informationObject[$field->getName()] = $this->form->getValue($field->getName());
+    }
+  }
+
+  protected function processForm()
+  {
+    foreach ($this->form as $field)
+    {
+      if (isset($this->request[$field->getName()]))
+      {
+        $this->processField($field);
+      }
+    }
+
+    // set the informationObject's attributes
+    $this->updateCollectionType();
+
+    // Save related objects (save on $this->informationObject->save())
+    $this->updateObjectTermRelations();
+    $this->updateNotes();
+    $this->updateEvents();
+    $this->updateStatus();
+    $this->updateChildLevels();
+
+    // save informationObject after setting all of its attributes...
+    $this->informationObject->save();
+
+    // delete related objects marked for deletion
+    $this->deleteNotes();
+    $this->deleteEvents();
+    $this->deleteObjectTermRelations();
+    $this->deleteChildLevels();
+  }
+
   public function execute($request)
   {
+    $this->form = new sfForm;
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+
     $this->informationObject = new QubitInformationObject;
 
     if (isset($request->id))
@@ -41,15 +385,43 @@ class InformationObjectEditAction extends sfAction
       {
         $this->forward404();
       }
+
+      // Check user authorization
+      if (!QubitAcl::check($this->informationObject, QubitAclAction::UPDATE_ID))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      // Add optimistic lock
+      $this->form->setDefault('serialNumber', $this->informationObject->serialNumber);
+      $this->form->setValidator('serialNumber', new sfValidatorInteger);
+      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
+    }
+    else
+    {
+      // Check user authorization
+      if (!QubitAcl::check(QubitInformationObject::getRoot(), QubitAclAction::CREATE_ID))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      $this->form->setValidator('parent', new sfValidatorString);
+      $this->form->setWidget('parent', new sfWidgetFormInputHidden);
+
+      $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array('module' => 'informationobject', 'action' => 'show', 'id' => QubitInformationObject::ROOT_ID))));
     }
 
+    // HACK: Use static::$NAMES in PHP 5.3,
+    // http://php.net/oop5.late-static-bindings
+    $class = new ReflectionClass($this);
+    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    {
+      $this->addField($name);
+    }
+
+    sfLoader::loadHelpers(array('Qubit'));
+
     $request->setAttribute('informationObject', $this->informationObject);
-
-    $this->warnings = array();
-
-    // Add javascript libraries to allow selecting multiple access points
-    $this->getResponse()->addJavaScript('/vendor/jquery/jquery');
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
 
     // Determine if user has edit priviliges
     $this->editTaxonomyCredentials = false;
@@ -60,17 +432,8 @@ class InformationObjectEditAction extends sfAction
 
     //Actor (Event) Relations
     $this->actorEvents = $this->informationObject->getEvents();
-    $this->newActorEvent = new QubitEvent;
+    $this->newEvent = new QubitEvent;
     $this->creators = $this->informationObject->getCreators();
-    $this->actorEventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
-    $this->defaultActorEventType = QubitTerm::CREATION_ID;
-    $this->actorEventPlaces = QubitTerm::getOptionsForSelectList(QubitTaxonomy::PLACE_ID, $options = array('include_blank' => true));
-
-    //Properties
-    $this->languageCodes = $this->informationObject->getProperties($name = 'information_object_language');
-    $this->scriptCodes = $this->informationObject->getProperties($name = 'information_object_script');
-    $this->descriptionLanguageCodes = $this->informationObject->getProperties($name = 'language_of_information_object_description');
-    $this->descriptionScriptCodes = $this->informationObject->getProperties($name = 'script_of_information_object_description');
 
     //Notes
     $this->notes = $this->informationObject->getNotes();
@@ -78,213 +441,15 @@ class InformationObjectEditAction extends sfAction
     $this->titleNotes = $this->informationObject->getNotesByType($options = array ('noteTypeId' => QubitTerm::TITLE_NOTE_ID));
     $this->publicationNotes = $this->informationObject->getNotesByType($options = array ('noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
 
-    //Access Points
-    $this->newSubjectAccessPoint = new QubitObjectTermRelation;
-    $this->newPlaceAccessPoint = new QubitObjectTermRelation;
-    $this->subjectAccessPoints = $this->informationObject->getSubjectAccessPoints();
-    $this->placeAccessPoints = $this->informationObject->getPlaceAccessPoints();
-    $this->nameSelectList = QubitActor::getAccessPointSelectList();
-    $this->nameAccessPoints = array();
-    $actorEvents = $this->informationObject->getActorEvents();
-    foreach ($actorEvents as $event)
-    {
-      if ($event->getActorId())
-      {
-        $this->nameAccessPoints[] = $event;
-      }
-    }
-
-    // Material Type
-    $this->newMaterialType = new QubitObjectTermRelation;
-    $this->materialTypes = $this->informationObject->getMaterialTypes();
-
-    // Count related digital objects for warning message when deleting info object
-    // Note: This should only be 0 or 1 digital objects.
-    $this->digitalObjectCount = 0;
-    if (null !== $digitalObject = $this->informationObject->getDigitalObject())
-    {
-      $this->digitalObjectCount = 1;
-    }
-
-    require_once sfConfig::get('sf_symfony_lib_dir').'/plugins/sfCompat10Plugin/lib/request/sfRequestCompat10.class.php';
-    $this->dispatcher->connect('request.method_not_found', array('sfRequestCompat10', 'call'));
-
-    // Check for file upload errors
-    $uploadFiles = $this->getRequest()->getFileName('upload_file');
-    $fileErrors  = $this->getRequest()->getFileError('upload_file');
-    if (count($uploadFiles))
-    {
-      foreach ($uploadFiles as $usageId => $filename)
-      {
-        if (strlen($filename) && $fileErrors[$usageId])
-        {
-          $uploadWarnings[] = 'The file "'.$filename.'" exceeded the maximum upload size of '.ini_get('upload_max_filesize').'.';
-        }
-      }
-
-      if (isset($uploadWarnings))
-      {
-        $this->warnings['upload_file'] = $uploadWarnings;
-      }
-    }
-
-    if ($request->hasParameter('error'))
-    {
-      $this->error = $request->getParameter('error');
-    }
-
     if ($request->isMethod('post'))
     {
-      $this->hasWarning = false;
-      $this->foreignKeyUpdate = false;
+      $this->form->bind($request->getPostParameters());
 
-      $this->processForm();
-
-      // Redirect to show template on successful update
-      if (!$this->hasWarning)
+      if ($this->form->isValid())
       {
+        $this->processForm();
+
         $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $this->informationObject->getId()));
-      }
-    }
-  }
-
-  protected function processForm()
-  {
-    // set the informationObject's attributes
-    $this->informationObject->setId($this->getRequestParameter('id'));
-    $this->updateInformationObjectAttributes();
-    $this->updateOneToManyRelations();
-    $this->updateCollectionType();
-    $this->updateHierarchy();
-
-    // save informationObject after setting all of its attributes...
-    $this->informationObject->save();
-
-    // ...now save objects related to this informationObject
-    $this->updateNotes();
-    $this->updateProperties();
-    $this->updateObjectTermRelations();
-    $this->updateActorEvents();
-    $this->updateDigitalObjects();
-    $this->updatePhysicalObjects();
-    //$this->updateRecursiveRelations();
-
-    // delete related objects marked for deletion
-    $this->deleteNotes();
-    $this->deleteActorEvents();
-    $this->deleteProperties();
-    $this->deleteObjectTermRelations();
-    $this->deleteRelations();
-  }
-
-  public function updateInformationObjectAttributes()
-  {
-    if ($this->hasRequestParameter('title'))
-    {
-      $this->informationObject->setTitle($this->getRequestParameter('title'));
-    }
-    if ($this->hasRequestParameter('alternate_title'))
-    {
-      $this->informationObject->setAlternateTitle($this->getRequestParameter('alternate_title'));
-    }
-    if ($this->hasRequestParameter('identifier'))
-    {
-      $this->informationObject->setIdentifier($this->getRequestParameter('identifier'));
-    }
-    if ($this->hasRequestParameter('edition'))
-    {
-      $this->informationObject->setEdition($this->getRequestParameter('edition'));
-    }
-    if ($this->hasRequestParameter('extent_and_medium'))
-    {
-      $this->informationObject->setExtentAndMedium($this->getRequestParameter('extent_and_medium'));
-    }
-    if ($this->hasRequestParameter('archival_history'))
-    {
-      $this->informationObject->setArchivalHistory($this->getRequestParameter('archival_history'));
-    }
-    if ($this->hasRequestParameter('acquisition'))
-    {
-      $this->informationObject->setAcquisition($this->getRequestParameter('acquisition'));
-    }
-    if ($this->hasRequestParameter('scope_and_content'))
-    {
-      $this->informationObject->setScopeAndContent($this->getRequestParameter('scope_and_content'));
-    }
-    if ($this->hasRequestParameter('appraisal'))
-    {
-      $this->informationObject->setAppraisal($this->getRequestParameter('appraisal'));
-    }
-    if ($this->hasRequestParameter('accruals'))
-    {
-      $this->informationObject->setAccruals($this->getRequestParameter('accruals'));
-    }
-    if ($this->hasRequestParameter('arrangement'))
-    {
-      $this->informationObject->setArrangement($this->getRequestParameter('arrangement'));
-    }
-    if ($this->hasRequestParameter('access_conditions'))
-    {
-      $this->informationObject->setAccessConditions($this->getRequestParameter('access_conditions'));
-    }
-    if ($this->hasRequestParameter('reproduction_conditions'))
-    {
-      $this->informationObject->setReproductionConditions($this->getRequestParameter('reproduction_conditions'));
-    }
-    if ($this->hasRequestParameter('physical_characteristics'))
-    {
-      $this->informationObject->setPhysicalCharacteristics($this->getRequestParameter('physical_characteristics'));
-    }
-    if ($this->hasRequestParameter('finding_aids'))
-    {
-      $this->informationObject->setFindingAids($this->getRequestParameter('finding_aids'));
-    }
-    if ($this->hasRequestParameter('location_of_originals'))
-    {
-      $this->informationObject->setLocationOfOriginals($this->getRequestParameter('location_of_originals'));
-    }
-    if ($this->hasRequestParameter('location_of_copies'))
-    {
-      $this->informationObject->setLocationOfCopies($this->getRequestParameter('location_of_copies'));
-    }
-    if ($this->hasRequestParameter('related_units_of_description'))
-    {
-      $this->informationObject->setRelatedUnitsOfDescription($this->getRequestParameter('related_units_of_description'));
-    }
-    if ($this->hasRequestParameter('rules'))
-    {
-      $this->informationObject->setRules($this->getRequestParameter('rules'));
-    }
-    if ($this->hasRequestParameter('institution_responsible_identifier'))
-    {
-      $this->informationObject->setInstitutionResponsibleIdentifier($this->getRequestParameter('institution_responsible_identifier'));
-    }
-    if ($this->hasRequestParameter('description_identifier'))
-    {
-      $this->informationObject->setDescriptionIdentifier($this->getRequestParameter('description_identifier'));
-    }
-    if ($this->hasRequestParameter('revision_history'))
-    {
-      $this->informationObject->setRevisionHistory($this->getRequestParameter('revision_history'));
-    }
-    if ($this->hasRequestParameter('sources'))
-    {
-      $this->informationObject->setSources($this->getRequestParameter('sources'));
-    }
-  }
-
-  public function updateHierarchy()
-  {
-    if ($this->hasRequestParameter('parent_id') || null === $this->informationObject->getParentId())
-    {
-      // Empty form values must be converted to null
-      if (0 == $parentId = $this->getRequestParameter('parent_id'))
-      {
-        $this->informationObject->setRoot();
-      }
-      else
-      {
-        $this->informationObject->setParentId($parentId);
       }
     }
   }
@@ -302,70 +467,8 @@ class InformationObjectEditAction extends sfAction
     }
   }
 
-  public function updateOneToManyRelations()
+  protected function updateNotes()
   {
-    if ($this->hasRequestParameter('level_of_description_id'))
-    {
-      // Empty form values must be converted to null
-      if (0 == $levelOfDescriptionId = $this->getRequestParameter('level_of_description_id'))
-      {
-        $levelOfDescriptionId = null;
-      }
-      $this->informationObject->setLevelOfDescriptionId($levelOfDescriptionId);
-
-      $this->foreignKeyUpdate = true;
-    }
-
-    if ($this->hasRequestParameter('repository_id'))
-    {
-      // Empty form values must be converted to null
-      if (0 == $repositoryId = $this->getRequestParameter('repository_id'))
-      {
-        $repositoryId = null;
-      }
-      $this->informationObject->setRepositoryId($repositoryId);
-    }
-
-    if ($this->hasRequestParameter('description_status_id'))
-    {
-      // Empty form values must be converted to null
-      if (0 == $descriptionStatusId = $this->getRequestParameter('description_status_id'))
-      {
-        $descriptionStatusId = null;
-      }
-      $this->informationObject->setDescriptionStatusId($descriptionStatusId);
-    }
-
-    if ($this->hasRequestParameter('description_detail_id'))
-    {
-      // Empty form values must be converted to null
-      if (0 == $descriptionDetailId = $this->getRequestParameter('description_detail_id'))
-      {
-        $descriptionDetailId = null;
-      }
-      $this->informationObject->setDescriptionDetailId($descriptionDetailId);
-    }
-  }
-
-  public function updateNotes()
-  {
-    foreach ((array) $this->getRequestParameter('new_title_note') as $newTitleNote)
-    {
-      if (0 < strlen($newTitleNote))
-      {
-        $this->informationObject->setNote($options = array('userId' => $this->getUser()->getAttribute('user_id'), 'note' => $newTitleNote, 'noteTypeId' => QubitTerm::TITLE_NOTE_ID));
-      }
-    }
-
-    if ($this->getRequestParameter('new_publication_note'))
-    {
-      $this->informationObject->setNote($options = array('userId' => $this->getUser()->getAttribute('user_id'), 'note' => $this->getRequestParameter('new_publication_note'), 'noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
-    }
-
-    if ($this->getRequestParameter('note'))
-    {
-      $this->informationObject->setNote($options = array('userId' => $this->getUser()->getAttribute('user_id'), 'note' => $this->getRequestParameter('note'), 'noteTypeId' => $this->getRequestParameter('note_type_id')));
-    }
   }
 
   /**
@@ -382,92 +485,6 @@ class InformationObjectEditAction extends sfAction
         if ($doDelete == 'delete' && !is_null($deleteNote = QubitNote::getById($noteId)))
         {
           $deleteNote->delete();
-        }
-      }
-    }
-  }
-
-  public function updateProperties()
-  {
-    // Add multiple languages of access
-    if ($language_codes = $this->getRequestParameter('language_code'))
-    {
-      // If string, turn into single element array
-      $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
-
-      foreach ($language_codes as $language_code)
-      {
-        if (strlen($language_code))
-        {
-          $this->informationObject->addProperty($name = 'information_object_language', $language_code, array('scope'=>'languages', 'sourceCulture'=>true));
-          $this->foreignKeyUpdate = true;
-        }
-      }
-    }
-
-    // Add multiple scripts of access
-    if ($script_codes = $this->getRequestParameter('script_code'))
-    {
-      // If string, turn into single element array
-      $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
-
-      foreach ($script_codes as $script_code)
-      {
-        if (strlen($script_code))
-        {
-          $this->informationObject->addProperty($name = 'information_object_script', $script_code, array('scope'=>'scripts', 'sourceCulture'=>true));
-          $this->foreignKeyUpdate = true;
-        }
-      }
-    }
-
-    // Add multiple languages of description
-    if ($language_codes = $this->getRequestParameter('description_language_code'))
-    {
-      // If string, turn into single element array
-      $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
-
-      foreach ($language_codes as $language_code)
-      {
-        if (strlen($language_code))
-        {
-          $this->informationObject->addProperty($name = 'language_of_information_object_description', $language_code, array('scope'=>'languages', 'sourceCulture'=>true));
-          $this->foreignKeyUpdate = true;
-        }
-      }
-    }
-
-    // Add multiple scripts of description
-    if ($script_codes = $this->getRequestParameter('description_script_code'))
-    {
-      // If string, turn into single element array
-      $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
-
-      foreach ($script_codes as $script_code)
-      {
-        if (strlen($script_code))
-        {
-          $this->informationObject->addProperty($name = 'script_of_information_object_description', $script_code, array('scope'=>'scripts', 'sourceCulture'=>true));
-          $this->foreignKeyUpdate = true;
-        }
-      }
-    }
-  }
-
-  /**
-   * Delete related properties marked for deletion.
-   *
-   * @param sfRequest request object
-   */
-  public function deleteProperties()
-  {
-    if (is_array($deleteProperties = $this->request->getParameter('delete_properties')) && count($deleteProperties))
-    {
-      foreach ($deleteProperties as $thisId => $doDelete)
-      {
-        if ($doDelete == 'delete' && !is_null($property = QubitProperty::getById($thisId)))
-        {
-          $property->delete();
         }
       }
     }
@@ -491,40 +508,11 @@ class InformationObjectEditAction extends sfAction
       {
         if (intval($name_id))
         {
-          $this->informationObject->addNameAccessPoint($name_id, QubitTerm::SUBJECT_ID);
-          $this->foreignKeyUpdate = true;
-        }
-      }
-    }
+          $relation = new QubitRelation;
+          $relation->typeId = QubitTerm::NAME_ACCESS_POINT_ID;
+          $relation->objectId = $name_id;
 
-    // Add subject access points
-    if ($subject_ids = $this->getRequestParameter('subject_id'))
-    {
-      // Make sure that $subject_id is an array, even if it's only got one value
-      $subject_ids = (is_array($subject_ids)) ? $subject_ids : array($subject_ids);
-
-      foreach ($subject_ids as $subject_id)
-      {
-        if (intval($subject_id))
-        {
-          $this->informationObject->addTermRelation($subject_id, QubitTaxonomy::SUBJECT_ID);
-          $this->foreignKeyUpdate = true;
-        }
-      }
-    }
-
-    // Add place access points
-    if ($place_ids = $this->getRequestParameter('place_id'))
-    {
-      // Make sure that $place_id is an array, even if it's only got one value
-      $place_ids = (is_array($place_ids)) ? $place_ids : array($place_ids);
-
-      foreach ($place_ids as $place_id)
-      {
-        if (intval($place_id))
-        {
-          $this->informationObject->addTermRelation($place_id, QubitTaxonomy::PLACE_ID);
-          $this->foreignKeyUpdate = true;
+          $this->informationObject->relationsRelatedBysubjectId[] = $relation;
         }
       }
     }
@@ -539,12 +527,10 @@ class InformationObjectEditAction extends sfAction
       {
         if (intval($material_type_id))
         {
-          $this->informationObject->addTermRelation($material_type_id, QubitTaxonomy::MATERIAL_TYPE_ID);
-          $this->foreignKeyUpdate = true;
+          $this->informationObject->addTermRelation($material_type_id);
         }
       }
     }
-
   }
 
   /**
@@ -571,109 +557,81 @@ class InformationObjectEditAction extends sfAction
    *
    * @param QubitInformationObject $informationObject
    */
-  protected function updateActorEvents()
+  protected function updateEvents()
   {
-    // Get an array of new actor events (notice PLURAL for "editActorEvents")
-    // from actorEventDialog.js
-    if (!is_array($editActorEvents = $this->getRequestParameter('editActorEvents')))
+    // if the eventDialog javascript has done it's work, then use the array of
+    // updated events
+    if ($this->hasRequestParameter('updateEvents'))
     {
-      // If there's only one event (SINGULAR), make editActorEvents a single
-      // element array
-      $editActorEvents = array($this->getRequestParameter('editActorEvent'));
+      $updatedEvents = $this->getRequestParameter('updateEvents');
+    }
+
+    // else, grab the new event values from the 'newEvent' form
+    else
+    {
+      $updatedEvents = array($this->getRequestParameter('newEvent'));
     }
 
     // Loop through actor events
-    foreach ($editActorEvents as $eventFormData)
+    foreach ($updatedEvents as $eventFormData)
     {
-      $saveEvent = false; // Only save if we have an actor or a date
-
       // Create new event or update an existing one
       if (isset($eventFormData['id']))
       {
-        if (null === $actorEvent = QubitEvent::getById($eventFormData['id']))
+        if (null === $event = QubitEvent::getById($eventFormData['id']))
         {
           continue; // If we can't find the object, then skip this row
         }
       }
       else
       {
-        $actorEvent = new QubitEvent;
+        $event = new QubitEvent;
       }
 
       // Use existing actor if one is selected (overrides new actor creation)
-      if (isset($eventFormData['actorId']) && '' != $eventFormData['actorId'])
+      if (0 < strlen($eventFormData['actor']))
       {
-        $actorEvent->setActorId($eventFormData['actorId']);
-        $saveEvent = true;
+        $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $eventFormData['actor']));
+        $event->actorId = $params['id'];
       }
 
-      // or, create a new actor and associate with Actor Event
-      else if (isset($eventFormData['newActorName']) && '' != $eventFormData['newActorName'])
+      $event->setStartDate(QubitDate::standardize($eventFormData['startDate']));
+      $event->setEndDate(QubitDate::standardize($eventFormData['endDate']));
+      $event->setDateDisplay($eventFormData['dateDisplay']);
+      $event->setTypeId($eventFormData['typeId']);
+      $event->setDescription($eventFormData['description']);
+
+      // Save the event if it's valid (has an actor OR date)
+      if (0 < $eventFormData['actorId'] ||
+        0 < strlen($eventFormData['newActorName']) ||
+        0 < strlen($eventFormData['startDate']) ||
+        0 < strlen($eventFormData['endDate']) ||
+        0 < strlen($eventFormData['dateDisplay'])
+      )
       {
-        // Create actor
-        $actor = new QubitActor;
-        $actor->setAuthorizedFormOfName($eventFormData['newActorName']);
-        $actor->save();
-
-        // Assign actor to event
-        $actorEvent->setActorId($actor->getId());
-        $saveEvent = true;
-      }
-
-      // add event start and end date
-      if (($eventFormData['year']) || ($eventFormData['endYear']))
-      {
-        $actorEvent->setStartDate($eventFormData['year'].'-01-01');
-        $actorEvent->setEndDate($eventFormData['endYear'].'-01-01');
-
-        // If no display format specified, then concatenate start & end year
-        // with hyphen
-        if (!$eventFormData['dateDisplay'])
+        // Update the "place" object term relation object
+        if (0 < strlen($eventFormData['place']))
         {
-          $dateString = $eventFormData['year'];
-          if ($eventFormData['endYear'])
+          // If this event didn't exist or didn't have a 'place' associated
+          if (null === $event->id || null === ($place = QubitObjectTermRelation::getOneByObjectId($event->id)))
           {
-            $dateString .= ' - '.$eventFormData['endYear'];
+            $place = new QubitObjectTermRelation;
           }
-          $actorEvent->setDateDisplay($dateString);
+
+          $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $eventFormData['place']));
+          $place->termId = $params['id'];
+
+          $event->objectTermRelationsRelatedByobjectId[] = $place;
         }
 
-        $saveEvent = true;
-      }
-
-      // Save the formatted date display
-      if ($eventFormData['dateDisplay'])
-      {
-        $actorEvent->setDateDisplay($eventFormData['dateDisplay']);
-
-        $saveEvent = true;
-      }
-
-      // Save the actor event if it's valid (has actor OR date)
-      if ($saveEvent)
-      {
-        $actorEvent->setTypeId($eventFormData['eventTypeId']);
-
-        if (isset($eventFormData['description']))
+        // Or delete an existing "place" object term relation, if it's no
+        // longer needed
+        else if (0 < $event->getId() && null !== ($place = QubitObjectTermRelation::getOneByObjectId($event->getId())))
         {
-          $actorEvent->setDescription($eventFormData['description']);
+          $place->delete();
         }
-        $actorEvent->setInformationObjectId($this->informationObject->getId());
 
-        $actorEvent->save();
-        $this->foreignKeyUpdate = true;
-      }
-
-      // Set ObjectTermRelation for "Place"
-      if ($saveEvent && isset($eventFormData['placeId']) && '' != $eventFormData['placeId'])
-      {
-        if (null === $place = QubitObjectTermRelation::getOneByObjectId($actorEvent->getId()))
-        {
-          $place = new QubitObjectTermRelation;
-        }
-        $place->setObjectId($actorEvent->getId());
-        $place->setTermId($eventFormData['placeId']);
-        $place->save();
+        $this->informationObject->events[] = $event;
       }
     }
   }
@@ -683,160 +641,102 @@ class InformationObjectEditAction extends sfAction
    *
    * @param sfRequest request object
    */
-  public function deleteActorEvents()
+  public function deleteEvents()
   {
-    if (is_array($deleteActorEvents = $this->request->getParameter('deleteEvents')) && count($deleteActorEvents))
+    if (is_array($deleteEvents = $this->request->getParameter('deleteEvents')) && count($deleteEvents))
     {
-      foreach ($deleteActorEvents as $deleteId => $doDelete)
+      foreach ($deleteEvents as $deleteId => $doDelete)
       {
-        if ('delete' == $doDelete && !is_null($actorEvent = QubitEvent::getById($deleteId)))
+        if ('delete' == $doDelete && !is_null($event = QubitEvent::getById($deleteId)))
         {
-          $actorEvent->delete();
+          $event->delete();
         }
       }
     }
   }
 
-  /**
-   * Add a new digital object to $informationObject, upload a digital asset,
-   * and create a representation (thumbnail, icon) of asset.
-   *
-   * @param  sfRequest         The current sfRequest object
-   * @param  informationObject The associated informationObject
-   * @return mixed  array of file metadata on sucess, false on failure
-   */
-  public function updateDigitalObjects()
+  public function updateChildLevels()
   {
-    // Set property 'display_as_compound_object'
-    if ($this->request->hasParameter('display_as_compound_object'))
+    if (is_array($updateChildLevels = $this->request->getParameter('updateChildLevels')) && count($updateChildLevels))
     {
-      $this->informationObject->setDisplayAsCompoundObject($this->request->getParameter('display_as_compound_object'));
-    }
-
-    // Update media type
-    if ($this->request->hasParameter('media_type_id'))
-    {
-      $digitalObject = $this->informationObject->getDigitalObject();
-      $digitalObject->setMediaTypeId($this->request->getParameter('media_type_id'));
-      $digitalObject->save();
-    }
-
-    // Do digital object upload
-    if (is_array($uploadedFiles = $this->request->getFile('upload_file')))
-    {
-      foreach ($uploadedFiles['name'] as $usageId => $filename)
+      foreach ($updateChildLevels as $childLevelFormData)
       {
-        if ($uploadedFiles['error'][$usageId])
+        if (isset($childLevelFormData['id']))
         {
-          continue;
+          if (null === $childLevel = QubitInformationObject::getById($childLevelFormData['id']))
+          {
+            continue;
+          }
+        }
+        else
+        {
+          $childLevel = new QubitInformationObject;
         }
 
-        if (!file_exists($tmpFile = $uploadedFiles['tmp_name'][$usageId]))
+        $childLevel->setIdentifier($childLevelFormData['identifier']);
+        $childLevel->setTitle($childLevelFormData['title']);
+
+        if (0 < $childLevelFormData['levelOfDescription'] && (null !== QubitTerm::getById($childLevelFormData['levelOfDescription'])))
         {
-          continue; // Skip to next $uploadFile if no valid filename
+          $childLevel->setLevelOfDescriptionId($childLevelFormData['levelOfDescription']);
         }
 
-        // Upload asset and create digital object
-        $asset = new QubitAsset($filename, file_get_contents($tmpFile));
-        $digitalObject = QubitDigitalObject::create($this->informationObject, $asset, array('usageId' => $usageId));
-
-        // If this is a new information object with no title, set title to name
-        // of digital object
-        if ($this->request->getParameter('action') == 'update' && $this->informationObject->getTitle(array('cultureFallback'=>true)) == null && $usageId == QubitTerm::MASTER_ID)
+        if (0 < $childLevelFormData['levelOfDescription'] ||
+          0 < strlen($childLevelFormData['identifier']) ||
+          0 < strlen($childLevelFormData['title'])
+        )
         {
-          $this->informationObject->setTitle($digitalObject->getName());
-          $this->informationObject->save();
+          $this->informationObject->informationObjectsRelatedByparentId[] = $childLevel;
         }
-
-        $this->foreignKeyUpdate = true;
-      } // endforeach
-    } // end if
-
-    // Generate a derivative
-    if ($this->request->hasParameter('createDerivative'))
-    {
-      $digitalObject = $this->informationObject->getDigitalObject();
-
-      switch ($this->request->getParameter('createDerivative'))
-      {
-        case QubitTerm::REFERENCE_ID:
-          $digitalObject->createReferenceImage();
-          break;
-        case QubitTerm::THUMBNAIL_ID:
-          $digitalObject->createThumbnail();
-          break;
       }
     }
-  } // end function
+  }
 
-
-  /**
-   * Update physical object relations.
-   *
-   * @param  informationObject The current informationObject object
-   */
-  public function updatePhysicalObjects()
+  public function deleteChildLevels()
   {
-    $oldPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->informationObject->getId(),
-    array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
-
-    // Preferentially use "new container" input data over the selector so that
-    // new object data is not lost (but only if an object name is entered)
-    if (strlen($physicalObjectName = $this->getRequestParameter('physicalObjectName')))
+    if (is_array($deleteChildLevels = $this->request->getParameter('deleteChildLevels')) && count($deleteChildLevels))
     {
-      $physicalObject = new QubitPhysicalObject;
-
-      $physicalObject->setName($physicalObjectName);
-
-      if ($this->hasRequestParameter('physicalObjectLocation'))
+      foreach ($deleteChildLevels as $deleteId => $doDelete)
       {
-        $physicalObject->setLocation($this->getRequestParameter('physicalObjectLocation'));
-      }
-
-      if (intval($this->getRequestParameter('physicalObjectTypeId')))
-      {
-        $physicalObject->setTypeId($this->getRequestParameter('physicalObjectTypeId'));
-      }
-      $physicalObject->save();
-
-      // Link info object to physical object
-      $this->informationObject->addPhysicalObject($physicalObject);
-    }
-
-    // If form is not populated, Add any existing physical objects that are selected
-    else if ($physicalObjectIds = $this->getRequestParameter('physicalObjectId'))
-    {
-      // Make sure that $subject_id is an array, even if it's only got one value
-      $physicalObjectIds = (is_array($physicalObjectIds)) ? $physicalObjectIds : array($physicalObjectIds);
-
-      foreach ($physicalObjectIds as $physicalObjectId)
-      {
-        // If a value is set for this select box, and the physical object exists,
-        // add a relation to this info object
-        if (intval($physicalObjectId) && (null !== $physicalObject = QubitPhysicalObject::getById($physicalObjectId)))
+        if ('delete' == $doDelete && !is_null($child = QubitInformationObject::getById($deleteId)))
         {
-          $this->informationObject->addPhysicalObject($physicalObject);
-          $this->foreignKeyUpdate = true;
+          foreach ($child->descendants->andSelf()->orderBy('rgt') as $descendant)
+          {
+            foreach ($descendant->digitalObjects as $digitalObject)
+            {
+              $digitalObject->delete();
+            }
+
+            $descendant->delete();
+          }
         }
       }
     }
+  }
 
-  } // end method: updatePhysicalObjects
-
-  /**
-   * Delete related physical objects marked for deletion.
-   *
-   * @param sfRequest request object
-   */
-  public function deleteRelations()
+  public function updateStatus()
   {
-    if (is_array($deleteRelations = $this->request->getParameter('delete_relations')) && count($deleteRelations))
+    if (!QubitAcl::check($this->informationObject, QubitAclAction::PUBLISH_ID))
     {
-      foreach ($deleteRelations as $thisId => $doDelete)
+      // if the user does not have 'publish' permission, automatically set publication status to 'draft'
+      $this->informationObject->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => QubitTerm::PUBLICATION_STATUS_DRAFT_ID));
+    }
+    else
+    {
+      $pubStatusId = $this->form->getValue('publicationStatus');
+
+      // only update publicationStatus if its value has changed because it triggers a resource-intensive update of all its descendants
+      if ($pubStatusId !== $this->informationObject->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID))->statusId)
       {
-        if ($doDelete == 'delete' && !is_null($relation = QubitRelation::getById($thisId)))
+        $this->informationObject->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+
+        // if publication status has changed, set the status of all its descendants to null
+        // so that they inherit the newly changed status, and update their search index
+        // document so that the changed status is reflected in search and list browse results
+        foreach ($this->informationObject->descendants as $descendant)
         {
-          $relation->delete();
+          $descendant->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => null));
+          $descendant->save();
         }
       }
     }

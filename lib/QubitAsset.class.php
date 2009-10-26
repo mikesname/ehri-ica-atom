@@ -27,14 +27,31 @@
  */
 class QubitAsset
 {
-  private
+  protected
     $name,
-    $contents;
+    $contents,
+    $checksum,
+    $checksumAlgorithm;
 
-  public function __construct($pName, $pContents)
+  public function __construct($assetName, $assetContents, $options = array())
   {
-    $this->name = $pName;
-    $this->contents = $pContents;
+    $this->name = $assetName;
+    $this->contents = $assetContents;
+
+    if (isset($options['checksumAlgorithm']))
+    {
+      $this->setChecksumAlgorithm($options['checksumAlgorithm']);
+    }
+
+    // Only allow user to set checksum if an algorithm is specified
+    if (isset($options['checksum']) && isset($this->checksumAlgorithm))
+    {
+      $this->checksum = $options['checksum'];
+    }
+    else
+    {
+      $this->generateChecksum();
+    }
   }
 
   public function setName($value)
@@ -59,5 +76,53 @@ class QubitAsset
   public function getContents()
   {
     return $this->contents;
+  }
+
+  public function setChecksum($value, $options)
+  {
+    if (isset($options['algorithm']))
+    {
+      $this->setChecksumAlgorithm($options['algorithm']);
+    }
+
+    if (0 < strlen($value) && !isset($this->checksumAlgorithm))
+    {
+      throw new Exception('You cannot set a checksum without specifiying an algorithm.');
+    }
+
+    $this->checksum = $value;
+
+    return $this;
+  }
+
+  public function setChecksumAlgorithm($value)
+  {
+    $this->checksumAlgorithm = $value;
+
+    return $this;
+  }
+
+  public function getChecksum()
+  {
+    return $this->checksum;
+  }
+
+  public function getChecksumAlgorithm()
+  {
+    return $this->checksumAlgorithm;
+  }
+
+  public function generateChecksum()
+  {
+    switch($this->checksumAlgorithm)
+    {
+      case 'sha1':
+        $this->checksum = sha1($this->contents);
+        break;
+      case 'md5':
+      default:
+        $this->checksum = md5($this->contents);
+        $this->checksumAlgorithm = 'md5';
+    }
   }
 }

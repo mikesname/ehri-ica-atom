@@ -9,13 +9,15 @@ abstract class BaseUserRoleRelation implements ArrayAccess
 
     USER_ID = 'q_user_role_relation.USER_ID',
     ROLE_ID = 'q_user_role_relation.ROLE_ID',
-    ID = 'q_user_role_relation.ID';
+    ID = 'q_user_role_relation.ID',
+    SERIAL_NUMBER = 'q_user_role_relation.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitUserRoleRelation::USER_ID);
     $criteria->addSelectColumn(QubitUserRoleRelation::ROLE_ID);
     $criteria->addSelectColumn(QubitUserRoleRelation::ID);
+    $criteria->addSelectColumn(QubitUserRoleRelation::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -24,20 +26,28 @@ abstract class BaseUserRoleRelation implements ArrayAccess
     $userRoleRelations = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$userRoleRelations[$id = (int) $row[2]]))
+    $keys = array();
+    $keys['id'] = $row[2];
+
+    $key = serialize($keys);
+    if (!isset(self::$userRoleRelations[$key]))
     {
       $userRoleRelation = new QubitUserRoleRelation;
-      $userRoleRelation->new = false;
+
+      $userRoleRelation->keys = $keys;
       $userRoleRelation->row = $row;
 
-      self::$userRoleRelations[$id] = $userRoleRelation;
+      $userRoleRelation->new = false;
+
+      self::$userRoleRelations[$key] = $userRoleRelation;
     }
 
-    return self::$userRoleRelations[$id];
+    return self::$userRoleRelations[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -98,13 +108,19 @@ abstract class BaseUserRoleRelation implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -114,7 +130,18 @@ abstract class BaseUserRoleRelation implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitUserRoleRelation::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitUserRoleRelation::ID, $this->id);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -122,6 +149,14 @@ abstract class BaseUserRoleRelation implements ArrayAccess
 
   public function __isset($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -129,19 +164,19 @@ abstract class BaseUserRoleRelation implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -153,6 +188,14 @@ abstract class BaseUserRoleRelation implements ArrayAccess
 
   public function __get($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -160,19 +203,21 @@ abstract class BaseUserRoleRelation implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -254,29 +299,18 @@ abstract class BaseUserRoleRelation implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitUserRoleRelation::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitUserRoleRelation::ID, $this->id);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -285,15 +319,13 @@ abstract class BaseUserRoleRelation implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -313,13 +345,11 @@ abstract class BaseUserRoleRelation implements ArrayAccess
     $this->new = false;
     $this->values = array();
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitUserRoleRelation::DATABASE_NAME);
@@ -354,23 +384,21 @@ abstract class BaseUserRoleRelation implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitUserRoleRelation::DATABASE_NAME);
@@ -393,6 +421,11 @@ abstract class BaseUserRoleRelation implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -406,11 +439,11 @@ abstract class BaseUserRoleRelation implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -420,16 +453,14 @@ abstract class BaseUserRoleRelation implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitUserRoleRelation::ID, $this->id);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	

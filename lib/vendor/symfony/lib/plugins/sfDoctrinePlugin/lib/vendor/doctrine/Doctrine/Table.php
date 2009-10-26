@@ -1,6 +1,6 @@
 <?php
 /*
- *  $Id: Table.php 5460 2009-02-03 04:37:06Z jwage $
+ *  $Id: Table.php 6049 2009-07-10 17:53:39Z dcousineau $
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
  * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
@@ -28,7 +28,7 @@
  * @package     Doctrine
  * @subpackage  Table
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @version     $Revision: 5460 $
+ * @version     $Revision: 6049 $
  * @link        www.phpdoctrine.org
  * @since       1.0
  */
@@ -566,17 +566,6 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
     }
 
     /**
-     * getTemplates
-     * returns all templates attached to this table
-     *
-     * @return array     an array containing all templates
-     */
-    public function getTemplates()
-    {
-        return $this->_templates;
-    }
-
-    /**
      * export
      * exports this table to database based on column and option definitions
      *
@@ -651,19 +640,15 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
                                  'foreign'      => $relation->getForeignColumnName(),
                                  'foreignTable' => $relation->getTable()->getTableName());
 
-                    if (($key = array_search($def, $options['foreignKeys'])) === false) {
+                    if ($integrity !== $emptyIntegrity) {
+                        $def = array_merge($def, $integrity);
+                    }
+                    if (($key = $this->_checkForeignKeyExists($def, $options['foreignKeys'])) === false) {
                         $options['foreignKeys'][] = $def;
-                        $constraints[] = $integrity;
                     } else {
-                        if ($integrity !== $emptyIntegrity) {
-                            $constraints[$key] = $integrity;
-                        }
+                        $options['foreignKeys'][$key] = array_merge($options['foreignKeys'][$key], $def);
                     }
                 }
-            }
-
-            foreach ($constraints as $k => $def) {
-                $options['foreignKeys'][$k] = array_merge($options['foreignKeys'][$k], $def);
             }
         }
 
@@ -672,6 +657,24 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
         return array('tableName' => $this->getOption('tableName'),
                      'columns'   => $columns,
                      'options'   => array_merge($this->getOptions(), $options));
+    }
+
+    /**
+     * Check if a foreign definition already exists in the fks array for a 
+     * foreign table, local and foreign key
+     *
+     * @param  array $def          Foreign key definition to check for
+     * @param  array $foreignKeys  Array of existing foreign key definitions to check in
+     * @return boolean $result     Whether or not the foreign key was found
+     */
+    protected function _checkForeignKeyExists($def, $foreignKeys)
+    {
+        foreach ($foreignKeys as $key => $foreignKey) {
+            if ($def['local'] == $foreignKey['local'] && $def['foreign'] == $foreignKey['foreign'] && $def['foreignTable'] == $foreignKey['foreignTable']) {
+                return $key;
+            }
+        }
+        return false;
     }
 
     /**
@@ -772,6 +775,20 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
      */
     public function addIndex($index, array $definition)
     {
+        if (isset($definition['fields'])) {
+	        foreach ((array) $definition['fields'] as $key => $field) {
+		        if (is_numeric($key)) {
+                    $definition['fields'][$key] = $this->getColumnName($field);
+                } else {
+                    $columnName = $this->getColumnName($key);
+
+                    unset($definition['fields'][$key]);
+
+                    $definition['fields'][$columnName] = $field;
+                }
+            }
+        }
+
         $this->_options['indexes'][$index] = $definition;
     }
 
@@ -1024,6 +1041,9 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
 
         if ($length == null) {
             switch ($type) {
+                case 'integer':
+                    $length = 8;
+                break;
                 case 'decimal':
                     $length = 18;
                 break;
@@ -1035,8 +1055,11 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
                 case 'object':
                 case 'blob':
                 case 'gzip':
-                    // use php int max
-                    $length = 2147483647;
+                    //$length = 2147483647;
+                    
+                    //All the DataDict driver classes have work-arounds to deal
+                    //with unset lengths.
+                    $length = null;
                 break;
                 case 'boolean':
                     $length = 1;
@@ -1485,13 +1508,16 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
             $id = implode(' ', $id);
 
             if (isset($this->_identityMap[$id])) {
-                //NOTE: This is still flawed as modifications are overridden in hydrate()
                 $record = $this->_identityMap[$id];
-                $record->hydrate($this->_data);
-                if ($record->state() == Doctrine_Record::STATE_PROXY) {
-                    if (count($this->_data) >= $this->getColumnCount()) {
-                        $record->state(Doctrine_Record::STATE_CLEAN);
+                if ($record->getTable()->getAttribute(Doctrine::ATTR_HYDRATE_OVERWRITE)) {
+                    $record->hydrate($this->_data);
+                    if ($record->state() == Doctrine_Record::STATE_PROXY) {
+                        if (count($this->_data) >= $this->getColumnCount()) {
+                            $record->state(Doctrine_Record::STATE_CLEAN);
+                        }
                     }
+                } else {
+                    $record->hydrate($this->_data, false);
                 }
             } else {
                 $recordName = $this->getComponentName();
@@ -1992,6 +2018,17 @@ class Doctrine_Table extends Doctrine_Configurable implements Countable
     public function isTree()
     {
         return ( ! is_null($this->_options['treeImpl'])) ? true : false;
+    }
+    
+    /**
+     * getTemplates
+     * returns all templates attached to this table
+     *
+     * @return array     an array containing all templates
+     */
+    public function getTemplates()
+    {
+        return $this->_templates;
     }
 
     /**

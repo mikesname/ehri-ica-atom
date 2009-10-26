@@ -19,13 +19,33 @@
 
 class myUser extends sfBasicSecurityUser
 {
+  public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = array())
+  {
+    // initialize parent
+    parent::initialize($dispatcher, $storage, $options);
+
+    // On timeout, remove *all* user credentials
+    if ($this->isTimedOut())
+    {
+      $this->signOut();
+    }
+
+    // If this user's account has been *deleted* or this user session is from a
+    // different install of qubit on the same server (cross-site), then signout
+    // user
+    if (null !== ($userId = $this->getAttribute('user_id')) && null === QubitUser::getById($userId))
+    {
+      $this->signOut();
+    }
+  }
+
   public function signIn($user)
   {
     $this->setAuthenticated(true);
 
-    foreach ($user->getRoles() as $role)
+    foreach ($user->getAclGroups() as $group)
     {
-      $this->addCredential((string) $role);
+      $this->addCredential($group->getName(array('culture' => 'en')));
     }
 
     $this->setAttribute('user_id', $user->getId());
@@ -68,7 +88,7 @@ class myUser extends sfBasicSecurityUser
       $error = 'invalid username';
     }
 
-    $user = QubitUser::checkCredentials($username, $password, &$error);
+    $user = QubitUser::checkCredentials($username, $password, $error);
 
     // user account exists?
     if ($user !== null)
@@ -78,5 +98,56 @@ class myUser extends sfBasicSecurityUser
     }
 
     return $authenticated;
+  }
+
+  public function getQubitUser()
+  {
+    return QubitUser::getById($this->getUserID());
+  }
+
+  public function hasGroup($checkGroups)
+  {
+    $hasGroup = false;
+
+    if ($this->isAuthenticated())
+    {
+      $hasGroup = $this->getQubitUser()->hasGroup($checkGroups);
+    }
+    else
+    {
+      if (!is_array($checkGroups))
+      {
+        $checkGroups = array($checkGroups);
+      }
+
+      if (in_array(QubitAclGroup::ANONYMOUS_ID, $checkGroups))
+      {
+        $hasGroup = true;
+      }
+    }
+
+    return $hasGroup;
+  }
+
+  public function listGroups()
+  {
+    if (null !== ($qubitUser = $this->getQubitUser()))
+    {
+      $groups = array(QubitAclGroup::getById(QubitAclGroup::AUTHENTICATED_ID));
+
+      if (null !== $qubitUser->aclUserGroups)
+      {
+        foreach ($qubitUser->aclUserGroups as $aclUserGroup)
+        {
+          $groups[] = QubitAclGroup::getById($aclUserGroup->groupId);
+        }
+      }
+
+      return $groups;
+    }
+    else
+    {
+      return QubitAclGroup::getById(QubitAclGroup::ANONYMOUS_ID);
+    }
   }
 }

@@ -31,6 +31,6 @@ class TermDeleteNoteAction extends sfAction
 
   $returnTemplate = $this->getRequestParameter('ReturnTemplate');
 
-  return $this->redirect('term/edit/?id='.$term->getId().'&template='.$returnTemplate);
+  $this->redirect('term/edit/?id='.$term->getId().'&template='.$returnTemplate);
   }
 }

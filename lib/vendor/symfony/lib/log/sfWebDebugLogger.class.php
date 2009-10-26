@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage log
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfWebDebugLogger.class.php 16942 2009-04-03 14:48:17Z fabien $
+ * @version    SVN: $Id: sfWebDebugLogger.class.php 17749 2009-04-29 11:54:22Z fabien $
  */
 class sfWebDebugLogger extends sfVarLogger
 {
@@ -56,7 +56,7 @@ class sfWebDebugLogger extends sfVarLogger
    * Listens to the response.filter_content event.
    *
    * @param  sfEvent $event   The sfEvent instance
-   * @param  string  $context The response content
+   * @param  string  $content The response content
    *
    * @return string  The filtered response content
    */

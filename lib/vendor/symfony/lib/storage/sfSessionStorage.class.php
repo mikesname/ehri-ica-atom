@@ -49,6 +49,11 @@ class sfSessionStorage extends sfStorage
    */
   public function initialize($options = null)
   {
+    if (!isset($options['session_cookie_path']))
+    {
+      $options['session_cookie_path'] = sfContext::getInstance()->request->getRelativeUrlRoot();
+    }
+
     $cookieDefaults = session_get_cookie_params();
 
     $options = array_merge(array(
@@ -56,7 +61,6 @@ class sfSessionStorage extends sfStorage
       'session_id'              => null,
       'auto_start'              => true,
       'session_cookie_lifetime' => $cookieDefaults['lifetime'],
-      'session_cookie_path'     => $cookieDefaults['path'],
       'session_cookie_domain'   => $cookieDefaults['domain'],
       'session_cookie_secure'   => $cookieDefaults['secure'],
       'session_cookie_httponly' => isset($cookieDefaults['httponly']) ? $cookieDefaults['httponly'] : false,

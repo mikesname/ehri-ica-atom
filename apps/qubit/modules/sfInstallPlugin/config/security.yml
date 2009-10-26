@@ -1,0 +1,16 @@
+checkHtaccess:
+  credentials: administrator
+
+checkSystem:
+  credentials: administrator
+
+configureDatabase:
+  credentials: administrator
+
+configureSite:
+  credentials: administrator
+
+finishInstall:
+
+loadData:
+  credentials: administrator

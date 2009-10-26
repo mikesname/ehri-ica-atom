@@ -14,7 +14,7 @@
  * @package    symfony
  * @subpackage util
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
- * @version    SVN: $Id: sfEvent.class.php 8698 2008-04-30 16:35:28Z fabien $
+ * @version    SVN: $Id: sfEvent.class.php 17858 2009-05-01 21:22:50Z FabianLange $
  */
 class sfEvent implements ArrayAccess
 {
@@ -28,9 +28,9 @@ class sfEvent implements ArrayAccess
   /**
    * Constructs a new sfEvent.
    *
-   * @param mixed   $subject      The subject
-   * @param string  $name         The event name
-   * @param array   $parameters   An array of parameters
+   * @param mixed  $subject    The subject
+   * @param string $name       The event name
+   * @param array  $parameters An array of parameters
    */
   public function __construct($subject, $name, $parameters = array())
   {
@@ -113,7 +113,7 @@ class sfEvent implements ArrayAccess
   /**
    * Returns true if the parameter exists (implements the ArrayAccess interface).
    *
-   * @param  string  $name  The parameter name
+   * @param string $name The parameter name
    *
    * @return Boolean true if the parameter exists, false otherwise
    */
@@ -125,11 +125,11 @@ class sfEvent implements ArrayAccess
   /**
    * Returns a parameter value (implements the ArrayAccess interface).
    *
-   * @param  string  $name  The parameter name
+   * @param string $name The parameter name
    *
-   * @return mixed  The parameter value
+   * @return mixed The parameter value
    */
-  public function offsetGet($name)
+  public function __get($name)
   {
     if (!array_key_exists($name, $this->parameters))
     {
@@ -139,11 +139,18 @@ class sfEvent implements ArrayAccess
     return $this->parameters[$name];
   }
 
+  public function offsetGet($offset)
+  {
+    $args = func_get_args();
+
+    return call_user_func_array(array($this, '__get'), $args);
+  }
+
   /**
    * Sets a parameter (implements the ArrayAccess interface).
    *
-   * @param string  $name   The parameter name
-   * @param mixed   $value  The parameter value 
+   * @param string $name  The parameter name
+   * @param mixed  $value The parameter value 
    */
   public function offsetSet($name, $value)
   {
@@ -153,7 +160,7 @@ class sfEvent implements ArrayAccess
   /**
    * Removes a parameter (implements the ArrayAccess interface).
    *
-   * @param string $name    The parameter name
+   * @param string $name The parameter name
    */
   public function offsetUnset($name)
   {

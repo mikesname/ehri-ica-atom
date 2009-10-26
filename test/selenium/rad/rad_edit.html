@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>rad_edit.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">rad_edit.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=RAD fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=title and statement of responsibility area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='titleAndStatementOfResponsibilityArea']/div/div[2]/ul/li[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select[@id='types']</td>
+	<td>label=Philatelic record</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//select[@id='types']/option[8]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rad_title_note</td>
+	<td>Here is a title note</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>rad_title_note_type</td>
+	<td>label=Variations in title</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>multiple media</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Philatelic record</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Variations in title: Here is a title note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=control area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>descriptionStatus</td>
+	<td>label=Final</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>descriptionDetail</td>
+	<td>label=Minimal</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Final</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Minimal</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

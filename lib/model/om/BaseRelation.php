@@ -12,9 +12,7 @@ abstract class BaseRelation extends QubitObject implements ArrayAccess
     OBJECT_ID = 'q_relation.OBJECT_ID',
     TYPE_ID = 'q_relation.TYPE_ID',
     START_DATE = 'q_relation.START_DATE',
-    END_DATE = 'q_relation.END_DATE',
-    CREATED_AT = 'q_relation.CREATED_AT',
-    UPDATED_AT = 'q_relation.UPDATED_AT';
+    END_DATE = 'q_relation.END_DATE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -28,8 +26,6 @@ abstract class BaseRelation extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitRelation::TYPE_ID);
     $criteria->addSelectColumn(QubitRelation::START_DATE);
     $criteria->addSelectColumn(QubitRelation::END_DATE);
-    $criteria->addSelectColumn(QubitRelation::CREATED_AT);
-    $criteria->addSelectColumn(QubitRelation::UPDATED_AT);
 
     return $criteria;
   }

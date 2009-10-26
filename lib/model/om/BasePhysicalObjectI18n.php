@@ -11,7 +11,8 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     DESCRIPTION = 'q_physical_object_i18n.DESCRIPTION',
     LOCATION = 'q_physical_object_i18n.LOCATION',
     ID = 'q_physical_object_i18n.ID',
-    CULTURE = 'q_physical_object_i18n.CULTURE';
+    CULTURE = 'q_physical_object_i18n.CULTURE',
+    SERIAL_NUMBER = 'q_physical_object_i18n.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -20,6 +21,7 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::LOCATION);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::ID);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::CULTURE);
+    $criteria->addSelectColumn(QubitPhysicalObjectI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -28,15 +30,24 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     $physicalObjectI18ns = array();
 
   protected
+    $keys = array(),
     $row = array();
 
   public static function getFromRow(array $row)
   {
-    if (!isset(self::$physicalObjectI18ns[$key = serialize(array((int) $row[3], (string) $row[4]))]))
+    $keys = array();
+    $keys['id'] = $row[3];
+    $keys['culture'] = $row[4];
+
+    $key = serialize($keys);
+    if (!isset(self::$physicalObjectI18ns[$key]))
     {
       $physicalObjectI18n = new QubitPhysicalObjectI18n;
-      $physicalObjectI18n->new = false;
+
+      $physicalObjectI18n->keys = $keys;
       $physicalObjectI18n->row = $row;
+
+      $physicalObjectI18n->new = false;
 
       self::$physicalObjectI18ns[$key] = $physicalObjectI18n;
     }
@@ -103,13 +114,19 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
   }
 
   protected
-    $values = array();
+    $values = array(),
+    $refFkValues = array();
 
-  protected function rowOffsetGet($name, $offset)
+  protected function rowOffsetGet($name, $offset, $options)
   {
-    if (array_key_exists($name, $this->values))
+    if (empty($options['clean']) && array_key_exists($name, $this->values))
     {
       return $this->values[$name];
+    }
+
+    if (array_key_exists($name, $this->keys))
+    {
+      return $this->keys[$name];
     }
 
     if (!array_key_exists($offset, $this->row))
@@ -119,7 +136,19 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
         return;
       }
 
-      $this->refresh();
+      if (!isset($options['connection']))
+      {
+        $options['connection'] = Propel::getConnection(QubitPhysicalObjectI18n::DATABASE_NAME);
+      }
+
+      $criteria = new Criteria;
+      $criteria->add(QubitPhysicalObjectI18n::ID, $this->id);
+      $criteria->add(QubitPhysicalObjectI18n::CULTURE, $this->culture);
+
+      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
+
+      $statement = BasePeer::doSelect($criteria, $options['connection']);
+      $this->row = $statement->fetch();
     }
 
     return $this->row[$offset];
@@ -127,6 +156,14 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
 
   public function __isset($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -134,19 +171,19 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name, $offset);
+          return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset);
+          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    return false;
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -158,6 +195,14 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
 
   public function __get($name)
   {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
     $offset = 0;
     foreach ($this->tables as $table)
     {
@@ -165,19 +210,21 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
       {
         if ($name == $column->getPhpName())
         {
-          return $this->rowOffsetGet($name, $offset);
+          return $this->rowOffsetGet($name, $offset, $options);
         }
 
         if ($name.'Id' == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
         }
 
         $offset++;
       }
     }
+
+    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -259,30 +306,18 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     return call_user_func_array(array($this, '__unset'), $args);
   }
 
+  public function clear()
+  {
+    $this->row = $this->values = array();
+
+    return $this;
+  }
+
   protected
     $new = true;
 
   protected
     $deleted = false;
-
-  public function refresh(array $options = array())
-  {
-    if (!isset($options['connection']))
-    {
-      $options['connection'] = Propel::getConnection(QubitPhysicalObjectI18n::DATABASE_NAME);
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitPhysicalObjectI18n::ID, $this->id);
-    $criteria->add(QubitPhysicalObjectI18n::CULTURE, $this->culture);
-
-    call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-    $statement = BasePeer::doSelect($criteria, $options['connection']);
-    $this->row = $statement->fetch();
-
-    return $this;
-  }
 
   public function save($connection = null)
   {
@@ -291,15 +326,13 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
       throw new PropelException('You cannot save an object that has been deleted.');
     }
 
-    $affectedRows = 0;
-
     if ($this->new)
     {
-      $affectedRows += $this->insert($connection);
+      $this->insert($connection);
     }
     else
     {
-      $affectedRows += $this->update($connection);
+      $this->update($connection);
     }
 
     $offset = 0;
@@ -319,13 +352,11 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     $this->new = false;
     $this->values = array();
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function insert($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitPhysicalObjectI18n::DATABASE_NAME);
@@ -360,23 +391,21 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
         }
       }
-
-      $affectedRows += 1;
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   protected function update($connection = null)
   {
-    $affectedRows = 0;
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitPhysicalObjectI18n::DATABASE_NAME);
@@ -399,6 +428,11 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
+          if ('serialNumber' == $column->getPhpName())
+          {
+            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
+          }
+
           $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
         }
 
@@ -412,11 +446,11 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
 
       if ($criteria->size() > 0)
       {
-        $affectedRows += BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
     }
 
-    return $affectedRows;
+    return $this;
   }
 
   public function delete($connection = null)
@@ -426,17 +460,15 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $affectedRows = 0;
-
     $criteria = new Criteria;
     $criteria->add(QubitPhysicalObjectI18n::ID, $this->id);
     $criteria->add(QubitPhysicalObjectI18n::CULTURE, $this->culture);
 
-    $affectedRows += self::doDelete($criteria, $connection);
+    self::doDelete($criteria, $connection);
 
     $this->deleted = true;
 
-    return $affectedRows;
+    return $this;
   }
 
 	

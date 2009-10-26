@@ -28,30 +28,4 @@
 
 class InformationObjectShowDcAction extends InformationObjectShowAction
 {
-  public function execute($request)
-  {
-    $this->context->getRouting()->setDefaultParameter('informationobject_template', 'dc');
-
-    // run the core informationObject show action commands
-    parent::execute($request);
-
-    // add DC specific commands
-    $this->dcTypes = QubitDc::getTypes($this->informationObject);
-
-    if ($relation = $this->informationObject->getPropertyByName('information_object_relation'))
-    {
-      if (strlen($relation->getValue()) > 0)
-      {
-        $this->dcRelation = $relation;
-      }
-      else
-      {
-        $this->dcRelation = null;
-      }
-    }
-    else
-    {
-      $this->dcRelation = null;
-    }
-  }
 }

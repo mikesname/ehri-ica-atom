@@ -65,11 +65,11 @@ class sf_test_project
   }
 }
 
-$t = new lime_test(37, new lime_output_color());
+$t = new lime_test(40, new lime_output_color());
 
 if (!extension_loaded('SQLite'))
 {
-  $t->skip('You need SQLite to run these tests', 33);
+  $t->skip('You need SQLite to run these tests', $t->plan);
 
   return;
 }
@@ -125,7 +125,7 @@ $t->ok(file_exists($c->tmp_dir.DS.'apps'.DS.'frontend'.DS.'modules'.DS.'articleI
 $content = $c->execute_command('test:functional frontend articleInitCrudActions');
 $t->is($content, $c->get_fixture_content('test/functional/result.txt'), '"test:functional" can launch a particular functional test');
 
-$content = $c->execute_command('test:functional frontend');
+$content = $c->execute_command('test:functional frontend', 1);
 $t->is($content, $c->get_fixture_content('test/functional/result-harness.txt'), '"test:functional" can launch all functional tests');
 
 copy(dirname(__FILE__).'/fixtures/test/unit/testTest.php', $c->tmp_dir.DS.'test'.DS.'unit'.DS.'testTest.php');
@@ -136,7 +136,7 @@ $t->is($content, $c->get_fixture_content('/test/unit/result.txt'), '"test:unit" 
 $content = $c->execute_command('test:unit');
 $t->is($content, $c->get_fixture_content('test/unit/result-harness.txt'), '"test:unit" can launch all unit tests');
 
-$content = $c->execute_command('test:all');
+$content = $c->execute_command('test:all', 1);
 $t->is($content, $c->get_fixture_content('test/result-harness.txt'), '"test:all" launches all unit and functional tests');
 
 $content = $c->execute_command(sprintf('project:freeze %s', realpath(dirname(__FILE__).'/../../data')));
@@ -146,5 +146,16 @@ $content = $c->execute_command('project:unfreeze');
 $t->unlike(file_get_contents($c->tmp_dir.DS.'config'.DS.'ProjectConfiguration.class.php'), '/dirname\(__FILE__\)/', '"project:unfreeze" unfreezes symfony lib and data dir');
 
 $content = $c->execute_command('cache:clear');
+
+// Test task autoloading
+mkdir($c->tmp_dir.DS.'lib'.DS.'task');
+copy(dirname(__FILE__).'/fixtures/task/aTask.class.php', $c->tmp_dir.DS.'lib'.DS.'task'.DS.'aTask.class.php');
+copy(dirname(__FILE__).'/fixtures/task/zTask.class.php', $c->tmp_dir.DS.'lib'.DS.'task'.DS.'zTask.class.php');
+mkdir($pluginDir = $c->tmp_dir.DS.'plugins'.DS.'myFooPlugin'.DS.'lib'.DS.'task', 0777, true);
+copy(dirname(__FILE__).'/fixtures/task/myPluginTask.class.php', $pluginDir.DS.'myPluginTask.class.php');
+
+$c->execute_command('a:run');
+$c->execute_command('z:run');
+$c->execute_command('p:run');
 
 $c->shutdown();

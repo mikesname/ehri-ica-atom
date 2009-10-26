@@ -1,26 +1,17 @@
-/* dimensions for both splash image and the player wrapper */ 
+/* dimensions for both splash image and the player wrapper */
 a.flowplayer, a.flowplayer img {
     display:block;
-    width:450px;
-    height:350px;
     border:0px;
     margin-left: auto;
     margin-right: auto;
-} 
- 
-/* play button on top of splash screen */ 
-div.playButton { 
-    background:url('../images/play.png') no-repeat; 
-    width:50px;
-    height:50px;
-    position:relative;
-    top:-190px;
-    left:200px;
-    opacity:0.9;
-    margin-bottom:-50px;
-} 
- 
-/* play button upon mouseover */ 
-div.playButton:hover { 
-    opacity:1.0;
+}
+
+a.flowplayerAudio {
+    width:450px;
+    height:24px;
+}
+
+a.flowplayerVideo {
+    width:450px;
+    height:350px;
 }

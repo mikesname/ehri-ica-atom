@@ -24,6 +24,11 @@ QubitSetting:
     editable: 1
     deleteable: 0
     value: 1
+  QubitSetting_sort_treeview:
+    name: sort_treeview_informationobject
+    editable: 1
+    deleteable: 0
+    value: none
   QubitSetting_8:
     name: informationobject
     scope: default_template
@@ -112,7 +117,7 @@ QubitSetting:
       de: Begriff
       en: terms
       es: Término
-      fr: terme
+      fr: descripteur
       it: termine
       nl: term
       pt: termo
@@ -217,7 +222,7 @@ QubitSetting:
       de: 'Physisches Objekt'
       en: 'physical storage'
       es: 'physical storage'
-      fr: 'conservation matérielle'
+      fr: 'objet physique'
       it: 'oggetto fisico'
       nl: 'fysieke opslag'
       pt: 'objeto físico'

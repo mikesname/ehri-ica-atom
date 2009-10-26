@@ -34,20 +34,28 @@ class InformationObjectContextMenuComponent extends sfComponent
     $this->informationObject = $request->getAttribute('informationObject');
     $this->multiRepository = (sfConfig::get('app_multi_repository') == 0) ? false : true;
 
-    //determine if user has edit priviliges
-    $this->editCredentials = (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject')) ? true : false;
-
-    // Get info object ancestors
+    // Get info object tree
     $this->informationObjects = null;
-    if (count($this->informationObject->getAncestors()) > 1 || count($this->informationObject->getDescendants()) > 0)
+
+    if (isset($this->informationObject->id))
     {
-      $this->informationObjects = $this->informationObject->getAncestors()->andSelf()->orderBy('lft')->offsetGet(1)->getDescendants()->andSelf();
-      $showContextMenu = true;
+      $ancestors = $this->informationObject->getAncestors()->andSelf()->orderBy('lft');
+      foreach ($ancestors as $ancestor)
+      {
+        $path[] = $ancestor->getId();
+      }
+      $informationObjects = $this->buildInformationObjectTree($path);
+      if (0 < count($informationObjects))
+      {
+        $this->informationObjects = $informationObjects;
+        $showContextMenu = true;
+      }
     }
 
     // Get repository for current object if system is multi-repository
     // (No point showing repository context if there is only one repository)
     $this->repository = null;
+
     $this->repositoryOptions = null;
     if ($this->multiRepository)
     {
@@ -106,7 +114,7 @@ class InformationObjectContextMenuComponent extends sfComponent
 
     // Get physical storage locations (only if user has edit privileges)
     $this->physicalObjects = null;
-    if ($this->editCredentials == true)
+    if (QubitAcl::check($this->informationObject, QubitAclAction::UPDATE_ID))
     {
       $physicalObjects = array();
       $childInformationObjects = $this->informationObject->getDescendants()->andSelf();
@@ -135,8 +143,38 @@ class InformationObjectContextMenuComponent extends sfComponent
     // If no context items found, don't show context menu
     if (!$showContextMenu)
     {
-
       return sfView::NONE;
     }
+  }
+
+  protected function buildInformationObjectTree($path)
+  {
+    $tmp = array();
+    $parent = QubitInformationObject::getById(array_shift($path));
+
+    // skip the root node
+    if (QubitInformationObject::ROOT_ID == $parent->id)
+    {
+      $tmp = array_merge($tmp, $this->buildInformationObjectTree($path));
+    }
+    else
+    {
+      $tmp[] = $parent;
+      foreach ($parent->getChildren(array('sortBy' => sfConfig::get('app_sort_treeview_informationobject'))) as $child)
+      {
+        // If it in path, we go on building the tree in that way
+        if (in_array($child->getId(), $path))
+        {
+          $tmp = array_merge($tmp, $this->buildInformationObjectTree($path));
+        }
+        else
+        {
+          // Add the child
+          $tmp[] = $child;
+        }
+      }
+    }
+
+    return $tmp;
   }
 }

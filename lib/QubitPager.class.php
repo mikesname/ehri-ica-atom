@@ -145,7 +145,7 @@ class QubitPager extends sfPropelPager
   public function getLinks($nb_links = null)
   {
     $links = array();
-    $nb_links = (null === $nb_links) ? $this->getMaxLinkCount() : null;
+    $nb_links = (null === $nb_links) ? $this->getMaxLinkCount() : $nb_links;
     $tmp   = $this->page - floor($nb_links / 2);
     $check = $this->lastPage - $nb_links + 1;
     $limit = ($check > 0) ? $check : 1;

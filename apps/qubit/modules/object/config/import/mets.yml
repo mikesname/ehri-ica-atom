@@ -41,23 +41,18 @@ information_object:
       XPath:   "mets:dmdSec/mets:mdWrap/mets:xmlData/dc:description"
       Method:  setScopeAndContent
 
-digital_object:
-  XPath:  "//mets:file"
-  Object:  DigitalObject
-
-  Methods:
-    information_object:
-      XPath:   "."    # special case for digitalobject to associate with an information object
-      Method:  setInformationObjectId
-      Parameters: %ancestor::mets:mets/@xml:id
+    creator:
+      XPath:   "mets:dmdSec/mets:mdWrap/mets:xmlData/dc:creator"
+      Method:  setActorByName
+      Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::CREATION_ID)"]
 
 # note: importAsset...() methods take an optional $usageId parameter,
 # but it's up to this mapping to choose that, eg. for thumbnails
     flocat:
-      XPath:   "mets:FLocat/@xlink:href"
-      Method:  importAssetFromURI
+      XPath:   "//mets:file/mets:FLocat/@xlink:href"
+      Method:  importDigitalObjectFromURI
 
     fcontent:
-      XPath:   "mets:FContent/mets:binData"
-      Method:  importAssetFromBase64
+      XPath:   "//mets:file/mets:FContent/mets:binData"
+      Method:  importDigitalObjectFromBase64
       Parameters: ['$nodeValue', '%parent::mets:FContent/@ID']

@@ -28,17 +28,8 @@ class RepositoryShowAction extends sfAction
     $this->scriptCodes = $this->repository->getProperties($name = 'script_of_repository_description');
 
     $this->otherNames = $this->repository->getOtherNames();
-
-    //Notes
     $this->notes = $this->repository->getRepositoryNotes();
 
     $this->contactInformation = $this->repository->getContactInformation();
-
-    // Determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'repository'))
-    {
-      $this->editCredentials = true;
-    }
   }
 }

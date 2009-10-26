@@ -113,7 +113,7 @@
 }
 
 
-h1 {
+h1#first {
   background-color: #D5DCB5;
   border-bottom:1px solid #38420D;
   border-top:1px solid #38420D;
@@ -431,6 +431,11 @@ font-weight: bold;
   background: #D5DCB5;
 }
 
+.actions
+{
+  background: #D5DCB5;
+}
+
 /****************************************************/
 /*            MENU - ACTION                         */
 /****************************************************/
@@ -587,16 +592,17 @@ background-color: #ffffff;
 /*           searchbox                   */
 /*****************************************/
 
-#searchbox
+#search-sidebar
 {
   background: transparent url(../images/searchbox.png) repeat scroll 0 0;
   background-repeat: repeat-y;
   height: 42px;
   margin: 0 auto 0 auto;
+  padding: 0;
   width: 770px;
 }
 
-#searchbox .box
+#search-sidebar .textbox
 {
   width: 360px;
   height: auto;
@@ -607,22 +613,31 @@ background-color: #ffffff;
   margin: 5px;
 }
 
-#searchbox .box:focus
+#search-sidebar .textbox:focus
 {
   background: transparent;
 }
 
-#searchbox .searchbox-submit
+#search-sidebar .form-submit, #search-sidebar .form-submit:hover
 {
   background: transparent url(../images/searchbox-button.png) repeat scroll 0 0;;
   background-repeat: repeat-y;
+  color: transparent;
   width: 38px;
   height: 33px;
   border: 0;
   margin: 4px 4px 2px 0;
   position: relative;
-  bottom: 39px;
-  left: 380px;
+  left: 220px;
+}
+
+/*********************************************************
+                LIST TEMPLATES SEARCH
+**********************************************************/
+
+#list-search
+{
+  background-color: #D5DCB5;
 }
 
 /*******************************************************/

@@ -70,6 +70,7 @@ class SearchRecentUpdatesAction extends sfAction
         $nameColumn = 'name';
         $this->nameColumnDisplay = 'name';
         $criteria = QubitTerm::addRecentUpdatesCriteria($criteria, $cutOffDate);
+        $criteria->addJoin(QubitObject::ID, QubitTerm::ID);
         break;
       case 'informationobject':
       default:
@@ -79,6 +80,7 @@ class SearchRecentUpdatesAction extends sfAction
 
         // Hide root
         $criteria->add(QubitInformationObject::PARENT_ID, null, Criteria::ISNOTNULL);
+        $criteria->addJoin(QubitObject::ID, QubitInformationObject::ID);
 
         $criteria = QubitInformationObject::addRecentUpdatesCriteria($criteria, $cutOffDate);
     }
