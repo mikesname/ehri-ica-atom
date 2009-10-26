@@ -1,0 +1,11 @@
+harvesterList:
+  is_secure:   on
+  credentials: administrator
+
+harvesterNewRepository:
+  is_secure:   on
+  credentials: administrator
+
+harvesterDelete:
+  is_secure: on
+  credentials: administrator
