@@ -89,7 +89,7 @@ QubitMenu:
     label:
       en: 'Archival institutions'
       es: 'Institución archivística'
-      fr: 'institution de conservation'
+      fr: institution
       it: 'istituzione archivistica'
       nl: archiefinstelling
       pt: 'instituição arquivística'
