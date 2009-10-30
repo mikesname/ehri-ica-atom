@@ -52,6 +52,10 @@ class sfSessionStorage extends sfStorage
     if (!isset($options['session_cookie_path']))
     {
       $options['session_cookie_path'] = sfContext::getInstance()->request->getRelativeUrlRoot();
+      if (1 > strlen($options['session_cookie_path']))
+      {
+        $options['session_cookie_path'] = '/';
+      }
     }
 
     $cookieDefaults = session_get_cookie_params();
