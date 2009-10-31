@@ -43,7 +43,7 @@ class DigitalObjectMultiFileUploadAction extends sfAction
 
     // Paths for uploader javascript
     $this->uploadSwfPath = $this->getRequest()->getRelativeUrlRoot().'/vendor/yui/uploader/assets/uploader.swf';
-    $this->uploadResponsePath = $this->getRequest()->getRelativeUrlRoot().'/digitalobject/upload';
+    $this->uploadResponsePath = $this->context->routing->generate(null, array('module' => 'digitalobject', 'action' => 'upload'));
     $this->uploadTmpDir = $this->getRequest()->getRelativeUrlRoot().'/uploads/tmp';
 
     // Handle form submit

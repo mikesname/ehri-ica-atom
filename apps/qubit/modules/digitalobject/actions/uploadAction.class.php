@@ -24,6 +24,7 @@ class DigitalObjectUploadAction extends sfAction
     sfLoader::loadHelpers('Qubit');
 
     $uploadFiles = array();
+    $warning = null;
 
     foreach ($_FILES as $file)
     {
