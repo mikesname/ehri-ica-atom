@@ -735,7 +735,7 @@ class InformationObjectEditAction extends sfAction
         // document so that the changed status is reflected in search and list browse results
         foreach ($this->informationObject->descendants as $descendant)
         {
-          $descendant->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => null));
+          $descendant->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
           $descendant->save();
         }
       }

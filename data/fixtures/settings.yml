@@ -3,7 +3,7 @@ QubitSetting:
     name: version
     editable: 0
     deleteable: 0
-    value: 'Qubit 1.0.8'
+    value: 'Qubit 1.1'
   QubitSetting_2:
     name: upload_dir
     editable: 0

@@ -350,10 +350,23 @@ class QubitAcl
         break;
       }
 
-      // Add repository access if it isn't set already
-      else if (!in_array($repository->id, array_keys($repositoryAccess)))
+      // Add repository access if there is no pre-existing rule for that repo
+      else
       {
-        $repositoryAccess[] = array('id' => $repository->id, 'access' => $access);
+        $preExistingRule = false;
+        foreach ($repositoryAccess as $rule)
+        {
+          if ($repository->id == $rule['id'])
+          {
+            $preExistingRule = true;
+            break;
+          }
+        }
+
+        if (!$preExistingRule)
+        {
+          $repositoryAccess[] = array('id' => $repository->id, 'access' => $access);
+        }
       }
     }
 
@@ -370,22 +383,31 @@ class QubitAcl
   public static function getRepositoryAccess($actionId, $options = array())
   {
     $repositoryAccess = array();
+    $userGroupIds = array();
 
-    // Test user permissions
-    $criteria = new Criteria;
-    $criteria->add(QubitAclPermission::ACTION_ID, $actionId);
-    $criteria->add(QubitAclPermission::USER_ID, sfContext::getInstance()->getUser()->getUserId());
-    $criteria->addDescendingOrderByColumn(QubitAclPermission::ID);
-
-    if (0 < count($permissions = QubitAclPermission::get($criteria)))
+    // If user is logged in
+    if (null !== ($userId = sfContext::getInstance()->getUser()->getUserId()))
     {
-      $repositoryAccess = self::addRepositoryAccess($repositoryAccess, $permissions);
+      // Test user permissions
+      $criteria = new Criteria;
+      $criteria->add(QubitAclPermission::ACTION_ID, $actionId);
+      $criteria->add(QubitAclPermission::USER_ID, $userId);
+      $criteria->addDescendingOrderByColumn(QubitAclPermission::ID);
+
+      if (0 < count($permissions = QubitAclPermission::get($criteria)))
+      {
+        $repositoryAccess = self::addRepositoryAccess($repositoryAccess, $permissions);
+      }
+    }
+    else
+    {
+      // Add anonymous group if user is not logged in
+      $userGroupIds[] = QubitAclGroup::ANONYMOUS_ID;
     }
 
     if (0 == count($repositoryAccess) || '*' != $repositoryAccess[count($repositoryAccess) - 1]['id'])
     {
       // Test user group permissions
-      $userGroupIds = array();
       foreach (sfContext::getInstance()->getUser()->listGroups() as $group)
       {
         $userGroupIds[] = $group->id;
@@ -412,15 +434,16 @@ class QubitAcl
     // ('1' => deny, '2' => allow, '*' => deny) -> ('2' => allow, '*' => deny)
     // ('1' => deny, '2' => allow, '*' => allow) -> (1' => deny, '*' => allow)
     $globalPermission = $repositoryAccess[count($repositoryAccess) - 1]['access'];
+    $collapsedRules = array();
     foreach ($repositoryAccess as $i => $val)
     {
-      if ('*' != $val['id'] && $globalPermission == $val['access'])
+      if ('*' == $val['id'] || $globalPermission != $val['access'])
       {
-        array_splice($repositoryAccess, $i, 1);
+        $collapsedRules[] = $val;
       }
     }
 
-    return $repositoryAccess;
+    return $collapsedRules;
   }
 
   public static function forwardUnauthorized()
@@ -513,7 +536,7 @@ class QubitAcl
       if (QubitAcl::DENY == $repositoryViewDrafts[0]['access'])
       {
         // Don't show *any* draft info objects
-        $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term(QubitTerm::PUBLICATION_STATUS_DRAFT_ID, 'publicationStatusId')), false);
+        $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId')), true);
       }
     }
     else

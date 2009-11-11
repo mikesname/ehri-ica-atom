@@ -82,6 +82,16 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     {
     }
 
+    if ('aclPermissions' == $name)
+    {
+      return true;
+    }
+
+    if ('aclUserGroups' == $name)
+    {
+      return true;
+    }
+
     if ('notes' == $name)
     {
       return true;
@@ -98,16 +108,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     }
 
     if ('userRoleRelations' == $name)
-    {
-      return true;
-    }
-
-    if ('aclPermissions' == $name)
-    {
-      return true;
-    }
-
-    if ('aclUserGroups' == $name)
     {
       return true;
     }
@@ -131,6 +131,40 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     }
     catch (sfException $e)
     {
+    }
+
+    if ('aclPermissions' == $name)
+    {
+      if (!isset($this->refFkValues['aclPermissions']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['aclPermissions'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['aclPermissions'] = self::getaclPermissionsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['aclPermissions'];
+    }
+
+    if ('aclUserGroups' == $name)
+    {
+      if (!isset($this->refFkValues['aclUserGroups']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['aclUserGroups'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['aclUserGroups'] = self::getaclUserGroupsById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['aclUserGroups'];
     }
 
     if ('notes' == $name)
@@ -201,41 +235,47 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return $this->refFkValues['userRoleRelations'];
     }
 
-    if ('aclPermissions' == $name)
-    {
-      if (!isset($this->refFkValues['aclPermissions']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['aclPermissions'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['aclPermissions'] = self::getaclPermissionsById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['aclPermissions'];
-    }
-
-    if ('aclUserGroups' == $name)
-    {
-      if (!isset($this->refFkValues['aclUserGroups']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['aclUserGroups'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['aclUserGroups'] = self::getaclUserGroupsById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['aclUserGroups'];
-    }
-
     throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+  }
+
+  public static function addaclPermissionsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitAclPermission::USER_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getaclPermissionsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addaclPermissionsCriteriaById($criteria, $id);
+
+    return QubitAclPermission::get($criteria, $options);
+  }
+
+  public function addaclPermissionsCriteria(Criteria $criteria)
+  {
+    return self::addaclPermissionsCriteriaById($criteria, $this->id);
+  }
+
+  public static function addaclUserGroupsCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitAclUserGroup::USER_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getaclUserGroupsById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addaclUserGroupsCriteriaById($criteria, $id);
+
+    return QubitAclUserGroup::get($criteria, $options);
+  }
+
+  public function addaclUserGroupsCriteria(Criteria $criteria)
+  {
+    return self::addaclUserGroupsCriteriaById($criteria, $this->id);
   }
 
   public static function addnotesCriteriaById(Criteria $criteria, $id)
@@ -316,45 +356,5 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
   public function adduserRoleRelationsCriteria(Criteria $criteria)
   {
     return self::adduserRoleRelationsCriteriaById($criteria, $this->id);
-  }
-
-  public static function addaclPermissionsCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitAclPermission::USER_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getaclPermissionsById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addaclPermissionsCriteriaById($criteria, $id);
-
-    return QubitAclPermission::get($criteria, $options);
-  }
-
-  public function addaclPermissionsCriteria(Criteria $criteria)
-  {
-    return self::addaclPermissionsCriteriaById($criteria, $this->id);
-  }
-
-  public static function addaclUserGroupsCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitAclUserGroup::USER_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getaclUserGroupsById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addaclUserGroupsCriteriaById($criteria, $id);
-
-    return QubitAclUserGroup::get($criteria, $options);
-  }
-
-  public function addaclUserGroupsCriteria(Criteria $criteria)
-  {
-    return self::addaclUserGroupsCriteriaById($criteria, $this->id);
   }
 }

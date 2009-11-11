@@ -25,5 +25,5 @@
     <?php echo __('displaying %1% to %2% of %3% results', array('%1%' => $pager->getFirstIndice(), '%2%' => $pager->getLastIndice(), '%3%' => $pager->getNbResults())) ?>
   <?php else: ?>
     <?php echo __('No results found'); ?>
-  <? endif; ?>
+  <?php endif; ?>
 </div>

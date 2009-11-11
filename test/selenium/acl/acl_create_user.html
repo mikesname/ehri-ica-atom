@@ -4,12 +4,12 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="" />
-<title>acl_create_user</title>
+<title>acl_create_user.html</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">acl_create_user</td></tr>
+<tr><td rowspan="1" colspan="3">acl_create_user.html</td></tr>
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
@@ -47,8 +47,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>typeAndWait</td>
+	<td>type</td>
 	<td>//fieldset[@id='groupsAndPermissions']/div/div/input[2]</td>
+	<td>editor</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/div/div/div[2]/ul/li[1]</td>
 	<td>editor</td>
 </tr>
 <tr>

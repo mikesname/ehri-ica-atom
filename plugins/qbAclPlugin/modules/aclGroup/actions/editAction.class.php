@@ -91,8 +91,12 @@ class AclGroupEditAction extends sfAction
     $this->group->name = $this->request->getParameter('name');
     $this->group->description = $this->request->getParameter('description');
 
-    // Inherit permissions from authenticated group
-    $this->group->parentId = QubitAclGroup::AUTHENTICATED_ID;
+    if (null === $this->group->parentId)
+    {
+      // By default, inherit permissions from authenticated group
+      $this->group->parentId = QubitAclGroup::AUTHENTICATED_ID;
+    }
+
     $this->group->save();
 
     $this->updatePermissions();

@@ -689,7 +689,7 @@ class QubitMigrate107to108 extends QubitMigrate
     {
       foreach ($value as $name => $value)
       {
-        $key = rand();
+        $key = 'QubitProperty_'.rand();
         $this->data['QubitProperty'][$key] = array();
         $this->data['QubitProperty'][$key]['object_id'] = $id;
 
@@ -843,7 +843,7 @@ class QubitMigrate107to108 extends QubitMigrate
     }
 
     // Add default value for the SortTreeviewInformationObject setting
-    $this->data['QubitSetting'][] = array(
+    $this->data['QubitSetting']['QubitSetting_sort_treeview'] = array(
       'name' => 'sort_treeview_informationobject',
       'editable' => 1,
       'deleteable' => 0,
@@ -880,7 +880,7 @@ class QubitMigrate107to108 extends QubitMigrate
   protected function alterQubitStatus()
   {
     // Assign default status to information object root
-    $this->data['QubitStatus']['root_status'] = array(
+    $this->data['QubitStatus']['QubitStatus_root_status'] = array(
       'object_id' => '<?php echo QubitInformationObject::ROOT_ID."\n" ?>',
       'type_id' => '<?php echo QubitTerm::STATUS_TYPE_PUBLICATION_ID."\n" ?>',
       'status_id' => '<?php echo QubitTerm::PUBLICATION_STATUS_DRAFT_ID."\n" ?>'
@@ -896,7 +896,7 @@ class QubitMigrate107to108 extends QubitMigrate
       // collection roots and orphans
       if ($value['parent_id'] == $rootKey)
       {
-        $this->data['QubitStatus']['publication_status_'.$key] = array(
+        $this->data['QubitStatus']['QubitStatus_publication_'.$key] = array(
           'object_id' => $key,
           'type_id' => '<?php echo QubitTerm::STATUS_TYPE_PUBLICATION_ID."\n" ?>',
           'status_id' => '<?php echo QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID."\n" ?>'
@@ -952,6 +952,13 @@ class QubitMigrate107to108 extends QubitMigrate
       while ($key = $this->getRowKey('QubitEvent', 'type_id', $termKey))
       {
         $event = $this->data['QubitEvent'][$key];
+
+        // Just delete if there is no actor for this event
+        if (!isset($event['actor_id']))
+        {
+          unset($this->data['QubitEvent'][$key]);
+          continue;
+        }
 
         // Get a random, unique key
         do

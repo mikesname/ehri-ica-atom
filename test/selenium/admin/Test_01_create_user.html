@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_1_create_user</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_1_create_user</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Admin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>list users</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>username</td>
+	<td>Hilary Jenkinson</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>hjenkinson@archives.ca</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>jenkinson</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>confirmPassword</td>
+	<td>jenkinson</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=groups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/input[2]</td>
+	<td>contributor</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/div/div/div[2]/ul/li[1]</td>
+	<td>contributor</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Hilary Jenkinson profile</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Hilary Jenkinson</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>hjenkinson@archives.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>contributor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=List all</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Hilary Jenkinson</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>hjenkinson@archives.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>contributor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Hilary Jenkinson</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=groups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/input[2]</td>
+	<td>administrator</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/div/div/div[2]/ul/li[1]</td>
+	<td>administrator</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=groups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>contributor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/ul/li[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForElementNotPresent</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/div/ul/li[2]/span</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>administrator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>contributor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>new user</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Cancel</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

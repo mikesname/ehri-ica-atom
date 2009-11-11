@@ -367,7 +367,7 @@ class QubitMenu extends BaseMenu
       }
 
       // Refresh moved object to get up-to-date data from db
-      $this->refresh();
+      $this->clear();
     }
 
     return $this;
