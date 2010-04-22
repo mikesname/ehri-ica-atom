@@ -1,5 +1,5 @@
 <?php
-// $Id: schema.inc,v 1.10 2009/01/26 14:08:40 dries Exp $
+// $Id: schema.inc,v 1.25 2010/01/25 10:38:34 dries Exp $
 
 /**
  * @file
@@ -25,8 +25,8 @@
  *
  * The following keys are defined:
  *
- *   - 'description': A string describing this table and its purpose.
- *     References to other tables should be enclosed in
+ *   - 'description': A string in non-markup plain text describing this table
+ *     and its purpose. References to other tables should be enclosed in
  *     curly-brackets. For example, the node_revisions table
  *     description field might contain "Stores per-revision title and
  *     body data for each {node}."
@@ -34,16 +34,18 @@
  *     that describes the table's database columns. The specification
  *     is also an array. The following specification parameters are defined:
  *
- *     - 'description': A string describing this field and its purpose.
- *       References to other tables should be enclosed in
+ *     - 'description': A string in non-markup plain text describing this field
+ *       and its purpose. References to other tables should be enclosed in
  *       curly-brackets. For example, the node table vid field
  *       description might contain "Always holds the largest (most
  *       recent) {node_revision}.vid value for this nid."
- *     - 'type': The generic datatype: 'varchar', 'int', 'serial'
- *       'float', 'numeric', 'text', 'blob' or 'datetime'. Most types
- *       just map to the according database engine specific
- *       datatypes. Use 'serial' for auto incrementing fields. This
- *       will expand to 'int auto_increment' on mysql.
+ *     - 'type': The generic datatype: 'char', 'varchar', 'text', 'blob', 'int',
+ *       'float', 'numeric', 'serial', 'date', 'datetime' or 'time'. Most types
+ *       types just map to the according database engine specific datatypes. Use
+ *       'serial' for auto incrementing fields. This will expand to 'INT
+ *       auto_increment' on MySQL.
+ *     - 'serialize': A boolean indicating whether the field will be stored as
+ *       a serialized string.
  *     - 'size': The data size: 'tiny', 'small', 'medium', 'normal',
  *       'big'. This is a hint about the largest value the field will
  *       store and determines which of the database engine specific
@@ -60,7 +62,7 @@
  *       specify '0' as the default value for a type 'int' field it
  *       will not work because '0' is a string containing the
  *       character "zero", not an integer.
- *     - 'length': The maximal length of a type 'varchar' or 'text'
+ *     - 'length': The maximal length of a type 'char', 'varchar' or 'text'
  *       field. Ignored for other field types.
  *     - 'unsigned': A boolean indicating whether a type 'int', 'float'
  *       and 'numeric' only is signed or unsigned. Defaults to
@@ -78,7 +80,11 @@
  *  - 'unique keys': An associative array of unique keys ('keyname' =>
  *    specification). Each specification is an array of one or more
  *    key column specifiers (see below) that form a unique key on the table.
- *  - 'indexes':  An associative array of indexes ('indexame' =>
+ *  - 'foreign keys': An associative array, each key references a column
+ *    of the local table, each value is an array with a single key pair as
+ *    'tablename' => 'column' where 'column' is the foreign column to
+ *    reference.
+ *  - 'indexes':  An associative array of indexes ('indexname' =>
  *    specification). Each specification is an array of one or more
  *    key column specifiers (see below) that form an index on the
  *    table.
@@ -96,32 +102,66 @@
  *
  * @code
  * $schema['node'] = array(
+ *   'description' => 'The base table for nodes.',
  *   'fields' => array(
- *     'nid'      => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE),
- *     'vid'      => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
- *     'type'     => array('type' => 'varchar', 'length' => 32, 'not null' => TRUE, 'default' => ''),
- *     'title'    => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
- *   ),
- *   'primary key' => array('nid'),
- *   'unique keys' => array(
- *     'vid'     => array('vid')
+ *     'nid'       => array('type' => 'serial', 'unsigned' => TRUE, 'not null' => TRUE),
+ *     'vid'       => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE,'default' => 0),
+ *     'type'      => array('type' => 'varchar','length' => 32,'not null' => TRUE, 'default' => ''),
+ *     'language'  => array('type' => 'varchar','length' => 12,'not null' => TRUE,'default' => ''),
+ *     'title'     => array('type' => 'varchar','length' => 255,'not null' => TRUE, 'default' => ''),
+ *     'uid'       => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+ *     'status'    => array('type' => 'int', 'not null' => TRUE, 'default' => 1),
+ *     'created'   => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+ *     'changed'   => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+ *     'comment'   => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+ *     'promote'   => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+ *     'moderate'  => array('type' => 'int', 'not null' => TRUE,'default' => 0),
+ *     'sticky'    => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
+ *     'tnid'      => array('type' => 'int', 'unsigned' => TRUE, 'not null' => TRUE, 'default' => 0),
+ *     'translate' => array('type' => 'int', 'not null' => TRUE, 'default' => 0),
  *   ),
  *   'indexes' => array(
- *     'nid'                 => array('nid'),
+ *     'node_changed'        => array('changed'),
+ *     'node_created'        => array('created'),
+ *     'node_moderate'       => array('moderate'),
+ *     'node_frontpage'      => array('promote', 'status', 'sticky', 'created'),
+ *     'node_status_type'    => array('status', 'type', 'nid'),
  *     'node_title_type'     => array('title', array('type', 4)),
+ *     'node_type'           => array(array('type', 4)),
+ *     'uid'                 => array('uid'),
+ *     'tnid'                => array('tnid'),
+ *     'translate'           => array('translate'),
  *   ),
+ *   'unique keys' => array(
+ *     'vid' => array('vid'),
+ *   ),
+ *   'foreign keys' => array(
+ *      'vid' => array('node_revision' => 'vid'),
+ *      'uid' => array('users' => 'uid'),
+ *    ),
+ *   'primary key' => array('nid'),
  * );
  * @endcode
  *
  * @see drupal_install_schema()
  */
 
-abstract class DatabaseSchema {
+abstract class DatabaseSchema implements QueryPlaceholderInterface {
 
   protected $connection;
 
+  /**
+   * The placeholder counter.
+   */
+  protected $placeholder = 0;
+
+
   public function __construct($connection) {
     $this->connection = $connection;
+  }
+
+  public function nextPlaceholder() {
+    return $this->placeholder++;
   }
 
   /**
@@ -143,7 +183,7 @@ abstract class DatabaseSchema {
    *   The name of the table to explode.
    * @param $operator
    *   The operator to apply on the 'table' part of the condition.
-   * @return
+   * @return QueryConditionInterface
    *   A DatabaseCondition object.
    */
   protected function buildTableNameCondition($table_name, $operator = '=') {
@@ -174,11 +214,12 @@ abstract class DatabaseSchema {
    */
   public function tableExists($table) {
     $condition = $this->buildTableNameCondition($this->connection->prefixTables('{' . $table . '}'));
-    $condition->compile($this->connection);
+    $condition->compile($this->connection, $this);
     // Normally, we would heartily discourage the use of string
-    // concatination for conditionals like this however, we
+    // concatenation for conditionals like this however, we
     // couldn't use db_select() here because it would prefix
     // information_schema.tables and the query would fail.
+    // Don't use {} around information_schema.tables table.
     return db_query("SELECT table_name FROM information_schema.tables WHERE " . (string) $condition, $condition->arguments())->fetchField();
   }
 
@@ -193,11 +234,12 @@ abstract class DatabaseSchema {
    */
   public function findTables($table_expression) {
     $condition = $this->buildTableNameCondition($table_expression, 'LIKE');
-    $condition->compile($this->connection);
+    $condition->compile($this->connection, $this);
     // Normally, we would heartily discourage the use of string
-    // concatination for conditionals like this however, we
+    // concatenation for conditionals like this however, we
     // couldn't use db_select() here because it would prefix
     // information_schema.tables and the query would fail.
+    // Don't use {} around information_schema.tables table.
     return db_query("SELECT table_name FROM information_schema.tables WHERE " . (string) $condition, $condition->arguments())->fetchAllKeyed(0, 0);
   }
 
@@ -207,11 +249,12 @@ abstract class DatabaseSchema {
   public function columnExists($table, $column) {
     $condition = $this->buildTableNameCondition($this->connection->prefixTables('{' . $table . '}'));
     $condition->condition('column_name', $column);
-    $condition->compile($this->connection);
+    $condition->compile($this->connection, $this);
     // Normally, we would heartily discourage the use of string
-    // concatination for conditionals like this however, we
+    // concatenation for conditionals like this however, we
     // couldn't use db_select() here because it would prefix
     // information_schema.tables and the query would fail.
+    // Don't use {} around information_schema.columns table.
     return db_query("SELECT column_name FROM information_schema.columns WHERE " . (string) $condition, $condition->arguments())->fetchAllKeyed(0, 0);
   }
 
@@ -224,30 +267,24 @@ abstract class DatabaseSchema {
   /**
    * Rename a table.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be renamed.
    * @param $new_name
    *   The new name for the table.
    */
-  abstract public function renameTable(&$ret, $table, $new_name);
+  abstract public function renameTable($table, $new_name);
 
   /**
    * Drop a table.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be dropped.
    */
-  abstract public function dropTable(&$ret, $table);
+  abstract public function dropTable($table);
 
   /**
    * Add a new field to a table.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   Name of the table to be altered.
    * @param $field
@@ -266,25 +303,21 @@ abstract class DatabaseSchema {
    *   or index including it in this array. @see db_change_field for more
    *   explanation why.
    */
-  abstract public function addField(&$ret, $table, $field, $spec, $keys_new = array());
+  abstract public function addField($table, $field, $spec, $keys_new = array());
 
   /**
    * Drop a field.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $field
    *   The field to be dropped.
    */
-  abstract public function dropField(&$ret, $table, $field);
+  abstract public function dropField($table, $field);
 
   /**
    * Set the default value for a field.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $field
@@ -292,47 +325,51 @@ abstract class DatabaseSchema {
    * @param $default
    *   Default value to be set. NULL for 'default NULL'.
    */
-  abstract public function fieldSetDefault(&$ret, $table, $field, $default);
+  abstract public function fieldSetDefault($table, $field, $default);
 
   /**
    * Set a field to have no default value.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $field
    *   The field to be altered.
    */
-  abstract public function fieldSetNoDefault(&$ret, $table, $field);
+  abstract public function fieldSetNoDefault($table, $field);
+
+  /**
+   * Checks if an index exists.
+   *
+   * @param $table
+   *   Name of the table.
+   * @param $name
+   *   Name of the index.
+   * @return
+   *   Index name if the table exists. Otherwise FALSE.
+   */
+  abstract public function indexExists($table, $name);
 
   /**
    * Add a primary key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $fields
    *   Fields for the primary key.
    */
-  abstract public function addPrimaryKey(&$ret, $table, $fields);
+  abstract public function addPrimaryKey($table, $fields);
 
   /**
    * Drop the primary key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    */
-  abstract public function dropPrimaryKey(&$ret, $table);
+  abstract public function dropPrimaryKey($table);
 
   /**
    * Add a unique key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
@@ -340,25 +377,21 @@ abstract class DatabaseSchema {
    * @param $fields
    *   An array of field names.
    */
-  abstract public function addUniqueKey(&$ret, $table, $name, $fields);
+  abstract public function addUniqueKey($table, $name, $fields);
 
   /**
    * Drop a unique key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
    *   The name of the key.
    */
-  abstract public function dropUniqueKey(&$ret, $table, $name);
+  abstract public function dropUniqueKey($table, $name);
 
   /**
    * Add an index.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
@@ -366,20 +399,17 @@ abstract class DatabaseSchema {
    * @param $fields
    *   An array of field names.
    */
-  abstract public function addIndex(&$ret, $table, $name, $fields);
+  abstract public function addIndex($table, $name, $fields);
 
   /**
    * Drop an index.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
    *   The name of the index.
    */
-  abstract public function dropIndex(&$ret, $table, $name);
-
+  abstract public function dropIndex($table, $name);
 
   /**
    * Change a field definition.
@@ -404,8 +434,8 @@ abstract class DatabaseSchema {
    * and you want to change foo.bar to be type serial, leaving it as the
    * primary key. The correct sequence is:
    * @code
-   * db_drop_primary_key($ret, 'foo');
-   * db_change_field($ret, 'foo', 'bar', 'bar',
+   * db_drop_primary_key('foo');
+   * db_change_field('foo', 'bar', 'bar',
    *   array('type' => 'serial', 'not null' => TRUE),
    *   array('primary key' => array('bar')));
    * @endcode
@@ -428,8 +458,6 @@ abstract class DatabaseSchema {
    * unless you are converting a field to be type serial. You can use
    * the $keys_new argument in all cases.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   Name of the table.
    * @param $field
@@ -443,22 +471,20 @@ abstract class DatabaseSchema {
    *   table along with changing the field. The format is the same as a
    *   table specification but without the 'fields' element.
    */
-  abstract public function changeField(&$ret, $table, $field, $field_new, $spec, $keys_new = array());
+  abstract public function changeField($table, $field, $field_new, $spec, $keys_new = array());
 
   /**
    * Create a new table from a Drupal table definition.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $name
    *   The name of the table to create.
    * @param $table
    *   A Schema API table definition array.
    */
-  public function createTable(&$ret, $name, $table) {
-    $statements = $this->createTableSql($name, $table);
+  public function createTable($name, $table) {
+  	$statements = $this->createTableSql($name, $table);
     foreach ($statements as $statement) {
-      $ret[] = update_sql($statement);
+    	$this->connection->query($statement);
     }
   }
 
@@ -474,16 +500,30 @@ abstract class DatabaseSchema {
    *   An array of field names.
    */
   public function fieldNames($fields) {
-    $ret = array();
+    $return = array();
     foreach ($fields as $field) {
       if (is_array($field)) {
-        $ret[] = $field[0];
+        $return[] = $field[0];
       }
       else {
-        $ret[] = $field;
+        $return[] = $field;
       }
     }
-    return $ret;
+    return $return;
+  }
+
+  /**
+   * Prepare a table or column comment for database query.
+   *
+   * @param $comment
+   *   The comment string to prepare.
+   * @param $length
+   *   Optional upper limit on the returned string length.
+   * @return
+   *   The prepared comment.
+   */
+  public function prepareComment($comment, $length = NULL) {
+    return $this->connection->quote($comment);
   }
 }
 

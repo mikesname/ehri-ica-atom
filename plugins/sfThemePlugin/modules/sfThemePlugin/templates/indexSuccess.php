@@ -1,6 +1,6 @@
 <div class="options-list"><?php echo link_to('list', array('module' => 'sfPluginAdminPlugin')) ?><a class="active">configure</a></div>
 
-<div class="pageTitle"><?php echo __('configure themes'); ?></div>
+<h1><?php echo __('Configure themes') ?></h1>
 
 <?php echo $form->renderFormTag(url_for(array('module' => 'sfThemePlugin')), array('style' => 'float: left;')) ?>
   <?php echo $form->renderGlobalErrors() ?>

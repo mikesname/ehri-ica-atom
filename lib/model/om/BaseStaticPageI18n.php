@@ -10,8 +10,7 @@ abstract class BaseStaticPageI18n implements ArrayAccess
     TITLE = 'q_static_page_i18n.TITLE',
     CONTENT = 'q_static_page_i18n.CONTENT',
     ID = 'q_static_page_i18n.ID',
-    CULTURE = 'q_static_page_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_static_page_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_static_page_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -19,7 +18,6 @@ abstract class BaseStaticPageI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitStaticPageI18n::CONTENT);
     $criteria->addSelectColumn(QubitStaticPageI18n::ID);
     $criteria->addSelectColumn(QubitStaticPageI18n::CULTURE);
-    $criteria->addSelectColumn(QubitStaticPageI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -389,9 +387,7 @@ abstract class BaseStaticPageI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

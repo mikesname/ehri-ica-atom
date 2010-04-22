@@ -32,7 +32,7 @@ class InformationObjectDeleteAction extends sfAction
     }
 
     // Check user authorization
-    if (!QubitAcl::check(QubitInformationObject::getRoot(), QubitAclAction::DELETE_ID))
+    if (!QubitAcl::check($this->informationObject, 'delete'))
     {
       QubitAcl::forwardUnauthorized();
     }
@@ -41,27 +41,28 @@ class InformationObjectDeleteAction extends sfAction
 
     if ($request->isMethod('delete'))
     {
-      $parentId = $this->informationObject->parentId;
+      $parent = $this->informationObject->parent;
 
       foreach ($this->informationObject->descendants->andSelf()->orderBy('rgt') as $descendant)
       {
-        // Delete related digitalObjects
-        foreach ($descendant->digitalObjects as $digitalObject)
+        if (QubitAcl::check($this->informationObject, 'delete'))
         {
-          $digitalObject->delete();
+          // Delete related digitalObjects
+          foreach ($descendant->digitalObjects as $digitalObject)
+          {
+            $digitalObject->delete();
+          }
+
+          $descendant->delete();
         }
-
-        $descendant->delete();
       }
 
-      if (QubitInformationObject::ROOT_ID != $parentId)
+      if (isset($parent->parent))
       {
-        $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $parentId));
+        $this->redirect(array($parent, 'module' => 'informationobject'));
       }
-      else
-      {
-        $this->redirect(array('module' => 'informationobject', 'action' => 'list'));
-      }
+
+      $this->redirect(array('module' => 'informationobject', 'action' => 'list'));
     }
   }
 }

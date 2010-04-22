@@ -1,5 +1,5 @@
 <?php
-// $Id: schema.inc,v 1.11 2009/01/26 14:08:41 dries Exp $
+// $Id: schema.inc,v 1.28 2009/12/15 08:30:53 dries Exp $
 
 /**
  * @file
@@ -13,6 +13,16 @@
  */
 
 class DatabaseSchema_mysql extends DatabaseSchema {
+
+  /**
+   * Maximum length of a table comment in MySQL.
+   */
+  const COMMENT_MAX_TABLE = 60;
+
+  /**
+   * Maximum length of a column comment in MySQL.
+   */
+  const COMMENT_MAX_COLUMN = 255;
 
   /**
    * Build a condition to match a table name against a standard information_schema.
@@ -49,9 +59,11 @@ class DatabaseSchema_mysql extends DatabaseSchema {
    *   An array of SQL statements to create the table.
    */
   protected function createTableSql($name, $table) {
-    if (empty($table['mysql_suffix'])) {
-      $table['mysql_suffix'] = "/*!40100 DEFAULT CHARACTER SET UTF8 */";
-    }
+    // Provide some defaults if needed
+    $table += array(
+      'mysql_engine' => 'InnoDB',
+      'mysql_character_set' => 'UTF8',
+    );
 
     $sql = "CREATE TABLE {" . $name . "} (\n";
 
@@ -69,7 +81,12 @@ class DatabaseSchema_mysql extends DatabaseSchema {
     // Remove the last comma and space.
     $sql = substr($sql, 0, -3) . "\n) ";
 
-    $sql .= $table['mysql_suffix'];
+    $sql .= 'ENGINE = ' . $table['mysql_engine'] . ' DEFAULT CHARACTER SET ' . $table['mysql_character_set'];
+
+    // Add table comment.
+    if (!empty($table['description'])) {
+      $sql .= ' COMMENT ' . $this->prepareComment($table['description'], self::COMMENT_MAX_TABLE);
+    }
 
     return array($sql);
   }
@@ -88,7 +105,7 @@ class DatabaseSchema_mysql extends DatabaseSchema {
   protected function createFieldSql($name, $spec) {
     $sql = "`" . $name . "` " . $spec['mysql_type'];
 
-    if (isset($spec['length'])) {
+    if (in_array($spec['type'], array('varchar', 'char', 'text')) && isset($spec['length'])) {
       $sql .= '(' . $spec['length'] . ')';
     }
     elseif (isset($spec['precision']) && isset($spec['scale'])) {
@@ -120,6 +137,11 @@ class DatabaseSchema_mysql extends DatabaseSchema {
 
     if (empty($spec['not null']) && !isset($spec['default'])) {
       $sql .= ' DEFAULT NULL';
+    }
+
+    // Add column comment.
+    if (!empty($spec['description'])) {
+      $sql .= ' COMMENT ' . $this->prepareComment($spec['description'], self::COMMENT_MAX_COLUMN);
     }
 
     return $sql;
@@ -154,6 +176,7 @@ class DatabaseSchema_mysql extends DatabaseSchema {
     // Put :normal last so it gets preserved by array_flip. This makes
     // it much easier for modules (such as schema.module) to map
     // database types back into schema types.
+    // $map does not use drupal_static as its value never changes.
     static $map = array(
       'varchar:normal'  => 'VARCHAR',
       'char:normal'     => 'CHAR',
@@ -187,7 +210,11 @@ class DatabaseSchema_mysql extends DatabaseSchema {
       'blob:big'        => 'LONGBLOB',
       'blob:normal'     => 'BLOB',
 
+      'date:normal'     => 'DATE',
+
       'datetime:normal' => 'DATETIME',
+
+      'time:normal'     => 'TIME',
     );
     return $map;
   }
@@ -203,12 +230,12 @@ class DatabaseSchema_mysql extends DatabaseSchema {
     }
     if (!empty($spec['unique keys'])) {
       foreach ($spec['unique keys'] as $key => $fields) {
-        $keys[] = 'UNIQUE KEY ' . $key .' ('. $this->createKeysSqlHelper($fields) . ')';
+        $keys[] = 'UNIQUE KEY `' . $key . '` (' . $this->createKeysSqlHelper($fields) . ')';
       }
     }
     if (!empty($spec['indexes'])) {
       foreach ($spec['indexes'] as $index => $fields) {
-        $keys[] = 'INDEX ' . $index . ' (' . $this->createKeysSqlHelper($fields) . ')';
+        $keys[] = 'INDEX `' . $index . '` (' . $this->createKeysSqlHelper($fields) . ')';
       }
     }
 
@@ -216,40 +243,40 @@ class DatabaseSchema_mysql extends DatabaseSchema {
   }
 
   protected function createKeySql($fields) {
-    $ret = array();
+    $return = array();
     foreach ($fields as $field) {
       if (is_array($field)) {
-        $ret[] = $field[0] . '(' . $field[1] . ')';
+        $return[] = '`' . $field[0] . '`(' . $field[1] . ')';
       }
       else {
-        $ret[] = $field;
+        $return[] = '`' . $field . '`';
       }
     }
-    return implode(', ', $ret);
+    return implode(', ', $return);
   }
 
   protected function createKeysSqlHelper($fields) {
-    $ret = array();
+    $return = array();
     foreach ($fields as $field) {
       if (is_array($field)) {
-        $ret[] = $field[0] . '(' . $field[1] . ')';
+        $return[] = '`' . $field[0] . '`(' . $field[1] . ')';
       }
       else {
-        $ret[] = $field;
+        $return[] = '`' . $field . '`';
       }
     }
-    return implode(', ', $ret);
+    return implode(', ', $return);
   }
 
-  public function renameTable(&$ret, $table, $new_name) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} RENAME TO {' . $new_name . '}');
+  public function renameTable($table, $new_name) {
+    $this->connection->query('ALTER TABLE {' . $table . '} RENAME TO {' . $new_name . '}');
   }
 
-  public function dropTable(&$ret, $table) {
-    $ret[] = update_sql('DROP TABLE {' . $table . '}');
+  public function dropTable($table) {
+    $this->connection->query('DROP TABLE {' . $table . '}');
   }
 
-  public function addField(&$ret, $table, $field, $spec, $keys_new = array()) {
+  public function addField($table, $field, $spec, $keys_new = array()) {
     $fixnull = FALSE;
     if (!empty($spec['not null']) && !isset($spec['default'])) {
       $fixnull = TRUE;
@@ -260,24 +287,23 @@ class DatabaseSchema_mysql extends DatabaseSchema {
     if (count($keys_new)) {
       $query .= ', ADD ' . implode(', ADD ', $this->createKeysSql($keys_new));
     }
-    $ret[] = update_sql($query);
+    $this->connection->query($query);
     if (isset($spec['initial'])) {
-      // All this because update_sql does not support %-placeholders.
-      $sql = 'UPDATE {' . $table . '} SET ' . $field . ' = ' . db_type_placeholder($spec['type']);
-      $result = db_query($sql, $spec['initial']);
-      $ret[] = array('success' => $result !== FALSE, 'query' => check_plain($sql . ' (' . $spec['initial'] . ')'));
+      $this->connection->update($table)
+        ->fields(array($field, $spec['initial']))
+        ->execute();
     }
     if ($fixnull) {
       $spec['not null'] = TRUE;
-      $this->changeField($ret, $table, $field, $field, $spec);
+      $this->changeField($table, $field, $field, $spec);
     }
   }
 
-  public function dropField(&$ret, $table, $field) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP ' . $field);
+  public function dropField($table, $field) {
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP `' . $field . '`');
   }
 
-  public function fieldSetDefault(&$ret, $table, $field, $default) {
+  public function fieldSetDefault($table, $field, $default) {
     if (is_null($default)) {
       $default = 'NULL';
     }
@@ -285,44 +311,78 @@ class DatabaseSchema_mysql extends DatabaseSchema {
       $default = is_string($default) ? "'$default'" : $default;
     }
 
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ALTER COLUMN ' . $field . ' SET DEFAULT ' . $default);
+    $this->connection->query('ALTER TABLE {' . $table . '} ALTER COLUMN `' . $field . '` SET DEFAULT ' . $default);
   }
 
-  public function fieldSetNoDefault(&$ret, $table, $field) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ALTER COLUMN ' . $field . ' DROP DEFAULT');
+  public function fieldSetNoDefault($table, $field) {
+    $this->connection->query('ALTER TABLE {' . $table . '} ALTER COLUMN `' . $field . '` DROP DEFAULT');
   }
 
-  public function addPrimaryKey(&$ret, $table, $fields) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ADD PRIMARY KEY (' . $this->createKeySql($fields) . ')');
+  public function indexExists($table, $name) {
+    return $this->connection->query('SHOW INDEX FROM {' . $table . "} WHERE key_name = '$name'")->fetchField();
   }
 
-  public function dropPrimaryKey(&$ret, $table) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP PRIMARY KEY');
+  public function addPrimaryKey($table, $fields) {
+    $this->connection->query('ALTER TABLE {' . $table . '} ADD PRIMARY KEY (' . $this->createKeySql($fields) . ')');
   }
 
-  public function addUniqueKey(&$ret, $table, $name, $fields) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ADD UNIQUE KEY ' . $name . ' (' . $this->createKeySql($fields) . ')');
+  public function dropPrimaryKey($table) {
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP PRIMARY KEY');
   }
 
-  public function dropUniqueKey(&$ret, $table, $name) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP KEY ' . $name);
+  public function addUniqueKey($table, $name, $fields) {
+    $this->connection->query('ALTER TABLE {' . $table . '} ADD UNIQUE KEY `' . $name . '` (' . $this->createKeySql($fields) . ')');
   }
 
-  public function addIndex(&$ret, $table, $name, $fields) {
-    $query = 'ALTER TABLE {' . $table . '} ADD INDEX ' . $name . ' (' . $this->createKeySql($fields) . ')';
-    $ret[] = update_sql($query);
+  public function dropUniqueKey($table, $name) {
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP KEY `' . $name . '`');
   }
 
-  public function dropIndex(&$ret, $table, $name) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP INDEX ' . $name);
+  public function addIndex($table, $name, $fields) {
+    $this->connection->query('ALTER TABLE {' . $table . '} ADD INDEX `' . $name . '` (' . $this->createKeySql($fields) . ')');
   }
 
-  public function changeField(&$ret, $table, $field, $field_new, $spec, $keys_new = array()) {
+  public function dropIndex($table, $name) {
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP INDEX `' . $name . '`');
+  }
+
+  public function changeField($table, $field, $field_new, $spec, $keys_new = array()) {
     $sql = 'ALTER TABLE {' . $table . '} CHANGE `' . $field . '` ' . $this->createFieldSql($field_new, $this->processField($spec));
     if (count($keys_new)) {
       $sql .= ', ADD ' . implode(', ADD ', $this->createKeysSql($keys_new));
     }
-    $ret[] = update_sql($sql);
+    $this->connection->query($sql);
+  }
+
+  public function prepareComment($comment, $length = NULL) {
+    // Work around a bug in some versions of PDO, see http://bugs.php.net/bug.php?id=41125
+    $comment = str_replace("'", '’', $comment);
+
+    // Truncate comment to maximum comment length.
+    if (isset($length)) {
+      // Add table prefixes before truncating.
+      $comment = truncate_utf8($this->connection->prefixTables($comment), $length, TRUE, TRUE);
+    }
+
+    return $this->connection->quote($comment);
+  }
+
+  /**
+   * Retrieve a table or column comment.
+   */
+  public function getComment($table, $column = NULL) {
+    $condition = $this->buildTableNameCondition($this->connection->prefixTables('{' . $table . '}'));
+    if (isset($column)) {
+      $condition->condition('column_name', $column);
+      $condition->compile($this->connection, $this);
+      // Don't use {} around information_schema.columns table.
+      return $this->connection->query("SELECT column_comment FROM information_schema.columns WHERE " . (string) $condition, $condition->arguments())->fetchField();
+    }
+    $condition->compile($this->connection, $this);
+    // Don't use {} around information_schema.tables table.
+    $comment = $this->connection->query("SELECT table_comment FROM information_schema.tables WHERE " . (string) $condition, $condition->arguments())->fetchField();
+    // Work-around for MySQL 5.0 bug http://bugs.mysql.com/bug.php?id=11379
+    return preg_replace('/; InnoDB free:.*$/', '', $comment);
   }
 
 }

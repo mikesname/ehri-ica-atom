@@ -8,13 +8,13 @@
 <?php echo javascript_tag(<<<EOF
 progress = new Drupal.progressBar('checkSystem');
 progress.setProgress(-1, 'Check system');
-$('#progress').append(progress.element);
+jQuery('#progress').append(progress.element);
 progress.setProgress(0, 'Check .htaccess');
 jQuery.ajax({
   url: $checkHtaccessUrl,
   complete: function (request)
     {
-      $('#progress').after(request.responseText);
+      jQuery('#progress').after(request.responseText);
       progress.setProgress(100, 'Check system');
     } });
 EOF

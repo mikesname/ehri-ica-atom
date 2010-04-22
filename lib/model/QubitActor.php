@@ -26,6 +26,8 @@
  */
 class QubitActor extends BaseActor
 {
+  const ROOT_ID = 3;
+
   public function __toString()
   {
     $authorizedFormOfName = $this->getAuthorizedFormOfName();
@@ -37,8 +39,92 @@ class QubitActor extends BaseActor
     return (string) $authorizedFormOfName;
   }
 
+  public function __get($name)
+  {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    switch ($name)
+    {
+      case 'language':
+      case 'script':
+        if (!isset($this->values[$name]))
+        {
+          $criteria = new Criteria;
+          $this->addPropertysCriteria($criteria);
+          $criteria->add(QubitProperty::NAME, $name);
+
+          if (1 == count($query = QubitProperty::get($criteria)))
+          {
+            $this->values[$name] = $query[0];
+          }
+        }
+
+        if (isset($this->values[$name]))
+        {
+          return unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)));
+        }
+
+        return;
+    }
+
+    return call_user_func_array(array($this, 'BaseActor::__get'), $args);
+  }
+
+  public function __set($name, $value)
+  {
+    $args = func_get_args();
+
+    $options = array();
+    if (2 < count($args))
+    {
+      $options = $args[2];
+    }
+
+    switch ($name)
+    {
+      case 'language':
+      case 'script':
+
+        if (!isset($this->values[$name]))
+        {
+          $criteria = new Criteria;
+          $this->addPropertysCriteria($criteria);
+          $criteria->add(QubitProperty::NAME, $name);
+
+          if (1 == count($query = QubitProperty::get($criteria)))
+          {
+            $this->values[$name] = $query[0];
+          }
+          else
+          {
+            $this->values[$name] = new QubitProperty;
+            $this->values[$name]->name = $name;
+            $this->propertys[] = $this->values[$name];
+          }
+        }
+
+        $this->values[$name]->__set('value', serialize($value), $options + array('sourceCulture' => true));
+
+        return $this;
+    }
+
+    return call_user_func_array(array($this, 'BaseActor::__set'), $args);
+  }
+
   public function updateLuceneIndex()
   {
+    // Don't index root object
+    if (self::ROOT_ID == $this->id)
+    {
+      return;
+    }
+
     $search = new QubitSearch;
     $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->id, 'id'));
 
@@ -69,7 +155,29 @@ class QubitActor extends BaseActor
 
   public function save($connection = null)
   {
+    // Make sure all orphan actors are parented to ROOT
+    if ((!isset($this->id) || QubitActor::ROOT_ID != $this->id) && !isset($this->parentId))
+    {
+      $this->parentId = QubitActor::ROOT_ID;
+    }
+
     parent::save($connection);
+
+    // Save related event objects
+    foreach ($this->events as $event)
+    {
+      // Update search index for related info object
+      $event->setIndexOnSave(true);
+      $event->actor = $this;
+
+      try
+      {
+        $event->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
 
     $this->updateLuceneIndex();
 
@@ -87,6 +195,11 @@ class QubitActor extends BaseActor
     }
 
     return parent::delete($connection);
+  }
+
+  public static function getRoot()
+  {
+    return self::getById(self::ROOT_ID);
   }
 
   public static function getAllExceptUsers($options = array())
@@ -130,93 +243,6 @@ class QubitActor extends BaseActor
   }
 
   /**
-   * Get a paginated hitlist of actors
-   *
-   * @param string   $culture primary language for list
-   * @param Criteria $criteria Propel Criteria object
-   * @param array    $options array of optional function parameters
-   * @return QubitQuery collection of QubitInformationObject objects
-   */
-  public static function getList($options=array())
-  {
-    $criteria = new Criteria;
-
-    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
-    $sort = (isset($options['sort'])) ? $options['sort'] : null;
-    $page = (isset($options['page'])) ? $options['page'] : 1;
-
-    if (isset($options['repositoryId']))
-    {
-      $criteria->add(QubitInformationObject::REPOSITORY_ID, $options['repositoryId']);
-    }
-
-    if (isset($options['collectionType']))
-    {
-      $criteria->add(QubitInformationObject::COLLECTION_TYPE_ID, $options['collectionType']);
-    }
-
-    // Get culture for list
-    if (isset($options['culture']))
-    {
-      $culture = $options['culture'];
-    }
-    else
-    {
-      $culture = sfContext::getInstance()->getUser()->getCulture();
-    }
-
-    // Add criteria to exclude actors that are users or repository objects
-    $criteria = QubitActor::addGetOnlyActorsCriteria($criteria);
-
-    // Add sort criteria
-    switch($sort)
-    {
-      case 'typeDown':
-        $fallbackTable = 'QubitTerm';
-        $criteria->addJoin(QubitActor::ENTITY_TYPE_ID, QubitTerm::ID, Criteria::LEFT_JOIN);
-        $criteria->addDescendingOrderByColumn('name');
-        break;
-      case 'typeUp':
-        $fallbackTable = 'QubitTerm';
-        $criteria->addJoin(QubitActor::ENTITY_TYPE_ID, QubitTerm::ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('name');
-        break;
-      case 'nameDown':
-        $fallbackTable = 'QubitActor';
-        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
-        break;
-      case 'nameUp':
-      default:
-        $fallbackTable = 'QubitActor';
-        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
-    }
-
-    // Do source culture fallback
-    if ($cultureFallback === true)
-    {
-      // Return a QubitQuery object
-      $options = array('returnClass'=>'QubitActor');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
-    }
-    else
-    {
-      // Do straight joins without fallback
-      $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
-      $criteria->addJoin(QubitActor::ENTITY_TYPE_ID, QubitTermI18n::ID, Criteria::LEFT_JOIN);
-      $criteria->add(QubitActorI18n::CULTURE, $culture);
-      $criteria->add(QubitTermI18n::CULTURE, $culture);
-    }
-
-    // Page results
-    $pager = new QubitPager('QubitActor');
-    $pager->setCriteria($criteria);
-    $pager->setPage($page);
-    $pager->init();
-
-    return $pager;
-  }
-
-  /**
    * Append criteria to get only Actor objects that are NOT
    * a users or repository.
    *
@@ -249,36 +275,6 @@ class QubitActor extends BaseActor
     return self::get($criteria);
   }
 
-  public static function getAccessPointSelectList()
-  {
-    $actors = self::getAllExceptUsers();
-    $selectList = array();
-    if (count($actors) > 0)
-    {
-      foreach ($actors as $actor)
-      {
-        $actorName = $actor->getAuthorizedFormOfName(array('cultureFallback'=>true));
-        //use 'Family name, first name' format if available
-        /*
-        if ($actor->getEntityTypeId() == QubitTerm::PERSON_ID)
-        {
-        foreach ($actor->getOtherNames() as $name)
-        {
-        if ($name->getTypeId() == QubitTerm::FAMILY_NAME_FIRST_NAME_ID)
-        {
-        $actorName = $name;
-        break;
-        }
-        }
-        }
-        */
-        $selectList[$actor->getId()] = $actorName;
-      }
-    }
-
-    return $selectList;
-  }
-
   public static function getAllNames()
   {
     $actors = self::getOnlyActors();
@@ -296,25 +292,6 @@ class QubitActor extends BaseActor
     }
 
     return $allActorNames;
-  }
-
-  public function getOtherNames()
-  {
-    $criteria = new Criteria;
-    $criteria->addJoin(QubitActorName::TYPE_ID, QubitTerm::ID);
-    $criteria->add(QubitActorName::ACTOR_ID, $this->getId());
-
-    return QubitActorName::get($criteria);
-  }
-
-  public function setOtherNames($otherName, $nameTypeId, $nameNote)
-  {
-    $newName = new QubitActorName;
-    $newName->setActorId($this->getId());
-    $newName->setName($otherName);
-    $newName->setTypeId($nameTypeId);
-    $newName->setNote($nameNote);
-    $newName->save();
   }
 
   /**
@@ -506,5 +483,20 @@ class QubitActor extends BaseActor
     }
 
     return QubitActor::getOne($criteria, $options);
+  }
+
+  public function getLabel()
+  {
+    $label = null;
+    if (null !== $this->descriptionIdentifier)
+    {
+      $label .= $this->descriptionIdentifier;
+    }
+    if (null !== $value = $this->getAuthorizedFormOfName(array('cultureFallback' => true)))
+    {
+      $label = (0 < strlen($label)) ? $label.' - '.$value : $value;
+    }
+
+    return $label;
   }
 }

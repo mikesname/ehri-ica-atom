@@ -73,11 +73,7 @@ class sfInstallPluginConfiguration extends sfPluginConfiguration
       }
     }
 
-    $installScriptName = preg_replace('/\/[^\/]+\.php5?$/', '/install.php', $scriptName);
-    if (0 < strlen($relativeUrlRoot = sfConfig::get('sf_relative_url_root')))
-    {
-      $installScriptName = $relativeUrlRoot.'/install.php';
-    }
+    $installScriptName = sfConfig::get('sf_relative_url_root', preg_replace('/\/[^\/]+\.php5?$/', null, $scriptName)).'/install.php';
 
     if ($installScriptName == $scriptName)
     {
@@ -92,15 +88,18 @@ class sfInstallPluginConfiguration extends sfPluginConfiguration
       {
         try
         {
-          $databaseManager = new sfDatabaseManager($this->configuration);
+          new sfDatabaseManager($this->configuration);
         }
         catch (sfConfigurationException $e)
         {
-          $installUrl = $installScriptName.'/sfInstallPlugin';
+          $installUrl = $installScriptName.'/;sfInstallPlugin';
 
           header('Location: '.$installUrl);
 
           echo '<html><head><meta http-equiv="refresh" content="0;url='.htmlspecialchars($installUrl, ENT_QUOTES, sfConfig::get('sf_charset')).'" /></head></html>';
+
+          // Going any further may stop this redirect
+          exit;
         }
       }
     }

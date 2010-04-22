@@ -19,13 +19,14 @@
 
 class UserEditAction extends sfAction
 {
-  public static $NAMES = array(
-    'username',
-    'email',
-    'password',
-    'confirmPassword',
-    'groups'
-  );
+  public static
+    $NAMES = array(
+      'username',
+      'email',
+      'password',
+      'confirmPassword',
+      'groups',
+      'translate');
 
   protected function addField($name)
   {
@@ -33,20 +34,27 @@ class UserEditAction extends sfAction
     {
       case 'username':
         $this->form->setDefault($name, $this->user[$name]);
-        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setValidator($name, new sfValidatorString(array('required' => true)));
         $this->form->setWidget($name, new sfWidgetFormInput);
+
         break;
+
       case 'email':
         $this->form->setDefault($name, $this->user[$name]);
-        $this->form->setValidator($name, new sfValidatorEmail);
+        $this->form->setValidator($name, new sfValidatorEmail(array('required' => true)));
         $this->form->setWidget($name, new sfWidgetFormInput);
+
         break;
+
       case 'password':
       case 'confirmPassword':
         $this->form->setDefault($name, null);
-        $this->form->setValidator($name, new sfValidatorString);
+        // Required field only if a new user is being created
+        $this->form->setValidator($name, new sfValidatorString(array('required' => !isset($this->request->id))));
         $this->form->setWidget($name, new sfWidgetFormInputPassword);
+
         break;
+
       case 'groups':
         $values = array();
         $criteria = new Criteria;
@@ -69,7 +77,140 @@ class UserEditAction extends sfAction
         $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
 
         break;
+
+      case 'translate':
+        $c = sfCultureInfo::getInstance($this->getContext()->getUser()->getCulture());
+        $languages = $c->getLanguages();
+
+        $choices = array();
+        if (0 < count($langSettings = QubitSetting::getByScope('i18n_languages')))
+        {
+          foreach ($langSettings as $setting)
+          {
+            $choices[$setting->name] = $languages[$setting->name];
+          }
+        }
+
+        // Find existing translate permissions
+        $criteria = new Criteria;
+        $criteria->add(QubitAclPermission::USER_ID, $this->user->id);
+        $criteria->add(QubitAclPermission::ACTION, 'translate');
+
+        $defaults = null;
+        if (null !== $permission = QubitAclPermission::getOne($criteria))
+        {
+          $defaults = $permission->getConstants(array('name' => 'languages'));
+        }
+
+        $this->form->setDefault($name, $defaults);
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices'  => $choices, 'multiple' => true)));
+
+        break;
     }
+  }
+
+  protected function processField($field)
+  {
+    switch ($name = $field->getName())
+    {
+      case 'password':
+        if (0 < strlen(trim($this->form->getValue('password'))))
+        {
+          $this->user->setPassword($this->form->getValue('password'));
+        }
+
+        break;
+
+      case 'confirmPassword':
+        // Don't do anything for confirmPassword
+        break;
+
+      case 'groups':
+        $newGroupIds = $formGroupIds = array();
+
+        if (null != ($groups = $this->form->getValue('groups')))
+        {
+          foreach ($groups as $groupId)
+          {
+            $newGroupIds[$groupId] = $formGroupIds[$groupId] = $groupId;
+          }
+        }
+        else
+        {
+          $newGroupIds = $formGroupIds = array();
+        }
+
+        // Don't re-add existing groups + delete exiting groups that are no longer
+        // in groups list
+        foreach ($this->user->aclUserGroups as $existingUserGroup)
+        {
+          if (in_array($existingUserGroup->groupId, $formGroupIds))
+          {
+            unset($newGroupIds[$existingUserGroup->groupId]);
+          }
+          else
+          {
+            $existingUserGroup->delete();
+          }
+        }
+
+        foreach ($newGroupIds as $groupId)
+        {
+          $userGroup = new QubitAclUserGroup;
+          $userGroup->groupId = $groupId;
+
+          $this->user->aclUserGroups[] = $userGroup;
+        }
+
+        break;
+
+      case 'translate':
+        $languages = $this->form->getValue('translate');
+
+        $criteria = new Criteria;
+        $criteria->add(QubitAclPermission::USER_ID, $this->user->id);
+        $criteria->addAnd(QubitAclPermission::USER_ID, null, Criteria::ISNOTNULL);
+        $criteria->add(QubitAclPermission::ACTION, 'translate');
+
+        if (null === $permission = QubitAclPermission::getOne($criteria))
+        {
+          $permission = new QubitAclPermission;
+          $permission->userId = $this->user->id;
+          $permission->action = 'translate';
+          $permission->grantDeny = 1;
+          $permission->conditional = 'in_array(%p[language], %k[languages])';
+        }
+        else if (!is_array($languages))
+        {
+          // If $languages is not an array, then remove the translate permission
+          $permission->delete();
+        }
+
+        if (is_array($languages))
+        {
+          $permission->setConstants(array('languages' => $languages));
+          $permission->save();
+        }
+
+        break;
+
+      default:
+        $this->user[$name] = $this->form->getValue($name);
+    }
+  }
+
+  protected function processForm()
+  {
+    foreach ($this->form as $field)
+    {
+      $this->processField($field);
+    }
+
+    // Save changes
+    $this->user->save();
+
+    return $this;
   }
 
   public function execute($request)
@@ -92,8 +233,7 @@ class UserEditAction extends sfAction
     $this->form->getValidatorSchema()->setPostValidator(new sfValidatorSchemaCompare(
       'password', '==', 'confirmPassword',
       array(),
-      array('invalid' => 'Your password confirmation did not match you password.')
-    ));
+      array('invalid' => 'Your password confirmation did not match you password.')));
 
     // HACK: Use static::$NAMES in PHP 5.3,
     // http://php.net/oop5.late-static-bindings
@@ -106,16 +246,20 @@ class UserEditAction extends sfAction
     // HACK: because $this->user->getAclPermissions() is erroneously calling
     // QubitObject::getaclPermissionsById()
     $this->permissions = null;
-    if (null != $this->user->id)
+    if (isset($request->id))
     {
-      $this->permissions = QubitUser::getaclPermissionsById($this->user->id, array('self' => $this));
+      $permissions = QubitUser::getaclPermissionsById($this->user->id, array('self' => $this))->orderBy('constants')->orderBy('object_id');
+
+      foreach ($permissions as $item)
+      {
+        $repoId = $item->getConstants(array('name' => 'repositoryId'));
+        $this->permissions[$repoId][$item->objectId][$item->action] = $item->grantDeny;
+      }
     }
 
-    $this->isAdministrator = false;
-    if ($this->getUser()->hasGroup(QubitAclGroup::ADMIN_ID))
-    {
-      $this->isAdministrator = true;
-    }
+    // List of actions without translate
+    $this->basicActions = QubitInformationObjectAcl::$ACTIONS;
+    unset($this->basicActions['translate']);
 
     if ($request->isMethod('post'))
     {
@@ -124,126 +268,8 @@ class UserEditAction extends sfAction
       if ($this->form->isValid())
       {
         $this->processForm();
-        $this->redirect(array('module' => 'user', 'action' => 'show', 'id' => $this->user->id));
-      }
-    }
-  }
 
-  protected function processForm()
-  {
-    $this->user->username = $this->form->getValue('username');
-    $this->user->email = $this->form->getValue('email');
-
-    if (0 < strlen(trim($this->form->getValue('password'))))
-    {
-      $this->user->setPassword($this->form->getValue('password'));
-    }
-
-    $this->user->save();
-
-    $this->updateUserGroups();
-    $this->updatePermissions();
-    $this->deletePermissions();
-
-    return $this;
-  }
-
-  protected function updateUserGroups()
-  {
-    $newGroupIds = $formGroupIds = array();
-
-    if (null != ($groups = $this->form->getValue('groups')))
-    {
-      foreach ($groups as $groupId)
-      {
-        $newGroupIds[$groupId] = $formGroupIds[$groupId] = $groupId;
-      }
-    }
-    else
-    {
-      $newGroupIds = $formGroupIds = array();
-    }
-
-    // Don't re-add existing groups + delete exiting groups that are no longer
-    // in groups list
-    foreach ($this->user->aclUserGroups as $existingUserGroup)
-    {
-      if (in_array($existingUserGroup->groupId, $formGroupIds))
-      {
-        unset($newGroupIds[$existingUserGroup->groupId]);
-      }
-      else
-      {
-        $existingUserGroup->delete();
-      }
-    }
-
-    foreach ($newGroupIds as $groupId)
-    {
-      $userGroup = new QubitAclUserGroup;
-      $userGroup->userId = $this->user->id;
-      $userGroup->groupId = $groupId;
-      $userGroup->save();
-    }
-
-    return $this;
-  }
-
-  protected function updatePermissions()
-  {
-    foreach ($this->request->getParameter('permission') as $key => $formData)
-    {
-      if ('new' == $key)
-      {
-        if (0 < intval($formData['actionId']))
-        {
-          $aclPermission = new QubitAclPermission;
-          $aclPermission->userId = $this->user->id;
-          $aclPermission->actionId = $formData['actionId'];
-          $aclPermission->objectId = QubitInformationObject::ROOT_ID;
-        }
-        else
-        {
-          continue;
-        }
-      }
-      else
-      {
-        $aclPermission = QubitAclPermission::getById($key);
-        if (null === $aclPermission)
-        {
-          // If no valid aclPermission object, skip this row
-          continue;
-        }
-      }
-
-      $aclPermission->grantDeny = $formData['grantDeny'];
-
-      // Set repository conditional for permission
-      if ('null' != $formData['repository'])
-      {
-        $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $formData['repository']));
-        $aclPermission->setRepository(QubitRepository::getById($params['id']));
-      }
-      else
-      {
-        $aclPermission->setRepository(null);
-      }
-
-      $aclPermission->save();
-    }
-  }
-
-  protected function deletePermissions()
-  {
-    if (is_array($deletePermissions = $this->request->getParameter('deletePermission')))
-    {
-      foreach ($deletePermissions as $key => $value)
-      {
-        if (null !== $permission = QubitAclPermission::getById($key))
-        {
-          $permission->delete();
-        }
+        $this->redirect(array($this->user, 'module' => 'user'));
       }
     }
   }

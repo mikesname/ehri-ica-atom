@@ -19,20 +19,23 @@
 
 class sfColumbiaPluginConfiguration extends sfPluginConfiguration
 {
-  /**
-   * @see sfPluginConfiguration
-   */
-  public function configure()
-  {
-    $this->summary = 'Fixed width theme in shades of blue, with header image from Columbia Street, New Westminster (1907).';
-    $this->version = '1.0.0';
-  }
+  public static
+    $summary = 'Theme plugin. Adaptation of fixed width Classic theme using shades of blue and drop-down menus. Includes a header image from Columbia Street, New Westminster (1907).',
+    $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)
   {
     $context = $event->getSubject();
 
-    $context->response->addStylesheet('/sfColumbiaPlugin/css/style', 'last');
+    $context->response->addStylesheet('/sfClassicPlugin/css/main', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/sfCaribouPlugin/css/style', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/sfColumbiaPlugin/css/style', 'last', array('media' => 'all'));
+
+    $context->response->addStylesheet('/sfCaribouPlugin/css/print', 'last', array('media' => 'print'));
+
+    $context->response->addStylesheet('/sfCaribouPlugin/css/print-ie', 'last', array('condition' => 'IE', 'media' => 'print'));
+
+    $context->response->addJavaScript('/sfCaribouPlugin/js/navigation', 'last');
   }
 
   /**

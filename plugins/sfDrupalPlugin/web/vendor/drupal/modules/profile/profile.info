@@ -1,4 +1,4 @@
-; $Id: profile.info,v 1.8 2008/10/11 02:32:59 webchick Exp $
+; $Id: profile.info,v 1.10 2009/11/17 21:24:18 dries Exp $
 name = Profile
 description = Supports configurable user profiles.
 package = Core
@@ -8,3 +8,5 @@ files[] = profile.module
 files[] = profile.admin.inc
 files[] = profile.pages.inc
 files[] = profile.install
+files[] = profile.test
+configure = admin/config/people/profile

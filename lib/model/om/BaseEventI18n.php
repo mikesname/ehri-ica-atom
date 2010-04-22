@@ -11,8 +11,7 @@ abstract class BaseEventI18n implements ArrayAccess
     DESCRIPTION = 'q_event_i18n.DESCRIPTION',
     DATE_DISPLAY = 'q_event_i18n.DATE_DISPLAY',
     ID = 'q_event_i18n.ID',
-    CULTURE = 'q_event_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_event_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_event_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -21,7 +20,6 @@ abstract class BaseEventI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitEventI18n::DATE_DISPLAY);
     $criteria->addSelectColumn(QubitEventI18n::ID);
     $criteria->addSelectColumn(QubitEventI18n::CULTURE);
-    $criteria->addSelectColumn(QubitEventI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -391,9 +389,7 @@ abstract class BaseEventI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

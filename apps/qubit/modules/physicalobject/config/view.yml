@@ -1,8 +1,4 @@
-deleteSuccess:
-  components:
-    BrowseBox: []
-    MainMenu: []
-    SearchBox: []
-
-editSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+boxListSuccess:
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/tableheader:

@@ -1,0 +1,24 @@
+editIsdfSuccess:
+  stylesheets:
+    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
+    /vendor/yui/container/assets/skins/sam/container: { position: first }
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:
+    /sfDrupalPlugin/vendor/drupal/misc/textarea:
+    /vendor/yui/animation/animation-min:
+    /vendor/yui/connection/connection-min:
+    /vendor/yui/datasource/datasource-min:
+    /vendor/yui/autocomplete/autocomplete-min:
+    /vendor/yui/dragdrop/dragdrop-min:
+    /vendor/yui/container/container-min:
+    autocomplete:
+    dialog:
+    multiInput:
+    multiDelete:
+    select:
+
+indexIsdfSuccess:
+  javascripts:
+    blank:

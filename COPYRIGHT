@@ -68,11 +68,6 @@ sfTranslatePlugin
 Copyright: Jack Bates
 License: MIT
 
-sfUJSPlugin
------------
-Copyright: Francois Zaninotto
-License: MIT
-
 sfLucenePlugin
 --------------
 Copyright: Carl Vondrick
@@ -83,6 +78,10 @@ sfSearchPlugin
 Copyright: Carl Vondrick
 License: MIT
 
+sfWebBrowserPlugin
+--------------
+Copyright: Francois Zaninotto
+License: MIT
 
 In addition to symfony and its external libraries and plugins, Qubit Toolkit also uses:
 
@@ -104,12 +103,6 @@ jQuery
 Url:       http://jquery.com/
 Copyright: John Resig <jeresig@gmail.com>
 License:   Dual licensed under the MIT and GPL version 2 - see MIT-LICENSE.txt and GPL-LICENSE.txt
-
-sfUJSPlugin
------------
-Url:       http://trac.symfony-project.com/wiki/sfUJSPlugin
-Copyright: François Zaninotto <francois.zaninotto@symfony-project.com>
-License:   LGPL - see LICENSE file
 
 Silk Icons
 ----------
@@ -148,9 +141,3 @@ FreeBeer ISO639 Map
 Url:      http://sourceforge.net/projects/freebeer/
 Copyright: 2002-2004, Ross Smith
 License: BSD or LGPL License
-
-SAMPLE DATA
-===========
-All sample metadata and image files used with permission from the City of Vancouver Archives, Simon Fraser University Archives and Library and Archives of Canada.
-Some archival descriptions were abbreviated, altered or translated for demonstration purposes.
-Sample video file(s) made available by the Open Video Project and the Library of Congress under a Creative Commons Attribution-NonCommercial-NoDerivs 2.5 License.

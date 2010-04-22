@@ -10,8 +10,7 @@ abstract class BaseAclGroupI18n implements ArrayAccess
     NAME = 'q_acl_group_i18n.NAME',
     DESCRIPTION = 'q_acl_group_i18n.DESCRIPTION',
     ID = 'q_acl_group_i18n.ID',
-    CULTURE = 'q_acl_group_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_acl_group_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_acl_group_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -19,7 +18,6 @@ abstract class BaseAclGroupI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitAclGroupI18n::DESCRIPTION);
     $criteria->addSelectColumn(QubitAclGroupI18n::ID);
     $criteria->addSelectColumn(QubitAclGroupI18n::CULTURE);
-    $criteria->addSelectColumn(QubitAclGroupI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -389,9 +387,7 @@ abstract class BaseAclGroupI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

@@ -1,247 +1,224 @@
 <?php
-// $Id: field.default.inc,v 1.3 2009/02/08 21:22:59 webchick Exp $
+// $Id: field.default.inc,v 1.30 2009/12/26 16:50:08 dries Exp $
 
 /**
  * @file
- * Default 'implementations' of hook_field_*().
+ * Default 'implementations' of hook_field_*(): common field housekeeping.
  *
- * Handles common field housekeeping.
  * Those implementations are special, as field.module does not define any field
  * types. Those functions take care of default stuff common to all field types.
+ * They are called through the _field_invoke_default() iterator, generally in
+ * the corresponding field_attach_[operation]() function.
  */
 
-function field_default_validate($obj_type, $object, $field, $instance, $items, $form) {
-  // TODO: here we could validate that required fields are filled in (for programmatic save)
-}
+function field_default_extract_form_values($obj_type, $object, $field, $instance, $langcode, &$items, $form, &$form_state) {
+  $field_name = $field['field_name'];
 
-function field_default_submit($obj_type, &$object, $field, $instance, &$items, $form, &$form_state) {
-  // Get field values from the submitted form values. Assigning them to $items
-  // populates $object->field_name when we return from _field_invoke_default().
-
-  // TODO D7: Allow the values to be form_altered to another location, like we
-  // do for the form definition ($form['#fields'][$field_name]['form_path']) ?
-
-  if (isset($form_state['values'][$field['field_name']])) {
-    $items = $form_state['values'][$field['field_name']];
-
+  if (isset($form_state['values'][$field_name][$langcode])) {
+    $items = $form_state['values'][$field_name][$langcode];
     // Remove the 'value' of the 'add more' button.
-    unset($items[$field['field_name'] . '_add_more']);
-
-    // TODO: the above should be moved to validate time (and values saved back
-    // using form_set_value() ), so that hook_field_validate() works on clean data.
-    // Not sure we'll want what's below in validate too.
-
-    // Reorder items to account for drag-n-drop reordering.
-    if (field_behaviors_widget('multiple values', $instance) == FIELD_BEHAVIOR_DEFAULT) {
-      $items = _field_sort_items($field, $items);
-    }
-
-    // Filter out empty values.
-    $items = field_set_empty($field, $items);
-
-    // _field_invoke() does not add back items for fields not present in the
-    // original $object, so add them manually.
-    $object->{$field['field_name']} = $items;
-  }
-  else {
-    // The form did not include this field, for instance because of access
-    // rules: make sure any existing value for the field stays unchanged.
-    unset($object->{$field['field_name']});
+    unset($items['add_more']);
   }
 }
 
 /**
- * The 'view' operation constructs the $object in a way that you can use
- * drupal_render() to display the formatted output for an individual field.
- * i.e. print drupal_render($object->content['field_foo']);
+ * Generic field validation handler.
  *
- * The code supports both single value formatters, which theme an individual
- * item value, and multiple value formatters, which theme all values for the
- * field in a single theme. The multiple value formatters could be used, for
- * instance, to plot field values on a single map or display them in a graph.
- * Single value formatters are the default, multiple value formatters can be
- * designated as such in formatter_info().
+ * Possible error codes:
+ * - 'field_cardinality': The number of values exceeds the field cardinality.
  *
- * The $object array will look like:
- *   $object->content['field_foo']['wrapper'] = array(
- *     '#theme' => 'field',
- *     '#title' => 'label'
- *     '#field_name' => 'field_name',
- *     '#object' => $object,
- *     '#object_type' => $obj_type,
- *     // Value of the $teaser param of hook_nodeapi('view').
- *     '#teaser' => $teaser,
- *     'items' =>
- *       0 => array(
- *         '#item' => $items[0],
- *         // Only for 'single-value' formatters
- *         '#theme' => $theme,
- *         '#field_name' => 'field_name',
- *         '#bundle' => $bundle,
- *         '#formatter' => $formatter_name,
- *         '#settings' => $formatter_settings,
- *         '#object' => $object,
- *         '#object_type' => $obj_type,
- *         '#delta' => 0,
- *       ),
- *       1 => array(
- *         '#item' => $items[1],
- *         // Only for 'single-value' formatters
- *         '#theme' => $theme,
- *         '#field_name' => 'field_name',
- *         '#bundle' => $bundle_name,
- *         '#formatter' => $formatter_name,
- *         '#settings' => $formatter_settings,
- *         '#object' => $object,
- *         '#object_type' => $obj_type,
- *         '#delta' => 1,
- *       ),
- *       // Only for 'multiple-value' formatters
- *       '#theme' => $theme,
- *       '#field_name' => 'field_name',
- *       '#bundle' => $bundle_name,
- *       '#formatter' => $formatter_name,
- *       '#settings' => $formatter_settings,
- *     ),
- *   );
+ * @see _hook_field_validate()
+ *
+ * @param $obj_type
+ *   The type of $object.
+ * @param $object
+ *   The object for the operation.
+ * @param $field
+ *   The field structure for the operation.
+ * @param $instance
+ *   The instance structure for $field on $object's bundle.
+ * @param $langcode
+ *   The language associated to $items.
+ * @param $items
+ *   $object->{$field['field_name']}[$langcode], or an empty array if unset.
+ * @param $errors
+ *   The array of errors, keyed by field name and by value delta, that have
+ *   already been reported for the object. The function should add its errors
+ *   to this array. Each error is an associative array, with the following
+ *   keys and values:
+ *   - 'error': an error code (should be a string, prefixed with the module name)
+ *   - 'message': the human readable message to be displayed.
  */
-function field_default_view($obj_type, $object, $field, $instance, $items, $teaser) {
-  list($id, $vid, $bundle) = field_attach_extract_ids($obj_type, $object);
+function field_default_validate($obj_type, $object, $field, $instance, $langcode, $items, &$errors) {
+  // Filter out empty values.
+  $items = _field_filter_items($field, $items);
+
+  // Check that the number of values doesn't exceed the field cardinality.
+  // For form submitted values, this can only happen with 'multiple value'
+  // widgets.
+  if ($field['cardinality'] != FIELD_CARDINALITY_UNLIMITED && count($items) > $field['cardinality']) {
+    $errors[$field['field_name']][$langcode][0][] = array(
+      'error' => 'field_cardinality',
+      'message' => t('%name: this field cannot hold more than @count values.', array('%name' => t($instance['label']), '@count' => $field['cardinality'])),
+    );
+  }
+}
+
+function field_default_submit($obj_type, $object, $field, $instance, $langcode, &$items, $form, &$form_state) {
+  $field_name = $field['field_name'];
+
+  // Reorder items to account for drag-n-drop reordering.
+  if (field_behaviors_widget('multiple values', $instance) == FIELD_BEHAVIOR_DEFAULT) {
+    $items = _field_sort_items($field, $items);
+  }
+
+  // Filter out empty values.
+  $items = _field_filter_items($field, $items);
+}
+
+/**
+ * Default field 'insert' operation.
+ *
+ * Insert default value if no $object->$field_name entry was provided.
+ * This can happen with programmatic saves, or on form-based creation where
+ * the current user doesn't have 'edit' permission for the field.
+ */
+function field_default_insert($obj_type, $object, $field, $instance, $langcode, &$items) {
+  // _field_invoke() populates $items with an empty array if the $object has no
+  // entry for the field, so we check on the $object itself.
+  // We also check that the current field translation is actually defined before
+  // assigning it a default value. This way we ensure that only the intended
+  // languages get a default value. Otherwise we could have default values for
+  // not yet open languages.
+  if (empty($object) || !property_exists($object, $field['field_name']) ||
+    (isset($object->{$field['field_name']}[$langcode]) && count($object->{$field['field_name']}[$langcode]) == 0)) {
+    $items = field_get_default_value($obj_type, $object, $field, $instance, $langcode);
+  }
+}
+
+/**
+ * Invokes hook_field_formatter_prepare_view() on the relevant formatters.
+ *
+ * @param $obj_type
+ *   The type of $object; e.g. 'node' or 'user'.
+ * @param $objects
+ *   An array of objects being displayed, keyed by object id.
+ * @param $field
+ *   The field structure for the operation.
+ * @param $instances
+ *   Array of instance structures for $field for each object, keyed by object
+ *   id.
+ * @param $langcode
+ *   The language associated to $items.
+ * @param $items
+ *   Array of field values already loaded for the objects, keyed by object id.
+ * @param $display
+ *   Can be either:
+ *   - the name of a view mode
+ *   - or an array of display settings to use for display, as found in the
+ *     'display' entry of $instance definitions.
+*/
+function field_default_prepare_view($obj_type, $objects, $field, $instances, $langcode, &$items, $display) {
+  // Group objects, instances and items by formatter module.
+  $modules = array();
+  foreach ($instances as $id => $instance) {
+    $display = is_string($display) ? $instance['display'][$display] : $display;
+    if ($display['type'] !== 'hidden') {
+      $module = $display['module'];
+      $modules[$module] = $module;
+      $grouped_objects[$module][$id] = $objects[$id];
+      $grouped_instances[$module][$id] = $instance;
+      $grouped_displays[$module][$id] = $display;
+      // hook_field_formatter_prepare_view() alters $items by reference.
+      $grouped_items[$module][$id] = &$items[$id];
+    }
+  }
+
+  foreach ($modules as $module) {
+    // Invoke hook_field_formatter_prepare_view().
+    $function = $module . '_field_formatter_prepare_view';
+    if (function_exists($function)) {
+      $function($obj_type, $grouped_objects[$module], $field, $grouped_instances[$module], $langcode, $grouped_items[$module], $grouped_displays[$module]);
+    }
+  }
+}
+
+/**
+ * Builds a renderable array for field values.
+ *
+ * @param $obj_type
+ *   The type of $object; e.g. 'node' or 'user'.
+ * @param $objects
+ *   An array of objects being displayed, keyed by object id.
+ * @param $field
+ *   The field structure for the operation.
+ * @param $instances
+ *   Array of instance structures for $field for each object, keyed by object
+ *   id.
+ * @param $langcode
+ *   The language associated to $items.
+ * @param $items
+ *   Array of field values already loaded for the objects, keyed by object id.
+ * @param $display
+ *   Can be either:
+ *   - the name of a view mode;
+ *   - or an array of custom display settings, as found in the 'display' entry
+ *     of $instance definitions.
+ */
+function field_default_view($obj_type, $object, $field, $instance, $langcode, $items, $display) {
+  list($id, $vid, $bundle) = entity_extract_ids($obj_type, $object);
 
   $addition = array();
 
-  // Entities without build modes should provide a 'full' context.
-  // NODE_BUILD_NORMAL is 0, and ('whatever' == 0) is TRUE, so we need a ===.
-  if (!isset($object->build_mode)) {
-    $context = 'full';
-  }
-  elseif ($object->build_mode === NODE_BUILD_NORMAL
-    || $object->build_mode == NODE_BUILD_PREVIEW) {
-    $context = $teaser ? 'teaser' : 'full';
+  // Prepare incoming display specifications.
+  if (is_string($display)) {
+    $view_mode = $display;
+    $display = $instance['display'][$view_mode];
   }
   else {
-    $context = $object->build_mode;
+    $view_mode = '_custom_display';
   }
 
-  // If we don't have specific settings for the current build_mode, we use the
-  // (required) 'full' build_mode.
-  $display = isset($instance['display'][$context]) ? $instance['display'][$context] : $instance['display']['full'];
-  // Ensure we have a valid formatter and formatter settings.
-  $display = _field_get_formatter($display, $field);
-
-  if ($display['type'] && $display['type'] !== 'hidden') {
-    $theme = 'field_formatter_' . $display['type'];
-    $single = (field_behaviors_formatter('multiple values', $display) == FIELD_BEHAVIOR_DEFAULT);
-
-    $label_display = $display['label'];
-    if (isset($object->build_mode) && $object->build_mode == NODE_BUILD_SEARCH_INDEX) {
-      $label_display = 'hidden';
+  if ($display['type'] !== 'hidden') {
+    // We never want to index fields labels.
+    if ($view_mode == 'search_index') {
+      $display['label'] = 'hidden';
     }
 
-    $info = array(
-      '#field_name' => $field['field_name'],
-      '#bundle' => $bundle,
-      '#object' => $object,
-      '#object_type' => $obj_type,
-    );
+    // Calling the formatter function through module_invoke() can have a
+    // performance impact on pages with many fields and values.
+    $function = $display['module'] . '_field_formatter_view';
+    if (function_exists($function)) {
+      $elements = $function($obj_type, $object, $field, $instance, $langcode, $items, $display);
+    }
 
-    $element = $info + array(
-      '#theme' => 'field',
-      '#title' => check_plain(t($instance['label'])),
-      '#access' => field_access('view', $field),
-      '#label_display' => $label_display,
-      '#teaser' => $teaser,
-      '#single' => $single,
-      'items' => array(),
-    );
-
-    // Fill-in items.
-    foreach ($items as $delta => $item) {
-      $element['items'][$delta] = array(
-        '#item' => $item,
-        '#weight' => $delta,
+    if ($elements) {
+      $info = array(
+        '#theme' => 'field',
+        '#weight' => $display['weight'],
+        '#title' => t($instance['label']),
+        '#access' => field_access('view', $field, $obj_type, $object),
+        '#label_display' => $display['label'],
+        '#view_mode' => $view_mode,
+        '#language' => $langcode,
+        '#field_name' => $field['field_name'],
+        '#field_type' => $field['type'],
+        '#field_translatable' => $field['translatable'],
+        '#object_type' => $obj_type,
+        '#bundle' => $bundle,
+        '#object' => $object,
+        '#items' => $items,
+        '#formatter' => $display['type']
       );
+
+      $addition[$field['field_name']] = array_merge($info, $elements);
     }
-
-    // Append formatter information either on each item ('single-value' formatter)
-    // or at the upper 'items' level ('multiple-value' formatter)
-    $format_info = $info + array(
-      '#formatter' => $display['type'],
-      '#settings' => $display['settings'],
-      '#theme' => $theme,
-    );
-
-    if ($single) {
-      foreach ($items as $delta => $item) {
-        $element['items'][$delta] += $format_info;
-        $element['items'][$delta]['#item']['#delta'] = $delta;
-      }
-    }
-    else {
-      $element['items'] += $format_info;
-    }
-
-    // The wrapper lets us get the themed output for the whole field
-    // to populate the $FIELD_NAME_rendered variable for templates,
-    // and hide it from the $content variable if needed.
-    // See 'preprocess' op and theme_content_field_wrapper().
-    $wrapper = $info + array(
-      'field' => $element,
-      '#weight' => $instance['weight'],
-      '#post_render' => array('field_wrapper_post_render'),
-      '#context' => $context,
-    );
-
-    $addition = array($field['field_name'] => $wrapper);
   }
+
   return $addition;
 }
 
-/**
- * Hide excluded fields from the $content variable in templates.
- */
-function field_wrapper_post_render($content, $element) {
-  $instance = field_info_instance($element['#field_name'], $element['#bundle']);
-  if (theme('field_exclude', $content, $instance, $element['#context'])) {
-    return '';
-  }
-  return $content;
-}
-
-/**
- * 'Theme' function for a field's addition to the combined template output,
- * i.e. the node's $content or the user's $user_profile value.
- * This allows more flexibility in templates : you can use custom markup
- * around a few specific fields, and print the rest normally.
- *
- * This is a theme function, so it can be overridden in different
- * themes to produce different results.
- *
- * The html for individual fields are available in the $FIELD_NAME_rendered
- * variables.
- *
- * @return
- *   Whether or not the field's content is to be added in this context.
- *   Uses the 'exclude' value from the field's display settings.
- */
-function theme_field_exclude($content, $object, $context) {
-  if (empty($object['display'])
-    || empty($object['display'][$context])
-    || empty($object['display'][$context]['exclude'])) {
-    return FALSE;
-  }
-  else {
-    return TRUE;
-  }
-}
-
-function field_default_preprocess($obj_type, $object, $field, $instance, &$items) {
-  return array(
-    $field['field_name'] . '_rendered' => isset($object->content[$field['field_name']]['#children']) ? $object->content[$field['field_name']]['#children'] : '',
-  );
-}
-
-function field_default_prepare_translation($obj_type, $object, $field, $instance, &$items) {
+function field_default_prepare_translation($obj_type, $object, $field, $instance, $langcode, &$items) {
   $addition = array();
   if (isset($object->translation_source->$field['field_name'])) {
     $addition[$field['field_name']] = $object->translation_source->$field['field_name'];

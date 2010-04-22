@@ -21,7 +21,16 @@ class DigitalObjectUploadAction extends sfAction
 {
   public function execute($request)
   {
-    sfLoader::loadHelpers('Qubit');
+    // Check user authorization
+    $this->informationObject = QubitInformationObject::getById($request->informationObjectId);
+    if (!QubitAcl::check($this->informationObject, 'update'))
+    {
+      $this->response->setStatusCode(500);
+
+      throw new sfException();
+    }
+
+    sfContext::getInstance()->getConfiguration()->loadHelpers('Qubit');
 
     $uploadFiles = array();
     $warning = null;
@@ -94,7 +103,7 @@ class DigitalObjectUploadAction extends sfAction
         $thumbName = '../../images/'.QubitDigitalObject::getGenericIconPath($tmpFileMimeType, QubitTerm::THUMBNAIL_ID);
       }
 
-      $uploadFiles[] = array(
+      $uploadFiles = array(
         'name' => $file['name'],
         'tmpName' => $tmpFileName,
         'md5sum' => $tmpFileMd5sum,

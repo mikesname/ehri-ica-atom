@@ -77,12 +77,12 @@ class QubitInformationObject extends BaseInformationObject
           }
         }
 
-        if (isset($this->values[$name]))
+        if (isset($this->values[$name]) && null !== ($value = unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)))))
         {
-          return unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)));
+          return $value;
         }
 
-        return;
+        return array();
     }
 
     return call_user_func_array(array($this, 'BaseInformationObject::__get'), $args);
@@ -135,18 +135,20 @@ class QubitInformationObject extends BaseInformationObject
   {
     parent::save($connection);
 
-    // Save related information objects
-    foreach ($this->informationObjectsRelatedByparentId as $child)
+    // Save child information objects
+    if (0 < count($this->informationObjectsRelatedByparentId->transient))
     {
-      $child->setIndexOnSave(false);
-      $child->setParentId($this->id);
+      foreach ($this->informationObjectsRelatedByparentId->transient as $child)
+      {
+        $child->setParentId($this->id);
 
-      try
-      {
-        $child->save();
-      }
-      catch (PropelExceptino $e)
-      {
+        try
+        {
+          $child->save();
+        }
+        catch (PropelException $e)
+        {
+        }
       }
     }
 
@@ -160,21 +162,6 @@ class QubitInformationObject extends BaseInformationObject
       try
       {
         $event->save();
-      }
-      catch (PropelException $e)
-      {
-      }
-    }
-
-    // Save updated properties
-    foreach ($this->propertys as $property)
-    {
-      $property->setIndexOnSave(false);
-      $property->object = $this;
-
-      try
-      {
-        $property->save();
       }
       catch (PropelException $e)
       {
@@ -225,16 +212,27 @@ class QubitInformationObject extends BaseInformationObject
   {
     $this->deletePhysicalObjectRelations();
 
-    // Delete name access point relations
+    // Delete subject relations
     $criteria = new Criteria;
     $criteria = $this->addrelationsRelatedBysubjectIdCriteria($criteria);
-    $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
 
-    if ($nameAccessPointRelations = QubitRelation::get($criteria))
+    if ($subjectRelations = QubitRelation::get($criteria))
     {
-      foreach ($nameAccessPointRelations as $nameAccessPointRelation)
+      foreach ($subjectRelations as $subjectRelation)
       {
-        $nameAccessPointRelation->delete();
+        $subjectRelation->delete();
+      }
+    }
+
+    // Delete object relations
+    $criteria = new Criteria;
+    $criteria = $this->addrelationsRelatedByobjectIdCriteria($criteria);
+
+    if ($objectRelations = QubitRelation::get($criteria))
+    {
+      foreach ($objectRelations as $objectRelation)
+      {
+        $objectRelation->delete();
       }
     }
 
@@ -245,7 +243,7 @@ class QubitInformationObject extends BaseInformationObject
 
   public function getLabel(array $options = array())
   {
-    sfLoader::loadHelpers('Text');
+    sfContext::getInstance()->getConfiguration()->loadHelpers('Text');
 
     $label = $this->getLevelOfDescription();
 
@@ -271,8 +269,7 @@ class QubitInformationObject extends BaseInformationObject
       $label = truncate_text($label, $options['truncate']);
     }
 
-    $publicationStatus = $this->getPublicationStatus();
-    if ($publicationStatus->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID)
+    if (null !== ($publicationStatus = $this->getPublicationStatus()) && QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $publicationStatus->statusId)
     {
       $label .= ' ('.$publicationStatus->status.')';
     }
@@ -286,94 +283,6 @@ class QubitInformationObject extends BaseInformationObject
     */
 
     return $label;
-  }
-
-  /**
-   * Get a paginated hitlist information objects
-   *
-   * @param string   $culture primary language for list
-   * @param Criteria $criteria Propel Criteria object
-   * @param array    $options array of optional function parameters
-   * @return QubitQuery collection of QubitInformationObject objects
-   */
-  public static function getList($options = array())
-  {
-    $criteria = new Criteria;
-
-    // Only get the top-level info object (collections and orphans)
-    if (isset($options['parentId']))
-    {
-      $criteria->add(QubitInformationObject::PARENT_ID, $options['parentId'], Criteria::EQUAL);
-    }
-
-    if (isset($options['culture']))
-    {
-      $culture = $options['culture'];
-    }
-    else
-    {
-      $culture = sfContext::getInstance()->getUser()->getCulture();
-    }
-
-    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
-    $sort = (isset($options['sort'])) ? $options['sort'] : null;
-    $page = (isset($options['page'])) ? $options['page'] : 1;
-
-    if (isset($options['repositoryId']))
-    {
-      $criteria->add(QubitInformationObject::REPOSITORY_ID, $options['repositoryId']);
-    }
-
-    if (isset($options['collectionType']))
-    {
-      $criteria->add(QubitInformationObject::COLLECTION_TYPE_ID, $options['collectionType']);
-    }
-
-    // Sort results
-    switch($sort)
-    {
-      case 'titleDown':
-        $fallbackTable = 'QubitInformationObject';
-        $criteria->addDescendingOrderByColumn('title');
-        break;
-      case 'repositoryUp':
-        $fallbackTable = 'QubitActor';
-        $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
-        break;
-      case 'repositoryDown':
-        $fallbackTable = 'QubitActor';
-        $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
-        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
-        break;
-      case 'titleUp':
-      default:
-        $fallbackTable = 'QubitInformationObject';
-        $criteria->addAscendingOrderByColumn('title');
-    }
-
-    // Do source culture fallback
-    if ($cultureFallback === true)
-    {
-      // Return a QubitQuery object of class-type QubitInformationObject
-      $options = array('returnClass'=>'QubitInformationObject');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
-    }
-    else
-    {
-      // Do straight joins without fallback
-      $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID);
-      $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActorI18n::ID, Criteria::LEFT_JOIN);
-      $criteria->add(QubitInformationObjectI18n::CULTURE, $culture);
-    }
-
-    // Page results
-    $pager = new QubitPager('QubitInformationObject');
-    $pager->setCriteria($criteria);
-    $pager->setPage($page);
-    $pager->init();
-
-    return $pager;
   }
 
   /**
@@ -562,7 +471,25 @@ class QubitInformationObject extends BaseInformationObject
       $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor', $options);
     }
 
-    return QubitActor::get($criteria);
+    $actors = QubitActor::get($criteria);
+
+    // allow inheriting actors from ancestors
+    if (isset($options['inherit']) && false !== $options['inherit'])
+    {
+      if (0 === count($actors))
+      {
+        // Ascend up object hierarchy until an actor is found
+        foreach ($this->getAncestors() as $ancestor)
+        {
+          if (0 !== count($actors = $ancestor->getActors($options)))
+          {
+            break;
+          }
+        }
+      }
+    }
+
+    return $actors;
   }
 
   public function getCreators($options = array())
@@ -856,18 +783,19 @@ class QubitInformationObject extends BaseInformationObject
         Generate Strings for Search Index
   ******************************************/
 
-  public function getCreatorsNameString()
+  public function getCreatorsNameString($options = array())
   {
     if ($this->getCreators())
     {
+      $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->getUser()->getCulture();
       $creatorNameString = '';
       $creators = $this->getCreators();
       foreach ($creators as $creator)
       {
-        $creatorNameString .= $creator->getAuthorizedFormOfName().' ';
+        $creatorNameString .= $creator->getAuthorizedFormOfName(array('culture' => $culture)).' ';
         foreach ($creator->getOtherNames() as $otherName)
         {
-          $creatorNameString .= $otherName->getName().' ';
+          $creatorNameString .= $otherName->getName(array('culture' => $culture)).' ';
         }
       }
 
@@ -879,15 +807,16 @@ class QubitInformationObject extends BaseInformationObject
     }
   }
 
-  public function getCreatorsHistoryString()
+  public function getCreatorsHistoryString($options = array())
   {
     if ($this->getCreators())
     {
+      $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->getUser()->getCulture();
       $creatorHistoryString = '';
       $creators = $this->getCreators();
       foreach ($creators as $creator)
       {
-        $creatorHistoryString .= $creator->getHistory().' ';
+        $creatorHistoryString .= $creator->getHistory(array('culture' => $culture)).' ';
       }
 
       return $creatorHistoryString;
@@ -898,15 +827,16 @@ class QubitInformationObject extends BaseInformationObject
     }
   }
 
-  public function getDatesString()
+  public function getDatesString($options = array())
   {
     if ($this->getDates())
     {
+      $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->getUser()->getCulture();
       $datesString = '';
       $dates = $this->getDates();
       foreach ($dates as $date)
       {
-        $datesString .= $date->getDateDisplay().' ';
+        $datesString .= $date->getDateDisplay(array('culture' => $culture)).' ';
       }
 
       return $datesString;
@@ -917,72 +847,48 @@ class QubitInformationObject extends BaseInformationObject
     }
   }
 
-  public function getSubjectsString($language)
+  public function getAccessPointsString($typeId, $options = array())
   {
-    $subjectString = '';
-    $subjects = array();
+    $str = '';
+    $accessPoints = $this->getTermRelations($typeId);
 
-    $subjectAps = $this->getSubjectAccessPoints();
-    if ($subjectAps)
+    if ($accessPoints)
     {
-      foreach ($subjectAps as $subjectAp)
-      {
-        $subjectTerm = $subjectAp->getTerm();
-        $subjects[] = $subjectTerm->getName(array('culture' => $language));
+      $list = array();
+      $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->getUser()->getCulture();
 
-        if (0 < count($equivalentTerms = $subjectTerm->getEquivalentTerms(array('direction' => 'subjectToObject'))))
+      foreach ($accessPoints as $accessPoint)
+      {
+        $term = $accessPoint->getTerm();
+        $list[] = $term->getName(array('culture' => $culture));
+
+        if (0 < count($equivalentTerms = $term->getEquivalentTerms(array('direction' => 'subjectToObject'))))
         {
           foreach ($equivalentTerms as $eqTerm)
           {
-            $subjects[] = $eqTerm->getName(array('culture' => $language));
+            $list[] = $eqTerm->getName(array('culture' => $culture));
           }
         }
       }
 
-      $subjectString = implode(' ', $subjects);
+      $str = implode(' ', $list);
     }
 
-    return $subjectString;
+    return $str;
   }
 
-  public function getPlacesString($language)
-  {
-    $placeString = '';
-    $places = array();
-
-    $placeAps = $this->getPlaceAccessPoints();
-    if ($placeAps)
-    {
-      foreach ($placeAps as $placeAp)
-      {
-        $placeTerm = $placeAp->getTerm();
-        $places[] = $placeTerm->getName(array('culture' => $language));
-
-        if (0 < count($equivalentTerms = $placeTerm->getEquivalentTerms(array('direction' => 'subjectToObject'))))
-        {
-          foreach ($equivalentTerms as $eqTerm)
-          {
-            $places[] = $eqTerm->getName(array('culture' => $language));
-          }
-        }
-      }
-    }
-
-    $placeString = implode(' ', $places);
-
-    return $placeString;
-  }
-
-  public function getNameAccessPointsString($language)
+  public function getNameAccessPointsString($options = array())
   {
     $nameAccessPointString = '';
 
     $names = $this->getActors();
     if ($names)
     {
+      $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->getUser()->getCulture();
+
       foreach ($names as $name)
       {
-        $nameAccessPointString .= $name->getAuthorizedFormOfName(array('culture' => $language)).' ';
+        $nameAccessPointString .= $name->getAuthorizedFormOfName(array('culture' => $culture)).' ';
       }
     }
 
@@ -1062,36 +968,6 @@ class QubitInformationObject extends BaseInformationObject
   ******************/
 
   /**
-   * Get all digital objects from descendants of current
-   * object
-   *
-   * @return array  of thumbnail representations
-   */
-  public function getDescendantThumbnails()
-  {
-    $thumbnails = array();
-
-    $descendants = $this->getDescendants();
-    foreach ($descendants as $descendant)
-    {
-      if ($digitalObject = $descendant->getDigitalObject())
-      {
-        $thumbnail = $digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
-
-        if (!$thumbnail)
-        {
-          $thumbnail = QubitDigitalObject::getGenericRepresentation($digitalObject->getMimeType(), QubitTerm::THUMBNAIL_ID);
-          $thumbnail->setParent($digitalObject);
-        }
-
-        $thumbnails[] = $thumbnail;
-      }
-    }
-
-    return $thumbnails;
-  }
-
-    /**
    * Get the digital object related to this information object. The
    * informationObject to digitalObject relationship is "one to zero or one".
    *
@@ -1334,7 +1210,7 @@ class QubitInformationObject extends BaseInformationObject
     {
       preg_match('/(?P<start>\d{4}(-\d{2})?(-\d{2})?)\/?(?P<end>\d{4}(-\d{2})?(-\d{2})?)?/', $options['normalized_dates'], $matches);
       $normalizedDate['start'] = new DateTime($this->getDefaultDateValue($matches['start']));
-      if ($matches['end'])
+      if (isset($matches['end']))
       {
         $normalizedDate['end'] = new DateTime($this->getDefaultDateValue($matches['end']));
       }
@@ -1461,31 +1337,32 @@ class QubitInformationObject extends BaseInformationObject
     }
   }
 
-  public function setTermRelationByName($term, $options)
+  public function setTermRelationByName($name, $options)
   {
     // see if subject term already exists
     $criteria = new Criteria;
     $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
     $criteria->add(QubitTerm::TAXONOMY_ID, $options['taxonomyId']);
-    $criteria->add(QubitTermI18n::NAME, $term);
-    if ($existingTerm = QubitTerm::getOne($criteria))
+    $criteria->add(QubitTermI18n::NAME, $name);
+    if (null === $term = QubitTerm::getOne($criteria))
     {
-      $this->addTermRelation($existingTerm->getId());
-    }
-    else
-    {
-      $newTerm = new QubitTerm;
-      $newTerm->setTaxonomyId($options['taxonomyId']);
-      $newTerm->setName($term);
-      $newTerm->setRoot();
-      $newTerm->save();
+      $term = new QubitTerm;
+      $term->setTaxonomyId($options['taxonomyId']);
+      $term->setName($name);
+      $term->setRoot();
+      $term->save();
       if (isset($options['source']))
       {
-        $newTerm->setNote(null, $options['source'], QubitTerm::SOURCE_NOTE_ID);
+        $note = new QubitNote;
+        $note->content = $options['source'];
+        $note->typeId = QubitTerm::SOURCE_NOTE_ID;
+        $note->userId = sfContext::getInstance()->user->getAttribute('user_id');
+
+        $term->notes[] = $note;
       }
-      // associate this new subject term with this information object
-      $this->addTermRelation($newTerm->getId());
     }
+
+    $this->addTermRelation($term->getId());
   }
 
   public function setPhysicalObjectByName($physicalObjectName, $options)
@@ -1624,6 +1501,113 @@ class QubitInformationObject extends BaseInformationObject
         return $status;
       }
     }
+  }
+
+  /*****************************************************
+   TreeView
+  *****************************************************/
+  public function getTree($limit = false)
+  {
+    $ancestors = $this->getAncestors()->andSelf()->orderBy('lft');
+    $path = array();
+
+    foreach ($ancestors as $ancestor)
+    {
+      $path[] = $ancestor->id;
+    }
+
+    // return $this->buildInformationObjectTree($path, true === $limit ? sfConfig::get('app_hits_per_page', 10) : null);
+    return $this->buildInformationObjectTree($path, 2);
+  }
+
+  private function buildInformationObjectTree($path, $limit = null)
+  {
+    $parent = QubitInformationObject::getById(array_shift($path));
+    $tmp = array();
+
+    // Skip the root node
+    if (QubitInformationObject::ROOT_ID == $parent->id)
+    {
+      $tmp = array_merge($tmp, $this->buildInformationObjectTree($path, $limit));
+    }
+    else
+    {
+      $tmp[] = $parent;
+      foreach ($parent->getChildren(array('sortBy' => sfConfig::get('app_sort_treeview_informationobject'))) as $index => $child)
+      {
+        if ($limit == $index++)
+        {
+          // Add null (see getTreeViewObjecs method)
+          // $tmp[] = null;
+          null;
+
+          // break;
+        }
+
+        // If it in path, we go on building the tree in that way
+        if (in_array($child->id, $path))
+        {
+          $tmp = array_merge($tmp, $this->buildInformationObjectTree($path, $limit));
+        }
+        else
+        {
+          // Add child
+          $tmp[] = $child;
+        }
+      }
+    }
+
+    return $tmp;
+  }
+
+  public static function getTreeViewObjects($informationObjects, $currentInformationObject, array $options = array())
+  {
+    $treeViewObjects = array();
+    $treeViewExpands = array();
+
+    ProjectConfiguration::getActive()->loadHelpers('Qubit');
+
+    $lastParentId;
+
+    foreach ($informationObjects as $informationObject)
+    {
+      $treeViewObject = array();
+
+      if ($informationObject instanceof QubitInformationObject)
+      {
+        $treeViewObject['label'] = render_title($informationObject->getLabel(array('truncate' => 50)));
+        $treeViewObject['href'] = sfContext::getInstance()->routing->generate(null, array($informationObject, 'module' => 'informationobject'));
+        $treeViewObject['id'] = $informationObject->id;
+        $treeViewObject['parentId'] = $informationObject->parentId;
+        $treeViewObject['isLeaf'] = (string) !$informationObject->hasChildren();
+
+        if ($informationObject->id == $currentInformationObject->id)
+        {
+          $treeViewObject['style'] = 'ygtvlabel currentTextNode';
+        }
+
+        $lastParentId = $informationObject->parentId;
+      }
+      else
+      {
+        $treeViewObject['label'] = sfContext::getInstance()->i18n->__('See all');
+        $treeViewObject['parentId'] = $lastParentId;
+        $treeViewObject['href'] = '#';
+        $treeViewObject['isLeaf'] = 'true';
+        $treeViewObject['style'] = 'seeAllNode';
+      }
+
+      $treeViewObjects[] = $treeViewObject;
+    }
+
+    foreach ($currentInformationObject->getAncestors() as $ancestor)
+    {
+      $treeViewExpands[$id = $ancestor->id] = $id;
+    }
+
+    $treeViewExpands[$id = $currentInformationObject->id] = $id;
+
+    return array($treeViewObjects, $treeViewExpands);
   }
 
   /**

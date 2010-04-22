@@ -23,8 +23,7 @@ abstract class BaseRepositoryI18n implements ArrayAccess
     DESC_SOURCES = 'q_repository_i18n.DESC_SOURCES',
     DESC_REVISION_HISTORY = 'q_repository_i18n.DESC_REVISION_HISTORY',
     ID = 'q_repository_i18n.ID',
-    CULTURE = 'q_repository_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_repository_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_repository_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -45,7 +44,6 @@ abstract class BaseRepositoryI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitRepositoryI18n::DESC_REVISION_HISTORY);
     $criteria->addSelectColumn(QubitRepositoryI18n::ID);
     $criteria->addSelectColumn(QubitRepositoryI18n::CULTURE);
-    $criteria->addSelectColumn(QubitRepositoryI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -415,9 +413,7 @@ abstract class BaseRepositoryI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

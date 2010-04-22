@@ -34,64 +34,25 @@ class DigitalObjectShowCompoundComponent extends sfComponent
    */
   public function execute($request)
   {
-    // Make sure that this 'displayAsCompound' is set to yes
-    $displayAsCompoundProp = QubitProperty::getOneByObjectIdAndName($this->digitalObject->id, 'displayAsCompound');
-    $this->isCompoundDigitalObject = (is_null($displayAsCompoundProp)) ? false : true;
-    $this->masterDigitalObject = $this->digitalObject;
-    $this->informationObject = $this->digitalObject->informationObject;
-
-    //determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'informationObject'))
-    {
-      $this->editCredentials = true;
-    }
-
-    // Find all digital objects of child info objects
+    // Find all digital objects of child information objects
     $criteria = new Criteria;
-    $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitInformationObject::PARENT_ID, $this->digitalObject->informationObjectId, Criteria::EQUAL);
+    $criteria->add(QubitInformationObject::PARENT_ID, $this->digitalObject->informationObject->id, Criteria::EQUAL);
+    $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID);
 
     // Show two results on page with pager
-    $this->page = $request->getParameter('page', 1);
-    $pager = new QubitPager('QubitDigitalObject', 2);
-    $pager->setCriteria($criteria);
-    $pager->setPage($this->page);
-    $pager->init();
-    $results = $pager->getResults();
+    $this->pager = new QubitPager('QubitDigitalObject');
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage(2);
+    $this->pager->setPage($request->page);
 
-    $this->leftObject = $results->offsetGet(0);
-    $this->rightObject = (count($results) > 1) ? $results->offsetGet(1) : null;
+    $results = $this->pager->getResults();
 
-    // Link pages to fullscreen view
-    $this->leftObjectLink = $this->rightObjectLink = null;
-    if ($this->editCredentials || $this->masterDigitalObject->getMediaTypeId() == QubitTerm::TEXT_ID)
+    $this->leftObject = $results[0];
+
+    $this->rightObject = null;
+    if (1 < count($results))
     {
-      $this->leftObjectLink = 'digitalobject/showFullScreen?id='.$this->leftObject->getId();
-
-      if (null !== $this->rightObject)
-      {
-        $this->rightObjectLink = 'digitalobject/showFullScreen?id='.$this->rightObject->getId();
-      }
+      $this->rightObject = $results[1];
     }
-
-    // Show link to download master digital object
-    $this->masterDigiObjectLink = null;
-    if ($this->editCredentials && null !== $this->masterDigitalObject)
-    {
-      $this->masterDigiObjectLink = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->masterDigitalObject->getFullPath();
-    }
-
-    // Link for prev/next page
-    if ('informationobject' == sfContext::getInstance()->getModuleName())
-    {
-      $this->currentObjectRoute = array('module' => 'informationobject', 'action' => 'show', 'id' => $this->informationObject->id);
-    }
-    else if ('digitalobject' == sfContext::getInstance()->getModuleName())
-    {
-      $this->currentObjectRoute = array('module' => 'digitalobject', 'action' => 'edit', 'id' => $this->digitalObject->id);
-    }
-
-    $this->pager = $pager;
   }
 }

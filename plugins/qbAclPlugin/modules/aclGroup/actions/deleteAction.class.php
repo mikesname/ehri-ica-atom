@@ -38,7 +38,7 @@ class AclGroupDeleteAction extends sfAction
     }
 
     // Check user authorization
-    if (!QubitAcl::check($this->group, QubitAclAction::DELETE_ID))
+    if (!QubitAcl::check($this->group, 'delete'))
     {
       QubitAcl::forwardUnauthorized();
     }

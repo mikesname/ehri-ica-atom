@@ -18,7 +18,7 @@
  * @subpackage request
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfRequest.class.php 12660 2008-11-05 11:32:23Z fabien $
+ * @version    SVN: $Id: sfRequest.class.php 28641 2010-03-21 10:20:44Z fabien $
  */
 abstract class sfRequest implements ArrayAccess
 {
@@ -30,6 +30,7 @@ abstract class sfRequest implements ArrayAccess
 
   protected
     $dispatcher      = null,
+    $content         = null,
     $method          = null,
     $options         = array(),
     $parameterHolder = null,
@@ -78,6 +79,16 @@ abstract class sfRequest implements ArrayAccess
 
     $this->parameterHolder->add($parameters);
     $this->attributeHolder->add($attributes);
+  }
+
+  /**
+   * Returns the options.
+   *
+   * @return array The options.
+   */
+  public function getOptions()
+  {
+    return $this->options;
   }
 
   /**
@@ -263,7 +274,7 @@ abstract class sfRequest implements ArrayAccess
   }
 
   /**
-   * Retrieves a paramater for the current request.
+   * Retrieves a parameter for the current request.
    *
    * @param string $name     Parameter name
    * @param string $default  Parameter default value
@@ -279,7 +290,7 @@ abstract class sfRequest implements ArrayAccess
    *
    * @param  string $name  Parameter name
    *
-   * @return bool true, if the paramater exists otherwise false
+   * @return bool true, if the parameter exists otherwise false
    */
   public function hasParameter($name)
   {
@@ -296,6 +307,24 @@ abstract class sfRequest implements ArrayAccess
   public function setParameter($name, $value)
   {
     $this->parameterHolder->set($name, $value);
+  }
+
+  /**
+   * Returns the content of the current request.
+   *
+   * @return string|Boolean The content or false if none is available
+   */
+  public function getContent()
+  {
+    if (null === $this->content)
+    {
+      if (0 === strlen(trim($this->content = file_get_contents('php://input'))))
+      {
+        $this->content = false;
+      }
+    }
+
+    return $this->content;
   }
 
   /**

@@ -30,31 +30,12 @@ class ActorContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    if ($request->getParameter('id'))
-    {
-      $this->actor = QubitActor::getById($request->getParameter('id'));
+    $this->actor = QubitActor::getById($request->id);
 
-      if (null !== $this->actor)
-      {
-        $this->informationObjectRelations = $this->actor->getInformationObjectRelations();
-
-        $relatedInfoObjects = array();
-        foreach ($this->actor->getInformationObjectRelations() as $relation)
-        {
-          $relatedInfoObjects[$relation->getType()->getRole()][] = $relation;
-        }
-        $this->relatedInfoObjects = $relatedInfoObjects;
-      }
-    }
-    else
+    $this->relatedInfoObjects = array();
+    foreach ($this->actor->getInformationObjectRelations() as $relation)
     {
-      $this->relatedInfoObjects = null;
-    }
-
-    // Don't show anything if there are no related info objects or repository
-    if (count($this->relatedInfoObjects) == 0 && count($this->repository) == 0)
-    {
-      return sfView::NONE;
+      $this->relatedInfoObjects[$relation->type->getRole()][] = $relation;
     }
   }
 }

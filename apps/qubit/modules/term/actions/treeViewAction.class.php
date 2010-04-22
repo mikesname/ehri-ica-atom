@@ -21,30 +21,23 @@ class TermTreeViewAction extends sfAction
 {
   public function execute($request)
   {
-    // Get data
-    $term = QubitTerm::getById($this->getRequestParameter('id'));
+    $term = QubitTerm::getById($request->id);
 
-    // Objects
-    $treeViewObject = array();
+    $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
+
     $treeViewObjects = array();
-
-    if (0 < count($children = $term->getChildren(array('sortBy' => 'name'))))
+    foreach ($term->getChildren(array('sortBy' => 'name')) as $item)
     {
-      foreach ($children as $child)
-      {
-        $treeViewObject['label'] = (string) $child->getName(array('cultureFallback' => true, 'truncate' => 50));
-        $treeViewObject['href'] = $this->getController()->genUrl('term/show?id='.$child->getId());
-        $treeViewObject['id'] = $child->getId();
-        $treeViewObject['parentId'] = $child->getParentId();
-        $treeViewObject['isLeaf'] = (string) count($child->getDescendants()) == 0;
+      $treeViewObject = array();
+      $treeViewObject['label'] = $item->getName(array('cultureFallback' => true, 'truncate' => 50));
+      $treeViewObject['href'] = $this->context->routing->generate(null, array($item, 'module' => 'term'));
+      $treeViewObject['id'] = $item->id;
+      $treeViewObject['parentId'] = $item->parentId;
+      $treeViewObject['isLeaf'] = !$item->hasChildren();
 
-        $treeViewObjects[] = $treeViewObject;
-      }
+      $treeViewObjects[] = $treeViewObject;
     }
 
-    // Prepare and print output
-    $treeViewObjects = json_encode($treeViewObjects);
-    $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
-    return $this->renderText('('.$treeViewObjects.')');
+    return $this->renderText(json_encode($treeViewObjects));
   }
 }

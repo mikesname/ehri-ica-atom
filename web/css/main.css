@@ -29,13 +29,13 @@ body,
 {
   background: none;
   margin: 2px;
-  padding: 0px;
+  padding: 0;
   border-top: 1px dotted #999;
 }
 
 .contextMenu ul li:first-child
 {
-  border-top: none;
+  border-top: 0;
 }
 
 /* Fixes for Drupal and YUI to play together */
@@ -126,14 +126,48 @@ body,
 
 /* Lowercase menus */
 
-#menu-main, .menu-quick-links, .menu-secondary
+#menu-main,
+.menu-quick-links,
+.menu-secondary
 {
   text-transform: lowercase;
 }
 
-/* Fix YUI autocomplete */
+/* Fix YUI autocomplete, consistent style for autocomplete labels */
 
-.yui-skin-sam .yui-ac, .yui-skin-sam .yui-ac-input
+.yui-skin-sam .yui-ac
+{
+  font-family: inherit;
+}
+
+.yui-skin-sam .yui-ac-input
 {
   position: static;
+}
+
+/* Flowplayer width and height */
+
+.flowplayer
+{
+  display: block;
+  height: 300px;
+  width: 435px;
+}
+
+.audio
+{
+  height: 24px;
+}
+
+/* odd&even divs */
+.odd {
+background-color:#EDF5FA;
+border-bottom:1px solid #CCCCCC;
+padding:0.2em 0.6em;
+}
+
+.even {
+background-color:#FFFFFF;
+border-bottom:1px solid #CCCCCC;
+padding:0.2em 0.6em;
 }

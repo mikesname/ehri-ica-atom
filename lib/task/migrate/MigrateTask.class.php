@@ -34,7 +34,8 @@ class UpgradeTask extends sfBaseTask
     '1.0.5',
     '1.0.6',
     '1.0.7',
-    '1.0.8'
+    '1.0.8',
+    '1.0.9'
   );
 
   /**
@@ -48,7 +49,7 @@ class UpgradeTask extends sfBaseTask
     $this->detailedDescription = <<<EOF
 The [propel:migrate|INFO] task modifies the given YAML dump file with changes to the data structure and fixtures in subsequent versions of the application:
 
-  [./symfony propel:migrate qubit_data_1.0.3.yml|INFO]
+  [./symfony propel:migrate qubit_data_1.0.8.yml|INFO]
 EOF;
 
     $this->addArguments(array(
@@ -67,8 +68,7 @@ EOF;
   {
     if (!is_readable($arguments['datafile']))
     {
-      $this->log('The file '.$arguments['datafile'].' is not readable.');
-      die();
+      throw new Exception('The file '.$arguments['datafile'].' is not readable.');
     }
 
     // Get target application version for data migration
@@ -76,8 +76,7 @@ EOF;
     {
       if (!in_array($options['target-version'], $this->validVersions))
       {
-        $this->log('Invalid target version "'.$options['target-version'].'".');
-        die();
+        throw new Exception('Invalid target version "'.$options['target-version'].'".');
       }
 
       $this->targetVersion = $options['target-version'];
@@ -101,6 +100,11 @@ EOF;
     // Incrementally call the upgrade task for each intervening version from
     // initial version to the target version
     $initialIndex = array_search($this->initialVersion, $this->validVersions);
+    if (false === $initialIndex)
+    {
+      $initialIndex = count($this->validVersions) - 2;
+    }
+
     $finalIndex = array_search($this->targetVersion, $this->validVersions);
 
     if ($initialIndex !== false && $finalIndex !== false && $initialIndex < $finalIndex)
@@ -110,24 +114,28 @@ EOF;
         switch ($this->validVersions[$i])
         {
           case '1.0.3':
-            $migrator->migrate103to104();
+            $migrator->migrate103();
             $this->logSection('migrate', 'Data migrated to version 1.0.4');
             break;
           case '1.0.4':
-            $migrator->migrate104to105();
+            $migrator->migrate104();
             $this->logSection('migrate', 'Data migrated to version 1.0.5');
             break;
           case '1.0.5':
-            $migrator->migrate105to106();
+            $migrator->migrate105();
             $this->logSection('migrate', 'Data migrated to version 1.0.6');
             break;
           case '1.0.6':
-            $migrator->migrate106to107();
+            $migrator->migrate106();
             $this->logSection('migrate', 'Data migrated to version 1.0.7');
             break;
           case '1.0.7':
-            $migrator->migrate107to108();
+            $migrator->migrate107();
             $this->logSection('migrate', 'Data migrated to version 1.0.8');
+            break;
+          case '1.0.8':
+            $migrator->migrate108();
+            $this->logSection('migrate', 'Data migrated to version 1.0.9');
             break;
         }
       }
@@ -147,7 +155,7 @@ EOF;
   protected function writeMigratedData($originalFileName, $data)
   {
     $migratedDataVersion = $this->getDataVersion($data);
-    $migratedFileName = 'migrated_data_v'.str_replace('.', '', $migratedDataVersion).'.yml';
+    $migratedFileName = 'migrated_data_'.date('YmdHis').'.yml';
     $dir = dirname($originalFileName);
     $migratedFileName = $dir.DIRECTORY_SEPARATOR.$migratedFileName;
 
@@ -168,7 +176,7 @@ EOF;
     {
       if ($setting['name'] == 'version')
       {
-        preg_match('/\d\.\d\.\d/', $setting['value']['en'], $matches);
+        preg_match('/\d\.\d(\.\d)?/', $setting['value']['en'], $matches);
         $currentVersion = $matches[0];
         break;
       }

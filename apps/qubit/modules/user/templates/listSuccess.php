@@ -1,34 +1,33 @@
-<div class="options-list"><a class="active">users</a><?php echo link_to('groups', array('module' => 'aclGroup', 'action' => 'list')) ?></div>
+<h1><?php echo __('List users') ?></h1>
 
-<div class="pageTitle"><?php echo __('list users'); ?></div>
-
-<table class="list">
-<thead>
-<tr>
-  <th><?php echo __('user name'); ?> <span class="th-link"><?php echo link_to(__('add new'), array('module' => 'user', 'action' => 'create')) ?></span></th>
-  <th><?php echo __('email'); ?></th>
-  <th><?php echo __('user roles'); ?></th>
-</tr>
-</thead>
-<tbody>
-<?php foreach ($users->getResults() as $user): ?>
-<tr>
-  <td><?php echo link_to($user->getUsername(), array('module' => 'user', 'action' => 'show', 'id' => $user->getId())) ?></td>
-  <td><?php echo $user->getEmail() ?></td>
-  <td>
-    <ul>
-    <?php foreach ($user->getAclGroups() as $group): ?>
-    <?php if (100 <= $group->id): ?> 
-    <li><?php echo $group->getName(array('cultureFallback' => true)) ?></li>
-    <?php else: ?>
-    <li><span class="note2"><?php echo $group->getName(array('cultureFallback' => true)) ?></li>
-    <?php endif; ?>
+<table class="sticky-enabled">
+  <thead>
+    <tr>
+      <th>
+        <?php echo __('User name') ?> <?php echo link_to(__('Add new'), array('module' => 'user', 'action' => 'create')) ?>
+      </th><th>
+        <?php echo __('Email') ?>
+      </th><th>
+        <?php echo __('User roles') ?>
+      </th>
+    </tr>
+  </thead><tbody>
+    <?php foreach ($users as $user): ?>
+      <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
+        <td>
+          <?php echo link_to($user->username, array($user, 'module' => 'user')) ?>
+        </td><td>
+          <?php echo $user->email ?>
+        </td><td>
+          <ul>
+            <?php foreach ($user->getAclGroups() as $group): ?>
+              <li><?php echo render_title($group) ?></li>
+            <?php endforeach; ?>
+          </ul>
+        </td>
+      </tr>
     <?php endforeach; ?>
-    </ul>
-  </td>
-</tr>
-<?php endforeach; ?>
-</tbody>
+  </tbody>
 </table>
 
-<?php echo get_partial('default/pager', array('pager' => $users)) ?>
+<?php echo get_partial('default/pager', array('pager' => $pager)) ?>

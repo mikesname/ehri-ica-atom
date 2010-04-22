@@ -21,71 +21,56 @@ class TermAutocompleteAction extends sfAction
 {
   public function execute($request)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Tag','Url'));
-
     $this->taxonomy = QubitTaxonomy::getById($request->taxonomyId);
-    if (null === $this->taxonomy)
-    {
 
-      return $this->renderText(null);
+    if (!isset($this->taxonomy))
+    {
+      $this->forward404();
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitTermI18n::NAME, $request->query.'%', Criteria::LIKE);
-    $criteria->add(QubitTerm::TAXONOMY_ID, $request->taxonomyId, Criteria::EQUAL);
-    $criteria->addAscendingOrderByColumn('name');
-    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
-    $criteria->setDistinct();
-    $criteria->setLimit(10);
+    $criteria->add(QubitTerm::TAXONOMY_ID, $request->taxonomyId);
+    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID, Criteria::INNER_JOIN);
+    $criteria->add(QubitTermI18n::CULTURE, $this->context->user->getCulture());
 
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
-
-    $tableHtml = <<<EOL
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-  <meta http-equiv="Content-type" content="text/html;charset=UTF-8" />
-  <title>Taxonomy List</title>
-</head>
-<body>
-<table>
-<thead>
-<tr><th>term</th></tr>
-</thead>
-<tbody>
-
-EOL;
-
-    foreach (QubitTerm::get($criteria) as $term)
+    // Exclude the calling object and it's descendants from the list (prevent
+    // circular inheritance)
+    $params = $this->context->routing->parse(Qubit::pathInfo($request->getHttpHeader('Referer')));
+    if (isset($params['id']))
     {
-      // Search for preferred term
-      $c = new Criteria;
-      $c->add(QubitRelation::OBJECT_ID, $term->id);
-      $c->add(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID);
-      $c->addJoin(QubitRelation::SUBJECT_ID, QubitTerm::ID, Criteria::INNER_JOIN);
+      $thisTerm = QubitTerm::getById($params['id']);
 
-      if (null !== ($prefTerm = QubitTerm::getOne($c)))
+      if (isset($thisTerm))
       {
-        $termId = $prefTerm->id;
-        $label = $this->getContext()->getI18N()->__('%1% (use: %2%)', array('%1%' => $term->getName(array('cultureFallback' => true)), '%2%' => $prefTerm->getName(array('cultureFallback' => true))));
+        $c1 = $criteria->getNewCriterion(QubitTerm::LFT, $thisTerm->lft, Criteria::LESS_THAN);
+        $c2 = $criteria->getNewCriterion(QubitTerm::RGT, $thisTerm->rgt, Criteria::GREATER_THAN);
+        $c1->addOr($c2);
+        $criteria->add($c1);
       }
-      else
-      {
-        $termId = $term->id;
-        $label = $term->getName(array('cultureFallback' => true));
-      }
-
-      $tableHtml .= '<tr><td>'.link_to($label, array('module' => 'term', 'action' => 'show', 'id' => $termId)).'</td></tr>';
-      $tableHtml .= "\n";
     }
 
-    $tableHtml .= <<<EOL
-</tbody>
-</table>
-</body>
-</html>
-EOL;
+    // If calling from term page, exclude non-preferred terms from list
+    if ('term' == $params['module'])
+    {
+      $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
+      $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
+      $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
+      $criterion1->addOr($criterion2);
+      $criteria->add($criterion1);
+    }
 
-    return $this->renderText($tableHtml);
+    // Narrow results by query
+    if (isset($request->query))
+    {
+      $criteria->add(QubitTermI18n::NAME, $request->query.'%', Criteria::LIKE);
+    }
+
+    // Sort by name
+    $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME);
+
+    // Show first 10 results
+    $criteria->setLimit(10);
+
+    $this->terms = QubitTerm::get($criteria);
   }
 }

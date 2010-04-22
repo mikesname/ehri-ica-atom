@@ -1,34 +1,31 @@
 create:
-  is_secure:   on
   credentials: administrator
+  is_secure: true
 
 delete:
-  is_secure:   on
   credentials: administrator
+  is_secure: true
 
 edit:
-  is_secure:   on
   credentials: [[ administrator, translator ]]
+  is_secure: true
 
 list:
-  is_secure:   on
   credentials: administrator
+  is_secure: true
 
 passwordEdit:
-  is_secure:   on
   credentials: [[ researcher, contributor, editor, administrator, translator ]]
+  is_secure: true
 
 passwordUpdate:
-  is_secure:   on
   credentials: [[ researcher, contributor, editor, administrator, translator ]]
+  is_secure: true
 
 show:
-  is_secure:   on
   credentials: [[ researcher, contributor, editor, administrator, translator ]]
+  is_secure: true
 
 update:
-  is_secure:   on
   credentials: administrator
-
-all:
-  is_secure:   off
+  is_secure: true

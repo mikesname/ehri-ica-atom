@@ -167,7 +167,7 @@ class QubitRelation extends BaseRelation
    * @param array   $options optional parameters
    * @return QubitQuery collection of QubitRelation objects
    */
-  public static function getRelationsBySubjectOrObjectId($id, $options=array())
+  public static function getBySubjectOrObjectId($id, $options=array())
   {
     $criteria = new Criteria;
 
@@ -235,10 +235,10 @@ class QubitRelation extends BaseRelation
   }
 
   /**
-   * Get opposite vertex of relation 
+   * Get opposite vertex of relation
    *
    * @param integer $referenceId primary key of reference object
-   * @return mixed other object in relationship 
+   * @return mixed other object in relationship
    */
   public function getOpposedObject($referenceId)
   {
@@ -265,19 +265,17 @@ class QubitRelation extends BaseRelation
   public function addNote($text, $noteTypeId)
   {
     // Don't create a note with a blank text or a null noteTypeId
-    if (0 == strlen($text) || null == $noteTypeId)
+    if (0 < strlen($text) && 0 !== intval($noteTypeId))
     {
-      return;
+      $newNote = new QubitNote;
+      $newNote->setScope('QubitRelation');
+      $newNote->setContent($text);
+      $newNote->setTypeId($noteTypeId);
+
+      $this->notes[] = $newNote;
     }
 
-    $newNote = new QubitNote;
-    $newNote->setObjectId($this->getId());
-    $newNote->setScope('QubitRelation');
-    $newNote->setContent($text);
-    $newNote->setTypeId($noteTypeId);
-    $newNote->save();
-
-    return $newNote;
+    return $this;
   }
 
   /**
@@ -289,22 +287,36 @@ class QubitRelation extends BaseRelation
    */
   public function updateNote($text, $noteTypeId)
   {
-    if (null === ($currentNote = $this->getNoteByTypeId($noteTypeId)))
+    $existingNote = false;
+    foreach ($this->notes as $key => $note)
     {
+      if ($note->typeId == $noteTypeId)
+      {
+        if (0 == strlen($text))
+        {
+          // If $text is blank, then delete note object
+          $note->delete();
+          unset($this->notes[$key]);
+        }
+        else
+        {
+          // Update existing note
+          $note->setContent($text);
+        }
 
-      return $this->addNote($text, $noteTypeId);
+        $existingNote = true;
+        break;
+      }
     }
-    else if (0 == strlen($text))
+
+    if (false === $existingNote)
     {
-      // If $text is blank, then delete note object
-      $currentNote->delete();
+      // Add new note
+      return $this->addNote($text, $noteTypeId);
     }
     else
     {
-      $currentNote->setContent($text);
-      $currentNote->save();
-
-      return $currentNote;
+      return $this;
     }
   }
 

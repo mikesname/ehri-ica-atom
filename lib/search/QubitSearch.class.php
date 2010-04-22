@@ -42,14 +42,14 @@ class QubitSearch extends xfIndexSingle
     foreach (QubitActor::get($criteria) as $actor)
     {
       $actor->updateLuceneIndex();
-      $this->getLogger()->log('"'.$actor.'" inserted.', $this->getName());
+      $this->getLogger()->log('"'.$actor->__toString().'" inserted ('.round(microtime(true) - $start, 2).'s)', $this->getName());
     }
 
     $criteria = new Criteria;
     foreach (QubitInformationObject::get($criteria) as $informationObject)
     {
       SearchIndex::updateTranslatedLanguages($informationObject);
-      $this->getLogger()->log('"'.$informationObject.'" inserted.', $this->getName());
+      $this->getLogger()->log('"'.$informationObject->__toString().'" inserted ('.round(microtime(true) - $start, 2).'s)', $this->getName());
     }
 
     $this->getLogger()->log('Index populated in "'.round(microtime(true) - $start, 2).'" seconds.', $this->getName());

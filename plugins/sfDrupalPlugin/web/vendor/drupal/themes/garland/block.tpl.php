@@ -1,11 +1,13 @@
 <?php
-// $Id: block.tpl.php,v 1.4 2008/04/14 17:48:46 dries Exp $
+// $Id: block.tpl.php,v 1.13 2010/01/04 03:57:19 webchick Exp $
 ?>
-<div id="block-<?php print $block->module . '-' . $block->delta; ?>" class="clear-block block block-<?php print $block->module ?>">
+<div id="block-<?php print $block->module . '-' . $block->delta; ?>" class="<?php print $classes; ?> clearfix"<?php print $attributes; ?>>
 
+  <?php print render($title_prefix); ?>
 <?php if (!empty($block->subject)): ?>
-  <h2><?php print $block->subject ?></h2>
+  <h2 class="title"<?php print $title_attributes; ?>><?php print $block->subject ?></h2>
 <?php endif;?>
+  <?php print render($title_suffix); ?>
 
-  <div class="content"><?php print $block->content ?></div>
+  <div class="content"<?php print $content_attributes; ?>><?php print $content ?></div>
 </div>

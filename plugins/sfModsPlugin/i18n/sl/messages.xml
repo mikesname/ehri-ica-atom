@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="sl" datatype="plaintext" original="messages" date="2010-04-21T15:51:52Z" product-name="messages">
+    <body>
+      <trans-unit id="8">
+        <source>Title</source>
+        <target>naslov</target>
+      </trans-unit>
+      <trans-unit id="111">
+        <source>Language</source>
+        <target>jezik</target>
+      </trans-unit>
+      <trans-unit id="120">
+        <source>Identifier</source>
+        <target>identifikator</target>
+      </trans-unit>
+      <trans-unit id="230">
+        <source>Country</source>
+        <target>Dežela</target>
+      </trans-unit>
+      <trans-unit id="233">
+        <source>Latitude</source>
+        <target>Zemljepisna širina</target>
+      </trans-unit>
+      <trans-unit id="238">
+        <source>Note</source>
+        <target>Opomba</target>
+      </trans-unit>
+      <trans-unit id="258">
+        <source>Email</source>
+        <target>e_pošta</target>
+      </trans-unit>
+      <trans-unit id="306">
+        <source>Contact type</source>
+        <target>tip kontakta</target>
+      </trans-unit>
+      <trans-unit id="308">
+        <source>Street address</source>
+        <target>naslov</target>
+      </trans-unit>
+      <trans-unit id="309">
+        <source>City</source>
+        <target>mesto</target>
+      </trans-unit>
+      <trans-unit id="312">
+        <source>Telephone</source>
+        <target>telefon</target>
+      </trans-unit>
+      <trans-unit id="313">
+        <source>Fax</source>
+        <target>fax</target>
+      </trans-unit>
+      <trans-unit id="314">
+        <source>Website</source>
+        <target>spletni naslov</target>
+      </trans-unit>
+      <trans-unit id="434">
+        <source>Contact information</source>
+        <target>Kontaktni podatki</target>
+      </trans-unit>
+      <trans-unit id="444">
+        <source>Place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="489">
+        <source>Name</source>
+        <target>Ime</target>
+      </trans-unit>
+      <trans-unit id="580">
+        <source>Are you sure?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="604">
+        <source>Subject</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="651">
+        <source>URL</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="654">
+        <source>Date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="682">
+        <source>Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="711">
+        <source>Edit</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="713">
+        <source>Delete</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="714">
+        <source>Add new</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="715">
+        <source>List all</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="722">
+        <source>Description of relationship</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="734">
+        <source>Cancel</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="735">
+        <source>Save</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="736">
+        <source>Create</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="761">
+        <source>Type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="798">
+        <source>Institution identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="800">
+        <source>Status</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="801">
+        <source>Level of detail</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="802">
+        <source>Dates of creation, revision and deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="819">
+        <source>Conditions governing access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="840">
+        <source>Format</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="841">
+        <source>Description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="845">
+        <source>Type of resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="895">
+        <source>View resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="896">
+        <source>Edit resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="897">
+        <source>Internet media type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="898">
+        <source>Access condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="899">
+        <source>Physical location</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="900">
+        <source>Edit resource metadata - MODS</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="901">
+        <source>This is a duplicate of record %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="902">
+        <source>Names and origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="903">
+        <source>Add new name and/or origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="904">
+        <source>Add new child levels (if describing a collection)</source>
+        <target/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

@@ -1,26 +1,20 @@
 <?php
-// $Id: profile.install,v 1.15 2008/12/05 12:50:28 dries Exp $
+// $Id: profile.install,v 1.23 2009/12/04 16:49:47 dries Exp $
 
 /**
- * Implementation of hook_install().
+ * @file
+ * Install, update and uninstall functions for the profile module.
  */
-function profile_install() {
-  // Create tables.
-  drupal_install_schema('profile');
-}
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_uninstall().
  */
 function profile_uninstall() {
-  // Remove tables
-  drupal_uninstall_schema('profile');
-
   variable_del('profile_block_author_fields');
 }
 
 /**
- * Implementation of hook_schema().
+ * Implements hook_schema().
  */
 function profile_schema() {
   $schema['profile_field'] = array(
@@ -144,6 +138,10 @@ function profile_schema() {
     'indexes' => array(
       'fid' => array('fid'),
     ),
+    'foreign keys' => array(
+      'fid' => array('profile_field' => 'fid'),
+      'uid' => array('users' => 'uid'),
+    ),
   );
 
   return $schema;
@@ -153,8 +151,6 @@ function profile_schema() {
  * Rename {profile_fields} table to {profile_field} and {profile_values} to {profile_value}.
  */
 function profile_update_7001() {
-  $ret = array();
-  db_rename_table($ret, 'profile_fields', 'profile_field');
-  db_rename_table($ret, 'profile_values', 'profile_value');
-  return $ret;
+  db_rename_table('profile_fields', 'profile_field');
+  db_rename_table('profile_values', 'profile_value');
 }

@@ -1,418 +1,288 @@
 <?php use_helper('Javascript') ?>
 
-<div class="pageTitle"><?php echo __('edit %1% - ISDIAH', array('%1%' => sfConfig::get('app_ui_label_repository'))); ?></div>
+<h1><?php echo __('Edit %1% - ISDIAH', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?></h1>
+
+<h1 class="label"><?php echo render_title($repository) ?></h1>
 
 <?php if (isset($sf_request->id)): ?>
-  <?php echo $form->renderFormTag(url_for(array('module' => 'repository', 'action' => 'edit', 'id' => $sf_request->id))) ?>
+  <?php echo $form->renderFormTag(url_for(array($repository, 'module' => 'repository', 'action' => 'edit'))) ?>
 <?php else: ?>
   <?php echo $form->renderFormTag(url_for(array('module' => 'repository', 'action' => 'create'))) ?>
 <?php endif; ?>
 
   <?php echo $form->renderHiddenFields() ?>
 
-    <div class="formHeader">
-      <?php echo render_title($repository) ?>
-    </div>
-
   <fieldset class="collapsible collapsed" id="identityArea">
 
-  <legend><?php echo __('identity area'); ?></legend>
+    <legend><?php echo __('Identity area') ?></legend>
 
-  <div class="form-item">
-    <label for="identifier"><?php echo __('identifier'); ?></label>
-    <?php echo object_input_tag($repository, 'getIdentifier', array('size' => 20)) ?>
-  </div>
+    <?php echo $form->identifier
+      ->label(__('Identifier').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
+      ->renderRow() ?>
 
-  <div class="form-item">
-    <label for="authorized_form_of_name">
-      <?php if ($repository->getId()): ?>
-        <?php echo link_to(__('authorized form of name'), array('module' => 'actor', 'action' => 'edit', 'id' => $repository->getId(), 'repositoryReroute' => $repository->getId())) ?>
-      <?php else: ?>
-        <?php echo __('authorized form of name'); ?>
+    <div class="form-item">
+      <label for="authorized_form_of_name">
+        <?php echo link_to_if(isset($repository->id), __('Authorized form of name'), array($repository, 'module' => 'actor', 'action' => 'edit', 'repositoryReroute' => $repository->id)) ?> <span title="<?php echo __('This is a mandatory element') ?>" class="form-required">*</span>
+      </label>
+      <?php if (isset($repository->authorizedFormOfName) && $sf_user->getCulture() != $repository->sourceCulture): ?>
+        <div class="default-translation">
+          <?php echo $repository->getAuthorizedFormOfName(array('sourceCulture' => true)) ?>
+        </div>
       <?php endif; ?>
-   </label>
-    <?php if (strlen($sourceCultureValue = $repository->getAuthorizedFormOfName(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-    <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-    <?php endif; ?>
-     <?php echo object_input_tag($repository, 'getAuthorizedFormOfName', array('size' => 20)) ?>
-  </div>
-  
-  <div class="form-item">
-    <table class="inline">
-      <tr>
-        <th style="width: 90%"><?php echo __('Parallel form(s) of name'); ?></th>
-        <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
-      </tr>
-      <?php if(count($parallelFormsOfName)): ?>
-      <?php foreach($parallelFormsOfName as $parallelName): ?>
-      <tr class="<?php echo 'related_obj_'.$parallelName->getId() ?>">
-        <td><div class="animateNicely">
-            <?php echo $parallelName->getName(array('culture_fallback' => true)) ?>
-        </div></td>
-        <td style="text-align: right"><div class="animateNicely">
-          <input type="checkbox" name="delete_parallel_names[<?php echo $parallelName->getId() ?>]" value="delete" class="multiDelete" />
-        </div></td>
-      </tr>
-      <?php endforeach; ?>
-      <?php endif; ?>
-      <tr>
-        <td><?php echo input_tag('parallel_form_of_name', '', array('class' => 'multiInstanceTr')) ?></td>
-        <td style="text-align: right">&nbsp;</td>
-      </tr>
-    </table>
-  </div>
-  
-  <div class="form-item">
-    <table class="inline">
-      <tr>
-        <th style="width: 90%"><?php echo __('Other form(s) of name'); ?></th>
-        <th style="width: 10%; text-align: right;"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
-      </tr>
-      <?php if(count($otherFormsOfName)): ?>
-      <?php foreach($otherFormsOfName as $otherName): ?>
-      <tr class="<?php echo 'related_obj_'.$otherName->getId() ?>">
-        <td><div class="animateNicely">
-            <?php echo $otherName->getName(array('culture_fallback' => true)) ?>
-        </div></td>
-        <td style="text-align: right"><div class="animateNicely">
-          <input type="checkbox" name="delete_other_names[<?php echo $otherName->getId() ?>]" value="delete" class="multiDelete" />
-        </div></td>
-      </tr>
-      <?php endforeach; ?>
-      <?php endif; ?>
-      <tr>
-        <td><?php echo input_tag('other_form_of_name', '', array('class' => 'multiInstanceTr')) ?></td>
-        <td style="text-align: right">&nbsp;</td>
-      </tr>
-    </table>
-  </div>
+      <?php echo $form->authorizedFormOfName ?>
+    </div>
 
-  <div class="form-item">
-    <label for="repository_type_id"><?php echo __('type'); ?></label>
-    <?php echo object_select_tag($repository, 'getTypeId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getRepositoryTypes')) ?>
-  </div>
+    <?php echo $form->parallelName
+      ->label('Parallel form(s) of name')
+      ->renderRow() ?>
+
+    <?php echo $form->otherName
+      ->label('Other form(s) of name')
+      ->renderRow() ?>
+
+    <div class="form-item">
+      <?php echo $form->types
+        ->label(__('Type'))
+        ->renderLabel() ?>
+      <?php echo $form->types->render(array('class' => 'form-autocomplete')) ?>
+    </div>
 
   </fieldset>
 
  <fieldset class="collapsible collapsed" id="contactArea">
-   <legend><?php echo __('contact area'); ?></legend>
+
+   <legend><?php echo __('Contact area') ?></legend>
 
    <div class="form-item">
-      <label for="contact_information"><?php echo __('contact information'); ?></label>
-      <?php if (count($contactInformation) > 0): ?>
-        <?php foreach ($contactInformation as $contact): ?>
-          <table class="inline"><tr><td class="headerCell" style="margin-top: 5px; border-top: 2px solid #999999; width: 90%;">
-          <?php echo $contact->getContactType(array('cultureFallback' => true)) ?>
-          <?php if ($contact->getPrimaryContact()): ?><?php echo '('.__('primary contact').')' ?><?php endif; ?>
-          </td><td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;">
-          <?php echo link_to(image_tag('pencil', 'align=top'), array('module' => 'actor', 'action' => 'editContactInformation', 'id' => $contact->getId(), 'repositoryReroute' => $repository->getId())) ?></td>
-          <td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc;">
-          <?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'actor', 'action' => 'deleteContactInformation', 'contactInformationId' => $contact->getId(), 'returnTemplate' => 'isdiah')) ?>
-          </td></tr></table>
-          <div style="padding-left: 10px; margin-bottom: 10px;">
-            <?php if ($contact->getStreetAddress()): ?>
-              <?php echo nl2br($contact->getStreetAddress()) ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getCity(array('cultureFallback' => true))): ?>
-              <?php echo $contact->getCity(array('cultureFallback' => true)) ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getRegion(array('cultureFallback' => true))): ?>
-              <?php echo $contact->getRegion(array('cultureFallback' => true)) ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getCountryCode()): ?>
-              <?php echo format_country($contact->getCountryCode()) ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getPostalCode(array('cultureFallback' => true))): ?>
-              <?php echo $contact->getPostalCode(array('cultureFallback' => true)) ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getTelephone()): ?>
-              <?php echo __('telephone').': '.$contact->getTelephone() ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getFax()): ?>
-              <?php echo __('fax').': '.$contact->getFax() ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getEmail()): ?>
-              <?php echo $contact->getEmail() ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getWebsite()): ?>
-              <?php
-                // Add http:// to the beginning of website urls that don't already have it
-                $fullUrl = (preg_match('|^https?://|', $contact->getWebsite())) ? $contact->getWebsite() : 'http://'.$contact->getWebsite();
-              ?>
-              <?php echo '<a href="'.$fullUrl.'" target="_NEW">'.$fullUrl.'</a>' ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getContactPerson()): ?>
-              <?php echo __('contact person').': '.$contact->getContactPerson() ?><br />
-            <?php endif; ?>
-            <?php if ($contact->getNote(array('cultureFallback' => true))): ?>
-              <span class="note"><?php echo nl2br($contact->getNote(array('cultureFallback' => true))) ?></span>
-            <?php endif; ?>
-          </div>
+
+      <label for="contact_information"><?php echo __('Contact information') ?><span title="<?php echo __('This is a mandatory element.') ?>" class="form-required">*</span></label>
+
+      <?php foreach ($contactInformation as $item): ?>
+
+        <table class="inline">
+          <tr>
+            <td class="headerCell" style="margin-top: 5px; border-top: 2px solid #999999; width: 90%">
+              <?php echo $item->getContactType(array('cultureFallback' => true)) ?><?php if ($item->getPrimaryContact()): ?> (<?php echo __('Primary contact') ?>)<?php endif; ?>
+              </td><td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc">
+                <?php echo link_to(image_tag('pencil'), array($item, 'module' => 'actor', 'action' => 'editContactInformation', 'repositoryReroute' => $repository->id)) ?>
+              </td><td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc">
+                <?php echo link_to(image_tag('delete'), array('module' => 'actor', 'action' => 'deleteContactInformation', 'contactInformationId' => $item->id, 'returnTemplate' => 'isdiah')) ?>
+              </td>
+            </tr>
+          </table>
+
+          <?php echo get_partial('repository/contactInformation', array('contactInformation' => $item)) ?>
+
         <?php endforeach; ?>
-      <?php endif; ?>
 
       <table class="inline">
-        <tr><td class="headerCell" colspan="4" style="margin-top: 5px; border-top: 2px solid #999999; width: 95%;"><?php echo __('new contact information') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('street address'); ?></td><td><?php echo textarea_tag('street_address', '', 'size=30x3') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('city'); ?></td><td><?php echo input_tag('city', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('region/province'); ?></td><td><?php echo input_tag('region', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('country'); ?></td><td><?php echo select_country_tag('country_code', null, array('include_blank' => true)) ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('postal code'); ?></td><td><?php echo input_tag('postal_code', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('telephone'); ?></td><td><?php echo input_tag('telephone', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('fax'); ?></td><td><?php echo input_tag('fax', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('email'); ?></td><td><?php echo input_tag('email', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('website'); ?></td><td><?php echo input_tag('website', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('contact person'); ?></td><td><?php echo input_tag('contact_person', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('primary contact'); ?></td><td><?php echo checkbox_tag('primary_contact') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('contact type'); ?></td><td><?php echo input_tag('contact_type', '', 'size=20') ?></td></tr>
-        <tr><td class="headerCell"><?php echo __('note'); ?></td><td><?php echo textarea_tag('contact_information_note', '', array('class' => 'resizable', 'size' => '30x3')) ?></td></tr>
+        <tr>
+          <td class="headerCell" colspan="4" style="margin-top: 5px; border-top: 2px solid #999999; width: 95%">
+            <?php echo __('New contact information') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Street address') ?>
+          </td><td>
+            <?php echo textarea_tag('street_address') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('City') ?>
+          </td><td>
+            <?php echo input_tag('city') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Region/province') ?>
+          </td><td>
+            <?php echo input_tag('region') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Country') ?>
+          </td><td>
+            <?php echo select_country_tag('country_code', null, array('include_blank' => true)) ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Postal code') ?>
+          </td><td>
+            <?php echo input_tag('postal_code') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Telephone') ?>
+          </td><td>
+            <?php echo input_tag('telephone') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Fax') ?>
+          </td><td>
+            <?php echo input_tag('fax') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Email') ?>
+          </td><td>
+            <?php echo input_tag('email') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Website') ?>
+          </td><td>
+            <?php echo input_tag('website') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Contact person') ?>
+          </td><td>
+            <?php echo input_tag('contact_person') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Primary contact') ?>
+          </td><td>
+            <?php echo checkbox_tag('primary_contact') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Contact type') ?>
+          </td><td>
+            <?php echo input_tag('contact_type') ?>
+          </td>
+        </tr><tr>
+          <td class="headerCell">
+            <?php echo __('Note') ?>
+          </td><td>
+            <?php echo textarea_tag('contact_information_note', null, array('class' => 'resizable', 'size' => '30x3')) ?>
+          </td>
+        </tr>
       </table>
     </div>
 
   </fieldset>
 
- <fieldset class="collapsible collapsed" id="descriptionArea">
-    <legend><?php echo __('description area'); ?></legend>
+  <!-- ******************************************* -->
+  <!-- Description area                            -->
+  <!-- ******************************************* -->
+  <fieldset class="collapsible collapsed" id="descriptionArea">
 
-    <div class="form-item">
-      <label for="history"><?php echo __('history'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-       <?php echo object_textarea_tag($repository, 'getHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <legend><?php echo __('Description area') ?></legend>
 
-    <div class="form-item">
-      <label for="geocultural_context"><?php echo __('geographical and cultural context'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getGeoculturalContext(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getGeoculturalContext', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->history, $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="mandates"><?php echo __('Mandates/Sources of authority'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getMandates(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getMandates', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->geoculturalContext
+      ->label(__('Geographical and cultural context')), $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="structure"><?php echo __('administrative structure'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getInternalStructures(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getInternalStructures', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->mandates
+      ->label(__('Mandates/Sources of authority')), $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="collecting_policies"><?php echo __('records management and collecting policies'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getCollectingPolicies(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getCollectingPolicies', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->internalStructures
+      ->label(__('Administrative structure')), $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="buildings"><?php echo __('buildings'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getBuildings(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getBuildings', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->collectingPolicies
+      ->label(__('Records management and collecting policies')), $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="holdings"><?php echo __('archival and other holdings'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getHoldings(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getHoldings', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->buildings, $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="finding_aids"><?php echo __('finding aids, guides and publications'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getFindingAids(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getFindingAids', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->holdings
+      ->label(__('Archival and other holdings')), $repository, array('class' => 'resizable')) ?>
+
+    <?php echo render_field($form->findingAids
+      ->label(__('Finding aids, guides and publications')), $repository, array('class' => 'resizable')) ?>
+
   </fieldset>
 
+  <!-- ******************************************* -->
+  <!-- Access area                                 -->
+  <!-- ******************************************* -->
   <fieldset class="collapsible collapsed" id="accessArea">
-    <legend><?php echo __('access area'); ?></legend>
 
-    <div class="form-item">
-      <label for="opening_times"><?php echo __('opening times'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getOpeningTimes(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getOpeningTimes', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <legend><?php echo __('Access area') ?></legend>
 
-    <div class="form-item">
-      <label for="access_conditions"><?php echo __('conditions and requirements'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getAccessConditions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getAccessConditions', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->openingTimes, $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="disabled_access"><?php echo __('accessibility'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getDisabledAccess(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDisabledAccess', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->accessConditions
+      ->label(__('Conditions and requirements')), $repository, array('class' => 'resizable')) ?>
+
+    <?php echo render_field($form->disabledAccess
+      ->label(__('Accessibility')), $repository, array('class' => 'resizable')) ?>
+
   </fieldset>
 
+  <!-- ******************************************* -->
+  <!-- Services area                               -->
+  <!-- ******************************************* -->
   <fieldset class="collapsible collapsed" id="servicesArea">
-    <legend><?php echo __('services area'); ?></legend>
 
-    <div class="form-item">
-      <label for="research_services"><?php echo __('research services'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getResearchServices(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getResearchServices', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <legend><?php echo __('Services area') ?></legend>
 
-    <div class="form-item">
-      <label for="reproduction_services"><?php echo __('reproduction services'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getReproductionServices(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getReproductionServices', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->researchServices, $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="public_facilities"><?php echo __('public areas'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getPublicFacilities(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getPublicFacilities', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->reproductionServices, $repository, array('class' => 'resizable')) ?>
+
+    <?php echo render_field($form->publicFacilities
+      ->label(__('Public areas')), $repository, array('class' => 'resizable')) ?>
+
   </fieldset>
 
   <fieldset class="collapsible collapsed" id="controlArea">
-    <legend><?php echo __('control area'); ?></legend>
 
-    <div class="form-item">
-      <label for="desc_identifier"><?php echo __('description identifier'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getDescIdentifier(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>       <?php echo object_input_tag($repository, 'getDescIdentifier', array('size' => 20)) ?>
-    </div>
+    <legend><?php echo __('Control area') ?></legend>
 
-    <div class="form-item">
-      <label for="desc_institution_identifier"><?php echo __('institution responsible identifier'); ?></label>
-      <?php echo object_input_tag($repository, 'getDescInstitutionIdentifier', array('size' => 20)) ?>
-    </div>
+    <?php echo render_field($form->descIdentifier
+      ->label(__('Description identifier')), $repository) ?>
 
-    <div class="form-item">
-      <label for="desc_rules"><?php echo __('rules or conventions'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getDescRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDescRules', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->descInstitutionIdentifier
+      ->label(__('Institution identifier')), $repository) ?>
 
-    <div class="form-item">
-      <label for="desc_status_id"><?php echo __('status'); ?></label>
-      <?php echo object_select_tag($repository, 'getDescStatusId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getDescriptionStatuses')) ?>
-    </div>
+    <?php echo render_field($form->descRules
+      ->label(__('Rules and/or conventions used')), $repository, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="desc_detail_id"><?php echo __('level of detail'); ?></label>
-      <?php echo object_select_tag($repository, 'getDescDetailId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getDescriptionDetailLevels')) ?>
-    </div>
+    <?php echo $form->descStatus
+      ->label('Status')
+      ->renderRow() ?>
 
-    <div class="form-item">
-      <label for="desc_revision_history"><?php echo __('dates of creation, revision and deletion'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getDescRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDescRevisionHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
-    <div>
+    <?php echo $form->descDetail
+      ->label('Level of detail')
+      ->renderRow() ?>
 
-    <div class="form-item">
-      <label for="language_code"><?php echo __('languages'); ?></label>
+    <?php echo render_field($form->descRevisionHistory
+      ->label(__('Dates of creation, revision and deletion')), $repository, array('class' => 'resizable')) ?>
 
-      <?php if(count($languageCodes) > 0): ?>
-      <?php foreach ($languageCodes as $languageCode): ?>
-        <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'),
-            array('module' => 'actor', 'action' => 'deleteProperty', 'Id' => $languageCode->getId()),
-            array('query_string' => 'next='.url_for(array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())))
-          ) ?><br/>
-        </div>
-      <?php endforeach; ?>
-      <?php endif; ?>
+    <?php echo $form->language
+      ->label('Language(s)')
+      ->renderRow(array('class' => 'form-autocomplete')) ?>
 
-      <?php echo select_language_tag('language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
-     </div>
+    <?php echo $form->script
+      ->label('Script(s)')
+      ->renderRow(array('class' => 'form-autocomplete')) ?>
 
-    <div class="form-item">
-      <label for="script_id"><?php echo __('scripts'); ?></label>
+    <?php echo render_field($form->descSources
+      ->label(__('Sources')), $repository, array('class' => 'resizable')) ?>
 
-      <?php if(count($scriptCodes) > 0): ?>
-      <?php foreach ($scriptCodes as $scriptCode): ?>
-        <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'),
-            array('module' => 'actor', 'action' => 'deleteProperty', 'Id' => $scriptCode->getId()),
-            array('query_string' => 'next='.url_for(array('module' => 'repository', 'action' => 'edit', 'id' => $repository->getId())))
-          ) ?><br/>
-        </div>
-      <?php endforeach; ?>
-      <?php endif; ?>
-
-      <?php echo select_script_tag('script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
-    </div>
-
-    <div class="form-id">
-      <label for="desc_sources"><?php echo __('sources'); ?></label>
-      <?php if (strlen($sourceCultureValue = $repository->getDescSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $repository->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($repository, 'getDescSources', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
-
-    <div class="form-item">
-      <table class="inline">
-        <tr>
-          <th style="width: 90%;"><?php echo __('Maintenance Notes') ?></th>
-          <th style="width: 10%; text-align: right"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
-        </tr>
-        <?php if ($maintenanceNotes): ?>
-        <?php foreach ($maintenanceNotes as $maintenanceNote): ?>
-        <tr class="<?php echo 'related_obj_'.$maintenanceNote->getId() ?>">
-          <td><div class="animateNicely">
-            <?php echo $maintenanceNote->getContent(array('cultureFallback' => 'true')) ?>
-          </div></td>
-          <td style="text-align: right;"><div class="animateNicely">
-            <input type="checkbox" name="delete_notes[<?php echo $maintenanceNote->getId() ?>]" value="delete" class="multiDelete" />
-          </div></td>
-        </tr>
-        <?php endforeach; ?>
-        <?php endif; ?>
-        <tr>
-          <td><?php echo textarea_tag('new_maintenance_note', '', array('class' => 'multiInstanceTr', 'size' => '30x2')) ?></td>
-          <td style="text-align: right">&nbsp;</td>
-        </tr>
-      </table>
-    </div>
+    <?php echo render_field($form->maintenanceNotes, $maintenanceNote, array('name' => 'content', 'class' => 'resizable')) ?>
 
   </fieldset>
 
-  <ul class="actions">
-    <?php if (isset($sf_request->id)): ?>
-      <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'show', 'id' => $repository->id)) ?></li>
-      <li><?php echo submit_tag(__('Save')) ?></li>
-    <?php else: ?>
-      <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'list')) ?></li>
-      <li><?php echo submit_tag(__('Create')) ?></li>
-    <?php endif; ?>
-  </ul>
+  <div class="actions section">
+
+    <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+
+    <div class="content">
+      <ul class="clearfix links">
+        <?php if (isset($sf_request->id)): ?>
+          <li><?php echo link_to(__('Cancel'), array($repository, 'module' => 'repository')) ?></li>
+          <li><?php echo submit_tag(__('Save')) ?></li>
+        <?php else: ?>
+          <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'list')) ?></li>
+          <li><?php echo submit_tag(__('Create')) ?></li>
+        <?php endif; ?>
+      </ul>
+    </div>
+
+  </div>
 
 </form>

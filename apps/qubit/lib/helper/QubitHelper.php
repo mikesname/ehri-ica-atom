@@ -74,6 +74,7 @@ EOF;
   return <<<EOF
 <div class="form-item">
   {$field->renderLabel()}
+  {$field->renderError()}
   $div
   {$field->render($options)}
   {$field->renderHelp()}
@@ -84,24 +85,20 @@ EOF;
 
 function render_show($label, $value)
 {
-  if (0 < strlen($value))
-  {
-    return <<<EOF
-<tr>
-  <th>
-    $label
-  </th><td>
+  return <<<EOF
+<div class="field">
+  <h3>$label</h3>
+  <div>
     $value
-  </td>
-</tr>
+  </div>
+</div>
 
 EOF;
-  }
 }
 
 function render_title($object)
 {
-  // TODO: Workaround for PHP bug: http://bugs.php.net/bug.php?id=47522
+  // TODO: Workaround for PHP bug, http://bugs.php.net/bug.php?id=47522
   if (method_exists($object, '__toString'))
   {
     $object = $object->__toString();
@@ -113,6 +110,22 @@ function render_title($object)
   }
 
   return '<em>Untitled</em>';
+}
+
+function render_value($value)
+{
+  ProjectConfiguration::getActive()->loadHelpers('Text');
+
+  $value = auto_link_text($value);
+
+  $value = preg_replace('/\r?\n/', '<br/>', $value);
+
+  // Simple lists
+  $value = preg_replace('/(?:^\*.*\r?\n)*(?:^\*.*)/m', "<ul>\n$0\n</ul>", $value);
+  $value = preg_replace('/(?:^-.*\r?\n)*(?:^-.*)/m', "<ul>\n$0\n</ul>", $value);
+  $value = preg_replace('/^(?:\*|-)\s*(.*)/m', '<li>$1</li>', $value);
+
+  return $value;
 }
 
 function object_select_tree($object, $method, array $options = array())
@@ -336,6 +349,7 @@ function hr_filesize($val)
 function collapse_date($date)
 {
   $date = str_replace('-00', '', $date);
+  $date = preg_replace('/^0+/', '', $date);
 
   return $date;
 }

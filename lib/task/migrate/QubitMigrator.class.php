@@ -27,8 +27,9 @@
  */
 class QubitMigrator
 {
-  protected $data = null;
-  protected $dataModified = false;
+  protected
+    $data = null,
+    $dataModified = false;
 
   public function __construct($data)
   {
@@ -52,45 +53,54 @@ class QubitMigrator
     return $this->dataModified;
   }
 
-  public function migrate103to104()
+  public function migrate103()
   {
-    $migrator = new QubitMigrate103to104($this->data);
+    $migrator = new QubitMigrate103($this->data);
     $this->data = $migrator->execute();
     $this->dataModified = true;
 
     return $this;
   }
 
-  public function migrate104to105()
+  public function migrate104()
   {
-    $migrator = new QubitMigrate104to105($this->data);
+    $migrator = new QubitMigrate104($this->data);
     $this->data = $migrator->execute();
     $this->dataModified = true;
 
     return $this;
   }
 
-  public function migrate105to106()
+  public function migrate105()
   {
-    $migrator = new QubitMigrate105to106($this->data);
+    $migrator = new QubitMigrate105($this->data);
     $this->data = $migrator->execute();
     $this->dataModified = true;
 
     return $this;
   }
 
-  public function migrate106to107()
+  public function migrate106()
   {
-    $migrator = new QubitMigrate106to107($this->data);
+    $migrator = new QubitMigrate106($this->data);
     $this->data = $migrator->execute();
     $this->dataModified = true;
 
     return $this;
   }
 
-  public function migrate107to108()
+  public function migrate107()
   {
-    $migrator = new QubitMigrate107to108($this->data);
+    $migrator = new QubitMigrate107($this->data);
+    $this->data = $migrator->execute();
+    $this->dataModified = true;
+
+    return $this;
+  }
+
+  public function migrate108()
+  {
+    $migrator = new QubitMigrate108($this->data);
     $this->data = $migrator->execute();
     $this->dataModified = true;
 

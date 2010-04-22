@@ -34,10 +34,10 @@
       <addressline><?php echo htmlentities($baseObject->getRepository()->getPrimaryContact()->getStreetAddress()) ?></addressline>
       <addressline><?php echo htmlentities($baseObject->getRepository()->getPrimaryContact()->getCity().', '.$baseObject->getRepository()->getPrimaryContact()->getRegion()) ?></addressline>
       <addressline><?php echo htmlentities($baseObject->getRepositoryCountry().'  '.$baseObject->getRepository()->getPrimaryContact()->getPostalCode()) ?></addressline>
-      <addressline><?php echo htmlentities(__('telephone').': '.$baseObject->getRepository()->getPrimaryContact()->getTelephone()) ?></addressline>
-      <addressline><?php echo htmlentities(__('fax').': '.$baseObject->getRepository()->getPrimaryContact()->getFax()) ?></addressline>
-      <addressline><?php echo htmlentities(__('email').': '.$baseObject->getRepository()->getPrimaryContact()->getEmail()) ?></addressline>
-      <addressline><?php echo htmlentities(__('website').': '.$baseObject->getRepository()->getPrimaryContact()->getWebsite()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Telephone').': '.$baseObject->getRepository()->getPrimaryContact()->getTelephone()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Fax').': '.$baseObject->getRepository()->getPrimaryContact()->getFax()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Email').': '.$baseObject->getRepository()->getPrimaryContact()->getEmail()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Website').': '.$baseObject->getRepository()->getPrimaryContact()->getWebsite()) ?></addressline>
     </address>
     <?php endif; ?>
   </publicationstmt>
@@ -117,10 +117,10 @@ countrycode="<?php echo htmlentities($baseObject->getRepository()->getCountryCod
       <addressline><?php echo htmlentities($baseObject->getRepository()->getPrimaryContact()->getStreetAddress()) ?></addressline>
       <addressline><?php echo htmlentities($baseObject->getRepository()->getPrimaryContact()->getCity().', '.$baseObject->getRepository()->getPrimaryContact()->getRegion()) ?></addressline>
       <addressline><?php echo htmlentities($baseObject->getRepositoryCountry().'  '.$baseObject->getRepository()->getPrimaryContact()->getPostalCode()) ?></addressline>
-      <addressline><?php echo htmlentities(__('telephone').': '.$baseObject->getRepository()->getPrimaryContact()->getTelephone()) ?></addressline>
-      <addressline><?php echo htmlentities(__('fax').': '.$baseObject->getRepository()->getPrimaryContact()->getFax()) ?></addressline>
-      <addressline><?php echo htmlentities(__('email').': '.$baseObject->getRepository()->getPrimaryContact()->getEmail()) ?></addressline>
-      <addressline><?php echo htmlentities(__('website').': '.$baseObject->getRepository()->getPrimaryContact()->getWebsite()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Telephone').': '.$baseObject->getRepository()->getPrimaryContact()->getTelephone()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Fax').': '.$baseObject->getRepository()->getPrimaryContact()->getFax()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Email').': '.$baseObject->getRepository()->getPrimaryContact()->getEmail()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Website').': '.$baseObject->getRepository()->getPrimaryContact()->getWebsite()) ?></addressline>
     </address>
   <?php endif; ?>
 </repository>
@@ -265,10 +265,10 @@ countrycode="<?php echo htmlentities($descendant->getRepository()->getCountryCod
       <addressline><?php echo htmlentities($descendant->getRepository()->getPrimaryContact()->getStreetAddress()) ?></addressline>
       <addressline><?php echo htmlentities($descendant->getRepository()->getPrimaryContact()->getCity().', '.$descendant->getRepository()->getPrimaryContact()->getRegion()) ?></addressline>
       <addressline><?php echo htmlentities($descendant->getRepositoryCountry().'  '.$descendant->getRepository()->getPrimaryContact()->getPostalCode()) ?></addressline>
-      <addressline><?php echo htmlentities(__('telephone').': '.$descendant->getRepository()->getPrimaryContact()->getTelephone()) ?></addressline>
-      <addressline><?php echo htmlentities(__('fax').': '.$descendant->getRepository()->getPrimaryContact()->getFax()) ?></addressline>
-      <addressline><?php echo htmlentities(__('email').': '.$descendant->getRepository()->getPrimaryContact()->getEmail()) ?></addressline>
-      <addressline><?php echo htmlentities(__('website').': '.$descendant->getRepository()->getPrimaryContact()->getWebsite()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Telephone').': '.$descendant->getRepository()->getPrimaryContact()->getTelephone()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Fax').': '.$descendant->getRepository()->getPrimaryContact()->getFax()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Email').': '.$descendant->getRepository()->getPrimaryContact()->getEmail()) ?></addressline>
+      <addressline><?php echo htmlentities(__('Website').': '.$descendant->getRepository()->getPrimaryContact()->getWebsite()) ?></addressline>
     </address>
   <?php endif; ?>
 </repository>

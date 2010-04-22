@@ -29,6 +29,19 @@ class PhysicalObjectContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    //$this->physicalObjects = $physicalObjects;
+    $this->physicalObjects = array();
+    foreach (QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->informationObject->id, array('typeId' => QubitTerm::HAS_PHYSICAL_OBJECT_ID)) as $physicalObject)
+    {
+      // Check physical object is unique
+      if (!in_array($physicalObject, $this->physicalObjects))
+      {
+        $this->physicalObjects[] = $physicalObject;
+      }
+    }
+
+    if (1 > count($this->physicalObjects))
+    {
+      return sfView::NONE;
+    }
   }
 }

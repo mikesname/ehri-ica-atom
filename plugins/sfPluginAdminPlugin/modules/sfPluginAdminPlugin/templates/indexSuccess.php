@@ -19,18 +19,13 @@ Drupal.behaviors.sfPluginAdminPlugin = {
 EOF
 ) ?>
 
-<div class="options-list"><a class="active">list</a><?php echo link_to('configure', array('module' => 'sfThemePlugin')) ?></div>
-
-<div class="pageTitle"><?php echo __('list themes'); ?></div>
+<h1><?php echo __('List plugins') ?></h1>
 
 <?php echo $form->renderFormTag(url_for(array('module' => 'sfPluginAdminPlugin'))) ?>
   <?php echo $form->renderGlobalErrors() ?>
   <table class="sticky-enabled">
     <thead>
       <tr>
-
-        <th>
-        </th>
 
         <th>
           Name
@@ -48,25 +43,21 @@ EOF
     </thead>
     <tbody>
       <?php foreach ($plugins as $name => $plugin): ?>
-        <tr>
+        <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
 
           <td>
             <?php if (file_exists($plugin->getRootDir().'/web/images/image.png')): ?>
               <?php echo image_tag('/'.$name.'/images/image', array('alt' => $name)) ?>
-            <?php else: ?>
-              No image
             <?php endif; ?>
-          </td>
 
-          <td>
             <h2><?php echo $name ?></h2>
             <div class="description">
-              <?php echo $plugin->summary ?>
+              <?php $class = new ReflectionClass($plugin); echo $class->getStaticPropertyValue('summary') // HACK Use $plugin::$summary in PHP 5.3 http://php.net/oop5.late-static-bindings ?>
             </div>
           </td>
 
           <td>
-            <?php echo $plugin->version ?>
+            <?php echo $class->getStaticPropertyValue('version') // HACK Use $plugin::$version in PHP 5.3 ?>
           </td>
 
           <?php // TODO: Should redisplay tainted value ?>

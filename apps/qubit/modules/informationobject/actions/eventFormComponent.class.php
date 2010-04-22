@@ -30,7 +30,15 @@ class InformationObjectEventFormComponent extends sfComponent
   public function execute($request)
   {
     $this->informationObject = $request->getAttribute('informationObject');
-    $this->eventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
+    if ($request->getParameter('module') == 'sfDcPlugin')
+    {
+      // restrict to the Dublin Core event types (creation, publication, contribution)
+      $this->eventTypes = QubitTerm::getDcEventTypeList();
+    }
+    else
+    {
+      $this->eventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
+    }
     $this->defaultEventType = QubitTerm::CREATION_ID;
     $this->eventPlaces = QubitTerm::getOptionsForSelectList(QubitTaxonomy::PLACE_ID, $options = array('include_blank' => true));
   }

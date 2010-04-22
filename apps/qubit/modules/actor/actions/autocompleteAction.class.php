@@ -21,16 +21,34 @@ class ActorAutocompleteAction extends sfAction
 {
   public function execute($request)
   {
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
+
     $criteria = new Criteria;
-    $criteria->add(QubitActor::CLASS_NAME, 'QubitActor');
-    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
     $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
-    $criteria->addAscendingOrderByColumn('authorized_form_of_name');
-    $criteria->setDistinct();
-    $criteria->setLimit(sfConfig::get('app_hits_per_page', 10));
+    $criteria->add(QubitActorI18n::CULTURE, $this->context->user->getCulture());
 
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
+    if (isset($request->query))
+    {
+      $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
+    }
 
-    $this->actors = QubitActor::get($criteria);
+    // Exclude the calling actor from the list
+    $params = $this->context->routing->parse(Qubit::pathInfo($request->getHttpHeader('Referer')));
+    if (isset($params['id']))
+    {
+      $criteria->add(QubitActor::ID, $params['id'], Criteria::NOT_EQUAL);
+    }
+
+    $this->pager = new QubitPager('QubitActor');
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->page);
+
+    $this->actors = $this->pager->getResults();
+
+    $this->setTemplate('list');
   }
 }

@@ -12,38 +12,8 @@
 <tr><td rowspan="1" colspan="3">dc_create.html</td></tr>
 </thead><tbody>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Admin</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='header-bottom']/div[2]/ul/li[3]/ul/li[5]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=default template</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>default_template_informationobject</td>
-	<td>label=Dublin Core, Version 1.1. Dublin Core Metadata Initiative</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='content-two-column']/div/fieldset[3]/div/form/table/tbody/tr[4]/td[2]/div/input</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Add/edit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=add new</td>
+	<td>open</td>
+	<td>create/dc</td>
 	<td></td>
 </tr>
 <tr>
@@ -57,13 +27,23 @@
 	<td>DC collection</td>
 </tr>
 <tr>
-	<td>click</td>
-	<td>link=add new</td>
+	<td>runScript</td>
+	<td>Qubit.eventDialog.show()</td>
 	<td></td>
 </tr>
 <tr>
-	<td>typeAndWait</td>
+	<td>waitForVisible</td>
 	<td>newEventActor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEventActor</td>
+	<td>Mr. Bean</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//table[@id='newEvent']/tbody/tr[2]/td/div/div/div[2]/ul/li[1]</td>
 	<td>Mr. Bean</td>
 </tr>
 <tr>
@@ -112,8 +92,13 @@
 	<td>Description field</td>
 </tr>
 <tr>
-	<td>typeAndWait</td>
+	<td>type</td>
 	<td>//form[@id='editForm']/div[10]/input[2]</td>
+	<td>Afar</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//form[@id='editForm']/div[10]/div/div/div[2]/ul/li[1]</td>
 	<td>Afar</td>
 </tr>
 <tr>
@@ -122,8 +107,13 @@
 	<td></td>
 </tr>
 <tr>
-	<td>typeAndWait</td>
+	<td>type</td>
 	<td>repository</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//form[@id='editForm']/div[15]/div/div/div[2]/ul/li[1]</td>
 	<td>Archives of the Fraser Valley</td>
 </tr>
 <tr>

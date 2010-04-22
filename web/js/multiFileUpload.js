@@ -1,336 +1,332 @@
-var thumbWidth = 150;
+// $Id$
 
-// Load when DOM is ready
-YAHOO.util.Event.onDOMReady(
-  function() {
-    var uiLayer = YAHOO.util.Dom.getRegion('selectLink');
-    var overlay = YAHOO.util.Dom.get('uploaderOverlay');
-    YAHOO.util.Dom.setStyle(overlay, 'width', uiLayer.right - uiLayer.left + "px");
-    YAHOO.util.Dom.setStyle(overlay, 'height', uiLayer.bottom - uiLayer.top + "px");
-  }
-);
-
-function handleRollOver()
-{
-  YAHOO.util.Dom.setStyle(YAHOO.util.Dom.get('selectLink'), 'color', "#FFFFFF");
-  YAHOO.util.Dom.setStyle(YAHOO.util.Dom.get('selectLink'), 'background-color', "#000000");
-}
-function handleRollOut()
-{
-  YAHOO.util.Dom.setStyle(YAHOO.util.Dom.get('selectLink'), 'color', "#0066CC");
-  YAHOO.util.Dom.setStyle(YAHOO.util.Dom.get('selectLink'), 'background-color', "#FFFFFF");
-}
-
-// Empty placeholders
-function handleMouseDown()
-{
-}
-function handleMouseUp()
-{
-}
-function handleClick()
-{
-}
-
-// Show file picker
-function handleContentReady()
-{
-  uploader.clearFileList();
-
-  // Allows multiple file selection in "Browse" dialog.
-  uploader.setAllowMultipleFiles(true);
-
-  /*
-  // New set of file filters.
-  var ff = new Array( {
-    description: "Images",
-    extensions: "*.jpg;*.png;*.gif;*.tif"
-  }, {
-    description: "Videos",
-    extensions: "*.avi;*.mov;*.mpg"
-  });
-
-  // Apply new set of file filters to the uploader.
-  uploader.setFileFilters(ff);
-  */
-}
-
-// select files
-function onFileSelect(event)
-{
-  if ('fileList' in event && event.fileList != null)
+(function ($)
   {
-    fileList = event.fileList;
+    Qubit.multiFileUpload = Qubit.multiFileUpload || {};
 
-    // Make space for a thumbnail and progress bar
-    for (var i in fileList)
-    {
-      var fileHash = fileList[i].id;
-      var fileName = fileList[i].name;
-      var fileSize = fileList[i].size; // bytes
+    Drupal.behaviors.multiFileUpload = {
+      attach: function (context)
+        {
+          // Enable uploader
+          var uploader = new YAHOO.widget.Uploader('uploaderOverlay');
 
-      // TODO: Look for a way for blocking repeated files before upload them.
-      // Unfortunately, YUI generates different ids for same file opening browser two times.
-      if (-1 < jQuery.inArray(fileHash, uploadedList))
-      {
-        break;
-      }
+          // Put swf object over "Select files" button
+          var uiLayer = YAHOO.util.Dom.getRegion('selectLink');
+          var overlay = $('#uploaderOverlay');
+          overlay.width(uiLayer.right - uiLayer.left);
+          overlay.height(uiLayer.bottom - uiLayer.top);
 
-      if (fileSize > maxUploadSize)
-      {
-        // Create an upload block for this digital object
-        var uploadBlock = '<div id="upload-' + fileHash + '" class="multiFileUpload warning">';
-        uploadBlock    += '<ul class=\"validation_error\"><li>Warning, ' + fileName + ' exceeds maximum upload size</li></ul>';
-        uploadBlock    += '</div>';
-        $('#uploads').append(uploadBlock);
+          function parseHtmlId(id)
+          {
+            var yuiId = id.match(/([0-9]+)$/).shift();
 
-        uploader.removeFile(fileHash);
-      }
-      else
-      {
-        // Create an upload block for this digital object
-        var uploadBlock = '<div id="upload-' + fileHash + '" class="multiFileUpload">';
-        uploadBlock    += '<div id="thumbnail-' + fileHash + '" class="digitalObject" style="width: ' + thumbWidth + 'px"></div>';
-        uploadBlock    += '</div>';
-        $('#uploads').append(uploadBlock);
+            if (null != yuiId && !isNaN(parseInt(yuiId)))
+            {
 
-        // Insert placeholder for thumbnail ("upload text + progress bar div")
-        var progress  = '<span style="color: #999; text-align: left">' + i18nUploading + '</span>';
-        progress     += '&nbsp;<a href="#" class="cancel" onclick="cancelUpload(\'' + fileHash + '\'); return false;">' + i18nCancel + '</a><br />';
-        progress     += '<div class="progress-bar" style="width=: ' + thumbWidth + 'px;"></div>';
-        $('#thumbnail-' + fileHash).html(progress)
+              return yuiId;
+            }
+          };
 
-        // Initialize progress bar
-        var progbar = '<div style="height:5px;width:' + thumbWidth + 'px;background-color:#CCC;"></div>';
-        $('#thumbnail-' + fileHash + ' div.progress-bar').html(progbar);
-      }
+          function replacePlaceHolder(templateStr, index)
+          {
+            var fileName = null;
+            index = String(index);
 
-      uploadedList[uploadedList.length] = fileHash;
+            var matches = templateStr.match(/\%(d+)\%/);
+
+            if (null != matches && 0 < matches[1].length)
+            {
+              while (matches[1].length > index.length)
+              {
+                index = '0' + index;
+              }
+
+              var fileName = templateStr.replace('%' + matches[1] + '%', index);
+            }
+
+            if (null == fileName || templateStr == fileName)
+            {
+              fileName = templateStr + ' ' + index;
+            }
+
+            return fileName;
+          }
+
+          // Update all title values for all uploads
+          // It is not based on internal yui swfuploader fileID
+          function renumerateUploads()
+          {
+            var title = $('input#title').val();
+
+            $('div.multiFileUploadItem:has(input.md5sum)').each(function (i)
+             {
+               // Calculate new value
+               var newValue = replacePlaceHolder(title, i + 1);
+
+               // Replace title value 
+               $(this).find('input[type=text]').val(newValue);
+             });
+          }
+
+          function highlightRepeatedFiles()
+          {
+            var uploads = $('div.multiFileUploadItem:has(input.md5sum)');
+            var memMd5 = Array();
+
+            uploads.each(function()
+              {
+                var md5sum = $(this).find('input.md5sum').val();
+
+                if (-1 < $.inArray(md5sum, memMd5))
+                {
+                  var fileName = $('input.filename', $(this)).val();
+                  $(this).addClass('multiFileUploadWarning');
+                }
+                else
+                {
+                  $(this).removeClass('multiFileUploadWarning');
+                  memMd5[memMd5.length] = md5sum;
+                }
+              });
+          }
+
+          $('input#title').live('keyup', renumerateUploads);
+
+          $('a.uploadActionRetry, a.uploadActionStart').live('click', function()
+            {
+              var fileId = parseHtmlId($(this).closest('.multiFileUploadItem').attr('id'));
+
+              // Upload it
+              uploader.upload('file' + fileId, Qubit.multiFileUpload.uploadResponsePath, 'POST', { informationObjectId: Qubit.multiFileUpload.informationObjectId });
+
+              return false;
+            });
+
+          $('a.uploadActionDelete').live('click', function()
+            {
+              var fileId = parseHtmlId($(this).closest('.multiFileUploadItem').attr('id'));
+
+              // Hide block
+              $('div#upload-file' + fileId).slideUp('normal', function()
+                {
+                  // Remove it
+                  $(this).remove();
+
+                  renumerateUploads();
+                  highlightRepeatedFiles();
+                });
+
+              return false;
+            });
+
+          $('a.uploadActionCancel').live('click', function()
+            {
+              var fileId = parseHtmlId($(this).closest('.multiFileUploadItem').attr('id'));
+              var uploadLayer = $('div#upload-file' + fileId);
+
+              // Hide block
+              uploadLayer.slideUp('normal', function()
+              {
+                // Remove it
+                $(this).remove();
+
+                // Cancel upload
+                uploader.cancel('file' + fileId);
+
+                // Remove file from the queue
+                uploader.removeFile('file' + fileId);
+              });
+
+              return false;
+            });
+
+          uploader.addListener('contentReady', function ()
+            {
+              // Allows multiple file selection in "Browse" dialog.
+              uploader.setAllowMultipleFiles(true);
+            });
+
+          uploader.addListener('fileSelect', function (event)
+            {
+              if ('fileList' in event && event.fileList != null)
+              {
+                // Make space for a thumbnail and progress bar
+                for (var i in event.fileList)
+                {
+                  var file = event.fileList[i];
+
+                  // Create an upload block for each upload
+                  var uploadItem = $('<div id="upload-' + file.id + '" class="multiFileUploadItem"></div>')
+                    // Insert element in uploads layer
+                    .appendTo('#uploads');
+
+                  if (-1 < Qubit.multiFileUpload.maxUploadSize && file.size > Qubit.multiFileUpload.maxUploadSize)
+                  {
+                    uploadItem
+                      // Add warning class
+                      .addClass('multiFileUploadWarning')
+
+                      // Set error message
+                      .html('<p><b>' + file.name + '</b><br />' + Qubit.multiFileUpload.i18nOversizedFile + '</p>');
+
+                    // Remove file from uploader queue
+                    uploader.removeFile(file.id);
+                  }
+                  else
+                  {
+                    // Render thumbnail box and progress bar
+                    $(uploadItem)
+                      .html('<div id="thumbnail-' + file.id + '" class="multiFileUploadThumbItem" style="width: ' + Qubit.multiFileUpload.thumbWidth + 'px">' +
+                              '<div class="uploadStatus"><span>' + Qubit.multiFileUpload.i18nWaiting + '</span></div>' +
+                              '<div class="progressBar" style="width: ' + Qubit.multiFileUpload.thumbWidth + 'px;">' +
+                                '<div style="height: 5px; width:' + Qubit.multiFileUpload.thumbWidth + 'px; background-color: #CCC;"></div>' +
+                              '</div>' +
+                            '</div>' +
+                            '<div class="multiFileUploadInfo">' +
+                              '<div class="multiFileUploadInfoFilename">' +
+                                '<span class="title">' + Qubit.multiFileUpload.i18nFilename + ':</span>' +
+                                '<span class="value">' + file.name + '</span>' +
+                              '</div>' +
+                              '<div class="multiFileUploadInfoFilesize">' +
+                                '<span class="title">' + Qubit.multiFileUpload.i18nFilesize + ':</span>' +
+                                '<span class="value">' + file.size + ' bytes</span>' +
+                              '</div>' +
+                              '<div class="multiFileUploadInfoActions">' +
+                                '<a href="#" class="uploadActionStart">' + Qubit.multiFileUpload.i18nStart + '</a>' +
+                                '<a href="#" class="uploadActionCancel" style="display: none;">' + Qubit.multiFileUpload.i18nCancel + '</a>' +
+                                '<a href="#" class="uploadActionDelete" style="display: none;">' + Qubit.multiFileUpload.i18nDelete + '</a>' +
+                              '</div>' +
+                            '</div>');
+                  }
+                }
+
+                // Preventing simultaneous uploads
+                uploader.setSimUploadLimit(1);
+
+                // Start upload!
+                uploader.uploadAll(Qubit.multiFileUpload.uploadResponsePath, 'POST', { informationObjectId: Qubit.multiFileUpload.informationObjectId });
+              }
+            });
+
+          uploader.addListener('uploadStart', function(event)
+            {
+              var uploadLayer = $('#upload-' + event.id);
+
+              $('div.uploadStatus', uploadLayer)
+                .html('<span>' + Qubit.multiFileUpload.i18nUploading + '</span>');
+
+              // Show cancel button
+              $('a.uploadActionCancel', uploadLayer).show();
+
+              // Hide start button
+              $('a.uploadActionStart', uploadLayer).hide();
+            });
+
+          uploader.addListener('uploadProgress', function (event)
+            {
+              var thumbnailLayer = $('#thumbnail-' + event.id);
+              var statusLayer = $('div.uploadStatus', thumbnailLayer);
+
+              var progress = Math.round(Qubit.multiFileUpload.thumbWidth * (event.bytesLoaded / event.bytesTotal));
+              var progressBar = '<div style="background-color: #fd3; height: 5px; width: ' + progress + 'px" />';
+
+              // Update progress bar
+              $('div.progressBar', thumbnailLayer).html(progressBar);
+
+              // Update status message
+              if (event.bytesLoaded != event.bytesTotal)
+              {
+                $('span', statusLayer).text(Qubit.multiFileUpload.i18nUploading + ' ' + Math.round(event.bytesLoaded / event.bytesTotal * 100) + '%');
+              }
+              else
+              {
+                $('span', statusLayer).text(Qubit.multiFileUpload.i18nLoadingPreview);
+              }
+            });
+
+          uploader.addListener('uploadComplete', function (event)
+            {
+              var thumbnailLayer = $('#thumbnail-' + event.id);
+              var infoLayer = thumbnailLayer.next();
+
+              var progressBar = '<div style="background-color: #0f0; height: 5px; width: ' + Qubit.multiFileUpload.thumbWidth + 'px" />';
+
+              // Update progress bar
+              $('div.progressBar', thumbnailLayer).html(progressBar);
+
+              // Remove cancel button
+              $('a.uploadActionCancel', infoLayer).hide();
+
+              // Show delete button
+              $('a.uploadActionDelete', infoLayer).show();
+            });
+
+          uploader.addListener('uploadCompleteData', function (event)
+            {
+              // Parse server response for each upload
+              var upload = $.parseJSON(event.data);
+
+              // Remove this file from the upload queue
+              uploader.removeFile(event.id);
+
+              // Layers for current upload
+              var thumbnailLayer = $('#thumbnail-' + event.id);
+
+              thumbnailLayer
+                // Render img tag
+                .html('<img src="' + Qubit.multiFileUpload.uploadTmpDir + '/' + upload.thumb + '"/>')
+
+                // Give thumbnail div a minimum height to prevent text from wrapping to next line
+                .attr('style', function(i) {
+                  return $(this).attr('style') + '; min-length; 100px;'; });
+
+              // Get the file index from the id passed by YUI
+              var fileId = parseHtmlId(event.id);
+
+              // Render final upload
+              $('<div class="form-item">' +
+                  '<label>' + Qubit.multiFileUpload.i18nInfoObjectTitle + '</label>' +
+                  '<input type="text" name="files[' + fileId + '][infoObjectTitle]" value="" style="width: 250px"/>' +
+                  '<input type="hidden" class="md5sum" value="' + upload.md5sum + '" />' +
+                  '<input type="hidden" class="filename" value="' + upload.name + '" />' +
+                  '<input type="hidden" name="files[' + fileId + '][name]" value="' + upload.name + '" />' +
+                  '<input type="hidden" name="files[' + fileId + '][md5sum]" value="' + upload.md5sum + '" />' +
+                  '<input type="hidden" name="files[' + fileId + '][tmpName]" value="' + upload.tmpName + '" />' +
+                  '<input type="hidden" name="files[' + fileId + '][thumb]" value="' + upload.thumb + '" />' +
+                '</div>')
+                .prependTo(thumbnailLayer.next());
+
+              renumerateUploads();
+              highlightRepeatedFiles();
+            });
+
+          uploader.addListener('uploadError', function(event)
+            {
+              var thumbnailLayer = $('#thumbnail-' + event.id);
+
+              // Add error message to progress bar
+              $('div.uploadStatus', thumbnailLayer)
+                .html('<a href="#" class="uploadActionRetry">' + Qubit.multiFileUpload.i18nUploadError + '</a>')
+
+              // Remove cancel button
+              thumbnailLayer.find('a.uploadActionCancel').remove();
+            });
+
+          uploader.addListener('rollOver', function ()
+            {
+              $('#selectLink').addClass('hover');
+            });
+
+          uploader.addListener('rollOut', function ()
+            {
+              $('#selectLink').removeClass('hover');
+            });
+
+          // uploader.addListener('cancel', function () { });
+          // uploader.addListener('click', function () { });
+          // uploader.addListener('mouseDown', function () { });
+          // uploader.addListener('mouseUp', function () { });
+        }
     }
+  })(jQuery);
 
-    // Start upload
-    uploader.setSimUploadLimit(5);
-    uploader.uploadAll(uploadResponsePath);
-  }
-}
-
-// Update progress bar
-function onUploadProgress(event)
-{
-  var fileHash = event["id"];
-  prog = Math.round(thumbWidth * (event["bytesLoaded"] / event["bytesTotal"]));
-  progbar = '<div style="background-color: #fd3; height: 5px; width: ' + prog + 'px"/>';
-
-  $('#thumbnail-' + fileHash + ' div.progress-bar').html(progbar);
-}
-
-// Upload complete
-function onUploadComplete(event)
-{
-  var fileHash = event["id"];
-  progbar = '<div style="background-color: #0f0; height: 5px; width: ' + thumbWidth + 'px"/>';
-  $('#thumbnail-' + fileHash + ' div.progress-bar').html(progbar);
-}
-
-function onUploadStart(event)
-{
-}
-
-function onUploadError(event)
-{
-}
-
-function onUploadCancel(event)
-{
-}
-
-// This fires after successful upload
-function onUploadResponse(event)
-{
-  var uploadFiles = eval('(' + event['data'] + ')');
-  var inputTag, imageTag;
-
-  for (i in uploadFiles)
-  {
-    // Ignore this event if upload was cancel
-    if (!$('div#upload-' + event['id']).length)
-    {
-      break;
-    }
-
-    if (uploadFiles[i].error)
-    {
-      var warningMessage = '<ul class="validation_error"><li>' + uploadFiles[i].error + '</li></ul>';
-      $('#upload-' + event['id']).html(warningMessage).addClass('warning');
-      break;
-    }
-
-    var thumbnail = '<img src="' + uploadTmpDir + '/' + uploadFiles[i].thumb + '"/>';
-    $('#thumbnail-' + event['id']).html(thumbnail);
-
-    // Give thumbnail div a minimum height to prevent text from wrapping to next line
-    $('#thumbnail-' + event['id']).attr('style', function(i) {
-      return $(this).attr('style') + '; min-height: 100px';
-    });
-
-    if (!uploadFiles[i].canThumbnail)
-    {
-      var thumbDiv = $('#thumbnail-' + event['id']);
-      var thumbWidth = thumbDiv.find("img").width();
-
-      $(thumbDiv).css("background-color", "White");
-
-      if (thumbWidth)
-      {
-        $(thumbDiv).width(thumbWidth);
-      }
-    }
-
-    // Get the file index from the id passed by YUI
-    var fileIndex = event['id'].match(/([0-9]+)$/).shift();
-    if (null == fileIndex || isNaN(parseInt(fileIndex)))
-    {
-      fileIndex = i;
-    }
-
-    // Write upload file data
-    var hiddenFields = '<input type="hidden" name="files[' + fileIndex + '][name]" value="' + uploadFiles[i].name + '" />';
-    hiddenFields += '<input type="hidden" name=files[' + fileIndex + '][md5sum]" value="' + uploadFiles[i].md5sum + '" />';
-    hiddenFields += '<input type="hidden" name="files[' + fileIndex + '][tmpName]" value="' + uploadFiles[i].tmpName + '" />';
-    hiddenFields += '<input type="hidden" name="files[' + fileIndex + '][thumb]" value="' + uploadFiles[i].thumb + '" />';
-    $('#uploadForm').append(hiddenFields);
-
-    var uploadData = '<div class="form-item"><label>' + i18nInfoObjectTitle + '</label><input type="text" name="files[' + fileIndex + '][infoObjectTitle]" value="" style="width: 250px"/></div>';
-    uploadData += '<div class="form-item"><label>' + i18nFilename + '</label>' + uploadFiles[i].name + '</div>';
-    uploadData += '<div class="form-item"><label>' + i18nFilesize + '</label>' + uploadFiles[i].size + '</div>';
-    uploadData += '<input type="hidden" class="md5sum" value="' + uploadFiles[i].md5sum + '" />';
-    uploadData += '<input type="hidden" class="filename" value="' + uploadFiles[i].name + '" />';
-
-    // Show warning message if exists
-    uploadData += '<div class="toolbar" style="text-align: right;">';
-
-    if (uploadFiles[i].warning)
-    {
-      uploadData += '<span style="color: Red;">' + uploadFiles[i].warning + '</span>&nbsp;|&nbsp;';
-    }
-
-    uploadData += '<a href="#" onclick="deleteUpload(\'' + event['id'] + '\'); return false;">' + i18nDelete + '</a>';
-    uploadData += '</div>';
-
-    $('#upload-' + event['id']).append(uploadData).addClass('ready');
-
-    hilightRepeatedFiles();
-    renumerateUploads();
-  }
-
-  uploader.removeFile(event['id']);
-
-  //Debugging data
-  //document.getElementById('uploads').innerHTML += event['data'];
-}
-
-function replacePlaceHolder(templateStr, index)
-{
-  var fileName = null;
-  index = String(index);
-
-  var matches = templateStr.match(/\%(d+)\%/);
-
-  if (null != matches && 0 < matches[1].length)
-  {
-    while (matches[1].length > index.length)
-    {
-      index = '0' + index;
-    }
-
-    var fileName = templateStr.replace('%' + matches[1] + '%', index);
-  }
-
-  if (null == fileName || templateStr == fileName)
-  {
-    fileName = templateStr + ' ' + index;
-  }
-
-  return fileName;
-}
-
-function renumerateUploads()
-{
-  $('div.multiFileUpload:not(.warning)').each(function(i) {
-    var newValue = replacePlaceHolder(document.getElementById('uploadForm')['title'].value, i + 1);
-    $(this).find('input[type=text]').val(newValue); });
-}
-
-function hilightRepeatedFiles(force)
-{
-  // Count of selected files by YUI browser
-  var fileCount = 0;
-  for (var i in fileList)
-  {
-    fileCount++;
-  }
-
-  // Count of uploaded files successfully
-  var fileReadyCount = $('div.multiFileUpload.ready').length;
-
-   // Count of files which couldn't be uploaded
-  var fileWarningCount = $('div.multiFileUpload.warning').length;
-
-  // If there is any upload in progress stop function
-  if (!force && (fileReadyCount < fileCount - fileWarningCount))
-  {
-    return;
-  }
-
-  var memMd5 = Array();
-
-  // Iterates over all div.multiFileUploads hilighting ones with same md5sum (ignore first ocurrence)
-  $('div.multiFileUpload:not(.warning)').each(function() {
-    var md5sum = $(this).find("input.md5sum").val();
-
-    // If file already exists
-    if (-1 < jQuery.inArray(md5sum, memMd5))
-    {
-      var fileName = $('input.md5sum[value=' + md5sum + ']:first').parent().find("input.filename").val();
-      $(this).find('ul.validation_error').remove();
-      $(this).addClass('repeated').prepend('<ul class=\"validation_error\"><li>Warning: duplicate of ' + fileName + '</li></ul>');
-    }
-    else
-    {
-      $(this).removeClass('repeated').find('ul.validation_error').remove();
-      memMd5[memMd5.length] = md5sum;
-    }
-  });
-}
-
-function cancelUpload(id)
-{
-  uploader.cancel(id);
-  $('div#upload-' + id).slideUp('fast', function()
-    {
-      $(this).remove();
-    });
-}
-
-function deleteUpload(id)
-{
-  // Get the file index from the id passed by YUI
-  var fileIndex = id.match(/([0-9]+)$/).shift();
-  if (null == fileIndex || isNaN(parseInt(fileIndex)))
-  {
-    return;
-  }
-
-  $('div#upload-file' + fileIndex).slideUp('fast', function() {
-    // Remove the HTML block
-    $(this).remove();
-
-    // Remove hidden fields
-    $('input[type=hidden][name*=\[' + fileIndex + '\]]').remove();
-
-    hilightRepeatedFiles(1);
-    renumerateUploads();
-  });
-
-  // TODO: Ajax call to remove temporary file
-}

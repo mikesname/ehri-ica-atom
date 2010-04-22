@@ -21,10 +21,20 @@ class UserListAction extends sfAction
 {
   public function execute($request)
   {
-    // Set current page
-    $this->page = $this->getRequestParameter('page', 1);
-    $options['page'] = $this->page;
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
 
-    $this->users = QubitUser::getList($options);
+    $criteria = new Criteria;
+    $criteria->add(QubitUser::ID, null, Criteria::ISNOTNULL);
+    $criteria->addAscendingOrderByColumn(QubitUser::USERNAME);
+
+    $this->pager = new QubitPager('QubitUser');
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->page);
+
+    $this->users = $this->pager->getResults();
   }
 }

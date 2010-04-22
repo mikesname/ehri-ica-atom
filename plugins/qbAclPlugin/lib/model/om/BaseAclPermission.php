@@ -11,7 +11,7 @@ abstract class BaseAclPermission implements ArrayAccess
     USER_ID = 'q_acl_permission.USER_ID',
     GROUP_ID = 'q_acl_permission.GROUP_ID',
     OBJECT_ID = 'q_acl_permission.OBJECT_ID',
-    ACTION_ID = 'q_acl_permission.ACTION_ID',
+    ACTION = 'q_acl_permission.ACTION',
     GRANT_DENY = 'q_acl_permission.GRANT_DENY',
     CONDITIONAL = 'q_acl_permission.CONDITIONAL',
     CONSTANTS = 'q_acl_permission.CONSTANTS',
@@ -25,7 +25,7 @@ abstract class BaseAclPermission implements ArrayAccess
     $criteria->addSelectColumn(QubitAclPermission::USER_ID);
     $criteria->addSelectColumn(QubitAclPermission::GROUP_ID);
     $criteria->addSelectColumn(QubitAclPermission::OBJECT_ID);
-    $criteria->addSelectColumn(QubitAclPermission::ACTION_ID);
+    $criteria->addSelectColumn(QubitAclPermission::ACTION);
     $criteria->addSelectColumn(QubitAclPermission::GRANT_DENY);
     $criteria->addSelectColumn(QubitAclPermission::CONDITIONAL);
     $criteria->addSelectColumn(QubitAclPermission::CONSTANTS);
@@ -398,9 +398,7 @@ abstract class BaseAclPermission implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
@@ -506,13 +504,6 @@ abstract class BaseAclPermission implements ArrayAccess
   public static function addJoinobjectCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID);
-
-    return $criteria;
-  }
-
-  public static function addJoinactionCriteria(Criteria $criteria)
-  {
-    $criteria->addJoin(QubitAclPermission::ACTION_ID, QubitAclAction::ID);
 
     return $criteria;
   }

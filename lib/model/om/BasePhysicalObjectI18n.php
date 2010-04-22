@@ -11,8 +11,7 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     DESCRIPTION = 'q_physical_object_i18n.DESCRIPTION',
     LOCATION = 'q_physical_object_i18n.LOCATION',
     ID = 'q_physical_object_i18n.ID',
-    CULTURE = 'q_physical_object_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_physical_object_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_physical_object_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -21,7 +20,6 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::LOCATION);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::ID);
     $criteria->addSelectColumn(QubitPhysicalObjectI18n::CULTURE);
-    $criteria->addSelectColumn(QubitPhysicalObjectI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -391,9 +389,7 @@ abstract class BasePhysicalObjectI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

@@ -1,16 +1,13 @@
 [?php
 
-require_once(sfConfig::get('sf_lib_dir').'/filter/base/BaseFormFilterPropel.class.php');
-
 /**
  * <?php echo $this->table->getClassname() ?> filter form base class.
  *
  * @package    ##PROJECT_NAME##
  * @subpackage filter
  * @author     ##AUTHOR_NAME##
- * @version    SVN: $Id: sfPropelFormFilterGeneratedTemplate.php 16976 2009-04-04 12:47:44Z fabien $
  */
-class Base<?php echo $this->table->getClassname() ?>FormFilter extends BaseFormFilterPropel
+abstract class Base<?php echo $this->table->getClassname() ?>FormFilter extends BaseFormFilterPropel
 {
   public function setup()
   {

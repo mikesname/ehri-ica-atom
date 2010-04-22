@@ -29,7 +29,7 @@ class sfDrupalWidgetFormSchemaFormatter extends sfWidgetFormSchemaFormatter
     $validatorSchema = $this->form->getValidatorSchema();
     if (isset($validatorSchema[$name]) && $validatorSchema[$name]->getOption('required'))
     {
-      $label .= '<span class="form-required" title="This field is required.">*</span>';
+      $label .= ' <span class="form-required" title="This field is required.">*</span>';
     }
 
     return $label;

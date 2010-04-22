@@ -1,3 +1,6 @@
+# You can find more information about this file on the symfony website:
+# http://www.symfony-project.org/reference/1_4/en/10-Routing
+
 homepage:
   url:   /
   param:
@@ -5,295 +8,307 @@ homepage:
     action: static
     permalink: homepage
 
-permalink:
-  url:   /page/:permalink
+indexDc:
+  url: /:id;dc
+  class: QubitRoute
   param:
-    module: staticpage
-    action: static
-
-default_index:
-  url:   /:module
-  param:
+    module: sfDcPlugin
     action: index
+    informationobject_template: dc
 
 createDc:
-  url: /:module/create/dc
+  url: /;create/dc
   param:
-    action: editDc
+    module: sfDcPlugin
+    action: edit
+    informationobject_template: dc
+
+duplicateDc:
+  url: /;duplicate/dc
+  param:
+    module: sfDcPlugin
+    action: edit
     informationobject_template: dc
 
 editDc:
-  url: /:module/edit/dc/:id
+  url: /:id;edit/dc
+  class: QubitRoute
   param:
-    action: editDc
+    module: sfDcPlugin
+    action: edit
     informationobject_template: dc
 
-showDc:
-  url: /:module/show/dc/:id
+indexEad:
+  url: /:id;ead
+  class: QubitRoute
   param:
-    action: showDc
-    informationobject_template: dc
-
-showEad:
-  url: /:module/show/ead/:id
-  param:
-    action: showEad
+    module: sfEadPlugin
+    action: index
     informationobject_template: ead
 
-createIsaar:
-  url: /:module/create/isaar
+indexIsaar:
+  url: /:id;isaar
+  class: QubitRoute
   param:
+    module: actor
+    action: indexIsaar
+    actor_template: isaar
+
+createIsaar:
+  url: /;create/isaar
+  param:
+    module: actor
     action: editIsaar
     actor_template: isaar
 
 editIsaar:
-  url: /:module/edit/isaar/:id
+  url: /:id;edit/isaar
+  class: QubitRoute
   param:
+    module: actor
     action: editIsaar
     actor_template: isaar
 
-showIsaar:
-  url: /:module/show/isaar/:id
+indexIsad:
+  url: /:id;isad
+  class: QubitRoute
   param:
-    action: showIsaar
-    actor_template: isaar
+    module: sfIsadPlugin
+    action: index
+    informationobject_template: isad
 
 createIsad:
-  url: /:module/create/isad
+  url: /;create/isad
   param:
-    action: editIsad
+    module: sfIsadPlugin
+    action: edit
+    informationobject_template: isad
+
+duplicateIsad:
+  url: /;duplicate/isad
+  param:
+    module: sfIsadPlugin
+    action: edit
     informationobject_template: isad
 
 editIsad:
-  url: /:module/edit/isad/:id
+  url: /:id;edit/isad
+  class: QubitRoute
   param:
-    action: editIsad
+    module: sfIsadPlugin
+    action: edit
     informationobject_template: isad
 
-showIsad:
-  url: /:module/show/isad/:id
+indexIsdf:
+  url: /:id;isdf
+  class: QubitRoute
   param:
-    action: showIsad
-    informationobject_template: isad
+    module: function
+    action: index
+
+indexIsdiah:
+  url: /:id;isdiah
+  class: QubitRoute
+  param:
+    module: repository
+    action: indexIsdiah
+    repository_template: isdiah
 
 createIsdiah:
-  url: /:module/create/isdiah
+  url: /;create/isdiah
   param:
+    module: repository
     action: editIsdiah
     repository_template: isdiah
 
 editIsdiah:
-  url: /:module/edit/isdiah/:id
+  url: /:id;edit/isdiah
+  class: QubitRoute
   param:
+    module: repository
     action: editIsdiah
     repository_template: isdiah
 
-showIsdiah:
-  url: /:module/show/isdiah/:id
+indexMods:
+  url: /:id;mods
+  class: QubitRoute
   param:
-    action: showIsdiah
-    repository_template: isdiah
+    module: sfModsPlugin
+    action: index
+    informationobject_template: mods
 
 createMods:
-  url: /:module/create/mods
+  url: /;create/mods
   param:
-    action: editMods
+    module: sfModsPlugin
+    action: edit
+    informationobject_template: mods
+
+duplicateMods:
+  url: /;duplicate/mods
+  param:
+    module: sfModsPlugin
+    action: edit
     informationobject_template: mods
 
 editMods:
-  url: /:module/edit/mods/:id
+  url: /:id;edit/mods
+  class: QubitRoute
   param:
-    action: editMods
+    module: sfModsPlugin
+    action: edit
     informationobject_template: mods
 
-showMods:
-  url: /:module/show/mods/:id
+indexRad:
+  url: /:id;rad
+  class: QubitRoute
   param:
-    action: showMods
-    informationobject_template: mods
+    module: sfRadPlugin
+    action: index
+    informationobject_template: rad
 
 createRad:
-  url: /:module/create/rad
+  url: /;create/rad
   param:
-    action: editRad
+    module: sfRadPlugin
+    action: edit
+    informationobject_template: rad
+
+duplicateRad:
+  url: /;duplicate/rad
+  param:
+    module: sfRadPlugin
+    action: edit
     informationobject_template: rad
 
 editRad:
-  url: /:module/edit/rad/:id
+  url: /:id;edit/rad
+  class: QubitRoute
   param:
-    action: editRad
-    informationobject_template: rad
-
-showRad:
-  url: /:module/show/rad/:id
-  param:
-    action: showRad
+    module: sfRadPlugin
+    action: edit
     informationobject_template: rad
 
 actorCreate:
-  url: /actor/create/:actor_template
+  url: /;create/:actor_template
   param:
     module: actor
     action: create
-
-actorDelete:
-  url: /actor/delete/:id
-  param:
-    module: actor
-    action: delete
 
 actorEdit:
-  url: /actor/edit/:actor_template/:id
+  url: /:id;edit/:actor_template
+  class: QubitRoute
   param:
     module: actor
-    action: edit
-
-actorShow:
-  url: /actor/show/:actor_template/:id
-  param:
-    module: actor
-    action: show
-
-digitalObjectEdit:
-  url: /digitalobject/edit/:id
-  param:
-    module: digitalobject
-    action: edit
-
-createDigitalObject:
-  url: /digitalobject/create
-  param:
-    module: digitalobject
-    action: edit
-
-digitalObjectCreate:
-  url: /digitalobject/create
-  param:
-    module: digitalobject
-    action: create
-
-informationObjectDelete:
-  url: /informationobject/delete/:id
-  param:
-    module: informationobject
-    action: delete
-
-informationObjectEdit:
-  url: /informationobject/edit/:informationobject_template/:id
-  param:
-    module: informationobject
-    action: edit
-
-informationObjectEditPhysicalObjects:
-  url: /informationobject/editPhysicalObjects/:id
-  param:
-    module: informationobject
-    action: editPhysicalObjects
-
-informationObjectList:
-  url: /informationobject/list/:id
-  param:
-    module: informationobject
-    action: list
-    id: <?php echo QubitInformationObject::ROOT_ID ?>
-
-informationObjectMove:
-  url: /informationobject/move/:id
-  param:
-    module: informationobject
-    action: move
-
-informationObjectShow:
-  url: /informationobject/show/:informationobject_template/:id
-  param:
-    module: informationobject
-    action: show
-
-physicalObjectDelete:
-  url: /physicalobject/delete/:id
-  param:
-    module: physicalobject
-    action: delete
-
-physicalObjectEdit:
-  url: /physicalobject/edit/:id
-  param:
-    module: physicalobject
     action: edit
 
 repositoryCreate:
-  url: /repository/create/:repository_template
+  url: /;create/:repository_template
   param:
     module: repository
     action: create
 
-repositoryDelete:
-  url: /repository/delete/:id
-  param:
-    module: repository
-    action: delete
-
 repositoryEdit:
-  url: /repository/edit/:repository_template/:id
+  url: /:id;edit/:repository_template
+  class: QubitRoute
   param:
     module: repository
     action: edit
-
-repositoryShow:
-  url: /repository/show/:repository_template/:id
-  param:
-    module: repository
-    action: show
-
-termEdit:
-  url: /term/edit/:id
-  param:
-    module: term
-    action: edit
-
-termCreate:
-  url: /term/create/*
-  param:
-    module: term
-    action: edit
-
-termMove:
-  url: /term/move/:id
-  param:
-    module: term
-    action: move
 
 oai_harvester_harvest_all_sets:
-  url: /oai/harvest/:type/:harvestId/*
+  url: /;oai/harvest/:type/:harvestId/*
   param:
     module: oai
     action: harvesterHarvest
     harvestId: { pattern: \d+ }
 
 oai_harvester_delete:
-  url: /oai/deleteRepository/:repositoryId/*
+  url: /;oai/deleteRepository/:repositoryId/*
   param:
     module: oai
     action: harvesterDelete
     repositoryId: { pattern: \d+ }
 
 oai_requests:
-  url: /oai/request
+  url: /;oai/request
   param:
     module: oai
     action: oai
-    
-userEdit:
-  url: /user/edit/:id
+
+informationObjectIndex:
+  url: /:id;:informationobject_template
+  class: QubitRoute
   param:
-    module: user
+    module: informationobject
+    action: index
+    informationobject_template: { pattern: 'dc|ead|isad|mods|rad' }
+
+informationObject/create:
+  url: /;create/:informationobject_template
+  param:
+    module: informationobject
+    action: create
+
+informationObject/duplicate:
+  url: /;duplicate/:informationobject_template
+  param:
+    module: informationobject
+    action: duplicate
+
+informationObjectEdit:
+  url: /:id;edit/:informationobject_template
+  class: QubitRoute
+  param:
+    module: informationobject
     action: edit
 
-userCreate:
-  url: /user/create
+informationObjectList:
+  url: /;informationobject/list
+  class: QubitRoute
   param:
-    module: user
+    module: informationobject
+    action: list
+    id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+
+id;default_index:
+  url:   /:id;:module
+  class: QubitRoute
+  param:
+    action: index
+
+# QubitRoute only unsets $params[0]
+default_index:
+  url:   /;:module
+  class: QubitRoute
+  param:
+    action: index
+
+# After default_index to avoid matching /;foo
+permalink:
+  url: /:permalink
+  param:
+    module: staticpage
+    action: static
+
+id;default:
+  url: /:id;:module/:action
+  class: QubitRoute
+  param:
+    id: { pattern: '[^;]+' }
+
+# After id;default to avoid matching array($object, 'module' => 'foo', 'action', => 'edit')
+edit:
+  url: /;:module/create
+  param:
     action: edit
 
+# After edit to avoid matching /;foo/create
+create:
+  url: /;:module/create
+  param:
+    action: create
+
+# QubitRoute only unsets $params[0]
 default:
-  url:   /:module/:action/*
+  url:   /;:module/:action/*
+  class: QubitRoute

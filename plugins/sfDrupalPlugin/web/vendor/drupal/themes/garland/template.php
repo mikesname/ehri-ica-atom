@@ -1,5 +1,5 @@
 <?php
-// $Id: template.php,v 1.20 2009/01/20 03:18:41 webchick Exp $
+// $Id: template.php,v 1.36 2010/01/08 07:36:53 webchick Exp $
 
 /**
  * Return a themed breadcrumb trail.
@@ -8,22 +8,48 @@
  *   An array containing the breadcrumb links.
  * @return a string containing the breadcrumb output.
  */
-function garland_breadcrumb($breadcrumb) {
+function garland_breadcrumb($variables) {
+  $breadcrumb = $variables['breadcrumb'];
+
   if (!empty($breadcrumb)) {
-    return '<div class="breadcrumb">' . implode(' › ', $breadcrumb) . '</div>';
+    // Provide a navigational heading to give context for breadcrumb links to
+    // screen-reader users. Make the heading invisible with .element-invisible.
+    $output = '<h2 class="element-invisible">' . t('You are here') . '</h2>';
+
+    $output .= '<div class="breadcrumb">' . implode(' › ', $breadcrumb) . '</div>';
+    return $output;
   }
 }
 
 /**
- * Allow themable wrapping of all comments.
+ * Override or insert variables into the maintenance page template.
  */
-function garland_comment_wrapper($content, $node) {
-  if (!$content || $node->type == 'forum') {
-    return '<div id="comments">' . $content . '</div>';
+function garland_preprocess_maintenance_page(&$vars) {
+  // Toggle fixed or fluid width.
+  if (theme_get_setting('garland_width') == 'fluid') {
+    $vars['classes_array'][] = 'fluid-width';
   }
-  else {
-    return '<div id="comments"><h2 class="comments">' . t('Comments') . '</h2>' . $content . '</div>';
+}
+
+/**
+ * Override or insert variables into the html template.
+ */
+function garland_preprocess_html(&$vars) {
+  // Toggle fixed or fluid width.
+  if (theme_get_setting('garland_width') == 'fluid') {
+    $vars['classes_array'][] = 'fluid-width';
   }
+}
+
+/**
+ * Override or insert variables into the html template.
+ */
+function garland_process_html(&$vars) {
+  // Hook into color.module
+  if (module_exists('color')) {
+    _color_html_alter($vars);
+  }
+  $vars['styles'] .= "\n<!--[if lt IE 7]>\n" . garland_get_ie_styles() . "<![endif]-->\n";
 }
 
 /**
@@ -31,11 +57,40 @@ function garland_comment_wrapper($content, $node) {
  */
 function garland_preprocess_page(&$vars) {
   $vars['tabs2'] = menu_secondary_local_tasks();
-  $vars['primary_nav'] = isset($vars['main_menu']) ? theme('links', $vars['main_menu'], array('class' => 'links main-menu')) : FALSE;
-  $vars['secondary_nav'] = isset($vars['secondary_menu']) ? theme('links', $vars['secondary_menu'], array('class' => 'links secondary-menu')) : FALSE;
-  $vars['ie_styles'] = garland_get_ie_styles();
+  if (isset($vars['main_menu'])) {
+    $vars['primary_nav'] = theme('links__system_main_menu', array(
+      'links' => $vars['main_menu'],
+      'attributes' => array(
+        'class' => array('links', 'main-menu'),
+      ),
+      'heading' => array(
+        'text' => t('Main menu'),
+        'level' => 'h2',
+        'class' => array('element-invisible'),
+      )
+    ));
+  }
+  else {
+    $vars['primary_nav'] = FALSE;
+  }
+  if (isset($vars['secondary_menu'])) {
+    $vars['secondary_nav'] = theme('links__system_secondary_menu', array(
+      'links' => $vars['secondary_menu'],
+      'attributes' => array(
+        'class' => array('links', 'secondary-menu'),
+      ),
+      'heading' => array(
+        'text' => t('Secondary menu'),
+        'level' => 'h2',
+        'class' => array('element-invisible'),
+      )
+    ));
+  }
+  else {
+    $vars['secondary_nav'] = FALSE;
+  }
 
-  // Prepare header
+  // Prepare header.
   $site_fields = array();
   if (!empty($vars['site_name'])) {
     $site_fields[] = check_plain($vars['site_name']);
@@ -45,13 +100,32 @@ function garland_preprocess_page(&$vars) {
   }
   $vars['site_title'] = implode(' ', $site_fields);
   if (!empty($site_fields)) {
-    $site_fields[0] = '<span>'. $site_fields[0] .'</span>';
+    $site_fields[0] = '<span>' . $site_fields[0] . '</span>';
   }
   $vars['site_html'] = implode(' ', $site_fields);
+  
+  // Set a variable for the site name title and logo alt attributes text.
+  $slogan_text = filter_xss_admin(variable_get('site_slogan', ''));
+  $site_name_text = filter_xss_admin(variable_get('site_name', 'Drupal'));
+  $vars['site_name_and_slogan'] = $site_name_text . ' ' . $slogan_text;
+}
 
+/**
+ * Override or insert variables into the page template.
+ */
+function garland_process_page(&$vars) {
   // Hook into color.module
   if (module_exists('color')) {
     _color_page_alter($vars);
+  }
+}
+
+/**
+ * Override or insert variables into the region template.
+ */
+function garland_preprocess_region(&$vars) {
+  if ($vars['region'] == 'header') {
+    $vars['classes_array'][] = 'clearfix';
   }
 }
 
@@ -64,36 +138,14 @@ function garland_menu_local_tasks() {
 }
 
 /**
- * Format the "Submitted by username on date/time" for each comment.
- */
-function phptemplate_comment_submitted($comment) {
-  return t('!datetime — !username',
-    array(
-      '!username' => theme('username', $comment),
-      '!datetime' => format_date($comment->timestamp)
-    ));
-}
-
-/**
- * Format the "Submitted by username on date/time" for each node.
- */
-function garland_node_submitted($node) {
-  return t('!datetime — !username',
-    array(
-      '!username' => theme('username', $node),
-      '!datetime' => format_date($node->created),
-    ));
-}
-
-/**
  * Generates IE CSS links for LTR and RTL languages.
  */
 function garland_get_ie_styles() {
   global $language;
 
-  $ie_styles = '<link type="text/css" rel="stylesheet" media="all" href="' . base_path() . path_to_theme() . '/fix-ie.css" />'. "\n";
+  $ie_styles = '<link type="text/css" rel="stylesheet" media="all" href="' . file_create_url(path_to_theme() . '/fix-ie.css') . '" />' . "\n";
   if ($language->direction == LANGUAGE_RTL) {
-    $ie_styles .= '      <style type="text/css" media="all">@import "' . base_path() . path_to_theme() . '/fix-ie-rtl.css";</style>'. "\n";
+    $ie_styles .= '      <style type="text/css" media="all">@import "' . file_create_url(path_to_theme() . '/fix-ie-rtl.css') . '";</style>' . "\n";
   }
 
   return $ie_styles;

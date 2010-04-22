@@ -25,7 +25,6 @@
  */
 class QubitRepository extends BaseRepository
 {
-
   /**
    * Save new link to a term.
    *
@@ -135,29 +134,6 @@ class QubitRepository extends BaseRepository
   }
 
   /**
-   * Get information objects in this repository.
-   *
-   * @return QubitQuery collection of QubitInformationObject objects
-   */
-  public function getHoldingsPager($options = array())
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitInformationObject::REPOSITORY_ID, $this->getId());
-    $criteria->addAscendingOrderByColumn('title');
-
-    // Sort holdings alphabetically (w/ fallback)
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
-
-    // Page results
-    $page = (isset($options['page'])) ? $options['page'] : 1;
-    $pager = new QubitPager('QubitInformationObject');
-    $pager->setCriteria($criteria);
-    $pager->setPage($page);
-
-    return $pager;
-  }
-
-  /**
    * Only find repository objects, not other actor types
    *
    * @param Criteria $criteria current search criteria
@@ -184,88 +160,6 @@ class QubitRepository extends BaseRepository
   }
 
   /**
-   * Get a list of repositories.
-   *
-   * @param string $sort sort order (optional)
-   * @param string $countryCode filter by two-letter country code (optional)
-   * @return QubitQuery collection of QubitRepository objects
-   *
-   * @todo implement fallback
-   */
-  public static function getList($options=array())
-  {
-    $criteria = new Criteria;
-
-    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
-    $sort = (isset($options['sort'])) ? $options['sort'] : 'nameUp';
-    $page = (isset($options['page'])) ? $options['page'] : 1;
-
-    if (isset($options['countryCode']))
-    {
-      $criteria = self::addCountryCodeCriteria($criteria, $options['countryCode']);
-    }
-
-    //Establish sort order
-    switch($sort)
-    {
-      case 'typeDown' :
-        $fallbackTable = 'QubitTerm';
-        $criteria->addJoin(QubitRepository::TYPE_ID, QubitTerm::ID, Criteria::INNER_JOIN);
-        $criteria->addDescendingOrderByColumn('name');
-        break;
-      case 'typeUp' :
-        $fallbackTable = 'QubitTerm';
-        $criteria->addJoin(QubitRepository::TYPE_ID, QubitTerm::ID, Criteria::INNER_JOIN);
-        $criteria->addAscendingOrderByColumn('name');
-        break;
-
-      /*
-       * Can't sort on country "name" currently because it's a lookup value
-       * on country *code* (key) with the *name* being returned from
-       * symfony's sfCultureInfo data files.
-       *
-      case 'countryDown' :
-        $fallbackTable = 'QubitContactInformation';
-        $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID.' AND '.QubitContactInformation::PRIMARY_CONTACT.'=1', Criteria::LEFT_JOIN);
-        $criteria->addDescendingOrderByColumn('country_code');
-        break;
-      case 'countryUp' :
-        $fallbackTable = 'QubitContactInformation';
-        $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('country_code');
-        break;
-      */
-      case 'nameDown' :
-        $fallbackTable = 'QubitActor';
-        $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::LEFT_JOIN);
-        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
-        break;
-      case 'nameUp' :
-      default :
-        $fallbackTable = 'QubitActor';
-        $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
-    }
-
-    // Do source culture fallback
-    if ($cultureFallback === true)
-    {
-      // Return a QubitQuery object of class-type QubitInformationObject
-      $options = array('returnClass'=>'QubitRepository');
-      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
-    }
-    // TODO: add straight joins without fallback
-
-    // Page results
-    $pager = new QubitPager('QubitRepository');
-    $pager->setCriteria($criteria);
-    $pager->setPage($page);
-    $pager->init();
-
-    return $pager;
-  }
-
-  /**
    * Return an options_for_select array
    *
    * @param mixed $default current selected value for select list
@@ -286,34 +180,6 @@ class QubitRepository extends BaseRepository
     }
 
     return options_for_select($selectOptions, $default, $options);
-  }
-
-  /**
-   * Get related parallel forms of name
-   *
-   * @return QubitQuery list of parallel names
-   */
-  public function getParallelFormsOfName()
-  {
-    $c = new Criteria;
-    $c->add(QubitActorName::TYPE_ID, QubitTerm::PARALLEL_FORM_OF_NAME_ID, Criteria::EQUAL);
-    $c->addAnd(QubitActorName::ACTOR_ID, $this->getId(), Criteria::EQUAL);
-
-    return QubitActorName::get($c);
-  }
-
-  /**
-   * Get related other forms of name
-   *
-   * @return QubitQuery list of other names
-   */
-  public function getOtherFormsOfName()
-  {
-    $c = new Criteria;
-    $c->add(QubitActorName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID, Criteria::EQUAL);
-    $c->addAnd(QubitActorName::ACTOR_ID, $this->getId(), Criteria::EQUAL);
-
-    return QubitActorName::get($c);
   }
 
   /**
@@ -353,5 +219,66 @@ class QubitRepository extends BaseRepository
       $newTerm->save();
       $this->setTypeId($newTerm->getId());
     }
+  }
+
+  /**
+   * Get a list of repositories.
+   *
+   * @param string $sort sort order (optional)
+   * @param string $countryCode filter by two-letter country code (optional)
+   * @return QubitQuery collection of QubitRepository objects
+   *
+   * @todo implement fallback
+   */
+  public static function getList($options=array())
+  {
+    $criteria = new Criteria;
+
+    $cultureFallback = (isset($options['cultureFallback'])) ? $options['cultureFallback'] : false;
+    $sort = (isset($options['sort'])) ? $options['sort'] : 'nameUp';
+    $page = (isset($options['page'])) ? $options['page'] : 1;
+
+    if (isset($options['countryCode']))
+    {
+      $criteria = self::addCountryCodeCriteria($criteria, $options['countryCode']);
+    }
+
+    //Establish sort order
+    switch($sort)
+    {
+      case 'updatedUp':
+        $criteria->addJoin(QubitRepository::ID, QubitObject::ID, Criteria::LEFT_JOIN);
+        $criteria->addAscendingOrderByColumn('updated_at');
+      case 'updatedDown':
+        $criteria->addJoin(QubitRepository::ID, QubitObject::ID, Criteria::LEFT_JOIN);
+        $criteria->addDescendingOrderByColumn('updated_at');
+      case 'nameDown' :
+        $fallbackTable = 'QubitActor';
+        $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::LEFT_JOIN);
+        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
+        break;
+      case 'nameUp' :
+      default :
+        $fallbackTable = 'QubitActor';
+        $criteria->addJoin(QubitRepository::ID, QubitActor::ID, Criteria::LEFT_JOIN);
+        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+    }
+
+    // Do source culture fallback
+    if ($cultureFallback === true)
+    {
+      // Return a QubitQuery object of class-type QubitInformationObject
+      $options = array('returnClass'=>'QubitRepository');
+      $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, $options);
+    }
+    // TODO: add straight joins without fallback
+
+    // Page results
+    $pager = new QubitPager('QubitRepository');
+    $pager->setCriteria($criteria);
+    $pager->setPage($page);
+    $pager->init();
+
+    return $pager;
   }
 }

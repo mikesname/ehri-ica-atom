@@ -1,6 +1,6 @@
 <?php
 
-include(dirname(__FILE__).'/../../bootstrap/functional.php');
+include dirname(__FILE__).'/../../bootstrap/functional.php';
 
 $browser = new sfTestFunctional(new sfBrowser);
 
@@ -10,7 +10,7 @@ $informationObject->title = 'testtitle';
 $informationObject->save();
 
 $browser
-  ->get('/search/search?query=testtitle')
+  ->get(';search?query=testtitle')
 
   ->with('response')->begin()
     ->checkElement('body', '/testtitle/')
@@ -20,7 +20,7 @@ $informationObject->title = 'TesTTItLe';
 $informationObject->save();
 
 $browser
-  ->get('/search/search?query=TEsTtiTLE')
+  ->get(';search?query=TEsTtiTLE')
 
   ->with('response')->begin()
     ->checkElement('body', '/TesTTItLe/')
@@ -31,7 +31,7 @@ $informationObject->title = 'testtitlé';
 $informationObject->save();
 
 $browser
-  ->get('/search/search?query=testtitle')
+  ->get(';search?query=testtitle')
 
   ->with('response')->begin()
     ->checkElement('body', '/testtitlé/')
@@ -42,7 +42,7 @@ $informationObject->title = 'tEStTitLÉ';
 $informationObject->save();
 
 $browser
-  ->get('/search/search?query=teSTtiTle')
+  ->get(';search?query=teSTtiTle')
 
   ->with('response')->begin()
     ->checkElement('body', '/tEStTitLÉ/')
@@ -51,7 +51,7 @@ $browser
 $informationObject->delete();
 
 $browser
-  ->get('/search/search?query=testtitle')
+  ->get(';search?query=testtitle')
 
   ->with('response')->begin()
     ->checkElement('body', '!/testtitle/')

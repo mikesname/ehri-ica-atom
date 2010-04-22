@@ -74,7 +74,7 @@ class UserPasswordEditAction extends sfAction
       if ($this->form->isValid())
       {
         $this->processForm();
-        $this->redirect(array('module' => 'user', 'action' => 'show', 'id' => $this->user->id));
+        $this->redirect(array($this->user, 'module' => 'user'));
       }
     }
   }

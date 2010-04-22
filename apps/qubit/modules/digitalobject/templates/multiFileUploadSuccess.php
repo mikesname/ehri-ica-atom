@@ -1,94 +1,84 @@
 <?php use_helper('Javascript') ?>
 
-<?php if($hasWarning): ?>
-<div class="warning"><?php echo $warning ?></div>
-<?php endif; ?>
+<h1><?php echo __('Import multiple digital objects') ?></h1>
 
-<div class="pageTitle"><?php echo __('Import multiple digital objects'); ?></div>
-<form method="post" action="<?php echo url_for(array('module' => 'digitalobject', 'action' => 'multiFileUpload')) ?>" id="uploadForm">
+<h1 class="label"><?php echo render_title($informationObject->getLabel()) ?> </h1>
 
-  <fieldset class="collapsible">
-    <legend><?php echo __('new object template'); ?></legend>
+<noscript>
+  <div class="messages status">
+    <?php echo __('Your browser does not support Flash and/or JavaScript. See %1%minimum requirements%2%.', array('%1%' => '<a href="http://qubit-toolkit.org/wiki/index.php?title=Minimum_requirements">', '%2%' => '</a>')) ?>
+  </div>
+  <ul class="actions links">
+    <li><?php echo link_to(__('Cancel'), array($informationObject, 'module' => 'informationobject')) ?></li>
+  </ul>
+</noscript>
 
-    <div class="form-item">
-      <label for="parent_id"><?php echo __('title'); ?></label>
-      <?php echo object_input_tag($infoObjectTemplate, 'getTitle', array('size' => 20, 'onkeyup' => 'renumerateUploads()')) ?>
-      <span class="note"><?php echo __('The "<b>%dd%</b>" placeholder will be replaced with a incremental number (e.g. \'image <b>01</b>\', \'image <b>02</b>\')')?></span>
-    </div>
+<?php echo $form->renderFormTag(url_for(array('module' => 'digitalobject', 'action' => 'multiFileUpload')), array('id' => 'multiFileUploadForm', 'style' => 'display: none;')) ?>
 
-    <div class="form-item">
-      <label for="parent_id"><?php echo __('parent level'); ?></label>
-      <?php echo object_select_tree($infoObjectTemplate, 'getId',
-        array(
-          'peer_method' => 'getDescendants',
-          'related_class' => QubitInformationObject::getOne(QubitInformationObject::addRootsCriteria(new Criteria)),
-          'style' => 'width: 200px'
-        )) ?>
-    </div>
+  <?php echo $form->renderHiddenFields() ?>
 
-    <div class="form-item">
-      <label for="level_of_description_id"><?php echo __('level of description'); ?></label>
-      <?php echo object_select_tag($infoObjectTemplate, 'getLevelOfDescriptionId', array(
-        'related_class' => 'QubitTerm',
-        'include_blank' => true,
-        'peer_method' => 'getLevelsOfDescription'
-      ))
-      ?>
-    </div>
-  </fieldset>
+  <?php echo $form->title
+    ->help(__('The "<b>%dd%</b>" placeholder will be replaced with a incremental number (e.g. \'image <b>01</b>\', \'image <b>02</b>\')'))
+    ->label(__('Title'))
+    ->renderRow() ?>
 
-  <fieldset>
-    <legend><?php echo __('digital objects'); ?></legend>
+  <?php echo $form->levelOfDescription
+    ->label(__('Level of description'))
+    ->renderRow() ?>
 
+  <div class="form-item multiFileUpload">
+    <label for=""><?php echo __('Digital objects') ?></label>
     <div id="uploads"></div>
-    <br style="clear: both" />
-    <div id="uiElements" style="display:inline;">
+    <div id="uiElements" style="display: inline;">
       <div id="uploaderContainer">
-         <div id="uploaderOverlay" style="position:absolute; z-index:2"></div>
-         <div id="selectFilesLink" style="z-index:1"><a id="selectLink" href="#">Select Files</a></div>
+        <div id="uploaderOverlay" style="position: absolute; z-index: 2;"></div>
+        <div id="selectFilesLink" style="z-index: 1;"><a id="selectLink" href="#">Select files</a></div>
       </div>
     </div>
-  </fieldset>
-
-  <div>
-    <?php echo submit_tag('import')?>
   </div>
+
+  <div class="actions section">
+  <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+    <div class="content">
+      <ul class="clearfix links">
+        <li><?php echo link_to(__('Cancel'), array($informationObject, 'module' => 'informationobject')) ?></li>
+        <li><?php echo submit_tag(__('Import')) ?></li>
+      </ul>
+    </div>
+  </div>
+
 </form>
 
 <?php echo javascript_tag('
+  // If JavaScript and Flash Player installed
+  if (0 == YAHOO.deconcept.SWFObjectUtil.getPlayerVersion().major)
+  {
+    // Show <noscript> content
+    var noscript = jQuery(\'noscript\');
+    noscript.replaceWith(noscript.text());
+  }
+  else
+  {
+    jQuery(\'form#multiFileUploadForm\').show();
+  }
+
   YAHOO.widget.Uploader.SWFURL = "'.$uploadSwfPath.'";
 
-  var maxUploadSize = "'.$maxUploadSize.'";
-  var uploadTmpDir = "'.$uploadTmpDir.'";
-  var uploadResponsePath = "'.$uploadResponsePath.'";
+  Qubit.multiFileUpload.maxUploadSize = "'.$maxUploadSize.'";
+  Qubit.multiFileUpload.uploadTmpDir = "'.$uploadTmpDir.'";
+  Qubit.multiFileUpload.uploadResponsePath = "'.$uploadResponsePath.'?'.http_build_query(array(session_name() => session_id())).'";
+  Qubit.multiFileUpload.informationObjectId = "'.$informationObject->id.'";
+  Qubit.multiFileUpload.thumbWidth = 150;
 
-  var i18nUploading = "'.__('Uploading...').'";
-  var i18nInfoObjectTitle = "'.__('%1% title', array('%1%' => sfConfig::get('app_ui_label_informationobject'))).'";
-  var i18nFilename  = "'.__('file name').'";
-  var i18nFilesize  = "'.__('file size').'";
-  var i18nDelete = "'.__('Delete').'";
-  var i18nCancel = "'.__('Cancel').'";
-  var i18nOversizedFileListMessage = "'.__('These files couldn\'t be uploaded because of file size upload limits').'";
+  Qubit.multiFileUpload.i18nUploading = "'.__('Uploading...').'";
+  Qubit.multiFileUpload.i18nLoadingPreview = "'.__('Loading preview...').'";
+  Qubit.multiFileUpload.i18nWaiting = "'.__('Waiting...').'";
+  Qubit.multiFileUpload.i18nUploadError = "'.__('Upload error, retry?').'";
+  Qubit.multiFileUpload.i18nInfoObjectTitle = "'.__('Title').'";
+  Qubit.multiFileUpload.i18nFilename  = "'.__('Filename').'";
+  Qubit.multiFileUpload.i18nFilesize  = "'.__('Filesize').'";
+  Qubit.multiFileUpload.i18nDelete = "'.__('Delete').'";
+  Qubit.multiFileUpload.i18nCancel = "'.__('Cancel').'";
+  Qubit.multiFileUpload.i18nStart = "'.__('Start').'";
+  Qubit.multiFileUpload.i18nOversizedFile = "'.__('This file couldn\'t be uploaded because of file size upload limits').'";
 '); ?>
-
-<?php echo javascript_tag(<<<EOF
-  var uploader = new YAHOO.widget.Uploader('uploaderOverlay');
-
-  var fileList;
-  var uploadedList = Array();
-
-  uploader.addListener('contentReady', handleContentReady);
-  uploader.addListener('fileSelect', onFileSelect)
-  uploader.addListener('uploadStart', onUploadStart);
-  uploader.addListener('uploadProgress', onUploadProgress);
-  uploader.addListener('uploadCancel', onUploadCancel);
-  uploader.addListener('uploadComplete', onUploadComplete);
-  uploader.addListener('uploadCompleteData', onUploadResponse);
-  uploader.addListener('uploadError', onUploadError);
-  uploader.addListener('rollOver', handleRollOver);
-  uploader.addListener('rollOut', handleRollOut);
-  uploader.addListener('click', handleClick);
-  uploader.addListener('mouseDown', handleMouseDown);
-  uploader.addListener('mouseUp', handleMouseUp);
-EOF
-) ?>

@@ -1,7 +1,0 @@
-aclGroupEdit:
-  url: /aclGroup/edit/:id
-  param: { module: aclGroup, action: edit }
-
-aclGroupCreate:
-  url: /aclGroup/create/*
-  param: { module: aclGroup, action: edit }

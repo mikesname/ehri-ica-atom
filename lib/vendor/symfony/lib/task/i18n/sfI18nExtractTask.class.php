@@ -30,11 +30,15 @@ class sfI18nExtractTask extends sfBaseTask
   protected function configure()
   {
     $this->addArguments(array(
-      new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
       new sfCommandArgument('culture', sfCommandArgument::REQUIRED, 'The target culture'),
     ));
 
     $this->addOptions(array(
+
+      // http://trac.symfony-project.org/ticket/8352
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', true),
+
+      new sfCommandOption('plugin', null, sfCommandOption::PARAMETER_REQUIRED, 'The plugin name'),
       new sfCommandOption('display-new', null, sfCommandOption::PARAMETER_NONE, 'Output all new found strings'),
       new sfCommandOption('display-old', null, sfCommandOption::PARAMETER_NONE, 'Output all old strings'),
       new sfCommandOption('auto-save', null, sfCommandOption::PARAMETER_NONE, 'Save the new strings'),
@@ -49,30 +53,30 @@ class sfI18nExtractTask extends sfBaseTask
 The [i18n:extract|INFO] task extracts i18n strings from your project files
 for the given application and target culture:
 
-  [./symfony i18n:extract frontend fr|INFO]
+  [./symfony i18n:extract fr|INFO]
 
 By default, the task only displays the number of new and old strings
 it found in the current project.
 
 If you want to display the new strings, use the [--display-new|COMMENT] option:
 
-  [./symfony i18n:extract --display-new frontend fr|INFO]
+  [./symfony i18n:extract --display-new fr|INFO]
 
 To save them in the i18n message catalogue, use the [--auto-save|COMMENT] option:
 
-  [./symfony i18n:extract --auto-save frontend fr|INFO]
+  [./symfony i18n:extract --auto-save fr|INFO]
 
 If you want to display strings that are present in the i18n messages
 catalogue but are not found in the application, use the 
 [--display-old|COMMENT] option:
 
-  [./symfony i18n:extract --display-old frontend fr|INFO]
+  [./symfony i18n:extract --display-old fr|INFO]
 
 To automatically delete old strings, use the [--auto-delete|COMMENT] but
 be careful, especially if you have translations for plugins as they will
 appear as old strings but they are not:
 
-  [./symfony i18n:extract --auto-delete frontend fr|INFO]
+  [./symfony i18n:extract --auto-delete fr|INFO]
 EOF;
   }
 
@@ -81,7 +85,7 @@ EOF;
    */
   public function execute($arguments = array(), $options = array())
   {
-    $this->logSection('i18n', sprintf('extracting i18n strings for the "%s" application', $arguments['application']));
+    $this->logSection('i18n', sprintf('extracting i18n strings for the "%s" application', $options['application']));
 
     // get i18n configuration from factories.yml
     $config = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
@@ -91,6 +95,11 @@ EOF;
     unset($params['cache']);
 
     $extract = new sfI18nApplicationExtract(new $class($this->configuration, new sfNoCache(), $params), $arguments['culture']);
+    if (isset($options['plugin']))
+    {
+      $extract = new sfI18nPluginExtract(new $class($this->configuration, new sfNoCache, $params), $arguments['culture'], array('path' => sfConfig::get('sf_plugins_dir').'/'.$options['plugin']));
+    }
+
     $extract->extract();
 
     $this->logSection('i18n', sprintf('found "%d" new i18n strings', count($extract->getNewMessages())));

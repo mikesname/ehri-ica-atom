@@ -21,7 +21,7 @@
  * @subpackage storage
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     Sean Kerr <sean@code-box.org>
- * @version    SVN: $Id: sfSessionStorage.class.php 15553 2009-02-17 11:04:14Z dwhittle $
+ * @version    SVN: $Id: sfSessionStorage.class.php 23810 2009-11-12 11:07:44Z Kris.Wallsmith $
  */
 class sfSessionStorage extends sfStorage
 {
@@ -49,6 +49,7 @@ class sfSessionStorage extends sfStorage
    */
   public function initialize($options = null)
   {
+    // http://trac.symfony-project.org/ticket/5683
     if (!isset($options['session_cookie_path']))
     {
       $options['session_cookie_path'] = sfContext::getInstance()->request->getRelativeUrlRoot();
@@ -91,7 +92,7 @@ class sfSessionStorage extends sfStorage
     $httpOnly = $this->options['session_cookie_httponly'];
     session_set_cookie_params($lifetime, $path, $domain, $secure, $httpOnly);
 
-    if (!is_null($this->options['session_cache_limiter']))
+    if (null !== $this->options['session_cache_limiter'])
     {
       session_cache_limiter($this->options['session_cache_limiter']);
     }

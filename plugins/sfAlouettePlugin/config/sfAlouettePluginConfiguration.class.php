@@ -19,20 +19,24 @@
 
 class sfAlouettePluginConfiguration extends sfPluginConfiguration
 {
-  /**
-   * @see sfPluginConfiguration
-   */
-  public function configure()
-  {
-    $this->summary = 'Green version of the Columbia theme, without the header image';
-    $this->version = '1.0.0';
-  }
+  public static
+    $summary = 'Theme plugin. A green version of the Columbia theme, without the header image',
+    $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)
   {
     $context = $event->getSubject();
 
-    $context->response->addStylesheet('/sfAlouettePlugin/css/style', 'last');
+    $context->response->addStylesheet('/sfClassicPlugin/css/main', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/sfCaribouPlugin/css/style', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/sfColumbiaPlugin/css/style', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/sfAlouettePlugin/css/style', 'last', array('media' => 'all'));
+
+    $context->response->addStylesheet('/sfCaribouPlugin/css/print', 'last', array('media' => 'print'));
+
+    $context->response->addStylesheet('/sfCaribouPlugin/css/print-ie', 'last', array('condition' => 'IE', 'media' => 'print'));
+
+    $context->response->addJavaScript('/sfCaribouPlugin/js/navigation', 'last');
   }
 
   /**
@@ -43,10 +47,12 @@ class sfAlouettePluginConfiguration extends sfPluginConfiguration
     $this->dispatcher->connect('context.load_factories', array($this, 'contextLoadFactories'));
 
     $decoratorDirs = sfConfig::get('sf_decorator_dirs');
+    $decoratorDirs[] = sfConfig::get('sf_plugins_dir').'/sfColumbiaPlugin/templates';
     $decoratorDirs[] = $this->rootDir.'/templates';
     sfConfig::set('sf_decorator_dirs', $decoratorDirs);
 
     $moduleDirs = sfConfig::get('sf_module_dirs');
+    $moduleDirs[sfConfig::get('sf_plugins_dir').'/sfColumbiaPlugin/modules'] = false;
     $moduleDirs[$this->rootDir.'/modules'] = false;
     sfConfig::set('sf_module_dirs', $moduleDirs);
   }

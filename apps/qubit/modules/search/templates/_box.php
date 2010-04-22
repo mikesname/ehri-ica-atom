@@ -1,10 +1,12 @@
-<div id="search-sidebar">
-  <form action="<?php echo url_for(array('module' => 'search', 'action' => 'search')) ?>">
-    <div>
-      <?php echo input_tag('query', $sf_request->query, array('class' => 'textbox')) ?>
-    </div>
-    <div>
-      <?php echo submit_tag(__('search')) ?>
-    </div>
-  </form>
+<div class="search section">
+
+  <h2 class="element-invisible"><?php echo __('Search') ?></h2>
+
+  <div class="content">
+    <form action="<?php echo url_for(array('module' => 'search')) ?>">
+      <?php echo input_tag('query', $sf_request->query) ?>
+      <?php echo submit_tag(__('Search')) ?>
+    </form>
+  </div>
+
 </div>

@@ -1,57 +1,37 @@
 <?php
 
-abstract class BaseTaxonomy implements ArrayAccess
+abstract class BaseTaxonomy extends QubitObject implements ArrayAccess
 {
   const
     DATABASE_NAME = 'propel',
 
     TABLE_NAME = 'q_taxonomy',
 
+    ID = 'q_taxonomy.ID',
     USAGE = 'q_taxonomy.USAGE',
     CREATED_AT = 'q_taxonomy.CREATED_AT',
     UPDATED_AT = 'q_taxonomy.UPDATED_AT',
-    SOURCE_CULTURE = 'q_taxonomy.SOURCE_CULTURE',
-    ID = 'q_taxonomy.ID',
-    SERIAL_NUMBER = 'q_taxonomy.SERIAL_NUMBER';
+    PARENT_ID = 'q_taxonomy.PARENT_ID',
+    LFT = 'q_taxonomy.LFT',
+    RGT = 'q_taxonomy.RGT',
+    SOURCE_CULTURE = 'q_taxonomy.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
+    parent::addSelectColumns($criteria);
+
+    $criteria->addJoin(QubitTaxonomy::ID, QubitObject::ID);
+
+    $criteria->addSelectColumn(QubitTaxonomy::ID);
     $criteria->addSelectColumn(QubitTaxonomy::USAGE);
     $criteria->addSelectColumn(QubitTaxonomy::CREATED_AT);
     $criteria->addSelectColumn(QubitTaxonomy::UPDATED_AT);
+    $criteria->addSelectColumn(QubitTaxonomy::PARENT_ID);
+    $criteria->addSelectColumn(QubitTaxonomy::LFT);
+    $criteria->addSelectColumn(QubitTaxonomy::RGT);
     $criteria->addSelectColumn(QubitTaxonomy::SOURCE_CULTURE);
-    $criteria->addSelectColumn(QubitTaxonomy::ID);
-    $criteria->addSelectColumn(QubitTaxonomy::SERIAL_NUMBER);
 
     return $criteria;
-  }
-
-  protected static
-    $taxonomys = array();
-
-  protected
-    $keys = array(),
-    $row = array();
-
-  public static function getFromRow(array $row)
-  {
-    $keys = array();
-    $keys['id'] = $row[4];
-
-    $key = serialize($keys);
-    if (!isset(self::$taxonomys[$key]))
-    {
-      $taxonomy = new QubitTaxonomy;
-
-      $taxonomy->keys = $keys;
-      $taxonomy->row = $row;
-
-      $taxonomy->new = false;
-
-      self::$taxonomys[$key] = $taxonomy;
-    }
-
-    return self::$taxonomys[$key];
   }
 
   public static function get(Criteria $criteria, array $options = array())
@@ -89,66 +69,28 @@ abstract class BaseTaxonomy implements ArrayAccess
     }
   }
 
-  public static function doDelete(Criteria $criteria, $connection = null)
+  public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
   {
-    if (!isset($connection))
+    if ($order == Criteria::DESC)
     {
-      $connection = QubitTransactionFilter::getConnection(QubitTaxonomy::DATABASE_NAME);
+      return $criteria->addDescendingOrderByColumn(QubitTaxonomy::LFT);
     }
 
-    $affectedRows = 0;
-
-    $affectedRows += BasePeer::doDelete($criteria, $connection);
-
-    return $affectedRows;
+    return $criteria->addAscendingOrderByColumn(QubitTaxonomy::LFT);
   }
 
-  protected
-    $tables = array();
+  public static function addRootsCriteria(Criteria $criteria)
+  {
+    $criteria->add(QubitTaxonomy::PARENT_ID);
+
+    return $criteria;
+  }
 
   public function __construct()
   {
+    parent::__construct();
+
     $this->tables[] = Propel::getDatabaseMap(QubitTaxonomy::DATABASE_NAME)->getTable(QubitTaxonomy::TABLE_NAME);
-  }
-
-  protected
-    $values = array(),
-    $refFkValues = array();
-
-  protected function rowOffsetGet($name, $offset, $options)
-  {
-    if (empty($options['clean']) && array_key_exists($name, $this->values))
-    {
-      return $this->values[$name];
-    }
-
-    if (array_key_exists($name, $this->keys))
-    {
-      return $this->keys[$name];
-    }
-
-    if (!array_key_exists($offset, $this->row))
-    {
-      if ($this->new)
-      {
-        return;
-      }
-
-      if (!isset($options['connection']))
-      {
-        $options['connection'] = Propel::getConnection(QubitTaxonomy::DATABASE_NAME);
-      }
-
-      $criteria = new Criteria;
-      $criteria->add(QubitTaxonomy::ID, $this->id);
-
-      call_user_func(array(get_class($this), 'addSelectColumns'), $criteria);
-
-      $statement = BasePeer::doSelect($criteria, $options['connection']);
-      $this->row = $statement->fetch();
-    }
-
-    return $this->row[$offset];
   }
 
   public function __isset($name)
@@ -161,23 +103,17 @@ abstract class BaseTaxonomy implements ArrayAccess
       $options = $args[1];
     }
 
-    $offset = 0;
-    foreach ($this->tables as $table)
+    try
     {
-      foreach ($table->getColumns() as $column)
-      {
-        if ($name == $column->getPhpName())
-        {
-          return null !== $this->rowOffsetGet($name, $offset, $options);
-        }
+      return call_user_func_array(array($this, 'QubitObject::__isset'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
 
-        if ($name.'Id' == $column->getPhpName())
-        {
-          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
-        }
-
-        $offset++;
-      }
+    if ('taxonomysRelatedByparentId' == $name)
+    {
+      return true;
     }
 
     if ('taxonomyI18ns' == $name)
@@ -203,14 +139,17 @@ abstract class BaseTaxonomy implements ArrayAccess
     {
     }
 
+    if ('ancestors' == $name)
+    {
+      return true;
+    }
+
+    if ('descendants' == $name)
+    {
+      return true;
+    }
+
     throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
-  }
-
-  public function offsetExists($offset)
-  {
-    $args = func_get_args();
-
-    return call_user_func_array(array($this, '__isset'), $args);
   }
 
   public function __get($name)
@@ -223,25 +162,29 @@ abstract class BaseTaxonomy implements ArrayAccess
       $options = $args[1];
     }
 
-    $offset = 0;
-    foreach ($this->tables as $table)
+    try
     {
-      foreach ($table->getColumns() as $column)
+      return call_user_func_array(array($this, 'QubitObject::__get'), $args);
+    }
+    catch (sfException $e)
+    {
+    }
+
+    if ('taxonomysRelatedByparentId' == $name)
+    {
+      if (!isset($this->refFkValues['taxonomysRelatedByparentId']))
       {
-        if ($name == $column->getPhpName())
+        if (!isset($this->id))
         {
-          return $this->rowOffsetGet($name, $offset, $options);
+          $this->refFkValues['taxonomysRelatedByparentId'] = QubitQuery::create();
         }
-
-        if ($name.'Id' == $column->getPhpName())
+        else
         {
-          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
-
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
+          $this->refFkValues['taxonomysRelatedByparentId'] = self::gettaxonomysRelatedByparentIdById($this->id, array('self' => $this) + $options);
         }
-
-        $offset++;
       }
+
+      return $this->refFkValues['taxonomysRelatedByparentId'];
     }
 
     if ('taxonomyI18ns' == $name)
@@ -291,14 +234,47 @@ abstract class BaseTaxonomy implements ArrayAccess
     {
     }
 
+    if ('ancestors' == $name)
+    {
+      if (!isset($this->values['ancestors']))
+      {
+        if ($this->new)
+        {
+          $this->values['ancestors'] = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addAncestorsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->values['ancestors'] = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->values['ancestors'];
+    }
+
+    if ('descendants' == $name)
+    {
+      if (!isset($this->values['descendants']))
+      {
+        if ($this->new)
+        {
+          $this->values['descendants'] = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addDescendantsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->values['descendants'] = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->values['descendants'];
+    }
+
     throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
-  }
-
-  public function offsetGet($offset)
-  {
-    $args = func_get_args();
-
-    return call_user_func_array(array($this, '__get'), $args);
   }
 
   public function __set($name, $value)
@@ -311,37 +287,11 @@ abstract class BaseTaxonomy implements ArrayAccess
       $options = $args[2];
     }
 
-    $offset = 0;
-    foreach ($this->tables as $table)
-    {
-      foreach ($table->getColumns() as $column)
-      {
-        if ($name == $column->getPhpName())
-        {
-          $this->values[$name] = $value;
-        }
-
-        if ($name.'Id' == $column->getPhpName())
-        {
-          $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
-
-          $this->values[$name.'Id'] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
-        }
-
-        $offset++;
-      }
-    }
+    call_user_func_array(array($this, 'QubitObject::__set'), $args);
 
     call_user_func_array(array($this->getCurrenttaxonomyI18n($options), '__set'), $args);
 
     return $this;
-  }
-
-  public function offsetSet($offset, $value)
-  {
-    $args = func_get_args();
-
-    return call_user_func_array(array($this, '__set'), $args);
   }
 
   public function __unset($name)
@@ -354,35 +304,11 @@ abstract class BaseTaxonomy implements ArrayAccess
       $options = $args[1];
     }
 
-    $offset = 0;
-    foreach ($this->tables as $table)
-    {
-      foreach ($table->getColumns() as $column)
-      {
-        if ($name == $column->getPhpName())
-        {
-          $this->values[$name] = null;
-        }
-
-        if ($name.'Id' == $column->getPhpName())
-        {
-          $this->values[$name.'Id'] = null;
-        }
-
-        $offset++;
-      }
-    }
+    call_user_func_array(array($this, 'QubitObject::__unset'), $args);
 
     call_user_func_array(array($this->getCurrenttaxonomyI18n($options), '__unset'), $args);
 
     return $this;
-  }
-
-  public function offsetUnset($offset)
-  {
-    $args = func_get_args();
-
-    return call_user_func_array(array($this, '__unset'), $args);
   }
 
   public function clear()
@@ -392,49 +318,12 @@ abstract class BaseTaxonomy implements ArrayAccess
       $taxonomyI18n->clear();
     }
 
-    $this->row = $this->values = array();
-
-    return $this;
+    return parent::clear();
   }
-
-  protected
-    $new = true;
-
-  protected
-    $deleted = false;
 
   public function save($connection = null)
   {
-    if ($this->deleted)
-    {
-      throw new PropelException('You cannot save an object that has been deleted.');
-    }
-
-    if ($this->new)
-    {
-      $this->insert($connection);
-    }
-    else
-    {
-      $this->update($connection);
-    }
-
-    $offset = 0;
-    foreach ($this->tables as $table)
-    {
-      foreach ($table->getColumns() as $column)
-      {
-        if (array_key_exists($column->getPhpName(), $this->values))
-        {
-          $this->row[$offset] = $this->values[$column->getPhpName()];
-        }
-
-        $offset++;
-      }
-    }
-
-    $this->new = false;
-    $this->values = array();
+    parent::save($connection);
 
     foreach ($this->taxonomyI18ns as $taxonomyI18n)
     {
@@ -448,98 +337,39 @@ abstract class BaseTaxonomy implements ArrayAccess
 
   protected function insert($connection = null)
   {
-    if (!isset($connection))
-    {
-      $connection = QubitTransactionFilter::getConnection(QubitTaxonomy::DATABASE_NAME);
-    }
+    $this->updateNestedSet($connection);
 
-    $offset = 0;
-    foreach ($this->tables as $table)
-    {
-      $criteria = new Criteria;
-      foreach ($table->getColumns() as $column)
-      {
-        if (!array_key_exists($column->getPhpName(), $this->values))
-        {
-          if ('createdAt' == $column->getPhpName() || 'updatedAt' == $column->getPhpName())
-          {
-            $this->values[$column->getPhpName()] = new DateTime;
-          }
-
-          if ('sourceCulture' == $column->getPhpName())
-          {
-            $this->values['sourceCulture'] = sfPropel::getDefaultCulture();
-          }
-        }
-
-        if (array_key_exists($column->getPhpName(), $this->values))
-        {
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
-        }
-
-        $offset++;
-      }
-
-      if (null !== $id = BasePeer::doInsert($criteria, $connection))
-      {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
-        {
-          $columns = $table->getPrimaryKeyColumns();
-          $this->values[$columns[0]->getPhpName()] = $id;
-        }
-      }
-    }
+    parent::insert($connection);
 
     return $this;
   }
 
   protected function update($connection = null)
   {
-    if (!isset($connection))
+        if (isset($this->values['parentId']))
     {
-      $connection = QubitTransactionFilter::getConnection(QubitTaxonomy::DATABASE_NAME);
-    }
-
-    $offset = 0;
-    foreach ($this->tables as $table)
-    {
-      $criteria = new Criteria;
-      $selectCriteria = new Criteria;
-      foreach ($table->getColumns() as $column)
+            $offset = 0; 
+      $originalParentId = null;
+      foreach ($this->tables as $table)
       {
-        if (!array_key_exists($column->getPhpName(), $this->values))
+        foreach ($table->getColumns() as $column)
         {
-          if ('updatedAt' == $column->getPhpName())
+          if ('parentId' == $column->getPhpName())
           {
-            $this->values['updatedAt'] = new DateTime;
+            $originalParentId = $this->row[$offset];
+            break;
           }
+          $offset++;
         }
-
-        if (array_key_exists($column->getPhpName(), $this->values))
-        {
-          if ('serialNumber' == $column->getPhpName())
-          {
-            $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
-          }
-
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
-        }
-
-        if ($column->isPrimaryKey())
-        {
-          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$offset]);
-        }
-
-        $offset++;
       }
-
-      if ($criteria->size() > 0)
+      
+                  if ($originalParentId != $this->values['parentId'])
       {
-        BasePeer::doUpdate($selectCriteria, $criteria, $connection);
+        $this->updateNestedSet($connection);
       }
     }
+
+    parent::update($connection);
 
     return $this;
   }
@@ -551,27 +381,40 @@ abstract class BaseTaxonomy implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $criteria = new Criteria;
-    $criteria->add(QubitTaxonomy::ID, $this->id);
+    $this->clear();
+    $this->deleteFromNestedSet($connection);
 
-    self::doDelete($criteria, $connection);
-
-    $this->deleted = true;
+    parent::delete($connection);
 
     return $this;
   }
 
-	
-	public function getPrimaryKey()
-	{
-		return $this->getid();
-	}
+  public static function addJoinparentCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitTaxonomy::PARENT_ID, QubitTaxonomy::ID);
 
-	
-	public function setPrimaryKey($key)
-	{
-		$this->setid($key);
-	}
+    return $criteria;
+  }
+
+  public static function addtaxonomysRelatedByparentIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitTaxonomy::PARENT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function gettaxonomysRelatedByparentIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addtaxonomysRelatedByparentIdCriteriaById($criteria, $id);
+
+    return QubitTaxonomy::get($criteria, $options);
+  }
+
+  public function addtaxonomysRelatedByparentIdCriteria(Criteria $criteria)
+  {
+    return self::addtaxonomysRelatedByparentIdCriteriaById($criteria, $this->id);
+  }
 
   public static function addtaxonomyI18nsCriteriaById(Criteria $criteria, $id)
   {
@@ -634,15 +477,133 @@ abstract class BaseTaxonomy implements ArrayAccess
     return $taxonomyI18ns[$options['culture']];
   }
 
-  public function __call($name, $args)
+  public function addAncestorsCriteria(Criteria $criteria)
   {
-    if ('get' == substr($name, 0, 3) || 'set' == substr($name, 0, 3))
-    {
-      $args = array_merge(array(strtolower(substr($name, 3, 1)).substr($name, 4)), $args);
+    return $criteria->add(QubitTaxonomy::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitTaxonomy::RGT, $this->rgt, Criteria::GREATER_THAN);
+  }
 
-      return call_user_func_array(array($this, '__'.substr($name, 0, 3)), $args);
+  public function addDescendantsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitTaxonomy::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitTaxonomy::RGT, $this->rgt, Criteria::LESS_THAN);
+  }
+
+  protected function updateNestedSet($connection = null)
+  {
+unset($this->values['lft']);
+unset($this->values['rgt']);
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitTaxonomy::DATABASE_NAME);
     }
 
-    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+    if (!isset($this->lft) || !isset($this->rgt))
+    {
+      $delta = 2;
+    }
+    else
+    {
+      $delta = $this->rgt - $this->lft + 1;
+    }
+
+    if (null === $parent = $this->__get('parent', array('connection' => $connection)))
+    {
+      $statement = $connection->prepare('
+        SELECT MAX('.QubitTaxonomy::RGT.')
+        FROM '.QubitTaxonomy::TABLE_NAME);
+      $statement->execute();
+      $row = $statement->fetch();
+      $max = $row[0];
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $max + 1;
+        $this->rgt = $max + 2;
+
+        return $this;
+      }
+
+      $shift = $max + 1 - $this->lft;
+    }
+    else
+    {
+      $parent->clear();
+
+      if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
+      {
+        throw new PropelException('An object cannot be a descendant of itself.');
+      }
+
+      $statement = $connection->prepare('
+        UPDATE '.QubitTaxonomy::TABLE_NAME.'
+        SET '.QubitTaxonomy::LFT.' = '.QubitTaxonomy::LFT.' + ?
+        WHERE '.QubitTaxonomy::LFT.' >= ?');
+      $statement->execute(array($delta, $parent->rgt));
+
+      $statement = $connection->prepare('
+        UPDATE '.QubitTaxonomy::TABLE_NAME.'
+        SET '.QubitTaxonomy::RGT.' = '.QubitTaxonomy::RGT.' + ?
+        WHERE '.QubitTaxonomy::RGT.' >= ?');
+      $statement->execute(array($delta, $parent->rgt));
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $parent->rgt;
+        $this->rgt = $parent->rgt + 1;
+
+        return $this;
+      }
+
+      if ($this->lft > $parent->rgt)
+      {
+        $this->lft += $delta;
+        $this->rgt += $delta;
+      }
+
+      $shift = $parent->rgt - $this->lft;
+    }
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitTaxonomy::TABLE_NAME.'
+      SET '.QubitTaxonomy::LFT.' = '.QubitTaxonomy::LFT.' + ?, '.QubitTaxonomy::RGT.' = '.QubitTaxonomy::RGT.' + ?
+      WHERE '.QubitTaxonomy::LFT.' >= ?
+      AND '.QubitTaxonomy::RGT.' <= ?');
+    $statement->execute(array($shift, $shift, $this->lft, $this->rgt));
+
+    $this->deleteFromNestedSet($connection);
+
+    if ($shift > 0)
+    {
+      $this->lft -= $delta;
+      $this->rgt -= $delta;
+    }
+
+    $this->lft += $shift;
+    $this->rgt += $shift;
+
+    return $this;
+  }
+
+  protected function deleteFromNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitTaxonomy::DATABASE_NAME);
+    }
+
+    $delta = $this->rgt - $this->lft + 1;
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitTaxonomy::TABLE_NAME.'
+      SET '.QubitTaxonomy::LFT.' = '.QubitTaxonomy::LFT.' - ?
+      WHERE '.QubitTaxonomy::LFT.' >= ?');
+    $statement->execute(array($delta, $this->rgt));
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitTaxonomy::TABLE_NAME.'
+      SET '.QubitTaxonomy::RGT.' = '.QubitTaxonomy::RGT.' - ?
+      WHERE '.QubitTaxonomy::RGT.' >= ?');
+    $statement->execute(array($delta, $this->rgt));
+
+    return $this;
   }
 }

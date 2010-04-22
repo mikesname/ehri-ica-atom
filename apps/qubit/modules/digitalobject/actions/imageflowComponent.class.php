@@ -29,25 +29,51 @@ class DigitalObjectImageflowComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->getResponse()->addStylesheet('imageflow');
-    $this->getResponse()->addJavaScript('imageflow');
+    $this->thumbnails = array();
 
-    foreach ($this->thumbnails as $thumbnail)
+    // Set limit (null for no limit)
+    if (!isset($request->showFullImageflow) || 'true' != $request->showFullImageflow)
     {
-      // If object has a related information object, get it
-      if ($parentInfoObject = $thumbnail->getInformationObject())
-      {
-        $informationObjects[] = $parentInfoObject;
-      }
+      $this->limit = sfConfig::get('app_hits_per_page', 10);
+    }
 
-      // Else, if it's a derived image (no related info object) get parent digital
-      // object, and grab *that* related info object
-      else if ($parentInfoObject = $thumbnail->getParent()->getInformationObject())
+    // Add thumbs
+    foreach ($this->informationObject->descendants as $descendant)
+    {
+      if (null !== $digitalObject = $descendant->getDigitalObject())
       {
-        $informationObjects[] = $parentInfoObject;
+        $thumbnail = $digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+
+        if (!$thumbnail)
+        {
+          $thumbnail = QubitDigitalObject::getGenericRepresentation($digitalObject->getMimeType(), QubitTerm::THUMBNAIL_ID);
+          $thumbnail->setParent($digitalObject);
+        }
+
+        $this->thumbnails[] = $thumbnail;
+
+        if (isset($this->limit) && $this->limit <= count($this->thumbnails))
+        {
+          break;
+        }
       }
     }
 
-    $this->informationObjects = $informationObjects;
+    // Get total number of descendant digital objects
+    $this->total = 0;
+    if (isset($this->informationObject->id))
+    {
+      $criteria = new Criteria;
+      $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID, Criteria::INNER_JOIN);
+      $criteria->add(QubitInformationObject::LFT, $this->informationObject->lft, Criteria::GREATER_THAN);
+      $criteria->add(QubitInformationObject::RGT, $this->informationObject->rgt, Criteria::LESS_THAN);
+
+      $this->total = BasePeer::doCount($criteria)->fetchColumn(0);
+    }
+
+    if (2 > count($this->thumbnails))
+    {
+      return sfView::NONE;
+    }
   }
 }

@@ -1,41 +1,35 @@
 create:
-  is_secure:   on
-  credentials: [[ contributor, editor, administrator ]] 
-  
+  credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
+
 createPlaceMapRelation:
-  is_secure:   on
-  credentials: [[ contributor, editor, administrator ]] 
-  
+  credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
+
 delete:
-  is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
-  
+  is_secure: true
+
 deletePlaceMapRelation:
-  is_secure:   on
-  credentials: [[ contributor, editor, administrator ]] 
-  
-edit:
-  is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
+
+edit:
+  credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
 
 editPlaceMapRelation:
-  is_secure:   on
-  credentials: [[ contributor, editor, administrator ]] 
-  
-list:
-  is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
 
-show:
-  is_secure:  off
-  
+list:
+  credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
+
 update:
-  is_secure:   on
-  credentials: [[ contributor, editor, administrator ]] 
-  
-updatePlaceMapRelation:
-  is_secure:   on
-  credentials: [[ contributor, editor, administrator ]] 
+  credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
 
-all:
-  is_secure:   off
+updatePlaceMapRelation:
+  credentials: [[ contributor, editor, administrator ]]
+  is_secure: true

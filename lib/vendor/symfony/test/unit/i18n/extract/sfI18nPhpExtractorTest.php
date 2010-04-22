@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(7, new lime_output_color());
+$t = new lime_test(7);
 
 // __construct()
 $t->diag('__construct()');
@@ -73,6 +73,11 @@ $content = <<<EOF
 foo
 EOD
 );
+
+  echo __(<<<EOD
+bar
+EOD
+);
 EOF;
 
-$t->is($e->extract($content), array('foo'."\n"), '->extract() extracts strings from HEREDOC quoted strings');
+$t->is(fix_linebreaks($e->extract($content)), array("foo\n", "bar\n"), '->extract() extracts strings from HEREDOC quoted strings');

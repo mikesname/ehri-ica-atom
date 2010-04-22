@@ -12,8 +12,7 @@ abstract class BasePlaceI18n implements ArrayAccess
     REGION = 'q_place_i18n.REGION',
     POSTAL_CODE = 'q_place_i18n.POSTAL_CODE',
     ID = 'q_place_i18n.ID',
-    CULTURE = 'q_place_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_place_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_place_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -23,7 +22,6 @@ abstract class BasePlaceI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitPlaceI18n::POSTAL_CODE);
     $criteria->addSelectColumn(QubitPlaceI18n::ID);
     $criteria->addSelectColumn(QubitPlaceI18n::CULTURE);
-    $criteria->addSelectColumn(QubitPlaceI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -393,9 +391,7 @@ abstract class BasePlaceI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

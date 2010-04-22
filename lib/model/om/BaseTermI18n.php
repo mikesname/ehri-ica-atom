@@ -9,15 +9,13 @@ abstract class BaseTermI18n implements ArrayAccess
 
     NAME = 'q_term_i18n.NAME',
     ID = 'q_term_i18n.ID',
-    CULTURE = 'q_term_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_term_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_term_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitTermI18n::NAME);
     $criteria->addSelectColumn(QubitTermI18n::ID);
     $criteria->addSelectColumn(QubitTermI18n::CULTURE);
-    $criteria->addSelectColumn(QubitTermI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -387,9 +385,7 @@ abstract class BaseTermI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

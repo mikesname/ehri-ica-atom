@@ -1,16 +1,18 @@
-<div class="label">
-  <?php echo sfConfig::get('app_ui_label_physicalobject'); ?>
+<div>
+  <h3><?php echo sfConfig::get('app_ui_label_physicalobject') ?></h3>
+  <div>
+    <ul>
+      <?php foreach($physicalObjects as $physicalObject): ?>
+        <li>
+          <?php if (isset($physicalObject->type)): ?>
+            <?php echo $physicalObject->type ?>:
+          <?php endif; ?>
+          <?php echo link_to_if(QubitAcl::check($informationObject, 'update'), render_title($physicalObject), array($physicalObject, 'module' => 'physicalobject')) ?>
+          <?php if (isset($physicalObject->location)): ?>
+            - <?php echo $physicalObject->getLocation(array('cultureFallback' => 'true')) ?>
+          <?php endif; ?>
+        </li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
 </div>
-
-<ul>
-<?php foreach($physicalObjects as $physicalObject): ?>
-  <li>
-    <?php if($type = $physicalObject->getType()) echo $type.': '; ?>
-    <?php echo link_to($physicalObject->getName(array('cultureFallback' => 'true')),
-      array('module' => 'physicalobject', 'action' => 'edit', 'id' => $physicalObject->getId()), 
-      array('query_string' => 'next='.url_for(array('module' => 'informationobject', 'action' => 'edit', 'id' => $informationObject->getId())))
-    ) ?>
-    <?php if($location = $physicalObject->getLocation(array('cultureFallback' => 'true'))) echo ' - '.$location; ?>
-  </li>
-<?php endforeach; ?>
-</ul>

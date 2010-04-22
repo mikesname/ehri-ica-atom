@@ -97,17 +97,7 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return true;
     }
 
-    if ('permissionScopes' == $name)
-    {
-      return true;
-    }
-
     if ('systemEvents' == $name)
-    {
-      return true;
-    }
-
-    if ('userRoleRelations' == $name)
     {
       return true;
     }
@@ -184,23 +174,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return $this->refFkValues['notes'];
     }
 
-    if ('permissionScopes' == $name)
-    {
-      if (!isset($this->refFkValues['permissionScopes']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['permissionScopes'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['permissionScopes'] = self::getpermissionScopesById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['permissionScopes'];
-    }
-
     if ('systemEvents' == $name)
     {
       if (!isset($this->refFkValues['systemEvents']))
@@ -216,23 +189,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       }
 
       return $this->refFkValues['systemEvents'];
-    }
-
-    if ('userRoleRelations' == $name)
-    {
-      if (!isset($this->refFkValues['userRoleRelations']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['userRoleRelations'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['userRoleRelations'] = self::getuserRoleRelationsById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['userRoleRelations'];
     }
 
     throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
@@ -298,26 +254,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
     return self::addnotesCriteriaById($criteria, $this->id);
   }
 
-  public static function addpermissionScopesCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitPermissionScope::USER_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getpermissionScopesById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addpermissionScopesCriteriaById($criteria, $id);
-
-    return QubitPermissionScope::get($criteria, $options);
-  }
-
-  public function addpermissionScopesCriteria(Criteria $criteria)
-  {
-    return self::addpermissionScopesCriteriaById($criteria, $this->id);
-  }
-
   public static function addsystemEventsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitSystemEvent::USER_ID, $id);
@@ -336,25 +272,5 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
   public function addsystemEventsCriteria(Criteria $criteria)
   {
     return self::addsystemEventsCriteriaById($criteria, $this->id);
-  }
-
-  public static function adduserRoleRelationsCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitUserRoleRelation::USER_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getuserRoleRelationsById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::adduserRoleRelationsCriteriaById($criteria, $id);
-
-    return QubitUserRoleRelation::get($criteria, $options);
-  }
-
-  public function adduserRoleRelationsCriteria(Criteria $criteria)
-  {
-    return self::adduserRoleRelationsCriteriaById($criteria, $this->id);
   }
 }

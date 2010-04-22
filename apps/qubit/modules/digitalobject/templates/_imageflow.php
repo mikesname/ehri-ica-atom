@@ -1,26 +1,16 @@
-<?php use_helper('Javascript') ?>
-<div class="label">
-  <?php echo sfConfig::get('app_ui_label_digitalobject'); ?>
-</div>
-
-<div id="imageflow_iewrapper">
-<div id="imageflow" style="width: 235px"> 
-  <div id="imageflow_loading">
-    <b>Loading images</b><br/>
-    <?php echo image_tag('imageflow/loading.gif', array('width'=>'203', 'height'=>'13', 'alt'=>'loading')); ?>
-  </div>
-  <div id="imageflow_images">
-    <?php foreach($sf_data->getRaw('thumbnails') as $i => $thumbnail): ?>
-    <?php echo image_tag($thumbnail->getFullPath(), array(
-      'class'=>'imageflow',
-      'longdesc'=>url_for('informationobject/show?id='.$informationObjects[$i]->getId()), 
-      'alt'=>$informationObjects[$i]->getLabel(array('truncate' => 30))
-    )) ?>
+<div>
+  <h3><?php echo sfConfig::get('app_ui_label_digitalobject') ?></h3>
+  <div id="imageflow" class="imageflow">
+    <?php foreach ($thumbnails as $item): ?>
+      <?php echo image_tag($item->getFullPath(), array('longdesc' => url_for(array($item->parent->informationObject, 'module' => 'informationobject')), 'alt' => render_title(truncate_text($item->parent->informationObject, 28)))) ?>
     <?php endforeach; ?>
   </div>
-  <div id="imageflow_captions"></div>
-  <div id="imageflow_scrollbar">
-    <div id="imageflow_slider"></div>
-  </div>
-</div>
+
+  <?php if (isset($limit) && $limit < $total): ?>
+    <div class="result-count">
+      <?php echo __('Results %1% to %2% of %3%', array('%1%' => 1, '%2%' => $limit, '%3%' => $total)) ?>
+    </div><div>
+      <a href="<?php echo url_for(array($informationObject, 'module' => 'informationobject', 'showFullImageflow' => 'true')) ?>"><?php echo __('See all') ?></a>
+    </div>
+  <?php endif ?>
 </div>

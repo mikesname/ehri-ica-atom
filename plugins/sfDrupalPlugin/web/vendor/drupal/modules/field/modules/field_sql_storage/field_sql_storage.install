@@ -1,22 +1,14 @@
 <?php
-// $Id: field_sql_storage.install,v 1.1 2009/02/03 17:30:11 dries Exp $
+// $Id: field_sql_storage.install,v 1.8 2009/12/04 16:49:46 dries Exp $
 
 /**
- * Implementation of hook_install().
+ * @file
+ * Install, update and uninstall functions for the field_sql_storage module.
  */
-function field_sql_storage_install() {
-  drupal_install_schema('field_sql_storage');
-}
-
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_schema().
  */
-function field_sql_storage_uninstall() {
-  drupal_uninstall_schema('field_sql_storage');
-}
-
-
 function field_sql_storage_schema() {
   $schema = array();
 
@@ -42,11 +34,12 @@ function field_sql_storage_schema() {
 
   // Dynamic (data) tables.
   if (db_table_exists('field_config')) {
-    $fields = field_read_fields();
+    $fields = field_read_fields(array(), array('include_deleted' => TRUE, 'include_inactive' => TRUE));
     drupal_load('module', 'field_sql_storage');
-    $schema = array();
     foreach ($fields as $field) {
-      $schema += _field_sql_storage_schema($field);
+      if ($field['storage']['type'] == 'field_sql_storage') {
+        $schema += _field_sql_storage_schema($field);
+      }
     }
   }
   return $schema;

@@ -37,13 +37,29 @@ class QubitAclPermission extends BaseAclPermission
   {
     if ($repository instanceof QubitRepository)
     {
+      $this->setConstants(array('repositoryId' => $repository->id));
       $this->conditional = '%p[repositoryId] == %k[repositoryId]';
-      $this->constants = serialize(array('repositoryId' => $repository->id));
     }
     else if (null === $repository)
     {
+      $this->setConstants(array('repositoryId' => null));
       $this->conditional = null;
-      $this->constants = null;
+    }
+
+    return $this;
+  }
+
+  public function setTaxonomy($taxonomy)
+  {
+    if ($taxonomy instanceof QubitTaxonomy)
+    {
+      $this->setConstants(array('taxonomyId' => $taxonomy->id));
+      $this->conditional = '%p[taxonomyId] == %k[taxonomyId]';
+    }
+    else if (null === $taxonomy)
+    {
+      $this->setConstants(array('taxonomyId' => null));
+      $this->conditional = null;
     }
 
     return $this;
@@ -51,15 +67,71 @@ class QubitAclPermission extends BaseAclPermission
 
   public function getRepository()
   {
-    $repositoryId = null;
-    $constants = unserialize($this->constants);
-
-    if (isset($constants['repositoryId']))
+    if (null !== $repositoryId = $this->getConstants(array('name' => 'repositoryId')))
     {
-      $repositoryId = $constants['repositoryId'];
+      return QubitRepository::getById($repositoryId);
+    }
+  }
+
+  public function getConstants($options = array())
+  {
+    $value = null;
+
+    if (null !== $constants = parent::__get('constants', $options))
+    {
+      $value = unserialize($constants);
     }
 
-    return QubitRepository::getById($repositoryId);
+    if (isset($options['name']))
+    {
+      if (isset($value[$options['name']]))
+      {
+        $value = $value[$options['name']];
+      }
+      else
+      {
+        return; // Return null if key 'name' not set
+      }
+    }
+
+    return $value;
+  }
+
+  public function setConstants($value, $options = array())
+  {
+    if (is_array($value))
+    {
+      $constants = array();
+      if (parent::__isset('constants', $options))
+      {
+        $constants = unserialize(parent::__get('constants', $options));
+      }
+
+      foreach ($value as $key => $val)
+      {
+        if (null !== $val)
+        {
+          $constants[$key] = $val;
+        }
+        else if (isset($constants[$key]))
+        {
+          unset($constants[$key]); // Remove key if value is null
+        }
+      }
+
+      $value = $constants;
+    }
+
+    if (is_array($value) && 0 < count($value))
+    {
+      parent::__set('constants', serialize($value), $options);
+    }
+    else
+    {
+      parent::__set('constants', null, $options);
+    }
+
+    return $this;
   }
 
   public function evaluateConditional($parameters)
@@ -80,7 +152,14 @@ class QubitAclPermission extends BaseAclPermission
       {
         if (isset($constants[$match]))
         {
-          $conditional = str_replace('%k['.$match.']', '\''.$constants[$match].'\'', $conditional);
+          if (is_string($constants[$match]))
+          {
+            $conditional = str_replace('%k['.$match.']', '\''.$constants[$match].'\'', $conditional);
+          }
+          else if (is_array($constants[$match]))
+          {
+            $conditional = str_replace('%k['.$match.']', '$constants[$match]', $conditional);
+          }
         }
       }
     }
@@ -92,39 +171,57 @@ class QubitAclPermission extends BaseAclPermission
       {
         if (array_key_exists($key, $parameters))
         {
-          // A 'null' parameter matches *any* constant
+          // For null parameters (e.g. creating a new info object so
+          // $repositoryId is null) always grant and never deny privileges.
           if (null === $parameters[$key])
           {
-            $conditional = str_replace('%p['.$key.']', 'true', $conditional);
-            $conditional = str_replace('%k['.$key.']', 'true', $conditional);
+            if (0 == $this->grantDeny)
+            {
+              return false;
+            }
+            else
+            {
+              continue;
+            }
           }
-          else
+
+          $conditional = str_replace('%p['.$key.']', '\''.$parameters[$key].'\'', $conditional);
+
+          // If any conditional evaluates false then return false
+          if (!eval('return ('.$conditional.');'))
           {
-            $conditional = str_replace('%p['.$key.']', '\''.$parameters[$key].'\'', $conditional);
+            return false;
           }
         }
         else
         {
-          $conditional = str_replace('%p['.$key.']', '\'0\'', $conditional);
+          continue; // Don't evaluate if paramater not passed
         }
       }
     }
 
-    // evaluate conditional
-    return eval('return ('.$conditional.');');
+    return true;
   }
 
-  public function debug($parameters)
+  /*
+   * Render grantDeny boolean as string
+   *
+   * @return string
+   */
+  public function renderAccess()
   {
-    $debug  = 'permission_'.$this->id.'( ';
-    $debug .= 'userId: '.$this->userId.', ';
-    $debug .= 'groupId: '.$this->groupId.', ';
-    $debug .= 'objectId: '.$this->objectId.', ';
-    $debug .= 'actionId: '.$this->actionId.', ';
-    $debug .= 'grantDeny: '.$this->grantDeny.' )';
-    $debug .= "<br />\n";
-    echo $debug;
+    switch ($this->grantDeny)
+    {
+      case 1:
+        $access = 'Grant';
+        break;
+      case null:
+        $access = 'Inherit';
+        break;
+      default:
+        $access = 'Deny';
+    }
 
-    //var_dump($parameters);
+    return $access;
   }
 }

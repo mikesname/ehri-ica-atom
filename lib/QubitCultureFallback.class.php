@@ -35,15 +35,7 @@ class QubitCultureFallback
    */
   public static function addFallbackColumns($criteria, $fallbackClassName)
   {
-    // Get array of column names by getting a table map via MapBuilder class
-    // for passed fallback table
-    $mapBuilderClassName = substr($fallbackClassName, 5).'MapBuilder';
-    $objectMapBuilder = eval ('return new '.$mapBuilderClassName.';');
-    $tableName = eval('return '.$fallbackClassName.'::TABLE_NAME;');
-
-    // Build the database and table map, and then get tableMap
-    call_user_func(array($objectMapBuilder, 'doBuild'));
-    $tableMap = $objectMapBuilder->getDatabaseMap()->getTable($tableName);
+    $tableMap = eval('return new '.substr($fallbackClassName, 5).'TableMap;');
 
     // Loop through table columns and add fallback calculated fields to criteria
     foreach ($tableMap->getColumns() as $col)

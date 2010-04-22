@@ -129,6 +129,26 @@ class QubitMigrate
     {
       unset($this->data['QubitObjectTermRelation']);
     }
+
+    // Remove blank "stub" QubitRelation objects
+    if (isset($this->data['QubitRelation']) && is_array($this->data['QubitRelation']))
+    {
+      foreach ($this->data['QubitRelation'] as $key => $row)
+      {
+        if (!isset($row['object_id']) || !isset($row['subject_id']))
+        {
+          unset($this->data['QubitRelation'][$key]);
+        }
+      }
+    }
+
+    // If there are no QubitRelation objects left, remove the section
+    if ($this->data['QubitRelation'] == array())
+    {
+      unset($this->data['QubitRelation']);
+    }
+
+    return $this;
   }
 
   /*

@@ -1,5 +1,10 @@
 <?php
-// $Id $
+// $Id: query.inc,v 1.9 2009/11/02 00:19:27 webchick Exp $
+
+/**
+ * @file
+ * Query code for SQLite embedded database engine.
+ */
 
 /**
  * @ingroup database
@@ -16,21 +21,28 @@
 class InsertQuery_sqlite extends InsertQuery {
 
   public function execute() {
-    if (count($this->insertFields) + count($this->defaultFields) == 0) {
+    if (!$this->preExecute()) {
       return NULL;
     }
     if (count($this->insertFields)) {
       return parent::execute();
     }
     else {
-      return $this->connection->query('INSERT INTO {'. $this->table .'} DEFAULT VALUES', array(), $this->queryOptions);
+      return $this->connection->query('INSERT INTO {' . $this->table . '} DEFAULT VALUES', array(), $this->queryOptions);
     }
   }
 
   public function __toString() {
     // Produce as many generic placeholders as necessary.
     $placeholders = array_fill(0, count($this->insertFields), '?');
-    return 'INSERT INTO {'. $this->table .'} ('. implode(', ', $this->insertFields) .') VALUES ('. implode(', ', $placeholders) .')';
+
+    // If we're selecting from a SelectQuery, finish building the query and
+    // pass it back, as any remaining options are irrelevant.
+    if (!empty($this->fromQuery)) {
+      return "INSERT INTO {" . $this->table . '} (' . implode(', ', $this->insertFields) . ') ' . $this->fromQuery;
+    }
+
+    return 'INSERT INTO {' . $this->table . '} (' . implode(', ', $this->insertFields) . ') VALUES (' . implode(', ', $placeholders) . ')';
   }
 
 }
@@ -80,22 +92,19 @@ class UpdateQuery_sqlite extends UpdateQuery {
       if (is_array($data)) {
         // The field is an expression.
         $condition->condition($field, $data['expression'], '<>');
-        // The IS NULL operator is badly managed by DatabaseCondition.
-        $condition->where($field . ' IS NULL');
+        $condition->isNull($field);
       }
-      else if (is_null($data)) {
+      elseif (is_null($data)) {
         // The field will be set to NULL.
-        // The IS NULL operator is badly managed by DatabaseCondition.
-        $condition->where($field . ' IS NOT NULL');
+        $condition->isNull($field);
       }
       else {
         $condition->condition($field, $data, '<>');
-        // The IS NULL operator is badly managed by DatabaseCondition.
-        $condition->where($field . ' IS NULL');
+        $condition->isNull($field);
       }
     }
     if (count($condition)) {
-      $condition->compile($this->connection);
+      $condition->compile($this->connection, $this);
       $this->condition->where((string) $condition, $condition->arguments());
     }
     return parent::execute();
@@ -123,6 +132,18 @@ class DeleteQuery_sqlite extends DeleteQuery {
     else {
       return parent::execute();
     }
+  }
+}
+
+/**
+ * SQLite specific implementation of TruncateQuery.
+ *
+ * SQLite doesn't support TRUNCATE, but a DELETE query with no condition has
+ * exactly the effect (it is implemented by DROPing the table).
+ */
+class TruncateQuery_sqlite extends TruncateQuery {
+  public function __toString() {
+    return 'DELETE FROM {' . $this->connection->escapeTable($this->table) . '} ';
   }
 }
 

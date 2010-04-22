@@ -29,9 +29,54 @@
  */
 class ActorEditAction extends sfAction
 {
+  /**
+   * Define form field names
+   *
+   * @var string
+   */
+  public static $NAMES = array(
+    'entityType',
+    'authorizedFormOfName',
+    'parallelName',
+    'standardizedName',
+    'otherName',
+    'corporateBodyIdentifiers',
+    'datesOfExistence',
+    'history',
+    'places',
+    'legalStatus',
+    'functions',
+    'mandates',
+    'internalStructures',
+    'generalContext',
+    'descriptionIdentifier',
+    'institutionResponsibleIdentifier',
+    'rules',
+    'descriptionStatus',
+    'descriptionDetail',
+    'revisionHistory',
+    'language',
+    'script',
+    'sources',
+    'maintenanceNotes',
+    'relatedActor[authorizedFormOfName]',
+    'relatedActor[type]',
+    'relatedActor[description]',
+    'relatedActor[startDate]',
+    'relatedActor[endDate]',
+    'relatedActor[dateDisplay]',
+    'relatedResource[informationObject]',
+    'relatedResource[type]',
+    'relatedResource[resourceType]',
+    'relatedResource[startDate]',
+    'relatedResource[endDate]',
+    'relatedResource[dateDisplay]',
+  );
+
   public function execute($request)
   {
     $this->form = new sfForm;
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
     $this->actor = new QubitActor;
 
@@ -44,30 +89,31 @@ class ActorEditAction extends sfAction
         $this->forward404();
       }
 
+      // Check user authorization
+      if (!QubitAcl::check($this->actor, 'update'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
       // Add optimistic lock
       $this->form->setDefault('serialNumber', $this->actor->serialNumber);
       $this->form->setValidator('serialNumber', new sfValidatorInteger);
       $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
     }
-
-    //Other Forms of Name
-    $this->otherNames = $this->actor->getOtherNames();
-    $this->newName = new QubitActorName;
-
-    //Properties
-    $this->languageCodes = $this->actor->getProperties($name = 'language_of_actor_description');
-    $this->scriptCodes = $this->actor->getProperties($name = 'script_of_actor_description');
-
-    //Notes
-    $this->maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
+    else
+    {
+      // Check user authorization against Actor ROOT
+      if (!QubitAcl::check(QubitActor::getById(QubitActor::ROOT_ID), 'create'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+    }
 
     //Actor Relations
     $this->actorRelations = $this->actor->getActorRelations();
-    $this->actorRelationCategories = QubitTaxonomy::getTermsById(QubitTaxonomy::ACTOR_RELATION_TYPE_ID);
 
     //Related resources (events)
     $this->events = $this->actor->getEvents();
-    $this->eventTypes = QubitTerm::getOptionsForSelectList(QubitTaxonomy::EVENT_TYPE_ID);
     $this->resourceTypeTerms = array(QubitTerm::getById(QubitTerm::ARCHIVAL_MATERIAL_ID));
 
     if ($this->getRequestParameter('repositoryReroute'))
@@ -88,237 +134,444 @@ class ActorEditAction extends sfAction
       $this->informationObjectReroute = null;
     }
 
-    // Add javascript libraries to allow multiple instance select boxes
-    $this->getResponse()->addJavaScript('/vendor/jquery');
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
-    $this->getResponse()->addJavaScript('multiInstanceSelect');
+    // HACK: Use static::$NAMES in PHP 5.3,
+    // http://php.net/oop5.late-static-bindings
+    $class = new ReflectionClass($this);
+    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    {
+      $this->addField($name);
+    }
 
     if ($request->isMethod('post'))
     {
-      $this->updateActorAttributes();
-      $this->updateTermOneToManyRelations();
-      $this->updateProperties();
-      $this->updateActorRelations();
-      $this->deleteActorRelations();
-      $this->updateEvents();
-      $this->deleteEvents();
-      $this->updateNotes();
-      $this->deleteNotes();
+      $this->form->bind($request->getPostParameters());
 
-      $this->actor->save();
-
-      $this->updateOtherNames();
-
-      //set redirect if actor edit was called from another module
-      if ($this->getRequestParameter('repositoryReroute'))
+      if ($this->form->isValid())
       {
-        $this->redirect('repository/edit?id='.$this->getRequestParameter('repositoryReroute'));
-      }
+        $this->processForm();
 
-      if ($this->getRequestParameter('informationObjectReroute'))
-      {
-        $this->redirect('informationobject/edit?id='.$this->getRequestParameter('informationObjectReroute'));
-      }
-
-      $this->redirect(array('module' => 'actor', 'action' => 'show', 'id' => $this->actor->getId()));
-    }
-  }
-
-  public function updateActorAttributes()
-  {
-    $this->actor->setAuthorizedFormOfName($this->getRequestParameter('authorized_form_of_name'));
-    $this->actor->setDatesOfExistence($this->getRequestParameter('dates_of_existence'));
-    $this->actor->setCorporateBodyIdentifiers($this->getRequestParameter('corporate_body_identifiers'));
-    $this->actor->setHistory($this->getRequestParameter('history'));
-    $this->actor->setPlaces($this->getRequestParameter('places'));
-    $this->actor->setLegalStatus($this->getRequestParameter('legal_status'));
-    $this->actor->setFunctions($this->getRequestParameter('functions'));
-    $this->actor->setMandates($this->getRequestParameter('mandates'));
-    $this->actor->setInternalStructures($this->getRequestParameter('internal_structures'));
-    $this->actor->setGeneralContext($this->getRequestParameter('general_context'));
-    $this->actor->setDescriptionIdentifier($this->getRequestParameter('description_identifier'));
-    $this->actor->setInstitutionResponsibleIdentifier($this->getRequestParameter('institution_responsible_identifier'));
-    $this->actor->setRules($this->getRequestParameter('rules'));
-    $this->actor->setSources($this->getRequestParameter('sources'));
-    $this->actor->setRevisionHistory($this->getRequestParameter('revision_history'));
-
-  }
-
-  public function updateOtherNames()
-  {
-    if ($this->getRequestParameter('new_name'))
-    {
-      $this->actor->setOtherNames($this->getRequestParameter('new_name'), $this->getRequestParameter('new_name_type_id'), $this->getRequestParameter('new_name_note'));
-    }
-  }
-
-  public function updateTermOneToManyRelations()
-  {
-    if ($this->getRequestParameter('entity_type_id'))
-    {
-      $this->actor->setEntityTypeId($this->getRequestParameter('entity_type_id'));
-    }
-    else
-    {
-      $this->actor->setEntityTypeId(null);
-    }
-
-    if ($this->getRequestParameter('description_status_id'))
-    {
-      $this->actor->setDescriptionStatusId($this->getRequestParameter('description_status_id'));
-    }
-    else
-    {
-      $this->actor->setDescriptionStatusId(null);
-    }
-
-    if ($this->getRequestParameter('description_detail_id'))
-    {
-      $this->actor->setDescriptionDetailId($this->getRequestParameter('description_detail_id'));
-    }
-    else
-    {
-      $this->actor->setDescriptionDetailId(null);
-    }
-
-    $this->actor->save();
-  }
-
-  public function updateProperties()
-  {
-    // Add multiple languages of actor description
-    if ($language_codes = $this->getRequestParameter('language_code'))
-    {
-      // If string, turn into single element array
-      $language_codes = (is_array($language_codes)) ? $language_codes : array($language_codes);
-
-      foreach ($language_codes as $language_code)
-      {
-        if (strlen($language_code))
+        //set redirect if actor edit was called from another module
+        if ($this->getRequestParameter('repositoryReroute'))
         {
-          $this->actor->addProperty('language_of_actor_description', $language_code, array('source_culture'=>true, 'scope' => 'languages'));
-          $this->foreignKeyUpdate = true;
+          $this->redirect('repository/edit?id='.$this->getRequestParameter('repositoryReroute'));
         }
-      }
-    }
 
-    // Add multiple scripts of actor description
-    if ($script_codes = $this->getRequestParameter('script_code'))
-    {
-      // If string, turn into single element array
-      $script_codes = (is_array($script_codes)) ? $script_codes : array($script_codes);
-
-      foreach ($script_codes as $script_code)
-      {
-        if (strlen($script_code))
+        if ($this->getRequestParameter('informationObjectReroute'))
         {
-          $this->actor->addProperty($name = 'script_of_actor_description', $script_code, array('source_culture'=>true, 'scope' => 'scripts'));
-          $this->foreignKeyUpdate = true;
+          $this->redirect('informationobject/edit?id='.$this->getRequestParameter('informationObjectReroute'));
         }
+
+        $this->redirect(array($this->actor, 'module' => 'actor'));
       }
     }
   }
 
-  public function updateObjectTermRelations()
+  public function addField($name)
   {
-  }
-
-  public function updateEventRelations()
-  {
-    //used to be updateInformationObjectRelations - TO DO: update to handle relations via Event object
-
-    if ($this->getRequestParameter('informationObjectId'))
+    switch ($name)
     {
-      if ($this->getRequestParameter('actor_role_id'))
-      {
-        $actorRoleId = $this->getRequestParameter('actor_role_id');
-      }
-      else
-      {
-        //default role is Creator
-        $actorRoleId = QubitTerm::EXISTENCE_ID;
-      }
+      case 'entityType':
+        $choices = array();
+        $choices[null] = null;
 
-      $this->actor->addInformationObjectRelation($this->getRequestParameter('informationObjectId'), $actorRoleId, $this->getRequestParameter('relation_dates'));
+        foreach (QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::ACTOR_ENTITY_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        if (null !== $this->actor->entityTypeId)
+        {
+          $this->form->setDefault($name, $this->context->routing->generate(null, array('module' => 'term', 'id' => $this->actor->entityTypeId)));
+        }
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'parallelName':
+      case 'standardizedName':
+      case 'otherName':
+        $criteria = new Criteria;
+        $criteria = $this->actor->addotherNamesCriteria($criteria);
+
+        switch ($name)
+        {
+          case 'parallelName':
+            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::PARALLEL_FORM_OF_NAME_ID);
+            break;
+          case 'standardizedName':
+            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::STANDARDIZED_FORM_OF_NAME_ID);
+            break;
+          default:
+            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID);
+        }
+
+        $values = $defaults = array();
+        if (0 < count($otherNames = QubitOtherName::get($criteria)))
+        {
+          foreach ($otherNames as $otherName)
+          {
+            $values[] = $otherName->id;
+            $defaults[$otherName->id] = $otherName;
+          }
+        }
+
+        $this->form->setDefault($name, $values);
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults)));
+
+        break;
+
+      case 'descriptionStatus':
+      case 'descriptionDetail':
+        if (null !== $this->actor[$name.'Id'])
+        {
+          $this->form->setDefault($name, $this->context->routing->generate(null, array('module' => 'term', 'id' => $this->actor[$name.'Id'])));
+        }
+
+        $choices = array();
+        $choices[null] = null;
+
+        if ('descriptionStatus' == $name)
+        {
+          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID);
+        }
+        else
+        {
+          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID);
+        }
+
+        foreach ($terms as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'language':
+        $this->form->setDefault($name, $this->actor[$name]);
+        $this->form->setValidator($name, new sfValidatorI18nChoiceLanguage(array('multiple' => true)));
+        $this->form->setWidget($name, new sfWidgetFormI18nSelectLanguage(array('culture' => $this->context->user->getCulture(), 'multiple' => true)));
+
+        break;
+
+      case 'script':
+        $this->form->setDefault($name, $this->actor[$name]);
+        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
+        $this->form->setValidator($name, new sfValidatorChoice(array('choices' => array_keys($c->getScripts()), 'multiple' => true)));
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $c->getScripts(), 'multiple' => true)));
+
+        break;
+
+      case 'maintenanceNotes':
+        $this->maintenanceNote = null;
+
+        // Check for existing maintenance note related to this object
+        $maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
+
+        if (0 < count($maintenanceNotes))
+        {
+          $this->maintenanceNote = $maintenanceNotes[0];
+          $this->form->setDefault($name, $this->maintenanceNote->content);
+        }
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
+
+      case 'authorizedFormOfName':
+      case 'corporateBodyIdentifiers':
+      case 'datesOfExistence':
+      case 'descriptionIdentifier':
+      case 'institutionResponsibleIdentifier':
+        $this->form->setDefault($name, $this->actor[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'history':
+      case 'places':
+      case 'legalStatus':
+      case 'functions':
+      case 'mandates':
+      case 'internalStructures':
+      case 'generalContext':
+      case 'rules':
+      case 'revisionHistory':
+      case 'sources':
+        $this->form->setDefault($name, $this->actor[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
+
+      case 'relatedActor[authorizedFormOfName]':
+      case 'relatedResource[informationObject]':
+        $choices = array();
+
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedActor[type]':
+        $this->form->setValidator($name, new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::ACTOR_RELATION_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedResource[type]':
+        $this->form->setValidator($name, new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::EVENT_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedResource[resourceType]':
+        $term = QubitTerm::getById(QubitTerm::ARCHIVAL_MATERIAL_ID);
+
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setDefault($name, $this->context->routing->generate(null, array($term, 'module' => 'term')));
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' =>
+          array($this->context->routing->generate(null, array($term, 'module' => 'term')) => $term))));
+
+        break;
+
+      case 'relatedActor[startDate]':
+      case 'relatedActor[endDate]':
+      case 'relatedActor[dateDisplay]':
+      case 'relatedResource[startDate]':
+      case 'relatedResource[endDate]':
+      case 'relatedResource[dateDisplay]':
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'relatedActor[description]':
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
     }
   }
 
   /**
-   * Update actor relationships
+   * Process form fields
    *
-   * @return ActorEditAction $this object
+   * @param $field mixed symfony form widget
+   * @return void
    */
-  protected function updateActorRelations()
+  protected function processField($field)
   {
-    if ($this->hasRequestParameter('updateActorRelations'))
+    switch ($name = $field->getName())
     {
-      // Data from YUI dialog
-      $actorRelationData = $this->getRequestParameter('updateActorRelations');
-    }
-    else
-    {
-      // Data from plain html folm
-      $actorRelationData = array($this->getRequestParameter('editActorRelation'));
-    }
+      case 'entityType':
+        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
+        $fieldId = (isset($params['id'])) ? $params['id'] : null;
+        $this->actor[$name.'Id'] = $fieldId;
 
-    foreach ($actorRelationData as $actorRelationRow)
-    {
-      // If no actor name specified then don't update this actor relation
-      if (0 == strlen($relatedActorName = $actorRelationRow['actorName']))
-      {
-        continue;
-      }
+        break;
 
-      // If related actor doesn't exist, create a new actor
-      if (null === ($relatedActor = QubitActor::getByAuthorizedFormOfName($relatedActorName)))
-      {
-        $relatedActor = new QubitActor;
-        $relatedActor->setAuthorizedFormOfName($relatedActorName);
-        $relatedActor->save();
-      }
+      case 'parallelName':
+      case 'standardizedName':
+      case 'otherName':
+        $defaults = $this->form->getWidget($name)->getOption('defaults');
 
-      // Create/edit relation
-      if (isset($actorRelationRow['id']))
-      {
-        if (null === ($relation = QubitRelation::getById($actorRelationRow['id'])))
+        if (null !== $this->form->getValue($name))
         {
-          throw new sfException('Relation id '.$actorRelationRow['id'].' does not exist.');
+          foreach ($this->form->getValue($name) as $key => $thisName)
+          {
+            if ('new' == substr($key, 0, 3) && 0 < strlen(trim($thisName)))
+            {
+              $otherName = new QubitOtherName;
+
+              switch ($name)
+              {
+                case 'parallelName':
+                  $otherName->typeId = QubitTerm::PARALLEL_FORM_OF_NAME_ID;
+                  break;
+                case 'standardizedName':
+                  $otherName->typeId = QubitTerm::STANDARDIZED_FORM_OF_NAME_ID;
+                  break;
+                default:
+                  $otherName->typeId = QubitTerm::OTHER_FORM_OF_NAME_ID;
+              }
+            }
+            else
+            {
+              $otherName = QubitOtherName::getById($key);
+              if (null === $otherName)
+              {
+                continue;
+              }
+
+              // Don't delete this name
+              unset($defaults[$key]);
+            }
+
+            $otherName->name = $thisName;
+            $this->actor->otherNames[] = $otherName;
+          }
+        }
+
+        // Delete any names that are missing from form data
+        foreach ($defaults as $key => $val)
+        {
+          if (null !== ($otherName = QubitOtherName::getById($key)))
+          {
+            $otherName->delete();
+          }
+        }
+
+        break;
+
+      case 'descriptionStatus':
+      case 'descriptionDetail':
+        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
+        $fieldId = (isset($params['id'])) ? $params['id'] : null;
+        $this->actor[$name.'Id'] = $fieldId;
+
+        break;
+
+      case 'maintenanceNotes':
+        // Check for existing maintenance note related to this object
+        $maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
+
+        if (0 < count($maintenanceNotes))
+        {
+          $note = $maintenanceNotes[0];
+        }
+        else if (null !== $this->form->getValue($name))
+        {
+          // Create a maintenance note for this object if one doesn't exist
+          $note = new QubitNote;
+          $note->typeId = QubitTerm::MAINTENANCE_NOTE_ID;
         }
         else
         {
-          // Update related actor based on current direction of relationship
-          if ($this->actor->getId() == $relation->getSubjectId())
-          {
-            $relation->setObjectId($relatedActor->getId());
-          }
-          else if ($this->actor->getId() == $relation->getObjectId())
-          {
-            $relation->setSubjectId($relatedActor->getId());
-          }
-          else
-          {
-            throw new sfException('Invalid relation.');
-          }
+
+          break;
+        }
+
+        $note->content = $this->form->getValue($name);
+
+        $this->actor->notes[] = $note;
+
+        break;
+
+      default:
+        $this->actor[$field->getName()] = $this->form->getValue($field->getName());
+    }
+  }
+
+  protected function processForm()
+  {
+    foreach ($this->form as $field)
+    {
+      $this->processField($field);
+    }
+
+    $this->updateActorRelations();
+    $this->deleteActorRelations();
+    $this->updateEvents();
+    $this->deleteEvents();
+
+    $this->actor->save();
+  }
+
+  /**
+   * Update actor relationships
+   */
+  protected function updateActorRelations()
+  {
+    if ($this->hasRequestParameter('relatedActors'))
+    {
+      // Javascript (multiple) update
+      $relationsData = $this->getRequestParameter('relatedActors');
+    }
+    else if ($this->hasRequestParameter('relatedActor'))
+    {
+      // Non-javascript (single) update
+      $relationsData = array($this->getRequestParameter('relatedActor'));
+    }
+    else
+    {
+      return;
+    }
+
+    // Loop through related actors
+    foreach ($relationsData as $relationData)
+    {
+      // Get related actor
+      $params = $this->context->routing->parse(Qubit::pathInfo($relationData['authorizedFormOfName']));
+      $relatedObjectId = (isset($params['id'])) ? $params['id'] : null;
+      if (null === $relatedObject = QubitActor::getById($relatedObjectId))
+      {
+        continue; // If no related object, skip update
+      }
+
+      // Get relation
+      if (isset($relationData['id']))
+      {
+        $params = $this->context->routing->parse(Qubit::pathInfo($relationData['id']));
+
+        if (null === $relation = QubitRelation::getById($params['id']))
+        {
+          // If a relation id is passed, but relation object doesn't exist then
+          // skip this row
+          continue;
         }
       }
       else
       {
         $relation = new QubitRelation;
-        $relation->setSubjectId($this->actor->getId());
-        $relation->setObjectId($relatedActor->getId());
       }
 
-      $relation->setTypeId($actorRelationRow['categoryId']);
-      $relation->setStartDate(QubitDate::standardize($actorRelationRow['startDate']));
-      $relation->setEndDate(QubitDate::standardize($actorRelationRow['endDate']));
+      // Set category (typeId)
+      $params = $this->context->routing->parse(Qubit::pathInfo($relationData['type']));
+      $typeId = (isset($params['id'])) ? $params['id'] : null;
+      $relation->typeId = $typeId;
 
-      // Save new relation and related actor
-      $relatedActor->save();
-      $relation->save();
+      $relation->startDate = QubitDate::standardize($relationData['startDate']);
+      $relation->endDate = QubitDate::standardize($relationData['endDate']);
 
-      // Add notes (after save of $relation so we have an object_id)
-      $relation->updateNote($actorRelationRow['description'], QubitTerm::RELATION_NOTE_DESCRIPTION_ID);
-      $relation->updateNote($actorRelationRow['dateDisplay'], QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID);
+      // Add notes
+      $relation->updateNote($relationData['description'], QubitTerm::RELATION_NOTE_DESCRIPTION_ID);
+      $relation->updateNote($relationData['dateDisplay'], QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID);
+
+      // Default to current actor as the subject of the relationship
+      if ($relation->subjectId == $this->actor->id || null == $relation->subjectId)
+      {
+        $relation->object = $relatedObject;
+        $this->actor->relationsRelatedBysubjectId[] = $relation;
+      }
+      else
+      {
+        $relation->subject = $relatedObject;
+        $this->actor->relationsRelatedByobjectId[] = $relation;
+      }
     }
 
     return $this;
@@ -335,6 +588,7 @@ class ActorEditAction extends sfAction
       }
     }
   }
+
   /**
    * Add or update events related to this actor
    *
@@ -342,15 +596,15 @@ class ActorEditAction extends sfAction
    */
   protected function updateEvents()
   {
-    if ($this->hasRequestParameter('updateEvents'))
+    if ($this->hasRequestParameter('relatedResources'))
     {
       // The 'updateEvents' array is created by the actorEventDialog.js
-      $updateEvents = $this->getRequestParameter('updateEvents');
+      $updateEvents = $this->getRequestParameter('relatedResources');
     }
-    else if ($this->hasRequestParameter('newEvent'))
+    else if ($this->hasRequestParameter('relatedResource'))
     {
       // The 'newEvent' array means a non-javascript form submission
-      $updateEvents = array($this->getRequestParameter('newEvent'));
+      $updateEvents = array($this->getRequestParameter('relatedResource'));
     }
     else
     {
@@ -363,7 +617,8 @@ class ActorEditAction extends sfAction
       // Create new event or update an existing one
       if (isset($eventFormData['id']))
       {
-        if (null === $event = QubitEvent::getById($eventFormData['id']))
+        $params = $this->context->routing->parse(Qubit::pathInfo($eventFormData['id']));
+        if (null === $event = QubitEvent::getById($params['id']))
         {
           continue; // If we can't find the object, then skip this row
         }
@@ -374,45 +629,29 @@ class ActorEditAction extends sfAction
       }
 
       // Assign resource to event
-      if (0 == strlen($eventFormData['resourceTitle']))
+      if (0 == strlen($eventFormData['informationObject']))
       {
         continue; // If no resource name, don't update event
       }
       else
       {
-        // Create resource object (only type is "archival material" right now)
-        if (QubitTerm::ARCHIVAL_MATERIAL_ID == $eventFormData['resourceTypeId'])
-        {
-          // Check if info object already exists
-          $criteria = new Criteria;
-          $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID, Criteria::INNER_JOIN);
-          $criteria->add(QubitInformationObjectI18n::TITLE, $eventFormData['resourceTitle'], Criteria::EQUAL);
-          if (null === ($resource = QubitInformationObject::getOne($criteria)))
-          {
-            $resource = new QubitInformationObject;
-            $resource->setTitle($eventFormData['resourceTitle']);
-            $resource->setCollectionTypeId($eventFormData['resourceTypeId']);
-            $resource->setParentId(QubitInformationObject::ROOT_ID);
-            $resource->save();
-          }
-        }
-        else
-        {
-          continue;
-        }
+        $params = $this->context->routing->parse(Qubit::pathInfo($eventFormData['informationObject']));
 
         // Assign resource to event
-        $event->setInformationObjectId($resource->getId());
+        $event->informationObjectId = $params['id'];
       }
 
-      // Update other event properties
-      $event->setActorId($this->actor->getId());
-      $event->setTypeId($eventFormData['typeId']);
-      $event->setDateDisplay($eventFormData['dateDisplay']);
-      $event->setStartDate(QubitDate::standardize($eventFormData['startDate']));
-      $event->setEndDate(QubitDate::standardize($eventFormData['endDate']));
+      // Set type
+      $params = $this->context->routing->parse(Qubit::pathInfo($eventFormData['type']));
+      $typeId = (isset($params['id'])) ? $params['id'] : null;
+      $event->typeId = $typeId;
 
-      $event->save();
+      // Update other event properties
+      $event->dateDisplay = $eventFormData['dateDisplay'];
+      $event->startDate = QubitDate::standardize($eventFormData['startDate']);
+      $event->endDate = QubitDate::standardize($eventFormData['endDate']);
+
+      $this->actor->events[] = $event;
     }
 
     return $this;
@@ -438,38 +677,4 @@ class ActorEditAction extends sfAction
 
     return $this;
   }
-
-  public function updateNotes()
-  {
-    // Update maintenance notes (multiple)
-    foreach ((array) $this->getRequestParameter('new_maintenance_note') as $newNote)
-    {
-      if (0 < strlen($newNote))
-      {
-        $this->actor->setNote(array('userId' => $userId, 'note' => $newNote, 'noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
-      }
-    }
-
-    return $this;
-  }
-
-  /**
-   * Delete related notes marked for deletion.
-   *
-   * @param sfRequest request object
-   */
-  public function deleteNotes()
-  {
-    if (is_array($deleteNotes = $this->request->getParameter('delete_notes')) && count($deleteNotes))
-    {
-      foreach ($deleteNotes as $noteId => $doDelete)
-      {
-        if ($doDelete == 'delete' && !is_null($deleteNote = QubitNote::getById($noteId)))
-        {
-          $deleteNote->delete();
-        }
-      }
-    }
-  }
-
 }

@@ -1,45 +1,46 @@
-<div class="pageTitle"><?php echo __('list %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></div>
+<h1><?php echo __('List %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></h1>
 
-<table class="list">
-<thead>
-  <tr>
-    <th>
-      <?php echo __('title'); ?>
-      <?php if (QubitAcl::check($informationObject, QubitAclAction::CREATE_ID)): ?>
-        <span class="th-link"><?php echo link_to(__('add new'), array('module' => 'informationobject', 'action' => 'create', 'parent' => url_for(array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->id)))) ?></span>
-      <?php endif; ?>
-    </th>
-    <?php if (sfConfig::get('app_multi_repository')): ?>
-      <th><?php echo __(sfConfig::get('app_ui_label_repository')); ?></th>
-    <?php else: // NOT multi-repostiory: show creators ?>
-      <th><?php echo __('creator(s)') ?></th>
-    <?php endif; ?>
-  </tr>
-</thead>
-<tbody>
-<?php foreach ($informationObjects as $informationObject): ?>
-  <tr>
-    <td>
-      <?php echo link_to(render_title($informationObject), array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->id)) ?>
-      <?php $status = $informationObject->getPublicationStatus() ?>
-      <?php if ($status->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID): ?><span class="note2"><?php echo ' ('.$status->status.')' ?></span><?php endif; ?>
-    </td>
-  <?php if (sfConfig::get('app_multi_repository')): // multi-repository: show related repository ?>
-    <td>
-      <?php if (isset($informationObject->repository)): ?>
-        <?php echo link_to(render_title($informationObject->repository), array('module' => 'repository', 'action' => 'show', 'id' => $informationObject->repository->id)) ?>
-      <?php endif; ?>
-    </td>
-  <?php else: // NOT multi-repostiory: show creators as list ?>
-    <td><ul class="nobullet">
-    <?php foreach ($informationObject->getCreators() as $creator): ?>
-      <li><?php echo link_to(render_title($creator), array('module' => 'actor', 'action' => 'show', 'id' => $creator->id)) ?></li>
+<?php if (isset($sf_request->id)): ?>
+  <?php echo get_partial('default/breadcrumb', array('objects' => $informationObject->ancestors->andSelf())) ?>
+<?php endif; ?>
+
+<table class="sticky-enabled">
+  <thead>
+    <tr>
+      <th>
+        <?php echo __('Title') ?>
+        <?php if (QubitAcl::check($informationObject, 'create')): ?>
+          <?php echo link_to(__('Add new'), array('module' => 'informationobject', 'action' => 'create', 'parent' => url_for(array($informationObject, 'module' => 'informationobject')))) ?>
+        <?php endif; ?>
+      </th><th>
+        <?php if (sfConfig::get('app_multi_repository')): ?>
+          <?php echo __(sfConfig::get('app_ui_label_repository')) ?>
+        <?php else: ?>
+          <?php echo __('Creator(s)') ?>
+        <?php endif; ?>
+      </th>
+    </tr>
+  </thead><tbody>
+    <?php foreach ($informationObjects as $item): ?>
+      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+        <td>
+          <?php echo link_to(render_title($item), array($item, 'module' => 'informationobject')) ?><?php if (QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $item->getPublicationStatus()->status->id): ?> <span class="publicationStatus"><?php echo $item->getPublicationStatus()->status ?></span><?php endif; ?>
+        </td><td>
+          <?php if (sfConfig::get('app_multi_repository')): ?>
+            <?php if (isset($item->repository)): ?>
+              <?php echo link_to(render_title($item->repository), array($item->repository, 'module' => 'repository')) ?>
+            <?php endif; ?>
+          <?php else: ?>
+            <ul>
+              <?php foreach ($item->getCreators() as $creator): ?>
+                <li><?php echo link_to(render_title($creator), array($creator, 'module' => 'actor')) ?></li>
+              <?php endforeach; ?>
+            </ul>
+          <?php endif; ?>
+        </td>
+      </tr>
     <?php endforeach; ?>
-    </ul></td>
-  <?php endif; ?>
-  </tr>
-<?php endforeach; ?>
-</tbody>
+  </tbody>
 </table>
 
 <?php echo get_partial('default/pager', array('pager' => $pager)) ?>

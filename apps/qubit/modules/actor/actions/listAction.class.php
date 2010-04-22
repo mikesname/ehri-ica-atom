@@ -30,53 +30,26 @@ class ActorListAction extends sfAction
 {
   public function execute($request)
   {
-    $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($request->getPathInfoPrefix(), '/').'/', null, $request->getHttpHeader('Referer')));
-    if ($request->isXmlHttpRequest() && 'actor' == $params['module'])
+    if (!isset($request->limit))
     {
-      return $this->ajaxResponse($request);
-    }
-    else
-    {
-      $this->htmlResponse($request);
-    }
-  }
-
-  protected function ajaxResponse($request)
-  {
-    $criteria = new Criteria;
-    $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
-    $criteria->add(QubitActorI18n::CULTURE, $this->getUser()->getCulture(), Criteria::EQUAL);
-
-    // Exclude the calling actor from the list
-    if (0 < strlen ($notId = $request->getParameter('not')))
-    {
-      $criteria->add(QubitActor::ID, $notId, Criteria::NOT_EQUAL);
-    }
-    $criteria->addAscendingOrderByColumn(QubitActorI18n::AUTHORIZED_FORM_OF_NAME);
-    $criteria->setLimit(10);
-
-    $actors = QubitActor::get($criteria);
-    foreach ($actors as $actor)
-    {
-      $results[] = array('id' => $actor->id, 'name' => $actor->authorizedFormOfName);
+      $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    return $this->renderText(json_encode(array('Results' => $results)));
-  }
-
-  protected function htmlResponse($request)
-  {
     $search = new QubitSearch;
-    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitActor', 'className'));
+
+    $query = new Zend_Search_Lucene_Search_Query_Boolean;
+    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitActor', 'className')), true /* required */);
 
     if (isset($request->query))
     {
-      $query = new Zend_Search_Lucene_Search_Query_Boolean(array($query, Zend_Search_Lucene_Search_QueryParser::parse($request->query)));
+      $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->query), true /* required */);
     }
 
-    $this->pager = new QubitSearchPager;
+    $query = QubitAcl::searchFilterByResource($query, QubitActor::getById(QubitActor::ROOT_ID));
+
+    $this->pager = new QubitArrayPager;
     $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 
     $ids = array();
@@ -87,6 +60,7 @@ class ActorListAction extends sfAction
 
     $criteria = new Criteria;
     $criteria->add(QubitActor::ID, $ids, Criteria::IN);
+
     $this->actors = QubitActor::get($criteria);
   }
 }

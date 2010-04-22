@@ -1,48 +1,73 @@
 // $Id$
 
-Qubit.treeView = Qubit.treeView || {};
+(function ($)
+  {
+    Qubit.treeView = Qubit.treeView || {};
 
-Drupal.behaviors.treeView = {
-
-  attach: function (context)
+    function getMoveActionUrl(href)
     {
-      // Build tree function
-      function build(objects, expands, parentId, parentNode)
-      {
-        while (objects.length > 0 && objects[0].parentId == parentId)
+      return href.replace(/(\d+)([;!\/]).*/, '$1$2default/move');
+    }
+
+    Drupal.behaviors.treeView = {
+
+      attach: function (context)
         {
-          var object = objects.shift();
-          var textNode = new YAHOO.widget.TextNode(object, parentNode, expands[object.id] !== undefined);
-          textNode.isLeaf = object.isLeaf;
-          textNode.qubit_id = object.id;
-
-          if (object.style == 'ygtvlabel currentTextNode')
+          // Build tree function
+          function build(objects, expands, parentId, parentNode)
           {
-            textNode.highlight();
-          }
+            while (objects.length > 0 && objects[0].parentId == parentId)
+            {
+              var object = objects.shift();
+              var textNode = new YAHOO.widget.TextNode(object, parentNode, expands[object.id] !== undefined);
+              textNode.isLeaf = object.isLeaf;
 
-          if (Qubit.treeView.draggable)
-          {
-            var dd = new YAHOO.util.DDProxy(textNode.labelElId);
-
-            dd.invalidHandleTypes = {};
-
-            dd.onDragDrop = function (event, id)
+              if (object.style == 'ygtvlabel currentTextNode')
               {
-                var textNode = parentNode.tree.getNodeByElement(this.getEl());
+                textNode.highlight();
+                Qubit.treeView.currentNodeId = object.id;
+              }
 
-                var newParent = parentNode.tree.getNodeByElement($('#' + id)[0]);
+              var dd = new YAHOO.util.DDProxy(textNode.labelElId);
 
-                if (parentNode.contentElId == newParent.contentElId)
+              dd.invalidHandleTypes = {};
+
+              dd.clickValidator = function (event)
                 {
-                  $('#' + id).css('font-weight', 'normal');
-                  return false;
-                }
+                  var textNode = parentNode.tree.getNodeByElement(this.getEl());
 
-                jQuery.ajax({
-                  data: { parent: newParent.qubit_id },
-                  type: 'POST',
-                  url: textNode.href.replace(/\/(informationobject|term)\/\D*(\d+)/, '/$1/move/$2') });
+                  if (!Qubit.treeView.draggable || textNode.parent.isRoot())
+                  {
+                    YAHOO.util.Event.preventDefault(event);
+
+                    return false;
+                  }
+
+                  return true;
+                };
+
+              dd.onDragDrop = function (event, id)
+                {
+                  var textNode = parentNode.tree.getNodeByElement(this.getEl());
+
+                  var newParent = parentNode.tree.getNodeByElement($('#' + id)[0]);
+
+                  if (parentNode.contentElId == newParent.contentElId)
+                  {
+
+                    return false;
+                  }
+
+                  if ($(textNode.getEl()).has(newParent.getEl()).length)
+                  {
+
+                    return false;
+                  }
+
+                  jQuery.ajax({
+                    data: { parent: newParent.href },
+                    type: 'POST',
+                    url: getMoveActionUrl(textNode.href) });
 
                 parentNode.tree.popNode(textNode);
 
@@ -85,63 +110,100 @@ Drupal.behaviors.treeView = {
                 {
                   newParent.isLeaf = false;
                   newParent.refresh();
+                  newParent.applyParent();
+                  newParent.childrenRendered = false;
                 }
+              };
 
-                if (textNode.highlightState > 0)
+            dd.onDragOver = function (event, id)
+              {
+                var dest = $('#' + id);
+                var destEl = parentNode.tree.getNodeByElement(dest[0]);
+                var el = parentNode.tree.getNodeByElement(this.getEl());
+
+                if (el.parent.getElId() == destEl.getElId() || dest.hasClass('currentTextNode'))
                 {
-                  // TODO: expand parent nodes to avoid getting hidden
+
+                  return false;
                 }
+
+                if ($(el.getEl()).has(destEl.getEl()).length)
+                {
+
+                  return false;
+                }
+
+                dest.addClass('onDragOver');
               };
 
-            dd.onDragOver = function (e, id)
+            dd.onDragOut = function (event, id)
               {
-                $('#' + id).css('font-weight', 'bold');
+                $('#' + id).removeClass('onDragOver');
               };
 
-            dd.onDragOut = function (e, id)
-              {
-                $('#' + id).css('font-weight', 'normal');
+            dd.startDrag = function() {
+                var el = $(this.getEl());
+                var proxyEl = $(this.getDragEl());
+
+                el.addClass('onDrag');
+                proxyEl.html(el.html());
+                proxyEl.addClass('proxyTextNode');
               };
 
             dd.endDrag = function ()
               {
+                $(this.getEl()).removeClass('onDrag');
               };
+
+            build(objects, expands, object.id, textNode);
+          }
+        }
+
+        function loadNodeData(node, fnLoadComplete)
+        {
+          var nodeId = node.data.id;
+
+          if (Qubit.treeView.expands[nodeId])
+          {
+            return fnLoadComplete();
           }
 
-          build(objects, expands, object.id, textNode);
-        }
-      }
+          jQuery.ajax({
 
-      function loadNodeData(node, fnLoadComplete)
-      {
-        var nodeId = node.data.id;
+            data: { id: nodeId },
+            dataType: 'json',
+            timeout: 7000,
+            url: Qubit.treeView.Url,
 
-        if (Qubit.treeView.expands[nodeId])
-        {
-          return fnLoadComplete();
-        }
+            error: fnLoadComplete,
 
-        jQuery.ajax({
-
-          data: { id: nodeId },
-          dataType: 'json',
-          timeout: 7000,
-          url: Qubit.treeView.Url,
-
-          error: fnLoadComplete,
-
-          success: function (data)
-            {
-              for (var i = 0; i < data.length; i++)
+            success: function (data)
               {
-                var textNode = new YAHOO.widget.TextNode(data[i], node, false);
-                textNode.isLeaf = data[i].isLeaf;
-
-                if (Qubit.treeView.draggable)
+                for (var i = 0; i < data.length; i++)
                 {
+                  var textNode = new YAHOO.widget.TextNode(data[i], node, false);
+                  textNode.isLeaf = data[i].isLeaf;
+
+                  if (Qubit.treeView.currentNodeId == data[i].id)
+                  {
+                    textNode.labelStyle = 'ygtvlabel currentTextNode';
+                  }
+
                   var dd = new YAHOO.util.DDProxy(textNode.labelElId);
 
                   dd.invalidHandleTypes = {};
+
+                  dd.clickValidator = function (event)
+                    {
+                      if (!Qubit.treeView.draggable)
+                      {
+                        YAHOO.util.Event.preventDefault(event);
+
+                        return false;
+                      }
+
+                      return true;
+                    };
 
                   dd.onDragDrop = function (event, id)
                     {
@@ -151,14 +213,20 @@ Drupal.behaviors.treeView = {
 
                       if (newParent.contentElId == node.contentElId)
                       {
-                        $('#' + id).css('font-weight', 'normal');
+
+                        return false;
+                      }
+
+                      if ($(textNode.getEl()).has(newParent.getEl()).length)
+                      {
+
                         return false;
                       }
 
                       jQuery.ajax({
-                        data: { parent: newParent.qubit_id },
+                        data: { parent: newParent.href },
                         type: 'POST',
-                        url: textNode.href.replace(/\/(informationobject|term)\/\D*(\d+)/, '/$1/move/$2') });
+                        url: getMoveActionUrl(textNode.href) });
 
                       node.tree.popNode(textNode);
 
@@ -200,43 +268,92 @@ Drupal.behaviors.treeView = {
                       else if (newParent.isLeaf)
                       {
                         newParent.isLeaf = false;
+                        newParent.refresh();
+                        newParent.applyParent();
+                        newParent.childrenRendered = false;
                       }
+                    };
 
-                      if (textNode.highlightState > 0)
+                  dd.onDragOver = function (event, id)
+                    {
+                      var dest = $('#' + id);
+                      var destEl = node.tree.getNodeByElement(dest[0]);
+                      var el = node.tree.getNodeByElement(this.getEl());
+
+                      if (el.parent.getElId() == destEl.getElId() || dest.hasClass('currentTextNode'))
                       {
-                        // TODO: expand parent nodes to avoid getting hidden
+
+                        return false;
                       }
+
+                      if ($(el.getEl()).has(destEl.getEl()).length)
+                      {
+
+                        return false;
+                      }
+
+                      dest.addClass('onDragOver');
                     };
 
-                  dd.onDragOver = function (e, id)
+                  dd.onDragOut = function (event, id)
                     {
-                      $('#' + id).css('font-weight', 'bold');
+                      $('#' + id).removeClass('onDragOver');
                     };
 
-                  dd.onDragOut = function (e, id)
+                  dd.startDrag = function()
                     {
-                      $('#' + id).css('font-weight', 'normal');
+                      var el = $(this.getEl());
+                      var proxyEl = $(this.getDragEl());
+
+                      el.addClass('onDrag');
+                      proxyEl.html(el.html());
+                      proxyEl.addClass('proxyTextNode');
                     };
 
                   dd.endDrag = function ()
                     {
+                      $(this.getEl()).removeClass('onDrag');
                     };
                 }
-              }
 
-              return fnLoadComplete();
-            } });
-      }
+                return fnLoadComplete();
+              } });
+        }
 
-      // Create a new tree
-      Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
+        // Create a new tree
+        Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
 
-      // Turn dynamic loading on for entire tree
-      Qubit.treeView.treeView.setDynamicLoad(loadNodeData);
+        // Turn dynamic loading on for entire tree
+        Qubit.treeView.treeView.setDynamicLoad(loadNodeData);
 
-      // Build tree
-      build(Qubit.treeView.objects, Qubit.treeView.expands, Qubit.treeView.objects[0].parentId, Qubit.treeView.treeView.getRoot());
+        // Build tree
+        build(Qubit.treeView.objects, Qubit.treeView.expands, Qubit.treeView.objects[0].parentId, Qubit.treeView.treeView.getRoot());
 
-      // Render tree
-      Qubit.treeView.treeView.render();
-    } };
+        // Render tree
+        Qubit.treeView.treeView.render();
+
+        // 'See all' button
+        $('a.seeAllNode').live('click', function()
+          {
+            // Set button loading message
+            $(this).text(Qubit.treeView.i18nLoading);
+
+            var parentNode = Qubit.treeView.treeView.getNodeByElement(this).parent;
+
+            // Remove from expands
+            Qubit.treeView.expands[parentNode.data.id] = null;
+
+            parentNode.focus();
+
+            parentNode.tree.removeChildren(parentNode);
+
+            parentNode.expand();
+
+            return false;
+          });
+
+        // Enable logger (useful for debugging)
+        // $('body').prepend('<div id="logw" style="position: absolute; top: 10px; left: 10px; width: 320px; height: 400px;"></div>');
+        // var myLogReader = new YAHOO.widget.LogReader("logw");
+      } };
+  })(jQuery);

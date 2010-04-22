@@ -29,28 +29,47 @@ class DigitalObjectDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $digitalObject = QubitDigitalObject::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($digitalObject);
+    $this->form = new sfForm();
+
+    $this->digitalObject = QubitDigitalObject::getById($request->id);
+
+    // Check that object exists
+    $this->forward404Unless($this->digitalObject);
 
     // Get related information object by first grabbing top-level digital object
-    $parent = $digitalObject->getParent();
+    $parent = $this->digitalObject->parent;
     if (null == $parent)
     {
-      $informationObject = $digitalObject->getInformationObject();
-      $this->forward404Unless($informationObject);
-    }
-
-    //delete the digital object record from the database
-    $digitalObject->delete();
-
-    // Redirect to edit page for parent Info Object
-    if (null !== $parent)
-    {
-      $this->redirect(array('module' => 'digitalobject', 'action' => 'edit', 'id' => $parent->id));
+      $this->informationObject = $this->digitalObject->informationObject;
+      $this->forward404Unless($this->informationObject);
     }
     else
     {
-      $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->id));
+      $this->informationObject = $parent->informationObject;
+    }
+
+    // Check user authorization
+    if (!QubitAcl::check($this->informationObject, 'delete'))
+    {
+      QubitAcl::forwardUnauthorized();
+    }
+
+    $request->setAttribute('digitalObject', $this->digitalObject);
+
+    if ($request->isMethod('delete'))
+    {
+      // Delete the digital object record from the database
+      $this->digitalObject->delete();
+
+      // Redirect to edit page for parent Info Object
+      if (null !== $parent)
+      {
+        $this->redirect(array($parent, 'module' => 'digitalobject', 'action' => 'edit'));
+      }
+      else
+      {
+        $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
+      }
     }
   }
 }

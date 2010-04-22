@@ -1,33 +1,34 @@
-<?php if (substr($currentAction, 0, 4) == 'show' && count($holdings)):
-  // Only display holdings on "show" templates  to avoid form submit
-  // issues with using pager ?>
-<div class="context-column-box">
-  <div class="contextMenu">
+<div>
 
-    <div class="label"><?php echo sfConfig::get('app_ui_label_holdings') ?></div>
-    <div class="holdings">
-      <ul>
+  <h3><?php echo sfConfig::get('app_ui_label_holdings') ?></h3>
+  <div>
+    <ul>
       <?php foreach ($holdings as $holding): ?>
-        <li><?php echo link_to(render_title($holding), 'informationobject/show?id='.$holding->getId()) ?></li>
+        <li><?php echo link_to(render_title($holding), array($holding, 'module' => 'informationobject')) ?></li>
       <?php endforeach; ?>
-      </ul>
-    </div>
-
-    <?php if ($pager->haveToPaginate()): ?>
-    <div class="pager">
-      <?php $links = $pager->getLinks(); ?>
-      <?php if ($pager->getPage() != $pager->getFirstPage()): ?>
-        <?php echo link_to('< '.__('previous'), 'repository/show?id='.$repository->getId().'&holdingsPage='.($pager->getPage()-1)) ?>
-      <?php endif; ?>
-      <?php foreach ($links as $page): ?>
-        <?php echo ($page == $pager->getPage()) ? '<strong>'.$page.'</strong>' : link_to($page, 'repository/show?id='.$repository->getId().'&holdingsPage='.$page) ?>
-      <?php endforeach ?>
-      <?php if ($pager->getPage() != $pager->getLastPage()): ?>
-        <?php echo link_to(__('next').' >', 'repository/show?id='.$repository->getId().'&holdingsPage='.($pager->getPage()+1)) ?>
-      <?php endif; ?>
-    </div>
-    <?php endif; ?>
-
+    </ul>
   </div>
+
+  <?php if ($pager->haveToPaginate()): ?>
+    <div class="pager">
+
+      <?php if (1 < $pager->getPage()): ?>
+        <?php echo link_to('< '.__('Previous'), array('holdingsPage' => $pager->getPage()-1) + $sf_request->getParameterHolder()->getAll()) ?>
+      <?php endif; ?>
+
+      <?php foreach ($pager->getLinks(5) as $page): ?>
+        <?php if ($pager->getPage() == $page): ?>
+          <strong><?php echo $page ?></strong>
+        <?php else: ?>
+          <?php echo link_to($page, array('holdingsPage' => $page) + $sf_request->getParameterHolder()->getAll()) ?>
+        <?php endif; ?>
+      <?php endforeach ?>
+
+      <?php if ($pager->getLastPage() > $pager->getPage()): ?>
+        <?php echo link_to(__('Next').' >', array('holdingsPage' => $pager->getPage()+1) + $sf_request->getParameterHolder()->getAll()) ?>
+      <?php endif; ?>
+
+    </div>
+  <?php endif; ?>
+
 </div>
-<?php endif; // Only display holdings for show template ?>

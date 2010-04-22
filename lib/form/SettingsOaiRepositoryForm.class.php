@@ -17,7 +17,7 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sfLoader::loadHelpers('I18N');
+sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
 
 /**
  * Global form definition for settings module - with validation.
@@ -45,17 +45,17 @@ class SettingsOaiRepositoryForm extends sfForm
 
     // Add labels
     $this->widgetSchema->setLabels(array(
-      'oai_enabled' => __('enable OAI'),
+      'oai_enabled' => __('Enable OAI'),
       'oai_repository_code' => __('OAI repository code'),
       'oai_repository_identifier' => __('OAI repository identifier'),
-      'sample_oai_identifier' => __('sample OAI identifier'),
-      'resumption_token_limit' => __('resumption token limit')
+      'sample_oai_identifier' => __('Sample OAI identifier'),
+      'resumption_token_limit' => __('Resumption token limit')
     ));
 
     // Add helper text
     $this->widgetSchema->setHelps(array(
       'oai_enabled' => __('When set to &quot;yes&quot;, this system will act as an OAI repository and respond to OAI harvesting requests'),
-      'oai_repository_code' => __('add an alpha-numeric code to uniquely identify this particular OAI repository within its network domain to create a unique, OAI-compliant identifier, e.g. oai:foo.org:repositorycode_10001'),
+      'oai_repository_code' => __('Add an alpha-numeric code to uniquely identify this particular OAI repository within its network domain to create a unique, OAI-compliant identifier, e.g. oai:foo.org:repositorycode_10001'),
       'oai_repository_identifier' => ('this is an auto-generated setting that produces an OAI compliant repository identifier, which includes the OAI repository code value if it is set'),
       'sample_oai_identifier' => ('this is an example of the auto-generated, OAI compliant identifier which is created for each item in this particular OAI repository'),
       'resumption_token_limit' => __('The number of entities to include in a single OAI response list before inserting a resumption token')
@@ -76,7 +76,7 @@ class SettingsOaiRepositoryForm extends sfForm
     );
 
     $this->validatorSchema['oai_enabled'] = new sfValidatorInteger(array('required' => false));
-    $this->validatorSchema['oai_repository_code'] = new sfValidatorRegex(array('required' => false, 'pattern' => '/^[a-zA-Z0-9]+$/'), array('invalid' => __('the code can only contain letters and numbers')));
+    $this->validatorSchema['oai_repository_code'] = new sfValidatorRegex(array('required' => false, 'pattern' => '/^[a-zA-Z0-9]+$/'), array('invalid' => __('The code can only contain letters and numbers')));
     $this->validatorSchema['oai_repository_identifier'] = new sfValidatorString(array('required' => false));
     $this->validatorSchema['sample_oai_identifier'] = new sfValidatorString(array('required' => false));
 

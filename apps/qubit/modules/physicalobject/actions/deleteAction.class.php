@@ -43,15 +43,23 @@ class PhysicalObjectDeleteAction extends sfAction
     $criteria->addJoin(QubitRelation::OBJECT_ID, QubitInformationObject::ID);
     $this->informationObjects = QubitInformationObject::get($criteria);
 
-    $this->form->setValidator('next', new sfValidatorUrl);
+    $this->form->setValidator('next', new sfValidatorPass);
     $this->form->setWidget('next', new sfWidgetFormInputHidden);
 
     $this->form->bind($request->getGetParameters());
+
     if ($request->isMethod('delete'))
     {
+      $this->form->bind($request->getPostParameters());
+
       $this->physicalObject->delete();
 
-      $this->redirect($request->next);
+      if (null !== $next = $this->form->getValue('next'))
+      {
+        $this->redirect($next);
+      }
+
+      $this->redirect('@homepage');
     }
   }
 }

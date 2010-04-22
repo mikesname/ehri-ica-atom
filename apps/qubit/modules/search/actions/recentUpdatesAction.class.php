@@ -29,10 +29,14 @@ class SearchRecentUpdatesAction extends sfAction
 {
   public function execute($request)
   {
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
+
     // Get search parameters
     $this->objectType   = $request->getParameter('type', 'informationobject');
     $this->numberOfDays = $request->getParameter('days', 30);
-    $this->page         = $request->getParameter('page', 1);
     $this->sort         = $request->getParameter('sort', 'updatedDown');
 
     $cutOffDate = date('Y-m-d H:i:s', strtotime('-'.$this->numberOfDays.'day'));
@@ -109,11 +113,10 @@ class SearchRecentUpdatesAction extends sfAction
     }
 
     // Page results
-    $pager = new QubitPager($objectTable);
-    $pager->setCriteria($criteria);
-    $pager->setPage($this->page);
-    $pager->init();
-    $this->pager = $pager;
+    $this->pager = new QubitPager($objectTable);
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->page);
 
     // Define a default set of parameters for this page
     $this->defaultParamList = array(
@@ -122,7 +125,6 @@ class SearchRecentUpdatesAction extends sfAction
       'page' => $this->page,
       'sort' => $this->sort,
       'type' => $this->objectType,
-      'days' => $this->numberOfDays
-    );
+      'days' => $this->numberOfDays);
   }
 }

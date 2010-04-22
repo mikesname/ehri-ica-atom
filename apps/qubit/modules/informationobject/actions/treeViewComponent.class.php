@@ -23,47 +23,18 @@ class InformationObjectTreeViewComponent extends sfComponent
   {
     $this->informationObject = $request->getAttribute('informationObject');
 
-    if (count($this->informationObjects) < 1)
+    // Get info object tree
+    $this->informationObjects = $this->informationObject->getTree(array('limit' => true));
+
+    // Check if treeview worth it
+    if (1 > count($this->informationObjects))
     {
       return sfView::NONE;
     }
 
-    $this->getResponse()->addJavaScript('/vendor/jquery');
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
-    $this->getResponse()->addJavaScript('qubit');
-    $this->getResponse()->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
-    $this->getResponse()->addJavaScript('/vendor/yui/treeview/treeview-min');
-    $this->getResponse()->addJavaScript('/vendor/yui/dragdrop/dragdrop-min');
-    $this->getResponse()->addJavaScript('treeView');
-    $this->getResponse()->addStylesheet('yui/treeview/assets/skins/qubit/treeview-skin', 'first');
+    list($this->treeViewObjects, $this->treeViewExpands) = QubitInformationObject::getTreeViewObjects($this->informationObjects, $this->informationObject, array('limit' => true));
 
-    $this->treeViewObjects = array();
-    foreach ($this->informationObjects as $informationObject)
-    {
-      $treeViewObject = array();
-      $treeViewObject['label'] = (string) render_title($informationObject->getLabel(array('truncate' => 50)));
-      $treeViewObject['href'] = $this->getController()->genUrl('informationobject/show?id='.$informationObject->getId());
-      $treeViewObject['id'] = $informationObject->getId();
-      $treeViewObject['parentId'] = $informationObject->getParentId();
-      $treeViewObject['isLeaf'] = (string) !$informationObject->hasChildren();
-
-      // TODO: Should be able to check equality of objects
-      if ($informationObject->getId() == $this->informationObject->getId())
-      {
-        $treeViewObject['style'] = 'ygtvlabel currentTextNode';
-      }
-
-      $this->treeViewObjects[] = $treeViewObject;
-    }
-
-    $this->treeViewExpands = array();
-    foreach ($this->informationObject->getAncestors() as $ancestor)
-    {
-      $this->treeViewExpands[$id = $ancestor->getId()] = $id;
-    }
-    $this->treeViewExpands[$id = $this->informationObject->getId()] = $id;
-
-    // Is treeView draggable?
-    $this->treeViewDraggable = QubitAcl::check(QubitInformationObject::getRoot(), QubitAclAction::UPDATE_ID) ? 'true' : 'false';
+    // Is it draggable?
+    $this->treeViewDraggable = json_encode(QubitAcl::check(QubitInformationObject::getRoot(), 'update'));
   }
 }

@@ -1,5 +1,10 @@
 configureDatabaseSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:
 
 configureSiteSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/modules/user/user]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/modules/user/user:

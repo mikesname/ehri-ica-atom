@@ -45,7 +45,7 @@ class QubitContactInformation extends BaseContactInformation
 
   public function getContactInformationString()
   {
-  $string = ($this->getStreetAddress()) ? nl2br($this->getStreetAddress()).'<br />' : '' ;
+  $string = ($this->getStreetAddress()) ? $this->getStreetAddress().'<br />' : '' ;
   $string.= ($this->getCity()) ? $this->getCity() : '' ;
   $string.= ($this->getRegion()) ? ', '.$this->getRegion() : '' ;
   $string.= ($this->getCountryCode()) ? '<br />'.$this->getCountryCode().'' : '' ;

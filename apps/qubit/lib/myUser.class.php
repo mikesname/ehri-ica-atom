@@ -17,12 +17,34 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class myUser extends sfBasicSecurityUser
+class myUser extends sfBasicSecurityUser implements Zend_Acl_Role_Interface
 {
+  public $user = null;
+
+  /**
+   * Required for Zend_Acl_Role_Interface
+   */
+  public function getRoleId()
+  {
+    if ($this->isAuthenticated())
+    {
+      return $this->getUserID();
+    }
+    else
+    {
+      return QubitAclGroup::ANONYMOUS_ID;
+    }
+  }
+
   public function initialize(sfEventDispatcher $dispatcher, sfStorage $storage, $options = array())
   {
     // initialize parent
     parent::initialize($dispatcher, $storage, $options);
+
+    if ($this->isAuthenticated())
+    {
+      $this->user = QubitUser::getById($this->getUserID());
+    }
 
     // On timeout, remove *all* user credentials
     if ($this->isTimedOut())
@@ -33,7 +55,7 @@ class myUser extends sfBasicSecurityUser
     // If this user's account has been *deleted* or this user session is from a
     // different install of qubit on the same server (cross-site), then signout
     // user
-    if (null !== ($userId = $this->getAttribute('user_id')) && null === QubitUser::getById($userId))
+    if ($this->isAuthenticated() && null === $this->user)
     {
       $this->signOut();
     }
@@ -42,6 +64,7 @@ class myUser extends sfBasicSecurityUser
   public function signIn($user)
   {
     $this->setAuthenticated(true);
+    $this->user = $user;
 
     foreach ($user->getAclGroups() as $group)
     {
@@ -54,8 +77,6 @@ class myUser extends sfBasicSecurityUser
 
   public function signOut()
   {
-    $user = QubitUser::getById($this->getAttribute('user_id'));
-
     $this->getAttributeHolder()->removeNamespace('credentialScope');
 
     $this->clearCredentials();
@@ -77,15 +98,13 @@ class myUser extends sfBasicSecurityUser
     return $this->getAttribute('user_name');
   }
 
-  public function authenticate($username, $password, &$error)
+  public function authenticate($username, $password)
   {
     $authenticated = false;
-    $error = null;
-
     // anonymous is not a real user
     if ($username == 'anonymous')
     {
-      $error = 'invalid username';
+      return false;
     }
 
     $user = QubitUser::checkCredentials($username, $password, $error);
@@ -102,7 +121,19 @@ class myUser extends sfBasicSecurityUser
 
   public function getQubitUser()
   {
-    return QubitUser::getById($this->getUserID());
+    return $this->user; 
+  }
+
+  public function getAclGroups()
+  {
+    if (!$this->isAuthenticated())
+    {
+      return array(QubitAclGroup::getById(QubitAclGroup::ANONYMOUS_ID));
+    }
+    else
+    {
+      return $this->user->getAclGroups();
+    }
   }
 
   public function hasGroup($checkGroups)
@@ -111,7 +142,7 @@ class myUser extends sfBasicSecurityUser
 
     if ($this->isAuthenticated())
     {
-      $hasGroup = $this->getQubitUser()->hasGroup($checkGroups);
+      $hasGroup = $this->user->hasGroup($checkGroups);
     }
     else
     {
@@ -131,13 +162,13 @@ class myUser extends sfBasicSecurityUser
 
   public function listGroups()
   {
-    if (null !== ($qubitUser = $this->getQubitUser()))
+    if ($this->isAuthenticated())
     {
       $groups = array(QubitAclGroup::getById(QubitAclGroup::AUTHENTICATED_ID));
 
-      if (null !== $qubitUser->aclUserGroups)
+      if (null !== $this->user->aclUserGroups)
       {
-        foreach ($qubitUser->aclUserGroups as $aclUserGroup)
+        foreach ($this->user->aclUserGroups as $aclUserGroup)
         {
           $groups[] = QubitAclGroup::getById($aclUserGroup->groupId);
         }

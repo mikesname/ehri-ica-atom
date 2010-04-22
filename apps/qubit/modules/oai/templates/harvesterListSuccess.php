@@ -1,4 +1,4 @@
-<div class="pageTitle">Harvested Sites</div>
+<h1>Harvested Sites</h1>
 <table class="list">
 <thead>
   <tr>
@@ -39,8 +39,8 @@
       <table class="List">
       <thead>
     <tr>
-      <th width="30%"><?php echo __('name')?></th>
-      <th><?php echo __('value')?></th>
+      <th width="30%"><?php echo __('Name')?></th>
+      <th><?php echo __('Value')?></th>
     </tr>
 
       </thead>

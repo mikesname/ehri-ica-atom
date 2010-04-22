@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="is" datatype="plaintext" original="messages" date="2010-04-21T15:50:20Z" product-name="messages">
+    <body>
+      <trans-unit id="33">
+        <source>Title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="102">
+        <source>Note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="147">
+        <source>Identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="163">
+        <source>Language</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="289">
+        <source>Country</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="290">
+        <source>Latitude</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="311">
+        <source>Email</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="341">
+        <source>Contact type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="343">
+        <source>Street address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="344">
+        <source>City</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="347">
+        <source>Telephone</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="348">
+        <source>Fax</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="349">
+        <source>Website</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="367">
+        <source>Contact information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="374">
+        <source>Place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="396">
+        <source>Name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="509">
+        <source>Are you sure?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="533">
+        <source>Subject</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="580">
+        <source>URL</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="583">
+        <source>Date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="611">
+        <source>Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="640">
+        <source>Edit</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="642">
+        <source>Delete</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="643">
+        <source>Add new</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="644">
+        <source>List all</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="651">
+        <source>Description of relationship</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="663">
+        <source>Cancel</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="664">
+        <source>Save</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="665">
+        <source>Create</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="690">
+        <source>Type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="727">
+        <source>Institution identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="729">
+        <source>Status</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="730">
+        <source>Level of detail</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="731">
+        <source>Dates of creation, revision and deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="748">
+        <source>Conditions governing access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="769">
+        <source>Format</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="770">
+        <source>Description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="774">
+        <source>Type of resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="824">
+        <source>View resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="825">
+        <source>Edit resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="826">
+        <source>Internet media type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="827">
+        <source>Access condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="828">
+        <source>Physical location</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="829">
+        <source>Edit resource metadata - MODS</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="830">
+        <source>This is a duplicate of record %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="831">
+        <source>Names and origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="832">
+        <source>Add new name and/or origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="833">
+        <source>Add new child levels (if describing a collection)</source>
+        <target/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

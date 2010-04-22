@@ -1,18 +1,41 @@
-<h1><?php echo __('Upload digital object') ?></h1>
-<div class="headerCell"><?php if (0 < (strlen($label = $informationObject->getLabel()))): ?><?php echo $label ?><?php endif; ?></div>
+<?php use_helper('Javascript') ?>
 
-<?php echo $form->renderFormTag(url_for(array('module' => 'digitalobject', 'action' => 'create'))) ?>
-<input type="hidden" name="informationObject" value="<?php echo $informationObject->id ?>" />
+<h1><?php echo __('Upload digital objects') ?></h1>
 
-<div class="form-item">
-<?php echo $form->file->label(__('Select a digital object to upload'))->renderLabel() ?>
-<?php echo $form->file->render() ?>
-<span class="note"><?php echo __('max. file size ~%1%', array('%1%' => hr_filesize($maxUploadSize))) ?></span>
-</div>
+<h1 class="label"><?php echo render_title(QubitIsad::getLabel($informationObject)) ?> </h1>
 
-<ul class="actions">
-  <li><?php echo link_to(__('Cancel'), array('module' => 'informationobject', 'action' => 'show', 'id' => $informationObject->id)) ?></li>
-  <li><?php echo submit_tag(__('Create')) ?></li>
-</ul>
+<?php echo $form->renderFormTag(url_for(array('module' => 'digitalobject', 'action' => 'create')), array('id' => 'uploadForm')) ?>
+
+  <?php echo $form->renderGlobalErrors() ?>
+
+  <?php echo $form->renderHiddenFields() ?>
+
+  <fieldset class="collapsible" id="singleFileUpload">
+
+    <legend><?php echo __('Upload a digital object') ?></legend>
+
+    <?php echo $form->file
+        ->help(-1 < $maxUploadSize ? __('Max. size ~%1%', array('%1%' => hr_filesize($maxUploadSize))) : null)
+        ->renderRow() ?>
+
+  </fieldset>
+
+  <fieldset class="collapsible" id="externalFileLink">
+
+    <legend><?php echo __('Link to an external digital object') ?></legend>
+
+    <?php echo $form->url->renderRow() ?>
+
+  </fieldset>
+
+  <div class="actions section">
+  <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+    <div class="content">
+      <ul class="clearfix links">
+        <li><?php echo link_to(__('Cancel'), array($informationObject, 'module' => 'informationobject')) ?></li>
+        <li><?php echo submit_tag(__('Create')) ?></li>
+      </ul>
+    </div>
+  </div>
 
 </form>

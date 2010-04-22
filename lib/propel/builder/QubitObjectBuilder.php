@@ -125,6 +125,11 @@ class QubitObjectBuilder extends SfObjectBuilder
     return $this->getBuildProperty('basePrefix').ucfirst($this->getTable()->getPhpName());
   }
 
+  public function getColumnConstant(Column $column)
+  {
+    return $this->getPeerClassName().'::'.strtoupper($column->getName());
+  }
+
   protected function getColumnVarName(Column $column)
   {
     return $column->getPhpName();
@@ -1439,8 +1444,8 @@ EOF;
 
       if (null !== \$id = $this->basePeerClassName::doInsert(\$criteria, \$connection))
       {
-        \/\/ Guess that the first primary key of the first table is auto
-        \/\/ incremented
+        // Guess that the first primary key of the first table is auto
+        // incremented
         if (\$this->tables[0] == \$table)
         {
           \$columns = \$table->getPrimaryKeyColumns();
@@ -1478,10 +1483,10 @@ EOF;
     {
       $script .= <<<EOF
 
-    \/\/ Update nested set keys only if parent id has changed
+    // Update nested set keys only if parent id has changed
     if (isset(\$this->values['parentId']))
     {
-      \/\/ Get the "original" parentId before any updates
+      // Get the "original" parentId before any updates
       \$offset = 0; 
       \$originalParentId = null;
       foreach (\$this->tables as \$table)
@@ -1497,8 +1502,8 @@ EOF;
         }
       }
       
-      \/\/ If updated value of parentId is different then original value,
-      \/\/ update the nested set
+      // If updated value of parentId is different then original value,
+      // update the nested set
       if (\$originalParentId != \$this->values['parentId'])
       {
         \$this->updateNestedSet(\$connection);

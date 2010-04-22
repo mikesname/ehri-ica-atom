@@ -1,3 +1,5 @@
+// $Id$
+
 Drupal.behaviors.search = {
   attach: function (context)
     {

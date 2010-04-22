@@ -19,70 +19,48 @@
 
 class UserLoginAction extends sfAction
 {
-
   public function execute($request)
   {
-    sfLoader::loadHelpers(array('Url'));
+    $this->form = new sfForm;
 
-    $this->loginMessage = '';
-    $this->loginError = '';
-    $this->loginForm = new UserLoginForm;
+    // Redirect to the current URI in case we're forwarded to the login page
+    $this->form->setDefault('next', $request->getUri());
+    if ('user' == $request->module && 'login' == $request->action)
+    {
+      // Redirect to our referer otherwise
+      $this->form->setDefault('next', $request->getReferer());
+    }
 
-    // handle the form submission
+    $this->form->setValidator('next', new sfValidatorPass);
+    $this->form->setWidget('next', new sfWidgetFormInputHidden);
+
+    $this->form->setValidator('email', new sfValidatorEmail(array('required' => true), array(
+      'required' => $this->context->i18n->__('You must enter your email address'),
+      'invalid' => $this->context->i18n->__('This isn\'t a valid email address'))));
+    $this->form->setWidget('email', new sfWidgetFormInput);
+
+    $this->form->setValidator('password', new sfValidatorString(array('required' => true), array(
+      'required' => $this->context->i18n->__('You must enter your password'))));
+    $this->form->setWidget('password', new sfWidgetFormInputPassword);
+
     if ($request->isMethod('post'))
     {
-      $this->loginForm->bind($request->getParameter('login'));
-      if ($this->loginForm->isValid())
+      $this->form->bind($request->getPostParameters());
+
+      if ($this->form->isValid())
       {
-        if ($this->getUser()->authenticate($this->loginForm->getValue('email'), $this->loginForm->getValue('password'), $loginError))
+        if ($this->getUser()->authenticate($this->form->getValue('email'), $this->form->getValue('password')))
         {
-          // redirect to login_route, otherwise redirect to homepage
-          if ($nextPage = $this->getUser()->getAttribute('login_route'))
+          if (null !== $next = $this->form->getValue('next'))
           {
-            $this->getUser()->getAttributeHolder()->remove('login_route');
-            $this->redirect(url_for($nextPage));
+            $this->redirect($next);
           }
-          else
-          {
-            $this->redirect('@homepage');
-          }
+
+          $this->redirect('@homepage');
         }
-        else
-        {
-          $this->loginError = $loginError;
-        }
+
+        $this->form->getErrorSchema()->addError(new sfValidatorError(new sfValidatorPass, 'Sorry, unrecognized email or password'));
       }
-    }
-
-    // Set the 'login_route' attribute for redirecting user after authentication
-    $this->setLoginRoute($this->getUser());
-  }
-
-  /**
-   * Get referring page so we can redirect the user back there after
-   * successfully authenticating them
-   *
-   * @param sfUser $user
-   */
-  public function setLoginRoute($user)
-  {
-    // if the user selected the log-in page explicitely, send them back to their referring page
-    if ($this->getRequest()->getPathInfo() == '/user/login')
-    {
-      // Don't set the login_route to referrer if referrer = current page (login)
-      if ($this->getRequest()->getReferer() != $this->getRequest()->getUri())
-      {
-        $user->setAttribute('login_route', $this->getRequest()->getReferer());
-      }
-      $this->loginMessage = $this->getContext()->getI18N()->__('log in');
-    }
-
-    // if the user is stopped by the login page on their way to another page, send them on
-    // their way to that page after logging on successfully
-    else
-    {
-      $user->setAttribute('login_route', $this->getRequest()->getUri());
-      $this->loginMessage = $this->getContext()->getI18N()->__('please log-in to access that page');
     }
   }
 }

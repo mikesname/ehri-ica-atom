@@ -44,17 +44,17 @@
         $('body').prepend(' \
           <div class="yui-skin-sam"> \
             <div id="addAccessPointTermDialog"> \
-              <div class="hd"><?php echo __('enter term and scope') ?></div> \
+              <div class="hd"><?php echo __('Enter term and scope') ?></div> \
               <div class="bd" style="text-align: left"> \
                 <form action="<?php echo url_for('term/update') ?>" method="POST"> \
                   <input type="hidden" name="responseFormat" value="json" /> \
                   <input type="hidden" name="taxonomy_id" value="<?php echo QubitTaxonomy::SUBJECT_ID ?>" /> \
                   <div class="form-item"> \
-                    <label for="addSubjectTermName"><?php echo __('term name') ?></label> \
+                    <label for="addSubjectTermName"><?php echo __('Term name') ?></label> \
                     <input id="addSubjectTermName" type="text" name="name" value="" /> \
                   </div> \
                   <div class="form-item"> \
-                    <label for="addSubjectTermScope"><?php echo __('scope note') ?></label> \
+                    <label for="addSubjectTermScope"><?php echo __('Scope note') ?></label> \
                     <input id="addSubjectTermScope" type="text" name="new_scope_note" value="" /> \
                   </div> \
                 </form> \
@@ -73,9 +73,9 @@
       
         // Write a link to open the form
         $("#addSubjectAccessPointLink").append(' ' +
-          '(<a href="javascript:showSubjectAccessPointDialog()"><?php echo __('add new') ?></a>)');
+          '(<a href="javascript:showSubjectAccessPointDialog()"><?php echo __('Add new') ?></a>)');
         $("#addPlaceAccessPointLink").append(' ' +
-          '(<a href="javascript:showPlaceAccessPointDialog()"><?php echo __('add new') ?></a>)');
+          '(<a href="javascript:showPlaceAccessPointDialog()"><?php echo __('Add new') ?></a>)');
       } };
 //]]>
 </script>

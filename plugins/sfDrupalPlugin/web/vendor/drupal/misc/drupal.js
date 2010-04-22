@@ -1,11 +1,11 @@
-// $Id: drupal.js,v 1.49 2009/01/06 13:16:09 dries Exp $
+// $Id: drupal.js,v 1.62 2009/12/14 23:57:39 webchick Exp $
 
 var Drupal = Drupal || { 'settings': {}, 'behaviors': {}, 'locale': {} };
 
-/**
- * Set the variable that indicates if JavaScript behaviors should be applied.
- */
-Drupal.jsEnabled = document.getElementsByTagName && document.createElement && document.createTextNode && document.documentElement && document.getElementById;
+// Allow other JavaScript libraries to use $.
+jQuery.noConflict();
+
+(function ($) {
 
 /**
  * Attach all registered behaviors to a page element.
@@ -15,10 +15,10 @@ Drupal.jsEnabled = document.getElementsByTagName && document.createElement && do
  * object using the method 'attach' and optionally also 'detach' as follows:
  * @code
  *    Drupal.behaviors.behaviorName = {
- *      attach: function(context) {
+ *      attach: function (context, settings) {
  *        ...
  *      },
- *      detach: function(context) {
+ *      detach: function (context, settings, trigger) {
  *        ...
  *      }
  *    };
@@ -30,21 +30,30 @@ Drupal.jsEnabled = document.getElementsByTagName && document.createElement && do
  * loaded, feeding in an element to be processed, in order to attach all
  * behaviors to the new content.
  *
- * Behaviors should use a class in the form behaviorName-processed to ensure
- * the behavior is attached only once to a given element. (Doing so enables
- * the reprocessing of given elements, which may be needed on occasion despite
- * the ability to limit behavior attachment to a particular element.)
+ * Behaviors should use
+ * @code
+ *   $(selector).once('behavior-name', function () {
+ *     ...
+ *   });
+ * @endcode
+ * to ensure the behavior is attached only once to a given element. (Doing so
+ * enables the reprocessing of given elements, which may be needed on occasion
+ * despite the ability to limit behavior attachment to a particular element.)
  *
  * @param context
  *   An element to attach behaviors to. If none is given, the document element
  *   is used.
+ * @param settings
+ *   An object containing settings for the current context. If none given, the
+ *   global Drupal.settings object is used.
  */
-Drupal.attachBehaviors = function(context) {
+Drupal.attachBehaviors = function (context, settings) {
   context = context || document;
+  settings = settings || Drupal.settings;
   // Execute all of them.
-  jQuery.each(Drupal.behaviors, function() {
-    if (jQuery.isFunction(this.attach)) {
-      this.attach(context);
+  $.each(Drupal.behaviors, function () {
+    if ($.isFunction(this.attach)) {
+      this.attach(context, settings);
     }
   });
 };
@@ -65,15 +74,38 @@ Drupal.attachBehaviors = function(context) {
  * @param context
  *   An element to detach behaviors from. If none is given, the document element
  *   is used.
+ * @param settings
+ *   An object containing settings for the current context. If none given, the
+ *   global Drupal.settings object is used.
+ * @param trigger
+ *   A string containing what's causing the behaviors to be detached. The
+ *   possible triggers are:
+ *   - unload: (default) The context element is being removed from the DOM.
+ *   - move: The element is about to be moved within the DOM (for example,
+ *     during a tabledrag row swap). After the move is completed,
+ *     Drupal.attachBehaviors() is called, so that the behavior can undo
+ *     whatever it did in response to the move. Many behaviors won't need to
+ *     do anything simply in response to the element being moved, but because
+ *     IFRAME elements reload their "src" when being moved within the DOM,
+ *     behaviors bound to IFRAME elements (like WYSIWYG editors) may need to
+ *     take some action.
+ *   - serialize: When an AJAX form is submitted, this is called with the
+ *     form as the context. This provides every behavior within the form an
+ *     opportunity to ensure that the field elements have correct content
+ *     in them before the form is serialized. The canonical use-case is so
+ *     that WYSIWYG editors can update the hidden textarea to which they are
+ *     bound.
  *
  * @see Drupal.attachBehaviors
  */
-Drupal.detachBehaviors = function(context) {
+Drupal.detachBehaviors = function (context, settings, trigger) {
   context = context || document;
+  settings = settings || Drupal.settings;
+  trigger = trigger || 'unload';
   // Execute all of them.
-  jQuery.each(Drupal.behaviors, function() {
-    if (jQuery.isFunction(this.detach)) {
-      this.detach(context);
+  $.each(Drupal.behaviors, function () {
+    if ($.isFunction(this.detach)) {
+      this.detach(context, settings, trigger);
     }
   });
 };
@@ -81,7 +113,7 @@ Drupal.detachBehaviors = function(context) {
 /**
  * Encode special characters in a plain-text string for display as HTML.
  */
-Drupal.checkPlain = function(str) {
+Drupal.checkPlain = function (str) {
   str = String(str);
   var replace = { '&': '&amp;', '"': '&quot;', '<': '&lt;', '>': '&gt;' };
   for (var character in replace) {
@@ -109,7 +141,7 @@ Drupal.checkPlain = function(str) {
  * @return
  *   The translated string.
  */
-Drupal.t = function(str, args) {
+Drupal.t = function (str, args) {
   // Fetch the localized version of the string.
   if (Drupal.locale.strings && Drupal.locale.strings[str]) {
     str = Drupal.locale.strings[str];
@@ -169,7 +201,7 @@ Drupal.t = function(str, args) {
  * @return
  *   A translated string.
  */
-Drupal.formatPlural = function(count, singular, plural, args) {
+Drupal.formatPlural = function (count, singular, plural, args) {
   var args = args || {};
   args['@count'] = count;
   // Determine the index of the plural form.
@@ -182,9 +214,9 @@ Drupal.formatPlural = function(count, singular, plural, args) {
     return Drupal.t(plural, args);
   }
   else {
-    args['@count['+ index +']'] = args['@count'];
+    args['@count[' + index + ']'] = args['@count'];
     delete args['@count'];
-    return Drupal.t(plural.replace('@count', '@count['+ index +']'));
+    return Drupal.t(plural.replace('@count', '@count[' + index + ']'));
   }
 };
 
@@ -207,7 +239,7 @@ Drupal.formatPlural = function(count, singular, plural, args) {
  *   Any data the theme function returns. This could be a plain HTML string,
  *   but also a complex object.
  */
-Drupal.theme = function(func) {
+Drupal.theme = function (func) {
   for (var i = 1, args = []; i < arguments.length; i++) {
     args.push(arguments[i]);
   }
@@ -233,15 +265,13 @@ Drupal.parseJson = function (data) {
  */
 Drupal.freezeHeight = function () {
   Drupal.unfreezeHeight();
-  var div = document.createElement('div');
-  $(div).css({
+  $('<div id="freeze-height"></div>').css({
     position: 'absolute',
     top: '0px',
     left: '0px',
     width: '1px',
     height: $('body').css('height')
-  }).attr('id', 'freeze-height');
-  $('body').append(div);
+  }).appendTo('body');
 };
 
 /**
@@ -252,10 +282,11 @@ Drupal.unfreezeHeight = function () {
 };
 
 /**
- * Wrapper to address the mod_rewrite url encoding bug
- * (equivalent of drupal_urlencode() in PHP).
+ * Wrapper around encodeURIComponent() which avoids Apache quirks (equivalent of
+ * drupal_encode_path() in PHP). This function should only be used on paths, not
+ * on query string arguments.
  */
-Drupal.encodeURIComponent = function (item, uri) {
+Drupal.encodePath = function (item, uri) {
   uri = uri || location.href;
   item = encodeURIComponent(item).replace(/%2F/g, '/');
   return (uri.indexOf('?q=') != -1) ? item : item.replace(/%26/g, '%2526').replace(/%23/g, '%2523').replace(/\/\//g, '/%252F');
@@ -265,7 +296,7 @@ Drupal.encodeURIComponent = function (item, uri) {
  * Get the text selection in a textarea.
  */
 Drupal.getSelection = function (element) {
-  if (typeof(element.selectionStart) != 'number' && document.selection) {
+  if (typeof element.selectionStart != 'number' && document.selection) {
     // The current selection.
     var range1 = document.selection.createRange();
     var range2 = range1.duplicate();
@@ -282,34 +313,41 @@ Drupal.getSelection = function (element) {
 };
 
 /**
- * Build an error message from ahah response.
+ * Build an error message from an AJAX response.
  */
-Drupal.ahahError = function(xmlhttp, uri) {
-  if (xmlhttp.status == 200) {
-    if (jQuery.trim(xmlhttp.responseText)) {
-      var message = Drupal.t("An error occurred. \n@uri\n@text", {'@uri': uri, '@text': xmlhttp.responseText });
-    }
-    else {
-      var message = Drupal.t("An error occurred. \n@uri\n(no information available).", {'@uri': uri });
-    }
+Drupal.ajaxError = function (xmlhttp, uri) {
+  var statusCode, statusText, pathText, responseText, readyStateText, message;
+  if (xmlhttp.status) {
+    statusCode = "\n" + Drupal.t("An AJAX HTTP error occurred.") +  "\n" + Drupal.t("HTTP Result Code: !status", {'!status': xmlhttp.status});
   }
   else {
-    var message = Drupal.t("An HTTP error @status occurred. \n@uri", {'@uri': uri, '@status': xmlhttp.status });
+    statusCode = "\n" + Drupal.t("An AJAX HTTP request terminated abnormally.");
   }
-  return message.replace(/\n/g, '<br />');;
-}
+  statusCode += "\n" + Drupal.t("Debugging information follows.");
+  pathText = "\n" + Drupal.t("Path: !uri", {'!uri': uri} );
+  statusText = xmlhttp.statusText ? ("\n" + Drupal.t("StatusText: !statusText", {'!statusText': $.trim(xmlhttp.statusText)})) : "";
+  responseText = xmlhttp.responseText ? ("\n" + Drupal.t("ResponseText: !responseText", {'!responseText': $.trim(xmlhttp.responseText)})) : "";
+  // Make the responseText more readable by stripping HTML tags and newlines.
+  responseText = responseText.replace(/<("[^"]*"|'[^']*'|[^'">])*>/gi,"");
+  responseText = responseText.replace(/[\n]+\s+/g,"\n");
 
-// Global Killswitch on the <html> element.
-if (Drupal.jsEnabled) {
-  // Global Killswitch on the <html> element.
-  $(document.documentElement).addClass('js');
-  // 'js enabled' cookie.
-  document.cookie = 'has_js=1; path=/';
-  // Attach all behaviors.
-  $(document).ready(function() {
-    Drupal.attachBehaviors(this);
-  });
-}
+  // We don't need readyState except for status == 0.
+  readyStateText = xmlhttp.status == 0 ? ("\n" + Drupal.t("ReadyState: !readyState", {'!readyState': xmlhttp.readyState})) : "";
+
+  message = statusCode + pathText + statusText + responseText + readyStateText;
+  return message;
+};
+
+// Class indicating that JS is enabled; used for styling purpose.
+$('html').addClass('js');
+
+// 'js enabled' cookie.
+document.cookie = 'has_js=1; path=/';
+
+// Attach all behaviors.
+$(function () {
+  Drupal.attachBehaviors(document, Drupal.settings);
+});
 
 /**
  * The default themes.
@@ -324,7 +362,20 @@ Drupal.theme.prototype = {
    * @return
    *   The formatted text (html).
    */
-  placeholder: function(str) {
+  placeholder: function (str) {
     return '<em>' + Drupal.checkPlain(str) + '</em>';
   }
 };
+
+/**
+ * Return whether the given variable is an object.
+ *
+ * The HEAD version of jQuery (http://code.jquery.com/jquery-nightly.js)
+ * includes an isObject() function, so when that gets released and incorporated
+ * into Drupal, this can be removed.
+ */
+$.extend({isObject: function(value) {
+  return (value !== null && typeof value === 'object');
+}});
+
+})(jQuery);

@@ -99,6 +99,14 @@ class QubitTerm extends BaseTerm
   const PUBLICATION_STATUS_PUBLISHED_ID = 160;
   // Name access point
   const NAME_ACCESS_POINT_ID = 161;
+  // ISDF (function) relation type taxonomy
+  const ISDF_HIERARCHICAL_RELATION_ID = 162;
+  const ISDF_TEMPORAL_RELATION_ID = 163;
+  const ISDF_ASSOCIATIVE_RELATION_ID = 164;
+  // ISAAR standardized form name
+  const STANDARDIZED_FORM_OF_NAME_ID = 165;
+  // External URI
+  const EXTERNAL_URI_ID = 166;
 
   public function isProtected()
   {
@@ -131,6 +139,7 @@ class QubitTerm extends BaseTerm
     $this->getId() == QubitTerm::TEXT_ID ||
     $this->getId() == QubitTerm::VIDEO_ID ||
     $this->getId() == QubitTerm::OTHER_ID ||
+    $this->getId() == QubitTerm::EXTERNAL_URI_ID ||
     $this->getId() == QubitTerm::MASTER_ID ||
     $this->getId() == QubitTerm::REFERENCE_ID ||
     $this->getId() == QubitTerm::THUMBNAIL_ID ||
@@ -152,7 +161,8 @@ class QubitTerm extends BaseTerm
     $this->getId() == QubitTerm::STATUS_TYPE_PUBLICATION_ID ||
     $this->getId() == QubitTerm::PUBLICATION_STATUS_DRAFT_ID ||
     $this->getId() == QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID ||
-    $this->getId() == QubitTerm::NAME_ACCESS_POINT_ID;
+    $this->getId() == QubitTerm::NAME_ACCESS_POINT_ID ||
+    $this->getId() == QubitTerm::STANDARDIZED_FORM_OF_NAME_ID;
   }
 
   public function __toString()
@@ -163,6 +173,31 @@ class QubitTerm extends BaseTerm
     }
 
     return (string) $this->getName();
+  }
+
+  public function save($connection = null)
+  {
+    parent::save($connection);
+
+    // Save related terms
+    foreach ($this->termsRelatedByparentId as $child)
+    {
+      $child->setIndexOnSave(false);
+      $child->setParentId($this->id);
+
+      try
+      {
+        $child->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+  }
+
+  public static function getRoot()
+  {
+    return parent::getById(self::ROOT_ID);
   }
 
   public function setRoot()
@@ -234,7 +269,7 @@ class QubitTerm extends BaseTerm
 
   public static function getLevelsOfDescription($options = array())
   {
-    return QubitTaxonomy::getTermsById(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID, $options);
+    return QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID, $options);
   }
 
   public static function getNoteTypes($options = array())
@@ -425,9 +460,8 @@ class QubitTerm extends BaseTerm
   {
     $count = 0;
     $count += $this->getRelatedActorCount();
-    $count += $this->getRelatedActorNameCount();
+    $count += $this->getRelatedNameCount();
     $count += $this->getRelatedDigitalObjectCount();
-    $count += $this->getRelatedEventCount();
     $count += $this->getRelatedInfoObjectCount();
     $count += $this->getRelatedNoteCount();
     $count += $this->getRelatedObjectTermRelationCount();
@@ -474,10 +508,10 @@ class QubitTerm extends BaseTerm
    *
    * @return integer number of related actor_names
    */
-  public function getRelatedActorNameCount()
+  public function getRelatedNameCount()
   {
-    $sql = 'SELECT COUNT(*) FROM '.QubitActorName::TABLE_NAME;
-    $sql .= ' WHERE '.QubitActorName::TYPE_ID.' = '.$this->getId();
+    $sql = 'SELECT COUNT(*) FROM '.QubitOtherName::TABLE_NAME;
+    $sql .= ' WHERE '.QubitOtherName::TYPE_ID.' = '.$this->getId();
 
     return self::executeCount($sql);
   }
@@ -575,9 +609,11 @@ class QubitTerm extends BaseTerm
   public function getRelatedRepositoryCount()
   {
     $sql = 'SELECT COUNT(*) FROM '.QubitRepository::TABLE_NAME;
-    $sql .= ' WHERE '.QubitRepository::DESC_DETAIL_ID.' = '.$this->getId();
-    $sql .= ' OR '.QubitRepository::DESC_STATUS_ID.' = '.$this->getId();
-    $sql .= ' OR '.QubitRepository::TYPE_ID.' = '.$this->getId();
+    $sql .= ' LEFT JOIN '.QubitObjectTermRelation::TABLE_NAME;
+    $sql .= ' ON '.QubitRepository::ID.' = '.QubitObjectTermRelation::OBJECT_ID;
+    $sql .= ' WHERE '.QubitRepository::DESC_DETAIL_ID.' = '.$this->id;
+    $sql .= ' OR '.QubitRepository::DESC_STATUS_ID.' = '.$this->id;
+    $sql .= ' OR '.QubitObjectTermRelation::TERM_ID.' = '.$this->id;
 
     return self::executeCount($sql);
   }
@@ -770,9 +806,11 @@ class QubitTerm extends BaseTerm
     switch ($direction)
     {
       case 'subjectToObject':
+      case 'useFor':
         $criteria->add(QubitRelation::SUBJECT_ID, $this->id, Criteria::EQUAL);
         break;
       case 'objectToSubject':
+      case 'use':
         $criteria->add(QubitRelation::OBJECT_ID, $this->id, Criteria::EQUAL);
         break;
       case 'both':
@@ -834,5 +872,143 @@ class QubitTerm extends BaseTerm
     }
 
     return QubitTerm::get($criteria, $options);
+  }
+
+  /*****************************************************
+   TreeView
+  *****************************************************/
+  public function getTree($limit = false)
+  {
+    $path = array();
+
+    foreach (($ancestors = $this->getAncestors()->andSelf()->orderBy('lft')) as $ancestor)
+    {
+      $path[] = $ancestor->id;
+    }
+
+    return $this->buildTermTree($path, $limit ? 3 : null);
+  }
+
+  private function buildTermTree($path, $limit = null)
+  {
+    $parent = QubitTerm::getById(array_shift($path));
+    $tmp = array();
+
+    // Build query
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::PARENT_ID, $parent->id);
+    $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+    $criteria->addAscendingOrderByColumn('name');
+
+    // Exclude non-preferred terms
+    $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
+    $criterion1->addOr($criterion2);
+    $criteria->add($criterion1);
+
+    $filtered = false;
+
+    $tmp[] = $parent;
+    foreach (($terms = QubitTerm::get($criteria)) as $index => $child)
+    {
+      // DEBUG
+      $child->name = ($index + 1).'/'.$limit.' - '.$child->name;
+
+      // If it in path, we go on building the tree in that way
+      if (in_array($child->id, $path))
+      {
+        $tmp = array_merge($tmp, $this->buildTermTree($path, $limit));
+      }
+      else
+      {
+        // Add child
+        $tmp[] = $child;
+      }
+
+      if ($index + 1 == $limit)
+      {
+        $filtered = true;
+
+        break;
+      }
+    }
+
+    // Add SEEALL button
+    if ($filtered)
+    {
+      $tmp[] = array('parentId' => $parent->id, 'remainingItems' => count($terms) - $limit);
+    }
+
+    return $tmp;
+  }
+
+  public static function getTreeViewObjects($terms, $currentTerm)
+  {
+    $treeViewObjects = array();
+    $treeViewExpands = array();
+
+    ProjectConfiguration::getActive()->loadHelpers('Qubit');
+
+    foreach ($terms as $term)
+    {
+      $treeViewObject = array();
+
+      if ($term instanceof QubitTerm)
+      {
+        if (QubitTerm::ROOT_ID != $term->id)
+        {
+          $treeViewObject['label'] = render_title($term->getName(array('cultureFallback' => true, 'truncate' => 50)));
+          $treeViewObject['href'] = sfContext::getInstance()->routing->generate(null, array($term, 'module' => 'term'));
+          $treeViewObject['id'] = $term->id;
+          $treeViewObject['parentId'] = $term->parentId;
+          $treeViewObject['isLeaf'] = (string) !$term->hasChildren();
+        }
+        else
+        {
+          $treeViewObject['label'] = render_title($currentTerm->taxonomy->getName(array('cultureFallback' => true, 'truncate' => 50)));
+          $treeViewObject['href'] = sfContext::getInstance()->routing->generate(null, array($currentTerm->taxonomy, 'module' => 'term', 'action' => 'listTaxonomy'));
+          $treeViewObject['id'] = $term->id;
+          $treeViewObject['parentId'] = null;
+          $treeViewObject['isLeaf'] = (string) !$term->hasChildren();
+        }
+
+        if ($term->id == $currentTerm->id)
+        {
+          $treeViewObject['style'] = 'ygtvlabel currentTextNode';
+        }
+      }
+      else
+      {
+        // $treeViewObject['label'] = sfContext::getInstance()->i18n->__('See all');
+        $treeViewObject['label'] = '+'.$term['remainingItems'].' ...';
+        $treeViewObject['parentId'] = $term['parentId'];
+        $treeViewObject['href'] = '#';
+        $treeViewObject['isLeaf'] = 'true';
+        $treeViewObject['style'] = 'seeAllNode';
+      }
+
+      $treeViewObjects[] = $treeViewObject;
+    }
+
+    foreach ($currentTerm->getAncestors() as $ancestor)
+    {
+      $treeViewExpands[$id = $ancestor->id] = $id;
+    }
+    $treeViewExpands[$id = $currentTerm->id] = $id;
+
+    return array($treeViewObjects, $treeViewExpands);
+  }
+
+  /**
+   * Speed-optimized method for checking if information object has children
+   * which doesn't require hitting database.
+   *
+   * @return boolean - true if has children
+   */
+  public function hasChildren()
+  {
+    return ($this->rgt - $this->lft) > 1;
   }
 }

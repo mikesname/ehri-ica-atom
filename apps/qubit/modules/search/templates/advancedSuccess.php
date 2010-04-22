@@ -1,4 +1,4 @@
-<div class="pageTitle"><?php echo __('advanced search'); ?></div>
+<div class="pageTitle"><?php echo __('Advanced search'); ?></div>
 
 <div id="search-form">
 <?php echo form_tag('search/advanced', 'id=searchform') ?>

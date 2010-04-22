@@ -19,36 +19,36 @@
 
 class QubitTaxonomy extends BaseTaxonomy
 {
-  const DESCRIPTION_DETAIL_LEVEL_ID = 1;
-  const ACTOR_ENTITY_TYPE_ID = 2;
-  const DESCRIPTION_STATUS_ID = 3;
-  const LEVEL_OF_DESCRIPTION_ID = 4;
-  const SUBJECT_ID = 5;
-  const ACTOR_NAME_TYPE_ID = 6;
-  const NOTE_TYPE_ID = 7;
-  const REPOSITORY_TYPE_ID = 8;
-  const ACTOR_ROLE_ID = 9;
-  const EVENT_TYPE_ID = 10;
-  const QUBIT_SETTING_LABEL_ID = 11;
-  const PLACE_ID = 12;
-  const FUNCTION_ID = 13;
-  const HISTORICAL_EVENT_ID = 14;
-  const COLLECTION_TYPE_ID = 15;
-  const MEDIA_TYPE_ID = 16;
-  const DIGITAL_OBJECT_USAGE_ID = 17;
-  const PHYSICAL_OBJECT_TYPE_ID = 18;
-  const RELATION_TYPE_ID = 19;
-  const MATERIAL_TYPE_ID = 20;
-  const RAD_NOTE_ID = 21; //CCA Rules for Archival Description (RAD) taxonomies
-  const RAD_TITLE_NOTE_ID = 22; //CCA Rules for Archival Description (RAD) taxonomies
-  const MODS_RESOURCE_TYPE_ID = 23;
-  const DC_TYPE_ID = 24;
-  const ACTOR_RELATION_TYPE_ID = 25;
-  const RELATION_NOTE_TYPE_ID = 26;
-  const TERM_RELATION_TYPE_ID = 27;
-  const ROOT_ID = 28;
-  const STATUS_TYPE_ID = 29;
-  const PUBLICATION_STATUS_ID = 30;
+  const ROOT_ID = 30;
+  const DESCRIPTION_DETAIL_LEVEL_ID = 31;
+  const ACTOR_ENTITY_TYPE_ID = 32;
+  const DESCRIPTION_STATUS_ID = 33;
+  const LEVEL_OF_DESCRIPTION_ID = 34;
+  const SUBJECT_ID = 35;
+  const ACTOR_NAME_TYPE_ID = 36;
+  const NOTE_TYPE_ID = 37;
+  const REPOSITORY_TYPE_ID = 38;
+  const EVENT_TYPE_ID = 40;
+  const QUBIT_SETTING_LABEL_ID = 41;
+  const PLACE_ID = 42;
+  const FUNCTION_ID = 43;
+  const HISTORICAL_EVENT_ID = 44;
+  const COLLECTION_TYPE_ID = 45;
+  const MEDIA_TYPE_ID = 46;
+  const DIGITAL_OBJECT_USAGE_ID = 47;
+  const PHYSICAL_OBJECT_TYPE_ID = 48;
+  const RELATION_TYPE_ID = 49;
+  const MATERIAL_TYPE_ID = 50;
+  const RAD_NOTE_ID = 51; //CCA Rules for Archival Description (RAD) taxonomies
+  const RAD_TITLE_NOTE_ID = 52; //CCA Rules for Archival Description (RAD) taxonomies
+  const MODS_RESOURCE_TYPE_ID = 53;
+  const DC_TYPE_ID = 54;
+  const ACTOR_RELATION_TYPE_ID = 55;
+  const RELATION_NOTE_TYPE_ID = 56;
+  const TERM_RELATION_TYPE_ID = 57;
+  const STATUS_TYPE_ID = 59;
+  const PUBLICATION_STATUS_ID = 60;
+  const ISDF_RELATION_TYPE_ID = 61;
 
   public static $lockedTaxonomies = array(
     self::QUBIT_SETTING_LABEL_ID,
@@ -60,7 +60,9 @@ class QubitTaxonomy extends BaseTaxonomy
     self::TERM_RELATION_TYPE_ID,
     self::ROOT_ID,
     self::STATUS_TYPE_ID,
-    self::PUBLICATION_STATUS_ID
+    self::PUBLICATION_STATUS_ID,
+    self::ACTOR_ENTITY_TYPE_ID,
+    self::ACTOR_NAME_TYPE_ID
   );
 
   public function __toString()
@@ -71,6 +73,11 @@ class QubitTaxonomy extends BaseTaxonomy
     }
 
     return (string) $this->getName();
+  }
+
+  public static function getRoot()
+  {
+    return parent::getById(self::ROOT_ID);
   }
 
   public static function addEditableTaxonomyCriteria($criteria)
@@ -91,5 +98,32 @@ class QubitTaxonomy extends BaseTaxonomy
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTaxonomy', $options);
 
     return QubitTaxonomy::get($criteria);
+  }
+
+  public static function getTaxonomyTerms($taxonomyId, $options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId, Criteria::EQUAL);
+
+    // Only include top-level terms if option is set
+    if (isset($options['level']) && $options['level'] == 'top')
+    {
+      $criteria->add(QubitTerm::PARENT_ID, QubitTerm::ROOT_ID, Criteria::EQUAL);
+    }
+
+    // Exclude non-preferred terms
+    $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
+    $criterion1->addOr($criterion2);
+    $criteria->add($criterion1);
+
+    // Sort alphabetically
+    $criteria->addAscendingOrderByColumn('name');
+
+    // Do source culture fallback
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+
+    return QubitTerm::get($criteria);
   }
 }

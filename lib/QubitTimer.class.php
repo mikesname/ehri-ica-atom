@@ -19,9 +19,18 @@
 
 class QubitTimer
 {
-  public function __construct()
+  public
+    $fh = null,
+    $startTime = 0;
+
+  public function __construct($logFile = null)
   {
     $this->restart();
+
+    if (null != $logFile)
+    {
+      $this->fh = fopen($logFile, 'w');
+    }
   }
 
   public function restart()
@@ -32,5 +41,23 @@ class QubitTimer
   public function elapsed($rnd = 2)
   {
     return round((microtime(true) - $this->startTime), $rnd);
+  }
+
+  public function log($string)
+  {
+    if (!isset($this->fh))
+    {
+      return;
+    }
+
+    fwrite($this->fh, $string.' ('.$this->elapsed()."s)\n");
+  }
+
+  public function __destruct()
+  {
+    if (isset($this->fh))
+    {
+      fclose($this->fh);
+    }
   }
 }

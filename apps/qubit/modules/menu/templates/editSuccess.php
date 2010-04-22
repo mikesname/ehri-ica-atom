@@ -1,118 +1,61 @@
-<div class="pageTitle"><?php echo __('%1% menu', array('%1%' => $formAction)) ?></div>
+<h1>
+  <?php if (isset($sf_request->id)): ?>
+    <?php echo __('Edit menu') ?>
+  <?php else: ?>
+    <?php echo __('Add new menu') ?>
+  <?php endif; ?>
+</h1>
 
-<?php if($menuForm->hasGlobalErrors()): ?>
-<div>
-  <?php echo $menuForm->renderGlobalErrors() ?>
-</div>
+<?php if (isset($sf_request->id)): ?>
+  <h1 class="label <?php if ($menu->isProtected()): ?> readOnly<?php endif; ?>"><?php echo $menu->getName(array('sourceCulture' => true)) ?></h1>
 <?php endif; ?>
 
-<form action="<?php echo url_for('menu/'.$formAction) ?>" method="POST">
-  <input type="hidden" name="id" value="<?php echo $menu->getId() ?>">
-  <input type="hidden" name="page" value="<?php echo $page ?>">
-  <table class="detail">
-    <thead>
-      <tr>
-        <td colspan="2" class="headerCell">
-        <?php if ($formAction == 'edit'): ?>
-          <?php echo __('"%1%" menu', array('%1%' => $menu->getName(array('sourceCulture' => true)))) ?>
-          <?php if ($menu->isProtected()): ?>
-            <?php echo image_tag('lock', array('alt' => __('protected'))) ?>
-          <?php endif; ?>
-        <?php else: ?>
-          <?php echo __('New menu') ?>
+<?php echo $form->renderGlobalErrors() ?>
+
+<?php if (isset($sf_request->id)): ?>
+  <?php echo $form->renderFormTag(url_for(array($menu, 'module' => 'menu', 'action' => 'edit'))) ?>
+<?php else: ?>
+  <?php echo $form->renderFormTag(url_for(array('module' => 'menu', 'action' => 'create'))) ?>
+<?php endif; ?>
+
+  <?php echo render_field($form->name
+    ->help(__('Provide an internal menu name.  This is not visible to users.'))
+    ->label(__('Name')), $menu) ?>
+
+  <?php echo render_field($form['label']
+    ->help(__('Provide a menu label for users.  For menu items that are not visible (i.e. are organizational only) this should be left blank.'))
+    ->label(__('Label')), $menu) ?>
+
+  <?php echo $form->parentId
+    ->label('Parent')
+    ->renderRow() ?>
+
+  <?php echo render_field($form['path']
+    ->help(__('Provide a link to an external website or an internal, symfony path (module/action).'))
+    ->label(__('Path')), $menu) ?>
+
+  <?php echo render_field($form['description']
+    ->help(__('Provide a brief description of the menu and it\'s purpose.'))
+    ->label(__('Description')), $menu) ?>
+
+  <div class="actions section">
+
+    <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+
+    <div class="content">
+      <ul class="clearfix links">
+
+        <li><?php echo link_to(__('Cancel'), 'menu/list?page='.$page) ?></li>
+
+        <?php if (!$menu->isProtected()): ?>
+          <li><?php echo link_to(__('Delete'), array('module' => 'menu', 'action' => 'delete', 'id' => $menu->getId()), array('confirm' => __('This action will delete this menu and all it\'s descendants. Are you sure?'))) ?></li>
         <?php endif; ?>
-        </td>
-      </tr>
-    </thead>
-    <tbody>
-      
-      <tr>
-        <th>
-          <?php echo $menuForm['name']->renderLabel(null, 
-            array('title' => __('The name of this menu. The menu name is used internally and is not visible to users.'), 'class' => 'required_field')) ?>
-        </th>
-        <td>
-          <?php if (strlen($error = $menuForm['name']->renderError())): ?>
-            <?php echo $error ?>
-          <?php endif; ?>
-          <?php echo $menuForm['name']->render() ?>
-        </td>
-      </tr>
 
-      <tr>
-        <th>
-          <?php echo $menuForm['label']->renderLabel(null, 
-            array('title' => __('This is the button or link label that users see.  For menu items that are not visible (i.e. are organizational only) this should be left blank.'))) ?>
-        </th>
-        <td>
-          <?php if (strlen($error = $menuForm['label']->renderError())): ?>
-            <?php echo $error ?>
-          <?php elseif (strlen($sourceCultureValue = $menu->getLabel(array('sourceCulture' => true))) > 0 && $culture != $menu->getSourceCulture()): ?>
-            <div class="default-translation" title="<?php echo __('source text') ?>"><?php echo nl2br($sourceCultureValue) ?></div>
-          <?php endif; ?>
-          <?php echo $menuForm['label']->render() ?>
-        </td>
-      </tr>
+        <li><?php echo submit_tag(__('Save')) ?></li>
 
-      <tr>
-        <th>
-          <?php echo $menuForm['path']->renderLabel(null, 
-            array('title' => __('This can be an external URL (starts with http(s)://) or an internal, symfony path (e.g. module/action).'))) ?>
-        </th>
-        <td>
-          <?php if (strlen($error = $menuForm['path']->renderError())): ?>
-            <?php echo $error ?>
-          <?php endif; ?>
-          <span class="description">
-            <?php echo 'http'.($sf_request->isSecure() ? 's' : '').'://'.$sf_request->getHost().$sf_request->getRelativeUrlRoot().'/...' ?>
-          </span>
-          <?php echo $menuForm['path']->render() ?>
-        </td>
-      </tr>
-      
-      <tr>
-        <th>
-          <?php echo $menuForm['description']->renderLabel(null, 
-            array('title' => __('A brief description of the menu and it\'s purpose.'))) ?>
-        </th>
-        <td>
-          <?php if (strlen($error = $menuForm['description']->renderError())): ?>
-            <?php echo $error ?>
-          <?php elseif (strlen($sourceCultureValue = $menu->getDescription(array('sourceCulture' => true))) > 0 && $culture != $menu->getSourceCulture()): ?>
-            <div class="default-translation" title="<?php echo __('source text') ?>"><?php echo nl2br($sourceCultureValue) ?></div>
-          <?php endif; ?>
-          <?php echo $menuForm['description']->render() ?>
-        </td>
-      </tr>
-      
-      <tr>
-        <th>
-          <?php echo $menuForm['parentId']->renderLabel(null, 
-            array('title' => __('Move before'))) ?>
-        </th>
-        <td>
-          <?php if (strlen($error = $menuForm['parentId']->renderError())): ?>
-            <?php echo $error ?>
-          <?php endif;  ?>
-          <?php echo $menuForm['parentId']->render() ?>
-        </td>
-      </tr>
-    </tbody>
-    <tfoot>
-      <tr><td colspan="2"><?php echo __('* This field is required.') ?></td></tr>
-    </tfoot>
-  </table>
-    
-  <!-- include empty div at bottom of form to bump the fixed button-block and allow user to scroll past it -->
-  <div id="button-block-bump"></div>
-  
-  <div id="button-block">
-    <div class="menu-action">
-      &nbsp;<?php echo link_to(__('cancel'), 'menu/list?page='.$page) ?>
-      <?php if (!$menu->isProtected()): ?>
-      <?php echo link_to(__('delete'), 'menu/delete?id='.$menu->getId(), 'post=true&confirm='.__('this action will delete this menu and all it\'s descendants. Are you sure?')) ?>
-      <?php endif; ?>
-      <?php echo submit_tag(__('save')) ?>
+      </ul>
     </div>
+
   </div>
+
 </form>

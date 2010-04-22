@@ -45,7 +45,7 @@ class SettingsUpdateAction extends sfAction
     else if ($this->getRequestParameter('language_code'))
     {
       // we are adding a new language
-      sfLoader::loadHelpers(array('I18N'));
+      sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
       // Check to make sure that the selected language is supported with a Symfony i18n data file.
       // If not it will cause a fatal error in the Language List component on every response.
       // Can route the user to a warning page with more info in a later release, for now just

@@ -105,9 +105,12 @@ class SearchIndex
     xfLuceneZendManager::load();
     Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
 
-    foreach (self::getTranslatedLanguages($object) as $languageCode)
+    if (0 < count($languages = self::getTranslatedLanguages($object)))
     {
-      self::updateIndexDocument($object, $languageCode);
+      foreach ($languages as $languageCode)
+      {
+        self::updateIndexDocument($object, $languageCode);
+      }
     }
   }
 
@@ -214,16 +217,21 @@ class SearchIndex
 
     $doc->addField(Zend_Search_Lucene_Field::Keyword('id', $informationObject->id));
 
-    if (isset($informationObject->parent))
+    // PARENT
+    if (null !== $informationObject->parentId)
     {
-      $doc->addField(Zend_Search_Lucene_Field::Keyword('parentId', $informationObject->parent->id));
+      $doc->addField(Zend_Search_Lucene_Field::Keyword('parentId', $informationObject->parentId));
+    }
+    else
+    {
+      // Only ROOT node should have no parent, don't index
+      return;
     }
 
     $doc->addField(Zend_Search_Lucene_Field::Keyword('culture', $language));
 
+    // getPublicationStatus() loops up hierarchy tree for status
     $doc->addField(Zend_Search_Lucene_Field::Unstored('publicationStatusId', $informationObject->getPublicationStatus()->statusId));
-
-    // Note: text fields have to be converted to lower-case for use with utf-8 analyzer
 
     // IDENTIFIER
     $identifierField = Zend_Search_Lucene_Field::Unstored('identifier', $informationObject->getIdentifier(), $encoding);
@@ -236,7 +244,7 @@ class SearchIndex
     $titleField->boost = 10;
     $doc->addField($titleField);
     //store an unindexed, case-sensitive copy of the title field for use in hit display
-    if ($informationObject->getTitle(array('culture' => $language)))
+    if (0 < strlen($informationObject->getTitle(array('culture' => $language))))
     {
       $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_title', $informationObject->getTitle(array('culture' => $language)), $encoding));
     }
@@ -247,22 +255,27 @@ class SearchIndex
     }
 
     // LEVEL OF DESCRIPTION
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('levelofdescription', $informationObject->getLevelOfDescription(array('culture' => $language)), $encoding));
-    //store an unindexed, case-sensitive copy of the scope & content field for use in hit display
-    $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_levelofdescription', $informationObject->getLevelOfDescription(array('culture' => $language)), $encoding));
+    if (null !== $term = $informationObject->getLevelOfDescription())
+    {
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('levelofdescription', $term->getName(array('culture' => $language)), $encoding));
+      //store an unindexed, case-sensitive copy of the 'level of description' field for use in hit display
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_levelofdescription', $term->getName(array('culture' => $language)), $encoding));
+    }
+    else
+    {
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('levelofdescription', null, $encoding));
+      $doc->addField(Zend_Search_Lucene_Field::UnIndexed('display_levelofdescription', null, $encoding));
+    }
 
     // CREATOR
-    $creatorField = Zend_Search_Lucene_Field::Unstored('creator', $informationObject->getCreatorsNameString($language), $encoding);
+    $creatorField = Zend_Search_Lucene_Field::Unstored('creator', $informationObject->getCreatorsNameString(array('culture' => $language)), $encoding);
     //boost the hit relevance for the creator field
     $creatorField->boost = 8;
     $doc->addField($creatorField);
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', $informationObject->getCreatorsHistoryString($language), $encoding));
+    $doc->addField(Zend_Search_Lucene_Field::Unstored('creatorhistory', $informationObject->getCreatorsHistoryString(array('culture' => $language)), $encoding));
 
     //DATES
-    if (count($dates = $informationObject->getDatesString()) > 0)
-    {
-      $doc->addField(Zend_Search_Lucene_Field::Text('dates', $dates));
-    }
+    $doc->addField(Zend_Search_Lucene_Field::Text('dates', $informationObject->getDatesString(array('culture' => $language)), $encoding));
 
     // SCOPE AND CONTENT
     $doc->addField(Zend_Search_Lucene_Field::Unstored('scopeandcontent', $informationObject->getScopeAndContent(array('culture' => $language)), $encoding));
@@ -271,8 +284,8 @@ class SearchIndex
     $repository = $informationObject->getRepository(array('inherit' => true));
     if (null !== $repository)
     {
-      $doc->addField(Zend_Search_Lucene_Field::Keyword('repositoryid', $repository->getId()), $encoding);
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', $repository->getAuthorizedFormOfName(), $encoding));
+      $doc->addField(Zend_Search_Lucene_Field::Keyword('repositoryid', $repository->id), $encoding);
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('repository', $repository->getAuthorizedFormOfName(array('culture' => $language)), $encoding));
     }
     else
     {
@@ -298,58 +311,66 @@ class SearchIndex
     $doc->addField(Zend_Search_Lucene_Field::Unstored('relatedunitsofdescription', $informationObject->getRelatedUnitsOfDescription(array('culture' => $language)), $encoding));
 
     // SUBJECTS
-    $subjectField = Zend_Search_Lucene_Field::Unstored('subject', $informationObject->getSubjectsString($language), $encoding);
+    $subjectField = Zend_Search_Lucene_Field::Unstored('subject', $informationObject->getAccessPointsString(QubitTaxonomy::SUBJECT_ID, array('culture' => $language)), $encoding);
     //boost the hit relevance for the subject field
     $subjectField->boost = 5;
     $doc->addField($subjectField);
 
     // PLACE
-    $placeField = Zend_Search_Lucene_Field::Unstored('place', $informationObject->getPlacesString($language), $encoding);
+    $placeField = Zend_Search_Lucene_Field::Unstored('place', $informationObject->getAccessPointsString(QubitTaxonomy::PLACE_ID, array('culture' => $language)), $encoding);
     //boost the hit relevance for the place field
     $placeField->boost = 3;
     $doc->addField($placeField);
 
     // NAMES
-    $nameField = Zend_Search_Lucene_Field::Unstored('name', $informationObject->getNameAccessPointsString($language), $encoding);
+    $nameField = Zend_Search_Lucene_Field::Unstored('name', $informationObject->getNameAccessPointsString(array('culture' => $language)), $encoding);
     //boost the hit relevance for the place field
     $nameField->boost = 3;
     $doc->addField($nameField);
 
     $cultureInfo = sfCultureInfo::getInstance($language);
+    $languages = $cultureInfo->getLanguages();
+    $scripts = $cultureInfo->getScripts();
 
     // LANGUAGES
-    if (count($languageCodes = $informationObject->getProperties($name = 'information_object_language')) > 0)
+    if (0 < count($properties = $informationObject->getProperties($name = 'language')))
     {
-      $languages = $cultureInfo->getLanguages();
+      $languageCodes = unserialize($properties->offsetGet(0)->getValue(array('sourceCulture' => true)));
 
-      $languageString = '';
-      foreach ($languageCodes as $languageCode)
+      if (0 < count($languageCodes))
       {
-        $languageString .= $languages[$languageCode->getValue()].' ';
+        $languageString = '';
+        foreach ($languageCodes as $languageCode)
+        {
+          $languageString .= $languages[$languageCode].' ';
+        }
+        $doc->addField(Zend_Search_Lucene_Field::Unstored('language', rtrim($languageString), $encoding));
       }
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('language', $languageString, $encoding));
     }
 
     // SCRIPTS
-    if (count($scriptCodes = $informationObject->getProperties($name = 'information_object_script')) > 0)
+    if (0 < count($properties = $informationObject->getProperties($name = 'script')))
     {
-      $scripts = $cultureInfo->getScripts();
+      $scriptCodes = unserialize($properties->offsetGet(0)->getValue(array('sourceCulture' => true)));
 
-      $scriptString = '';
-      foreach ($scriptCodes as $scriptCode)
+      if (0 < count($scriptCodes))
       {
-        $scriptString .= $scripts[$scriptCode->getValue()].' ';
+        $scriptString = '';
+        foreach ($scriptCodes as $scriptCode)
+        {
+          $scriptString .= $scripts[$scriptCode].' ';
+        }
+        $doc->addField(Zend_Search_Lucene_Field::Unstored('script', rtrim($scriptString), $encoding));
       }
-      $doc->addField(Zend_Search_Lucene_Field::Unstored('script', $scriptString, $encoding));
     }
 
     // NOTES
-    if (count($notes = $informationObject->getNotes()) > 0)
+    if (0 < count($notes = $informationObject->getNotes()))
     {
       $noteString = '';
       foreach ($notes as $note)
       {
-        $noteString .= $note.' ';
+        $noteString .= $note->getContent(array('culture' => $language)).' ';
       }
       $doc->addField(Zend_Search_Lucene_Field::Unstored('notes', $noteString, $encoding));
     }
@@ -359,7 +380,7 @@ class SearchIndex
     {
       if (isset($digitalObject->mediaType))
       {
-        $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', $digitalObject->getMediaType()->__toString()), $encoding);
+        $doc->addField(Zend_Search_Lucene_Field::Unstored('mediatype', $digitalObject->getMediaType()->getName(array('culture' => $language)), $encoding));
       }
 
       $doc->addField(Zend_Search_Lucene_Field::Unstored('filename', $digitalObject->getName(), $encoding));

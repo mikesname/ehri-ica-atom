@@ -1,6 +1,20 @@
 <?php
 
 /*
+ * This file is part of Qubit Toolkit.
+ *
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 // TODO: Integrate with symfony/data/bin/check_configuration.php
@@ -158,18 +172,26 @@ class sfInstall
   protected static function get($url)
   {
     $request = sfContext::getInstance()->request;
+    $browser = new sfWebBrowser;
 
-    // TODO: Error handling
-    $handle = fsockopen($request->getHost(), 80, $null, $null, 5);
-    fwrite($handle, implode("\r\n", array(
-      'GET '.$url.' HTTP/1.1',
-      'Host: '.$request->getHost()))."\r\n\r\n");
-    fflush($handle);
-
-    $contents = stream_get_contents($handle);
-    fclose($handle);
-
-    return $contents;
+    try
+    {
+      if (true !== $browser->get($request->getUriPrefix().$url)->responseIsError())
+      {
+        // Successful response (eg. 200, 201, etc)
+        return $browser->getResponseText();
+      }
+      else
+      {
+        // Error response (eg. 404, 500, etc)
+        return false;
+      }
+    }
+    catch (Exception $e)
+    {
+      // Adapter error [curl,fopen,fsockopen] (eg. Host not found)
+      return false;
+    }
   }
 
   // Must be called after checkDatabasesYml() because the $noScriptNameUrl will
@@ -389,17 +411,17 @@ EOF;
     switch (strtolower(substr($memoryLimit, -1)))
     {
       case 'k':
-        $memoryLimit = round(intval(substr($memoryLimit, 0, -1))/1024, 3);
+        $memoryLimit = round(intval(substr($memoryLimit, 0, -1)) / 1024, 3);
         break;
       case 'm':
         $memoryLimit = intval(substr($memoryLimit, 0, -1));
         break;
       case 'g':
-        $memoryLimit = intval(substr($memoryLimit, 0, -1))*1024;
+        $memoryLimit = intval(substr($memoryLimit, 0, -1)) * 1024;
         break;
       default:
         // If suffix is not K, M, or G (case-insensitive), then value is assumed to be bytes
-        $memoryLimit = round(intval($memoryLimit)/1048576, 3);
+        $memoryLimit = round(intval($memoryLimit) / 1048576, 3);
     }
 
     if ($memoryLimit < self::$MINIMUM_MEMORY_LIMIT_MB)
@@ -436,7 +458,7 @@ EOF;
 
     chdir(sfConfig::get('sf_root_dir'));
 
-    $configureDatabase = new sfConfigureDatabaseTask($dispatcher, $formatter);
+    $configureDatabase = new sfPropelConfigureDatabaseTask($dispatcher, $formatter);
     $configureDatabase->run($arguments);
 
     // FIXME: By instantiating a new application configuration the cache clear
@@ -491,6 +513,10 @@ EOF;
     $object = new QubitInformationObject;
     $object->setId(QubitInformationObject::ROOT_ID);
     $object->save();
+
+    $object = new QubitActor;
+    $object->setId(QubitActor::ROOT_ID);
+    $object->save();
   }
 
   public static function loadData()
@@ -500,7 +526,7 @@ EOF;
 
     chdir(sfConfig::get('sf_root_dir'));
 
-    $loadData = new sfPropelLoadDataTask($dispatcher, $formatter);
+    $loadData = new sfPropelDataLoadTask($dispatcher, $formatter);
     $loadData->run();
   }
 }

@@ -1,100 +1,13 @@
-deleteSuccess:
-  components:
-    sidebar: []
-    BrowseBox: []
-    MainMenu: []
-    SearchBox: []
-
-editDcSuccess:
-  stylesheets:
-    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-  javascripts:
-    - /vendor/yui/datasource/datasource-min
-    - /vendor/yui/connection/connection-min
-    - /vendor/yui/animation/animation-min
-    - /vendor/yui/autocomplete/autocomplete-min
-    - autocomplete
-    - /sfDrupalPlugin/vendor/drupal/misc/collapse
-    - /sfDrupalPlugin/vendor/drupal/misc/textarea
-    - multiDelete
-    - multiInstanceInput
-    - multiInstanceSelect
-    - multiRow
-    - select
-
-editIsadSuccess:
-  stylesheets:
-    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-    edit:
-  javascripts:
-    - /vendor/yui/datasource/datasource-min
-    - /vendor/yui/connection/connection-min
-    - /vendor/yui/animation/animation-min
-    - /vendor/yui/autocomplete/autocomplete-min
-    - autocomplete
-    - /sfDrupalPlugin/vendor/drupal/misc/collapse
-    - /sfDrupalPlugin/vendor/drupal/misc/textarea
-    - multiDelete
-    - multiInstanceInput
-    - multiInstanceSelect
-    - multiRow
-    - select
-
-editModsSuccess:
-  stylesheets:
-    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-  javascripts:
-    - /vendor/yui/datasource/datasource-min
-    - /vendor/yui/connection/connection-min
-    - /vendor/yui/animation/animation-min
-    - /vendor/yui/autocomplete/autocomplete-min
-    - autocomplete
-    - /sfDrupalPlugin/vendor/drupal/misc/collapse
-    - /sfDrupalPlugin/vendor/drupal/misc/textarea
-    - multiDelete
-    - multiInstanceInput
-    - multiInstanceSelect
-    - multiRow
-    - select
-
 editPhysicalObjectsSuccess:
   javascripts:
-    - multiDelete
-  components:
-    sidebar: []
-
-editRadSuccess:
-  stylesheets:
-    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-  javascripts:
-    - /vendor/yui/datasource/datasource-min
-    - /vendor/yui/connection/connection-min
-    - /vendor/yui/animation/animation-min
-    - /vendor/yui/autocomplete/autocomplete-min
-    - autocomplete
-    - /sfDrupalPlugin/vendor/drupal/misc/collapse
-    - /sfDrupalPlugin/vendor/drupal/misc/textarea
-    - multiDelete
-    - multiInstanceInput
-    - multiInstanceSelect
-    - multiRow
-    - select
+    multiDelete:
 
 listSuccess:
-  javascripts: [actions]
-  components:
-    sidebar: []
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
-all:
-  components:
-    sidebar: [informationobject, contextMenu]
-
-updateIsadError:
-  components:
-    sidebar: []
-    MainMenu: []
-
-updateRadError:
-  components:
-    sidebar: []
-    MainMenu: []
+physicalObjects:
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/tableheader:

@@ -1,7 +1,10 @@
 QubitTaxonomy:
+  QubitTaxonomy_root:
+    id: <?php echo QubitTaxonomy::ROOT_ID."\n" ?>
   QubitTaxonomy_1:
     source_culture: en
     id: <?php echo QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'Detailgrad der Erschließung'
       en: 'Description Detail Levels'
@@ -14,6 +17,7 @@ QubitTaxonomy:
   QubitTaxonomy_2:
     source_culture: en
     id: <?php echo QubitTaxonomy::ACTOR_ENTITY_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Rechtspersönlichkeit
       en: 'Actor Entity Types'
@@ -25,6 +29,7 @@ QubitTaxonomy:
   QubitTaxonomy_3:
     source_culture: en
     id: <?php echo QubitTaxonomy::DESCRIPTION_STATUS_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Erschließungsstatus
       en: 'Description Statuses'
@@ -36,6 +41,7 @@ QubitTaxonomy:
   QubitTaxonomy_4:
     source_culture: en
     id: <?php echo QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Erschließungsstufe
       en: 'Levels of description'
@@ -48,6 +54,7 @@ QubitTaxonomy:
   QubitTaxonomy_5:
     source_culture: en
     id: <?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Themen
       en: Subjects
@@ -60,6 +67,7 @@ QubitTaxonomy:
   QubitTaxonomy_6:
     source_culture: en
     id: <?php echo QubitTaxonomy::ACTOR_NAME_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Bezeichnung
       en: 'Actor Name Types'
@@ -71,6 +79,7 @@ QubitTaxonomy:
   QubitTaxonomy_7:
     source_culture: en
     id: <?php echo QubitTaxonomy::NOTE_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Anmerkungsarten
       en: 'Note types'
@@ -82,6 +91,7 @@ QubitTaxonomy:
   QubitTaxonomy_8:
     source_culture: en
     id: <?php echo QubitTaxonomy::REPOSITORY_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Aufbewahrungsart
       en: 'Repository Types'
@@ -94,6 +104,7 @@ QubitTaxonomy:
   QubitTaxonomy_10:
     source_culture: en
     id: <?php echo QubitTaxonomy::EVENT_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Ereignistyp
       en: 'Event Types'
@@ -108,6 +119,7 @@ QubitTaxonomy:
   QubitTaxonomy_11:
     source_culture: en
     id: <?php echo QubitTaxonomy::QUBIT_SETTING_LABEL_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'Qubit Einstellungskennzeichen'
       en: 'Qubit Setting Labels'
@@ -122,6 +134,7 @@ QubitTaxonomy:
   QubitTaxonomy_12:
     source_culture: en
     id: <?php echo QubitTaxonomy::PLACE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Orte
       en: Places
@@ -134,18 +147,20 @@ QubitTaxonomy:
   QubitTaxonomy_13:
     source_culture: en
     id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
-      de: Funktionen
-      en: Functions
-      es: Funciones
-      fr: Fonctions
-      it: funzioni
-      nl: Functies
-      pt: Funções
-      sl: funkcija
+      de: ISDF Funktionen
+      en: ISDF Function Types
+      es: ISDF Tipos de Funcion
+      fr: ISDF Types de Fonction
+      it: ISDF Tipi di Funzion
+      nl: ISDF Functie Soorten
+      pt: ISDF Tipos de Funções
+      sl: ISDF Tip Funkcija
   QubitTaxonomy_14:
     source_culture: en
     id: <?php echo QubitTaxonomy::HISTORICAL_EVENT_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'Historische Ereignisse'
       en: 'Historical Events'
@@ -158,6 +173,7 @@ QubitTaxonomy:
   QubitTaxonomy_15:
     source_culture: en
     id: <?php echo QubitTaxonomy::COLLECTION_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Bestandsart
       en: 'Collection Types'
@@ -170,6 +186,7 @@ QubitTaxonomy:
   QubitTaxonomy_16:
     source_culture: en
     id: <?php echo QubitTaxonomy::MEDIA_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Medientyp
       en: 'Media Types'
@@ -181,6 +198,7 @@ QubitTaxonomy:
   QubitTaxonomy_17:
     source_culture: en
     id: <?php echo QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'Repräsentationsformen digitaler Objekte'
       en: 'Digital Object Usages'
@@ -193,6 +211,7 @@ QubitTaxonomy:
   QubitTaxonomy_18:
     source_culture: en
     id: <?php echo QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'Art des Physischen Objekts'
       en: 'Physical Object Type'
@@ -204,6 +223,7 @@ QubitTaxonomy:
   QubitTaxonomy_19:
     source_culture: en
     id: <?php echo QubitTaxonomy::RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Bezugsart
       en: 'Relation Type'
@@ -215,6 +235,7 @@ QubitTaxonomy:
   QubitTaxonomy_20:
     source_culture: en
     id: <?php echo QubitTaxonomy::MATERIAL_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: Materialart
       en: 'Material Type'
@@ -225,6 +246,7 @@ QubitTaxonomy:
   QubitTaxonomy_21:
     source_culture: en
     id: <?php echo QubitTaxonomy::RAD_NOTE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'RAD Eintrag'
       en: 'RAD Note'
@@ -236,6 +258,7 @@ QubitTaxonomy:
   QubitTaxonomy_22:
     source_culture: en
     id: <?php echo QubitTaxonomy::RAD_TITLE_NOTE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       de: 'RAD Titeleintrag'
       en: 'RAD Title Note'
@@ -247,6 +270,7 @@ QubitTaxonomy:
   QubitTaxonomy_mods_resource_type:
     source_culture: en
     id: <?php echo QubitTaxonomy::MODS_RESOURCE_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'MODS Resource Type'
       fr: 'Types de ressources MODS'
@@ -256,6 +280,7 @@ QubitTaxonomy:
   QubitTaxonomy_dc_type:
     source_culture: en
     id: <?php echo QubitTaxonomy::DC_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'Dublin Core Types'
       fr: 'Types Dublin Core'
@@ -265,6 +290,7 @@ QubitTaxonomy:
   QubitTaxonomy_actor_relation_type:
     source_culture: en
     id: <?php echo QubitTaxonomy::ACTOR_RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'Actor Relation Type'
     note:
@@ -272,25 +298,35 @@ QubitTaxonomy:
   QubitTaxonomy_actor_relation_note_type:
     source_culture: en
     id: <?php echo QubitTaxonomy::RELATION_NOTE_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'Relation Note Types'
   QubitTaxonomy_term_relation_type:
     source_culture: en
     id: <?php echo QubitTaxonomy::TERM_RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'Term Relation Types'
-  QubitTaxonomy_root:
-    id: <?php echo QubitTaxonomy::ROOT_ID."\n" ?>
   QubitTaxonomy_status_types:
     source_culture: en
     id: <?php echo QubitTaxonomy::STATUS_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'Status Types'
   QubitTaxonomy_publication_status:
     source_culture: en
     id: <?php echo QubitTaxonomy::PUBLICATION_STATUS_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
     name:
       en: 'Publication Status'
+  QubitTaxonomy_isdf_relation_type:
+    source_culture: en
+    id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTaxonomy_root
+    name:
+      en: 'ISDF Relation Type'
+    note:
+      en: 'Function-to-function relationship categories defined by the ICA ISDF specification, 1st Edition, Section 5.3.3, ''Category of relationship''.'
 QubitTerm:
   QubitTerm_110:
     taxonomy_id: <?php echo QubitTaxonomy::ROOT_ID."\n" ?>
@@ -590,6 +626,14 @@ QubitTerm:
       nl: Anders
       pt: Outro
       sl: Drugo
+  QubitTerm_external_uri:
+    taxonomy_id: QubitTaxonomy_17
+    parent_id: QubitTerm_110
+    id: <?php echo QubitTerm::EXTERNAL_URI_ID."\n" ?>
+    source_culture: en
+    name:
+      es: 'URI externo'
+      en: 'External URI'
   QubitTerm_137:
     taxonomy_id: QubitTaxonomy_17
     parent_id: QubitTerm_110
@@ -745,12 +789,12 @@ QubitTerm:
     source_culture: en
     name:
       de: 'Weiterer Name'
-      en: 'Other name'
-      es: 'Outra forma do nome'
+      en: 'Other form'
+      es: 'Outra forma'
       fr: 'Autre nom'
       it: 'Altro nome'
       nl: 'Andere naam'
-      pt: 'Outra forma do nome'
+      pt: 'Outra forma'
       sl: 'Drugo ime'
   QubitTerm_actor_relationship_hierarchical:
     taxonomy_id: QubitTaxonomy_actor_relation_type
@@ -864,6 +908,41 @@ QubitTerm:
       nl: 'naam ontsluitingsterm'
       pt: 'ponto de acesso - nome'
       sl: 'ime vhodne točke'
+  QubitTerm_isdf_relationship_hierarchical:
+    taxonomy_id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTerm_110
+    id: <?php echo QubitTerm::ISDF_HIERARCHICAL_RELATION_ID."\n" ?>
+    source_culture: en
+    name:
+      en: hierarchical
+  QubitTerm_isdf_relationship_temporal:
+    taxonomy_id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTerm_110
+    id: <?php echo QubitTerm::ISDF_TEMPORAL_RELATION_ID."\n" ?>
+    source_culture: en
+    name:
+      en: temporal
+  QubitTerm_isdf_relationship_associative:
+    taxonomy_id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
+    parent_id: QubitTerm_110
+    id: <?php echo QubitTerm::ISDF_ASSOCIATIVE_RELATION_ID."\n" ?>
+    source_culture: en
+    name:
+      en: associative
+  QubitTerm_standardized_form_of_name:
+    id: <?php echo QubitTerm::STANDARDIZED_FORM_OF_NAME_ID."\n" ?>
+    taxonomy_id: QubitTaxonomy_6
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      de: Standardansetzung
+      en: 'Standardized form'
+      es: 'Forma normalizada'
+      fr: 'Forme normalisée'
+      it: 'Forma standardizzata'
+      nl: 'Geautoriseerde naam'
+      pt: 'Forma normalizada'
+      sl: 'Standardizirana oblika'
   QubitTerm_146:
     taxonomy_id: QubitTaxonomy_10
     parent_id: QubitTerm_110
@@ -905,70 +984,6 @@ QubitTerm:
       it: Fabbricazione
       pt: Fabricação
       sl: Proizvoden
-  QubitTerm_152:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: Standardansetzung
-      en: 'Standardized form'
-      es: 'Forma normalizada'
-      fr: 'Forme normalisée'
-      it: 'Forma standardizzata'
-      nl: 'Geautoriseerde naam'
-      pt: 'Forma normalizada'
-      sl: 'Standardizirana oblika'
-  QubitTerm_154:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: 'Früherer Name'
-      en: 'Previous name'
-      es: 'Nombre anterior'
-      fr: 'Nom précédent'
-      it: 'Nome precedente'
-      nl: 'Eerdere naam'
-      pt: 'Nome anterior'
-      sl: 'Prejšnje ime'
-  QubitTerm_155:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: Pseudonym
-      en: Pseudonym
-      es: Pseudônimo
-      fr: Pseudonyme
-      it: Pseudonomo
-      nl: Pseudoniem
-      pt: Pseudônimo
-      sl: Psevdonim
-  QubitTerm_156:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: Acronym
-      en: Acronym
-      fr: Acronyme
-      it: Acronimo
-      nl: Acroniem
-      pt: Sigla
-      sl: Akronim
-  QubitTerm_157:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: Titel
-      en: Title
-      es: Título
-      fr: Titre
-      it: Titolo
-      nl: Titel
-      pt: Título
-      sl: Naslov
   QubitTerm_158:
     taxonomy_id: QubitTaxonomy_18
     parent_id: QubitTerm_141
@@ -1055,32 +1070,6 @@ QubitTerm:
       nl: Plank
       pt: Prateleira
       sl: Poličnica
-  QubitTerm_165:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: Geburtsname
-      en: 'Maiden name, first name'
-      es: 'Sobrenome de solteira, Primeiro nome'
-      fr: 'Nom de jeune fille, prénom'
-      it: 'Cognome da nubile, nome'
-      nl: 'Meisjesnaam, voornaam'
-      pt: 'Sobrenome de solteira, primeiro nome'
-      sl: Priimek
-  QubitTerm_166:
-    taxonomy_id: QubitTaxonomy_6
-    parent_id: QubitTerm_110
-    source_culture: en
-    name:
-      de: Spitzname
-      en: Nickname
-      es: Apelido
-      fr: Surnom
-      it: Soprannome
-      nl: Roepnaam
-      pt: Apelido
-      sl: Vzdevek
   QubitTerm_167:
     taxonomy_id: QubitTaxonomy_3
     parent_id: QubitTerm_110
@@ -2074,6 +2063,45 @@ QubitTerm:
       en: text
       fr: 'documents textuels'
       it: testo
+  QubitTerm_function_function:
+    taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      de: Funktion
+      en: Function
+      es: Funcion
+      fr: Fonction
+  QubitTerm_function_subfunction:
+    taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      en: Subfunction
+  QubitTerm_function_business_process:
+    taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      en: 'Business process' 
+  QubitTerm_function_activity:
+    taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      en: Activity 
+  QubitTerm_function_task:
+    taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      en: Task 
+  QubitTerm_function_transaction:
+    taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
+    parent_id: QubitTerm_110
+    source_culture: en
+    name:
+      en: Transaction 
 QubitNote:
   QubitNote_1:
     object_id: QubitTerm_111

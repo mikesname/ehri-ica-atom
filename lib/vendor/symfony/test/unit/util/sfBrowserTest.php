@@ -10,10 +10,11 @@
 
 require_once(dirname(__FILE__).'/../../bootstrap/unit.php');
 
-$t = new lime_test(61, new lime_output_color());
+$t = new lime_test(73);
 
 // ->click()
 $t->diag('->click()');
+
 class myClickBrowser extends sfBrowser
 {
   public function setHtml($html)
@@ -21,6 +22,7 @@ class myClickBrowser extends sfBrowser
     $this->dom = new DomDocument('1.0', 'UTF-8');
     $this->dom->validateOnParse = true;
     $this->dom->loadHTML($html);
+    $this->domCssSelector = new sfDomCssSelector($this->dom);
   }
 
   public function getFiles()
@@ -49,11 +51,12 @@ class myClickBrowser extends sfBrowser
 $html = <<<EOF
 <html>
   <body>
-    <a href="/mylink">test link</a>
-    <a href="/myimagelink"><img src="myimage.gif" alt="image link" /></a>
+    <a href="/mylink" id="clickable-link" class="one-of-many-clickable-links">test link</a>
+    <a href="/myimagelink" class="one-of-many-clickable-links"><img src="myimage.gif" alt="image link" /></a>
     <form action="/myform" method="post">
       <input type="text" name="text_default_value" value="default" />
       <input type="text" name="text" value="" />
+      <input type="text" name="i_am_disabled" value="i_am_disabled" disabled="disabled" />
       <textarea name="textarea">content</textarea>
       <select name="select">
         <option value="first">first</option>
@@ -82,7 +85,7 @@ $html = <<<EOF
       <input type="radio" name="radio1" value="a" id="a-radio" />
       <input type="radio" name="radio1" value="b" id="b-radio" />
       <input type="button" name="mybutton" value="mybuttonvalue" />
-      <input type="submit" name="submit" value="submit" />
+      <input type="submit" name="submit" value="submit" id="clickable-input-submit" />
     </form>
 
     <form action="/myform1" method="get">
@@ -109,8 +112,18 @@ $html = <<<EOF
 
     <form action="/myform5">
       <div><span>
-        <button  id="submit5">Click</button>
+        <button id="submit5">Click</button>
         <input type="image" src="myimage.png" alt="image submit" name="submit_image" value="image" />
+      </span></div>
+    </form>
+
+    <form action="/myform6" method="post">
+      <div><span>
+        <input type="text" name="foo[bar]" value="foo" />
+        <input type="text" name="foo[bar]" value="bar" />
+        <input type="text" name="bar" value="foo" />
+        <input type="text" name="bar" value="bar" />
+        <input type="submit" name="submit" value="submit6" />
       </span></div>
     </form>
 
@@ -118,12 +131,15 @@ $html = <<<EOF
     <a href="/submitlink">submit</a>
     <a href="/submitimagelink"><img src="myimage.gif" alt="submit" /></a>
 
+    <input type="submit" id="orphaned-input-submit" />
+
   </body>
 </html>
 EOF;
 
 $b = new myClickBrowser();
 $b->setHtml($html);
+
 try
 {
   $b->click('nonexistantname');
@@ -143,7 +159,6 @@ catch(Exception $e)
 {
   $t->fail('->click() clicks on button links');
 }
-
 
 list($method, $uri, $parameters) = $b->click('test link');
 $t->is($uri, '/mylink', '->click() clicks on links');
@@ -219,6 +234,31 @@ $t->is($parameters['select_multiple'], array('first', 'selected', 'last'), '->cl
 $t->is($parameters['article']['title'], 'mytitle', '->click() can override array fields');
 $t->is($parameters['article']['category'], array(1, 2, 3), '->click() can override array fields');
 $t->is($parameters['article']['or']['much']['longer'], 'long', '->click() recognizes array names');
+$t->is(isset($parameters['i_am_disabled']), false, '->click() ignores disabled fields');
+
+list($method, $uri, $parameters) = $b->click('#clickable-link');
+$t->is($method, 'get', '->click() accepts a CSS selector');
+$t->is($uri, '/mylink', '->click() accepts a CSS selector');
+$t->is_deeply($parameters, array(), '->click() accepts a CSS selector');
+
+list($method, $uri, $parameters) = $b->click('.one-of-many-clickable-links', array(), array('position' => 2));
+$t->is($method, 'get', '->click() accepts a CSS selector and position option');
+$t->is($uri, '/myimagelink', '->click() accepts a CSS selector and position option');
+$t->is_deeply($parameters, array(), '->click() accepts a CSS selector and position option');
+
+list($method, $uri, $parameters) = $b->click('#clickable-input-submit');
+$t->is($method, 'post', '->click() accepts a CSS selector for a submit input');
+$t->is($uri, '/myform', '->click() accepts a CSS selector for a submit input');
+
+try
+{
+  $b->click('#orphaned-input-submit');
+  $t->fail('->click() throws an error if a submit is clicked outside a form');
+}
+catch (Exception $e)
+{
+  $t->pass('->click() throws an error if a submit is clicked outside a form');
+}
 
 // ->setField()
 $t->diag('->setField()');
@@ -299,3 +339,9 @@ $files = $b->getFiles();
 
 $t->is($files['myfile']['error'], UPLOAD_ERR_OK, 'existent file exists (UPLOAD_ERR_OK)');
 $t->is($files['myfile']['name'], basename($existentFilename), 'name key ok');
+
+// bug #7816
+$t->diag('bug #7816');
+list($method, $uri, $parameters) = $b->click('submit6');
+$t->is($parameters['bar'], 'bar', '->click() overrides input elements defined several times');
+$t->is($parameters['foo']['bar'], 'bar', '->click() overrides input elements defined several times');

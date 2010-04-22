@@ -1,12 +1,12 @@
-<div class="pageTitle"><?php echo __('list places'); ?></div>
+<div class="pageTitle"><?php echo __('List places'); ?></div>
 
 <table class="list">
 <thead>
 <tr>
-  <th><?php echo __('id'); ?></th>
-  <th><?php echo __('place name'); ?> <span class="th-link"><?php echo link_to(__('add new'), 'place/create') ?></span></th>
-  <th><?php echo __('address'); ?></th>
-  <th><?php echo __('country'); ?></th>
+  <th><?php echo __('Id'); ?></th>
+  <th><?php echo __('Place name'); ?> <span class="th-link"><?php echo link_to(__('Add new'), 'place/create') ?></span></th>
+  <th><?php echo __('Address'); ?></th>
+  <th><?php echo __('Country'); ?></th>
 </tr>
 </thead>
 <tbody>
@@ -22,5 +22,5 @@
 </table>
 
 <div class="menu-action">
-<?php echo link_to (__('add new place'), 'place/create') ?>
+<?php echo link_to (__('Add new place'), 'place/create') ?>
 </div>

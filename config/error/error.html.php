@@ -17,28 +17,34 @@
 <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/ie.css" />
 <![endif]-->
 
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/modules/system/defaults.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/modules/system/system.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/themes/garland/style.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/themes/garland/minnelli/minnelli.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/modules/system/system.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/themes/garland/style.css" />
 <link rel="stylesheet" type="text/css" media="print" href="<?php echo $path ?>/sfDrupalPlugin/vendor/drupal/themes/garland/print.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sfClassicPlugin/css/main.css" />
 <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/css/main.css" />
 
 </head>
 <body>
-<div class="sfTContainer" id="wrapper">
-  <div class="clear-block" id="container">
+<div class="sfTContainer" id="page-wrapper">
+  <div id="page">
 
     <div id="header">
-      <div id="logo-floater">
-        <h1><img alt="Qubit" id="logo" src="<?php echo $path ?>/images/logo.png" /><div>Qubit</div></h1>
+      <div class="section clearfix">
+
+        <img alt="Qubit" id="logo" src="<?php echo $path ?>/images/logo.png" />
+
+        <div id="name-and-slogan">
+          <h1 id="site-name">Qubit</h1>
+        </div> <!-- /#name-and-slogan -->
+
       </div>
     </div>
 
-    <div id="center">
-      <div id="squeeze">
-        <div class="right-corner">
-          <div class="left-corner">
+    <div id="main-wrapper">
+      <div class="clearfix" id="main">
+
+        <div class="column" id="content">
+          <div class="section">
 
             <div class="sfTMessageContainer sfTAlert">
               <img alt="page not found" class="sfTMessageIcon" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
@@ -49,8 +55,8 @@
             </div>
 
             <dl class="sfTMessageInfo">
-              <dt>Sorry for the inconvenience but something is not working correctly right now.</dt>
-              <dd>Please contact the site administrator or try again a little later.</dd>
+              <dt>Sorry something went wrong</dt>
+              <dd>Try again a little later or ask in the <a href="http://groups.google.ca/group/ica-atom-users">discussion group</a></dd>
               <dt>What's next</dt>
               <dd>
                 <ul class="sfTIconList">
@@ -59,12 +65,13 @@
               </dd>
             </dl>
 
-          </div>
-        </div>
-      </div>
-    </div>
+          </div> <!-- /.section -->
+        </div> <!-- /.column #content -->
 
-  </div>
-</div>
+      </div> <!-- /#main -->
+    </div> <!-- /#main-wrapper -->
+
+  </div> <!-- /#page -->
+</div> <!-- /#page-wrapper -->
 </body>
 </html>

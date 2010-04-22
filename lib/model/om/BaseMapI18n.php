@@ -10,8 +10,7 @@ abstract class BaseMapI18n implements ArrayAccess
     TITLE = 'q_map_i18n.TITLE',
     DESCRIPTION = 'q_map_i18n.DESCRIPTION',
     ID = 'q_map_i18n.ID',
-    CULTURE = 'q_map_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_map_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_map_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -19,7 +18,6 @@ abstract class BaseMapI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitMapI18n::DESCRIPTION);
     $criteria->addSelectColumn(QubitMapI18n::ID);
     $criteria->addSelectColumn(QubitMapI18n::CULTURE);
-    $criteria->addSelectColumn(QubitMapI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -389,9 +387,7 @@ abstract class BaseMapI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

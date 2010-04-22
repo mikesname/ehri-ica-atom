@@ -21,24 +21,24 @@ class RepositoryContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
-    if ($this->repository)
+    if (!isset($request->limit))
     {
-      // Set current page
-      $this->holdingsPage = $this->getRequestParameter('holdingsPage', 1);
-      $options['page'] = $this->holdingsPage;
-
-      // Paginate holdings list
-      $this->pager = $this->repository->getHoldingsPager($options);
-      $this->pager->setMaxLinkCount(5);
-      $this->pager->init();
-
-      $this->holdings = $this->pager->getResults();
-      $this->currentAction = sfContext::getInstance()->getActionName();
+      $request->limit = sfConfig::get('app_hits_per_page');
     }
-    else
-    {
-      return sfView::NONE;
-    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitInformationObject::REPOSITORY_ID, $request->id);
+    $criteria->addAscendingOrderByColumn('title');
+
+    // Sort holdings alphabetically (w/ fallback)
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+
+    // Paginate holdings list
+    $this->pager = new QubitPager('QubitInformationObject');
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->holdingsPage);
+
+    $this->holdings = $this->pager->getResults();
   }
 }

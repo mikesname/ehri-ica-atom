@@ -1,5 +1,5 @@
 <?php
-// $Id: help.admin.inc,v 1.7 2008/10/26 18:06:38 dries Exp $
+// $Id: help.admin.inc,v 1.11 2009/10/13 05:26:57 webchick Exp $
 
 /**
  * @file
@@ -38,7 +38,7 @@ function help_page($name) {
     $admin_tasks = system_get_module_admin_tasks($name);
     if (!empty($admin_tasks)) {
       ksort($admin_tasks);
-      $output .= theme('item_list', $admin_tasks, t('@module administration pages', array('@module' => $module['name'])));
+      $output .= theme('item_list', array('items' => $admin_tasks, 'title' => t('@module administration pages', array('@module' => $module['name']))));
     }
 
   }
@@ -47,7 +47,7 @@ function help_page($name) {
 
 function help_links_as_list() {
   $empty_arg = drupal_help_arg();
-  $module_info = module_rebuild_cache();
+  $module_info = system_rebuild_module_data();
 
   $modules = array();
   foreach (module_implements('help', TRUE) as $module) {
@@ -60,7 +60,7 @@ function help_links_as_list() {
   // Output pretty four-column list
   $count = count($modules);
   $break = ceil($count / 4);
-  $output = '<div class="clear-block"><div class="help-items"><ul>';
+  $output = '<div class="clearfix"><div class="help-items"><ul>';
   $i = 0;
   foreach ($modules as $module => $name) {
     $output .= '<li>' . l($name, 'admin/help/' . $module) . '</li>';

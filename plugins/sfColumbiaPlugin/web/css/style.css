@@ -1,692 +1,294 @@
-/*******************************************************/
-/*                                                     */
-/*    STYLE.CSS: OVERIDE CORE QUBIT CSS FILES          */
-/*               WITH THEME-SPECIFIC VALUES            */
-/*                                                     */
-/*******************************************************/
-
-
-
-/*******************************************************/
-/*                                                     */
-/*                  LAYOUT.CSS                         */
-/*                                                     */
-/*******************************************************/
-
-
-/************************************/
-/*            BODY                  */
-/************************************/
-
-#body-banner-top
+.field :link:focus h3,
+.field :link:hover h3,
+.field :visited:focus h3,
+.field :visited:hover h3,
+.page :link:focus h1,
+.page :link:hover h1,
+.page :visited:focus h1,
+.page :visited:hover h1,
+:link:focus h2,
+:link:hover h2,
+:visited:focus h2,
+:visited:hover h2,
+:link:focus .label,
+:link:hover .label,
+:visited:focus .label,
+:visited:hover .label,
+#header .browse :link:focus,
+#header .browse :link:hover,
+#header .browse :visited:focus,
+#header .browse :visited:hover,
+#navigation li:hover :link:focus,
+#navigation li:hover :link:hover,
+#navigation li:hover :visited:focus,
+#navigation li:hover :visited:hover,
+#navigation .active :link:focus,
+#navigation .active :visited:focus,
+#navigation :link:focus,
+#navigation :visited:focus
 {
-  height: auto;
-  padding: 5px 0 0 0;
-  margin: 0;
-  position: relative;
-  background: #083852;
+  background-color: #036;
+  color: #fff;
+  text-decoration: none;
 }
 
-#body-page
+thead th,
+.actions,
+.label,
+#content .search
 {
-  margin: 20px auto 0 auto;
+  background: #def;
 }
 
-/************************************/
-/*            HEADER                */
-/************************************/
+.actions :link,
+.actions :visited,
+.form-submit
+{
+  background: #036;
+}
 
 #header
 {
-  background-color: #ffffff;
-  clear: both;
-  margin: 0;
-  padding: 0;
-  height: auto;
-  border: 0;
-  background-image: url(../images/ColumbiaStreet_NewWestminster_1903.jpg);
-  background-repeat: repeat-x;
+  background: #069 url(../images/background.jpg) repeat-x;
 }
 
-#header-top
+/* Avoid collapsing margins with clearfix,
+ * http://www.w3.org/TR/CSS2/box.html#collapsing-margins */
+
+#header > :before
 {
-  padding: 0;
-  border: 0;
-  margin: 0;
+  clear: both;
+  content: '.';
+  display: block;
+  height: 0;
+  visibility: hidden;
+}
+
+#header .browse
+{
+  background: #069;
+
+  border-radius: 1em;
+  -moz-border-radius: 1em;
+  -webkit-border-radius: 1em;
+
+  box-shadow: 2px 2px .5em rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 2px 2px .5em rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 2px 2px .5em rgba(0, 0, 0, 0.5);
+
+  float: right;
+  padding: .5em 2px 1em;
   text-align: center;
-  background-color: #083852;
-  border: 0;
 }
 
-#header-middle
+#header .browse,
+#logo,
+#name-and-slogan
 {
-  clear: both;
-  height: 175px;
-  padding: 0;
+  margin: 1em 0;
+}
+
+#name-and-slogan
+{
+  text-align: center;
+}
+
+#page .browse
+{
   margin: 0;
-  border: 0;
-  position: relative;
-}
-
-#header-bottom
-{
-  clear: both;
   width: auto;
-  text-align: left;
-  height: auto;
-  padding: 5px 0 5px 0;
-  margin: 0 auto 0 auto;
   border: 0;
-  background: #0A5F8C;
 }
 
-/*******************************************************/
-/*                                                     */
-/*                  GRAPHIC.CSS                        */
-/*                                                     */
-/*******************************************************/
-
-/*********************************************************
-                WEBSITE NAME & LOGO
-**********************************************************/
-
-#header-block
+#header .browse h2
 {
-  padding: 10px 0 0 0;
-  clear: both;
-  width: 770px;
-  text-align: left;
+  color: #fff;
   height: auto;
-  margin: 0 auto 0 auto;
-  border: 0;
-  position: relative;
+  position: static;
 }
 
-#website-name
+#header .browse li
 {
-  font: bold 44px georgia, garamond, serif;
-  letter-spacing: 0.10ex;
-  border: 0;
-  margin: 0 0 5px 0;
-  padding: 3px 3px 10px 3px;
-  background-color: white;
-  max-width: 430px;
-  text-align: center;
+  background: #fff;
   display: block;
-  -moz-border-radius: 10px;
-  border: 2px solid #083852;
-}
-
-#website-name a:hover,#website-name a:link,#website-name a:visited,#website-name a:active
-{
-  text-decoration: none;
-  border: 0;
-  background-color: transparent;
+  margin: 0;
   padding: 0;
-  margin: 0;
-  color: #CC3204;
 }
 
-#website-description {
-  color: #083852;
-  font: bold 12px georgia, garamond, serif;
-  margin: 0;
-  padding: 3px;
-  text-align: center;
-  letter-spacing: -0.1ex;
-  background-color: white;
-  max-width: 430px;
-  -moz-border-radius: 10px;
-  border: 2px solid #083852;
-}
-
-#logo
+#header .browse li + li
 {
-   float: left;
+  border-top: 2px dotted #069;
 }
 
-#logo a:hover,#logo a:link,#logo a:visited,#logo a:active {
-  color: #ffffff;
-  padding: 0;
-  margin: 0;
-  float: left;
-}
-
-#logo img {
-  margin: 0 5px 0 0;
-}
-
-/*****************************************
-              LIST TABLES
-*****************************************/
-
-table.list th {
-  border: 1px solid #6A7F9A;
-  background-color: #F1F9FC;
-  color: #000000;
-  padding: 4px 4px 4px 10px;
-  font-weight: bold;
-  vertical-align: top;
-  text-align: left;
-}
-
-/************************************************
-              DETAIL (SHOW/EDIT) TABLES
-*************************************************/
-
-table.detail td.headerCell {
-  border-bottom: 1px solid #6A7F9A;
-  border-top: 2px solid #6A7F9A;
-  color: #000033;
-  background-color: #F1F9FC;
-}
-
-table.detail td.headerCell a {
-  color: #000000;
-  background-color: #F1F9FC;
-}
-
-table.detail td.headerCell a:hover {
-  color: #ffffff;
-  background-color: #083852;
-}
-
-/*****************************************
-              SEARCH RESULTS
-*****************************************/
-
-h1.search
+#header .browse :link,
+#header .browse :visited
 {
-  background-color: #F1F9FC;
-  border-bottom: 1px solid #6A7F9A;
-  border-top: 2px solid #6A7F9A;
+  color: inherit;
+  display: block;
+  padding: 2px 1em;
 }
 
-/*****************************************
-                APP VERSION NUMBER
-*****************************************/
-.versionNumber {
-  float: right;
-  color: #cccccc;
-  margin: 18px 3px 0 0;
-  background: transparent;
-  z-index: 1;
-}
-
-
-/*******************************************************/
-/*                                                     */
-/*                  MENU.CSS                           */
-/*                                                     */
-/*******************************************************/
-
-/*****************************************/
-/*           MENU - TOP                  */
-/*****************************************/
-.menu-top
+#header .search
 {
-  padding: 0 10px 10px 10px;
-  margin: 0;
-  background-color: #083852;
-  border: 0;
-  height: 15px;
-}
-
-/*****************************************/
-/*           MENU - LANGUAGE LIST        */
-/*****************************************/
-
-.language-list
-{
-position: absolute;
-top: 1px;
-left: 10px;
-margin: 0;
-padding: 3px 0 0 0;
-height: 12px;
-background-color: transparent;
-border: 0;
-}
-
-.language-list a:link, .language-list a:visited
-{
-background: transparent;
-color: #DAEEF8;
-text-decoration: none;
-}
-
-.language-list a:hover
-{
-background: #083852;
-color: #ffffff;
-}
-
-.language-list a.active
-{
-color: #ffffff;
-font-weight: bold;
-}
-
-/*****************************************/
-/*           MENU - QUICKLINKS           */
-/*****************************************/
-
-.menu-quick-links
-{
-  margin: 0;
-  padding: 3px 2px 0 0;
-  background-color: transparent;
-  position: absolute;
-  top: 1px;
-  right: 10px;
-}
-
-.menu-quick-links a:link, .menu-quick-links a:visited
-{
-  background: transparent;
-  color: #DAEEF8;
-  text-decoration: none;
-}
-
-.menu-quick-links a:hover
-{
-  background: #083852;
-  color: #ffffff;
-}
-
-.menu-quick-links a.active
-{
-  font-weight: bold;
-  color: #ffffff;
-}
-
-/*****************************************/
-/*           MENU -  MAIN                */
-/*****************************************/
-
-#menu-main-block
-{
-  background: #DAEEF8;
-  padding: 8px 0 4px 0;
-}
-
-#menu-main
-{
-  margin: 0 auto 0 auto;
-  width: 770px;
-  padding: 0;
-  height: 27px;
-  background: transparent;
+  float: none;
+  margin-top: 200px;
+  padding: 4px 0;
+  width: 540px;
+  margin-left: 0;
+  background: #069;
   border-top: 0;
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
+}
+
+#header .search > *
+{
   position: relative;
 }
 
-#menu-main a
+#header .search .form-submit
 {
-  float: left;
-  padding: 5px 20px 3px 20px;
-  margin: 0;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  min-width: 80px;
-  height: 19px;
-  font: normal 17px/18px georgia, serif;
-  background:  transparent;
-  color: #083852;
-  border-right: 0;
-}
+  background: #bcd url(../images/search.png) no-repeat center;
+  border: 0;
 
-#menu-main a:link, #menu-main a:visited, #menu-main a:active
-{
-  background:  transparent;
-  color: #083852;
-  text-decoration: none;
-}
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
 
-#menu-main a:hover
-{
-  background: #083852;
-  color: #ffffff;
-  text-decoration: none;
-  border: 1px solid #083852;
-  -moz-border-radius-topleft: 15px;
-  -moz-border-radius-topright: 15px;
-}
-
-#menu-main a.selected
-{
-  background:  #F1F9FC;
-  color: #083852;
-  padding-bottom: 7px;
-  text-decoration: none;
-  font-weight: bold;
-  border: 1px solid #DAEEF8;
-  border-bottom: 0;
-  -moz-border-radius-topleft: 15px;
-  -moz-border-radius-topright: 15px;
-}
-
-/*****************************************/
-/*            MENU - SECONDARY           */
-/*****************************************/
-
-#menu-secondary-block
-{
-  background-color: #F1F9FC;
-  padding: 4px 0 5px 0;
-  border-bottom: 1px solid #DAEEF8;
-  border-top: 1px solid #DAEEF8;
-}
-
-
-.menu-secondary
-{
-  margin: 0 auto 0 auto;
-  width: 770px;
-  padding: 0px 0 0 5px;
   height: 27px;
-  background: transparent;
-  border: 0;
-  position: relative;
-}
-
-.menu-secondary a
-{
-  float:left;
-  height: 15px;
-  border: 1px solid transparent;
-  padding: 7px 10px 5px 10px;
-  margin: 5px 3px 0 3px;
-  color: #083852;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  font: normal 15px/15px georgia, serif;
-}
-
-.menu-secondary a:link, .menu-secondary a:visited, .menu-secondary a:active
-{
-  background: transparent;
-  color: #083852;
-  text-decoration: none;
-}
-
-.menu-secondary a:hover
-{
-  background-color: #083852;
-  color: #ffffff;
-  text-decoration: none;
-  border: 1px solid #083852;
-  border-bottom: 0;
-  -moz-border-radius-topleft: 25px;
-  -moz-border-radius-topright: 25px;
-}
-
-.menu-secondary a.selected
-{
-  background:  #ffffff;
-  color: #083852;
-  text-decoration: none;
-  font-weight: bold;
-  border: 1px solid #DAEEF8;
-  border-bottom: 0;
-  -moz-border-radius-topleft: 25px;
-  -moz-border-radius-topright: 25px;
-}
-
-
-/********************************************/
-/*            BUTTON-BLOCK                  */
-/********************************************/
-
-#button-block
-{
-  border: 3px solid #6A7F9A;
-  background: #F1F9FC;
-}
-
-.actions
-{
-  background: #F1F9FC;
-}
-
-/****************************************************/
-/*            MENU - ACTION                         */
-/****************************************************/
-
-.menu-action a:link, .menu-action a:visited, .menu-action a:active
-{
-color: #ffffff;
-background-color: #083852;
-}
-
-.menu-action a:hover
-{
-color: #083852;
-background-color: #ffffff;
-}
-
-/* see also graphic.css: EDIT FORMS (i.e. more styles for #content form) */
-
-.form-submit
-{
-color: #ffffff;
-background-color: #083852;
-}
-
-.form-submit:hover
-{
-color: #083852;
-background-color: #ffffff;
-}
-
-/*****************************************/
-/*           MENU - BROWSE               */
-/*****************************************/
-
-.menu-browse
-{
-  -moz-border-radius: 25px;
-  float: right;
-  margin: 0;
-  padding: 10px 0 0 0;
-  background-color: #0A5F8C;
-  text-align: center;
+  margin: 4px;
   position: absolute;
-  top: 0;
-  left: 650px;
-  z-index: 5;
-  border: 2px solid #0A5F8C;
-
-  filter: alpha(opacity=80);
-  opacity: 0.8;
+  right: 0;
+  text-indent: -32767px;
+  width: 27px;
 }
 
-.menu-browse #label
+#header .search .form-submit:focus,
+#header .search .form-submit:hover
 {
-  font: 13px/14px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
-  color: #ffffff;
-  background: transparent;
+  background-color: #abc;
 }
 
-.menu-browse ul
+#header #query
 {
-  padding: 5px 0 0 0;
-  margin: 0;
-}
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
 
-.menu-browse li
-{
-  list-style-type: none;
-  list-style-image: none;
-  margin: 0;
-  padding: 0;
-  border-top: 2px dotted #0A5F8C;
-  background: #ffffff;
-}
+  /* Use consistent box model if possible */
 
-.menu-browse li.hidden
-{
-  visibility: hidden;
-  position: absolute;
-}
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
 
-.menu-browse a
-{
-  display: block;
-  padding: 5px 15px 5px 15px;
-  margin: 0;
-  text-decoration: none;
-  text-align: center;
-  background:  transparent;
-  border: 0;
-  height: auto;
-  font: 13px/14px "Lucida Grande", "Lucida Sans Unicode", verdana, lucida, sans-serif;
-  color: #083852;
-}
-
-.menu-browse a:link, .menu-browse a:visited
-{
-  background: transparent;
-  color: #083852;
-  text-decoration: none;
-}
-
-.menu-browse a:hover
-{
-  background: #083852;
-  color: #ffffff;
-}
-
-.menu-browse a.active
-{
-  border-bottom: 1px solid #999999;
-}
-
-.menu-browse li:first-child
-{
-  border-top: none;
-}
-
-.menu-browse li:last-child
-{
-  border-bottom: none;
-}
-
-.menu-browse ul.menu-level-2
-{
-  visibility: hidden;
-  position: absolute;
-}
-
-/*******************************************************/
-/*                                                     */
-/*                  FORM.CSS                           */
-/*                                                     */
-/*******************************************************/
-
-
-.formHeader
-{
-  border-bottom: 1px solid #6A7F9A;
-  border-top: 2px solid #6A7F9A;
-  background-color: #F1F9FC;
-}
-
-.login-form input.form-submit
-{
-  background-color: #083852;
-}
-
-.login-form input.form-submit:hover
-{
-  color: #083852;
-}
-
-
-
-/*****************************************/
-/*           searchbox                   */
-/*****************************************/
-
-#search-sidebar
-{
-  background: transparent url(../images/searchbox.gif) repeat scroll 0 0;
-  background-repeat: repeat-y;
-  height: 42px;
-  margin: 0 auto 0 auto;
-  padding: 0;
-  width: 770px;
-}
-
-#search-sidebar .textbox
-{
-  width: 360px;
-  height: auto;
   font-size: 24px;
-  color: #C9C9C9;
-  border: 0;
-  padding: 0;
-  margin: 5px;
+  margin: 0; /* Only needed in WebKit */
+  width: 100%;
 }
 
-#search-sidebar .textbox:focus
+#languageMenu,
+#userMenu
+{
+  background: #036;
+}
+
+#languageMenu :link,
+#languageMenu :visited,
+#userMenu :link,
+#userMenu :visited
+{
+  color: #def;
+}
+
+#languageMenu :link:focus,
+#languageMenu :link:hover,
+#languageMenu :visited:focus,
+#languageMenu :visited:hover,
+#userMenu :link:focus,
+#userMenu :link:hover,
+#userMenu :visited:focus,
+#userMenu :visited:hover
 {
   background: transparent;
 }
 
-#search-sidebar .form-submit, #search-sidebar .form-submit:hover
+#navigation
 {
-  background: transparent url(../images/searchbox-button.gif) repeat scroll 0 0;;
-  background-repeat: repeat-y;
-  color: transparent;
-  width: 38px;
-  height: 33px;
+  background: #def;
+  margin-top: 0;
+  padding-top: .5em;
   border: 0;
-  margin: 4px 4px 2px 0;
-  position: relative;
-  left: 220px;
 }
 
-/*********************************************************
-                LIST TEMPLATES SEARCH
-**********************************************************/
-
-#list-search
+#navigation li,
+#navigation ul:first-child
 {
-  background-color: #F1F9FC;
+  border: 0;
 }
 
-
-/*******************************************************/
-/*                                                     */
-/*                  TREEVIEW-SKIN.CSS                  */
-/*                                                     */
-/*******************************************************/
-
-a.currentTextNode
+#navigation li:hover :link,
+#navigation li:hover :visited,
+#navigation .active :link,
+#navigation .active :visited,
+#navigation .links .links
 {
-  background: #DAEEF8 none repeat scroll 0 0;
-  color:#000000;
+  background-color: #f6f9fc;
 }
 
-.ygtvlabel:hover {
-  background-color: #083852;
-  color: #ffffff;
+#navigation .links .links :link,
+#navigation .links .links :visited
+{
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
 }
 
-/*******************************************************/
-/*                                                     */
-/*                  TRANSPARENCY                       */
-/*                                                     */
-/*******************************************************/
+#navigation .links .links :link:focus,
+#navigation .links .links :link:hover,
+#navigation .links .links :visited:focus,
+#navigation .links .links :visited:hover
+{
+  background-image: none;
+}
 
-.transparent {
-  filter:alpha(opacity=80);
+#navigation :link,
+#navigation :visited
+{
+  background-image: url(../images/arrow.png);
+
+  border-top-left-radius: 1em;
+  -moz-border-radius-topleft: 1em;
+  -webkit-border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+  -moz-border-radius-topright: 1em;
+  -webkit-border-top-right-radius: 1em;
+
+  color: #036;
+}
+
+#navigation :link:focus,
+#navigation :link:hover,
+#navigation :visited:focus,
+#navigation :visited:hover
+{
+  background-image: url(../../sfUsablePlugin/images/arrow.png);
+}
+
+#site-name,
+#site-slogan
+{
+  background: #fff;
+  border: 2px solid #036;
+
+  border-radius: 1em;
+  -moz-border-radius: 1em;
+  -webkit-border-radius: 1em;
+
+  color: #c30;
   opacity: 0.8;
+  padding: 0 1em;
+}
+
+#site-slogan
+{
+  color: #036;
+  margin: 1em 0;
 }

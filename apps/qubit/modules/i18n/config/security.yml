@@ -1,18 +1,15 @@
 update:
-  is_secure:   on
   credentials: translator
+  is_secure: true
 
 listDefaultContentTranslation:
-  is_secure:  on  
   credentials: translator
+  is_secure: true  
 
 listNewContentTranslation:
-  is_secure:  on  
   credentials: translator
+  is_secure: true  
 
 listUserInterfaceTranslation:
-  is_secure:  on  
   credentials: translator
-
-all:
-  is_secure:   off
+  is_secure: true  

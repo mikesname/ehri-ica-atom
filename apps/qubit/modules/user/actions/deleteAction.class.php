@@ -21,12 +21,22 @@ class UserDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $user = QubitUser::getById($this->getRequestParameter('id'));
+    $this->form = new sfForm;
 
-    $this->forward404Unless($user);
+    $this->user = QubitUser::getById($request->id);
 
-    $user->delete();
+    // Check that user exists
+    $this->forward404Unless($this->user);
 
-    $this->redirect('user/list');
+    // TODO: Check ACL authorization
+
+    $request->setAttribute('user', $this->user);
+
+    if ($request->isMethod('delete'))
+    {
+      $this->user->delete();
+
+      $this->redirect(array('module' => 'user', 'action' => 'list'));
+    }
   }
 }

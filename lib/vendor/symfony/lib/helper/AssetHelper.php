@@ -16,7 +16,7 @@
  * @subpackage helper
  * @author     Fabien Potencier <fabien.potencier@symfony-project.com>
  * @author     David Heinemeier Hansson
- * @version    SVN: $Id: AssetHelper.php 21387 2009-08-24 11:41:17Z fabien $
+ * @version    SVN: $Id: AssetHelper.php 24289 2009-11-23 19:45:06Z Kris.Wallsmith $
  */
 
 /**
@@ -75,7 +75,7 @@ function auto_discovery_link_tag($type = 'rss', $url = '', $tag_options = array(
  */
 function javascript_path($source, $absolute = false)
 {
-  return _compute_public_path($source, 'js', 'js', $absolute);
+  return _compute_public_path($source, sfConfig::get('sf_web_js_dir_name', 'js'), 'js', $absolute);
 }
 
 /**
@@ -96,49 +96,28 @@ function javascript_path($source, $absolute = false)
  * @return string XHTML compliant <script> tag(s)
  * @see    javascript_path
  */
-function javascript_include_tag()
+function javascript_include_tag($source, $options = array())
 {
-  $sources = func_get_args();
-  $sourceOptions = (func_num_args() > 1 && is_array($sources[func_num_args() - 1])) ? array_pop($sources) : array();
-
-  $html = '';
-  foreach ($sources as $source)
+  if (!is_array($options))
   {
-    $absolute = false;
-    if (isset($sourceOptions['absolute']))
-    {
-      unset($sourceOptions['absolute']);
-      $absolute = true;
-    }
-
-    $condition = null;
-    if (isset($sourceOptions['condition']))
-    {
-      $condition = $sourceOptions['condition'];
-      unset($sourceOptions['condition']);
-    }
-
-    if (!isset($sourceOptions['raw_name']))
-    {
-      $source = javascript_path($source, $absolute);
-    }
-    else
-    {
-      unset($sourceOptions['raw_name']);
-    }
-
-    $options = array_merge(array('type' => 'text/javascript', 'src' => $source), $sourceOptions);
-    $tag = content_tag('script', '', $options);
-
-    if (!is_null($condition))
-    {
-      $tag = comment_as_conditional($condition, $tag);
-    }
-
-    $html .= $tag."\n";
+    $options = array();
   }
 
-  return $html;
+  $options += array('absolute' => false);
+
+  if (empty($options['raw_name']))
+  {
+    $source = javascript_path($source, $options['absolute']);
+  }
+
+  $tag = content_tag('script', null, array_diff_key($options + array('src' => $source, 'type' => 'text/javascript'), array('absolute' => 'absolute', 'condition' => 'condition', 'raw_name' => 'raw_name')));
+
+  if (isset($options['condition']))
+  {
+    $tag = comment_as_conditional($options['condition'], $tag);
+  }
+
+  return $tag."\n";
 }
 
 /**
@@ -163,7 +142,7 @@ function javascript_include_tag()
  */
 function stylesheet_path($source, $absolute = false)
 {
-  return _compute_public_path($source, 'css', 'css', $absolute);
+  return _compute_public_path($source, sfConfig::get('sf_web_css_dir_name', 'css'), 'css', $absolute);
 }
 
 /**
@@ -208,7 +187,7 @@ function stylesheet_tag($source, $options = array())
     $source = stylesheet_path($source, $options['absolute']);
   }
 
-  $tag = tag('link', array_diff_key($options + array('rel' => 'stylesheet', 'type' => 'text/css', 'media' => 'screen', 'href' => $source), array('absolute' => 'abosolute', 'condition' => 'condition', 'raw_name' => 'raw_name')));
+  $tag = tag('link', array_diff_key($options + array('href' => $source, 'media' => 'screen', 'rel' => 'stylesheet', 'type' => 'text/css'), array('absolute' => 'abosolute', 'condition' => 'condition', 'raw_name' => 'raw_name')));
 
   if (isset($options['condition']))
   {
@@ -277,7 +256,7 @@ function decorate_with($layout)
  */
 function image_path($source, $absolute = false)
 {
-  return _compute_public_path($source, 'images', 'png', $absolute);
+  return _compute_public_path($source, sfConfig::get('sf_web_images_dir_name', 'images'), 'png', $absolute);
 }
 
 /**
@@ -425,7 +404,7 @@ function include_metas()
   $i18n = sfConfig::get('sf_i18n') ? $context->getI18N() : null;
   foreach ($context->getResponse()->getMetas() as $name => $content)
   {
-    echo tag('meta', array('name' => $name, 'content' => is_null($i18n) ? $content : $i18n->__($content)))."\n";
+    echo tag('meta', array('name' => $name, 'content' => null === $i18n ? $content : $i18n->__($content)))."\n";
   }
 }
 
@@ -628,6 +607,21 @@ function include_javascripts_for_form(sfForm $form)
 }
 
 /**
+ * Adds javascripts from the supplied form to the response object.
+ *
+ * @param sfForm $form
+ */
+function use_javascripts_for_form(sfForm $form)
+{
+  $response = sfContext::getInstance()->getResponse();
+
+  foreach ($form->getJavascripts() as $file)
+  {
+    $response->addJavascript($file);
+  }
+}
+
+/**
  * Returns <link> tags for all stylesheets associated with the given form.
  *
  * The stylesheets are set by implementing the getStyleSheets() method in the
@@ -664,4 +658,19 @@ function get_stylesheets_for_form(sfForm $form)
 function include_stylesheets_for_form(sfForm $form)
 {
   echo get_stylesheets_for_form($form);
+}
+
+/**
+ * Adds stylesheets from the supplied form to the response object.
+ *
+ * @param sfForm $form
+ */
+function use_stylesheets_for_form(sfForm $form)
+{
+  $response = sfContext::getInstance()->getResponse();
+
+  foreach ($form->getStylesheets() as $file => $media)
+  {
+    $response->addStylesheet($file, '', array('media' => $media));
+  }
 }

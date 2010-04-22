@@ -29,14 +29,6 @@ class DigitalObjectEditRepresentationComponent extends sfComponent
 {
   public function execute($request)
   {
-    // Set $link to fullscreen preview for Reference or Thumbnail images, download for other media types
-    if ($this->representation->getMediaTypeId() == QubitTerm::IMAGE_ID)
-    {
-      $this->link = 'digitalobject/showFullScreen?id='.$this->representation->getId();
-    }
-    else
-    {
-      $this->link = public_path($this->digitalObject->getFullPath(), true);
-    }
+
   }
 }

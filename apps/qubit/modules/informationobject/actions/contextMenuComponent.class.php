@@ -30,34 +30,13 @@ class InformationObjectContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    $showContextMenu = false;
     $this->informationObject = $request->getAttribute('informationObject');
-    $this->multiRepository = (sfConfig::get('app_multi_repository') == 0) ? false : true;
-
-    // Get info object tree
-    $this->informationObjects = null;
-
-    if (isset($this->informationObject->id))
-    {
-      $ancestors = $this->informationObject->getAncestors()->andSelf()->orderBy('lft');
-      foreach ($ancestors as $ancestor)
-      {
-        $path[] = $ancestor->getId();
-      }
-      $informationObjects = $this->buildInformationObjectTree($path);
-      if (0 < count($informationObjects))
-      {
-        $this->informationObjects = $informationObjects;
-        $showContextMenu = true;
-      }
-    }
 
     // Get repository for current object if system is multi-repository
     // (No point showing repository context if there is only one repository)
     $this->repository = null;
-
-    $this->repositoryOptions = null;
-    if ($this->multiRepository)
+    $this->repositoryOptions = array();
+    if (sfConfig::get('app_multi_repository'))
     {
       if (null === $repository = $this->informationObject->getRepository())
       {
@@ -67,7 +46,6 @@ class InformationObjectContextMenuComponent extends sfComponent
           if (null !== $repository = $ancestor->getRepository())
           {
             $repositoryOptions['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor));
-            $repositoryOptions['id'] = 'repositoryLink';
             $this->repositoryOptions = $repositoryOptions;
             break;
           }
@@ -77,13 +55,12 @@ class InformationObjectContextMenuComponent extends sfComponent
       if (null !== $repository)
       {
         $this->repository = $repository;
-        $showContextMenu = true;
       }
     }
 
     // Get Creators
-    $this->creators = null;
-    $this->creatorOptions = null;
+    $this->creators = array();
+    $this->creatorOptions = array();
     if (0 == count($creators = $this->informationObject->getCreators(array('cultureFallback' => true))))
     {
       foreach ($this->informationObject->getAncestors() as $ancestor)
@@ -91,7 +68,6 @@ class InformationObjectContextMenuComponent extends sfComponent
         if (0 < count($creators = $ancestor->getCreators(array('cultureFallback' => true))))
         {
           $creatorOptions['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor));
-          $creatorOptions['id'] = 'creatorsLink';
           $this->creatorOptions = $creatorOptions;
           break;
         }
@@ -100,81 +76,6 @@ class InformationObjectContextMenuComponent extends sfComponent
     if (count($creators))
     {
       $this->creators = $creators;
-      $showContextMenu = true;
     }
-
-    // Get digital object thumbnails
-    $this->thumbnails = null;
-    $thumbnails = $this->informationObject->getDescendantThumbnails();
-    if (count($thumbnails))
-    {
-      $this->thumbnails = $thumbnails;
-      $showContextMenu = true;
-    }
-
-    // Get physical storage locations (only if user has edit privileges)
-    $this->physicalObjects = null;
-    if (QubitAcl::check($this->informationObject, QubitAclAction::UPDATE_ID))
-    {
-      $physicalObjects = array();
-      $childInformationObjects = $this->informationObject->getDescendants()->andSelf();
-      foreach ($childInformationObjects as $informationObject)
-      {
-        $relatedPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $informationObject->getId(),
-        array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
-
-        foreach ($relatedPhysicalObjects as $physicalObject)
-        {
-          // Check to make sure this object is not already in the array
-          if (!in_array($physicalObject, $physicalObjects))
-          {
-            $physicalObjects[] = $physicalObject;
-          }
-        }
-      }
-
-      if (count($physicalObjects))
-      {
-        $this->physicalObjects = $physicalObjects;
-        $showContextMenu = true;
-      }
-    }
-
-    // If no context items found, don't show context menu
-    if (!$showContextMenu)
-    {
-      return sfView::NONE;
-    }
-  }
-
-  protected function buildInformationObjectTree($path)
-  {
-    $tmp = array();
-    $parent = QubitInformationObject::getById(array_shift($path));
-
-    // skip the root node
-    if (QubitInformationObject::ROOT_ID == $parent->id)
-    {
-      $tmp = array_merge($tmp, $this->buildInformationObjectTree($path));
-    }
-    else
-    {
-      $tmp[] = $parent;
-      foreach ($parent->getChildren(array('sortBy' => sfConfig::get('app_sort_treeview_informationobject'))) as $child)
-      {
-        // If it in path, we go on building the tree in that way
-        if (in_array($child->getId(), $path))
-        {
-          $tmp = array_merge($tmp, $this->buildInformationObjectTree($path));
-        }
-        else
-        {
-          // Add the child
-          $tmp[] = $child;
-        }
-      }
-    }
-
-    return $tmp;
   }
 }

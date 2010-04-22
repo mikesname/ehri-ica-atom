@@ -131,7 +131,7 @@ a.ygtvlabel {
   display: block;
 }
 
-a.ygtvspacer:hover {
+a.ygtvspacer:hover, a.ygtvspacer:focus {
   background-color: transparent;
   margin: 0;
   display: inline;
@@ -177,4 +177,24 @@ a.currentTextNode {
   background: #FF9D3C;
   display: block;
   padding: 1px 1px 1px 3px;
+}
+
+a.seeAllNode {
+  font-weight: bold;
+  color: #000000;
+  background: #DDEEFF;
+  padding: 1px 3px 1px 3px;
+}
+
+a.onDragOver {
+  background: #DDEEFF;
+}
+
+a.onDrag {
+  opacity: .5;
+}
+
+.proxyTextNode {
+  background: #CCC;
+  opacity: .8;
 }

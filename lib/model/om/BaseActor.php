@@ -73,6 +73,23 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     }
   }
 
+  public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
+  {
+    if ($order == Criteria::DESC)
+    {
+      return $criteria->addDescendingOrderByColumn(QubitActor::LFT);
+    }
+
+    return $criteria->addAscendingOrderByColumn(QubitActor::LFT);
+  }
+
+  public static function addRootsCriteria(Criteria $criteria)
+  {
+    $criteria->add(QubitActor::PARENT_ID);
+
+    return $criteria;
+  }
+
   public function __construct()
   {
     parent::__construct();
@@ -108,11 +125,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       return true;
     }
 
-    if ('actorNames' == $name)
-    {
-      return true;
-    }
-
     if ('contactInformations' == $name)
     {
       return true;
@@ -139,6 +151,16 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     }
     catch (sfException $e)
     {
+    }
+
+    if ('ancestors' == $name)
+    {
+      return true;
+    }
+
+    if ('descendants' == $name)
+    {
+      return true;
     }
 
     throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
@@ -194,23 +216,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       }
 
       return $this->refFkValues['actorI18ns'];
-    }
-
-    if ('actorNames' == $name)
-    {
-      if (!isset($this->refFkValues['actorNames']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['actorNames'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['actorNames'] = self::getactorNamesById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['actorNames'];
     }
 
     if ('contactInformations' == $name)
@@ -277,6 +282,46 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     {
     }
 
+    if ('ancestors' == $name)
+    {
+      if (!isset($this->values['ancestors']))
+      {
+        if ($this->new)
+        {
+          $this->values['ancestors'] = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addAncestorsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->values['ancestors'] = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->values['ancestors'];
+    }
+
+    if ('descendants' == $name)
+    {
+      if (!isset($this->values['descendants']))
+      {
+        if ($this->new)
+        {
+          $this->values['descendants'] = QubitQuery::create(array('self' => $this) + $options);
+        }
+        else
+        {
+          $criteria = new Criteria;
+          $this->addDescendantsCriteria($criteria);
+          $this->addOrderByPreorder($criteria);
+          $this->values['descendants'] = self::get($criteria, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->values['descendants'];
+    }
+
     throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
   }
 
@@ -334,6 +379,60 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
 
       $actorI18n->save($connection);
     }
+
+    return $this;
+  }
+
+  protected function insert($connection = null)
+  {
+    $this->updateNestedSet($connection);
+
+    parent::insert($connection);
+
+    return $this;
+  }
+
+  protected function update($connection = null)
+  {
+        if (isset($this->values['parentId']))
+    {
+            $offset = 0; 
+      $originalParentId = null;
+      foreach ($this->tables as $table)
+      {
+        foreach ($table->getColumns() as $column)
+        {
+          if ('parentId' == $column->getPhpName())
+          {
+            $originalParentId = $this->row[$offset];
+            break;
+          }
+          $offset++;
+        }
+      }
+      
+                  if ($originalParentId != $this->values['parentId'])
+      {
+        $this->updateNestedSet($connection);
+      }
+    }
+
+    parent::update($connection);
+
+    return $this;
+  }
+
+  public function delete($connection = null)
+  {
+    if ($this->deleted)
+    {
+      throw new PropelException('This object has already been deleted.');
+    }
+
+    $this->clear();
+    $this->deleteFromNestedSet($connection);
+
+    parent::delete($connection);
 
     return $this;
   }
@@ -404,26 +503,6 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
   public function addactorI18nsCriteria(Criteria $criteria)
   {
     return self::addactorI18nsCriteriaById($criteria, $this->id);
-  }
-
-  public static function addactorNamesCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitActorName::ACTOR_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getactorNamesById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addactorNamesCriteriaById($criteria, $id);
-
-    return QubitActorName::get($criteria, $options);
-  }
-
-  public function addactorNamesCriteria(Criteria $criteria)
-  {
-    return self::addactorNamesCriteriaById($criteria, $this->id);
   }
 
   public static function addcontactInformationsCriteriaById(Criteria $criteria, $id)
@@ -505,5 +584,135 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     }
 
     return $actorI18ns[$options['culture']];
+  }
+
+  public function addAncestorsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitActor::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitActor::RGT, $this->rgt, Criteria::GREATER_THAN);
+  }
+
+  public function addDescendantsCriteria(Criteria $criteria)
+  {
+    return $criteria->add(QubitActor::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitActor::RGT, $this->rgt, Criteria::LESS_THAN);
+  }
+
+  protected function updateNestedSet($connection = null)
+  {
+unset($this->values['lft']);
+unset($this->values['rgt']);
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitActor::DATABASE_NAME);
+    }
+
+    if (!isset($this->lft) || !isset($this->rgt))
+    {
+      $delta = 2;
+    }
+    else
+    {
+      $delta = $this->rgt - $this->lft + 1;
+    }
+
+    if (null === $parent = $this->__get('parent', array('connection' => $connection)))
+    {
+      $statement = $connection->prepare('
+        SELECT MAX('.QubitActor::RGT.')
+        FROM '.QubitActor::TABLE_NAME);
+      $statement->execute();
+      $row = $statement->fetch();
+      $max = $row[0];
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $max + 1;
+        $this->rgt = $max + 2;
+
+        return $this;
+      }
+
+      $shift = $max + 1 - $this->lft;
+    }
+    else
+    {
+      $parent->clear();
+
+      if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
+      {
+        throw new PropelException('An object cannot be a descendant of itself.');
+      }
+
+      $statement = $connection->prepare('
+        UPDATE '.QubitActor::TABLE_NAME.'
+        SET '.QubitActor::LFT.' = '.QubitActor::LFT.' + ?
+        WHERE '.QubitActor::LFT.' >= ?');
+      $statement->execute(array($delta, $parent->rgt));
+
+      $statement = $connection->prepare('
+        UPDATE '.QubitActor::TABLE_NAME.'
+        SET '.QubitActor::RGT.' = '.QubitActor::RGT.' + ?
+        WHERE '.QubitActor::RGT.' >= ?');
+      $statement->execute(array($delta, $parent->rgt));
+
+      if (!isset($this->lft) || !isset($this->rgt))
+      {
+        $this->lft = $parent->rgt;
+        $this->rgt = $parent->rgt + 1;
+
+        return $this;
+      }
+
+      if ($this->lft > $parent->rgt)
+      {
+        $this->lft += $delta;
+        $this->rgt += $delta;
+      }
+
+      $shift = $parent->rgt - $this->lft;
+    }
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitActor::TABLE_NAME.'
+      SET '.QubitActor::LFT.' = '.QubitActor::LFT.' + ?, '.QubitActor::RGT.' = '.QubitActor::RGT.' + ?
+      WHERE '.QubitActor::LFT.' >= ?
+      AND '.QubitActor::RGT.' <= ?');
+    $statement->execute(array($shift, $shift, $this->lft, $this->rgt));
+
+    $this->deleteFromNestedSet($connection);
+
+    if ($shift > 0)
+    {
+      $this->lft -= $delta;
+      $this->rgt -= $delta;
+    }
+
+    $this->lft += $shift;
+    $this->rgt += $shift;
+
+    return $this;
+  }
+
+  protected function deleteFromNestedSet($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitActor::DATABASE_NAME);
+    }
+
+    $delta = $this->rgt - $this->lft + 1;
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitActor::TABLE_NAME.'
+      SET '.QubitActor::LFT.' = '.QubitActor::LFT.' - ?
+      WHERE '.QubitActor::LFT.' >= ?');
+    $statement->execute(array($delta, $this->rgt));
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitActor::TABLE_NAME.'
+      SET '.QubitActor::RGT.' = '.QubitActor::RGT.' - ?
+      WHERE '.QubitActor::RGT.' >= ?');
+    $statement->execute(array($delta, $this->rgt));
+
+    return $this;
   }
 }

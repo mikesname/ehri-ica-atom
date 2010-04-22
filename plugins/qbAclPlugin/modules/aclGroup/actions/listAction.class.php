@@ -21,19 +21,23 @@ class aclGroupListAction extends sfAction
 {
   public function execute($request)
   {
-    // Set current page
-    $this->page = $this->getRequestParameter('page', 1);
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
 
-    $c = new Criteria;
-    $c->add(QubitAclGroup::ID, QubitAclGroup::ROOT_ID, Criteria::NOT_EQUAL);
-    $c->addAscendingOrderByColumn('name');
+    $criteria = new Criteria;
+    $criteria->add(QubitAclGroup::ID, QubitAclGroup::ROOT_ID, Criteria::NOT_EQUAL);
+    $criteria->addAscendingOrderByColumn('name');
 
-    $c = QubitCultureFallback::addFallbackCriteria($c, 'QubitAclGroup');
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitAclGroup');
 
     // Page results
     $this->pager = new QubitPager('QubitAclGroup');
-    $this->pager->setCriteria($c);
-    $this->pager->setPage($this->page);
-    $this->pager->init();
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->page);
+
+    $this->groups = $this->pager->getResults();
   }
 }

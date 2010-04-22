@@ -63,6 +63,7 @@ class sfInstallPluginConfigureSiteAction extends sfAction
         $user->username = $this->form->getValue('username');
         $user->email = $this->form->getValue('email');
         $user->setPassword($this->form->getValue('password'));
+        $user->parentId = QubitActor::ROOT_ID;
         $user->save();
 
         $aclUserGroup = new QubitAclUserGroup;

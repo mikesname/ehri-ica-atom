@@ -12,21 +12,6 @@ class sfTranslatePluginTranslateComponent extends sfComponent
 {
   public function execute($request)
   {
-    $actionInstance = $this->getController()->getAction($this->getModuleName(), $this->getActionName());
-    if ($actionInstance->isSecure())
-    {
-      if (!$this->getUser()->isAuthenticated())
-      {
-        return sfView::NONE;
-      }
-
-      $credential = $actionInstance->getCredential();
-      if ($credential !== null && !$this->getUser()->hasCredential($credential))
-      {
-        return sfView::NONE;
-      }
-    }
-
     $this->messages = $this->getRequest()->getAttribute('messages', array());
     if (empty($this->messages))
     {

@@ -27,74 +27,133 @@
  */
 class MenuEditAction extends sfAction
 {
-  public function execute($request)
+  public static
+    $NAMES = array(
+      'name',
+      'label',
+      'parentId',
+      'path',
+      'description');
+
+  protected function addField($name)
   {
-    $this->forward404Unless($this->menu = QubitMenu::getById($request->getParameter('id')));
-
-    // Pass page parameter to maintain position in menu/list page.
-    $this->page = $request->getParameter('page', null);
-
-    $this->menuForm = new MenuEditForm;
-
-    // Handle POST data (form submit)
-    if ($request->isMethod('post'))
+    switch ($name)
     {
-      $this->menuForm->bind($request->getParameter('menu'));
-      if ($this->menuForm->isValid())
-      {
-        // Do update and redirect to avoid repeat submit wackiness
-        $this->updateMenu();
-        $this->redirect('menu/list?page='.$this->page);
-      }
+      case 'name':
+      case 'path':
+        $this->form->setDefault($name, $this->menu[$name]);
+        $this->form->setValidator($name, new sfValidatorString(array('required' => true)));
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'label':
+        $this->form->setDefault($name, $this->menu[$name]);
+        $this->form->setValidator($name, new sfValidatorString());
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'parentId':
+
+        // Get menuTree array with menu depths
+        $menuTree = QubitMenu::getTreeById(QubitMenu::ROOT_ID);
+
+        // Build an array of choices for "parentId" select box (with blank line)
+        $choices = array(1 => '[ '.$this->context->i18n->__('Top').' ]');
+        foreach ($menuTree as $menu)
+        {
+          $choices[$menu['id']] = str_repeat('-', $menu['depth']).' '.$menu['name'];
+        }
+
+        if (null !== $this->menu->parentId)
+        {
+          $this->form->setDefault('parentId', $this->menu->parentId);
+        }
+
+        $this->form->setValidator('parentId', new sfValidatorString(array('required' => true)));
+        $this->form->setWidget('parentId', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'description':
+        $this->form->setDefault($name, $this->menu[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
     }
-
-    // Set defaults values
-    $this->menuForm->setDefaults(array(
-      'name' => $this->menu->getName(array('sourceCulture' => true)),
-      'label' => $this->menu->getLabel(),
-      'path' => $this->menu->getPath(array('sourceCulture' => true)),
-      'description' => $this->menu->getDescription(),
-      'parentId' => $this->menu->getParentId()
-    ));
-
-    $this->formAction = 'edit';
-
-    $this->culture = $this->getUser()->getCulture();
   }
 
-  public function updateMenu()
+  protected function processField($field)
   {
-    // Set name
-    if (null !== $name = $this->menuForm->getValue('name'))
+    switch ($name = $field->getName())
     {
-      $this->menu->setName($name, array('sourceCulture'=>true));
-    }
+      case 'parentId':
+        if (null == $parentId = $this->form->getValue('parentId'))
+        {
+          $parentId = QubitMenu::ROOT_ID;
+        }
+        $this->menu['parentId'] = $parentId;
 
-    // Set label
-    if (null !== $label = $this->menuForm->getValue('label'))
-    {
-      $this->menu->setLabel($label);
-    }
+        break;
 
-    // Set path
-    if (null !== $path = $this->menuForm->getValue('path'))
-    {
-      $this->menu->setPath($path, array('sourceCulture'=>true));
+      default:
+        $this->menu[$field->getName()] = $this->form->getValue($field->getName());
     }
+  }
 
-    // Set description
-    if (null !== $description = $this->menuForm->getValue('description'))
+  public function processForm()
+  {
+    foreach ($this->form as $field)
     {
-      $this->menu->setDescription($description);
-    }
-
-    if (null !== $parentId = $this->menuForm->getValue('parentId'))
-    {
-      $this->menu->setParentId($parentId);
+      if (isset($this->request[$field->getName()]))
+      {
+        $this->processField($field);
+      }
     }
 
     $this->menu->save();
 
     return $this;
+  }
+
+  public function execute($request)
+  {
+    $this->form = new sfForm;
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+
+    $this->menu = new QubitMenu;
+
+    if (isset($request->id))
+    {
+      $this->menu = QubitMenu::getById($request->id);
+
+      if (!isset($this->menu))
+      {
+        $this->forward404();
+      }
+    }
+
+    // HACK: Use static::$NAMES in PHP 5.3,
+    // http://php.net/oop5.late-static-bindings
+    $class = new ReflectionClass($this);
+    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    {
+      $this->addField($name);
+    }
+
+    // Handle POST data (form submit)
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getPostParameters());
+
+      if ($this->form->isValid())
+      {
+        $this->processForm();
+
+        $this->redirect(array('module' => 'menu', 'action' => 'list'));
+      }
+    }
   }
 }

@@ -1,0 +1,55 @@
+<?php
+
+/*
+ * This file is part of Qubit Toolkit.
+ *
+ * Qubit Toolkit is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * Qubit Toolkit is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+class QubitRoute extends sfRoute
+{
+  protected function filterParams($params)
+  {
+    foreach (array_diff_key($this->variables, $params) as $key => $ignore)
+    {
+      try
+      {
+        $params[$key] = @$params[0][$key];
+      }
+      catch (sfException $e)
+      {
+      }
+    }
+
+    unset($params[0]);
+
+    return $params;
+  }
+
+  /**
+   * @see sfRequestRoute
+   */
+  public function matchesParameters($params, $context = array())
+  {
+    return parent::matchesParameters($this->filterParams($params), $context);
+  }
+
+  /**
+   * @see sfRequestRoute
+   */
+  public function generate($params, $context = array(), $absolute = false)
+  {
+    return parent::generate($this->filterParams($params), $context, $absolute);
+  }
+}

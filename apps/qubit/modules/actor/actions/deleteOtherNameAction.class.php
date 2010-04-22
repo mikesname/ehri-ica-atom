@@ -21,9 +21,9 @@ class ActorDeleteOtherNameAction extends sfAction
 {
   public function execute($request)
   {
-    $this->deleteOtherName = QubitActorName::getById($this->getRequestParameter('otherNameId'));
+    $this->deleteOtherName = QubitOtherName::getById($this->getRequestParameter('otherNameId'));
     $this->forward404Unless($this->deleteOtherName);
-    $this->actorId = $this->deleteOtherName->getActorId();
+    $this->actorId = $this->deleteOtherName->getObjectId();
 
     // Do delete
     $this->deleteOtherName->delete();

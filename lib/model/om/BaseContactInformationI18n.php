@@ -12,8 +12,7 @@ abstract class BaseContactInformationI18n implements ArrayAccess
     REGION = 'q_contact_information_i18n.REGION',
     NOTE = 'q_contact_information_i18n.NOTE',
     ID = 'q_contact_information_i18n.ID',
-    CULTURE = 'q_contact_information_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_contact_information_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_contact_information_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -23,7 +22,6 @@ abstract class BaseContactInformationI18n implements ArrayAccess
     $criteria->addSelectColumn(QubitContactInformationI18n::NOTE);
     $criteria->addSelectColumn(QubitContactInformationI18n::ID);
     $criteria->addSelectColumn(QubitContactInformationI18n::CULTURE);
-    $criteria->addSelectColumn(QubitContactInformationI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -393,9 +391,7 @@ abstract class BaseContactInformationI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

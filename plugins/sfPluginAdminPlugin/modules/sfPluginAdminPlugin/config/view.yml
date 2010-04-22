@@ -1,2 +1,4 @@
 indexSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/tableheader]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/tableheader:

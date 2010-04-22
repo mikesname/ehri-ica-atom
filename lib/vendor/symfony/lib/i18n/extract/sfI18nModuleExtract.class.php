@@ -30,7 +30,10 @@ class sfI18nModuleExtract extends sfI18nExtract
 
     $this->module = $this->parameters['module'];
 
-    $this->i18n->setMessageSource($this->i18n->getConfiguration()->getI18NDirs($this->module), $this->culture);
+    if (!isset($this->parameters['path']))
+    {
+      $this->i18n->setMessageSource($this->i18n->getConfiguration()->getI18NDirs($this->module), $this->culture);
+    }
   }
 
   /**
@@ -42,6 +45,11 @@ class sfI18nModuleExtract extends sfI18nExtract
   {
     // Extract from PHP files to find __() calls in actions/ lib/ and templates/ directories
     $moduleDir = sfConfig::get('sf_app_module_dir').'/'.$this->module;
+    if (isset($this->parameters['path']))
+    {
+      $moduleDir = $this->parameters['path'];
+    }
+
     $this->extractFromPhpFiles(array(
       $moduleDir.'/actions',
       $moduleDir.'/lib',

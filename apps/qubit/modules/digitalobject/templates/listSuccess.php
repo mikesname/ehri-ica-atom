@@ -1,16 +1,16 @@
-<div class="pageTitle"><?php echo __('list %1%', array('%1%' => sfConfig::get('app_ui_label_mediatype'))) ?></div>
+<h1><?php echo __('List %1%', array('%1%' => sfConfig::get('app_ui_label_digitalobject'))) ?></h1>
 
 <table class="list">
 <thead>
   <tr>
-    <th><?php echo __('name'); ?></th>
-    <th><?php echo __('results'); ?></th>
+    <th><?php echo __('Name'); ?></th>
+    <th><?php echo __('Results'); ?></th>
   </tr>
 </thead>
 
 <tbody>
 <?php foreach ($terms as $term): ?>
-<tr>
+<tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
   <td>
     <?php $linkAction = ($editCredentials) ? 'browse' : 'show'; ?>
     <div style="padding-left: 17px;">

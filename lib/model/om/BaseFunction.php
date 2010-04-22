@@ -1,6 +1,6 @@
 <?php
 
-abstract class BaseFunction extends QubitTerm implements ArrayAccess
+abstract class BaseFunction extends QubitObject implements ArrayAccess
 {
   const
     DATABASE_NAME = 'propel',
@@ -9,22 +9,28 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
 
     ID = 'q_function.ID',
     TYPE_ID = 'q_function.TYPE_ID',
+    PARENT_ID = 'q_function.PARENT_ID',
     DESCRIPTION_STATUS_ID = 'q_function.DESCRIPTION_STATUS_ID',
-    DESCRIPTION_LEVEL_ID = 'q_function.DESCRIPTION_LEVEL_ID',
+    DESCRIPTION_DETAIL_ID = 'q_function.DESCRIPTION_DETAIL_ID',
     DESCRIPTION_IDENTIFIER = 'q_function.DESCRIPTION_IDENTIFIER',
+    LFT = 'q_function.LFT',
+    RGT = 'q_function.RGT',
     SOURCE_CULTURE = 'q_function.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     parent::addSelectColumns($criteria);
 
-    $criteria->addJoin(QubitFunction::ID, QubitTerm::ID);
+    $criteria->addJoin(QubitFunction::ID, QubitObject::ID);
 
     $criteria->addSelectColumn(QubitFunction::ID);
     $criteria->addSelectColumn(QubitFunction::TYPE_ID);
+    $criteria->addSelectColumn(QubitFunction::PARENT_ID);
     $criteria->addSelectColumn(QubitFunction::DESCRIPTION_STATUS_ID);
-    $criteria->addSelectColumn(QubitFunction::DESCRIPTION_LEVEL_ID);
+    $criteria->addSelectColumn(QubitFunction::DESCRIPTION_DETAIL_ID);
     $criteria->addSelectColumn(QubitFunction::DESCRIPTION_IDENTIFIER);
+    $criteria->addSelectColumn(QubitFunction::LFT);
+    $criteria->addSelectColumn(QubitFunction::RGT);
     $criteria->addSelectColumn(QubitFunction::SOURCE_CULTURE);
 
     return $criteria;
@@ -84,10 +90,15 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
 
     try
     {
-      return call_user_func_array(array($this, 'QubitTerm::__isset'), $args);
+      return call_user_func_array(array($this, 'QubitObject::__isset'), $args);
     }
     catch (sfException $e)
     {
+    }
+
+    if ('functionsRelatedByparentId' == $name)
+    {
+      return true;
     }
 
     if ('functionI18ns' == $name)
@@ -123,10 +134,27 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
 
     try
     {
-      return call_user_func_array(array($this, 'QubitTerm::__get'), $args);
+      return call_user_func_array(array($this, 'QubitObject::__get'), $args);
     }
     catch (sfException $e)
     {
+    }
+
+    if ('functionsRelatedByparentId' == $name)
+    {
+      if (!isset($this->refFkValues['functionsRelatedByparentId']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['functionsRelatedByparentId'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['functionsRelatedByparentId'] = self::getfunctionsRelatedByparentIdById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['functionsRelatedByparentId'];
     }
 
     if ('functionI18ns' == $name)
@@ -172,7 +200,7 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
       $options = $args[2];
     }
 
-    call_user_func_array(array($this, 'QubitTerm::__set'), $args);
+    call_user_func_array(array($this, 'QubitObject::__set'), $args);
 
     call_user_func_array(array($this->getCurrentfunctionI18n($options), '__set'), $args);
 
@@ -189,7 +217,7 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
       $options = $args[1];
     }
 
-    call_user_func_array(array($this, 'QubitTerm::__unset'), $args);
+    call_user_func_array(array($this, 'QubitObject::__unset'), $args);
 
     call_user_func_array(array($this->getCurrentfunctionI18n($options), '__unset'), $args);
 
@@ -227,6 +255,13 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
     return $criteria;
   }
 
+  public static function addJoinparentCriteria(Criteria $criteria)
+  {
+    $criteria->addJoin(QubitFunction::PARENT_ID, QubitFunction::ID);
+
+    return $criteria;
+  }
+
   public static function addJoindescriptionStatusCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitFunction::DESCRIPTION_STATUS_ID, QubitTerm::ID);
@@ -234,11 +269,31 @@ abstract class BaseFunction extends QubitTerm implements ArrayAccess
     return $criteria;
   }
 
-  public static function addJoindescriptionLevelCriteria(Criteria $criteria)
+  public static function addJoindescriptionDetailCriteria(Criteria $criteria)
   {
-    $criteria->addJoin(QubitFunction::DESCRIPTION_LEVEL_ID, QubitTerm::ID);
+    $criteria->addJoin(QubitFunction::DESCRIPTION_DETAIL_ID, QubitTerm::ID);
 
     return $criteria;
+  }
+
+  public static function addfunctionsRelatedByparentIdCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitFunction::PARENT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getfunctionsRelatedByparentIdById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addfunctionsRelatedByparentIdCriteriaById($criteria, $id);
+
+    return QubitFunction::get($criteria, $options);
+  }
+
+  public function addfunctionsRelatedByparentIdCriteria(Criteria $criteria)
+  {
+    return self::addfunctionsRelatedByparentIdCriteriaById($criteria, $this->id);
   }
 
   public static function addfunctionI18nsCriteriaById(Criteria $criteria, $id)

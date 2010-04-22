@@ -64,8 +64,8 @@ class DigitalObjectEditAction extends sfAction
       $this->form->setValidator('displayAsCompound', new sfValidatorPass);
       $this->form->setWidget('displayAsCompound', new sfWidgetFormSelectRadio(
         array('choices' => array(
-          '1' => $this->getContext()->getI18N()->__('yes'),
-          '0' => $this->getContext()->getI18N()->__('no')
+          '1' => $this->getContext()->getI18N()->__('Yes'),
+          '0' => $this->getContext()->getI18N()->__('No')
         ))
       ));
       // Set 'displayAsCompound' value from QubitProperty
@@ -101,9 +101,10 @@ class DigitalObjectEditAction extends sfAction
     $this->digitalObject = new QubitDigitalObject;
     $this->informationObject = new QubitInformationObject;
 
+    // Get max upload size limits
     $this->maxUploadSize = QubitDigitalObject::getMaxUploadSize();
 
-    // If digital object already exists
+    // If digital object already exists (template: edit)
     if (isset($request->id))
     {
       $this->digitalObject = QubitDigitalObject::getById($request->id);
@@ -113,19 +114,25 @@ class DigitalObjectEditAction extends sfAction
         $this->forward404();
       }
 
+      $this->informationObject = $this->digitalObject->informationObject;
+
+      // Check user authorization
+      if (!QubitAcl::check($this->informationObject, 'update'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
       // Get representations
       $this->representations = array(
         QubitTerm::REFERENCE_ID => $this->digitalObject->getChildByUsageId(QubitTerm::REFERENCE_ID),
         QubitTerm::THUMBNAIL_ID => $this->digitalObject->getChildByUsageId(QubitTerm::THUMBNAIL_ID)
       );
 
-      $this->informationObject = $this->digitalObject->informationObject;
-
       $this->addFormFields();
     }
 
-    // Upload a new digital object
-    else if (isset($request->informationObject))
+    // Upload a new digital object (template: uploadForm)
+    else
     {
       $this->informationObject = QubitInformationObject::getById($request->informationObject);
 
@@ -135,12 +142,40 @@ class DigitalObjectEditAction extends sfAction
         $this->forward404();
       }
 
-      $this->form->setValidator('file', new sfValidatorFile);
+      // Check if already exists a digital object
+      if (null !== ($digitalObject = $this->informationObject->getDigitalObject()))
+      {
+        $this->redirect(array($digitalObject, 'module' => 'digitalobject', 'action' => 'edit'));
+      }
+
+      // Check user authorization
+      if (!QubitAcl::check($this->informationObject, 'update'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      // Single upload
+      if (0 < count($request->getFiles()))
+      {
+        $this->form->setValidator('file', new sfValidatorFile);
+      }
+
       $this->form->setWidget('file', new sfWidgetFormInputFile);
 
-      $this->form->setValidator('informationObject', new sfValidatorPass);
+      // URL
+      if (isset($request->url) && 'http://' != $request->url)
+      {
+        $this->form->setValidator('url', new sfValidatorUrl);
+      }
+
+      $this->form->setDefault('url', 'http://');
+      $this->form->setWidget('url', new sfWidgetFormInput);
+
+      $this->form->setValidator('informationObject', new sfValidatorInteger);
       $this->form->setWidget('informationObject', new sfWidgetFormInputHidden);
       $this->form->setDefault('informationObject', $this->informationObject->id);
+
+      $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
       $this->setTemplate('uploadForm');
     }
@@ -152,16 +187,15 @@ class DigitalObjectEditAction extends sfAction
 
       if ($this->form->isValid())
       {
-        if (null != $this->form->getValue('file'))
+        if (null !== $this->form->getValue('file') || null !== $this->form->getValue('url'))
         {
-          // Process upload form
+          // Process single-upload form
           $this->processUploadForm();
         }
         else
         {
           // Process update form
           $this->processUpdateForm();
-          $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $this->informationObject->id));
         }
       }
     }
@@ -175,14 +209,23 @@ class DigitalObjectEditAction extends sfAction
    */
   public function processUploadForm()
   {
-    $this->digitalObject->usageId = QubitTerm::MASTER_ID;
-    $this->digitalObject->assets[] = new QubitAsset($this->form->getValue('file')->getOriginalName(), file_get_contents($this->form->getValue('file')->getTempName()));
+    if (null !== $this->form->getValue('file'))
+    {
+      $name = $this->form->getValue('file')->getOriginalName();
+      $content = file_get_contents($this->form->getValue('file')->getTempName());
+
+      $this->digitalObject->assets[] = new QubitAsset($name, $content);
+      $this->digitalObject->usageId = QubitTerm::MASTER_ID;
+    }
+    else if (null !== $this->form->getValue('url'))
+    {
+      $this->digitalObject->importFromURI($this->form->getValue('url'));
+    }
+
     $this->informationObject->digitalObjects[] = $this->digitalObject;
     $this->informationObject->save();
 
-    $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $this->informationObject->id));
-
-    return $this;
+    $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
   }
 
   /**
@@ -233,6 +276,6 @@ class DigitalObjectEditAction extends sfAction
 
     $this->digitalObject->save();
 
-    return $this;
+    $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
   }
 }

@@ -1,24 +1,25 @@
-deleteSuccess:
-  components:
-    sidebar: []
-    BrowseBox: []
-    MainMenu: []
-    SearchBox: []
-
 editIsdiahSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse, /sfDrupalPlugin/vendor/drupal/misc/textarea, multiDelete, multiInstanceSelect, multiInstanceInput]
+  stylesheets:
+    /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:
+    /sfDrupalPlugin/vendor/drupal/misc/textarea:
+    /vendor/yui/connection/connection-min:
+    /vendor/yui/datasource/datasource-min:
+    /vendor/yui/autocomplete/autocomplete-min:
+    autocomplete:
+    multiInput:
+    multiInstanceSelect:
 
 listSuccess:
   javascripts:
-  components:
-    sidebar: []
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
-autocompleteSuccess:
-  javascripts: [-*]
-  stylesheets: [-*] 
-  components:
-    sidebar: []
-
-all:
+indexIsdiahSuccess:
+  javascripts:
+    blank:
   components:
     sidebar: [repository, contextMenu]

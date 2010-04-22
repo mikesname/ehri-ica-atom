@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta content="HTML Tidy for Linux/x86 (vers 7 December 2008), see www.w3.org" name="generator" />
+
+  <title></title>
+</head>
+
+<body>
+  <a href="http://qubit-toolkit.org/wiki/index.php?title=Unit_and_functional_testing#Upload_.mp3">http://qubit-toolkit.org/wiki/index.php?title=Unit_and_functional_testing#Upload_.mp3</a>
+
+  <table>
+    <tr>
+      <td>open</td>
+
+      <td>create/isad</td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>clickAndWait</td>
+
+      <td>//input[@value='Create']</td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>clickAndWait</td>
+
+      <td>link=Upload digital object</td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>type</td>
+
+      <td>file</td>
+
+      <td>/var/www/qubit/test/fixtures/sine_8000_11025_64.mp3</td>
+    </tr>
+
+    <tr>
+      <td>clickAndWait</td>
+
+      <td>//input[@value='Create']</td>
+
+      <td></td>
+    </tr>
+
+    <tr>
+      <td>verifyElementPresent</td>
+
+      <td>css=.audio.flowplayer</td>
+
+      <td></td>
+    </tr>
+  </table>
+</body>
+</html>

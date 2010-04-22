@@ -1,11 +1,23 @@
-<div class="pageTitle"></div>
+<div class="page">
 
-<h1 id="first"><?php echo $sf_data->getRaw('staticPage')->getTitle(array('cultureFallback' => true)) ?></h1><br/>
+  <h1><?php echo render_title($staticPage->getTitle(array('cultureFallback' => true))) ?></h1>
 
-<div class="staticPageContent">
-  <?php echo nl2br($sf_data->getRaw('staticPage')->getContent(array('cultureFallback' => true))) ?>
+  <p>
+    <?php echo render_value($staticPage->getContent(array('cultureFallback' => true))) ?>
+  </p>
+
+  <?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'staticpage', 'action' => 'update'))): ?>
+    <div class="actions section">
+
+      <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+
+      <div class="content">
+        <ul class="links">
+          <li><?php echo link_to(__('Edit'), array($staticPage, 'module' => 'staticpage', 'action' => 'edit'), array('title' => __('Edit this page'))) ?></li>
+        </ul>
+      </div>
+
+    </div>
+  <?php endif; ?>
+
 </div>
-
-<?php if (SecurityCheck::HasPermission($sf_user, array('module' => 'staticpage', 'action' => 'update'))): ?>
-  <div class="editLink"><?php echo link_to(__('edit this page'), 'staticpage/edit/?id='.$staticPage->getId()) ?></div>
-<?php endif; ?>

@@ -46,7 +46,7 @@ class ActorDeleteAction extends sfAction
         }
       }
 
-      foreach (QubitRelation::getRelationsBySubjectOrObjectId($this->actor->id) as $relation)
+      foreach (QubitRelation::getBySubjectOrObjectId($this->actor->id) as $relation)
       {
         $relation->delete();
       }

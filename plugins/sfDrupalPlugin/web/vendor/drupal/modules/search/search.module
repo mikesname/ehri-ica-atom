@@ -1,5 +1,5 @@
 <?php
-// $Id: search.module,v 1.283 2009/01/04 16:10:48 dries Exp $
+// $Id: search.module,v 1.335 2010/01/10 21:46:16 webchick Exp $
 
 /**
  * @file
@@ -9,78 +9,98 @@
 /**
  * Matches Unicode character classes to exclude from the search index.
  *
- * See: http://www.unicode.org/Public/UNIDATA/UCD.html#General_Category_Values
+ * @see http://unicode.org/glossary
  *
- * The index only contains the following character classes:
- * Lu     Letter, Uppercase
- * Ll     Letter, Lowercase
- * Lt     Letter, Titlecase
- * Lo     Letter, Other
- * Nd     Number, Decimal Digit
- * No     Number, Other
+ * Characters with the following General_category (gc) property values are
+ * excluded from the search index. Also, they are used as word boundaries.
+ * While this does not fully conform to the  Word Boundaries algorithm
+ * described in http://unicode.org/reports/tr29, as PCRE does not contain the
+ * Word_Break property table, this simpler algorithm has to do.
+ * - Cc, Cf, Cn, Co, Cs: Other.
+ * - Pc, Pd, Pe, Pf, Pi, Po, Ps: Punctuation.
+ * - Sc, Sk, Sm, So: Symbols.
+ * - Zl, Zp, Zs: Separators.
+ *
+ * Consequently, the index only contains characters with the following
+ * General_category (gc) property values:
+ * - Ll, Lm, Lo, Lt, Lu: Letters.
+ * - Mc, Me, Mn: Combining Marks.
+ * - Nd, Nl, No: Numbers.
+ *
+ * Note that the PCRE property matcher is not used because we wanted to be
+ * compatible with Unicode 5.2.0 regardless of the PCRE version used (and any
+ * bugs in PCRE property tables).
  */
 define('PREG_CLASS_SEARCH_EXCLUDE',
-'\x{0}-\x{2f}\x{3a}-\x{40}\x{5b}-\x{60}\x{7b}-\x{bf}\x{d7}\x{f7}\x{2b0}-' .
-'\x{385}\x{387}\x{3f6}\x{482}-\x{489}\x{559}-\x{55f}\x{589}-\x{5c7}\x{5f3}-' .
-'\x{61f}\x{640}\x{64b}-\x{65e}\x{66a}-\x{66d}\x{670}\x{6d4}\x{6d6}-\x{6ed}' .
-'\x{6fd}\x{6fe}\x{700}-\x{70f}\x{711}\x{730}-\x{74a}\x{7a6}-\x{7b0}\x{901}-' .
-'\x{903}\x{93c}\x{93e}-\x{94d}\x{951}-\x{954}\x{962}-\x{965}\x{970}\x{981}-' .
-'\x{983}\x{9bc}\x{9be}-\x{9cd}\x{9d7}\x{9e2}\x{9e3}\x{9f2}-\x{a03}\x{a3c}-' .
-'\x{a4d}\x{a70}\x{a71}\x{a81}-\x{a83}\x{abc}\x{abe}-\x{acd}\x{ae2}\x{ae3}' .
-'\x{af1}-\x{b03}\x{b3c}\x{b3e}-\x{b57}\x{b70}\x{b82}\x{bbe}-\x{bd7}\x{bf0}-' .
-'\x{c03}\x{c3e}-\x{c56}\x{c82}\x{c83}\x{cbc}\x{cbe}-\x{cd6}\x{d02}\x{d03}' .
-'\x{d3e}-\x{d57}\x{d82}\x{d83}\x{dca}-\x{df4}\x{e31}\x{e34}-\x{e3f}\x{e46}-' .
-'\x{e4f}\x{e5a}\x{e5b}\x{eb1}\x{eb4}-\x{ebc}\x{ec6}-\x{ecd}\x{f01}-\x{f1f}' .
-'\x{f2a}-\x{f3f}\x{f71}-\x{f87}\x{f90}-\x{fd1}\x{102c}-\x{1039}\x{104a}-' .
-'\x{104f}\x{1056}-\x{1059}\x{10fb}\x{10fc}\x{135f}-\x{137c}\x{1390}-\x{1399}' .
-'\x{166d}\x{166e}\x{1680}\x{169b}\x{169c}\x{16eb}-\x{16f0}\x{1712}-\x{1714}' .
-'\x{1732}-\x{1736}\x{1752}\x{1753}\x{1772}\x{1773}\x{17b4}-\x{17db}\x{17dd}' .
-'\x{17f0}-\x{180e}\x{1843}\x{18a9}\x{1920}-\x{1945}\x{19b0}-\x{19c0}\x{19c8}' .
-'\x{19c9}\x{19de}-\x{19ff}\x{1a17}-\x{1a1f}\x{1d2c}-\x{1d61}\x{1d78}\x{1d9b}-' .
-'\x{1dc3}\x{1fbd}\x{1fbf}-\x{1fc1}\x{1fcd}-\x{1fcf}\x{1fdd}-\x{1fdf}\x{1fed}-' .
-'\x{1fef}\x{1ffd}-\x{2070}\x{2074}-\x{207e}\x{2080}-\x{2101}\x{2103}-\x{2106}' .
-'\x{2108}\x{2109}\x{2114}\x{2116}-\x{2118}\x{211e}-\x{2123}\x{2125}\x{2127}' .
-'\x{2129}\x{212e}\x{2132}\x{213a}\x{213b}\x{2140}-\x{2144}\x{214a}-\x{2b13}' .
-'\x{2ce5}-\x{2cff}\x{2d6f}\x{2e00}-\x{3005}\x{3007}-\x{303b}\x{303d}-\x{303f}' .
-'\x{3099}-\x{309e}\x{30a0}\x{30fb}-\x{30fe}\x{3190}-\x{319f}\x{31c0}-\x{31cf}' .
-'\x{3200}-\x{33ff}\x{4dc0}-\x{4dff}\x{a015}\x{a490}-\x{a716}\x{a802}\x{a806}' .
-'\x{a80b}\x{a823}-\x{a82b}\x{d800}-\x{f8ff}\x{fb1e}\x{fb29}\x{fd3e}\x{fd3f}' .
-'\x{fdfc}-\x{fe6b}\x{feff}-\x{ff0f}\x{ff1a}-\x{ff20}\x{ff3b}-\x{ff40}\x{ff5b}-' .
-'\x{ff65}\x{ff70}\x{ff9e}\x{ff9f}\x{ffe0}-\x{fffd}');
+  '\x{0}-\x{2F}\x{3A}-\x{40}\x{5B}-\x{60}\x{7B}-\x{A9}\x{AB}-\x{B1}\x{B4}' .
+  '\x{B6}-\x{B8}\x{BB}\x{BF}\x{D7}\x{F7}\x{2C2}-\x{2C5}\x{2D2}-\x{2DF}' .   
+  '\x{2E5}-\x{2EB}\x{2ED}\x{2EF}-\x{2FF}\x{375}\x{37E}-\x{385}\x{387}\x{3F6}' .
+  '\x{482}\x{55A}-\x{55F}\x{589}-\x{58A}\x{5BE}\x{5C0}\x{5C3}\x{5C6}' .        
+  '\x{5F3}-\x{60F}\x{61B}-\x{61F}\x{66A}-\x{66D}\x{6D4}\x{6DD}\x{6E9}' .       
+  '\x{6FD}-\x{6FE}\x{700}-\x{70F}\x{7F6}-\x{7F9}\x{830}-\x{83E}' .             
+  '\x{964}-\x{965}\x{970}\x{9F2}-\x{9F3}\x{9FA}-\x{9FB}\x{AF1}\x{B70}' .       
+  '\x{BF3}-\x{BFA}\x{C7F}\x{CF1}-\x{CF2}\x{D79}\x{DF4}\x{E3F}\x{E4F}' .        
+  '\x{E5A}-\x{E5B}\x{F01}-\x{F17}\x{F1A}-\x{F1F}\x{F34}\x{F36}\x{F38}' .
+  '\x{F3A}-\x{F3D}\x{F85}\x{FBE}-\x{FC5}\x{FC7}-\x{FD8}\x{104A}-\x{104F}' .
+  '\x{109E}-\x{109F}\x{10FB}\x{1360}-\x{1368}\x{1390}-\x{1399}\x{1400}' .
+  '\x{166D}-\x{166E}\x{1680}\x{169B}-\x{169C}\x{16EB}-\x{16ED}' .
+  '\x{1735}-\x{1736}\x{17B4}-\x{17B5}\x{17D4}-\x{17D6}\x{17D8}-\x{17DB}' .
+  '\x{1800}-\x{180A}\x{180E}\x{1940}-\x{1945}\x{19DE}-\x{19FF}' .
+  '\x{1A1E}-\x{1A1F}\x{1AA0}-\x{1AA6}\x{1AA8}-\x{1AAD}\x{1B5A}-\x{1B6A}' .
+  '\x{1B74}-\x{1B7C}\x{1C3B}-\x{1C3F}\x{1C7E}-\x{1C7F}\x{1CD3}\x{1FBD}' .
+  '\x{1FBF}-\x{1FC1}\x{1FCD}-\x{1FCF}\x{1FDD}-\x{1FDF}\x{1FED}-\x{1FEF}' .
+  '\x{1FFD}-\x{206F}\x{207A}-\x{207E}\x{208A}-\x{208E}\x{20A0}-\x{20B8}' .
+  '\x{2100}-\x{2101}\x{2103}-\x{2106}\x{2108}-\x{2109}\x{2114}' .
+  '\x{2116}-\x{2118}\x{211E}-\x{2123}\x{2125}\x{2127}\x{2129}\x{212E}' .
+  '\x{213A}-\x{213B}\x{2140}-\x{2144}\x{214A}-\x{214D}\x{214F}' .
+  '\x{2190}-\x{244A}\x{249C}-\x{24E9}\x{2500}-\x{2775}\x{2794}-\x{2B59}' .
+  '\x{2CE5}-\x{2CEA}\x{2CF9}-\x{2CFC}\x{2CFE}-\x{2CFF}\x{2E00}-\x{2E2E}' .
+  '\x{2E30}-\x{3004}\x{3008}-\x{3020}\x{3030}\x{3036}-\x{3037}' .
+  '\x{303D}-\x{303F}\x{309B}-\x{309C}\x{30A0}\x{30FB}\x{3190}-\x{3191}' .
+  '\x{3196}-\x{319F}\x{31C0}-\x{31E3}\x{3200}-\x{321E}\x{322A}-\x{3250}' .
+  '\x{3260}-\x{327F}\x{328A}-\x{32B0}\x{32C0}-\x{33FF}\x{4DC0}-\x{4DFF}' .
+  '\x{A490}-\x{A4C6}\x{A4FE}-\x{A4FF}\x{A60D}-\x{A60F}\x{A673}\x{A67E}' .
+  '\x{A6F2}-\x{A716}\x{A720}-\x{A721}\x{A789}-\x{A78A}\x{A828}-\x{A82B}' .
+  '\x{A836}-\x{A839}\x{A874}-\x{A877}\x{A8CE}-\x{A8CF}\x{A8F8}-\x{A8FA}' .
+  '\x{A92E}-\x{A92F}\x{A95F}\x{A9C1}-\x{A9CD}\x{A9DE}-\x{A9DF}' .
+  '\x{AA5C}-\x{AA5F}\x{AA77}-\x{AA79}\x{AADE}-\x{AADF}\x{ABEB}' .
+  '\x{D800}-\x{F8FF}\x{FB29}\x{FD3E}-\x{FD3F}\x{FDFC}-\x{FDFD}' .
+  '\x{FE10}-\x{FE19}\x{FE30}-\x{FE6B}\x{FEFF}-\x{FF0F}\x{FF1A}-\x{FF20}' .
+  '\x{FF3B}-\x{FF40}\x{FF5B}-\x{FF65}\x{FFE0}-\x{FFFD}');
 
 /**
  * Matches all 'N' Unicode character classes (numbers)
  */
 define('PREG_CLASS_NUMBERS',
-'\x{30}-\x{39}\x{b2}\x{b3}\x{b9}\x{bc}-\x{be}\x{660}-\x{669}\x{6f0}-\x{6f9}'.
-'\x{966}-\x{96f}\x{9e6}-\x{9ef}\x{9f4}-\x{9f9}\x{a66}-\x{a6f}\x{ae6}-\x{aef}'.
-'\x{b66}-\x{b6f}\x{be7}-\x{bf2}\x{c66}-\x{c6f}\x{ce6}-\x{cef}\x{d66}-\x{d6f}'.
-'\x{e50}-\x{e59}\x{ed0}-\x{ed9}\x{f20}-\x{f33}\x{1040}-\x{1049}\x{1369}-'.
-'\x{137c}\x{16ee}-\x{16f0}\x{17e0}-\x{17e9}\x{17f0}-\x{17f9}\x{1810}-\x{1819}'.
-'\x{1946}-\x{194f}\x{2070}\x{2074}-\x{2079}\x{2080}-\x{2089}\x{2153}-\x{2183}'.
-'\x{2460}-\x{249b}\x{24ea}-\x{24ff}\x{2776}-\x{2793}\x{3007}\x{3021}-\x{3029}'.
-'\x{3038}-\x{303a}\x{3192}-\x{3195}\x{3220}-\x{3229}\x{3251}-\x{325f}\x{3280}-'.
-'\x{3289}\x{32b1}-\x{32bf}\x{ff10}-\x{ff19}');
+  '\x{30}-\x{39}\x{b2}\x{b3}\x{b9}\x{bc}-\x{be}\x{660}-\x{669}\x{6f0}-\x{6f9}' .
+  '\x{966}-\x{96f}\x{9e6}-\x{9ef}\x{9f4}-\x{9f9}\x{a66}-\x{a6f}\x{ae6}-\x{aef}' .
+  '\x{b66}-\x{b6f}\x{be7}-\x{bf2}\x{c66}-\x{c6f}\x{ce6}-\x{cef}\x{d66}-\x{d6f}' .
+  '\x{e50}-\x{e59}\x{ed0}-\x{ed9}\x{f20}-\x{f33}\x{1040}-\x{1049}\x{1369}-' .
+  '\x{137c}\x{16ee}-\x{16f0}\x{17e0}-\x{17e9}\x{17f0}-\x{17f9}\x{1810}-\x{1819}' .
+  '\x{1946}-\x{194f}\x{2070}\x{2074}-\x{2079}\x{2080}-\x{2089}\x{2153}-\x{2183}' .
+  '\x{2460}-\x{249b}\x{24ea}-\x{24ff}\x{2776}-\x{2793}\x{3007}\x{3021}-\x{3029}' .
+  '\x{3038}-\x{303a}\x{3192}-\x{3195}\x{3220}-\x{3229}\x{3251}-\x{325f}\x{3280}-' .
+  '\x{3289}\x{32b1}-\x{32bf}\x{ff10}-\x{ff19}');
 
 /**
  * Matches all 'P' Unicode character classes (punctuation)
  */
 define('PREG_CLASS_PUNCTUATION',
-'\x{21}-\x{23}\x{25}-\x{2a}\x{2c}-\x{2f}\x{3a}\x{3b}\x{3f}\x{40}\x{5b}-\x{5d}'.
-'\x{5f}\x{7b}\x{7d}\x{a1}\x{ab}\x{b7}\x{bb}\x{bf}\x{37e}\x{387}\x{55a}-\x{55f}'.
-'\x{589}\x{58a}\x{5be}\x{5c0}\x{5c3}\x{5f3}\x{5f4}\x{60c}\x{60d}\x{61b}\x{61f}'.
-'\x{66a}-\x{66d}\x{6d4}\x{700}-\x{70d}\x{964}\x{965}\x{970}\x{df4}\x{e4f}'.
-'\x{e5a}\x{e5b}\x{f04}-\x{f12}\x{f3a}-\x{f3d}\x{f85}\x{104a}-\x{104f}\x{10fb}'.
-'\x{1361}-\x{1368}\x{166d}\x{166e}\x{169b}\x{169c}\x{16eb}-\x{16ed}\x{1735}'.
-'\x{1736}\x{17d4}-\x{17d6}\x{17d8}-\x{17da}\x{1800}-\x{180a}\x{1944}\x{1945}'.
-'\x{2010}-\x{2027}\x{2030}-\x{2043}\x{2045}-\x{2051}\x{2053}\x{2054}\x{2057}'.
-'\x{207d}\x{207e}\x{208d}\x{208e}\x{2329}\x{232a}\x{23b4}-\x{23b6}\x{2768}-'.
-'\x{2775}\x{27e6}-\x{27eb}\x{2983}-\x{2998}\x{29d8}-\x{29db}\x{29fc}\x{29fd}'.
-'\x{3001}-\x{3003}\x{3008}-\x{3011}\x{3014}-\x{301f}\x{3030}\x{303d}\x{30a0}'.
-'\x{30fb}\x{fd3e}\x{fd3f}\x{fe30}-\x{fe52}\x{fe54}-\x{fe61}\x{fe63}\x{fe68}'.
-'\x{fe6a}\x{fe6b}\x{ff01}-\x{ff03}\x{ff05}-\x{ff0a}\x{ff0c}-\x{ff0f}\x{ff1a}'.
-'\x{ff1b}\x{ff1f}\x{ff20}\x{ff3b}-\x{ff3d}\x{ff3f}\x{ff5b}\x{ff5d}\x{ff5f}-'.
-'\x{ff65}');
+  '\x{21}-\x{23}\x{25}-\x{2a}\x{2c}-\x{2f}\x{3a}\x{3b}\x{3f}\x{40}\x{5b}-\x{5d}' .
+  '\x{5f}\x{7b}\x{7d}\x{a1}\x{ab}\x{b7}\x{bb}\x{bf}\x{37e}\x{387}\x{55a}-\x{55f}' .
+  '\x{589}\x{58a}\x{5be}\x{5c0}\x{5c3}\x{5f3}\x{5f4}\x{60c}\x{60d}\x{61b}\x{61f}' .
+  '\x{66a}-\x{66d}\x{6d4}\x{700}-\x{70d}\x{964}\x{965}\x{970}\x{df4}\x{e4f}' .
+  '\x{e5a}\x{e5b}\x{f04}-\x{f12}\x{f3a}-\x{f3d}\x{f85}\x{104a}-\x{104f}\x{10fb}' .
+  '\x{1361}-\x{1368}\x{166d}\x{166e}\x{169b}\x{169c}\x{16eb}-\x{16ed}\x{1735}' .
+  '\x{1736}\x{17d4}-\x{17d6}\x{17d8}-\x{17da}\x{1800}-\x{180a}\x{1944}\x{1945}' .
+  '\x{2010}-\x{2027}\x{2030}-\x{2043}\x{2045}-\x{2051}\x{2053}\x{2054}\x{2057}' .
+  '\x{207d}\x{207e}\x{208d}\x{208e}\x{2329}\x{232a}\x{23b4}-\x{23b6}\x{2768}-' .
+  '\x{2775}\x{27e6}-\x{27eb}\x{2983}-\x{2998}\x{29d8}-\x{29db}\x{29fc}\x{29fd}' .
+  '\x{3001}-\x{3003}\x{3008}-\x{3011}\x{3014}-\x{301f}\x{3030}\x{303d}\x{30a0}' .
+  '\x{30fb}\x{fd3e}\x{fd3f}\x{fe30}-\x{fe52}\x{fe54}-\x{fe61}\x{fe63}\x{fe68}' .
+  '\x{fe6a}\x{fe6b}\x{ff01}-\x{ff03}\x{ff05}-\x{ff0a}\x{ff0c}-\x{ff0f}\x{ff1a}' .
+  '\x{ff1b}\x{ff1f}\x{ff20}\x{ff3b}-\x{ff3d}\x{ff3f}\x{ff5b}\x{ff5d}\x{ff5f}-' .
+  '\x{ff65}');
 
 /**
  * Matches all CJK characters that are candidates for auto-splitting
@@ -91,16 +111,29 @@ define('PREG_CLASS_CJK', '\x{3041}-\x{30ff}\x{31f0}-\x{31ff}\x{3400}-\x{4db5}' .
 '\x{4e00}-\x{9fbb}\x{f900}-\x{fad9}');
 
 /**
- * Implementation of hook_help().
+ * Implements hook_help().
  */
 function search_help($path, $arg) {
   switch ($path) {
     case 'admin/help#search':
-      $output = '<p>' . t('The search module adds the ability to search for content by keywords. Search is often the only practical way to find content on a large site, and is useful for finding both users and posts.') . '</p>';
-      $output .= '<p>' . t('To provide keyword searching, the search engine maintains an index of words found in your site\'s content. To build and maintain this index, a correctly configured <a href="@cron">cron maintenance task</a> is required. Indexing behavior can be adjusted using the <a href="@searchsettings">search settings page</a>; for example, the <em>Number of items to index per cron run</em> sets the maximum number of items indexed in each pass of a <a href="@cron">cron maintenance task</a>. If necessary, reduce this number to prevent timeouts and memory errors when indexing.', array('@cron' => url('admin/reports/status'), '@searchsettings' => url('admin/settings/search'))) . '</p>';
-      $output .= '<p>' . t('For more information, see the online handbook entry for <a href="@search">Search module</a>.', array('@search' => 'http://drupal.org/handbook/modules/search/')) . '</p>';
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The Search module provides the ability to index and search for content by exact keywords, and for users by username or e-mail. For more information, see the online handbook entry for <a href="@search-module">Search module</a>.', array('@search-module' => 'http://drupal.org/handbook/modules/search/', '@search' => url('search'))) . '</p>';
+      $output .= '<h3>' . t('Uses') . '</h3>';
+      $output .= '<dl>';
+      $output .= '<dt>' . t('Searching content and users') . '</dt>';
+      $output .= '<dd>' . t('Users with <em>Use search</em> permission can use the search block and <a href="@search">Search page</a>. Users with the <em>View published content</em> permission can search for content containing exact keywords. Users with the <em>View user profiles</em> permission can search for users containing the keyword anywhere in the user name, and users with the <em>Administer users</em> permission can search for users by email address. Additionally, users with <em>Use advanced search</em> permission can find content using more complex search methods and filtering by choosing the <em>Advanced search</em> option on the <a href="@search">Search page</a>.', array('@search' => url('search'))) . '</dd>';
+      $output .= '<dt>' . t('Indexing content with cron') . '</dt>';
+      $output .= '<dd>' . t('To provide keyword searching, the search engine maintains an index of words found in the content. To build and maintain this index, a correctly configured <a href="@cron">cron maintenance task</a> is required. Users with <em>Administer search</em> permission can further configure the cron settings on the <a href="@searchsettings">Search settings page</a>.', array('@cron' => 'http://drupal.org/cron', '@searchsettings' => url('admin/config/search/settings'))) . '</dd>';
+      $output .= '<dt>' . t('Configuring search settings') . '</dt>';
+      $output .= '<dd>' . t('Indexing behavior can be adjusted using the <a href="@searchsettings">Search settings page</a>. Users with <em>Administer search</em> permission can control settings such as the <em>Number of items to index per cron run</em>, <em>Indexing settings</em> (word length), <em>Active search modules</em>, and <em>Content ranking</em>, which lets you adjust the priority in which indexed content is returned in results.', array('@searchsettings' => url('admin/config/search/settings'))) . '</dd>';
+      $output .= '<dt>' . t('Search block') . '</dt>';
+      $output .= '<dd>' . t('The Search module includes a default <em>Search form</em> block, which can be enabled and configured on the <a href="@blocks">Blocks administration page</a>. The block is available to users with the <em>Search content</em> permission.', array('@blocks' => url('admin/structure/block'))) . '</dd>';
+      $output .= '<dt>' . t('Extending Search module') . '</dt>';
+      $output .= '<dd>' . t('By default, the Search module only supports exact keyword matching in content searches. You can modify this behavior by installing a language-specific stemming module for your language (such as <a href="http://drupal.org/project/porterstemmer">Porter Stemmer</a> for American English), which allows words such as walk, walking, and walked to be matched in the Search module. Another approach is to use a third-party search technology with stemming or partial word matching features built in, such as <a href="http://drupal.org/project/apachesolr">Apache Solr</a> or <a href="http://drupal.org/project/sphinx">Sphinx</a>. These and other <a href="@contrib-search">search-related contributed modules</a> can be downloaded by visiting Drupal.org.', array('@contrib-search' => 'http://drupal.org/project/modules?filters=tid%3A105')) . '</dd>';
+      $output .= '</dl>';
       return $output;
-    case 'admin/settings/search':
+    case 'admin/config/search/settings':
       return '<p>' . t('The search engine maintains an index of words found in your site\'s content. To build and maintain this index, a correctly configured <a href="@cron">cron maintenance task</a> is required. Indexing behavior can be adjusted using the settings below.', array('@cron' => url('admin/reports/status'))) . '</p>';
     case 'search#noresults':
       return t('<ul>
@@ -112,74 +145,69 @@ function search_help($path, $arg) {
 }
 
 /**
- * Implementation of hook_theme().
+ * Implements hook_theme().
  */
 function search_theme() {
   return array(
-    'search_theme_form' => array(
-      'arguments' => array('form' => NULL),
-      'template' => 'search-theme-form',
-    ),
     'search_block_form' => array(
-      'arguments' => array('form' => NULL),
+      'render element' => 'form',
       'template' => 'search-block-form',
     ),
     'search_result' => array(
-      'arguments' => array('result' => NULL, 'type' => NULL),
+      'variables' => array('result' => NULL, 'type' => NULL),
       'file' => 'search.pages.inc',
       'template' => 'search-result',
     ),
     'search_results' => array(
-      'arguments' => array('results' => NULL, 'type' => NULL),
+      'variables' => array('results' => NULL, 'type' => NULL),
       'file' => 'search.pages.inc',
       'template' => 'search-results',
     ),
+    'search_results_listing' => array(
+      'variables' => array('title' => NULL, 'content' => NULL),
+    ),
   );
 }
 
 /**
- * Implementation of hook_perm().
+ * Implements hook_permission().
  */
-function search_perm() {
+function search_permission() {
   return array(
     'administer search' => array(
       'title' => t('Administer search'),
-      'description' => t('Configure search administration settings.'),
     ),
     'search content' => array(
-      'title' => t('Search content'),
-      'description' => t('Search website content.'),
+      'title' => t('Use search'),
     ),
     'use advanced search' => array(
       'title' => t('Use advanced search'),
-      'description' => t('Limit search results with additional criteria, such as specific content types. Could have performance implications.'),
     ),
   );
 }
 
 /**
- * Implementation of hook_block_list().
+ * Implements hook_block_info().
  */
-function search_block_list() {
+function search_block_info() {
   $blocks['form']['info'] = t('Search form');
   // Not worth caching.
-  $blocks['form']['cache'] = BLOCK_NO_CACHE;
+  $blocks['form']['cache'] = DRUPAL_NO_CACHE;
   return $blocks;
 }
 
 /**
- * Implementation of hook_block_view().
+ * Implements hook_block_view().
  */
 function search_block_view($delta = '') {
   if (user_access('search content')) {
     $block['content'] = drupal_get_form('search_block_form');
-    $block['subject'] = t('Search');
     return $block;
   }
 }
 
 /**
- * Implementation of hook_menu().
+ * Implements hook_menu().
  */
 function search_menu() {
   $items['search'] = array(
@@ -187,21 +215,24 @@ function search_menu() {
     'page callback' => 'search_view',
     'access arguments' => array('search content'),
     'type' => MENU_SUGGESTED_ITEM,
+    'file' => 'search.pages.inc',
   );
-  $items['admin/settings/search'] = array(
+  $items['admin/config/search/settings'] = array(
     'title' => 'Search settings',
-    'description' => 'Configure relevance settings for search and other indexing options',
+    'description' => 'Configure relevance settings for search and other indexing options.',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('search_admin_settings'),
     'access arguments' => array('administer search'),
     'type' => MENU_NORMAL_ITEM,
+    'file' => 'search.admin.inc',
   );
-  $items['admin/settings/search/wipe'] = array(
+  $items['admin/config/search/settings/reindex'] = array(
     'title' => 'Clear index',
     'page callback' => 'drupal_get_form',
-    'page arguments' => array('search_wipe_confirm'),
+    'page arguments' => array('search_reindex_confirm'),
     'access arguments' => array('administer search'),
     'type' => MENU_CALLBACK,
+    'file' => 'search.admin.inc',
   );
   $items['admin/reports/search'] = array(
     'title' => 'Top search phrases',
@@ -210,25 +241,47 @@ function search_menu() {
     'page arguments' => array('search'),
     'access arguments' => array('access site reports'),
     'file path' => drupal_get_path('module', 'dblog'),
+    'file' => 'dblog.admin.inc',
   );
-
-  foreach (module_implements('search') as $module) {
-    $items['search/' . $module . '/%menu_tail'] = array(
-      'title callback' => 'module_invoke',
-      'title arguments' => array($module, 'search', 'name', TRUE),
-      'page callback' => 'search_view',
-      'page arguments' => array($module),
-      'access callback' => '_search_menu',
-      'access arguments' => array($module),
-      'type' => MENU_LOCAL_TASK,
-      'parent' => 'search',
-    );
+  drupal_static_reset('search_get_info');
+  $search_hooks = search_get_info();
+  foreach(variable_get('search_active_modules', array('node', 'user')) as $module) {
+    if (isset($search_hooks[$module])) {
+      $items['search/' . $search_hooks[$module]['path'] . '/%menu_tail'] = array(
+        'title' => $search_hooks[$module]['title'],
+        'page callback' => 'search_view',
+        'page arguments' => array($module),
+        'access callback' => '_search_menu_access',
+        'access arguments' => array($module),
+        'type' => MENU_LOCAL_TASK,
+        'file' => 'search.pages.inc',
+      );
+    }
   }
   return $items;
 }
 
-function _search_menu($name) {
-  return user_access('search content') && module_invoke($name, 'search', 'name');
+/**
+ * Get information about all available search hooks.
+ */
+function search_get_info() {
+  $search_hooks = &drupal_static(__FUNCTION__);
+
+  if (!isset($search_hooks)) {
+    foreach (module_implements('search_info') as $module) {
+      $search_hooks[$module] = call_user_func($module . '_search_info');
+      // Use module name as the default.
+      $search_hooks[$module] += array('title' => $module, 'path' => $module);
+    }
+  }
+  return $search_hooks;
+}
+
+/**
+ * Access callback for search tabs.
+ */
+function _search_menu_access($name) {
+  return user_access('search content') && (!function_exists($name . '_search_access') || module_invoke($name, 'search_access'));
 }
 
 /**
@@ -240,16 +293,25 @@ function _search_menu($name) {
  * @param $type
  *  (optional) The type of item to wipe.
  */
-function search_wipe($sid = NULL, $type = NULL, $reindex = FALSE) {
+function search_reindex($sid = NULL, $type = NULL, $reindex = FALSE) {
   if ($type == NULL && $sid == NULL) {
-    module_invoke_all('search', 'reset');
+    module_invoke_all('search_reset');
   }
   else {
-    db_query("DELETE FROM {search_dataset} WHERE sid = %d AND type = '%s'", $sid, $type);
-    db_query("DELETE FROM {search_index} WHERE sid = %d AND type = '%s'", $sid, $type);
+    db_delete('search_dataset')
+      ->condition('sid', $sid)
+      ->condition('type', $type)
+      ->execute();
+    db_delete('search_index')
+      ->condition('sid', $sid)
+      ->condition('type', $type)
+      ->execute();
     // Don't remove links if re-indexing.
     if (!$reindex) {
-      db_query("DELETE FROM {search_node_links} WHERE sid = %d AND type = '%s'", $sid, $type);
+      db_delete('search_node_links')
+        ->condition('sid', $sid)
+        ->condition('type', $type)
+        ->execute();
     }
   }
 }
@@ -260,7 +322,7 @@ function search_wipe($sid = NULL, $type = NULL, $reindex = FALSE) {
  * the search_total table, and need to be recounted.
  */
 function search_dirty($word = NULL) {
-  static $dirty = array();
+  $dirty = &drupal_static(__FUNCTION__, array());
   if ($word !== NULL) {
     $dirty[$word] = TRUE;
   }
@@ -270,7 +332,7 @@ function search_dirty($word = NULL) {
 }
 
 /**
- * Implementation of hook_cron().
+ * Implements hook_cron().
  *
  * Fires hook_update_index() in all modules and cleans up dirty words (see
  * search_dirty).
@@ -280,8 +342,10 @@ function search_cron() {
   // to date.
   register_shutdown_function('search_update_totals');
 
-  // Update word index
-  module_invoke_all('update_index');
+  foreach(variable_get('search_active_modules', array('node', 'user')) as $module) {
+    // Update word index
+    module_invoke($module, 'update_index');
+  }
 }
 
 /**
@@ -289,20 +353,29 @@ function search_cron() {
  * up to date (even if cron times out or otherwise fails).
  */
 function search_update_totals() {
-  // Update word IDF (Inverse Document Frequency) counts for new/changed words
+  // Update word IDF (Inverse Document Frequency) counts for new/changed words.
   foreach (search_dirty() as $word => $dummy) {
     // Get total count
-    $total = db_result(db_query("SELECT SUM(score) FROM {search_index} WHERE word = '%s'", $word));
-    // Apply Zipf's law to equalize the probability distribution
+    $total = db_query("SELECT SUM(score) FROM {search_index} WHERE word = :word", array(':word' => $word), array('target' => 'slave'))->fetchField();
+    // Apply Zipf's law to equalize the probability distribution.
     $total = log10(1 + 1/(max(1, $total)));
-    db_merge('search_total')->key(array('word' => $word))->fields(array('count' => $total))->execute();
+    db_merge('search_total')
+      ->key(array('word' => $word))
+      ->fields(array('count' => $total))
+      ->execute();
   }
   // Find words that were deleted from search_index, but are still in
   // search_total. We use a LEFT JOIN between the two tables and keep only the
   // rows which fail to join.
-  $result = db_query("SELECT t.word AS realword, i.word FROM {search_total} t LEFT JOIN {search_index} i ON t.word = i.word WHERE i.word IS NULL");
-  while ($word = db_fetch_object($result)) {
-    db_query("DELETE FROM {search_total} WHERE word = '%s'", $word->realword);
+  $result = db_query("SELECT t.word AS realword, i.word FROM {search_total} t LEFT JOIN {search_index} i ON t.word = i.word WHERE i.word IS NULL", array(), array('target' => 'slave'));
+  $or = db_or();
+  foreach ($result as $word) {
+    $or->condition('word', $word->realword);
+  }
+  if (count($or) > 0) {
+    db_delete('search_total')
+      ->condition($or)
+      ->execute();
   }
 }
 
@@ -333,7 +406,9 @@ function search_simplify($text) {
   $text = preg_replace('/([' . PREG_CLASS_NUMBERS . ']+)[' . PREG_CLASS_PUNCTUATION . ']+(?=[' . PREG_CLASS_NUMBERS . '])/u', '\1', $text);
 
   // The dot, underscore and dash are simply removed. This allows meaningful
-  // search behavior with acronyms and URLs.
+  // search behavior with acronyms and URLs. No need to use the unicode modifer
+  // here because 0-127 ASCII characters can't match higher UTF-8 characters as
+  // the leftmost bit of those are 1.
   $text = preg_replace('/[._-]+/', '', $text);
 
   // With the exception of the rules above, we consider all punctuation,
@@ -376,8 +451,8 @@ function search_expand_cjk($matches) {
  * Splits a string into tokens for indexing.
  */
 function search_index_split($text) {
-  static $last = NULL;
-  static $lastsplit = NULL;
+  $last = &drupal_static(__FUNCTION__);
+  $lastsplit = &drupal_static(__FUNCTION__ . ':lastsplit');
 
   if ($last == $text) {
     return $lastsplit;
@@ -508,12 +583,9 @@ function search_index($sid, $type, $text) {
             if (preg_match('!(?:node|book)/(?:view/)?([0-9]+)!i', $path, $match)) {
               $linknid = $match[1];
               if ($linknid > 0) {
-                // Note: ignore links to uncachable nodes to avoid redirect bugs.
-                $node = db_fetch_object(db_query('SELECT n.title, n.nid, n.vid, r.format FROM {node} n INNER JOIN {node_revision} r ON n.vid = r.vid WHERE n.nid = %d', $linknid));
-                if (filter_format_allowcache($node->format)) {
-                  $link = TRUE;
-                  $linktitle = $node->title;
-                }
+                $node = db_query('SELECT title, nid, vid FROM {node} WHERE nid = :nid', array(':nid' => $linknid), array('target' => 'slave'))->fetchObject();
+                $link = TRUE;
+                $linktitle = $node->title;
               }
             }
           }
@@ -574,30 +646,43 @@ function search_index($sid, $type, $text) {
     $tag = !$tag;
   }
 
-  search_wipe($sid, $type, TRUE);
+  search_reindex($sid, $type, TRUE);
 
   // Insert cleaned up data into dataset
-  db_query("INSERT INTO {search_dataset} (sid, type, data, reindex) VALUES (%d, '%s', '%s', %d)", $sid, $type, $accum, 0);
+  db_insert('search_dataset')
+    ->fields(array(
+      'sid' => $sid,
+      'type' => $type,
+      'data' => $accum,
+      'reindex' => 0,
+    ))
+    ->execute();
 
   // Insert results into search index
   foreach ($results[0] as $word => $score) {
     // If a word already exists in the database, its score gets increased
     // appropriately. If not, we create a new record with the appropriate
     // starting score.
-    db_merge('search_index')->key(array(
-      'word' => $word,
-      'sid' => $sid,
-      'type' => $type,
-    ))->fields(array('score' => $score))->expression('score', 'score + :score', array(':score' => $score))
-    ->execute();
+    db_merge('search_index')
+      ->key(array(
+        'word' => $word,
+        'sid' => $sid,
+        'type' => $type,
+      ))
+      ->fields(array('score' => $score))
+      ->expression('score', 'score + :score', array(':score' => $score))
+      ->execute();
     search_dirty($word);
   }
   unset($results[0]);
 
   // Get all previous links from this item.
-  $result = db_query("SELECT nid, caption FROM {search_node_links} WHERE sid = %d AND type = '%s'", $sid, $type);
+  $result = db_query("SELECT nid, caption FROM {search_node_links} WHERE sid = :sid AND type = :type", array(
+    ':sid' => $sid,
+    ':type' => $type
+  ), array('target' => 'slave'));
   $links = array();
-  while ($link = db_fetch_object($result)) {
+  foreach ($result as $link) {
     $links[$link->nid] = $link->caption;
   }
 
@@ -607,7 +692,12 @@ function search_index($sid, $type, $text) {
     if (isset($links[$nid])) {
       if ($links[$nid] != $caption) {
         // Update the existing link and mark the node for reindexing.
-        db_query("UPDATE {search_node_links} SET caption = '%s' WHERE sid = %d AND type = '%s' AND nid = %d", $caption, $sid, $type, $nid);
+        db_update('search_node_links')
+          ->fields(array('caption' => $caption))
+          ->condition('sid', $sid)
+          ->condition('type', $type)
+          ->condition('nid', $nid)
+          ->execute();
         search_touch_node($nid);
       }
       // Unset the link to mark it as processed.
@@ -615,13 +705,24 @@ function search_index($sid, $type, $text) {
     }
     else {
       // Insert the existing link and mark the node for reindexing.
-      db_query("INSERT INTO {search_node_links} (caption, sid, type, nid) VALUES ('%s', %d, '%s', %d)", $caption, $sid, $type, $nid);
+      db_insert('search_node_links')
+        ->fields(array(
+          'caption' => $caption,
+          'sid' => $sid,
+          'type' => $type,
+          'nid' => $nid,
+        ))
+        ->execute();
       search_touch_node($nid);
     }
   }
   // Any left-over links in $links no longer exist. Delete them and mark the nodes for reindexing.
   foreach ($links as $nid => $caption) {
-    db_query("DELETE FROM {search_node_links} WHERE sid = %d AND type = '%s' AND nid = %d", $sid, $type, $nid);
+    db_delete('search_node_links')
+      ->condition('sid', $sid)
+      ->condition('type', $type)
+      ->condition('nid', $nid)
+      ->execute();
     search_touch_node($nid);
   }
 }
@@ -633,49 +734,55 @@ function search_index($sid, $type, $text) {
  *   The nid of the node that needs reindexing.
  */
 function search_touch_node($nid) {
-  db_query("UPDATE {search_dataset} SET reindex = %d WHERE sid = %d AND type = 'node'", REQUEST_TIME, $nid);
+  db_update('search_dataset')
+    ->fields(array('reindex' => REQUEST_TIME))
+    ->condition('type', 'node')
+    ->condition('sid', $nid)
+    ->execute();
 }
 
 /**
- * Implementation of hook_nodeapi_update_index().
+ * Implements hook_node_update_index().
  */
-function search_nodeapi_update_index($node) {
+function search_node_update_index($node) {
   // Transplant links to a node into the target node.
-  $result = db_query("SELECT caption FROM {search_node_links} WHERE nid = %d", $node->nid);
+  $result = db_query("SELECT caption FROM {search_node_links} WHERE nid = :nid", array(':nid' => $node->nid), array('target' => 'slave'));
   $output = array();
-  while ($link = db_fetch_object($result)) {
+  foreach ($result as $link) {
     $output[] = $link->caption;
   }
-  return '<a>(' . implode(', ', $output) . ')</a>';
+  if (count($output)) {
+    return '<a>(' . implode(', ', $output) . ')</a>';
+  }
 }
 
 /**
- * Implementation of hook_nodeapi_update().
+ * Implements hook_node_update().
  */
-function search_nodeapi_update($node) {
+function search_node_update($node) {
   // Reindex the node when it is updated. The node is automatically indexed
   // when it is added, simply by being added to the node table.
   search_touch_node($node->nid);
 }
 
 /**
- * Implementation of hook_comment_insert().
+ * Implements hook_comment_insert().
  */
-function search_comment_insert($form_values) {
+function search_comment_insert($comment) {
   // Reindex the node when comments are added.
-  search_touch_node($form_values['nid']);
+  search_touch_node($comment->nid);
 }
 
 /**
- * Implementation of hook_comment_update().
+ * Implements hook_comment_update().
  */
-function search_comment_update($form_values) {
+function search_comment_update($comment) {
   // Reindex the node when comments are changed.
-  search_touch_node($form_values['nid']);
+  search_touch_node($comment->nid);
 }
 
 /**
- * Implementation of hook_comment_delete().
+ * Implements hook_comment_delete().
  */
 function search_comment_delete($comment) {
   // Reindex the node when comments are deleted.
@@ -683,15 +790,15 @@ function search_comment_delete($comment) {
 }
 
 /**
- * Implementation of hook_comment_publish().
+ * Implements hook_comment_publish().
  */
-function search_comment_publish($form_values) {
+function search_comment_publish($comment) {
   // Reindex the node when comments are published.
-  search_touch_node($form_values['nid']);
+  search_touch_node($comment->nid);
 }
 
 /**
- * Implementation of hook_comment_unpublish().
+ * Implements hook_comment_unpublish().
  */
 function search_comment_unpublish($comment) {
   // Reindex the node when comments are unpublished.
@@ -701,7 +808,7 @@ function search_comment_unpublish($comment) {
 /**
  * Extract a module-specific search option from a search query. e.g. 'type:book'
  */
-function search_query_extract($keys, $option) {
+function search_expression_extract($keys, $option) {
   if (preg_match('/(^| )' . $option . ':([^ ]*)( |$)/i', $keys, $matches)) {
     return $matches[2];
   }
@@ -711,8 +818,8 @@ function search_query_extract($keys, $option) {
  * Return a query with the given module-specific search option inserted in.
  * e.g. 'type:book'.
  */
-function search_query_insert($keys, $option, $value = '') {
-  if (search_query_extract($keys, $option)) {
+function search_expression_insert($keys, $option, $value = '') {
+  if (search_expression_extract($keys, $option)) {
     $keys = trim(preg_replace('/(^| )' . $option . ':[^ ]*/i', '', $keys));
   }
   if ($value != '') {
@@ -722,285 +829,10 @@ function search_query_insert($keys, $option, $value = '') {
 }
 
 /**
- * Parse a search query into SQL conditions.
- *
- * We build two queries that matches the dataset bodies. @See do_search for
- * more about these.
- *
- * @param $text
- *   The search keys.
- * @return
- *   A list of six elements.
- *    * A series of statements AND'd together which will be used to provide all
- *      possible matches.
- *    * Arguments for this query part.
- *    * A series of exact word matches OR'd together.
- *    * Arguments for this query part.
- *    * A boolean indicating whether this is a simple query or not. Negative
- *      terms, presence of both AND / OR make this FALSE.
- *    * A boolean indicating the presence of a lowercase or. Maybe the user
- *      wanted to use OR.
- */
-function search_parse_query($text) {
-  $keys = array('positive' => array(), 'negative' => array());
-
-  // Tokenize query string
-  preg_match_all('/ (-?)("[^"]+"|[^" ]+)/i', ' ' . $text, $matches, PREG_SET_ORDER);
-
-  if (count($matches) < 1) {
-    return NULL;
-  }
-
-  // Classify tokens
-  $or = FALSE;
-  $warning = '';
-  $simple = TRUE;
-  foreach ($matches as $match) {
-    $phrase = FALSE;
-    // Strip off phrase quotes
-    if ($match[2]{0} == '"') {
-      $match[2] = substr($match[2], 1, -1);
-      $phrase = TRUE;
-      $simple = FALSE;
-    }
-    // Simplify keyword according to indexing rules and external preprocessors
-    $words = search_simplify($match[2]);
-    // Re-explode in case simplification added more words, except when matching a phrase
-    $words = $phrase ? array($words) : preg_split('/ /', $words, -1, PREG_SPLIT_NO_EMPTY);
-    // Negative matches
-    if ($match[1] == '-') {
-      $keys['negative'] = array_merge($keys['negative'], $words);
-    }
-    // OR operator: instead of a single keyword, we store an array of all
-    // OR'd keywords.
-    elseif ($match[2] == 'OR' && count($keys['positive'])) {
-      $last = array_pop($keys['positive']);
-      // Starting a new OR?
-      if (!is_array($last)) {
-        $last = array($last);
-      }
-      $keys['positive'][] = $last;
-      $or = TRUE;
-      continue;
-    }
-    // AND operator: implied, so just ignore it
-    elseif ($match[2] == 'AND' || $match[2] == 'and') {
-      $warning = $match[2];
-      continue;
-    }
-
-    // Plain keyword
-    else {
-      if ($match[2] == 'or') {
-        $warning = $match[2];
-      }
-      if ($or) {
-        // Add to last element (which is an array)
-        $keys['positive'][count($keys['positive']) - 1] = array_merge($keys['positive'][count($keys['positive']) - 1], $words);
-      }
-      else {
-        $keys['positive'] = array_merge($keys['positive'], $words);
-      }
-    }
-    $or = FALSE;
-  }
-
-  // Convert keywords into SQL statements.
-  $query = array();
-  $query2 = array();
-  $arguments = array();
-  $arguments2 = array();
-  $matches = 0;
-  $simple_and = FALSE;
-  $simple_or = FALSE;
-  // Positive matches
-  foreach ($keys['positive'] as $key) {
-    // Group of ORed terms
-    if (is_array($key) && count($key)) {
-      $simple_or = TRUE;
-      $queryor = array();
-      $any = FALSE;
-      foreach ($key as $or) {
-        list($q, $num_new_scores) = _search_parse_query($or, $arguments2);
-        $any |= $num_new_scores;
-        if ($q) {
-          $queryor[] = $q;
-          $arguments[] = "% $or %";
-        }
-      }
-      if (count($queryor)) {
-        $query[] = '(' . implode(' OR ', $queryor) . ')';
-        // A group of OR keywords only needs to match once
-        $matches += ($any > 0);
-      }
-    }
-    // Single ANDed term
-    else {
-      $simple_and = TRUE;
-      list($q, $num_new_scores, $num_valid_words) = _search_parse_query($key, $arguments2);
-      if ($q) {
-        $query[] = $q;
-        $arguments[] = "% $key %";
-        if (!$num_valid_words) {
-          $simple = FALSE;
-        }
-        // Each AND keyword needs to match at least once
-        $matches += $num_new_scores;
-      }
-    }
-  }
-  if ($simple_and && $simple_or) {
-    $simple = FALSE;
-  }
-  // Negative matches
-  foreach ($keys['negative'] as $key) {
-    list($q) = _search_parse_query($key, $arguments2, TRUE);
-    if ($q) {
-      $query[] = $q;
-      $arguments[] = "% $key %";
-      $simple = FALSE;
-    }
-  }
-  $query = implode(' AND ', $query);
-
-  // Build word-index conditions for the first pass
-  $query2 = substr(str_repeat("i.word = '%s' OR ", count($arguments2)), 0, -4);
-
-  return array($query, $arguments, $query2, $arguments2, $matches, $simple, $warning);
-}
-
-/**
- * Helper function for search_parse_query();
- */
-function _search_parse_query(&$word, &$scores, $not = FALSE) {
-  $num_new_scores = 0;
-  $num_valid_words = 0;
-  // Determine the scorewords of this word/phrase
-  if (!$not) {
-    $split = explode(' ', $word);
-    foreach ($split as $s) {
-      $num = is_numeric($s);
-      if ($num || drupal_strlen($s) >= variable_get('minimum_word_size', 3)) {
-        $s = $num ? ((int)ltrim($s, '-0')) : $s;
-        if (!isset($scores[$s])) {
-          $scores[$s] = $s;
-          $num_new_scores++;
-        }
-        $num_valid_words++;
-      }
-    }
-  }
-  // Return matching snippet and number of added words
-  return array("d.data " . ($not ? 'NOT ' : '') . "LIKE '%s'", $num_new_scores, $num_valid_words);
-}
-
-/**
- * Do a query on the full-text search index for a word or words.
- *
- * This function is normally only called by each module that support the
- * indexed search (and thus, implements hook_update_index()).
- *
- * Results are retrieved in two logical passes. However, the two passes are
- * joined together into a single query. And in the case of most simple
- * queries the second pass is not even used.
- *
- * The first pass selects a set of all possible matches, which has the benefit
- * of also providing the exact result set for simple "AND" or "OR" searches.
- *
- * The second portion of the query further refines this set by verifying
- * advanced text conditions (such negative or phrase matches)
- *
- * @param $keywords
- *   A search string as entered by the user.
- *
- * @param $type
- *   A string identifying the calling module.
- *
- * @param $join1
- *   (optional) Inserted into the JOIN part of the first SQL query.
- *   For example "INNER JOIN {node} n ON n.nid = i.sid".
- *
- * @param $where1
- *   (optional) Inserted into the WHERE part of the first SQL query.
- *   For example "(n.status > %d)".
- *
- * @param $arguments1
- *   (optional) Extra SQL arguments belonging to the first query.
- *
- * @param $columns2
- *   (optional) Inserted into the SELECT pat of the second query. Must contain
- *   a column selected as 'calculated_score'.
- *   defaults to 'SUM(i.relevance) AS calculated_score'
- *
- * @param $join2
- *   (optional) Inserted into the JOIN par of the second SQL query.
- *   For example "INNER JOIN {node_comment_statistics} n ON n.nid = i.sid"
- *
- * @param $arguments2
- *   (optional) Extra SQL arguments belonging to the second query parameter.
- *
- * @param $sort_parameters
- *   (optional) SQL arguments for sorting the final results.
- *              Default: 'ORDER BY calculated_score DESC'
- *
- * @return
- *   An array of SIDs for the search results.
- *
- * @ingroup search
- */
-function do_search($keywords, $type, $join1 = '', $where1 = '1 = 1', $arguments1 = array(), $columns2 = 'SUM(i.relevance) AS calculated_score', $join2 = '', $arguments2 = array(), $sort_parameters = 'ORDER BY calculated_score DESC') {
-  $query = search_parse_query($keywords);
-
-  if ($query[2] == '') {
-    form_set_error('keys', t('You must include at least one positive keyword with @count characters or more.', array('@count' => variable_get('minimum_word_size', 3))));
-  }
-  if ($query[6]) {
-    if ($query[6] == 'or') {
-      drupal_set_message(t('Search for either of the two terms with uppercase <strong>OR</strong>. For example, <strong>cats OR dogs</strong>.'));
-    }
-  }
-  if ($query === NULL || $query[0] == '' || $query[2] == '') {
-    return array();
-  }
-
-  // Build query for keyword normalization.
-  $conditions = "$where1 AND ($query[2]) AND i.type = '%s'";
-  $arguments1 = array_merge($arguments1, $query[3], array($type));
-  $join = "INNER JOIN {search_total} t ON i.word = t.word $join1";
-  if (!$query[5]) {
-    $conditions .= " AND ($query[0])";
-    $arguments1 = array_merge($arguments1, $query[1]);
-    $join .= " INNER JOIN {search_dataset} d ON i.sid = d.sid AND i.type = d.type";
-  }
-
-  // Calculate maximum keyword relevance, to normalize it.
-  $select = "SELECT SUM(i.score * t.count) AS calculated_score FROM {search_index} i $join WHERE $conditions GROUP BY i.type, i.sid HAVING COUNT(*) >= %d ORDER BY calculated_score DESC";
-  $arguments = array_merge($arguments1, array($query[4]));
-  $normalize = db_result(db_query_range($select, $arguments, 0, 1));
-  if (!$normalize) {
-    return array();
-  }
-  $columns2 = str_replace('i.relevance', '(' . (1.0 / $normalize) . ' * i.score * t.count)', $columns2);
-
-  // Build query to retrieve results.
-  $select = "SELECT i.type, i.sid, $columns2 FROM {search_index} i $join $join2 WHERE $conditions GROUP BY i.type, i.sid HAVING COUNT(*) >= %d";
-  $count_select =  "SELECT COUNT(*) FROM ($select) n1";
-  $arguments = array_values(array_merge($arguments2, $arguments1, array($query[4])));
-
-  // Do actual search query
-  $result = pager_query("$select $sort_parameters", 10, 0, $count_select, $arguments);
-  $results = array();
-  while ($item = db_fetch_object($result)) {
-    $results[] = $item;
-  }
-  return $results;
-}
-
-/**
  * Helper function for grabbing search keys.
  */
 function search_get_keys() {
-  static $return;
+  $return = &drupal_static(__FUNCTION__);
   if (!isset($return)) {
     // Extract keys as remainder of path
     // Note: support old GET format of searches for existing links.
@@ -1021,15 +853,15 @@ function search_get_keys() {
  * for all of the search features to work.
  *
  * There are three ways to interact with the search system:
- * - Specifically for searching nodes, you can implement nodeapi('update_index')
- *   and nodeapi('search_result'). However, note that the search system already
+ * - Specifically for searching nodes, you can implement hook_node_update_index()
+ *   and hook_node_search_result(). However, note that the search system already
  *   indexes all visible output of a node, i.e. everything displayed normally
- *   by hook_view() and hook_nodeapi('view'). This is usually sufficient.
- *   You should only use this mechanism if you want additional, non-visible data
- *   to be indexed.
- * - Implement hook_search(). This will create a search tab for your module on
- *   the /search page with a simple keyword search form. You may optionally
- *   implement hook_search_item() to customize the display of your results.
+ *   by hook_view() and hook_node_view(). This is usually sufficient. You should
+ *   only use this mechanism if you want additional, non-visible data to be
+ *   indexed.
+ * - Implement hook_search_info(). This will create a search tab for your module on
+ *   the /search page with a simple keyword search form. You will also need to
+ *   implement hook_search_execute() to perform the search.
  * - Implement hook_update_index(). This allows your module to use Drupal's
  *   HTML indexing mechanism for searching full text efficiently.
  *
@@ -1054,8 +886,7 @@ function search_get_keys() {
  * @return
  *   An HTML string containing the search form.
  */
-function search_form(&$form_state, $action = '', $keys = '', $type = NULL, $prompt = NULL) {
-
+function search_form($form, &$form_state, $action = '', $keys = '', $type = NULL, $prompt = NULL) {
   // Add CSS
   drupal_add_css(drupal_get_path('module', 'search') . '/search.css', array('preprocess' => FALSE));
 
@@ -1066,12 +897,10 @@ function search_form(&$form_state, $action = '', $keys = '', $type = NULL, $prom
     $prompt = t('Enter your keywords');
   }
 
-  $form = array(
-    '#action' => $action,
-    '#attributes' => array('class' => 'search-form'),
-  );
+  $form['#action'] = $action;
+  $form['#attributes']['class'][] = 'search-form';
   $form['module'] = array('#type' => 'value', '#value' => $type);
-  $form['basic'] = array('#type' => 'item', '#title' => $prompt);
+  $form['basic'] = array('#type' => 'item', '#title' => $prompt, '#id' => 'edit-keys');
   $form['basic']['inline'] = array('#prefix' => '<div class="container-inline">', '#suffix' => '</div>');
   $form['basic']['inline']['keys'] = array(
     '#type' => 'textfield',
@@ -1089,15 +918,15 @@ function search_form(&$form_state, $action = '', $keys = '', $type = NULL, $prom
 }
 
 /**
- * Form builder; Output a search form for the search block and the theme's search box.
+ * Form builder; Output a search form for the search block's search box.
  *
  * @ingroup forms
  * @see search_box_form_submit()
- * @see theme_search_box_form()
+ * @see search-theme-form.tpl.php
+ * @see search-block-form.tpl.php
  */
-function search_box(&$form_state, $form_id) {
+function search_box($form, &$form_state, $form_id) {
   $form[$form_id] = array(
-    '#title' => t('Search this site'),
     '#type' => 'textfield',
     '#size' => 15,
     '#default_value' => '',
@@ -1113,35 +942,16 @@ function search_box(&$form_state, $form_id) {
  * Process a block search form submission.
  */
 function search_box_form_submit($form, &$form_state) {
+  // The search form relies on control of the redirect destination for its
+  // functionality, so we override any static destination set in the request,
+  // for example by drupal_access_denied() or drupal_not_found()
+  // (see http://drupal.org/node/292565).
+  if (isset($_GET['destination'])) {
+    unset($_GET['destination']);
+  }
+
   $form_id = $form['form_id']['#value'];
   $form_state['redirect'] = 'search/node/' . trim($form_state['values'][$form_id]);
-}
-
-/**
- * Process variables for search-theme-form.tpl.php.
- *
- * The $variables array contains the following arguments:
- * - $form
- *
- * @see search-theme-form.tpl.php
- */
-function template_preprocess_search_theme_form(&$variables) {
-  $variables['search'] = array();
-  $hidden = array();
-  // Provide variables named after form keys so themers can print each element independently.
-  foreach (element_children($variables['form']) as $key) {
-    $type = $variables['form'][$key]['#type'];
-    if ($type == 'hidden' || $type == 'token') {
-      $hidden[] = drupal_render($variables['form'][$key]);
-    }
-    else {
-      $variables['search'][$key] = drupal_render($variables['form'][$key]);
-    }
-  }
-  // Hidden form elements have no value to themers. No need for separation.
-  $variables['search']['hidden'] = implode($hidden);
-  // Collect all form elements to make it easier to print the whole form.
-  $variables['search_form'] = implode($variables['search']);
 }
 
 /**
@@ -1177,15 +987,13 @@ function template_preprocess_search_block_form(&$variables) {
 function search_data($keys = NULL, $type = 'node') {
 
   if (isset($keys)) {
-    if (module_hook($type, 'search')) {
-      $results = module_invoke($type, 'search', 'search', $keys);
-      if (isset($results) && is_array($results) && count($results)) {
-        if (module_hook($type, 'search_page')) {
-          return module_invoke($type, 'search_page', $results);
-        }
-        else {
-          return theme('search_results', $results, $type);
-        }
+    if (module_hook($type, 'search_execute')) {
+      $results = module_invoke($type, 'search_execute', $keys);
+      if (module_hook($type, 'search_page')) {
+        return module_invoke($type, 'search_page', $results);
+      }
+      else {
+        return theme('search_results', array('results' => $results, 'type' => $type));
       }
     }
   }
@@ -1315,10 +1123,6 @@ function _search_excerpt_replace(&$text) {
 }
 
 function search_forms() {
-  $forms['search_theme_form']= array(
-    'callback' => 'search_box',
-    'callback arguments' => array('search_theme_form'),
-  );
   $forms['search_block_form']= array(
     'callback' => 'search_box',
     'callback arguments' => array('search_block_form'),

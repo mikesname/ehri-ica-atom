@@ -1,5 +1,5 @@
 <?php
-// $Id: database.inc,v 1.11 2009/01/19 20:45:17 dries Exp $
+// $Id: database.inc,v 1.23 2010/01/14 19:49:14 webchick Exp $
 
 /**
  * @file
@@ -25,7 +25,7 @@ class DatabaseConnection_sqlite extends DatabaseConnection {
     // This driver defaults to transaction support, except if explicitly passed FALSE.
     $this->transactionSupport = !isset($connection_options['transactions']) || $connection_options['transactions'] !== FALSE;
 
-    parent::__construct('sqlite:'. $connection_options['database'], '', '', array(
+    parent::__construct('sqlite:' . $connection_options['database'], '', '', array(
       // Force column names to lower case.
       PDO::ATTR_CASE => PDO::CASE_LOWER,
     ));
@@ -37,8 +37,10 @@ class DatabaseConnection_sqlite extends DatabaseConnection {
     $this->sqliteCreateFunction('greatest', array($this, 'sqlFunctionGreatest'));
     $this->sqliteCreateFunction('pow', 'pow', 2);
     $this->sqliteCreateFunction('length', 'strlen', 1);
+    $this->sqliteCreateFunction('md5', 'md5', 1);
     $this->sqliteCreateFunction('concat', array($this, 'sqlFunctionConcat'));
     $this->sqliteCreateFunction('substring', array($this, 'sqlFunctionSubstring'), 3);
+    $this->sqliteCreateFunction('substring_index', array($this, 'sqlFunctionSubstringIndex'), 3);
     $this->sqliteCreateFunction('rand', array($this, 'sqlFunctionRand'));
   }
 
@@ -83,6 +85,20 @@ class DatabaseConnection_sqlite extends DatabaseConnection {
   }
 
   /**
+   * SQLite compatibility implementation for the SUBSTRING_INDEX() SQL function.
+   */
+  public function sqlFunctionSubstringIndex($string, $delimiter, $count) {
+    $end = 0;
+    for ($i = 0; $i < $count; $i++) {
+      $end = strpos($string, $delimiter, $end + 1);
+      if ($end === FALSE) {
+        $end = strlen($string);
+      }
+    }
+    return substr($string, 0, $end);
+  }
+
+  /**
    * SQLite compatibility implementation for the RAND() SQL function.
    */
   public function sqlFunctionRand($seed = NULL) {
@@ -99,7 +115,7 @@ class DatabaseConnection_sqlite extends DatabaseConnection {
    * a DatabaseStatement_sqlite object, that will create a PDOStatement
    * using the semi-private PDOPrepare() method below.
    */
-  public function prepare($query, array $options = array()) {
+  public function prepare($query, $options = array()) {
     return new DatabaseStatement_sqlite($this, $query, $options);
   }
 
@@ -119,11 +135,11 @@ class DatabaseConnection_sqlite extends DatabaseConnection {
     return parent::prepare($query, $options);
   }
 
-  public function queryRange($query, array $args, $from, $count, array $options = array()) {
+  public function queryRange($query, $from, $count, array $args = array(), array $options = array()) {
     return $this->query($query . ' LIMIT ' . $from . ', ' . $count, $args, $options);
   }
 
-  public function queryTemporary($query, array $args, array $options = array()) {
+  public function queryTemporary($query, array $args = array(), array $options = array()) {
     $tablename = $this->generateTemporaryTableName();
     $this->query(preg_replace('/^SELECT/i', 'CREATE TEMPORARY TABLE {' . $tablename . '} AS SELECT', $query), $args, $options);
     return $tablename;
@@ -139,31 +155,48 @@ class DatabaseConnection_sqlite extends DatabaseConnection {
 
   public function mapConditionOperator($operator) {
     // We don't want to override any of the defaults.
-    return NULL;
+    static $specials = array(
+      'LIKE' => array('postfix' => " ESCAPE '\\'"),
+    );
+    return isset($specials[$operator]) ? $specials[$operator] : NULL;
   }
 
-  protected function prepareQuery($query, $cache = TRUE) {
+  public function prepareQuery($query, $cache = TRUE) {
     // It makes no sense to use the static prepared statement cache here,
     // because all the work in our implementation is done in
     // DatabaseStatement_sqlite::execute() and cannot be cached.
     return $this->prepare($this->prefixTables($query));
   }
 
-  /**
-   * @todo Remove this as soon as db_rewrite_sql() has been exterminated.
-   */
-  public function distinctField($table, $field, $query) {
-    $field_to_select = 'DISTINCT(' . $table . '.' . $field . ')';
-    // (?<!text) is a negative look-behind (no need to rewrite queries that already use DISTINCT).
-    return preg_replace('/(SELECT.*)(?:' . $table . '\.|\s)(?<!DISTINCT\()(?<!DISTINCT\(' . $table . '\.)' . $field . '(.*FROM )/AUsi', '\1 ' . $field_to_select . '\2', $query);
+  public function nextId($existing_id = 0) {
+    $transaction = $this->startTransaction();
+    // We can safely use literal queries here instead of the slower query
+    // builder because if a given database breaks here then it can simply
+    // override nextId. However, this is unlikely as we deal with short strings
+    // and integers and no known databases require special handling for those
+    // simple cases. If another transaction wants to write the same row, it will
+    // wait until this transaction commits.
+    $stmt = $this->query('UPDATE {sequences} SET value = GREATEST(value, :existing_id) + 1', array(
+      ':existing_id' => $existing_id,
+    ));
+    if (!$stmt->rowCount()) {
+      $this->query('INSERT INTO {sequences} (value) VALUES (:existing_id + 1)', array(
+        ':existing_id' => $existing_id,
+      ));
+    }
+    // The transaction gets committed when the transaction object gets destroyed
+    // because it gets out of scope.
+    return (int) $this->query('SELECT value FROM {sequences}')->fetchField();
   }
 }
 
 /**
  * Specific SQLite implementation of DatabaseConnection.
  *
- * @see DatabaseConnection_sqlite::PDOPrepare for reasons why we must prefetch
+ * See DatabaseConnection_sqlite::PDOPrepare() for reasons why we must prefetch
  * the data instead of using PDOStatement.
+ *
+ * @see DatabaseConnection_sqlite::PDOPrepare()
  */
 class DatabaseStatement_sqlite extends DatabaseStatementPrefetch implements Iterator, DatabaseStatementInterface {
 
@@ -200,11 +233,20 @@ class DatabaseStatement_sqlite extends DatabaseStatementPrefetch implements Iter
         // Else, this is using named placeholders.
         foreach ($args as $placeholder => $value) {
           if (is_numeric($value)) {
+            // We will remove this placeholder from the query and PDO throws an
+            // exception if the number of placeholders in the query and the
+            // arguments does not match.
+            unset($args[$placeholder]);
+            // PDO allows placeholders to not be prefixed by a colon. See
+            // http://marc.info/?l=php-internals&m=111234321827149&w=2 for
+            // more.
+            if ($placeholder[0] != ':') {
+              $placeholder = ":$placeholder";
+            }
             // When replacing the placeholders, make sure we search for the
             // exact placeholder. For example, if searching for
             // ':db_placeholder_1', do not replace ':db_placeholder_11'.
             $query = preg_replace('/' . preg_quote($placeholder) . '\b/', $value, $query);
-            unset($args[$placeholder]);
           }
         }
       }
@@ -213,7 +255,7 @@ class DatabaseStatement_sqlite extends DatabaseStatementPrefetch implements Iter
     return $this->dbh->PDOPrepare($query);
   }
 
-  public function execute($args, $options) {
+  public function execute($args = array(), $options = array()) {
     try {
       $return = parent::execute($args, $options);
     }

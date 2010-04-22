@@ -1,13 +1,13 @@
 <?php use_helper('Javascript') ?>
 
-<div class="pageTitle"><?php echo __('reset password'); ?></div>
+<h1><?php echo __('Reset password'); ?></h1>
 
 <form method="post" action="<?php echo url_for(array('module' => 'user', 'action' => 'passwordEdit')) ?>">
 
 <?php echo object_input_hidden_tag($user, 'getId') ?>
 
 <div class="formHeader">
-  <?php echo __('reset password: %1%', array('%1%' => $user)) ?>
+  <?php echo __('Reset password: %1%', array('%1%' => $user)) ?>
 </div>
 
 <fieldset>
@@ -20,15 +20,20 @@ EOF
 
   <?php echo $form->renderGlobalErrors() ?>
   
-  <?php echo $form->password->label(__('change password'))->renderRow(array('class' => 'password-field')) ?>
+  <?php echo $form->password->label(__('Change password'))->renderRow(array('class' => 'password-field')) ?>
   <br style="clear: both" />  
-  <?php echo $form->confirmPassword->label(__('confirm password'))->renderRow(array('class' => 'password-confirm')) ?>
+  <?php echo $form->confirmPassword->label(__('Confirm password'))->renderRow(array('class' => 'password-confirm')) ?>
 </div>
 </fieldset>
 
-<ul class="actions">
-  <li><?php echo link_to(__('Cancel'), array('module' => 'user', 'action' => 'show', 'id' => $user->getId())) ?></li>
-  <li><?php echo submit_tag(__('Save')) ?></li>
-</ul>
+  <div class="actions section">
+    <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+    <div class="content">
+      <ul class="clearfix links">
+        <li><?php echo link_to(__('Cancel'), array('module' => 'user', 'id' => $user->getId())) ?></li>
+        <li><?php echo submit_tag(__('Save')) ?></li>
+      </ul>
+    </div>
+  </div>
 
 </form>

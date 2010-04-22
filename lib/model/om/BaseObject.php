@@ -195,12 +195,12 @@ abstract class BaseObject implements ArrayAccess
       return true;
     }
 
-    if ('propertys' == $name)
+    if ('otherNames' == $name)
     {
       return true;
     }
 
-    if ('rightss' == $name)
+    if ('propertys' == $name)
     {
       return true;
     }
@@ -211,6 +211,11 @@ abstract class BaseObject implements ArrayAccess
     }
 
     if ('relationsRelatedByobjectId' == $name)
+    {
+      return true;
+    }
+
+    if ('rightss' == $name)
     {
       return true;
     }
@@ -312,6 +317,23 @@ abstract class BaseObject implements ArrayAccess
       return $this->refFkValues['objectTermRelationsRelatedByobjectId'];
     }
 
+    if ('otherNames' == $name)
+    {
+      if (!isset($this->refFkValues['otherNames']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['otherNames'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['otherNames'] = self::getotherNamesById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['otherNames'];
+    }
+
     if ('propertys' == $name)
     {
       if (!isset($this->refFkValues['propertys']))
@@ -327,23 +349,6 @@ abstract class BaseObject implements ArrayAccess
       }
 
       return $this->refFkValues['propertys'];
-    }
-
-    if ('rightss' == $name)
-    {
-      if (!isset($this->refFkValues['rightss']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['rightss'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['rightss'] = self::getrightssById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['rightss'];
     }
 
     if ('relationsRelatedBysubjectId' == $name)
@@ -378,6 +383,23 @@ abstract class BaseObject implements ArrayAccess
       }
 
       return $this->refFkValues['relationsRelatedByobjectId'];
+    }
+
+    if ('rightss' == $name)
+    {
+      if (!isset($this->refFkValues['rightss']))
+      {
+        if (!isset($this->id))
+        {
+          $this->refFkValues['rightss'] = QubitQuery::create();
+        }
+        else
+        {
+          $this->refFkValues['rightss'] = self::getrightssById($this->id, array('self' => $this) + $options);
+        }
+      }
+
+      return $this->refFkValues['rightss'];
     }
 
     if ('statuss' == $name)
@@ -564,9 +586,7 @@ abstract class BaseObject implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
@@ -715,6 +735,26 @@ abstract class BaseObject implements ArrayAccess
     return self::addobjectTermRelationsRelatedByobjectIdCriteriaById($criteria, $this->id);
   }
 
+  public static function addotherNamesCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitOtherName::OBJECT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getotherNamesById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addotherNamesCriteriaById($criteria, $id);
+
+    return QubitOtherName::get($criteria, $options);
+  }
+
+  public function addotherNamesCriteria(Criteria $criteria)
+  {
+    return self::addotherNamesCriteriaById($criteria, $this->id);
+  }
+
   public static function addpropertysCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitProperty::OBJECT_ID, $id);
@@ -733,26 +773,6 @@ abstract class BaseObject implements ArrayAccess
   public function addpropertysCriteria(Criteria $criteria)
   {
     return self::addpropertysCriteriaById($criteria, $this->id);
-  }
-
-  public static function addrightssCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitRights::OBJECT_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getrightssById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addrightssCriteriaById($criteria, $id);
-
-    return QubitRights::get($criteria, $options);
-  }
-
-  public function addrightssCriteria(Criteria $criteria)
-  {
-    return self::addrightssCriteriaById($criteria, $this->id);
   }
 
   public static function addrelationsRelatedBysubjectIdCriteriaById(Criteria $criteria, $id)
@@ -793,6 +813,26 @@ abstract class BaseObject implements ArrayAccess
   public function addrelationsRelatedByobjectIdCriteria(Criteria $criteria)
   {
     return self::addrelationsRelatedByobjectIdCriteriaById($criteria, $this->id);
+  }
+
+  public static function addrightssCriteriaById(Criteria $criteria, $id)
+  {
+    $criteria->add(QubitRights::OBJECT_ID, $id);
+
+    return $criteria;
+  }
+
+  public static function getrightssById($id, array $options = array())
+  {
+    $criteria = new Criteria;
+    self::addrightssCriteriaById($criteria, $id);
+
+    return QubitRights::get($criteria, $options);
+  }
+
+  public function addrightssCriteria(Criteria $criteria)
+  {
+    return self::addrightssCriteriaById($criteria, $this->id);
   }
 
   public static function addstatussCriteriaById(Criteria $criteria, $id)

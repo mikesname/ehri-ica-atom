@@ -17,11 +17,41 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/**
+ * Browse list for digital objects 
+ *
+ * @package    qubit
+ * @subpackage digitalobject
+ * @author     David Juhasz <david@artefactual.com> 
+ * @version    SVN: $Id$
+ */
 class DigitalObjectBrowseAction extends sfAction
 {
   public function execute($request)
   {
-    $this->mediaType = QubitTerm::getById($request->getParameter('mediatype'));
-    $this->page = $request->getParameter('page', 1);
+    $this->mediaType = QubitTerm::getById($request->mediatype);
+
+    if (!$this->mediaType instanceOf QubitTerm)
+    {
+      $this->forward404();
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $this->mediaType->id);
+    $criteria->add(QubitDigitalObject::SEQUENCE, null, Criteria::ISNULL);
+    $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
+
+    // Sort by name ascending
+    $criteria->addAscendingOrderByColumn(QubitDigitalObject::NAME);
+
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
+
+    $this->pager = new QubitPager('QubitDigitalObject');
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->page);
   }
 }

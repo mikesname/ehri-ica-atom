@@ -8,7 +8,7 @@ QubitAclGroup:
       en: anonymous
   QubitAclGroup_authenticated:
     id: <?php echo QubitAclGroup::AUTHENTICATED_ID."\n" ?>
-    parent_id: QubitAclGroup_anonymous
+    parent_id: QubitAclGroup_ROOT
     name:
       en: authenticated
   QubitAclGroup_administrator:
@@ -31,134 +31,86 @@ QubitAclGroup:
     parent_id: QubitAclGroup_authenticated
     name:
       en: translator
-QubitAclAction:
-  QubitAclAction_create:
-    id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
-    name:
-      en: create
-  QubitAclAction_read:
-    id: <?php echo QubitAclAction::READ_ID."\n" ?>
-    name:
-      en: read
-  QubitAclAction_update:
-    id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
-    name:
-      en: update
-  QubitAclAction_delete:
-    id: <?php echo QubitAclAction::DELETE_ID."\n" ?>
-    name:
-      en: delete
-  QubitAclAction_view_draft:
-    id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
-    name:
-      en: 'view draft'
-  QubitAclAction_publish:
-    id: <?php echo QubitAclAction::PUBLISH_ID."\n" ?>
-    name:
-      en: publish
 QubitAclPermission:
   QubitAclPermission_anonymous_read:
     group_id: QubitAclGroup_anonymous
+    action: read
+    grant_deny: 1
+  QubitAclPermission_anonymous_readReference:
+    group_id: QubitAclGroup_anonymous
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    action: readReference
     grant_deny: 1
   QubitAclPermission_authenticated_read:
     group_id: QubitAclGroup_authenticated
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    action: read
     grant_deny: 1
-  QubitAclPermission_admin_create:
-    group_id: QubitAclGroup_administrator
+  QubitAclPermission_authenticated_readReference:
+    group_id: QubitAclGroup_authenticated
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
+    action: readReference
     grant_deny: 1
-  QubitAclPermission_admin_read:
+  QubitAclPermission_admin_all:
     group_id: QubitAclGroup_administrator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_admin_update:
-    group_id: QubitAclGroup_administrator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_admin_delete:
-    group_id: QubitAclGroup_administrator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::DELETE_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_admin_view_draft:
-    group_id: QubitAclGroup_administrator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_admin_publish:
-    group_id: QubitAclGroup_administrator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::PUBLISH_ID."\n" ?>
     grant_deny: 1
   QubitAclPermission_editor_create:
     group_id: QubitAclGroup_editor
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_editor_read:
-    group_id: QubitAclGroup_editor
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    action: create
     grant_deny: 1
   QubitAclPermission_editor_update:
     group_id: QubitAclGroup_editor
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    action: update
     grant_deny: 1
   QubitAclPermission_editor_delete:
     group_id: QubitAclGroup_editor
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::DELETE_ID."\n" ?>
+    action: delete
     grant_deny: 1
-  QubitAclPermission_editor_view_draft:
+  QubitAclPermission_editor_viewDraft:
     group_id: QubitAclGroup_editor
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    action: viewDraft
     grant_deny: 1
   QubitAclPermission_editor_publish:
     group_id: QubitAclGroup_editor
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::PUBLISH_ID."\n" ?>
+    action: publish
     grant_deny: 1
-  QubitAclPermission_contributor_create:
+  QubitAclPermission_editor_readMaster:
+    group_id: QubitAclGroup_editor
+    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
+    action: readMaster
+    grant_deny: 1
+  QubitAclPermission_contributor_io_create:
     group_id: QubitAclGroup_contributor
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::CREATE_ID."\n" ?>
+    action: create
     grant_deny: 1
-  QubitAclPermission_contributor_read:
+  QubitAclPermission_contributor_actor_create:
+    group_id: QubitAclGroup_contributor
+    object_id: <?php echo QubitActor::ROOT_ID."\n" ?>
+    action: create
+    grant_deny: 1
+  QubitAclPermission_contributor_io_update:
     group_id: QubitAclGroup_contributor
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
+    action: update
     grant_deny: 1
-  QubitAclPermission_contributor_update:
+  QubitAclPermission_contributor_actor_update:
+    group_id: QubitAclGroup_contributor
+    object_id: <?php echo QubitActor::ROOT_ID."\n" ?>
+    action: update
+    grant_deny: 1
+  QubitAclPermission_contributor_viewDraft:
     group_id: QubitAclGroup_contributor
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
+    action: viewDraft
     grant_deny: 1
-  QubitAclPermission_contributor_view_draft:
+  QubitAclPermission_contributor_readMaster:
     group_id: QubitAclGroup_contributor
     object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    action: readMaster
     grant_deny: 1
-  QubitAclPermission_translator_read:
+  QubitAclPermission_translator_translate:
     group_id: QubitAclGroup_translator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::READ_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_translator_update:
-    group_id: QubitAclGroup_translator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::UPDATE_ID."\n" ?>
-    grant_deny: 1
-  QubitAclPermission_translator_view_draft:
-    group_id: QubitAclGroup_translator
-    object_id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-    action_id: <?php echo QubitAclAction::VIEW_DRAFT_ID."\n" ?>
+    action: translate 
     grant_deny: 1

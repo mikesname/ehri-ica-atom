@@ -50,7 +50,7 @@ class InformationObjectEditPhysicalObjectsAction extends sfAction
 
       $this->informationObject->save();
 
-      $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $this->informationObject->id));
+      $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
     }
   }
 

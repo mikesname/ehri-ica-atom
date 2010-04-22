@@ -27,6 +27,39 @@ class QubitUser extends BaseUser
     return (string) $this->username;
   }
 
+  public function save($connection = null)
+  {
+    parent::save($connection);
+
+    foreach ($this->aclUserGroups as $aclUserGroup)
+    {
+      $aclUserGroup->user = $this;
+
+      try
+      {
+        $aclUserGroup->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    foreach ($this->aclPermissions as $aclPermission)
+    {
+      $aclPermission->user = $this;
+
+      try
+      {
+        $aclPermission->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    return $this;
+  }
+
   public function setPassword($password)
   {
     $salt = md5(rand(100000, 999999).$this->getEmail());
@@ -51,22 +84,6 @@ class QubitUser extends BaseUser
   public function getUserCredentials()
   {
     return $this->getAclGroups();
-  }
-
-  public static function getList($options=array())
-  {
-    $criteria = new Criteria;
-
-    $criteria->add(QubitUser::ID, null, Criteria::ISNOTNULL);
-    $page = (isset($options['page'])) ? $options['page'] : 1;
-
-    // Page results
-    $pager = new QubitPager('QubitUser');
-    $pager->setCriteria($criteria);
-    $pager->setPage($page);
-    $pager->init();
-
-    return $pager;
   }
 
   public static function checkCredentials($username, $password, &$error)

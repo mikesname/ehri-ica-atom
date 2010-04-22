@@ -1,5 +1,5 @@
 <?php
-// $Id: book.pages.inc,v 1.13 2008/12/20 18:24:35 dries Exp $
+// $Id: book.pages.inc,v 1.24 2010/01/09 21:54:00 webchick Exp $
 
 /**
  * @file
@@ -15,7 +15,7 @@ function book_render() {
     $book_list[] = l($book['title'], $book['href'], $book['options']);
   }
 
-  return theme('item_list', $book_list);
+  return theme('item_list', array('items' => $book_list));
 }
 
 /**
@@ -79,7 +79,7 @@ function book_export_html($nid) {
       $contents = book_export_traverse($tree, 'book_node_export');
     }
 
-    return theme('book_export_html', $node->title, $contents, $node->book['depth']);
+    return theme('book_export_html', array('title' => $node->title, 'contents' => $contents, 'depth' => $node->book['depth']));
   }
   else {
     drupal_access_denied();
@@ -102,7 +102,7 @@ function book_outline($node) {
  *
  * @ingroup forms
  */
-function book_outline_form(&$form_state, $node) {
+function book_outline_form($form, &$form_state, $node) {
   if (!isset($node->book)) {
     // The node is not part of any book yet - set default options.
     $node->book = _book_link_defaults($node->nid);
@@ -117,7 +117,7 @@ function book_outline_form(&$form_state, $node) {
   }
   $form['#node'] = $node;
   $form['#id'] = 'book-outline';
-  _book_add_form_elements($form, $node);
+  _book_add_form_elements($form, $form_state, $node);
 
   $form['book']['#collapsible'] = FALSE;
 
@@ -186,7 +186,7 @@ function book_outline_form_submit($form, &$form_state) {
  *
  * @ingroup forms
  */
-function book_remove_form(&$form_state, $node) {
+function book_remove_form($form, &$form_state, $node) {
   $form['#node'] = $node;
   $title = array('%title' => $node->title);
 
@@ -234,29 +234,29 @@ function book_remove_form_submit($form, &$form_state) {
  *   Prints the replacement HTML in JSON format.
  */
 function book_form_update() {
-  $cached_form_state = array();
+  // Load the form based upon the $_POST data sent via the ajax call.
+  list($form, $form_state) = ajax_get_form();
+
+  $commands = array();
   $bid = $_POST['book']['bid'];
-  if ($form = form_get_cache($_POST['form_build_id'], $cached_form_state)) {
-    // Validate the bid.
-    if (isset($form['book']['bid']['#options'][$bid])) {
-      $book_link = $form['#node']->book;
-      $book_link['bid'] = $bid;
-      // Get the new options and update the cache.
-      $form['book']['plid'] = _book_parent_select($book_link);
-      form_set_cache($_POST['form_build_id'], $form, $cached_form_state);
-      // Build and render the new select element, then return it in JSON format.
-      $form_state = array();
-      $form['#post'] = array();
-      $form = form_builder($form['form_id']['#value'] , $form, $form_state);
-      $output = drupal_render($form['book']['plid']);
-      drupal_json(array('status' => TRUE, 'data' => $output));
-    }
-    else {
-      drupal_json(array('status' => FALSE, 'data' => ''));
-    }
+
+  // Validate the bid.
+  if (isset($form['book']['bid']['#options'][$bid])) {
+    $book_link = $form['#node']->book;
+    $book_link['bid'] = $bid;
+    // Get the new options and update the cache.
+    $form['book']['plid'] = _book_parent_select($book_link);
+    form_set_cache($form['values']['form_build_id'], $form, $form_state);
+
+    // Build and render the new select element, then return it in JSON format.
+    $form_state = array();
+    $form = form_builder($form['form_id']['#value'], $form, $form_state);
+
+    $commands[] = ajax_command_replace(NULL, drupal_render($form['book']['plid']));
   }
-  else {
-    drupal_json(array('status' => FALSE, 'data' => ''));
-  }
-  exit();
+
+  // @todo: We could and should just return $form['book']['plid'] and skip the
+  // ajax_command_replace() above. But for now, this provides a test case of
+  // returning an AJAX commands array.
+  return array('#type' => 'ajax_commands', '#ajax_commands' => $commands);
 }

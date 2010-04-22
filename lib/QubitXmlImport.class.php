@@ -54,7 +54,7 @@ class QubitXmlImport
     // if we were unable to parse the XML file at all
     if (empty($importDOM->documentElement))
     {
-      $errorMsg = sfContext::getInstance()->getI18N()->__('unable to parse XML file: malformed or unresolvable entities');
+      $errorMsg = sfContext::getInstance()->getI18N()->__('Unable to parse XML file: malformed or unresolvable entities');
 
       throw new Exception($errorMsg);
     }
@@ -128,7 +128,7 @@ class QubitXmlImport
     if (!file_exists($importMap))
     {
       // error condition, unknown schema or no import filter
-      $errorMsg = sfContext::getInstance()->getI18N()->__('unknown schema or import format: "%format%"', array('%format%' => $importSchema));
+      $errorMsg = sfContext::getInstance()->getI18N()->__('Unknown schema or import format: "%format%"', array('%format%' => $importSchema));
 
       throw new Exception($errorMsg);
     }
@@ -160,7 +160,7 @@ class QubitXmlImport
         }
         else
         {
-          $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
+          $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('Unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
         }
       }
 
@@ -170,7 +170,7 @@ class QubitXmlImport
 
     // switch source culture if langusage is set in an EAD document
     if ($importSchema == 'ead')
-    sfLoader::loadHelpers(array('I18N'));
+    sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
     {
       if (is_object($langusage = $importDOM->xpath->query('//eadheader/profiledesc/langusage/language/@langcode')))
       {
@@ -217,7 +217,7 @@ class QubitXmlImport
       // if object is not defined or a valid class, we can't process this mapping
       if (empty($mapping['Object']) || !class_exists('Qubit'.$mapping['Object']))
       {
-        $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
+        $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('Non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
         continue;
       }
 
@@ -273,7 +273,7 @@ class QubitXmlImport
           // if method is not defined, we can't process this mapping
           if (empty($methodMap['Method']) || !is_callable(array($currentObject, $methodMap['Method'])))
           {
-            $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
+            $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('Non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
             continue;
           }
 
@@ -344,7 +344,26 @@ class QubitXmlImport
                       }
                       else
                       {
-                        // NB: this will throw warnings when DOM is accessed directly from mapping and returns null objects
+                        // Confirm DOMXML node exists to avoid warnings at run-time
+                        if (false !== preg_match_all('/\$importDOM->xpath->query\(\'@\w+\', \$domNode2\)->item\(0\)->nodeValue/', $parameter, $matches))
+                        {
+                          foreach ($matches[0] as $match)
+                          {
+                            $str = str_replace('->nodeValue', '', $match);
+
+                            if (null !== ($node = eval('return '.$str.';')))
+                            {
+                              // Substitute node value for search string
+                              $parameter = str_replace($match, '\''.$node->nodeValue.'\'', $parameter);
+                            }
+                            else
+                            {
+                              // Replace empty nodes with null in parameter string
+                              $parameter = str_replace($match, 'null', $parameter);
+                            }
+                          }
+                        }
+
                         eval('$parameters[] = '.$parameter.';');
                       }
                     }

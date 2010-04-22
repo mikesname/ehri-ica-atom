@@ -559,9 +559,7 @@ abstract class BaseMenu implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;
@@ -574,11 +572,9 @@ abstract class BaseMenu implements ArrayAccess
 
   protected function update($connection = null)
   {
-    // Update nested set keys only if parent id has changed
-    if (isset($this->values['parentId']))
+        if (isset($this->values['parentId']))
     {
-      // Get the "original" parentId before any updates
-      $offset = 0; 
+            $offset = 0; 
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -593,9 +589,7 @@ abstract class BaseMenu implements ArrayAccess
         }
       }
       
-      // If updated value of parentId is different then original value,
-      // update the nested set
-      if ($originalParentId != $this->values['parentId'])
+                  if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }

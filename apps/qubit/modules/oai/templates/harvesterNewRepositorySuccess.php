@@ -1,4 +1,4 @@
-<div class="pageTitle"><?php __('Repository Insertion')?></div>
+<h1><?php __('Repository Insertion')?></h1>
 <?php if(isset($preExistingRepository)): ?>
   <?php echo __('Repository could not be added because it already exists.')?>
 <?php elseif(isset($parsingErrors)):?>

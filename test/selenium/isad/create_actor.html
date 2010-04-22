@@ -12,154 +12,129 @@
 <tr><td rowspan="1" colspan="3">create_actor.html</td></tr>
 </thead><tbody>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Add/edit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[2]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>list authority records</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=add new</td>
+	<td>open</td>
+	<td>actor/create/isaar</td>
 	<td></td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>entity_type_id</td>
+	<td>entityType</td>
 	<td>label=Person</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>authorized_form_of_name</td>
+	<td>authorizedFormOfName</td>
 	<td>Mr. Bean</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>new_name</td>
+	<td>parallelName_new</td>
 	<td>Bobby Bean</td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>new_name_type_id</td>
-	<td>label=Pseudonym</td>
+	<td>type</td>
+	<td>standardizedName_new</td>
+	<td>B. Bean</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>new_name_note</td>
-	<td>Not used much</td>
+	<td>otherName_new</td>
+	<td>B.B. Bean</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>corporate_body_identifiers</td>
+	<td>corporateBodyIdentifiers</td>
 	<td>n/a</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>dates_of_existence</td>
+	<td>datesOfExistence</td>
 	<td>1945-2009</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>history</td>
-	<td>History field</td>
+	<td>Mr. Bean has a long and storied past</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>places</td>
-	<td>Places field</td>
+	<td>Vancouver, Ontario</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>legal_status</td>
-	<td>Legal status field</td>
+	<td>legalStatus</td>
+	<td>Not legal in any sense</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>functions</td>
-	<td>Functions, occupations and activities field</td>
+	<td>Butcher, baker, candlestick maker</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>mandates</td>
-	<td>Mandates/sources of authority field</td>
+	<td>Has no mandate</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>internal_structures</td>
-	<td>Internal structures/genealogy field</td>
+	<td>internalStructures</td>
+	<td>Has a large family but&nbsp;&nbsp;no internal structure</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>general_context</td>
-	<td>General context field</td>
+	<td>generalContext</td>
+	<td>No context</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>description_identifier</td>
-	<td>Authority record identifier field</td>
+	<td>descriptionIdentifier</td>
+	<td>12345</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>institution_responsible_identifier</td>
-	<td>institution identifier field</td>
+	<td>institutionResponsibleIdentifier</td>
+	<td>FVA123</td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>rules</td>
-	<td>Rule and conventions field</td>
+	<td>No rules</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>description_status_id</td>
+	<td>descriptionStatus</td>
 	<td>label=Revised</td>
 </tr>
 <tr>
 	<td>select</td>
-	<td>description_detail_id</td>
+	<td>descriptionDetail</td>
 	<td>label=Full</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>revision_history</td>
-	<td>Dates of creation, revision and deletion field</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>language_code</td>
-	<td>label=Aleut</td>
+	<td>revisionHistory</td>
+	<td>Not revised at all</td>
 </tr>
 <tr>
 	<td>click</td>
-	<td>//option[@value='ale']</td>
+	<td>//fieldset[@id='controlArea']/div/div[7]/div/div/div[2]/ul/li[1]</td>
 	<td></td>
 </tr>
 <tr>
-	<td>select</td>
-	<td>script_code</td>
-	<td>label=Bopomofo</td>
-</tr>
-<tr>
 	<td>click</td>
-	<td>//option[@value='Bopo']</td>
+	<td>//fieldset[@id='controlArea']/div/div[8]/div/div/div[2]/ul/li[1]</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
 	<td>sources</td>
-	<td>Sources field</td>
+	<td>ISAAR</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>new_maintenance_note</td>
-	<td>Maintenance notes field</td>
+	<td>maintenanceNotes</td>
+	<td>Not maintained by anyone</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -173,112 +148,122 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>type of entity</td>
+	<td>Type of entity</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>authorized form of name</td>
+	<td>Authorized form of name</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>other names</td>
+	<td>Parallel form(s) of name</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>identifiers</td>
+	<td>Standardized form(s) of name according to other rules</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>dates of existence</td>
+	<td>Other form(s) of name</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>history</td>
+	<td>Identifiers for corporate bodies</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>places</td>
+	<td>Dates of existence</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>legal status</td>
+	<td>History</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>functions occupations activities</td>
+	<td>Places</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Mandates/Sources of authority</td>
+	<td>Legal status</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Internal structures/Genealogy</td>
+	<td>Functions, occupations and activities</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>general context</td>
+	<td>Mandates/sources of authority</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>authority record identifier</td>
+	<td>Internal structures/genealogy</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>institution identifier</td>
+	<td>General context</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>rules and/or conventions</td>
+	<td>Description identifier</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>status</td>
+	<td>Institution identifier</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>detail</td>
+	<td>Rules and/or conventions</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>dates of creation revision deletion</td>
+	<td>Status</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>language of authority record</td>
+	<td>Level of detail</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>script of authority record</td>
+	<td>Dates of creation, revision and deletion</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>sources</td>
+	<td>Language of authority record</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Maintenance note</td>
+	<td>Script of authority record</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sources</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance notes</td>
 	<td></td>
 </tr>
 <tr>
@@ -293,12 +278,12 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Bobby Bean (Pseudonym)</td>
+	<td>B. Bean</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>--Not used much</td>
+	<td>B.B. Bean</td>
 	<td></td>
 </tr>
 <tr>
@@ -313,52 +298,52 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>History field</td>
+	<td>Mr. Bean has a long and storied past</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Places field</td>
+	<td>Vancouver, Ontario</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Legal status field</td>
+	<td>Not legal in any sense</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Functions, occupations and activities field</td>
+	<td>Butcher, baker, candlestick maker</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Mandates/sources of authority field</td>
+	<td>Has no mandate</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Internal structures/genealogy field</td>
+	<td>Has a large family but no internal structure</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>General context field</td>
+	<td>No context</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Authority record identifier field</td>
+	<td>12345</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>institution identifier field</td>
+	<td>FVA123</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Rule and conventions field</td>
+	<td>No rules</td>
 	<td></td>
 </tr>
 <tr>
@@ -373,7 +358,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Dates of creation, revision and deletion field</td>
+	<td>Not revised at all</td>
 	<td></td>
 </tr>
 <tr>
@@ -388,37 +373,37 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Sources field</td>
+	<td>ISAAR</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Maintenance notes field</td>
+	<td>Not maintained by anyone</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=List all</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>list authority records</td>
+	<td>open</td>
+	<td>actor/list</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>name</td>
+	<td>List persons/organizations</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Name</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
-	<td>link=add new</td>
+	<td>link=Add new</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>type</td>
+	<td>Type</td>
 	<td></td>
 </tr>
 <tr>
@@ -429,166 +414,6 @@
 <tr>
 	<td>verifyTextPresent</td>
 	<td>Person</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Mr. Bean</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Edit</td>
-	<td></td>
-</tr>
-<tr>
-	<td>runScript</td>
-	<td>Qubit.actorRelationDialog.show()</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForVisible</td>
-	<td>//table[@id='actorRelation']/caption</td>
-	<td>new relationship</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>actorNameAcInput</td>
-	<td>Little Bean</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>editActorRelation_categoryId</td>
-	<td>label=family</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>editActorRelation_description</td>
-	<td>Little Bean is Mr. Bean's dog</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>editActorRelation_startDate</td>
-	<td>1996</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>editActorRelation_endDate</td>
-	<td>2009</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>yui-gen0-button</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//input[@value='Save']</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>related entity</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyElementPresent</td>
-	<td>link=Little Bean</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>category of the relationship</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>dates of the relationship</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>description of relationship</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>family</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>1996 - 2009</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Little Bean is Mr. Bean's dog</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Little Bean</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyElementPresent</td>
-	<td>link=Little Bean</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>authorized form of name</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>related entity</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>identifier of the related entity</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>n/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>category of the relationship</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>family</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>dates of the relationship</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>1996 - 2009</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>description of relationship</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyTextPresent</td>
-	<td>Little Bean is Mr. Bean's dog</td>
-	<td></td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Mr. Bean</td>
 	<td></td>
 </tr>
 

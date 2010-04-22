@@ -1,5 +1,5 @@
 <?php
-// $Id: translation.pages.inc,v 1.7 2008/10/13 00:33:05 webchick Exp $
+// $Id: translation.pages.inc,v 1.14 2010/01/09 21:54:01 webchick Exp $
 
 /**
  * @file
@@ -47,7 +47,7 @@ function translation_node_overview($node) {
       // No such translation in the set yet: help user to create it.
       $title = t('n/a');
       if (node_access('create', $node)) {
-        $options[] = l(t('add translation'), 'node/add/' . str_replace('_', '-', $node->type), array('query' => "translation=$node->nid&language=$language->language"));
+        $options[] = l(t('add translation'), 'node/add/' . str_replace('_', '-', $node->type), array('query' => array('translation' => $node->nid, 'language' => $language->language)));
       }
       $status = t('Not translated');
     }
@@ -55,5 +55,12 @@ function translation_node_overview($node) {
   }
 
   drupal_set_title(t('Translations of %title', array('%title' => $node->title)), PASS_THROUGH);
-  return theme('table', $header, $rows);
+  
+  $build['translation_node_overview'] = array(
+    '#theme' => 'table', 
+    '#header' => $header, 
+    '#rows' => $rows,
+  );
+  
+  return $build;
 }

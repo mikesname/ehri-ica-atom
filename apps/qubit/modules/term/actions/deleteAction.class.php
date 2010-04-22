@@ -21,24 +21,44 @@ class TermDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $term = QubitTerm::getById($this->getRequestParameter('id'));
-    $this->forward404If(null == $term, 'That term does not exist');
-    $taxonomyId = $term->taxonomyId;
+    $this->form = new sfForm;
 
-    // don't delete protected terms
-    if ($term->isProtected())
+    $this->term = QubitTerm::getById($request->id);
+
+    if (!isset($this->term))
     {
-      $this->forward('admin', 'termPermission');
+      $this->forward404();
     }
 
-    $term->delete();
-
-    if (null != $taxonomyId)
+    // Check user authorization
+    if (!QubitAcl::check($this->term, 'delete'))
     {
-      $this->redirect(array('module' => 'term', 'action' => 'list', 'taxonomyId' => $taxonomyId));
+      QubitAcl::forwardUnauthorized();
     }
-    else
+
+    $request->setAttribute('term', $this->term);
+
+    if ($request->isMethod('delete'))
     {
+      // Don't delete protected terms
+      if ($this->term->isProtected())
+      {
+        $this->forward('admin', 'termPermission');
+      }
+
+      foreach ($this->term->descendants->andSelf()->orderBy('rgt') as $descendant)
+      {
+        if (QubitAcl::check($descendant, 'delete'))
+        {
+          $descendant->delete();
+        }
+      }
+
+      if (isset($this->term->taxonomy))
+      {
+        $this->redirect(array('module' => 'term', 'action' => 'listTaxonomy', 'id' => $this->term->taxonomyId));
+      }
+
       $this->redirect(array('module' => 'term', 'action' => 'list'));
     }
   }

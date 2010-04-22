@@ -17,7 +17,7 @@ abstract class BaseContactInformation implements ArrayAccess
     FAX = 'q_contact_information.FAX',
     POSTAL_CODE = 'q_contact_information.POSTAL_CODE',
     COUNTRY_CODE = 'q_contact_information.COUNTRY_CODE',
-    LONGTITUDE = 'q_contact_information.LONGTITUDE',
+    LONGITUDE = 'q_contact_information.LONGITUDE',
     LATITUDE = 'q_contact_information.LATITUDE',
     CREATED_AT = 'q_contact_information.CREATED_AT',
     UPDATED_AT = 'q_contact_information.UPDATED_AT',
@@ -37,7 +37,7 @@ abstract class BaseContactInformation implements ArrayAccess
     $criteria->addSelectColumn(QubitContactInformation::FAX);
     $criteria->addSelectColumn(QubitContactInformation::POSTAL_CODE);
     $criteria->addSelectColumn(QubitContactInformation::COUNTRY_CODE);
-    $criteria->addSelectColumn(QubitContactInformation::LONGTITUDE);
+    $criteria->addSelectColumn(QubitContactInformation::LONGITUDE);
     $criteria->addSelectColumn(QubitContactInformation::LATITUDE);
     $criteria->addSelectColumn(QubitContactInformation::CREATED_AT);
     $criteria->addSelectColumn(QubitContactInformation::UPDATED_AT);
@@ -482,9 +482,7 @@ abstract class BaseContactInformation implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

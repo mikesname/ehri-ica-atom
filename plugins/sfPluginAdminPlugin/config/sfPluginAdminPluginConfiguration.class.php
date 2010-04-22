@@ -10,6 +10,9 @@
  */
 class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
 {
+  public static
+    $pluginNames;
+
   /**
    * @see sfPluginConfiguration
    */
@@ -19,30 +22,30 @@ class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
     $enabledModules[] = 'sfPluginAdminPlugin';
     sfConfig::set('sf_enabled_modules', $enabledModules);
 
-    // Go no further if a database connection does not exist, for example in
+    // Stash plugin names enabled in ProjectConfiguration.class.php for
+    // sfPluginAdminPluginIndexAction. Where is the best place to stash it?
+    // This is probably not the best place : P
+    sfPluginAdminPluginConfiguration::$pluginNames = $this->configuration->getPlugins();
+
+    // Go no further if a database connection doesn't exist, for example in
     // install
     if (!sfConfig::get('sf_use_database'))
     {
       return;
     }
 
-    // Copied from sfBaseTask::createConfiguration(), add project classes like
-    // QubitSetting to the autoloader
-    if (!$this->configuration instanceof sfApplicationConfiguration)
-    {
-      $autoloader = sfSimpleAutoload::getInstance(sfConfig::get('sf_cache_dir').'/project_autoload.cache');
-      $autoloader->addFiles(sfFinder::type('file')->prune('symfony')->follow_link()->name('*.php')->in(sfConfig::get('sf_lib_dir')));
-      $autoloader->register();
-    }
+    // http://qubit-toolkit.org/wiki/index.php?title=Autoload
+    $this->dispatcher->disconnect('autoload.filter_config', array($this->configuration, 'filterAutoloadConfig'));
 
     $criteria = new Criteria;
     $criteria->add(QubitSetting::NAME, 'plugins');
     if (1 == count($query = QubitSetting::get($criteria)))
     {
-      $setting = $query[0];
+      $pluginNames = unserialize($query[0]->__get('value', array('sourceCulture' => true)));
+      $this->configuration->enablePlugins($pluginNames);
 
       $pluginPaths = $this->configuration->getAllPluginPaths();
-      foreach (unserialize($setting->__get('value', array('sourceCulture' => true))) as $name)
+      foreach ($pluginNames as $name)
       {
         if (!isset($pluginPaths[$name]))
         {
@@ -61,6 +64,8 @@ class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
           $configuration = new $className($this->configuration, $pluginPaths[$name], $name);
         }
 
+        // Is this cached?
+        $configuration->initializeAutoload();
         $configuration->initialize();
       }
     }

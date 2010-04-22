@@ -18,11 +18,13 @@
  */
 class qubitConfiguration extends sfApplicationConfiguration
 {
+  const VERSION = '1.1';
+
   public function contextLoadFactories(sfEvent $event)
   {
     $context = $event->getSubject();
 
-    // Go no further if a database connection does not exist, for example in
+    // Go no further if a database connection doesn't exist, for example in
     // install
     if (!sfConfig::get('sf_use_database'))
     {
@@ -33,14 +35,14 @@ class qubitConfiguration extends sfApplicationConfiguration
     $criteria->add(QubitSetting::NAME, 'siteTitle');
     if (1 == count($query = QubitSetting::get($criteria)))
     {
-      $context->getResponse()->addMeta('title', $query[0]->__get('value', array('cultureFallback' => true)));
+      $context->response->addMeta('title', $query[0]->__get('value', array('cultureFallback' => true)));
     }
 
     $criteria = new Criteria;
     $criteria->add(QubitSetting::NAME, 'siteDescription');
     if (1 == count($query = QubitSetting::get($criteria)))
     {
-      $context->getResponse()->addMeta('description', $query[0]->__get('value', array('cultureFallback' => true)));
+      $context->response->addMeta('description', $query[0]->__get('value', array('cultureFallback' => true)));
     }
 
     foreach (array('actor_template', 'informationobject_template', 'repository_template') as $name)
@@ -60,13 +62,11 @@ class qubitConfiguration extends sfApplicationConfiguration
         }
       }
     }
-
-    $context->routing->insertRouteBefore('default', 'informationObject/create', new sfRoute('/informationobject/create/:informationobject_template', array('module' => 'informationobject', 'action' => 'create', 'parent' => array('default' => $context->routing->generate(null, array('module' => 'informationobject', 'action' => 'show', 'id' => QubitInformationObject::ROOT_ID))))));
   }
 
   public function responseFilterContent(sfEvent $event, $content)
   {
-    $this->loadHelpers('Javascript');
+    sfContext::getInstance()->getConfiguration()->loadHelpers('Javascript');
 
     return str_ireplace('</head>', javascript_tag('jQuery.extend(Qubit, '.json_encode(array('relativeUrlRoot' => sfContext::getInstance()->request->getRelativeUrlRoot())).');').'</head>', $content);
   }
@@ -77,11 +77,48 @@ class qubitConfiguration extends sfApplicationConfiguration
     $this->dispatcher->connect('response.filter_content', array($this, 'responseFilterContent'));
   }
 
+  /**
+   * @see sfApplicationConfiguration
+   */
+  public function getControllerDirs($moduleName)
+  {
+    if (!isset($this->cache['getControllerDirs'][$moduleName]))
+    {
+      $this->cache['getControllerDirs'][$moduleName] = array();
+
+      // HACK Currently plugins only override application templates, not the
+      // other way around
+      foreach ($this->getPluginSubPaths('/modules/'.$moduleName.'/actions') as $dir)
+      {
+        $this->cache['getControllerDirs'][$moduleName][$dir] = false; // plugins
+      }
+
+      $this->cache['getControllerDirs'][$moduleName][sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/actions'] = false; // application
+    }
+
+    return $this->cache['getControllerDirs'][$moduleName];
+  }
+
+  /**
+   * @see sfApplicationConfiguration
+   */
   public function getDecoratorDirs()
   {
-    $dirs = array();
-    $dirs = array_merge($dirs, (array) sfConfig::get('sf_decorator_dirs'));
+    $dirs = sfConfig::get('sf_decorator_dirs');
     $dirs[] = sfConfig::get('sf_app_template_dir');
+
+    return $dirs;
+  }
+
+  /**
+   * @see sfApplicationConfiguration
+   */
+  public function getTemplateDirs($moduleName)
+  {
+    // HACK Currently plugins only override application templates, not the
+    // other way around
+    $dirs = $this->getPluginSubPaths('/modules/'.$moduleName.'/templates');
+    $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
 
     return $dirs;
   }

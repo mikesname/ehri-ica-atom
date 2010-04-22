@@ -1,8 +1,11 @@
 editSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:
 
-showFullScreenSuccess:
-  layout: layout_fullscreen
-  components:
-    all: []
-    bottomBanner: [sfTranslatePlugin, translate]
+uploadFormSuccess:
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:

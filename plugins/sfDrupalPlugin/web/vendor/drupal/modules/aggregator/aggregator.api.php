@@ -1,5 +1,5 @@
 <?php
-// $Id: aggregator.api.php,v 1.2 2009/01/26 14:08:42 dries Exp $
+// $Id: aggregator.api.php,v 1.7 2010/01/08 11:03:54 dries Exp $
 
 /**
  * @file
@@ -21,12 +21,15 @@
  * data.
  *
  * Modules that define this hook can be set as active fetcher on
- * admin/content/aggregator/settings. Only one fetcher can be active at a time.
+ * admin/config/services/aggregator. Only one fetcher can be active at a time.
  *
  * @param $feed
  *   The $feed object that describes the resource to be downloaded.
  *   $feed->url contains the link to the feed. Download the data at the URL
  *   and expose it to other modules by attaching it to $feed->source_string.
+ *
+ * @return
+ *   TRUE if fetching was successful, FALSE otherwise.
  *
  * @see hook_aggregator_fetch_info()
  * @see hook_aggregator_parse()
@@ -43,7 +46,7 @@ function hook_aggregator_fetch($feed) {
  * fetcher.
  *
  * The title and the description provided are shown on
- * admin/content/aggregator/settings among other places. Use as title the human
+ * admin/config/services/aggregator among other places. Use as title the human
  * readable name of the fetcher and as description a brief (40 to 80 characters)
  * explanation of the fetcher's functionality.
  *
@@ -75,13 +78,21 @@ function hook_aggregator_fetch_info() {
  * data.
  *
  * Modules that define this hook can be set as active parser on
- * admin/content/aggregator/settings. Only one parser can be active at a time.
+ * admin/config/services/aggregator. Only one parser can be active at a time.
  *
  * @param $feed
  *   The $feed object that describes the resource to be parsed.
  *   $feed->source_string contains the raw feed data as a string. Parse data
  *   from $feed->source_string and expose it to other modules as an array of
  *   data items on $feed->items.
+ *
+ *   Feed format:
+ *   - $feed->description (string) - description of the feed
+ *   - $feed->image (string) - image for the feed
+ *   - $feed->etag (string) - value of feed's entity tag header field
+ *   - $feed->modified (UNIX timestamp) - value of feed's last modified header
+ *     field
+ *   - $feed->items (Array) - array of feed items.
  *
  *   By convention, the common format for a single feed item is:
  *   $item[key-name] = value;
@@ -94,6 +105,9 @@ function hook_aggregator_fetch_info() {
  *   GUID (string) - RSS/Atom global unique identifier
  *   LINK (string) - the feed item's URL
  *
+ * @return
+ *   TRUE if parsing was successful, FALSE otherwise.
+ *
  * @see hook_aggregator_parse_info()
  * @see hook_aggregator_fetch()
  * @see hook_aggregator_process()
@@ -101,7 +115,11 @@ function hook_aggregator_fetch_info() {
  * @ingroup aggregator
  */
 function hook_aggregator_parse($feed) {
-  $feed->items = mymodule_parse($feed->source_string);
+  if ($items = mymodule_parse($feed->source_string)) {
+    $feed->items = $items;
+    return TRUE;
+  }
+  return FALSE;
 }
 
 /**
@@ -109,7 +127,7 @@ function hook_aggregator_parse($feed) {
  * parser.
  *
  * The title and the description provided are shown on
- * admin/content/aggregator/settings among other places. Use as title the human
+ * admin/config/services/aggregator among other places. Use as title the human
  * readable name of the parser and as description a brief (40 to 80 characters)
  * explanation of the parser's functionality.
  *
@@ -141,7 +159,7 @@ function hook_aggregator_parse_info() {
  * data.
  *
  * Modules that define this hook can be activated as processor on
- * admin/content/aggregator/settings.
+ * admin/config/services/aggregator.
  *
  * @param $feed
  *   The $feed object that describes the resource to be processed. $feed->items
@@ -167,7 +185,7 @@ function hook_aggregator_process($feed) {
  * processor.
  *
  * The title and the description provided are shown most importantly on
- * admin/content/aggregator/settings . Use as title the natural name of the
+ * admin/config/services/aggregator. Use as title the natural name of the
  * processor and as description a brief (40 to 80 characters) explanation of
  * the functionality.
  *

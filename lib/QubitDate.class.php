@@ -36,21 +36,21 @@ class QubitDate
   {
     $isoDate = null;
 
-    if (preg_match('|(\d{4})[-/]?(\d{2})?[-/]?(\d{2})?|', $date, $matches))
+    if (preg_match('|(\d{1,4})([-/](\d{2}))?([-/](\d{2}))?|', $date, $matches))
     {
       if (2 == count($matches))
       {
-        $isoDate = $matches[1].'-00-00';
+        $isoDate = str_pad($matches[1], 4, '0', STR_PAD_LEFT).'-00-00';
       }
       // Make sure month is between 0 and 12
-      else if (3 == count($matches) && 13 > $matches[2])
+      else if (4 == count($matches) && 13 > $matches[3])
       {
-        $isoDate = $matches[1].'-'.$matches[2].'-00';
+        $isoDate = str_pad($matches[1], 4, '0', STR_PAD_LEFT).'-'.$matches[2].'-00';
       }
       // Validate date (No Feb. 30th)
-      else if (4 == count($matches) && checkdate($matches[2], $matches[3], $matches[1]))
+      else if (6 == count($matches) && checkdate($matches[3], $matches[5], $matches[1]))
       {
-        $isoDate = implode('-', array_splice($matches, 1));
+        $isoDate = implode('-', array(str_pad($matches[1], 4, '0', STR_PAD_LEFT), $matches[3], $matches[5]));
       }
 
       return $isoDate;

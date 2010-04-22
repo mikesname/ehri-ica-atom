@@ -1,15 +1,11 @@
 <?php use_helper('Javascript') ?>
 
-<?php // write actorRelationDialog yui dialog object to DOM via javascript
-  echo include_partial('actorRelationDialog'); ?>
+<h1><?php echo __('Edit %1% - ISAAR', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></h1>
 
-<?php // write eventDialog yui dialog object to DOM via javascript
-  echo include_partial('eventDialog'); ?>
-
-<div class="pageTitle"><?php echo __('edit %1% - ISAAR', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
+<h1 class="label"><?php echo render_title($actor) ?></h1>
 
 <?php if (isset($sf_request->id)): ?>
-  <?php echo $form->renderFormTag(url_for(array('module' => 'actor', 'action' => 'edit', 'id' => $sf_request->id)), array('id' => 'editForm')) ?>
+  <?php echo $form->renderFormTag(url_for(array($actor, 'module' => 'actor', 'action' => 'edit')), array('id' => 'editForm')) ?>
 <?php else: ?>
   <?php echo $form->renderFormTag(url_for(array('module' => 'actor', 'action' => 'create')), array('id' => 'editForm')) ?>
 <?php endif; ?>
@@ -19,435 +15,506 @@
   <?php echo input_hidden_tag('repositoryReroute', $repositoryReroute) ?>
   <?php echo input_hidden_tag('informationObjectReroute', $informationObjectReroute) ?>
 
-    <div class="formHeader">
-      <?php echo render_title($actor) ?>
-    </div>
-
   <fieldset class="collapsible collapsed" id="identityArea">
 
-  <legend><?php echo __('identity area'); ?></legend>
+    <legend><?php echo __('Identity area') ?></legend>
 
-  <div class="form-item">
-    <label for="type_of_entity"><?php echo __('type of entity'); ?></label>
-    <?php echo object_select_tag($actor, 'getEntityTypeId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getActorEntityTypes')) ?>
-  </div>
+    <?php echo $form->entityType
+      ->label(__('Type of entity').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
+      ->renderRow() ?>
 
-  <div class="form-item">
-    <label for="authorized_form_of_name"><?php echo __('authorized form of name'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getAuthorizedFormOfName(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-    <?php echo object_input_tag($actor, 'getAuthorizedFormOfName', array('size' => 20)) ?>
-  </div>
+    <?php echo render_field($form->authorizedFormOfName
+      ->label(__('Authorized form of name').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $actor) ?>
 
-  <div class="form-item">
-    <label for="other_name"><?php echo __('other names'); ?></label>
-    <table class="inline"><tr>
-      <td class="headerCell" style="width: 40%;"><?php echo __('name'); ?></td>
-      <td class="headerCell" style="width: 20%;"><?php echo __('type'); ?></td>
-      <td class="headerCell" style="width: 35%;"><?php echo __('note'); ?></td>
-      <td class="headerCell" style="width: 5%;"></td>
-      </tr>
-      <?php if ($otherNames): ?>
-        <?php foreach ($otherNames as $otherName): ?>
-          <tr><td><?php echo $otherName->getName() ?></td><td><?php echo $otherName->getType() ?></td>
-          <td><?php echo $otherName->getNote() ?></td>
-          <td style="text-align: center;"><?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'actor', 'action' => 'deleteOtherName', 'otherNameId' => $otherName->getId(), 'returnTemplate' => 'isaar')) ?></td></tr>
-        <?php endforeach; ?>
-      <?php endif; ?>
-      <tr>
-        <td><?php echo input_tag('new_name', null, array('size' => 10))?></td>
-        <td><?php echo object_select_tag($newName, 'getTypeId', array(
-          'name' => 'new_name_type_id',
-          'id' => 'new_name_type_id',
-          'related_class' => 'QubitTerm',
-          'include_blank' => true,
-          'peer_method' => 'getActorNameTypes',
-          'style' => 'width: 95px;'
-        )) ?></td>
-        <td><?php echo input_tag('new_name_note', null, array('size' => 10))?></td>
-      </tr>
-    </table>
-  </div>
+    <?php echo $form->parallelName
+      ->label(__('Parallel form(s) of name'))
+      ->renderRow() ?>
 
-  <div class="form-item">
-    <label for="identifiers"><?php echo __('identifiers for corporate bodies'); ?></label>
-    <?php echo object_input_tag($actor, 'getCorporateBodyIdentifiers', array('size' => 20)) ?>
-  </div>
+    <?php echo $form->standardizedName
+      ->label(__('Standardized form(s) of name according to other rules'))
+      ->renderRow() ?>
+
+    <?php echo $form->otherName
+      ->label(__('Other form(s) of name'))
+      ->renderRow() ?>
+
+    <?php echo render_field($form->corporateBodyIdentifiers
+      ->label(__('Identifiers for corporate bodies')), $actor) ?>
 
   </fieldset>
 
   <fieldset class="collapsible collapsed" id="descriptionArea">
-    <legend><?php echo __('description area'); ?></legend>
 
-    <div class="form-item">
-      <label for="dates_of_existence"><?php echo __('dates of existence'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getDatesOfExistence(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_input_tag($actor, 'getDatesOfExistence', array('size' => 20)) ?>
-    </div>
+    <legend><?php echo __('Description area') ?></legend>
 
-    <div class="form-item">
-      <label for="history"><?php echo __('history'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getHistory', array('class' => 'resizable', 'size' => '30x10')) ?>
-    </div>
+    <?php echo render_field($form->datesOfExistence
+      ->label(__('Dates of existence').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $actor) ?>
 
-    <div class="form-item">
-      <label for="places"><?php echo __('places'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getPlaces(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getPlaces', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->history, $actor, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="legal_status"><?php echo __('legal status'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getLegalStatus(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getLegalStatus', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->places, $actor, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="functions"><?php echo __('functions, occupations and activities'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getFunctions(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getFunctions', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->legalStatus, $actor, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="mandates"><?php echo __('Mandates/Sources of authority'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getMandates(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getMandates', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->functions
+      ->label(__('Functions, occupations and activities')), $actor, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="internal_structures"><?php echo __('Internal structures/Genealogy'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getInternalStructures(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getInternalStructures', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->mandates
+      ->label(__('Mandates/sources of authority')), $actor, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="general_context"><?php echo __('general context'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getGeneralContext(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getGeneralContext', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->internalStructures
+      ->label(__('Internal structures/genealogy')), $actor, array('class' => 'resizable')) ?>
 
+    <?php echo render_field($form->generalContext, $actor, array('class' => 'resizable')) ?>
 
   </fieldset>
 
   <fieldset class="collapsible collapsed" id="relationshipsArea">
-    <legend><?php echo __('relationships area'); ?></legend>
+
+    <legend><?php echo __('Relationships area') ?></legend>
 
     <div class="form-item">
       <table class="inline" id="relatedEntities">
-        <caption><?php echo __('Related corporate bodies, persons or families'); ?></caption>
+        <caption><?php echo __('Related corporate bodies, persons or families') ?></caption>
         <tr>
-          <th style="width: 25%"><?php echo __('name'); ?></th>
-          <th style="width: 15%"><?php echo __('type'); ?></th>
-          <th style="width: 20%"><?php echo __('dates'); ?></th>
-          <th style="width: 30%"><?php echo __('description'); ?></th>
-          <th style="width: 10%; text-align: center"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+          <th style="width: 25%">
+            <?php echo __('Name') ?>
+          </th><th style="width: 15%">
+            <?php echo __('Type') ?>
+          </th><th style="width: 20%">
+            <?php echo __('Dates') ?>
+          </th><th style="width: 30%">
+            <?php echo __('Description') ?>
+          </th><th style="width: 10%; text-align: center">
+            <?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?>
+          </th>
         </tr>
-      <?php if (0 < count($actorRelations)): ?>
-        <?php foreach ($actorRelations as $actorRelation): ?>
-        <tr id="<?php echo 'actorRelation_'.$actorRelation->getId() ?>" class="<?php echo 'related_obj_'.$actorRelation->getId() ?>">
-          <?php if ($actorRelation->getObjectId() == $actor->getId()): ?>
-          <td><?php echo $actorRelation->getSubject()->getAuthorizedFormOfName() ?></td>
-          <?php else: ?>
-          <td><?php echo $actorRelation->getObject()->getAuthorizedFormOfName() ?></td>
-          <?php endif; ?>
-          <td><?php echo $actorRelation->getType() ?></td>
-          <td>
-          <?php if (0 < strlen($dateDisplay = $actorRelation->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID)) || 0 < count($dateArray = $actorRelation->getDates())): ?>
-            <?php if (0 < strlen($dateDisplay)): ?>
-              <?php echo $dateDisplay ?>
-            <?php elseif (2 == count($dateArray)): ?>
-              <?php echo __('%1% - %2%', array('%1%' => collapse_date($dateArray['start']), '%2%' => collapse_date($dateArray['end']))) ?>
-            <?php else: ?>
-              <?php echo collapse_date(array_shift($dateArray)) ?>
-            <?php endif; ?>
-          <?php endif; ?>
-          </td>
-          <td><?php echo $actorRelation->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID) ?></td>
-          <td style="text-align: center;">
-            <input type="checkbox" name="deleteRelations[<?php echo $actorRelation->getId() ?>]" value="delete" class="multiDelete" />
-          </td>
-        </tr>
+        <?php foreach ($actorRelations as $item): ?>
+          <tr id="<?php echo url_for(array($item, 'module' => 'relation')) ?>" class="<?php echo 'related_obj_'.$item->id ?>">
+            <td>
+              <?php if ($actor->id == $item->objectId): ?>
+                <?php echo $item->subject->__toString() ?>
+              <?php else: ?>
+                <?php echo $item->object->__toString() ?>
+              <?php endif; ?>
+            </td><td>
+              <?php echo $item->type ?>
+            </td><td>
+              <?php if (0 < strlen($dateDisplay = $item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID)) || 0 < count($dateArray = $item->getDates())): ?>
+                <?php if (0 < strlen($dateDisplay)): ?>
+                  <?php echo $dateDisplay ?>
+                <?php elseif (2 == count($dateArray)): ?>
+                  <?php echo __('%1% - %2%', array('%1%' => collapse_date($dateArray['start']), '%2%' => collapse_date($dateArray['end']))) ?>
+                <?php else: ?>
+                  <?php echo collapse_date(array_shift($dateArray)) ?>
+                <?php endif; ?>
+              <?php endif; ?>
+            </td><td>
+              <?php echo $item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID) ?>
+            </td><td style="text-align: center">
+              <input type="checkbox" name="deleteRelations[<?php echo $item->id ?>]" value="delete" class="multiDelete"/>
+            </td>
+          </tr>
         <?php endforeach; ?>
-      <?php endif; ?>
       </table>
     </div>
 
+    <?php
+    // Define template for new relation table rows added by dialog
+    $editImage = image_tag('pencil', array('style' => 'align: top', 'alt' => 'edit'));
+    $deleteBtn = '<button class="delete-small" name="delete" />';
+
+    $rowTemplate = '<tr id="{relatedActor[id]}">';
+    $rowTemplate .= '<td>{relatedActor[authorizedFormOfName]}</td>';
+    $rowTemplate .= '<td>{relatedActor[type]}</td>';
+    $rowTemplate .= '<td>{relatedActor[dateDisplay]}</td>';
+    $rowTemplate .= '<td>{relatedActor[description]}</td>';
+    $rowTemplate .= '<td style="text-align: right">'.$editImage.' '.$deleteBtn.'</td>';
+    $rowTemplate .= '</tr>';
+
+    $linkToShow = url_for(array($actor, 'module' => 'actor'));
+
+    echo javascript_tag(<<<EOL
+Drupal.behaviors.dialog = {
+  attach: function (context)
+  {
+    // Add special rendering rules
+    var handleFieldRender = function(obj, fname)
+    {
+      var matches = fname.match(/(\w+)\[(\w+)\]/);
+      if (null == matches)
+      {
+        return obj.renderField(fname);
+      }
+
+      switch (matches[2])
+      {
+        case 'dateDisplay':
+          if (0 < obj.getField('dateDisplay').value.length)
+          {
+            return obj.getField('dateDisplay').value;
+          }
+          else if (0 < obj.getField('startDate').value.length && 0 < obj.getField('endDate').value.length)
+          {
+            return obj.getField('startDate').value + ' - ' + obj.getField('endDate').value;
+          }
+          else
+          {
+            return obj.getField('startDate').value;
+          }
+
+          break;
+
+        default:
+          return obj.renderField(fname);
+      }
+    }
+
+    // Map 'q_relation' table data to dialog fields
+    var relationTableMap = function (data)
+    {
+      var output = {};
+      for (col in data)
+      {
+        switch(col)
+        {
+          case 'subject':
+          case 'object':
+            if ('$linkToShow' != data[col])
+            {
+              output['relatedActor[authorizedFormOfName]'] = data[col];
+            }
+            break;
+
+          default:
+            output['relatedActor[' + col + ']'] = data[col];
+        }
+      }
+
+      return output;
+    }
+
+    // Define dialog
+    Qubit.dialog = new QubitDialog('actorRelation',
+    {
+      "displayTable": "relatedEntities",
+      "newRowTemplate": '$rowTemplate',
+      "handleFieldRender": handleFieldRender,
+      "relationTableMap": relationTableMap,
+    }, jQuery);
+
+    // Add edit link/icon to 'relatedFunctions' rows
+    jQuery('#relatedEntities').find('tr').each(function ()
+    {
+      var thisUri = this.id;
+
+      if (undefined != thisUri)
+      {
+        jQuery('td:last', this).prepend('<a href="javascript:Qubit.dialog.open(\'' + thisUri + '\')">$editImage</a>');
+      }
+    });
+  }
+}
+EOL
+) ?>
+
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
-    <!-- NOTE: The actorRelationDialog.js script cuts this *entire*       -->
-    <!-- "actorRelation" table and pastes it in a YUI dialog object.      -->
+    <!-- NOTE: The dialog.js script cuts this table and moves it to a YUI -->
+    <!-- dialog object.                                                   -->
     <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
     <table class="inline" id="actorRelation">
-      <caption><?php echo __('new relationship') ?></caption>
+      <caption><?php echo __('New relationship') ?></caption>
       <tbody>
-      <tr>
-        <th style="width: 66%" colspan="3">
-          <label for="editActorRelation_actorName" class="required_field"><?php echo __('Name of related entity') ?></label>
-        </th>
-        <th style="width: 34%">
-          <label for="editActorRelation_categoryId"><?php echo __('Category of relationship') ?></label>
-        </th>
-      </tr>
-      <tr>
-        <td colspan="3" style="width: 66%">
-          <?php include_partial('actorNameAutoComplete', array('actor' => $actor))?>
-        </td>
-        <td style="width: 34%">
-          <?php echo select_tag('editActorRelation[categoryId]', objects_for_select($actorRelationCategories, 'getId', 'getName')) ?>
-        </td>
-      </tr>
-      <tr>
-        <th colspan="4">
-          <label for="editActorRelation_description"><?php echo __('Description of relationship') ?></label>
-        </th>
-      </tr>
-      <tr>
-        <td colspan="4" style="width: 100%">
-          <?php echo textarea_tag('editActorRelation[description]', '', array('class' => 'resizable', 'style' => '30x3')) ?>
-        </td>
-      </tr>
-      <tr>
-        <th style="width: 25%">
-          <label for="editActorRelation_startDate"><?php echo __('date&dagger') ?></label>
-        </th>
-        <th style="width: 25%">
-          <label for="editActorRelation_endDate"><?php echo __('end date&dagger;') ?></label>
-        </th>
-        <th colspan="2" style="width: 50%">
-          <label for="editActorRelation_dateDisplay"><?php echo __('date display') ?></label>
-        </th>
-      </tr>
-      <tr>
-        <td style="width: 25%">
-          <?php echo input_tag('editActorRelation[startDate]') ?>
-        </td>
-        <td style="width: 25%">
-          <?php echo input_tag('editActorRelation[endDate]') ?>
-        </td>
-        <td colspan="2" style="width: 50%">
-          <?php echo input_tag('editActorRelation[dateDisplay]') ?>
-        </td>
-      </tr>
-      <tr>
-        <td colspan="4">
-          <?php echo __('%1% - required field', array('%1%' => '*'))?><br />
-          <?php echo __('%1% - dates must be specified in ISO-8601 format (YYYY-MM-DD)', array('%1%' => '&dagger;'))?>
-        </td>
-      </tr>
+        <tr>
+          <th colspan="3">
+            <?php echo $form['relatedActor[authorizedFormOfName]']
+              ->label(__('Authorized form of name'))
+              ->renderLabel() ?>
+          </th>
+        </tr><tr>
+          <td colspan="3">
+            <?php echo $form['relatedActor[authorizedFormOfName]']->render(array('class' => 'form-autocomplete')) ?>
+            <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>" />
+          </td>
+        </tr><tr>
+          <th colspan="3">
+            <?php echo $form['relatedActor[type]']
+              ->label(__('Category of relationship'))
+              ->renderLabel() ?>
+          </th>
+        </tr><tr>
+          <td colspan="3">
+            <?php echo $form['relatedActor[type]']->render(array('class' => 'form-autocomplete')) ?>
+          </td>
+        </tr><tr>
+          <th colspan="3">
+            <?php echo $form['relatedActor[description]']
+              ->label(__('Description of relationship'))
+              ->renderLabel() ?>
+          </th>
+        </tr><tr>
+          <td colspan="3" style="width: 100%">
+            <?php echo $form['relatedActor[description]'] ?>
+          </td>
+        </tr><tr>
+          <th style="width: 25%">
+            <?php echo $form['relatedActor[startDate]']
+              ->label(__('Date&dagger;'))
+              ->renderLabel() ?>
+          </th><th style="width: 25%">
+            <?php echo $form['relatedActor[endDate]']
+              ->label(__('End date&dagger;'))
+              ->renderLabel() ?>
+          </th><th style="width: 50%">
+            <?php echo $form['relatedActor[dateDisplay]']
+              ->label(__('Date display&dagger;'))
+              ->renderLabel() ?>
+          </th>
+        </tr><tr>
+          <td style="width: 25%">
+            <?php echo $form['relatedActor[startDate]'] ?>
+          </td><td style="width: 25%">
+            <?php echo $form['relatedActor[endDate]'] ?>
+          </td><td style="width: 50%">
+            <?php echo $form['relatedActor[dateDisplay]'] ?>
+          </td>
+        </tr><tr>
+          <td colspan="3">
+            <?php echo __('%1% - dates must be specified in ISO-8601 format (YYYY-MM-DD)', array('%1%' => '&dagger;'))?>
+          </td>
+        </tr>
       </tbody>
     </table>
 
-    <!-- Related resources -->
     <div class="form-item">
       <table class="inline" id="relatedEvents">
-        <caption><?php echo __('Related resources'); ?></caption>
+        <caption><?php echo __('Related resources') ?></caption>
         <tr>
-          <th style="width: 35%"><?php echo __('title'); ?></th>
-          <th style="width: 20%"><?php echo __('relationship'); ?></th>
-          <th style="width: 25%"><?php echo __('dates'); ?></th>
-          <th style="width: 10%; text-align: center"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
+          <th style="width: 35%">
+            <?php echo __('Title') ?>
+          </th><th style="width: 20%">
+            <?php echo __('Relationship') ?>
+          </th><th style="width: 25%">
+            <?php echo __('Dates') ?>
+          </th><th style="width: 10%; text-align: center">
+            <?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?>
+          </th>
         </tr>
-      <?php if (0 < count($events)): ?>
         <?php foreach ($events as $event): ?>
-        <tr id="<?php echo 'event_'.$event->getId() ?>" class="<?php echo 'related_obj_'.$event->getId() ?>">
-          <td><?php echo $event->getInformationObject()->getTitle() ?></td>
-          <td><?php echo $event->getType() ?></td>
-          <td>
-            <?php if (0 < strlen($dateDisplay = $event->getDateDisplay())): ?>
-              <?php echo $dateDisplay ?>
-            <?php elseif (0 < strlen($event->getStartDate()) && 0 < strlen($event->getEndDate())): ?>
-              <?php echo __('%1% - %2%', array('%1%' => collapse_date($event->getStartDate()), '%2%' => collapse_date($event->getEndDate()))) ?>
-            <?php elseif (0 < strlen($date = $event->getStartDate()) || 0 < strlen($date = $event->getEndDate())): ?>
-              <?php echo collapse_date($date) ?>
-            <?php endif; ?>
-          </td>
-          <td style="text-align: right">
-            <input type="checkbox" name="deleteEvents[<?php echo $event->getId() ?>]" value="delete" class="multiDelete" />
-          </td>
-        </tr>
+          <tr id="<?php echo url_for(array($event, 'module' => 'event')) ?>" class="<?php echo 'related_obj_'.$event->id ?>">
+            <td>
+              <?php echo $event->informationObject->__toString() ?>
+            </td><td>
+              <?php echo $event->type ?>
+            </td><td>
+              <?php if (0 < strlen($dateDisplay = $event->getDateDisplay())): ?>
+                <?php echo $dateDisplay ?>
+              <?php elseif (0 < strlen($event->getStartDate()) && 0 < strlen($event->getEndDate())): ?>
+                <?php echo __('%1% - %2%', array('%1%' => collapse_date($event->getStartDate()), '%2%' => collapse_date($event->getEndDate()))) ?>
+              <?php elseif (0 < strlen($date = $event->getStartDate()) || 0 < strlen($date = $event->getEndDate())): ?>
+                <?php echo collapse_date($date) ?>
+              <?php endif; ?>
+            </td><td style="text-align: right">
+              <input type="checkbox" name="deleteEvents[<?php echo $event->getId() ?>]" value="delete" class="multiDelete" />
+            </td>
+          </tr>
         <?php endforeach; ?>
-      <?php endif; ?>
       </table>
     </div>
 
-    <?php 
-      /**
-       * NOTE: The eventDialog script cuts this entire table and pastes
-       * it in a YUI dialog object.
-       *
-       * @see apps/qubit/modules/actor/_eventDialog.php
-       * @see web/js/eventDialog.js
-       */
-    ?>
-    <table id="newEvent" class="inline">
+    <?php
+    // Define template for new relation table rows added by dialog
+    $rowTemplate = '<tr id="{relatedResource[id]}">';
+    $rowTemplate .= '<td>{relatedResource[informationObject]}</td>';
+    $rowTemplate .= '<td>{relatedResource[type]}</td>';
+    $rowTemplate .= '<td>{relatedResource[dateDisplay]}</td>';
+    $rowTemplate .= '<td style="text-align: right">'.$editImage.' '.$deleteBtn.'</td>';
+    $rowTemplate .= '</tr>';
+
+    echo javascript_tag(<<<EOL
+Drupal.behaviors.dialog2 = {
+  attach: function (context)
+  {
+    // Add special rendering rules
+    var handleFieldRender = function(obj, fname)
+    {
+      var matches = fname.match(/(\w+)\[(\w+)\]/);
+      if (null == matches)
+      {
+        return obj.renderField(fname);
+      }
+
+      switch (matches[2])
+      {
+        case 'dateDisplay':
+          if (0 < obj.getField('dateDisplay').value.length)
+          {
+            return obj.getField('dateDisplay').value;
+          }
+          else if (0 < obj.getField('startDate').value.length && 0 < obj.getField('endDate').value.length)
+          {
+            return obj.getField('startDate').value + ' - ' + obj.getField('endDate').value;
+          }
+          else
+          {
+            return obj.getField('startDate').value;
+          }
+
+          break;
+
+        default:
+          return obj.renderField(fname);
+      }
+    }
+
+    // Define dialog
+    Qubit.dialog2 = new QubitDialog('resourceRelation',
+    {
+      "displayTable": "relatedEvents",
+      "newRowTemplate": '$rowTemplate',
+      "handleFieldRender": handleFieldRender,
+    }, jQuery);
+
+    // Add edit link/icon to 'relatedFunctions' rows
+    jQuery('#relatedEvents').find('tr').each(function ()
+    {
+      var thisUri = this.id;
+
+      if (undefined != thisUri)
+      {
+        jQuery('td:last', this).prepend('<a href="javascript:Qubit.dialog2.open(\'' + thisUri + '\')">$editImage</a>');
+      }
+    });
+  }
+}
+EOL
+) ?>
+
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
+    <!-- NOTE: The dialog.js script cuts this table and moves it to a YUI -->
+    <!-- dialog object.                                                   -->
+    <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *  -->
+    <table id="resourceRelation" class="inline">
       <tr>
-        <td colspan="3" class="headerCell" style="width: 55%;"><?php echo __('title of related resource'); ?></td>
-      </tr>
-      <tr>
+        <td colspan="3" class="headerCell" style="width: 55%">
+          <?php echo $form['relatedResource[informationObject]']
+            ->label(__('Title of related resource'))
+            ->renderLabel() ?>
+        </td>
+      </tr><tr>
         <td colspan="3" class="noline">
-          <?php echo input_tag('newEvent[resourceTitle]', null, array('class' => 'titleAutoComplete')) ?>
-          <?php include_partial('informationobject/titleAutoComplete') ?>
+          <?php echo $form['relatedResource[informationObject]']->render(array('class' => 'form-autocomplete')) ?>
+          <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'informationobject', 'action' => 'autocomplete')) ?>" />
         </td>
-      </tr>
-      <tr>
-        <td colspan="2" class="headerCell" style="width: 60%;"><?php echo __('nature of relationship') ?></td>
-        <td class="headerCell" style="width: 40%;"><?php echo __('type of related resource') ?></td>
-      </tr>
-      <tr>
+      </tr><tr>
+        <td colspan="2" class="headerCell" style="width: 60%">
+          <?php echo $form['relatedResource[type]']
+            ->label(__('Nature of relationship'))
+            ->renderLabel() ?>
+        </td><td class="headerCell" style="width: 40%">
+          <?php echo $form['relatedResource[resourceType]']
+            ->label(__('Type of related resource'))
+            ->renderLabel() ?>
+        </td>
+      </tr><tr>
         <td colspan="2" class="noline">
-          <?php echo select_tag('newEvent[typeId]', options_for_select($eventTypes))?>
+          <?php echo $form['relatedResource[type]']->render(array('class' => 'form-autocomplete')) ?>
+        </td><td class="noline">
+          <?php echo $form['relatedResource[resourceType]']->render(array('disabled' => 'true', 'class' => 'disabled')) ?>
         </td>
-        <td class="noline">
-          <?php echo select_tag('newEvent[resourceTypeId]', 
-            objects_for_select($resourceTypeTerms, 'getId', 'getName'))?>
+      </tr><tr>
+        <th style="width: 25%">
+          <?php echo $form['relatedResource[startDate]']
+            ->label(__('Date&dagger;'))
+            ->renderLabel() ?>
+        </th><th style="width: 25%">
+          <?php echo $form['relatedResource[endDate]']
+            ->label(__('End date&dagger;'))
+            ->renderLabel() ?>
+        </th><th style="width: 50%">
+          <?php echo $form['relatedResource[dateDisplay]']
+            ->label(__('Date display&dagger;'))
+            ->renderLabel() ?>
+        </th>
+      </tr><tr>
+        <td style="width: 25%">
+          <?php echo $form['relatedResource[startDate]'] ?>
+        </td><td style="width: 25%">
+          <?php echo $form['relatedResource[endDate]'] ?>
+        </td><td style="width: 50%">
+          <?php echo $form['relatedResource[dateDisplay]'] ?>
         </td>
-      </tr>
-      <tr>
-        <td class="headerCell" style="width: 30%"><?php echo __('date'); ?></td>
-        <td class="headerCell" style="width: 30%"><?php echo __('end date'); ?></td>
-        <td class="headerCell" style="width: 40%"><?php echo __('date display'); ?></td></tr>
-      <tr>
-        <td class="noline"><?php echo input_tag('newEvent[startDate]') ?></td>
-        <td class="noline"><?php echo input_tag('newEvent[endDate]') ?></td>
-        <td class="noline"><?php echo input_tag('newEvent[dateDisplay]') ?></td>
+      </tr><tr>
+        <td colspan="3">
+          <?php echo __('%1% - dates must be specified in ISO-8601 format (YYYY-MM-DD)', array('%1%' => '&dagger;'))?>
+        </td>
       </tr>
     </table>
+
   </fieldset>
 
   <fieldset class="collapsible collapsed" id="controlArea">
-    <legend><?php echo __('control area'); ?></legend>
 
-    <div class="form-item">
-      <label for="description_identifier"><?php echo __('authority record identifier'); ?></label>
-      <?php echo object_input_tag($actor, 'getDescriptionIdentifier', array('size' => 20)) ?>
-    </div>
+    <legend><?php echo __('Control area') ?></legend>
 
-    <div class="form-item">
-      <label for="institution_identifier"><?php echo __('institution identifier'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getInstitutionResponsibleIdentifier(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_input_tag($actor, 'getInstitutionResponsibleIdentifier', array('size' => 20)) ?>
-    </div>
+    <?php echo render_field($form->descriptionIdentifier
+      ->label(__('Description identifier').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $actor) ?>
 
-    <div class="form-item">
-      <label for="rules"><?php echo __('rules and/or conventions'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getRules(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getRules', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo render_field($form->institutionResponsibleIdentifier->label(__('Institution identifier')), $actor) ?>
 
-    <div class="form-item">
-      <label for="status_id"><?php echo __('status'); ?></label>
-      <?php echo object_select_tag($actor, 'getDescriptionStatusId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getDescriptionStatuses')) ?>
-    </div>
+    <?php echo render_field($form->rules
+      ->label(__('Rules and/or conventions used')), $actor, array('class' => 'resizable')) ?>
 
-    <div class="form-item">
-      <label for="level_of_detail_id"><?php echo __('level of detail'); ?></label>
-      <?php echo object_select_tag($actor, 'getDescriptionDetailId', array('related_class' => 'QubitTerm', 'include_blank' => true, 'peer_method' => 'getDescriptionDetailLevels')) ?>
-    </div>
+    <?php echo $form->descriptionStatus
+      ->label('Status')
+      ->renderRow() ?>
 
-    <div class="form-item">
-      <label for="dates"><?php echo __('dates of creation, revision and deletion'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getRevisionHistory(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getRevisionHistory', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
+    <?php echo $form->descriptionDetail
+      ->label('Level of detail')
+      ->renderRow() ?>
 
-    <div class="form-item">
-      <label for="language_code"><?php echo __('languages of authority record'); ?></label>
+    <?php echo render_field($form->revisionHistory
+      ->label(__('Dates of creation, revision and deletion')), $actor, array('class' => 'resizable')) ?>
 
-      <?php if (count($languageCodes) > 0): ?>
-      <?php foreach ($languageCodes as $languageCode): ?>
-        <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_language($languageCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'actor', 'action' => 'deleteProperty', 'Id' => $languageCode->getId(), 'returnTemplate' => 'isaar')) ?><br/>
-        </div>
-      <?php endforeach; ?>
-      <?php endif; ?>
+    <?php echo $form->language
+      ->label('Language(s)')
+      ->renderRow(array('class' => 'form-autocomplete')) ?>
 
-      <?php echo select_language_tag('language_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
-     </div>
+    <?php echo $form->script
+      ->label('Script(s)')
+      ->renderRow(array('class' => 'form-autocomplete')) ?>
 
-    <div class="form-item">
-      <label for="script_id"><?php echo __('scripts of authority record'); ?></label>
+    <?php echo render_field($form->sources, $actor, array('class' => 'resizable')) ?>
 
-      <?php if (count($scriptCodes) > 0): ?>
-      <?php foreach ($scriptCodes as $scriptCode): ?>
-        <div style="margin-top: 5px; margin-bottom: 5px;">
-        <?php echo format_script($scriptCode->getValue(array('sourceCulture' => true))) ?>&nbsp;<?php echo link_to(image_tag('delete', 'align=top'), array('module' => 'actor', 'action' => 'deleteProperty', 'Id' => $scriptCode->getId(), 'returnTemplate' => 'isaar')) ?><br/>
-        </div>
-      <?php endforeach; ?>
-      <?php endif; ?>
-
-      <?php echo select_script_tag('script_code', null, array('include_blank' => true, 'class'=>'multiInstance')) ?>
-    </div>
-
-    <div class="form-id">
-      <label for="sources"><?php echo __('sources'); ?></label>
-      <?php if (strlen($sourceCultureValue = $actor->getSources(array('sourceCulture' => 'true'))) > 0 && $sf_user->getCulture() != $actor->getSourceCulture()): ?>
-      <div class="default-translation"><?php echo nl2br($sourceCultureValue) ?></div>
-      <?php endif; ?>
-      <?php echo object_textarea_tag($actor, 'getSources', array('class' => 'resizable', 'size' => '30x3')) ?>
-    </div>
-
-    <div class="form-item">
-      <table class="inline">
-        <tr>
-          <th style="width: 90%;"><?php echo __('Maintenance Notes') ?></th>
-          <th style="width: 10%; text-align: right"><?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?></th>
-        </tr>
-        <?php if ($maintenanceNotes): ?>
-        <?php foreach ($maintenanceNotes as $maintenanceNote): ?>
-        <tr class="<?php echo 'related_obj_'.$maintenanceNote->getId() ?>">
-          <td><div class="animateNicely">
-            <?php echo $maintenanceNote->getContent(array('cultureFallback' => 'true')) ?>
-          </div></td>
-          <td style="text-align: right;"><div class="animateNicely">
-            <input type="checkbox" name="delete_notes[<?php echo $maintenanceNote->getId() ?>]" value="delete" class="multiDelete" />
-          </div></td>
-        </tr>
-        <?php endforeach; ?>
-        <?php endif; ?>
-        <tr>
-          <td><?php echo textarea_tag('new_maintenance_note', '', array('class' => 'multiInstanceTr', 'size' => '30x2')) ?></td>
-          <td style="text-align: right">&nbsp;</td>
-        </tr>
-      </table>
-    </div>
+    <?php echo render_field($form->maintenanceNotes, $maintenanceNote, array('name' => 'content', 'class' => 'resizable')) ?>
 
   </fieldset>
 
-  <ul class="actions">
-    <?php if (isset($sf_request->id)): ?>
-      <?php if($repositoryReroute): ?>
-        <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'show', 'id' => $repositoryReroute)) ?>
-      <?php else: ?>
-        <li><?php echo link_to(__('Cancel'), array('module' => 'actor', 'action' => 'show', 'id' => $actor->id)) ?></li>
-      <?php endif; ?>
-      <li><?php echo submit_tag(__('Save')) ?></li>
-    <?php else: ?>
-      <li><?php echo link_to(__('Cancel'), array('module' => 'actor', 'action' => 'list')) ?></li>
-      <li><?php echo submit_tag(__('Create')) ?></li>
-    <?php endif; ?>
-  </ul>
+  <div class="actions section">
+
+    <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+
+    <div class="content">
+      <ul class="clearfix links">
+
+        <?php if (isset($sf_request->id)): ?>
+
+          <?php if ($repositoryReroute): ?>
+            <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'id' => $repositoryReroute)) ?>
+          <?php else: ?>
+            <li><?php echo link_to(__('Cancel'), array($actor, 'module' => 'actor')) ?></li>
+          <?php endif; ?>
+
+          <li><?php echo submit_tag(__('Save')) ?></li>
+
+        <?php else: ?>
+          <li><?php echo link_to(__('Cancel'), array('module' => 'actor', 'action' => 'list')) ?></li>
+          <li><?php echo submit_tag(__('Create')) ?></li>
+        <?php endif; ?>
+
+      </ul>
+    </div>
+
+  </div>
 
 </form>

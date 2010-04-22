@@ -20,7 +20,7 @@ class sfPluginAdminPluginIndexAction extends sfAction
 
     $configuration = sfProjectConfiguration::getActive();
     $pluginPaths = $configuration->getAllPluginPaths();
-    foreach ($configuration->getPlugins() as $name)
+    foreach (sfPluginAdminPluginConfiguration::$pluginNames as $name)
     {
       unset($pluginPaths[$name]);
     }

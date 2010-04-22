@@ -16,7 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
-sfLoader::loadHelpers('I18N');
+sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
 /**
  * OAI Add Repository Form
  *

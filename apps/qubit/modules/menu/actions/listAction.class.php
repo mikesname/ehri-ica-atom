@@ -29,37 +29,28 @@ class MenuListAction extends sfAction
 {
   public function execute($request)
   {
-    // Re-order menus if 'move' parameter passed
-    if ($request->hasParameter('move') && $moveMenu = QubitMenu::getById($request->getParameter('move')))
+    // Re-order menus if "move" parameter passed
+    if (isset($request->move) && $menu = QubitMenu::getById($request->move))
     {
-      if ($request->hasParameter('before'))
+      if (isset($request->before))
       {
-        $moveMenu->moveBeforeById($request->getParameter('before'));
+        $menu->moveBeforeById($request->before);
       }
-      else if ($request->hasParameter('after'))
+      else if (isset($request->after))
       {
-        $moveMenu->moveAfterById($request->getParameter('after'));
+        $menu->moveAfterById($request->after);
       }
     }
 
-    // Set current page (from request parameter)
-    $this->page = $this->getRequestParameter('page', 1);
-
     // Get an array with menu ids and depth (relative to top menu) to create
     // and indented list
-    $menuTree = QubitMenu::getTreeById(QubitMenu::ROOT_ID);
+    $this->menuTree = QubitMenu::getTreeById(QubitMenu::ROOT_ID);
 
-    foreach ($menuTree as $i => $menu)
+    foreach ($this->menuTree as $i => $menu)
     {
-      // Build an array of siblings for each parentId for figuring out prev/next
-      // buttons
+      // Build an array of siblings for each parentId for figuring out
+      // prev/next buttons
       $siblingList[$menu['parentId']][] = array('id' => $menu['id'], 'pos' => $i);
-
-      // Change page if necessary to display current menu being moved
-      if ($request->hasParameter('move') && $request->getParameter('move') == $menu['id'])
-      {
-        $this->page = floor($i / sfConfig::get('app_hits_per_page')) + 1;
-      }
     }
 
     // Build prev/next values based on number of siblings
@@ -67,11 +58,16 @@ class MenuListAction extends sfAction
     {
       foreach ($siblings as $i => $sibling)
       {
-        $menuTree[$sibling['pos']]['prev'] = ($i > 0) ? $siblings[$i - 1]['id'] : null;
-        $menuTree[$sibling['pos']]['next'] = ($i < (count($siblings) - 1)) ? $siblings[$i + 1]['id'] : null;
+        if (0 < $i)
+        {
+          $this->menuTree[$sibling['pos']]['prev'] = $siblings[$i - 1]['id'];
+        }
+
+        if (count($siblings) - 1 > $i)
+        {
+          $this->menuTree[$sibling['pos']]['next'] = $siblings[$i + 1]['id'];
+        }
       }
     }
-
-    $this->menuTree = $menuTree;
   }
 }

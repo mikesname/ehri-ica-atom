@@ -10,7 +10,7 @@
 
 require_once(dirname(__FILE__).'/../../../bootstrap/unit.php');
 
-$t = new lime_test(3, new lime_output_color());
+$t = new lime_test(3);
 
 // __construct()
 $t->diag('__construct()');
@@ -23,20 +23,21 @@ $t->diag('->extract()');
 $content = <<<EOF
 generator:
   param:
-    fields:
-      name: { name: "Global Field Name", help: "Global Help for Name" }
-    list:
-      title: List title
+    config:
       fields:
-        name: { name: "List Field Name", help: "List Help for Name" }
-    edit:
-      title: Edit title
-      display:
-        NONE: []
-        First category: []
-        Last category: []
-      fields:
-        name: { name: "Edit Field Name", help: "Edit Help for Name" }
+        name: { name: "Global Field Name", help: "Global Help for Name" }
+      list:
+        title: List title
+        fields:
+          name: { name: "List Field Name", help: "List Help for Name" }
+      edit:
+        title: Edit title
+        display:
+          NONE: []
+          First category: []
+          Last category: []
+        fields:
+          name: { name: "Edit Field Name", help: "Edit Help for Name" }
 EOF;
 
 $t->is($e->extract($content), array(

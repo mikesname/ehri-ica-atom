@@ -1,0 +1,535 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+  <file source-language="EN" target-language="ru" datatype="plaintext" original="messages" date="2010-04-21T15:44:33Z" product-name="messages">
+    <body>
+      <trans-unit id="8">
+        <source>Title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="40">
+        <source>Identity area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="41">
+        <source>Reference code</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="43">
+        <source>Note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="48">
+        <source>Level of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="51">
+        <source>Context area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="62">
+        <source>Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="70">
+        <source>Conditions governing access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="80">
+        <source>Subject access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="81">
+        <source>Place access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="85">
+        <source>Institution identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="86">
+        <source>Status</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="87">
+        <source>Level of detail</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="88">
+        <source>Dates of creation, revision and deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="91">
+        <source>Sources</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="120">
+        <source>Identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="207">
+        <source>Type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="230">
+        <source>Country</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="233">
+        <source>Latitude</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="238">
+        <source>Note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="247">
+        <source>Control area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="258">
+        <source>Email</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="300">
+        <source>Description identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="306">
+        <source>Contact type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="308">
+        <source>Street address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="309">
+        <source>City</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="312">
+        <source>Telephone</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="313">
+        <source>Fax</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="314">
+        <source>Website</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="333">
+        <source>Date</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>Name access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Contact information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="359">
+        <source>Place</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="381">
+        <source>Name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="384">
+        <source>Date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="494">
+        <source>Are you sure?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="568">
+        <source>Date(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="596">
+        <source>Repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="625">
+        <source>Edit</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="627">
+        <source>Delete</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="628">
+        <source>Add new</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="629">
+        <source>List all</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="636">
+        <source>Description of relationship</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="646">
+        <source>End date</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="648">
+        <source>Cancel</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="649">
+        <source>Save</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="650">
+        <source>Create</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="675">
+        <source>Type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="678">
+        <source>Edit identity area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="679">
+        <source>Edit context area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="712">
+        <source>Institution identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="713">
+        <source>Rules or conventions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="714">
+        <source>Status</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="715">
+        <source>Level of detail</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="716">
+        <source>Dates of creation, revision and deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="728">
+        <source>Appraisal, destruction and scheduling</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="731">
+        <source>System of arrangement</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="733">
+        <source>Conditions governing access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="735">
+        <source>Conditions governing reproduction</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="737">
+        <source>Physical characteristics and technical requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="740">
+        <source>Existence and location of originals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="742">
+        <source>Existence and location of copies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="744">
+        <source>Related units of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="754">
+        <source>Format</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="755">
+        <source>Description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="809">
+        <source>Untitled</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="810">
+        <source>This archival description, or one of its higher levels, %1%requires%2% at least one %3%creator%4%.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="811">
+        <source>%1%Date(s)%2% - are not consistent with %3%higher levels%2%.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="812">
+        <source>%1%Date(s)%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="813">
+        <source>%1%Extent and medium%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="814">
+        <source>%1%Identifier%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="815">
+        <source>%1%Level of description%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="816">
+        <source>%1%Title%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="817">
+        <source>%1%Level of description%2% - Value "%value%" is not consistent with higher levels.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="818">
+        <source>Add archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="819">
+        <source>File list</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="820">
+        <source>View archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="821">
+        <source>Edit archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="822">
+        <source>Extent and medium</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="823">
+        <source>Related function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="824">
+        <source>Archival history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="825">
+        <source>Immediate source of acquisition or transfer</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="826">
+        <source>Content and structure area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="827">
+        <source>Edit content and structure area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="828">
+        <source>Scope and content</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="829">
+        <source>Accruals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="830">
+        <source>Conditions of access and use area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="831">
+        <source>Edit conditions of access and use area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="832">
+        <source>Language of material</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="833">
+        <source>Script of material</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="834">
+        <source>Finding aids</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="835">
+        <source>Allied materials area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="836">
+        <source>Edit alied materials area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="837">
+        <source>Publication note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="838">
+        <source>Notes area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="839">
+        <source>Edit notes area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="840">
+        <source>Access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="841">
+        <source>Edit access points</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="842">
+        <source>Description control area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="843">
+        <source>Edit description control area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="844">
+        <source>Rules and/or conventions used</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="845">
+        <source>Dates of creation revision deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="846">
+        <source>Language(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="847">
+        <source>Script(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="848">
+        <source>Archivist's note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="849">
+        <source>Edit archival description - ISAD(G)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="850">
+        <source>This is a duplicate of record %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="851">
+        <source>This is a mandatory element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="852">
+        <source>Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="853">
+        <source>Date display</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="854">
+        <source>Record the level of this unit of description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="855">
+        <source>Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="856">
+        <source>Name of creator(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="857">
+        <source>This archival description, or one of its higher levels, requires at least one creator.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="858">
+        <source>Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. The name should given in the standardized form as prescribed by international or national conventions in accordance with the principles of ISAAR(CPF).</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="859">
+        <source>Record the successive transfers of ownership, responsibility and/or custody of the unit of description and indicate those actions, such as history of the arrangement, production of contemporary finding aids, re-use of the records for other purposes or software migrations, that have contributed to its present structure and arrangement. Give the dates of these actions, insofar as they can be ascertained. If the archival history is unknown, record that information.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="860">
+        <source>Record the source from which the unit of description was acquired and the date and/or method of acquisition if any or all of this information is not confidential. If the source is unknown, record that information. Optionally, add accession numbers or codes.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="861">
+        <source>Give a summary of the scope (such as, time periods, geography) and content, (such as documentary forms, subject matter, administrative processes) of the unit of description, appropriate to the level of description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="862">
+        <source>Record appraisal, destruction and scheduling actions taken on or planned for the unit of description, especially if they may affect the interpretation of the material.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="863">
+        <source>Indicate if accruals are expected. Where appropriate, give an estimate of their quantity and frequency.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="864">
+        <source>Specify the internal structure, order and/or the system of classification of the unit of description. Note how these have been treated by the archivist. For electronic records, record or reference information on system design.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="865">
+        <source>Specify the law or legal status, contract, regulation or policy that affects access to the unit of description. Indicate the extent of the period of closure and the date at which the material will open when appropriate.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="866">
+        <source>Give information about conditions, such as copyright, governing the reproduction of the unit of description after access has been provided. If the existence of such conditions is unknown, record this. If there are no conditions, no statement is necessary.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="867">
+        <source>Indicate any important physical conditions, such as preservation requirements, that affect the use of the unit of description. Note any software and/or hardware required to access the unit of description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="868">
+        <source>Give information about any finding aids that the repository or records creator may have that provide information relating to the context and contents of the unit of description. If appropriate, include information on where to obtain a copy.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="869">
+        <source>If the original of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. If the originals no longer exist, or their location is unknown, give that information.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="870">
+        <source>If the copy of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="871">
+        <source>Record information about units of description in the same repository or elsewhere that are related by provenance or other association(s). Use appropriate introductory wording and explain the nature of the relationship . If the related unit of description is a finding aid, use the finding aids element of description (3.4.5) to make the reference to it.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="872">
+        <source>Publication notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="873">
+        <source>Notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="874">
+        <source>Record the international, national and/or local rules or conventions followed in preparing the description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="875">
+        <source>Archivist's Notes</source>
+        <target/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

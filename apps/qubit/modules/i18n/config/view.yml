@@ -1,5 +1,11 @@
 listDefaultContentTranslationSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:
 
 listUserInterfaceTranslationSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/collapse]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /sfDrupalPlugin/vendor/drupal/misc/form:

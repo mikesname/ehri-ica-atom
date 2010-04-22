@@ -1,0 +1,110 @@
+@page
+{
+  font-size: 9pt;
+
+  @bottom
+  {
+    content: string(site-name);
+  }
+
+  @top
+  {
+    content: string(label);
+  }
+}
+
+a:link,
+a:visited
+{
+  text-decoration: underline;
+}
+
+body
+{
+  /* Reset */
+
+  margin: 0;
+  width: auto;
+}
+
+h1
+{
+  prince-bookmark-level: none;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+{
+  page-break-after: avoid;
+}
+
+thead th
+{
+  border: 0;
+  border-bottom: medium solid;
+}
+
+thead th,
+.field > h3,
+.label,
+.sidebar > .section > div > h3
+{
+  background: transparent;
+  color: #000;
+}
+
+.actions,
+.itemsPerPage,
+.pager,
+#footer,
+#header,
+#navigation
+{
+  display: none;
+}
+
+.label
+{
+  string-set: label content();
+}
+
+#content
+{
+  /* FIXME */
+
+  width: 79%;
+}
+
+#main
+{
+  /* Reset */
+
+  margin: 0;
+}
+
+#page
+{
+  /* Header hidden */
+
+  padding: 0;
+
+  /* Reset */
+
+  width: auto;
+}
+
+#sidebar-first
+{
+  /* FIXME */
+
+  width: 19%;
+}
+
+#site-name
+{
+  string-set: site-name content();
+}

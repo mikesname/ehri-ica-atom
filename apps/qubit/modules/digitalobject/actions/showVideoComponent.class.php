@@ -35,12 +35,6 @@ class DigitalObjectShowVideoComponent extends sfComponent
    */
   public function execute($request)
   {
-    $this->getResponse()->addJavaScript('/vendor/jquery');
-    $this->getResponse()->addJavaScript('/vendor/flowplayer/flashembed.min.js');
-    $this->getResponse()->addStylesheet('flowPlayer');
-
-    $this->pathToFlowPlayer = public_path('flowplayer/flowplayer.swf');
-
     // Get representation by usage type
     $this->representation = $this->digitalObject->getRepresentationByUsage($this->usageType);
 
@@ -53,6 +47,9 @@ class DigitalObjectShowVideoComponent extends sfComponent
     // Set up display of video in flowplayer
     if ($this->representation)
     {
+      $this->getResponse()->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
+      $this->getResponse()->addJavaScript('flowplayer');
+
       // If this is a reference movie, get the thumbnail representation for the
       // place holder image
       $this->showFlashPlayer = true;

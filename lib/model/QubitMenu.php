@@ -29,12 +29,14 @@ class QubitMenu extends BaseMenu
   // 2nd generation constant ids
   const MAIN_MENU_ID = 2;
   const QUICK_LINKS_ID  = 3;
+  const BROWSE_ID = 4;
 
   // 3rd generation constant ids
-  const ADD_EDIT_ID = 4;
-  const IMPORT_ID = 5;
-  const TRANSLATE_ID = 6;
-  const ADMIN_ID = 7;
+  const ADD_EDIT_ID = 5;
+  const TAXONOMY_ID = 6;
+  const IMPORT_ID = 7;
+  const TRANSLATE_ID = 8;
+  const ADMIN_ID = 9;
 
   /**
    * Wrapper for BaseMenu::getPath() call to allow additional functionality
@@ -46,17 +48,21 @@ class QubitMenu extends BaseMenu
    */
   public function getPath($options = array())
   {
-    $pathAliasList = array(
-      '%profile%' => array('module' => 'user', 'action' => 'show', 'id' => sfContext::getInstance()->getUser()->getUserId())
+    $aliases = array(
+      '%profile%' => sfContext::getInstance()->routing->generate(null, array('module' => 'user', 'id' => sfContext::getInstance()->getUser()->getUserId())),
+      '%currentId%' => sfContext::getInstance()->getRequest()->id
     );
 
     $path = parent::offsetGet('path', $options);
 
-    if (isset($options['resolveAlias']) &&  true == $options['resolveAlias'])
+    if (isset($options['resolveAlias']) && $options['resolveAlias'])
     {
-      if (in_array($path, array_keys($pathAliasList)))
+      foreach ($aliases as $alias => $target)
       {
-        $path = $pathAliasList[$path];
+        if (false !== strpos($path, $alias))
+        {
+          $path = str_replace($alias, $target, $path);
+        }
       }
     }
 
@@ -161,6 +167,19 @@ class QubitMenu extends BaseMenu
     {
 
       return ($this->getPath() == 'informationobject/list');
+    }
+    // And even more hacks
+    else if (in_array($currentModule, array('sfIsadPlugin', 'sfRadPlugin', 'sfDcPlugin', 'sfModsPlugin')))
+    {
+
+      return ($this->getPath() == 'informationobject/list');
+    }
+
+    // son of hack
+    if ($currentModule == 'term' && $currentAction == 'list')
+    {
+
+      return ($this->getPath() == 'term/list');
     }
 
     // If passed $url matches the url for this menu AND is not the base url
@@ -324,7 +343,7 @@ class QubitMenu extends BaseMenu
       $parent->insertBefore($this, $referenceMenu);
 
       // Refresh moved object to get up-to-date data from db
-      $this->refresh();
+      $this->clear();
     }
 
     return $this;
@@ -470,35 +489,27 @@ class QubitMenu extends BaseMenu
    */
   public static function displayHierarchyAsList($parent, $depth=0, $options=array())
   {
-    $ulClass = '';
-    if ($parent->isDescendantSelected())
-    {
-      $ulClass = ' visible';
-    }
-
-    $str = str_repeat("\t", $depth * 2).'<ul class="menu-level-'.($depth + 1).$ulClass."\">\n";
+    $str = str_repeat("\t", $depth * 2)."<ul class=\"clearfix links\">\n";
     foreach ($parent->getChildren() as $child)
     {
-      $linkOptions = array();
-      $menuUrl = $child->getPath(array('getUrl' => true, 'resolveAlias' => true));
-
-      if ($child->isSelected() || $child->isDescendantSelected())
+      // Skip this menu and children if marked "hidden"
+      if (isset($options['overrideVisibility'][$child->getName()]))
       {
-        $linkOptions = array('class' => 'selected');
-      }
-
-      // Allow user to override link visibilty by menu name
-      $listClass = ' class="visible"';
-      if (isset($options['overrideVisibility']) && in_array($child->getName(), array_keys($options['overrideVisibility'])))
-      {
-        if ($options['overrideVisibility'][$child->getName()] == 'hidden')
+        if ('hidden' == $options['overrideVisibility'][$child->getName()])
         {
-          $listClass = ' class="hidden"';
+          continue;
         }
       }
 
-      $str .= str_repeat("\t", ($depth * 2) + 1).'<li'.$listClass.'>';
-      $str .= link_to($child->getLabel(array('cultureFallback'=>true)), $menuUrl, $linkOptions);
+      $class = '';
+      if ($child->isSelected() || $child->isDescendantSelected())
+      {
+        $class = ' class="active"';
+      }
+
+      $str .= str_repeat("\t", ($depth * 2) + 1).'<li'.$class.'>';
+      $str .= link_to($child->getLabel(array('cultureFallback'=>true)), $child->getPath(array('getUrl' => true, 'resolveAlias' => true)));
+
       if ($child->hasChildren())
       {
         $str .= "\n";

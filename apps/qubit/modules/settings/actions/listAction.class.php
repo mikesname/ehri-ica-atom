@@ -62,6 +62,7 @@ class SettingsListAction extends sfAction
     $this->uiLabelForm = new SettingsGenericForm(array(), array(
       'settings' => QubitSetting::getByScope('ui_label'), 'scope'=>'ui_label', 'fieldsRequired' => false));
     $this->oaiRepositoryForm = new SettingsOaiRepositoryForm;
+    $this->initializeDefaultPageElementsForm();
 
     // Handle POST data (form submit)
     if ($request->isMethod('post'))
@@ -437,6 +438,44 @@ class SettingsListAction extends sfAction
         $setting->setValue($resumptionTokenLimit, array('sourceCulture'=>true));
         $setting->save();
       }
+    }
+
+    return $this;
+  }
+
+  protected function initializeDefaultPageElementsForm()
+  {
+    $this->defaultPageElementsForm = new sfForm;
+    $this->defaultPageElementsForm->setWidgets(array(
+      'toggleDescription' => new sfWidgetFormInputCheckbox,
+      'toggleLogo' => new sfWidgetFormInputCheckbox,
+      'toggleTitle' => new sfWidgetFormInputCheckbox));
+
+    $criteria = new Criteria;
+    $criteria->add(QubitSetting::NAME, 'toggleDescription');
+    if (1 == count($toggleDescriptionQuery = QubitSetting::get($criteria)))
+    {
+      $toggleDescriptionSetting = $toggleDescriptionQuery[0];
+
+      $this->defaultPageElementsForm->setDefault('toggleDescription', $toggleDescriptionSetting->__get('value', array('sourceCulture' => true)));
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitSetting::NAME, 'toggleLogo');
+    if (1 == count($toggleLogoQuery = QubitSetting::get($criteria)))
+    {
+      $toggleLogoSetting = $toggleLogoQuery[0];
+
+      $this->defaultPageElementsForm->setDefault('toggleLogo', $toggleLogoSetting->__get('value', array('sourceCulture' => true)));
+    }
+
+    $criteria = new Criteria;
+    $criteria->add(QubitSetting::NAME, 'toggleTitle');
+    if (1 == count($toggleTitleQuery = QubitSetting::get($criteria)))
+    {
+      $toggleTitleSetting = $toggleTitleQuery[0];
+
+      $this->defaultPageElementsForm->setDefault('toggleTitle', $toggleTitleSetting->__get('value', array('sourceCulture' => true)));
     }
 
     return $this;

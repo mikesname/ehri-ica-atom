@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file source-language="EN" target-language="it" datatype="plaintext" original="messages" date="2010-04-21T15:50:25Z" product-name="messages">
+    <header/>
+    <body>
+      <trans-unit id="1">
+        <source>View resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Edit resource metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>Type of resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Language</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Internet media type</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>Subject</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Access condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>URL</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>Physical location</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Edit resource metadata - MODS</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>This is a duplicate of record %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="14">
+        <source>Names and origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="15">
+        <source>Add new name and/or origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="16">
+        <source>Add new child levels (if describing a collection)</source>
+        <target/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

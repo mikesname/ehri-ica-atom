@@ -1,28 +1,3 @@
-create:
-  is_secure:   on
-  credentials: [[ editor, administrator ]]
-
-delete:
-  is_secure:   on
-  credentials: [[ editor, administrator ]]
-
-edit:
-  is_secure:   on
-  credentials: [[ editor, administrator, translator ]]
-
-list:
-  is_secure:   off
-
 move:
-  is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
-
-show:
-  is_secure:  off
-
-update:
-  is_secure:   on
-  credentials: [[ editor, administrator, translator ]]
-
-all:
-  is_secure:   off
+  is_secure: true

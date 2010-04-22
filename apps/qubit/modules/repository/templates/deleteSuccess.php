@@ -1,10 +1,15 @@
 <h1><?php echo __('Are you sure you want to delete %1%?', array('%1%' => render_title($repository))) ?></h1>
 
-<?php echo $form->renderFormTag(url_for(array('module' => 'repository', 'action' => 'delete', 'id' => $repository->id)), array('method' => 'delete')) ?>
+<?php echo $form->renderFormTag(url_for(array($repository, 'module' => 'repository', 'action' => 'delete')), array('method' => 'delete')) ?>
 
-  <ul class="actions">
-    <li><?php echo link_to(__('Cancel'), array('module' => 'repository', 'action' => 'show', 'id' => $repository->id)) ?></li>
-    <li><?php echo submit_tag(__('Confirm')) ?></li>
-  </ul>
+  <div class="actions section">
+    <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+    <div class="content">
+      <ul class="clearfix links">
+        <li><?php echo link_to(__('Cancel'), array($repository, 'module' => 'repository')) ?></li>
+        <li><?php echo submit_tag(__('Confirm')) ?></li>
+      </ul>
+    </div>
+  </div>
 
 </form>

@@ -1,5 +1,5 @@
 <?php
-// $Id: openid.inc,v 1.13 2008/11/01 19:51:06 dries Exp $
+// $Id: openid.inc,v 1.22 2009/11/24 05:20:48 dries Exp $
 
 /**
  * @file
@@ -61,7 +61,8 @@ function openid_redirect_http($url, $message) {
 
   $sep = (strpos($url, '?') === FALSE) ? '?' : '&';
   header('Location: ' . $url . $sep . implode('&', $query), TRUE, 302);
-  exit;
+
+  drupal_exit();
 }
 
 /**
@@ -69,15 +70,15 @@ function openid_redirect_http($url, $message) {
  */
 function openid_redirect($url, $message) {
   $output = '<html><head><title>' . t('OpenID redirect') . "</title></head>\n<body>";
-  $output .= drupal_get_form('openid_redirect_form', $url, $message);
+  $output .= drupal_render(drupal_get_form('openid_redirect_form', $url, $message));
   $output .= '<script type="text/javascript">document.getElementById("openid-redirect-form").submit();</script>';
   $output .= "</body></html>\n";
   print $output;
-  exit;
+
+  drupal_exit();
 }
 
-function openid_redirect_form(&$form_state, $url, $message) {
-  $form = array();
+function openid_redirect_form($form, &$form_state, $url, $message) {
   $form['#action'] = $url;
   $form['#method'] = "post";
   foreach ($message as $key => $value) {
@@ -101,11 +102,15 @@ function openid_redirect_form(&$form_state, $url, $message) {
  * Determine if the given identifier is an XRI ID.
  */
 function _openid_is_xri($identifier) {
-  $firstchar = substr($identifier, 0, 1);
-  if ($firstchar == "@" || $firstchar == "=")
-    return TRUE;
+  // Strip the xri:// scheme from the identifier if present.
+  if (stripos($identifier, 'xri://') !== FALSE) {
+    $identifier = substr($identifier, 6);
+  }
 
-  if (stristr($identifier, 'xri://') !== FALSE) {
+
+  // Test whether the identifier starts with an XRI global context symbol or (.
+  $firstchar = substr($identifier, 0, 1);
+  if (strpos("=@+$!(", $firstchar) !== FALSE) {
     return TRUE;
   }
 
@@ -139,6 +144,9 @@ function _openid_normalize_url($url) {
     $normalized_url = 'http://' . $url;
   }
 
+  // Strip the fragment and fragment delimiter if present.
+  $normalized_url = strtok($normalized_url, '#');
+
   if (substr_count($normalized_url, '/') < 3) {
     $normalized_url .= '/';
   }
@@ -154,7 +162,7 @@ function _openid_create_message($data) {
 
   foreach ($data as $key => $value) {
     if ((strpos($key, ':') !== FALSE) || (strpos($key, "\n") !== FALSE) || (strpos($value, "\n") !== FALSE)) {
-      return null;
+      return NULL;
     }
     $serialized .= "$key:$value\n";
   }
@@ -267,27 +275,16 @@ function _openid_signature($association, $message_array, $keys_to_sign) {
 
 function _openid_hmac($key, $text) {
   if (strlen($key) > OPENID_SHA1_BLOCKSIZE) {
-    $key = _openid_sha1($key, TRUE);
+    $key = sha1($key, TRUE);
   }
 
   $key = str_pad($key, OPENID_SHA1_BLOCKSIZE, chr(0x00));
   $ipad = str_repeat(chr(0x36), OPENID_SHA1_BLOCKSIZE);
   $opad = str_repeat(chr(0x5c), OPENID_SHA1_BLOCKSIZE);
-  $hash1 = _openid_sha1(($key ^ $ipad) . $text, TRUE);
-  $hmac = _openid_sha1(($key ^ $opad) . $hash1, TRUE);
+  $hash1 = sha1(($key ^ $ipad) . $text, TRUE);
+  $hmac = sha1(($key ^ $opad) . $hash1, TRUE);
 
   return $hmac;
-}
-
-function _openid_sha1($text) {
-  $hex = sha1($text);
-  $raw = '';
-  for ($i = 0; $i < 40; $i += 2) {
-    $hexcode = substr($hex, $i, 2);
-    $charcode = (int)base_convert($hexcode, 16, 10);
-    $raw .= chr($charcode);
-  }
-  return $raw;
 }
 
 function _openid_dh_base64_to_long($str) {
@@ -343,7 +340,7 @@ function _openid_dh_long_to_binary($long) {
 
 function _openid_dh_xorsecret($shared, $secret) {
   $dh_shared_str = _openid_dh_long_to_binary($shared);
-  $sha1_dh_shared = _openid_sha1($dh_shared_str);
+  $sha1_dh_shared = sha1($dh_shared_str, TRUE);
   $xsecret = "";
   for ($i = 0; $i < strlen($secret); $i++) {
     $xsecret .= chr(ord($secret[$i]) ^ ord($sha1_dh_shared[$i]));
@@ -353,7 +350,7 @@ function _openid_dh_xorsecret($shared, $secret) {
 }
 
 function _openid_dh_rand($stop) {
-  static $duplicate_cache = array();
+  $duplicate_cache = &drupal_static(__FUNCTION__, array());
 
   // Used as the key for the duplicate cache
   $rbytes = _openid_dh_long_to_binary($stop);
@@ -392,7 +389,7 @@ function _openid_dh_rand($stop) {
 }
 
 function _openid_get_bytes($num_bytes) {
-  static $f = null;
+  $f = &drupal_static(__FUNCTION__);
   $bytes = '';
   if (!isset($f)) {
     $f = @fopen(OPENID_RAND_SOURCE, "r");

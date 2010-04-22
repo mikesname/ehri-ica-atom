@@ -1,5 +1,5 @@
 <?php
-// $Id: module.inc,v 1.138 2009/01/14 12:18:37 dries Exp $
+// $Id: module.inc,v 1.179 2010/01/13 05:08:29 webchick Exp $
 
 /**
  * @file
@@ -7,24 +7,28 @@
  */
 
 /**
- * Pass this to module_implements when its cache needs to be written.
- */
-define('MODULE_IMPLEMENTS_WRITE_CACHE', -1);
-
-/**
- * Pass this to module_implements when its cache needs to be cleared.
- */
-define('MODULE_IMPLEMENTS_CLEAR_CACHE', -2);
-
-
-/**
  * Load all the modules that have been enabled in the system table.
+ *
+ * @param $bootstrap
+ *   Whether to load only the reduced set of modules loaded in "bootstrap mode"
+ *   for cached pages. See bootstrap.inc.
+ * @return
+ *   If $bootstrap is NULL, return a boolean indicating whether all modules
+ *   have been loaded.
  */
-function module_load_all() {
-  foreach (module_list(TRUE) as $module) {
-    drupal_load('module', $module);
+function module_load_all($bootstrap = FALSE) {
+  static $has_run = FALSE;
+
+  if (isset($bootstrap)) {
+    foreach (module_list(TRUE, $bootstrap) as $module) {
+      drupal_load('module', $module);
+    }
+    // $has_run will be TRUE if $bootstrap is FALSE.
+    $has_run = !$bootstrap;
   }
+  return $has_run;
 }
+
 
 /**
  * Collect a list of all loaded modules. During the bootstrap, return only
@@ -33,9 +37,12 @@ function module_load_all() {
  * @param $refresh
  *   Whether to force the module list to be regenerated (such as after the
  *   administrator has changed the system settings).
+ * @param $bootstrap
+ *   Whether to return the reduced set of modules loaded in "bootstrap mode"
+ *   for cached pages. See bootstrap.inc.
  * @param $sort
- *   By default, modules are ordered by weight and filename. Set this option to
- *   TRUE to return a module list ordered only by module name.
+ *   By default, modules are ordered by weight and module name. Set this option
+ *   to TRUE to return a module list ordered only by module name.
  * @param $fixed_list
  *   (Optional) Override the module list with the given modules. Stays until the
  *   next call with $refresh = TRUE.
@@ -43,7 +50,7 @@ function module_load_all() {
  *   An associative array whose keys and values are the names of all loaded
  *   modules.
  */
-function module_list($refresh = FALSE, $sort = FALSE, $fixed_list = NULL) {
+function module_list($refresh = FALSE, $bootstrap = FALSE, $sort = FALSE, $fixed_list = NULL) {
   static $list = array(), $sorted_list;
 
   if (empty($list) || $refresh || $fixed_list) {
@@ -56,12 +63,14 @@ function module_list($refresh = FALSE, $sort = FALSE, $fixed_list = NULL) {
       }
     }
     else {
-      $result = db_query("SELECT name, filename FROM {system} WHERE type = 'module' AND status = 1 ORDER BY weight ASC, filename ASC");
-      foreach ($result as $module) {
-        if (file_exists($module->filename)) {
-          drupal_get_filename('module', $module->name, $module->filename);
-          $list[$module->name] = $module->name;
-        }
+      // As this is the $refresh case, make sure that system_list() returns
+      // fresh data.
+      drupal_static_reset('system_list');
+      if ($bootstrap) {
+        $list = system_list('bootstrap');
+      }
+      else {
+        $list = system_list('module_enabled');
       }
     }
   }
@@ -76,72 +85,96 @@ function module_list($refresh = FALSE, $sort = FALSE, $fixed_list = NULL) {
 }
 
 /**
- * Rebuild the database cache of module files.
+ * Build a list of bootstrap modules and enabled modules and themes.
+ *
+ * @param $type
+ *   The type of list to return:
+ *   - module_enabled: All enabled modules.
+ *   - bootstrap: All enabled modules required for bootstrap.
+ *   - theme: All themes.
  *
  * @return
- *   The array of filesystem objects used to rebuild the cache.
+ *   An associative array of modules or themes, keyed by name, and having the
+ *   respective database row as value. For $type 'module_enabled' and
+ *   'bootstrap', the array values equal the keys.
+ *
+ * @see module_list()
+ * @see list_themes()
  */
-function module_rebuild_cache() {
-  // Get current list of modules, including uninstalled modules.
-  $files = drupal_system_listing('/\.module$/', 'modules', 'name', 0);
+function system_list($type) {
+  $lists = &drupal_static(__FUNCTION__);
 
-  // Extract current files from database.
-  system_get_files_database($files, 'module');
-
-  ksort($files);
-
-  // Set defaults for module info
-  $defaults = array(
-    'dependencies' => array(),
-    'dependents' => array(),
-    'description' => '',
-    'package' => 'Other',
-    'version' => NULL,
-    'php' => DRUPAL_MINIMUM_PHP,
-    'files' => array(),
-  );
-
-  foreach ($files as $filename => $file) {
-    // Look for the info file.
-    $file->info = drupal_parse_info_file(dirname($file->filename) . '/' . $file->name . '.info');
-
-    // Skip modules that don't provide info.
-    if (empty($file->info)) {
-      unset($files[$filename]);
-      continue;
-    }
-    // Merge in defaults and save.
-    $files[$filename]->info = $file->info + $defaults;
-
-    // Invoke hook_system_info_alter() to give installed modules a chance to
-    // modify the data in the .info files if necessary.
-    drupal_alter('system_info', $files[$filename]->info, $files[$filename]);
-
-    // Update the contents of the system table:
-    if (isset($file->status) || (isset($file->old_filename) && $file->old_filename != $file->filename)) {
-      db_update('system')
-        ->fields(array(
-            'info' => serialize($files[$filename]->info),
-            'name' => $file->name,
-            'filename' => $file->filename))
-        ->condition('filename', $file->old_filename)
-        ->execute();
+  // For bootstrap modules, attempt to fetch the list from cache if possible.
+  // if not fetch only the required information to fire bootstrap hooks
+  // in case we are going to serve the page from cache.
+  if ($type == 'bootstrap') {
+    if ($cached = cache_get('bootstrap_modules', 'cache_bootstrap')) {
+      $bootstrap_list = $cached->data;
     }
     else {
-      // This is a new module.
-      $files[$filename]->status = 0;
-      db_insert('system')
-        ->fields(array(
-            'name' => $file->name,
-            'info' => serialize($files[$filename]->info),
-            'type' => 'module',
-            'filename' => $file->filename,
-            'status' => 0))
-        ->execute();
+      $bootstrap_list = db_query("SELECT name, filename FROM {system} WHERE status = 1 AND bootstrap = 1 AND type = 'module' ORDER BY weight ASC, name ASC")->fetchAllAssoc('name');
+      cache_set('bootstrap_modules', $bootstrap_list, 'cache_bootstrap');
+    }
+    // To avoid a separate database lookup for the filepath, prime the
+    // drupal_get_filename() static cache for bootstrap modules only.
+    // The rest is stored separately to keep the bootstrap module cache small.
+    foreach ($bootstrap_list as $module) {
+      drupal_get_filename('module', $module->name, $module->filename);
+    }
+    // We only return the module names here since module_list() doesn't need
+    // the filename itself.
+    $lists['bootstrap'] = array_keys($bootstrap_list);
+  }
+  // Otherwise build the list for enabled modules and themes.
+  elseif (!isset($lists['module_enabled'])) {
+    if ($cached = cache_get('system_list', 'cache_bootstrap')) {
+      $lists = $cached->data;
+    }
+    else {
+      $lists = array(
+        'module_enabled' => array(),
+        'theme' => array(),
+        'filepaths' => array(),
+      );
+      // The module name (rather than the filename) is used as the fallback
+      // weighting in order to guarantee consistent behavior across different
+      // Drupal installations, which might have modules installed in different
+      // locations in the file system. The ordering here must also be
+      // consistent with the one used in module_implements().
+      $result = db_query("SELECT * FROM {system} ORDER BY weight ASC, name ASC");
+      foreach ($result as $record) {
+        if ($record->type == 'module' && $record->status) {
+          // Build a list of all enabled modules.
+          $lists['module_enabled'][$record->name] = $record->name;
+        }
+        // Build a list of themes.
+        if ($record->type == 'theme') {
+          $lists['theme'][$record->name] = $record;
+        }
+        // Build a list of filenames so drupal_get_filename can use it.
+        if ($record->status) {
+          $lists['filepaths'][] = array('type' => $record->type, 'name' => $record->name, 'filepath' => $record->filename);
+        }
+      }
+      cache_set('system_list', $lists, 'cache_bootstrap');
+    }
+    // To avoid a separate database lookup for the filepath, prime the
+    // drupal_get_filename() static cache with all enabled modules and themes.
+    foreach ($lists['filepaths'] as $item) {
+      drupal_get_filename($item['type'], $item['name'], $item['filepath']);
     }
   }
-  $files = _module_build_dependencies($files);
-  return $files;
+
+  return $lists[$type];
+}
+
+/**
+ * Reset all system_list() caches.
+ */
+function system_list_reset() {
+  drupal_static_reset('system_list');
+  cache_clear_all('bootstrap_modules', 'cache_bootstrap');
+  cache_clear_all('system_list', 'cache_bootstrap');
 }
 
 /**
@@ -157,20 +190,21 @@ function module_rebuild_cache() {
  *     without this module.
  */
 function _module_build_dependencies($files) {
-  require_once DRUPAL_ROOT .'/includes/graph.inc';
+  require_once DRUPAL_ROOT . '/includes/graph.inc';
   $roots = $files;
   foreach ($files as $filename => $file) {
     $graph[$file->name]['edges'] = array();
     if (isset($file->info['dependencies']) && is_array($file->info['dependencies'])) {
-      foreach ($file->info['dependencies'] as $dependency_name) {
-        $graph[$file->name]['edges'][$dependency_name] = 1;
-        unset($roots[$dependency_name]);
+      foreach ($file->info['dependencies'] as $dependency) {
+        $dependency_data = drupal_parse_dependency($dependency);
+        $graph[$file->name]['edges'][$dependency_data['name']] = $dependency_data;
+        unset($roots[$dependency_data['name']]);
       }
     }
   }
   drupal_depth_first_search($graph, array_keys($roots));
   foreach ($graph as $module => $data) {
-    $files[$module]->required_by= isset($data['reverse_paths']) ? $data['reverse_paths'] : array();
+    $files[$module]->required_by = isset($data['reverse_paths']) ? $data['reverse_paths'] : array();
     $files[$module]->requires = isset($data['paths']) ? $data['paths'] : array();
     $files[$module]->sort = $data['weight'];
   }
@@ -203,19 +237,31 @@ function module_load_install($module) {
 /**
  * Load a module include file.
  *
+ * Examples:
+ * @code
+ *   // Load node.admin.inc from the node module.
+ *   module_load_include('inc', 'node', 'node.admin');
+ *   // Load content_types.inc from the node module.
+ *   module_load_include('inc', 'node', 'content_types');
+ * @endcode
+ *
+ * Do not use this function to load an install file. Use module_load_install()
+ * instead.
+ *
  * @param $type
  *   The include file's type (file extension).
  * @param $module
  *   The module to which the include file belongs.
  * @param $name
- *   Optionally, specify the file name. If not set, the module's name is used.
+ *   Optionally, specify the base file name (without the $type extension).
+ *   If not set, $module is used.
  */
 function module_load_include($type, $module, $name = NULL) {
   if (empty($name)) {
     $name = $module;
   }
 
-  if (drupal_function_exists('drupal_get_path')) {
+  if (function_exists('drupal_get_path')) {
     $file = DRUPAL_ROOT . '/' . drupal_get_path('module', $module) . "/$name.$type";
     if (is_file($file)) {
       require_once $file;
@@ -241,9 +287,58 @@ function module_load_all_includes($type, $name = NULL) {
  *
  * @param $module_list
  *   An array of module names.
+ * @param $enable_dependencies
+ *   If TRUE, dependencies will automatically be added and enabled in the
+ *   correct order. This incurs a significant performance cost, so use FALSE
+ *   if you know $module_list is already complete and in the correct order.
+ * @param $disable_modules_installed_hook
+ *   Normally just testing wants to set this to TRUE.
+ * @return
+ *   FALSE if one or more dependencies are missing, TRUE otherwise.
  */
-function module_enable($module_list) {
+function module_enable($module_list, $enable_dependencies = TRUE, $disable_modules_installed_hook = FALSE) {
+  if ($enable_dependencies) {
+    // Get all module data so we can find dependencies and sort.
+    $module_data = system_rebuild_module_data();
+    // Create an associative array with weights as values.
+    $module_list = array_flip(array_values($module_list));
+
+    while (list($module) = each($module_list)) {
+      if (!isset($module_data[$module])) {
+        // This module is not found in the filesystem, abort.
+        return FALSE;
+      }
+      if ($module_data[$module]->status) {
+        // Skip already enabled modules.
+        unset($module_list[$module]);
+        continue;
+      }
+      $module_list[$module] = $module_data[$module]->sort;
+
+      // Add dependencies to the list, with a placeholder weight.
+      // The new modules will be processed as the while loop continues.
+      foreach ($module_data[$module]->info['dependencies'] as $dependency) {
+        if (!isset($module_list[$dependency])) {
+          $module_list[$dependency] = 0;
+        }
+      }
+    }
+
+    if (!$module_list) {
+      // Nothing to do. All modules already enabled.
+      return TRUE;
+    }
+
+    // Sort the module list by pre-calculated weights.
+    arsort($module_list);
+    $module_list = array_keys($module_list);
+  }
+
   $invoke_modules = array();
+
+  // Try to install the enabled modules and collect which were installed.
+  // $module_list is not changed and already installed modules are ignored.
+  $modules_installed = array_filter($module_list, '_drupal_install_module');
   foreach ($module_list as $module) {
     $existing = db_query("SELECT status FROM {system} WHERE type = :type AND name = :name", array(
       ':type' => 'module',
@@ -258,14 +353,25 @@ function module_enable($module_list) {
         ->execute();
       drupal_load('module', $module);
       $invoke_modules[] = $module;
+      watchdog('system', '%module module enabled.', array('%module' => $module), WATCHDOG_INFO);
     }
   }
 
   if (!empty($invoke_modules)) {
-    // Refresh the module list to include the new enabled module.
+    // Refresh the module list to exclude the disabled modules.
+    system_list_reset();
     module_list(TRUE);
-    // Force to regenerate the stored list of hook implementations.
-    registry_rebuild();
+    module_implements('', FALSE, TRUE);
+    // Update the registry to include the new enabled module.
+    registry_update();
+    // Refresh the schema to include the new enabled module.
+    drupal_get_schema(NULL, TRUE);
+
+    // If any modules were newly installed, execute the hook for them.
+    if (!$disable_modules_installed_hook && !empty($modules_installed)) {
+      module_invoke_all('modules_installed', $modules_installed);
+    }
+    _system_update_bootstrap_status();
   }
 
   foreach ($invoke_modules as $module) {
@@ -274,16 +380,18 @@ function module_enable($module_list) {
     // We check for the existence of node_access_needs_rebuild() since
     // at install time, module_enable() could be called while node.module
     // is not enabled yet.
-    if (drupal_function_exists('node_access_needs_rebuild') && !node_access_needs_rebuild() && module_hook($module, 'node_grants')) {
+    if (function_exists('node_access_needs_rebuild') && !node_access_needs_rebuild() && module_hook($module, 'node_grants')) {
       node_access_needs_rebuild(TRUE);
     }
   }
 
   if (!empty($invoke_modules)) {
-    // Invoke the hook_module_enable after all the modules have been
+    // Invoke hook_modules_enabled after all the modules have been
     // enabled.
     module_invoke_all('modules_enabled', $invoke_modules);
   }
+
+  return TRUE;
 }
 
 /**
@@ -291,9 +399,42 @@ function module_enable($module_list) {
  *
  * @param $module_list
  *   An array of module names.
+ * @param $disable_dependents
+ *   If TRUE, dependent modules will automatically be added and disabled in the
+ *   correct order. This incurs a significant performance cost, so use FALSE
+ *   if you know $module_list is already complete and in the correct order.
  */
-function module_disable($module_list) {
+function module_disable($module_list, $disable_dependents = TRUE) {
+  if ($disable_dependents) {
+    // Get all module data so we can find dependents and sort.
+    $module_data = system_rebuild_module_data();
+    // Create an associative array with weights as values.
+    $module_list = array_flip(array_values($module_list));
+
+    while (list($module) = each($module_list)) {
+      if (!isset($module_data[$module]) || !$module_data[$module]->status) {
+        // This module doesn't exist or is already disabled, skip it.
+        unset($module_list[$module]);
+        continue;
+      }
+      $module_list[$module] = $module_data[$module]->sort;
+
+      // Add dependent modules to the list, with a placeholder weight.
+      // The new modules will be processed as the while loop continues.
+      foreach ($module_data[$module]->required_by as $dependent => $dependent_data) {
+        if (!isset($module_list[$dependent]) && !strstr($module_data[$dependent]->filename, '.profile')) {
+          $module_list[$dependent] = 0;
+        }
+      }
+    }
+
+    // Sort the module list by pre-calculated weights.
+    asort($module_list);
+    $module_list = array_keys($module_list);
+  }
+
   $invoke_modules = array();
+
   foreach ($module_list as $module) {
     if (module_exists($module)) {
       // Check if node_access table needs rebuilding.
@@ -309,17 +450,21 @@ function module_disable($module_list) {
         ->condition('name', $module)
         ->execute();
       $invoke_modules[] = $module;
+      watchdog('system', '%module module disabled.', array('%module' => $module), WATCHDOG_INFO);
     }
   }
 
   if (!empty($invoke_modules)) {
-    // Invoke hook_module_disable before disabling modules,
+    // Refresh the module list to exclude the disabled modules.
+    system_list_reset();
+    module_list(TRUE);
+    module_implements('', FALSE, TRUE);
+    // Invoke hook_modules_disabled before disabling modules,
     // so we can still call module hooks to get information.
     module_invoke_all('modules_disabled', $invoke_modules);
-    // Refresh the module list to exclude the disabled modules.
-    module_list(TRUE);
-    // Force to regenerate the stored list of hook implementations.
-    registry_rebuild();
+    // Update the registry to remove the newly-disabled module.
+    registry_update();
+    _system_update_bootstrap_status();
   }
 
   // If there remains no more node_access module, rebuilding will be
@@ -335,19 +480,19 @@ function module_disable($module_list) {
  * Allow modules to interact with the Drupal core.
  *
  * Drupal's module system is based on the concept of "hooks". A hook is a PHP
- * function that is named foo_bar(), where "foo" is the name of the module (whose
- * filename is thus foo.module) and "bar" is the name of the hook. Each hook has
- * a defined set of parameters and a specified result type.
+ * function that is named foo_bar(), where "foo" is the name of the module
+ * (whose filename is thus foo.module) and "bar" is the name of the hook. Each
+ * hook has a defined set of parameters and a specified result type.
  *
- * To extend Drupal, a module need simply implement a hook. When Drupal wishes to
- * allow intervention from modules, it determines which modules implement a hook
- * and call that hook in all enabled modules that implement it.
+ * To extend Drupal, a module need simply implement a hook. When Drupal wishes
+ * to allow intervention from modules, it determines which modules implement a
+ * hook and calls that hook in all enabled modules that implement it.
  *
  * The available hooks to implement are explained here in the Hooks section of
  * the developer documentation. The string "hook" is used as a placeholder for
- * the module name is the hook definitions. For example, if the module file is
- * called example.module, then hook_help() as implemented by that module would be
- * defined as example_help().
+ * the module name in the hook definitions. For example, if the module file is
+ * called example.module, then hook_help() as implemented by that module would
+ * be defined as example_help().
  */
 
 /**
@@ -362,113 +507,152 @@ function module_disable($module_list) {
  *   implemented in that module.
  */
 function module_hook($module, $hook) {
-  $function = $module . '_' . $hook;
-  if (defined('MAINTENANCE_MODE')) {
-    return function_exists($function);
-  }
-  else {
-    return drupal_function_exists($function);
-  }
+  return function_exists($module . '_' . $hook);
 }
 
 /**
  * Determine which modules are implementing a hook.
  *
  * @param $hook
- *   The name of the hook (e.g. "help" or "menu"). Special cases:
- *     MODULE_IMPLEMENTS_CLEAR_CACHE: Force the stored list of hook
- *   implementations to be regenerated (such as after enabling a new module,
- *     before processing hook_enable).
- *     MODULE_IMPLEMENTS_WRITE_CACHE: Write the stored list of hook
- *     implementations into the cache_registry table.
+ *   The name of the hook (e.g. "help" or "menu").
  * @param $sort
- *   By default, modules are ordered by weight and filename. By setting this
- *   option to TRUE, modules will be ordered by module name.
+ *   By default, modules are ordered by weight and filename, settings this option
+ *   to TRUE, module list will be ordered by module name.
+ * @param $reset
+ *   For internal use only: Whether to force the stored list of hook
+ *   implementations to be regenerated (such as after enabling a new module,
+ *   before processing hook_enable).
+ *
  * @return
  *   An array with the names of the modules which are implementing this hook.
- *   All enabled modules are taken into consideration and the files containing
- *   the implementations are loaded as necessary.
+ *
+ * @see module_implements_write_cache().
  */
-function module_implements($hook, $sort = FALSE) {
-  static $implementations = array(), $sorted_implementations = array(), $loaded = array(), $cached_hooks = 0;
-
-  if (defined('MAINTENANCE_MODE')) {
-    return _module_implements_maintenance($hook, $sort);
+function module_implements($hook, $sort = FALSE, $reset = FALSE) {
+  // Use the advanced drupal_static() pattern, since this is called very often.
+  static $drupal_static_fast;
+  if (!isset($drupal_static_fast)) {
+    $drupal_static_fast['implementations'] = &drupal_static(__FUNCTION__);
   }
-  if ($hook === MODULE_IMPLEMENTS_CLEAR_CACHE) {
+  $implementations = &$drupal_static_fast['implementations'];
+
+  // We maintain a persistent cache of hook implementations in addition to the
+  // static cache to avoid looping through every module and every hook on each
+  // request. Benchmarks show that the benefit of this caching outweighs the
+  // additional database hit even when using the default database caching
+  // backend and only a small number of modules are enabled. The cost of the
+  // cache_get() is more or less constant and reduced further when non-database
+  // caching backends are used, so there will be more significant gains when a
+  // large number of modules are installed or hooks invoked, since this can
+  // quickly lead to module_hook() being called several thousand times
+  // per request.
+  if ($reset) {
     $implementations = array();
-    $sorted_implementations = array();
-    $loaded = array();
-    $cached_hooks = 0;
-    cache_clear_all('hooks', 'cache_registry');
-    return;
-  }
-  if ($hook === MODULE_IMPLEMENTS_WRITE_CACHE) {
-    // Only write this to cache if we loaded new implementations.
-    if (count($implementations) > $cached_hooks) {
-      cache_set('hooks', $implementations, 'cache_registry');
-    }
+    cache_set('module_implements', array(), 'cache_bootstrap');
+    drupal_static_reset('module_hook_info');
+    drupal_static_reset('drupal_alter');
+    cache_clear_all('hook_info', 'cache_bootstrap');
     return;
   }
 
-  if (!isset($loaded[$hook])) {
-    if (empty($implementations) && ($cache = cache_get('hooks', 'cache_registry'))) {
-      $implementations = $cache->data;
-      $cached_hooks = count($implementations);
+  // Fetch implementations from cache.
+  if (empty($implementations)) {
+    $implementations = cache_get('module_implements', 'cache_bootstrap');
+    if ($implementations === FALSE) {
+      $implementations = array();
     }
-    if (!isset($implementations[$hook])) {
-      $implementations[$hook] = db_query("SELECT module FROM {registry} WHERE type = 'function' AND suffix = :hook ORDER BY weight, module", array(':hook' => $hook))->fetchCol();
+    else {
+      $implementations = $implementations->data;
     }
-    foreach ($implementations[$hook] as $module) {
-      $function = $module . '_' . $hook;
-      if (!function_exists($function)) {
-        drupal_function_exists($function);
+  }
+
+  if (!isset($implementations[$hook])) {
+    $hook_info = module_hook_info();
+    $implementations[$hook] = array();
+    $list = module_list(FALSE, FALSE, $sort);
+    foreach ($list as $module) {
+      $include_file = FALSE;
+      if (module_hook($module, $hook) || (isset($hook_info[$hook]['group']) && $include_file = module_load_include('inc', $module, $module . '.' . $hook_info[$hook]['group']) && module_hook($module, $hook))) {
+        $implementations[$hook][$module] = $include_file ? $hook_info[$hook]['group'] : FALSE;
+        // We added something to the cache, so write it when we are done.
+        $implementations['#write_cache'] = TRUE;
       }
     }
-    $loaded[$hook] = TRUE;
-  }
-
-  if ($sort) {
-    if (!isset($sorted_implementations[$hook])) {
-      $sorted_implementations[$hook] = $implementations[$hook];
-      sort($sorted_implementations[$hook]);
-    }
-    return $sorted_implementations[$hook];
   }
   else {
-    return $implementations[$hook];
+    foreach ($implementations[$hook] as $module => $group) {
+      // If this hook implementation is stored in a lazy-loaded file, so include
+      // that file first.
+      if ($group) {
+        module_load_include('inc', $module, "$module.$group");
+      }
+      // It is possible that a module removed a hook implementation without the
+      // implementations cache being rebuilt yet, so we check module_hook() on
+      // each request to avoid undefined function errors.
+      if (!module_hook($module, $hook)) {
+        // Clear out the stale implementation from the cache and force a cache
+        // refresh to forget about no longer existing hook implementations.
+        unset($implementations[$hook][$module]);
+        $implementations['#write_cache'] = TRUE;
+      }
+    }
   }
+
+  return array_keys($implementations[$hook]);
 }
 
 /**
- * This is the maintenance version of module_implements for internal use only.
- *
- * This function is called whenever MAINTENANCE_MODE is defined and is a
- * safe code path for Drupal installation or upgrade because it does not use
- * the database, instead it uses module_list. @see module_list $fixed_list on
- * how to make module_list also DB independent.
- *
- * @param $hook
- *   The name of the hook (e.g. "help" or "menu").
- * @param $sort
- *   By default, modules are ordered by weight and filename, settings this
- *   option to TRUE, module list will be ordered by module name.
- * @return
- *   An array with the names of the modules which are implementing this hook.
- *   Only enabled and already loaded modules are taken into consideration.
+ * Retrieve a list of what hooks are explicitly declared.
  */
-function _module_implements_maintenance($hook, $sort = FALSE) {
-  $implementations = array();
-  foreach (module_list() as $module) {
-    $function = $module . '_' . $hook;
-    if (function_exists($function)) {
-      $implementations[] = $module;
+function module_hook_info() {
+  $hook_info = &drupal_static(__FUNCTION__, array());
+
+  if (empty($hook_info)) {
+    $cache = cache_get('hook_info', 'cache_bootstrap');
+    if ($cache === FALSE) {
+      // Rebuild the cache and save it.
+      // We can't use module_invoke_all() here or it would cause an infinite
+      // loop.
+      foreach (module_list() as $module) {
+        $function = $module . '_hook_info';
+        if (function_exists($function)) {
+          $result = $function();
+          if (isset($result) && is_array($result)) {
+            $hook_info = array_merge_recursive($hook_info, $result);
+          }
+        }
+      }
+      // We can't use drupal_alter() for the same reason as above.
+      foreach (module_list() as $module) {
+        $function = $module . '_hook_info_alter';
+        if (function_exists($function)) {
+          $function($hook_info);
+        }
+      }
+      cache_set('hook_info', $hook_info, 'cache_bootstrap');
     }
-    if ($sort) {
-      sort($implementations);
+    else {
+      $hook_info = $cache->data;
     }
   }
-  return $implementations;
+
+  return $hook_info;
+}
+
+/**
+ * Writes the hook implementation cache.
+ *
+ * @see module_implements()
+ */
+function module_implements_write_cache() {
+  $implementations = &drupal_static('module_implements');
+  // Check whether we need to write the cache. We do not want to cache hooks
+  // which are only invoked on HTTP POST requests since these do not need to be
+  // optimized as tightly, and not doing so keeps the cache entry smaller.
+  if (isset($implementations['#write_cache']) && ($_SERVER['REQUEST_METHOD'] == 'GET' || $_SERVER['REQUEST_METHOD'] == 'HEAD')) {
+    unset($implementations['#write_cache']);
+    cache_set('module_implements', $implementations, 'cache_bootstrap');
+  }
 }
 
 /**
@@ -510,7 +694,7 @@ function module_invoke_all() {
   $return = array();
   foreach (module_implements($hook) as $module) {
     $function = $module . '_' . $hook;
-    if (drupal_function_exists($function)) {
+    if (function_exists($function)) {
       $result = call_user_func_array($function, $args);
       if (isset($result) && is_array($result)) {
         $return = array_merge_recursive($return, $result);
@@ -534,11 +718,16 @@ function module_invoke_all() {
 function drupal_required_modules() {
   $files = drupal_system_listing('/\.info$/', 'modules', 'name', 0);
   $required = array();
+
+  // An install profile is required and one must always be loaded.
+  $required[] = drupal_get_profile();
+
   foreach ($files as $name => $file) {
-    $info = drupal_parse_info_file($file->filename);
+    $info = drupal_parse_info_file($file->uri);
     if (!empty($info) && !empty($info['required']) && $info['required']) {
       $required[] = $name;
     }
   }
+
   return $required;
 }

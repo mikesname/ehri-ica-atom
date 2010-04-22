@@ -1,6 +1,6 @@
-/* $Id: dblog.css,v 1.5 2008/09/02 16:56:33 dries Exp $ */
+/* $Id: dblog.css,v 1.8 2010/01/03 21:01:04 webchick Exp $ */
 
-#edit-type-wrapper, #edit-severity-wrapper {
+.form-item-type, .form-item-severity {
   float: left; /* LTR */
   padding-right: .8em; /* LTR */
   margin: 0.1em;
@@ -11,9 +11,14 @@
    */
   width: 15em;
 }
-#dblog-filter-form .form-item select.form-select {
+#dblog-filter-form .form-type-select select {
   width: 100%;
 }
+#dblog-filter-form .form-actions {
+  float: left;
+  padding: 3ex 0 0 1em;
+}
+
 tr.dblog-user {
   background: #ffd;
 }

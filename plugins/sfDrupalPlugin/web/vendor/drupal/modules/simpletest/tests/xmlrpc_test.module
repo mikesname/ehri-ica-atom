@@ -1,5 +1,5 @@
 <?php
-// $Id: xmlrpc_test.module,v 1.3 2008/10/15 13:56:08 dries Exp $
+// $Id: xmlrpc_test.module,v 1.5 2009/12/04 16:49:47 dries Exp $
 
 function xmlrpc_test_arrayOfStructsTest($array) {
   $sum = 0;
@@ -47,7 +47,7 @@ function xmlrpc_test_simpleStructReturnTest($number) {
 }
 
 /**
- * Implementation of hook_xmlrpc()
+ * Implements hook_xmlrpc().
  */
 function xmlrpc_test_xmlrpc() {
   return array(

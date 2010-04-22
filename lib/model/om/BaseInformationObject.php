@@ -378,11 +378,9 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
 
   protected function update($connection = null)
   {
-    // Update nested set keys only if parent id has changed
-    if (isset($this->values['parentId']))
+        if (isset($this->values['parentId']))
     {
-      // Get the "original" parentId before any updates
-      $offset = 0; 
+            $offset = 0; 
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -397,9 +395,7 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
         }
       }
       
-      // If updated value of parentId is different then original value,
-      // update the nested set
-      if ($originalParentId != $this->values['parentId'])
+                  if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }

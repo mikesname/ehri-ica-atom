@@ -1,5 +1,5 @@
 <?php
-// $Id: schema.inc,v 1.7 2009/01/26 14:08:42 dries Exp $
+// $Id: schema.inc,v 1.22 2009/12/15 08:30:53 dries Exp $
 
 /**
  * @file
@@ -12,6 +12,66 @@
  */
 
 class DatabaseSchema_pgsql extends DatabaseSchema {
+
+  /**
+   * A cache of information about blob columns and sequences of tables.
+   *
+   * This is collected by DatabaseConnection_pgsql->queryTableInformation(),
+   * by introspecting the database.
+   *
+   * @see DatabaseConnection_pgsql->queryTableInformation()
+   * @var array
+   */
+  protected $tableInformation = array();
+
+  /**
+   * Fetch the list of blobs and sequences used on a table.
+   *
+   * We introspect the database to collect the information required by insert
+   * and update queries.
+   *
+   * @param $table_name
+   *   The non-prefixed name of the table.
+   * @return
+   *   An object with two member variables:
+   *     - 'blob_fields' that lists all the blob fields in the table.
+   *     - 'sequences' that lists the sequences used in that table.
+   */
+  public function queryTableInformation($table) {
+    // Generate a key to reference this table's information on.
+    $key = $this->connection->prefixTables('{' . $table . '}');
+    if (!strpos($key, '.')) {
+      $key = 'public.' . $key;
+    }
+
+    if (!isset($this->tableInformation[$key])) {
+      // Split the key into schema and table for querying.
+      list($schema, $table_name) = explode('.', $key);
+      $table_information = (object) array(
+        'blob_fields' => array(),
+        'sequences' => array(),
+      );
+      // Don't use {} around information_schema.columns table.
+      $result = $this->connection->query("SELECT column_name, data_type, column_default FROM information_schema.columns WHERE table_schema = :schema AND table_name = :table AND (data_type = 'bytea' OR (numeric_precision IS NOT NULL AND column_default LIKE :default))", array(
+        ':schema' => $schema,
+        ':table' => $table_name,
+        ':default' => '%nextval%',
+      ));
+      foreach ($result as $column) {
+        if ($column->data_type == 'bytea') {
+          $table_information->blob_fields[$column->column_name] = TRUE;
+        }
+        elseif (preg_match("/nextval\('([^']+)'/", $column->column_default, $matches)) {
+          // We must know of any sequences in the table structure to help us
+          // return the last insert id. If there is more than 1 sequences the
+          // first one (index 0 of the sequences array) will be used.
+          $table_information->sequences[] = $matches[1];
+        }
+      }
+      $this->tableInformation[$key] = $table_information;
+    }
+    return $this->tableInformation[$key];
+  }
 
   /**
    * Generate SQL to create a new table from a Drupal schema definition.
@@ -54,6 +114,18 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
       }
     }
 
+    // Add table comment.
+    if (!empty($table['description'])) {
+      $statements[] = 'COMMENT ON TABLE {' . $name . '} IS ' . $this->prepareComment($table['description']);
+    }
+
+    // Add column comments.
+    foreach ($table['fields'] as $field_name => $field) {
+      if (!empty($field['description'])) {
+        $statements[] = 'COMMENT ON COLUMN {' . $name . '}.' . $field_name . ' IS ' . $this->prepareComment($field['description']);
+      }
+    }
+
     return $statements;
   }
 
@@ -79,7 +151,7 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
       $sql .= " CHECK ($name >= 0)";
     }
 
-    if (!empty($spec['length'])) {
+    if (in_array($spec['type'], array('varchar', 'char', 'text')) && isset($spec['length'])) {
       $sql .= '(' . $spec['length'] . ')';
     }
     elseif (isset($spec['precision']) && isset($spec['scale'])) {
@@ -146,7 +218,8 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
     // Put :normal last so it gets preserved by array_flip. This makes
     // it much easier for modules (such as schema.module) to map
     // database types back into schema types.
-    $map = array(
+    // $map does not use drupal_static as its value never changes.
+    static $map = array(
       'varchar:normal' => 'varchar',
       'char:normal' => 'character',
 
@@ -173,7 +246,11 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
       'blob:big' => 'bytea',
       'blob:normal' => 'bytea',
 
-      'datetime:normal' => 'timestamp',
+      'date:normal' => 'date',
+
+      'datetime:normal' => 'timestamp without time zone',
+
+      'time:normal'     => 'time without time zone',
 
       'serial:tiny' => 'serial',
       'serial:small' => 'serial',
@@ -185,49 +262,29 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
   }
 
   protected function _createKeySql($fields) {
-    $ret = array();
+    $return = array();
     foreach ($fields as $field) {
       if (is_array($field)) {
-        $ret[] = 'substr(' . $field[0] . ', 1, ' . $field[1] . ')';
+        $return[] = 'substr(' . $field[0] . ', 1, ' . $field[1] . ')';
       }
       else {
-        $ret[] = $field;
+        $return[] = '"' . $field . '"';
       }
     }
-    return implode(', ', $ret);
+    return implode(', ', $return);
   }
 
-  /**
-   * Rename a table.
-   *
-   * @param $ret
-   *   Array to which query results will be added.
-   * @param $table
-   *   The table to be renamed.
-   * @param $new_name
-   *   The new name for the table.
-   */
-  function renameTable(&$ret, $table, $new_name) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} RENAME TO {' . $new_name . '}');
+  function renameTable($table, $new_name) {
+    $this->connection->query('ALTER TABLE {' . $table . '} RENAME TO {' . $new_name . '}');
   }
 
-  /**
-   * Drop a table.
-   *
-   * @param $ret
-   *   Array to which query results will be added.
-   * @param $table
-   *   The table to be dropped.
-   */
-  public function dropTable(&$ret, $table) {
-    $ret[] = update_sql('DROP TABLE {' . $table . '}');
+  public function dropTable($table) {
+    $this->connection->query('DROP TABLE {' . $table . '}');
   }
 
   /**
    * Add a new field to a table.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   Name of the table to be altered.
    * @param $field
@@ -243,10 +300,12 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    *   table along with adding the field. The format is the same as a
    *   table specification but without the 'fields' element. If you are
    *   adding a type 'serial' field, you MUST specify at least one key
-   *   or index including it in this array. @see db_change_field for more
+   *   or index including it in this array. See db_change_field() for more
    *   explanation why.
+   *
+   * @see db_change_field()
    */
-  public function addField(&$ret, $table, $field, $spec, $new_keys = array()) {
+  public function addField($table, $field, $spec, $new_keys = array()) {
     $fixnull = FALSE;
     if (!empty($spec['not null']) && !isset($spec['default'])) {
       $fixnull = TRUE;
@@ -254,40 +313,39 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
     }
     $query = 'ALTER TABLE {' . $table . '} ADD COLUMN ';
     $query .= $this->createFieldSql($field, $this->processField($spec));
-    $ret[] = update_sql($query);
+    $this->connection->query($query);
     if (isset($spec['initial'])) {
-      // All this because update_sql does not support %-placeholders.
-      $sql = 'UPDATE {' . $table . '} SET ' . $field . ' = ' . db_type_placeholder($spec['type']);
-      $result = db_query($sql, $spec['initial']);
-      $ret[] = array('success' => $result !== FALSE, 'query' => check_plain($sql . ' (' . $spec['initial'] . ')'));
+      $this->connection->update($table)
+        ->fields(array($field, $spec['initial']))
+        ->execute();
     }
     if ($fixnull) {
-      $ret[] = update_sql("ALTER TABLE {" . $table . "} ALTER $field SET NOT NULL");
+      $this->connection->query("ALTER TABLE {" . $table . "} ALTER $field SET NOT NULL");
     }
     if (isset($new_keys)) {
-      $this->_createKeys($ret, $table, $new_keys);
+      $this->_createKeys($table, $new_keys);
+    }
+    // Add column comment.
+    if (!empty($spec['description'])) {
+      $this->connection->query('COMMENT ON COLUMN {' . $table . '}.' . $field . ' IS ' . $this->prepareComment($spec['description']));
     }
   }
 
   /**
    * Drop a field.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $field
    *   The field to be dropped.
    */
-  public function dropField(&$ret, $table, $field) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP COLUMN ' . $field);
+  public function dropField($table, $field) {
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP COLUMN "' . $field . '"');
   }
 
   /**
    * Set the default value for a field.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $field
@@ -295,7 +353,7 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    * @param $default
    *   Default value to be set. NULL for 'default NULL'.
    */
-  public function fieldSetDefault(&$ret, $table, $field, $default) {
+  public function fieldSetDefault($table, $field, $default) {
     if (is_null($default)) {
       $default = 'NULL';
     }
@@ -303,54 +361,50 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
       $default = is_string($default) ? "'$default'" : $default;
     }
 
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ALTER COLUMN ' . $field . ' SET DEFAULT ' . $default);
+    $this->connection->query('ALTER TABLE {' . $table . '} ALTER COLUMN "' . $field . '" SET DEFAULT ' . $default);
   }
 
   /**
    * Set a field to have no default value.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $field
    *   The field to be altered.
    */
-  public function fieldSetNoDefault(&$ret, $table, $field) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ALTER COLUMN ' . $field . ' DROP DEFAULT');
+  public function fieldSetNoDefault($table, $field) {
+    $this->connection->query('ALTER TABLE {' . $table . '} ALTER COLUMN "' . $field . '" DROP DEFAULT');
+  }
+
+  public function indexExists($table, $name) {
+    return $this->connection->query("SELECT COUNT(indexname) FROM pg_indexes WHERE indexname = '$name'")->fetchField();
   }
 
   /**
    * Add a primary key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $fields
    *   Fields for the primary key.
    */
-  public function addPrimaryKey(&$ret, $table, $fields) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ADD PRIMARY KEY (' . implode(',', $fields) . ')');
+  public function addPrimaryKey($table, $fields) {
+    $this->connection->query('ALTER TABLE {' . $table . '} ADD PRIMARY KEY (' . implode(',', $fields) . ')');
   }
 
   /**
    * Drop the primary key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    */
-  public function dropPrimaryKey(&$ret, $table) {
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP CONSTRAINT {' . $table . '}_pkey');
+  public function dropPrimaryKey($table) {
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP CONSTRAINT {' . $table . '}_pkey');
   }
 
   /**
    * Add a unique key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
@@ -358,31 +412,27 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    * @param $fields
    *   An array of field names.
    */
-  function addUniqueKey(&$ret, $table, $name, $fields) {
+  function addUniqueKey($table, $name, $fields) {
     $name = '{' . $table . '}_' . $name . '_key';
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} ADD CONSTRAINT ' . $name . ' UNIQUE (' . implode(',', $fields) . ')');
+    $this->connection->query('ALTER TABLE {' . $table . '} ADD CONSTRAINT "' . $name . '" UNIQUE (' . implode(',', $fields) . ')');
   }
 
   /**
    * Drop a unique key.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
    *   The name of the key.
    */
-  public function dropUniqueKey(&$ret, $table, $name) {
+  public function dropUniqueKey($table, $name) {
     $name = '{' . $table . '}_' . $name . '_key';
-    $ret[] = update_sql('ALTER TABLE {' . $table . '} DROP CONSTRAINT ' . $name);
+    $this->connection->query('ALTER TABLE {' . $table . '} DROP CONSTRAINT "' . $name . '"');
   }
 
   /**
    * Add an index.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
@@ -390,23 +440,21 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    * @param $fields
    *   An array of field names.
    */
-  public function addIndex(&$ret, $table, $name, $fields) {
-    $ret[] = update_sql($this->_createIndexSql($table, $name, $fields));
+  public function addIndex($table, $name, $fields) {
+    $this->connection->query($this->_createIndexSql($table, $name, $fields));
   }
 
   /**
    * Drop an index.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   The table to be altered.
    * @param $name
    *   The name of the index.
    */
-  public function dropIndex(&$ret, $table, $name) {
+  public function dropIndex($table, $name) {
     $name = '{' . $table . '}_' . $name . '_idx';
-    $ret[] = update_sql('DROP INDEX ' . $name);
+    $this->connection->query('DROP INDEX ' . $name);
   }
 
   /**
@@ -432,8 +480,8 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    * and you want to change foo.bar to be type serial, leaving it as the
    * primary key. The correct sequence is:
    * @code
-   * db_drop_primary_key($ret, 'foo');
-   * db_change_field($ret, 'foo', 'bar', 'bar',
+   * db_drop_primary_key('foo');
+   * db_change_field('foo', 'bar', 'bar',
    *   array('type' => 'serial', 'not null' => TRUE),
    *   array('primary key' => array('bar')));
    * @endcode
@@ -456,8 +504,6 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    * unless you are converting a field to be type serial. You can use
    * the $new_keys argument in all cases.
    *
-   * @param $ret
-   *   Array to which query results will be added.
    * @param $table
    *   Name of the table.
    * @param $field
@@ -471,45 +517,68 @@ class DatabaseSchema_pgsql extends DatabaseSchema {
    *   table along with changing the field. The format is the same as a
    *   table specification but without the 'fields' element.
    */
-  public function changeField(&$ret, $table, $field, $field_new, $spec, $new_keys = array()) {
-    $ret[] = update_sql("ALTER TABLE {" . $table . "} RENAME $field TO " . $field . "_old");
+  public function changeField($table, $field, $field_new, $spec, $new_keys = array()) {
+    $this->connection->query('ALTER TABLE {' . $table . '} RENAME "' . $field . '" TO "' . $field . '_old"');
     $not_null = isset($spec['not null']) ? $spec['not null'] : FALSE;
     unset($spec['not null']);
 
-    $this->addField($ret, $table, "$field_new", $spec);
+    if (!array_key_exists('size', $spec)) {
+      $spec['size'] = 'normal';
+    }
+    $this->addField($table, "$field_new", $spec);
 
-    $ret[] = update_sql("UPDATE {" . $table . "} SET $field_new = " . $field . "_old");
+    // We need to typecast the new column to best be able to transfer the data
+    // Schema_pgsql::getFieldTypeMap() will return possibilities that are not
+    // 'cast-able' such as 'serial' - so they need to be casted int instead.
+    $map = $this->getFieldTypeMap();
+    $typecast = $map[$spec['type'] . ':' . $spec['size']];
+    if (in_array($typecast, array('serial', 'bigserial', 'numeric'))) {
+      $typecast = 'int';
+    }
+    $this->connection->query("UPDATE {" . $table . "} SET $field_new = CAST(" . $field . "_old as " . $typecast . ")");
 
     if ($not_null) {
-      $ret[] = update_sql("ALTER TABLE {" . $table . "} ALTER $field_new SET NOT NULL");
+      $this->connection->query("ALTER TABLE {" . $table . "} ALTER $field_new SET NOT NULL");
     }
 
-    $this->dropField($ret, $table, $field . '_old');
+    $this->dropField($table, $field . '_old');
 
     if (isset($new_keys)) {
-      $this->_createKeys($ret, $table, $new_keys);
+      $this->_createKeys($table, $new_keys);
     }
   }
 
   protected function _createIndexSql($table, $name, $fields) {
-    $query = 'CREATE INDEX {' . $table . '}_' . $name . '_idx ON {' . $table . '} (';
+    $query = 'CREATE INDEX "{' . $table . '}_' . $name . '_idx" ON {' . $table . '} (';
     $query .= $this->_createKeySql($fields) . ')';
     return $query;
   }
 
-  protected function _createKeys(&$ret, $table, $new_keys) {
+  protected function _createKeys($table, $new_keys) {
     if (isset($new_keys['primary key'])) {
-      $this->addPrimaryKey($ret, $table, $new_keys['primary key']);
+      $this->addPrimaryKey($table, $new_keys['primary key']);
     }
     if (isset($new_keys['unique keys'])) {
       foreach ($new_keys['unique keys'] as $name => $fields) {
-        $this->addUniqueKey($ret, $table, $name, $fields);
+        $this->addUniqueKey($table, $name, $fields);
       }
     }
     if (isset($new_keys['indexes'])) {
       foreach ($new_keys['indexes'] as $name => $fields) {
-        $this->addIndex($ret, $table, $name, $fields);
+        $this->addIndex($table, $name, $fields);
       }
     }
+  }
+
+  /**
+   * Retrieve a table or column comment.
+   */
+  public function getComment($table, $column = NULL) {
+    $table = $this->connection->prefixTables('{' . $table . '}');
+    // Don't use {} around pg_class, pg_attribute tables.
+    if (isset($column)) {
+      $this->connection->query('SELECT col_description(oid, attnum) FROM pg_class, pg_attribute WHERE attrelid = oid AND relname = ? AND attname = ?', array($table, $column))->fetchField();
+    }
+    $this->connection->query('SELECT obj_description(oid, ?) FROM pg_class WHERE relname = ?', array('pg_class', $table))->fetchField();
   }
 }

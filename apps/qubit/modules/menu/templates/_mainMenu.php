@@ -1,15 +1,9 @@
-  <div id="menu-main">
+<div class="section" id="mainMenu">
 
-    <div class='versionNumber' style='visibility:<?php echo $versionNumberVisibility ?>;'>
-      <?php echo $versionNumber ?>
-    </div>
+  <h2 class="element-invisible"><?php echo __('Main menu') ?></h2>
 
-    <?php echo QubitMenu::displayHierarchyAsList($mainMenu, 0, $sf_data->getRaw('options')) ?>
+  <div class="content">
+    <?php echo QubitMenu::displayHierarchyAsList($mainMenu, 0, $options) ?>
   </div>
 
-  <?php if($showSecondaryMenu): ?>
-  <div class="menu-secondary">
-    <?php echo QubitMenu::displayHierarchyAsList($mainMenu, 0, $sf_data->getRaw('options')) ?>
-  </div>
-  <?php endif; ?>
-
+</div>

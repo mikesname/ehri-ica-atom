@@ -30,20 +30,6 @@ class menuQuickLinksComponent extends sfComponent
   public function execute($request)
   {
     // Get menu objects
-    $this->quickLinks = QubitMenu::getById(QubitMenu::QUICK_LINKS_ID);
-
-    // Hide login/logout links depending on authentication state
-    $options = array();
-    if ($this->getUser()->isAuthenticated())
-    {
-      $options['overrideVisibility']['log in'] = 'hidden';
-    }
-    else
-    {
-      $options['overrideVisibility']['logout'] = 'hidden';
-      $options['overrideVisibility']['my profile'] = 'hidden';
-    }
-
-    $this->options = $options;
+    $this->menu = QubitMenu::getById(QubitMenu::QUICK_LINKS_ID);
   }
 }

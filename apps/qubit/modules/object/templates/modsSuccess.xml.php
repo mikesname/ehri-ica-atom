@@ -93,7 +93,7 @@
 <?php endif; ?>
 
 <?php if (strlen($value = $baseObject->getAccessConditions(array('cultureFallback' => true))) > 0) : ?>
-<accessCondition><?php echo nl2br($value) ?></accessCondition>
+<accessCondition><?php echo $value ?></accessCondition>
 <?php endif; ?>
 
 <recordInfo>

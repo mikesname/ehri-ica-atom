@@ -1,63 +1,68 @@
 <?php
-// $Id: field.install,v 1.1 2009/02/03 17:30:11 dries Exp $
+// $Id: field.install,v 1.17 2009/12/04 16:49:46 dries Exp $
+
 /**
- * Implementation of hook_install().
+ * @file
+ * Install, update and uninstall functions for the field module.
  */
-function field_install() {
-  drupal_install_schema('field');
-}
-
 
 /**
- * Implementation of hook_uninstall().
- */
-function field_uninstall() {
-  drupal_uninstall_schema('field');
-}
-
-/**
- * Implementation of hook_enable().
- */
-function field_enable() {
-  // Make sure old data is emptied out of the caches, since it
-  // may no longer be valid since the module was last enabled,
-  // especially if not all the same field modules are enabled
-  // as before. Especially needed during updates.
-  module_load_include('inc', 'field', 'field.crud');
-  module_load_include('inc', 'field', 'field.info');
-  cache_clear_all('*', 'cache_field', TRUE);
-  field_cache_clear(TRUE);
-}
-
-/**
- * Implementation of hook_disable().
- */
-function field_disable() {
-  // Make sure old data is emptied out of the caches, since it
-  // may no longer be valid when the module is re-enabled.
-  module_load_include('inc', 'field', 'field.crud');
-  cache_clear_all('*', 'cache_field', TRUE);
-  field_cache_clear(TRUE);
-}
-
-/**
- * Implementation of hook_schema.
+ * Implements hook_schema().
  */
 function field_schema() {
   // Static (meta) tables.
   $schema['field_config'] = array(
     'fields' => array(
+      'id' => array(
+        'type' => 'serial',
+        'not null' => TRUE,
+        'description' => 'The primary identifier for a field',
+      ),
       'field_name' => array(
         'type' => 'varchar',
         'length' => 32,
         'not null' => TRUE,
-        'description' => 'The name of this field',
+        'description' => 'The name of this field. Non-deleted field names are unique, but multiple deleted fields can have the same name.',
       ),
       'type' => array(
         'type' => 'varchar',
         'length' => 128,
         'not null' => TRUE,
-        'description' => 'The type of this field, coming from a field module',
+        'description' => 'The type of this field.',
+      ),
+     'module' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The module that implements the field type.',
+      ),
+      'active' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Boolean indicating whether the module that implements the field type is enabled.',
+      ),
+      'storage_type' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'description' => 'The storage backend for the field.',
+      ),
+      'storage_module' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => '',
+        'description' => 'The module that implements the storage backend.',
+      ),
+      'storage_active' => array(
+        'type' => 'int',
+        'size' => 'tiny',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'Boolean indicating whether the module that implements the storage backend is enabled.',
       ),
       'locked' => array(
         'type' => 'int',
@@ -66,30 +71,24 @@ function field_schema() {
         'default' => 0,
         'description' => '@TODO',
       ),
-      'settings' => array(
+      'data' => array(
         'type' => 'text',
         'size' => 'medium',
         'not null' => TRUE,
         'serialize' => TRUE,
-        'description' => 'Field specific settings, for example maximum length',
-      ),
-      'module' => array(
-        'type' => 'varchar',
-        'length' => 128,
-        'not null' => TRUE,
-        'default' => '',
+        'description' => 'Serialized data containing the field properties that do not warrant a dedicated column.',
       ),
       'cardinality' => array(
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
-          'default' => 0,
+        'default' => 0,
       ),
-      'active' => array(
+      'translatable' => array(
         'type' => 'int',
         'size' => 'tiny',
         'not null' => TRUE,
-          'default' => 0,
+        'default' => 0,
       ),
       'deleted' => array(
         'type' => 'int',
@@ -98,27 +97,50 @@ function field_schema() {
         'default' => 0,
       ),
     ),
-    'primary key' => array('field_name'),
+    'primary key' => array('id'),
     'indexes' => array(
-      // used by field_read_fields
-      'active_deleted' => array('active', 'deleted'),
-      // used by field_modules_disabled
+      'field_name' => array('field_name'),
+      // Used by field_read_fields().
+      'active' => array('active'),
+      'storage_active' => array('storage_active'),
+      'deleted' => array('deleted'),
+      // Used by field_modules_disabled().
       'module' => array('module'),
-      // used by field_associate_fields
+      'storage_module' => array('storage_module'),
+      // Used by field_associate_fields().
       'type' => array('type'),
+      'storage_type' => array('storage_type'),
     ),
   );
   $schema['field_config_instance'] = array(
     'fields' => array(
-      'field_name'        => array('type' => 'varchar', 'length' => 32, 'not null' => TRUE, 'default' => ''),
-      'bundle'            => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
-      'widget_type'       => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
-      'widget_module'     => array('type' => 'varchar', 'length' => 128, 'not null' => TRUE, 'default' => ''),
-      'widget_active' => array(
-        'type' => 'int',
-        'size' => 'tiny',
+      'id' => array(
+        'type' => 'serial',
         'not null' => TRUE,
-        'default' => 0,
+        'description' => 'The primary identifier for a field instance',
+      ),
+      'field_id' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'description' => 'The identifier of the field attached by this instance',
+      ),
+      'field_name' => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'object_type'       => array(
+        'type' => 'varchar',
+        'length' => 32,
+        'not null' => TRUE,
+        'default' => ''
+      ),
+      'bundle' => array(
+        'type' => 'varchar',
+        'length' => 128,
+        'not null' => TRUE,
+        'default' => ''
       ),
       'data' => array(
         'type' => 'text',
@@ -126,11 +148,6 @@ function field_schema() {
         'not null' => TRUE,
         'serialize' => TRUE,
       ),
-      'weight' => array(
-        'type' => 'int',
-        'not null' => TRUE,
-        'default' => 0,
-      ),
       'deleted' => array(
         'type' => 'int',
         'size' => 'tiny',
@@ -138,14 +155,12 @@ function field_schema() {
         'default' => 0,
       ),
     ),
-    'primary key' => array('field_name', 'bundle'),
+    'primary key' => array('id'),
     'indexes' => array(
-      // used by field_read_instances
-      'widget_active_deleted' => array('widget_active', 'deleted'),
-      // used by field_modules_disabled
-      'widget_module' => array('widget_module'),
-      // used by field_associate_fields
-      'widget_type' => array('widget_type'),
+      // Used by field_delete_instance().
+      'field_name_bundle' => array('field_name', 'object_type', 'bundle'),
+      // Used by field_read_instances().
+      'deleted' => array('deleted'),
     ),
   );
   $schema['cache_field'] = drupal_get_schema_unprocessed('system', 'cache');

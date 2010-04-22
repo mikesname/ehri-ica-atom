@@ -19,4 +19,102 @@
 
 class QubitFunction extends BaseFunction
 {
+  public function __toString()
+  {
+    return $this->getAuthorizedFormOfName(array('cultureFallback' => true));
+  }
+
+  public function __get($name)
+  {
+    $args = func_get_args();
+
+    $options = array();
+    if (1 < count($args))
+    {
+      $options = $args[1];
+    }
+
+    switch ($name)
+    {
+      case 'language':
+      case 'script':
+
+        if (!isset($this->values[$name]))
+        {
+          $criteria = new Criteria;
+          $this->addPropertysCriteria($criteria);
+          $criteria->add(QubitProperty::NAME, $name);
+
+          if (1 == count($query = QubitProperty::get($criteria)))
+          {
+            $this->values[$name] = $query[0];
+          }
+        }
+
+        if (isset($this->values[$name]))
+        {
+          return unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)));
+        }
+
+        return;
+    }
+
+    return call_user_func_array(array($this, 'BaseFunction::__get'), $args);
+  }
+
+  public function __set($name, $value)
+  {
+    $args = func_get_args();
+
+    $options = array();
+    if (2 < count($args))
+    {
+      $options = $args[2];
+    }
+
+    switch ($name)
+    {
+      case 'language':
+      case 'script':
+
+        if (!isset($this->values[$name]))
+        {
+          $criteria = new Criteria;
+          $this->addPropertysCriteria($criteria);
+          $criteria->add(QubitProperty::NAME, $name);
+
+          if (1 == count($query = QubitProperty::get($criteria)))
+          {
+            $this->values[$name] = $query[0];
+          }
+          else
+          {
+            $this->values[$name] = new QubitProperty;
+            $this->values[$name]->name = $name;
+            $this->propertys[] = $this->values[$name];
+          }
+        }
+
+        $this->values[$name]->__set('value', serialize($value), $options + array('sourceCulture' => true));
+
+        return $this;
+    }
+
+    return call_user_func_array(array($this, 'BaseFunction::__set'), $args);
+  }
+
+  public function getLabel()
+  {
+    $label = null;
+    if (null !== $this->descriptionIdentifier)
+    {
+      $label .= $this->descriptionIdentifier;
+    }
+    if (null !== $value = $this->getAuthorizedFormOfName(array('cultureFallback' => true)))
+    {
+      $label = (0 < strlen($label)) ? $label.' - '.$value : $value;
+    }
+
+    return $label;
+  }
 }

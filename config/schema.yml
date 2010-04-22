@@ -7,11 +7,11 @@ propel:
     description_detail_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     description_identifier: varchar(255)
     parent_id: { type: integer, foreignTable: actor, foreignReference: id }
-    lft: integer
-    rgt: integer
+    lft: { type: integer, required: true, nestedSetLeftKey: true }
+    rgt: { type: integer, required: true, nestedSetRightKey: true }
 
   actor_i18n:
-    authorized_form_of_name: { type: varchar(255), required: true }
+    authorized_form_of_name: varchar(255)
     dates_of_existence: varchar(255)
     history: longvarchar
     places: longvarchar
@@ -25,16 +25,6 @@ propel:
     sources: longvarchar
     revision_history: longvarchar
     
-  actor_name:
-    actor_id: { type: integer, required: true, foreignTable: actor, foreignReference: id, onDelete: cascade }
-    type_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
-    created_at:
-    updated_at:
-
-  actor_name_i18n:
-    name: varchar(255)
-    note: varchar(255)
-
   contact_information:
     actor_id: { type: integer, required: true, foreignTable: actor, foreignReference: id, onDelete: cascade }
     primary_contact: boolean
@@ -46,7 +36,7 @@ propel:
     fax: varchar(255)
     postal_code: varchar(255)
     country_code: varchar(255)
-    longtitude: float
+    longitude: float
     latitude: float
     created_at:
     updated_at:
@@ -89,24 +79,27 @@ propel:
     date_display: varchar(255)
 
   function:
-    id: { type: integer, required: true, primaryKey: true, foreignTable: term, foreignReference: id, onDelete: cascade, inheritanceKey: true }
+    id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     type_id: { type: integer, foreignTable: term, foreignReference: id }
+    parent_id: { type: integer, foreignTable: function, foreignReference: id }
     description_status_id: { type: integer, foreignTable: term, foreignReference: id }
-    description_level_id: { type: integer, foreignTable: term, foreignReference: id }
+    description_detail_id: { type: integer, foreignTable: term, foreignReference: id }
     description_identifier: varchar(255)
+    lft: integer
+    rgt: integer
 
   function_i18n:
-    classification: longvarchar
-    domain: longvarchar
-    dates: longvarchar
+    authorized_form_of_name: { type: varchar(255) }
+    classification: varchar(255) 
+    dates: varchar(255)
+    description: longvarchar
     history: longvarchar
     legislation: longvarchar
-    general_context: longvarchar
-    institution_responsible_identifier: varchar(255)
+    institution_identifier: longvarchar 
+    revision_history: longvarchar
     rules: longvarchar
     sources: longvarchar
-    revision_history: longvarchar
-
+    
   historical_event:
     id: { type: integer, required: true, primaryKey: true, foreignTable: term, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     type_id: { type: integer, foreignTable: term, foreignReference: id }
@@ -186,7 +179,27 @@ propel:
 
   note_i18n:
     content: longvarchar
+
+  oai_harvest:
+    id:
+    oai_repository_id: { type: integer, required: true, foreignTable: oai_repository, foreignReference: id, onDelete: cascade}
+    start_timestamp: timestamp
+    end_timestamp: timestamp
+    last_harvest: timestamp
+    last_harvest_attempt: timestamp
+    metadataPrefix: varchar(255)
+    set: varchar(255)
+    created_at:
   
+  oai_repository:
+    id: 
+    name:  varchar(512)
+    uri: varchar(255)
+    admin_email: varchar(255)
+    earliest_timestamp: timestamp
+    created_at:
+    updated_at:
+
   object:
     class_name: varchar(255)
     created_at:
@@ -199,16 +212,15 @@ propel:
     start_date: bu_date
     end_date: bu_date
 
-  permission:
-    module: varchar(255)
-    action: varchar(255)
+  other_name:
+    object_id: { type: integer, required: true, foreignTable: object, foreignReference: id, onDelete: cascade }
+    type_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
+    created_at:
+    updated_at:
 
-  permission_scope:
+  other_name_i18n:
     name: varchar(255)
-    parameters: varchar(255)
-    permission_id: { type: integer, required: true, foreignTable: permission, foreignReference: id, onDelete: cascade }
-    role_id: { type: integer, required: false, foreignTable: role, foreignReference: id, onDelete: cascade }
-    user_id: { type: integer, required: false, foreignTable: user, foreignReference: id, onDelete: cascade }
+    note: varchar(255)
 
   physical_object:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
@@ -254,12 +266,6 @@ propel:
   property_i18n:
     value: varchar(255)
 
-  rights:
-    object_id: { type: integer, required: true, foreignTable: object, foreignReference: id, onDelete: cascade }
-    permission_id: { type: integer, foreignTable: term, foreignReference: id }
-    created_at:
-    updated_at:
-
   relation:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     subject_id: { type: integer, required: true, foreignTable: object, foreignReference: id }
@@ -271,7 +277,6 @@ propel:
   repository:
     id: { type: integer, required: true, primaryKey: true, foreignTable: actor, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     identifier: varchar(255)
-    type_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     desc_status_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     desc_detail_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     desc_identifier: varchar(255)
@@ -293,6 +298,12 @@ propel:
     desc_sources: longvarchar
     desc_revision_history: longvarchar
 
+  rights:
+    object_id: { type: integer, required: true, foreignTable: object, foreignReference: id, onDelete: cascade }
+    permission_id: { type: integer, foreignTable: term, foreignReference: id }
+    created_at:
+    updated_at:
+
   rights_i18n:
     description: longvarchar
 
@@ -309,13 +320,6 @@ propel:
     description: longvarchar
     created_at:
     updated_at:
-
-  role:
-    name: varchar(255)
-
-  role_permission_relation:
-    role_id: { type: integer, required: true, foreignTable: role, foreignReference: id, onDelete: cascade }
-    permission_id: { type: integer, required: true, foreignTable: permission, foreignReference: id, onDelete: cascade }
 
   setting:
     name: varchar(255)
@@ -353,9 +357,13 @@ propel:
     updated_at:
 
   taxonomy:
+    id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     usage: varchar(255)
     created_at:
     updated_at:
+    parent_id: { type: integer, foreignTable: taxonomy, foreignReference: id }
+    lft: { type: integer, required: true, nestedSetLeftKey: true }
+    rgt: { type: integer, required: true, nestedSetRightKey: true }
 
   taxonomy_i18n:
     name: varchar(255)
@@ -378,27 +386,3 @@ propel:
     email: varchar(255)
     sha1_password: varchar(255)
     salt: varchar(255)
-
-  user_role_relation:
-    user_id: { type: integer, required: true, foreignTable: user, foreignReference: id, onDelete: cascade }
-    role_id: { type: integer, required: true, foreignTable: role, foreignReference: id, onDelete: cascade }
-
-  oai_repository:
-    id: 
-    name:  varchar(512)
-    uri: varchar(255)
-    admin_email: varchar(255)
-    earliest_timestamp: timestamp
-    created_at:
-    updated_at:
-
-  oai_harvest:
-    id:
-    oai_repository_id: { type: integer, required: true, foreignTable: oai_repository, foreignReference: id, onDelete: cascade}
-    start_timestamp: timestamp
-    end_timestamp: timestamp
-    last_harvest: timestamp
-    last_harvest_attempt: timestamp
-    metadataPrefix: varchar(255)
-    set: varchar(255)
-    created_at:

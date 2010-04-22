@@ -1,28 +1,19 @@
 delete:
-  is_secure:   on
   credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
 
 deleteInformationObjectRelation:
-  is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
 
 deleteTermRelation:
-  is_secure:  on
   credentials: [[ contributor, editor, administrator ]]
+  is_secure: true
 
 edit:
-  is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
+  is_secure: true
 
 editIsaar:
-  is_secure:   on
   credentials: [[ contributor, editor, administrator, translator ]]
-
-list:
-  is_secure:   off
-
-showIsaar:
-  is_secure:  off
-
-all:
-  is_secure:   off
+  is_secure: true

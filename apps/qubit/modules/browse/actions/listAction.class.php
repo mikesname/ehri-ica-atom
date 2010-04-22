@@ -21,77 +21,64 @@ class BrowseListAction extends sfAction
 {
   public function execute($request)
   {
-  $this->browseList = $this->getRequestParameter('browseList');
-  $this->forward404Unless($this->browseList);
+    $this->browseList = $this->getRequestParameter('browseList');
+    $this->forward404Unless($this->browseList);
 
-  switch($this->browseList)
+    switch($this->browseList)
     {
-    case 'subject':
-      {
-      $this->getUser()->setAttribute('browse_list', 'subject');
-      $this->redirect('term/browse?taxonomyId='.QubitTaxonomy::SUBJECT_ID);
-      break;
-      }
-    case 'materialtype':
-      {
-      $this->getUser()->setAttribute('browse_list', 'materialtype');
-      $this->redirect('term/browse?taxonomyId='.QubitTaxonomy::MATERIAL_TYPE_ID);
-      break;
-      }
-    case 'place':
-      {
-      $this->getUser()->setAttribute('browse_list', 'place');
-      $this->redirect('term/browse?taxonomyId='.QubitTaxonomy::PLACE_ID);
-      break;
-      }
+      case 'subject':
+        $this->getUser()->setAttribute('browse_list', 'subject');
+        $this->redirect(array('module' => 'term', 'action' => 'browseTaxonomy', 'id' => QubitTaxonomy::SUBJECT_ID));
+        break;
 
-    case 'actor':
-      {
-      $this->getUser()->setAttribute('browse_list', 'actor');
-      $this->redirect('actor/list');
-      break;
-      }
-    case 'name':
-      {
-      $this->getUser()->setAttribute('browse_list', 'name');
-      $this->redirect('actor/list');
-      break;
-      }
-    case 'repository':
-      {
-      $this->getUser()->setAttribute('browse_list', 'repository');
-      $this->redirect('repository/list');
-      break;
-      }
-    case 'language':
-      {
-      $this->getUser()->setAttribute('browse_list', 'language');
-      $this->redirect('term/browse?taxonomyId=10');
-      break;
-      }
-    case 'mediatype':
-      {
-      $this->getUser()->setAttribute('browse_list', 'mediatype');
-      $this->redirect('digitalobject/list');
-      break;
-      }
-    case 'informationobject':
-      {
-      $this->getUser()->setAttribute('browse_list', 'informationobject');
-      $this->redirect('informationobject/list');
-      break;
-      }
-    case 'recentUpdates':
-      {
-      $this->getUser()->setAttribute('browse_list', 'recentUpdates');
-      $this->informationObjects = informationObjectPeer::getRecentChanges(10);
-      $this->setTemplate('recentList');
-      break;
-      }
-    default:
-      {
-      $this->forward404();
-      }
+      case 'materialtype':
+        $this->getUser()->setAttribute('browse_list', 'materialtype');
+        $this->redirect(array('module' => 'term', 'action' => 'browseTaxonomy', 'id' => QubitTaxonomy::MATERIAL_TYPE_ID));
+        break;
+
+      case 'place':
+        $this->getUser()->setAttribute('browse_list', 'place');
+        $this->redirect(array('module' => 'term', 'action' => 'browseTaxonomy', 'id' => QubitTaxonomy::PLACE_ID));
+        break;
+
+      case 'actor':
+        $this->getUser()->setAttribute('browse_list', 'actor');
+        $this->redirect(array('module' => 'actor', 'action' => 'browse'));
+        break;
+
+      case 'function':
+        $this->getUser()->setAttribute('browse_list', 'function');
+        $this->redirect(array('module' => 'function', 'action' => 'list'));
+        break;
+
+      case 'name':
+        $this->getUser()->setAttribute('browse_list', 'name');
+        $this->redirect(array('module' => 'actor', 'action' => 'browse'));
+        break;
+
+      case 'repository':
+        $this->getUser()->setAttribute('browse_list', 'repository');
+        $this->redirect(array('module' => 'repository', 'action' => 'browse'));
+        break;
+
+      case 'mediatype':
+        $this->getUser()->setAttribute('browse_list', 'mediatype');
+        $this->redirect(array('module' => 'digitalobject', 'action' => 'list'));
+        break;
+
+      case 'informationobject':
+        $this->getUser()->setAttribute('browse_list', 'informationobject');
+        $this->redirect(array('module' => 'informationobject', 'action' => 'browse'));
+        break;
+
+      case 'recentUpdates':
+        $this->getUser()->setAttribute('browse_list', 'recentUpdates');
+        $this->informationObjects = informationObjectPeer::getRecentChanges(10);
+        $this->setTemplate('recentList');
+        break;
+
+      default:
+        $this->forward404();
     }
   }
 }

@@ -17,7 +17,7 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class QubitObject extends BaseObject
+class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
 {
   public function save($connection = null)
   {
@@ -47,6 +47,21 @@ class QubitObject extends BaseObject
       try
       {
         $note->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    // Save updated properties
+    foreach ($this->propertys as $property)
+    {
+      $property->setIndexOnSave(false);
+      $property->object = $this;
+
+      try
+      {
+        $property->save();
       }
       catch (PropelException $e)
       {
@@ -83,7 +98,29 @@ class QubitObject extends BaseObject
       }
     }
 
+    // Save updated other namnes
+    foreach ($this->otherNames as $otherName)
+    {
+      $otherName->object = $this;
+
+      try
+      {
+        $otherName->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
     return $this;
+  }
+
+  /**
+   * Required by Zend_Acl_Resource_Interface interface
+   */
+  public function getResourceId()
+  {
+    return $this->id;
   }
 
   /********************
@@ -112,23 +149,6 @@ class QubitObject extends BaseObject
     $criteria->add(QubitStatus::TYPE_ID, $options['typeId']);
 
     return QubitStatus::getOne($criteria);
-  }
-
-
-  /********************
-        Notes
-  *********************/
-
-  public function setNote(array $options = array())
-  {
-    $newNote = new QubitNote;
-    $newNote->setObject($this);
-    $newNote->setScope($this->getClassName());
-    $newNote->setUserId($options['userId']);
-    $newNote->setContent($options['note']);
-    $newNote->setTypeId($options['noteTypeId']);
-
-    $this->notes[] = $newNote;
   }
 
   public function getNotesByType(array $options = array())
@@ -167,4 +187,21 @@ class QubitObject extends BaseObject
     return QubitNote::get($criteria);
   }
 
+
+  /********************
+       Other names
+  *********************/
+
+  public function getOtherNames($options = array())
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitOtherName::OBJECT_ID, $this->getId());
+
+    if (isset($options['typeId']))
+    {
+      $criteria->add(QubitOtherName::TYPE_ID, $options['typeId']);
+    }
+
+    return QubitOtherName::get($criteria);
+  }
 }

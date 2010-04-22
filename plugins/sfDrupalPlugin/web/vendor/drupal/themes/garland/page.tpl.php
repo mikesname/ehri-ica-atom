@@ -1,34 +1,29 @@
 <?php
-// $Id: page.tpl.php,v 1.23 2008/11/24 15:27:13 dries Exp $
-?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML+RDFa 1.0//EN"
-  "http://www.w3.org/MarkUp/DTD/xhtml-rdfa-1.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php print $language->language ?>" dir="<?php print $language->dir ?>"
-  <?php print $rdf_namespaces ?>>
-  <head profile="<?php print $grddl_profile ?>">
-    <title><?php print $head_title ?></title>
-    <?php print $head ?>
-    <?php print $styles ?>
-    <?php print $scripts ?>
-    <!--[if lt IE 7]>
-      <?php print $ie_styles ?>
-    <![endif]-->
-  </head>
-  <body class="<?php print $body_classes ?>">
-
-  <div id="header-region" class="clear-block"><?php print $header ?></div>
+// $Id: page.tpl.php,v 1.41 2010/01/04 03:57:19 webchick Exp $
+?>
+  <?php print render($page['header']); ?>
 
   <div id="wrapper">
-    <div id="container" class="clear-block">
+    <div id="container" class="clearfix">
 
       <div id="header">
         <div id="logo-floater">
         <?php if ($logo || $site_title): ?>
-          <h1><a href="<?php print $front_page ?>" title="<?php print $site_title ?>">
-          <?php if ($logo): ?>
-            <img src="<?php print $logo ?>" alt="<?php print $site_title ?>" id="logo" />
-          <?php endif; ?>
-          <?php print $site_html ?>
-          </a></h1>
+          <?php if ($title): ?>
+            <div id="branding"><strong><a href="<?php print $front_page ?>" title="<?php print $site_name_and_slogan ?>">
+            <?php if ($logo): ?>
+              <img src="<?php print $logo ?>" alt="<?php print $site_name_and_slogan ?>" id="logo" />
+            <?php endif; ?>
+            <?php print $site_html ?>
+            </a></strong></div>           
+          <?php else: /* Use h1 when the content title is empty */ ?>  
+            <h1 id="branding"><a href="<?php print $front_page ?>" title="<?php print $site_name_and_slogan ?>">
+            <?php if ($logo): ?>
+              <img src="<?php print $logo ?>" alt="<?php print $site_name_and_slogan ?>" id="logo" />
+            <?php endif; ?>
+            <?php print $site_html ?>
+            </a></h1>
+        <?php endif; ?>
         <?php endif; ?>
         </div>
 
@@ -36,39 +31,39 @@
         <?php if ($secondary_nav): print $secondary_nav; endif; ?>
       </div> <!-- /#header -->
 
-      <?php if ($left): ?>
-        <div id="sidebar-left" class="sidebar">
-          <?php if ($search_box): ?><div class="block block-theme"><?php print $search_box ?></div><?php endif; ?>
-          <?php print $left ?>
+      <?php if ($page['sidebar_first']): ?>
+        <div id="sidebar-first" class="sidebar">
+          <?php print render($page['sidebar_first']); ?>
         </div>
       <?php endif; ?>
 
       <div id="center"><div id="squeeze"><div class="right-corner"><div class="left-corner">
           <?php print $breadcrumb; ?>
-          <?php if ($mission): ?><div id="mission"><?php print $mission ?></div><?php endif; ?>
-          <?php if ($tabs): ?><div id="tabs-wrapper" class="clear-block"><?php endif; ?>
-          <?php if ($title): ?><h2<?php print $tabs ? ' class="with-tabs"' : '' ?>><?php print $title ?></h2><?php endif; ?>
-          <?php if ($tabs): ?><ul class="tabs primary"><?php print $tabs ?></ul></div><?php endif; ?>
-          <?php if ($tabs2): ?><ul class="tabs secondary"><?php print $tabs2 ?></ul><?php endif; ?>
-          <?php if ($show_messages && $messages): print $messages; endif; ?>
-          <?php print $help; ?>
-          <div class="clear-block">
-            <?php print $content ?>
+          <?php if ($page['highlight']): ?><div id="highlight"><?php render($page['highlight']); ?></div><?php endif; ?>
+          <a id="main-content"></a>
+          <?php if ($tabs): ?><div id="tabs-wrapper" class="clearfix"><?php endif; ?>
+          <?php print render($title_prefix); ?>
+          <?php if ($title): ?>
+            <h1<?php print $tabs ? ' class="with-tabs"' : '' ?>><?php print $title ?></h1>
+          <?php endif; ?>
+          <?php print render($title_suffix); ?>
+          <?php if ($tabs): ?><ul class="tabs primary"><?php print render($tabs) ?></ul></div><?php endif; ?>
+          <?php if ($tabs2): ?><ul class="tabs secondary"><?php print render($tabs2) ?></ul><?php endif; ?>
+          <?php print $messages; ?>
+          <?php print render($page['help']); ?>
+          <?php if ($action_links): ?><ul class="action-links"><?php print render($action_links); ?></ul><?php endif; ?>
+          <div class="clearfix">
+            <?php print render($page['content']); ?>
           </div>
           <?php print $feed_icons ?>
-          <div id="footer"><?php print $footer_message . $footer ?></div>
+          <?php print render($page['footer']) ?>
       </div></div></div></div> <!-- /.left-corner, /.right-corner, /#squeeze, /#center -->
 
-      <?php if ($right): ?>
-        <div id="sidebar-right" class="sidebar">
-          <?php if (!$left && $search_box): ?><div class="block block-theme"><?php print $search_box ?></div><?php endif; ?>
-          <?php print $right ?>
+      <?php if ($page['sidebar_second']): ?>
+        <div id="sidebar-second" class="sidebar">
+          <?php print render($page['sidebar_second']); ?>
         </div>
       <?php endif; ?>
 
     </div> <!-- /#container -->
   </div> <!-- /#wrapper -->
-
-  <?php print $closure ?>
-  </body>
-</html>

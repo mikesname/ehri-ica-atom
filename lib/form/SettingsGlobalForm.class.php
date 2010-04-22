@@ -17,7 +17,7 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sfLoader::loadHelpers('I18N');
+sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
 
 /**
  * Global form definition for settings module - with validation.
@@ -50,13 +50,13 @@ class SettingsGlobalForm extends sfForm
 
     // Add labels
     $this->widgetSchema->setLabels(array(
-      'version' => __('application version'),
-      'upload_dir' => __('upload directory'),
-      'reference_image_maxwidth' => __('maximum image width (pixels)'),
-      'hits_per_page' => __('results per page'),
-      'inherit_code_informationobject' => __('inherit reference code (information object)'),
-      'sort_treeview_informationobject' => __('sort treeview (information object)'),
-      'multi_repository' => __('multiple repositories')
+      'version' => __('Application version'),
+      'upload_dir' => __('Upload directory'),
+      'reference_image_maxwidth' => __('Maximum image width (pixels)'),
+      'hits_per_page' => __('Results per page'),
+      'inherit_code_informationobject' => __('Inherit reference code (information object)'),
+      'sort_treeview_informationobject' => __('Sort treeview (information object)'),
+      'multi_repository' => __('Multiple repositories')
     ));
 
     // Add helper text

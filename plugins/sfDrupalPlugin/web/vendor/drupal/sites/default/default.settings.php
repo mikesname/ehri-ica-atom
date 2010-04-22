@@ -1,5 +1,5 @@
 <?php
-// $Id: default.settings.php,v 1.18 2008/12/23 19:59:17 dries Exp $
+// $Id: default.settings.php,v 1.39 2010/01/14 18:45:17 dries Exp $
 
 /**
  * @file
@@ -46,7 +46,7 @@
 /**
  * Database settings:
  *
- * The $databases array specifies the database connection or 
+ * The $databases array specifies the database connection or
  * connections that Drupal may use.  Drupal is able to connect
  * to multiple databases, including multiple types of databases,
  * during the same request.
@@ -63,15 +63,16 @@
  *   'port' => 3306,
  * );
  *
- * The "driver" property indicates what Drupal database driver the 
+ * The "driver" property indicates what Drupal database driver the
  * connection should use.  This is usually the same as the name of the
  * database type, such as mysql or sqlite, but not always.  The other
  * properties will vary depending on the driver.  For SQLite, you must
- * specify a database.  For most other drivers, you must specify a username,
- * password, host, and database name.
+ * specify a database file name in a directory that is writable by the 
+ * webserver.  For most other drivers, you must specify a 
+ * username, password, host, and database name.
  *
  * Some database engines support transactions.  In order to enable
- * transaction support for a given database, set the 'transaction' key
+ * transaction support for a given database, set the 'transactions' key
  * to TRUE.  To disable it, set it to FALSE.  Note that the default value
  * varies by driver.  For MySQL, the default is FALSE since MyISAM tables
  * do not support transactions.
@@ -80,7 +81,7 @@
  * A target database allows Drupal to try to send certain queries to a
  * different database if it can but fall back to the default connection if not.
  * That is useful for master/slave replication, as Drupal may try to connect
- * to a slave server when appropriate and if one is not available will simply 
+ * to a slave server when appropriate and if one is not available will simply
  * fall back to the single master server.
  *
  * The general format for the $databases array is as follows:
@@ -124,7 +125,7 @@
  *
  *   $db_prefix = array(
  *     'default'   => 'main_',
- *     'users'     => 'shared_',
+ *     'users'      => 'shared_',
  *     'sessions'  => 'shared_',
  *     'role'      => 'shared_',
  *     'authmap'   => 'shared_',
@@ -147,7 +148,7 @@
  *   );
  *   $databases['default']['default'] = array(
  *     'driver' => 'sqlite',
- *     'database' => 'databasefilename',
+ *     'database' => '/path/to/databasefilename',
  *   );
  */
 $databases = array();
@@ -156,20 +157,41 @@ $db_prefix = '';
 /**
  * Access control for update.php script
  *
- * If you are updating your Drupal installation using the update.php script
- * being not logged in as administrator, you will need to modify the access
- * check statement below. Change the FALSE to a TRUE to disable the access
- * check. After finishing the upgrade, be sure to open this file again
- * and change the TRUE back to a FALSE!
+ * If you are updating your Drupal installation using the update.php script but
+ * are not logged in using either an account with the "Administer software
+ * updates" permission or the site maintenance account (the account that was
+ * created during installation), you will need to modify the access check
+ * statement below. Change the FALSE to a TRUE to disable the access check.
+ * After finishing the upgrade, be sure to open this file again and change the
+ * TRUE back to a FALSE!
  */
 $update_free_access = FALSE;
+
+/**
+ * Salt for one-time login links and cancel links, form tokens, etc.
+ *
+ * This variable will be set to a random value by the installer. All one-time
+ * login links will be invalidated if the value is changed.  Note that this
+ * variable must have the same value on every web server.  If this variable is
+ * empty, a hash of the serialized database credentials will be used as a
+ * fallback salt.
+ *
+ * For enhanced security, you may set this variable to a value using the
+ * contents of a file outside your docroot that is never saved together
+ * with any backups of your Drupal files and database.
+ *
+ * Example:
+ *   $drupal_hash_salt = file_get_contents('/home/example/salt.txt');
+ *   
+ */
+$drupal_hash_salt = '';
 
 /**
  * Base URL (optional).
  *
  * If you are experiencing issues with different site domains,
  * uncomment the Base URL statement below (remove the leading hash sign)
- * and fill in the URL to your Drupal installation.
+ * and fill in the absolute URL to your Drupal installation.
  *
  * You might also want to force users to use a given domain.
  * See the .htaccess file for more information.
@@ -194,7 +216,18 @@ $update_free_access = FALSE;
  * See drupal_initialize_variables() in includes/bootstrap.inc for required
  * runtime settings and the .htaccess file for non-runtime settings. Settings
  * defined there should not be duplicated here so as to avoid conflict issues.
- *
+ */
+
+/**
+ * Some distributions of Linux (most notably Debian) ship their PHP
+ * installations with garbage collection (gc) disabled. Since Drupal depends on
+ * PHP's garbage collection for clearing sessions, ensure that garbage
+ * collection occurs by using the most common settings.
+ */
+ini_set('session.gc_probability', 1);
+ini_set('session.gc_divisor', 100);
+
+/**
  * Set session lifetime (in seconds), i.e. the time from the user's last visit
  * to the active session may be deleted by the session garbage collector. When
  * a session is deleted, authenticated users are logged out, and the contents
@@ -230,21 +263,26 @@ ini_set('session.cookie_lifetime', 2000000);
  * these variable overrides will not be modifiable from the Drupal
  * administration interface.
  *
+ * The following overrides are examples:
+ * - site_name: Defines the site's name.
+ * - theme_default: Defines the default theme for this site.
+ * - anonymous: Defines the human-readable name of anonymous users.
  * Remove the leading hash signs to enable.
  */
-# $conf = array(
-#   'site_name' => 'My Drupal site',
-#   'theme_default' => 'minnelli',
-#   'anonymous' => 'Visitor',
+# $conf['site_name'] = 'My Drupal site';
+# $conf['theme_default'] = 'garland';
+# $conf['anonymous'] = 'Visitor';
+
 /**
  * A custom theme can be set for the offline page. This applies when the site
- * is explicitly set to offline mode through the administration page or when
+ * is explicitly set to maintenance mode through the administration page or when
  * the database is inactive due to an error. It can be set through the
  * 'maintenance_theme' key. The template file should also be copied into the
  * theme. It is located inside 'modules/system/maintenance-page.tpl.php'.
  * Note: This setting does not apply to installation and update pages.
  */
-#   'maintenance_theme' => 'minnelli', // Leave the comma here.
+# $conf['maintenance_theme'] = 'garland';
+
 /**
  * reverse_proxy accepts a boolean value.
  *
@@ -261,7 +299,8 @@ ini_set('session.cookie_lifetime', 2000000);
  * about this setting, do not have a reverse proxy, or Drupal operates in
  * a shared hosting environment, this setting should remain commented out.
  */
-#   'reverse_proxy' => TRUE, // Leave the comma here.
+# $conf['reverse_proxy'] = TRUE;
+
 /**
  * reverse_proxy accepts an array of IP addresses.
  *
@@ -272,8 +311,26 @@ ini_set('session.cookie_lifetime', 2000000);
  * reverse proxies. Otherwise, the client could directly connect to
  * your web server spoofing the X-Forwarded-For headers.
  */
-#   'reverse_proxy_addresses' => array('a.b.c.d', ...), // Leave the comma here.
-# );
+# $conf['reverse_proxy_addresses'] = array('a.b.c.d', ...);
+
+/**
+ * Page caching:
+ *
+ * By default, Drupal sends a "Vary: Cookie" HTTP header for anonymous page
+ * views. This tells a HTTP proxy that it may return a page from its local
+ * cache without contacting the web server, if the user sends the same Cookie
+ * header as the user who originally requested the cached page. Without "Vary:
+ * Cookie", authenticated users would also be served the anonymous page from
+ * the cache. If the site has mostly anonymous users except a few known
+ * editors/administrators, the Vary header can be omitted. This allows for
+ * better caching in HTTP proxies (including reverse proxies), i.e. even if
+ * clients send different cookies, they still get content served from the cache
+ * if aggressive caching is enabled and the minimum cache time is non-zero.
+ * However, authenticated users should access the site directly (i.e. not use an
+ * HTTP proxy, and bypass the reverse proxy if one is used) in order to avoid
+ * getting cached pages from the proxy.
+ */
+# $conf['omit_vary_cookie'] = TRUE;
 
 /**
  * String overrides:
@@ -284,7 +341,7 @@ ini_set('session.cookie_lifetime', 2000000);
  *
  * Remove the leading hash signs to enable.
  */
-# $conf['locale_custom_strings_en'] = array(
+# $conf['locale_custom_strings_en'][''] = array(
 #   'forum'      => 'Discussion board',
 #   '@count min' => '@count minutes',
 # );
@@ -311,3 +368,19 @@ ini_set('session.cookie_lifetime', 2000000);
 # $conf['blocked_ips'] = array(
 #   'a.b.c.d',
 # );
+
+/**
+ * Authorized file system operations:
+ *
+ * The Update manager module included with Drupal provides a mechanism for
+ * site administrators to securely install missing updates for the site
+ * directly through the web user interface by providing either SSH or FTP
+ * credentials. This allows the site to update the new files as the user who
+ * owns all the Drupal files, instead of as the user the webserver is running
+ * as. However, some sites might wish to disable this functionality, and only
+ * update the code directly via SSH or FTP themselves. This setting completely
+ * disables all functionality related to these authorized file operations.
+ *
+ * Remove the leading hash signs to disable.
+ */
+# $conf['allow_authorize_operations'] = FALSE;

@@ -27,16 +27,22 @@ class RepositoryListAction extends sfAction
 {
   public function execute($request)
   {
-    $search = new QubitSearch;
-    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitRepository', 'className'));
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
 
+    $search = new QubitSearch;
+
+    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitRepository', 'className'));
     if (isset($request->query))
     {
       $query = new Zend_Search_Lucene_Search_Query_Boolean(array($query, Zend_Search_Lucene_Search_QueryParser::parse($request->query)));
     }
 
-    $this->pager = new QubitSearchPager;
+    $this->pager = new QubitArrayPager;
     $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 
     $ids = array();
@@ -47,6 +53,7 @@ class RepositoryListAction extends sfAction
 
     $criteria = new Criteria;
     $criteria->add(QubitRepository::ID, $ids, Criteria::IN);
+
     $this->repositories = QubitRepository::get($criteria);
   }
 }

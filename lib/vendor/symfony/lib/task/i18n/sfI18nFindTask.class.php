@@ -23,11 +23,8 @@ class sfI18nFindTask extends sfBaseTask
    */
   protected function configure()
   {
-    $this->addArguments(array(
-      new sfCommandArgument('application', sfCommandArgument::REQUIRED, 'The application name'),
-    ));
-
     $this->addOptions(array(
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_REQUIRED, 'The application name', true),
       new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'dev'),
     ));
 
@@ -38,7 +35,7 @@ class sfI18nFindTask extends sfBaseTask
     $this->detailedDescription = <<<EOF
 The [i18n:find|INFO] task finds non internationalized strings embedded in templates:
 
-  [./symfony i18n:find frontend|INFO]
+  [./symfony i18n:find|INFO]
 
 This task is able to find non internationalized strings in pure HTML and in PHP code:
 
@@ -55,7 +52,7 @@ EOF;
    */
   public function execute($arguments = array(), $options = array())
   {
-    $this->logSection('i18n', sprintf('find non "i18n ready" strings in the "%s" application', $arguments['application']));
+    $this->logSection('i18n', sprintf('find non "i18n ready" strings in the "%s" application', $options['application']));
 
     // Look in templates
     $dirs = array();

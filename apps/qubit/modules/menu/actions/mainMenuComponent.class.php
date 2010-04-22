@@ -30,38 +30,15 @@ class MenuMainMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    // get the current page context
-    $this->versionNumber  = sfConfig::get('app_version');
-
-    $currentModule = $this->getContext()->getModuleName();
-    $currentAction = $this->getContext()->getActionName();
-    $currentUrl = url_for($currentModule.'/'.$currentAction);
-
     // Get menu objects
     $this->mainMenu = QubitMenu::getById(QubitMenu::MAIN_MENU_ID);
     $this->adminMenu = QubitMenu::getById(QubitMenu::ADMIN_ID);
 
-    // Set visibility
-    $this->versionNumberVisibility = ($this->adminMenu->isDescendantSelected()) ? 'visible' : 'hidden';
-    $this->showSecondaryMenu = ($currentUrl != url_for('')) ? true : false;
-    // Yucky Hack: Don't display secondary menu options when displaying search results
-    if ($currentModule == 'search' && $currentAction == 'search')
-    {
-      $this->showSecondaryMenu = false;
-    }
-
     // Hide menus that user cannot access
-    $options = array();
+    $this->options = array();
     if (!$this->getUser()->hasCredential('administrator'))
     {
-      $options['overrideVisibility']['admin'] = 'hidden';
+      $this->options['overrideVisibility']['admin'] = 'hidden';
     }
-
-    if (!$this->getUser()->hasCredential('translator'))
-    {
-      $options['overrideVisibility']['translate'] = 'hidden';
-    }
-
-    $this->options = $options;
   }
 }

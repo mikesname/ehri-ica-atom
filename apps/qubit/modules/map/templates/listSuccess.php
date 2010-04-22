@@ -1,10 +1,10 @@
-<div class="pageTitle"><?php echo __('list maps'); ?></div>
+<div class="pageTitle"><?php echo __('List maps'); ?></div>
 
 <table class="list">
 <thead>
 <tr>
-  <th style="width: 35px;"><?php echo __('id'); ?></th>
-  <th><?php echo __('title'); ?><span class="th-link"><?php echo link_to(__('add new'), 'map/create') ?></span></th>
+  <th style="width: 35px;"><?php echo __('Id'); ?></th>
+  <th><?php echo __('Title'); ?><span class="th-link"><?php echo link_to(__('Add new'), 'map/create') ?></span></th>
 
 </tr>
 </thead>
@@ -19,5 +19,5 @@
 </table>
 
 <div class="menu-action">
-<?php echo link_to (__('add new map'), 'map/create') ?>
+<?php echo link_to (__('Add new map'), 'map/create') ?>
 </div>

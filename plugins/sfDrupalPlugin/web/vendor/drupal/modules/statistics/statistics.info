@@ -1,4 +1,4 @@
-; $Id: statistics.info,v 1.8 2008/10/11 02:33:02 webchick Exp $
+; $Id: statistics.info,v 1.11 2009/11/17 21:24:18 dries Exp $
 name = Statistics
 description = Logs access statistics for your site.
 package = Core
@@ -8,3 +8,6 @@ files[] = statistics.module
 files[] = statistics.admin.inc
 files[] = statistics.pages.inc
 files[] = statistics.install
+files[] = statistics.test
+files[] = statistics.tokens.inc
+configure = admin/config/system/statistics

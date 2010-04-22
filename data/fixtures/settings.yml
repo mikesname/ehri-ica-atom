@@ -1,9 +1,9 @@
 QubitSetting:
-  QubitSetting_1:
+  version:
     name: version
     editable: 0
     deleteable: 0
-    value: 'Qubit 1.0.8.1'
+    value: 31
   QubitSetting_2:
     name: upload_dir
     editable: 0
@@ -54,14 +54,12 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      de: Erschließung
-      en: 'archival descriptions'
-      es: 'Descripción archivística'
-      fr: 'description archivistique'
-      it: 'descrizione archivistica'
-      nl: 'archivistische beschrijving'
-      pt: 'descrição arquivística'
-      sl: 'arhivski opisi'
+      en: 'information objects'
+      fr: 'objet d''information'
+      it: 'oggetto informativo'
+      nl: 'information object'
+      pt: 'objeto informacional'
+      sl: 'informacijski objekt'
   QubitSetting_12:
     name: actor
     scope: ui_label
@@ -69,14 +67,13 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      de: Normdaten
-      en: 'authority records'
-      es: 'Registro de autoridad'
-      fr: 'fichier d''autorité'
-      it: 'record di autorità'
-      nl: 'geautoriseerd bestand'
-      pt: 'registro de autoridade'
-      sl: 'normativni zapisi'
+      de: Person/Einrichtung
+      en: persons/organizations
+      fr: personne/organisation
+      it: persona/organizzazione
+      nl: persoon/organisatie
+      pt: pessoa/organização
+      sl: oseba/organizacija
   QubitSetting_13:
     name: creator
     scope: ui_label
@@ -99,14 +96,12 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      de: Aufbewahrungsort
-      en: 'archival institutions'
-      es: 'Institución archivística'
-      fr: 'institution de conservation'
-      it: 'istituzione archivistica'
-      nl: archiefinstelling
-      pt: 'instituição arquivística'
-      sl: 'arhivske ustanove'
+      en: repositories
+      fr: 'service d''archives'
+      it: 'soggetto conservatore'
+      nl: depot
+      pt: 'entidade custodiadora'
+      sl: skladišče
   QubitSetting_15:
     name: term
     scope: ui_label
@@ -144,14 +139,12 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      de: Sammlung
-      en: fonds
-      es: fundo
-      fr: collections
+      en: collections
+      fr: collection
       it: collezione
       nl: collectie
-      pt: fundo/coleção
-      sl: zbirke
+      pt: coleção
+      sl: zbirka
   QubitSetting_18:
     name: holdings
     scope: ui_label
@@ -285,11 +278,6 @@ QubitSetting:
     editable: 1
     deleteable: 1
     value: pt
-  QubitSetting_default_repository:
-    name: default_repository
-    editable: 1
-    deleteable: 0
-    value: ''
   QubitSetting_oai_enabled:
     name: oai_enabled
     scope: oai
@@ -313,6 +301,15 @@ QubitSetting:
     editable: 1
     deleteable: 0
     value: 1
+  plugins:
+    name: plugins
+    value: 'a:5:{i:0;s:10:"sfDcPlugin";i:1;s:11:"sfEadPlugin";i:2;s:12:"sfIsadPlugin";i:3;s:12:"sfModsPlugin";i:4;s:11:"sfRadPlugin";}'
+  toggleDescription:
+    name: toggleDescription
+    value: 1
   toggleLogo:
     name: toggleLogo
+    value: 1
+  toggleTitle:
+    name: toggleTitle
     value: 1

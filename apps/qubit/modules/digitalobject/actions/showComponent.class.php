@@ -42,12 +42,16 @@ class DigitalObjectShowComponent extends sfComponent
       $this->usageType = QubitTerm::THUMBNAIL_ID;
     }
 
-    // Figure out which show component to call, base on USER selected media
-    // type
-    switch ($this->digitalObject->getMediaTypeId())
+    if (QubitTerm::REFERENCE_ID == $this->usageType && !QubitAcl::check($this->digitalObject->informationObject, 'readReference'))
+    {
+      return sfView::NONE;
+    }
+
+    // Figure out which show component to call
+    switch ($this->digitalObject->mediaTypeId)
     {
       case QubitTerm::IMAGE_ID:
-        if ($this->digitalObject->showAsCompoundDigitalObject($this->usageType))
+        if ($this->digitalObject->showAsCompoundDigitalObject())
         {
           $this->showComponent = 'showCompound';
         }
@@ -59,15 +63,21 @@ class DigitalObjectShowComponent extends sfComponent
         {
           $this->showComponent = 'showDownload';
         }
+
         break;
+
       case QubitTerm::AUDIO_ID:
         $this->showComponent = 'showAudio';
+
         break;
+
       case QubitTerm::VIDEO_ID:
         $this->showComponent = 'showVideo';
+
         break;
+
       case QubitTerm::TEXT_ID:
-        if ($this->digitalObject->showAsCompoundDigitalObject($this->usageType))
+        if ($this->digitalObject->showAsCompoundDigitalObject())
         {
           $this->showComponent = 'showCompound';
         }
@@ -75,10 +85,14 @@ class DigitalObjectShowComponent extends sfComponent
         {
           $this->showComponent = 'showText';
         }
+
         break;
+
       default:
         $this->showComponent = 'showDownload';
+
         break;
+
     }
 
     if (!isset($this->link))

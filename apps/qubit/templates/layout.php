@@ -5,95 +5,42 @@
     <?php include_metas() ?>
     <?php include_title() ?>
     <link rel="shortcut icon" href="/favicon.ico" />
+    <?php include_stylesheets() ?>
+    <?php include_javascripts() ?>
   </head>
-  <body class="yui-skin-sam">
-    <div id="body-banner-top"></div>
+  <body class="yui-skin-sam <?php echo $sf_context->getModuleName() ?> <?php echo $sf_context->getActionName() ?>">
 
-    <div id="body-page">
+    <div id="page-wrapper">
+      <div id="page">
 
-    <div id="header">
-      <?php include_component_slot('header') ?>
-    <div id="header-top">
+        <?php echo get_partial('global/header') ?>
 
-    <div class="menu-top">
-      <?php include_component_slot('ChangeLanguage') ?>
-      <?php include_component('menu', 'quickLinks') ?>
-    </div>
-    </div> <!--close header-top -->
+        <?php if ($sf_user->isAuthenticated()): ?>
+          <div id="navigation">
+            <div class="section">
+              <?php echo get_component('menu', 'mainMenu') ?>
+            </div> <!-- /.section -->
+          </div> <!-- /#navigation -->
+        <?php endif; ?>
 
-    <div id="header-middle">
-    <div id="site-header">
+        <div id="main-wrapper">
+          <div class="clearfix" id="main">
 
-    <?php if (sfConfig::get('app_toggleLogo')): ?>
-    <div id="logo"><?php echo link_to(image_tag('logo', array('alt' => sfConfig::get('app_siteTitle'))),
-      array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?></div>
-    <?php endif; ?>
+            <div class="column" id="content">
+              <div class="section">
+                <?php echo $sf_content ?>
+              </div> <!-- /.section -->
+            </div> <!-- /.column#content -->
 
-    <div id="site-info">
-    <?php if (sfConfig::get('app_toggleTitle')): ?>
-    <div id="website-name">
-      <?php echo link_to(__(sfConfig::get('app_siteTitle')),
-        array('module' => 'staticpage', 'action' => 'static', 'permalink' => 'homepage')) ?>
-    </div>
-    <?php endif; ?>
+            <?php echo get_partial('global/sidebar') ?>
 
-    <?php if (sfConfig::get('app_toggleDescription')): ?>
-    <div id="website-description">
-      <?php echo __(sfConfig::get('app_siteDescription')); ?>
-    </div>
-    <?php endif; ?>
-    </div> <!-- close site-info -->
+          </div> <!-- /#main -->
+        </div> <!-- /#main-wrapper -->
 
-    </div> <!-- close site-header -->
-    </div> <!-- close header-middle -->
+        <?php echo get_partial('global/footer') ?>
 
-    <div id="header-bottom">
-    <?php if ($sf_user->hasCredential('authenticated')): ?>
-    <?php include_component_slot('MainMenu') ?>
-    <?php endif; ?>
-    </div> <!-- close header-bottom -->
+      </div> <!-- /#page -->
+    </div> <!-- /#page-wrapper -->
 
-    </div> <!-- close header -->
-
-    <div id="main">
-
-    <div id="context-column">
-
-    <?php if (has_component_slot('SearchBox') || has_component_slot('BrowseBox')): ?>
-    <div class="context-column-box">
-    <?php include_component_slot('SearchBox') ?>
-    <?php include_component_slot('BrowseBox') ?>
-    </div>
-    <?php endif;?>
-
-    <?php if (has_component_slot('sidebar')): ?>
-    <div id="sidebar">
-      <?php include_component_slot('sidebar') ?>
-    </div>
-    <?php endif; ?>
-
-    </div> <!-- close context-column" -->
-
-    <div id="content-two-column">
-
-    <div class="content-column-box">
-    <?php echo $sf_data->getRaw('sf_content') ?>
-    </div>
-
-    </div> <!-- close content-two-column -->
-
-    </div> <!-- close main -->
-
-    <div id="footer">
-    </div>
-
-    </div> <!-- close body-page -->
-    <div id="body-banner-bottom">
-      <?php include_component_slot('bottomBanner') ?>
-
-      <div class="logos">
-      <?php echo link_to(image_tag('xhtml10', array('alt' => 'This page is valid XHTML 1.0')), 'http://validator.w3.org/check?'.http_build_query(array('uri' => $sf_request->getUri().'?'.http_build_query(array(session_name() => session_id())), 'ss' => 1))) ?>
-      </div>
-    </div>
   </body>
 </html>

@@ -1,4 +1,4 @@
-<div class="pageTitle"><?php echo __('add/edit map'); ?></div>
+<div class="pageTitle"><?php echo __('Add/edit map'); ?></div>
 
 <?php echo form_tag('map/update') ?>
 
@@ -13,21 +13,21 @@
 	</td></tr>
 <?php endif; ?>
 
-<tr><th><?php echo __('id'); ?></th>
+<tr><th><?php echo __('Id'); ?></th>
 <td><?php echo $map->getId() ?></td></tr>
 
 <tr>
-  <th><?php echo __('title'); ?></th>
+  <th><?php echo __('Title'); ?></th>
   <td><?php echo object_input_tag($map, 'getTitle', array ('size' => 20)) ?></td>
 </tr>
 <tr>
-  <th><?php echo __('description'); ?></th>
+  <th><?php echo __('Description'); ?></th>
   <td><?php echo object_textarea_tag($map, 'getDescription', array ('size' => '30x3')) ?></td>
 </tr>
 
 <tr>
-  <th><?php echo __('places'); ?>: <br />
-  <span class="th-link"><?php echo link_to(__('add new'), 'map/createPlaceMapRelation?mapId='.$map->getId()) ?></span></th>
+  <th><?php echo __('Places'); ?>: <br />
+  <span class="th-link"><?php echo link_to(__('Add new'), 'map/createPlaceMapRelation?mapId='.$map->getId()) ?></span></th>
   <td>
   <?php if ($placeRelations): ?>
   <?php foreach ($placeRelations as $relation): ?>
@@ -42,20 +42,20 @@
 
 <div class="menu-action">
 <?php if ($map->getId()): ?>
-  &nbsp;<?php echo link_to(__('delete'), 'map/delete?id='.$map->getId(), 'post=true&confirm='.__('are you sure?')) ?>
-  &nbsp;<?php echo link_to(__('cancel'), 'map/show?id='.$map->getId()) ?>
+  &nbsp;<?php echo link_to(__('Delete'), 'map/delete?id='.$map->getId(), 'post=true&confirm='.__('Are you sure?')) ?>
+  &nbsp;<?php echo link_to(__('Cancel'), 'map/show?id='.$map->getId()) ?>
 <?php else: ?>
-  &nbsp;<?php echo link_to(__('cancel'), 'map/list') ?>
+  &nbsp;<?php echo link_to(__('Cancel'), 'map/list') ?>
 <?php endif; ?>
     <?php if ($map->getId()): ?>
-      <?php echo submit_tag(__('save')) ?>
+      <?php echo submit_tag(__('Save')) ?>
     <?php else: ?>
-      <?php echo submit_tag(__('create')) ?>
+      <?php echo submit_tag(__('Create')) ?>
     <?php endif; ?>
 </div>
 </form>
 
 <div class="menu-extra">
-	<?php echo link_to(__('list all maps'), 'map/list'); ?>
-	<?php echo link_to(__('view map'), 'map/show?id='.$map->getId() ) ?>
+	<?php echo link_to(__('List all maps'), 'map/list'); ?>
+	<?php echo link_to(__('View map'), 'map/show?id='.$map->getId() ) ?>
 </div>

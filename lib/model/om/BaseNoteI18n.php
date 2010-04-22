@@ -9,15 +9,13 @@ abstract class BaseNoteI18n implements ArrayAccess
 
     CONTENT = 'q_note_i18n.CONTENT',
     ID = 'q_note_i18n.ID',
-    CULTURE = 'q_note_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_note_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_note_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
     $criteria->addSelectColumn(QubitNoteI18n::CONTENT);
     $criteria->addSelectColumn(QubitNoteI18n::ID);
     $criteria->addSelectColumn(QubitNoteI18n::CULTURE);
-    $criteria->addSelectColumn(QubitNoteI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -387,9 +385,7 @@ abstract class BaseNoteI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

@@ -1,4 +1,4 @@
-<div class="pageTitle"><?php echo __('recent updates'); ?></div>
+<h1><?php echo __('Recent updates'); ?></h1>
 
 <div style="width: 99%">
 <div class="table-control">
@@ -17,28 +17,28 @@
   <tr>
     <th><?php echo __($nameColumnDisplay); ?></th>
     <?php if('informationobject' == $objectType && 0 < sfConfig::get('app_multi_repository')): ?>
-      <th><?php echo __('repository') ?></th>
+      <th><?php echo __('Repository') ?></th>
     <?php elseif('term' == $objectType): ?>
-      <th><?php echo __('taxonomy'); ?></th>
+      <th><?php echo __('Taxonomy'); ?></th>
     <?php endif; ?>
-    <th style="width: 110px"><?php echo __('updated'); ?></th>
+    <th style="width: 110px"><?php echo __('Updated'); ?></th>
   </tr>
 </thead>
 <tbody>
 <?php foreach ($pager->getResults() as $result): ?>
-  <tr>
+  <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
     <td>
     <?php if ('informationobject' == $objectType): ?>
       <?php $title = render_title($result->getTitle(array('cultureFallback' => true))) ?>
-      <?php echo link_to($title, array('module' => 'informationobject', 'action' => 'show', 'id' => $result->getId())) ?>
+      <?php echo link_to($title, array('module' => 'informationobject', 'id' => $result->getId())) ?>
       <?php $status = $result->getPublicationStatus() ?>
       <?php if ($status->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID): ?><span class="note2"><?php echo ' ('.$status->status.')' ?></span><?php endif; ?>
     <?php elseif ('actor' == $objectType || 'repository' == $objectType): ?>
       <?php $name = render_title($result->getAuthorizedFormOfName(array('cultureFallback' => true))) ?>
-      <?php echo link_to($name, array('module' => $objectType, 'action' => 'show', 'id' => $result->getId())) ?>
+      <?php echo link_to($name, array('module' => $objectType, 'id' => $result->getId())) ?>
     <?php elseif ('term' == $objectType): ?>
       <?php $name = render_title($result->getName(array('cultureFallback' => true))) ?>
-      <?php echo link_to($name, array('module' => 'term', 'action' => 'show', 'id' => $result->getId())) ?>
+      <?php echo link_to($name, array('module' => 'term', 'id' => $result->getId())) ?>
     <?php endif; ?>
     </td>
 

@@ -7,35 +7,33 @@ abstract class BaseFunctionI18n implements ArrayAccess
 
     TABLE_NAME = 'q_function_i18n',
 
+    AUTHORIZED_FORM_OF_NAME = 'q_function_i18n.AUTHORIZED_FORM_OF_NAME',
     CLASSIFICATION = 'q_function_i18n.CLASSIFICATION',
-    DOMAIN = 'q_function_i18n.DOMAIN',
     DATES = 'q_function_i18n.DATES',
+    DESCRIPTION = 'q_function_i18n.DESCRIPTION',
     HISTORY = 'q_function_i18n.HISTORY',
     LEGISLATION = 'q_function_i18n.LEGISLATION',
-    GENERAL_CONTEXT = 'q_function_i18n.GENERAL_CONTEXT',
-    INSTITUTION_RESPONSIBLE_IDENTIFIER = 'q_function_i18n.INSTITUTION_RESPONSIBLE_IDENTIFIER',
+    INSTITUTION_IDENTIFIER = 'q_function_i18n.INSTITUTION_IDENTIFIER',
+    REVISION_HISTORY = 'q_function_i18n.REVISION_HISTORY',
     RULES = 'q_function_i18n.RULES',
     SOURCES = 'q_function_i18n.SOURCES',
-    REVISION_HISTORY = 'q_function_i18n.REVISION_HISTORY',
     ID = 'q_function_i18n.ID',
-    CULTURE = 'q_function_i18n.CULTURE',
-    SERIAL_NUMBER = 'q_function_i18n.SERIAL_NUMBER';
+    CULTURE = 'q_function_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
+    $criteria->addSelectColumn(QubitFunctionI18n::AUTHORIZED_FORM_OF_NAME);
     $criteria->addSelectColumn(QubitFunctionI18n::CLASSIFICATION);
-    $criteria->addSelectColumn(QubitFunctionI18n::DOMAIN);
     $criteria->addSelectColumn(QubitFunctionI18n::DATES);
+    $criteria->addSelectColumn(QubitFunctionI18n::DESCRIPTION);
     $criteria->addSelectColumn(QubitFunctionI18n::HISTORY);
     $criteria->addSelectColumn(QubitFunctionI18n::LEGISLATION);
-    $criteria->addSelectColumn(QubitFunctionI18n::GENERAL_CONTEXT);
-    $criteria->addSelectColumn(QubitFunctionI18n::INSTITUTION_RESPONSIBLE_IDENTIFIER);
+    $criteria->addSelectColumn(QubitFunctionI18n::INSTITUTION_IDENTIFIER);
+    $criteria->addSelectColumn(QubitFunctionI18n::REVISION_HISTORY);
     $criteria->addSelectColumn(QubitFunctionI18n::RULES);
     $criteria->addSelectColumn(QubitFunctionI18n::SOURCES);
-    $criteria->addSelectColumn(QubitFunctionI18n::REVISION_HISTORY);
     $criteria->addSelectColumn(QubitFunctionI18n::ID);
     $criteria->addSelectColumn(QubitFunctionI18n::CULTURE);
-    $criteria->addSelectColumn(QubitFunctionI18n::SERIAL_NUMBER);
 
     return $criteria;
   }
@@ -405,9 +403,7 @@ abstract class BaseFunctionI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-        // Guess that the first primary key of the first table is auto
-        // incremented
-        if ($this->tables[0] == $table)
+                        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
           $this->values[$columns[0]->getPhpName()] = $id;

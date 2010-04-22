@@ -11,45 +11,6 @@
                UNIVERSAL FORM PROPERTIES
 **********************************************************/
 
-form
-{
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
-
-form input, .yui-skin-sam .yui-ac-input
-{
-  width: 95%;
-  padding: 0 3px 3px 3px;
-  margin: 0;
-  font: normal 12px Verdana, Arial, Sans-Serif;
-  background-color: #FFFFFF;
-  border: 1px solid #a3a3a3;
-}
-
-input[type="radio"], input.radio,
-input[type="checkbox"], input.checkbox
-{
-  padding: 0;
-  margin: 0;
-  border: none;
-  background-color: none;
-  font: none;
-  width: auto;
-}
-
-form textarea
-{
-  width: 95%;
-  padding: 0 3px 3px 3px;
-  margin: 0;
-  font: normal 12px Verdana, Arial, Sans-Serif;
-  background-color: #FFFFFF;
-  border: 1px solid #a3a3a3;
-}
-
-
 form ul.radio_list
 {
   padding: 0;
@@ -69,216 +30,6 @@ form ul.radio_list li label
   display: inline;
   font-weight: normal;
   color: black;
-}
-
-
-form ul.linked-object
-{
-  background: none;
-  list-style-type: none;
-  list-style-image: none;
-  border-top: 1px solid #cccccc;
-  padding: 0;
-  margin: 0;
-}
-
-form ul.linked-object li
-{
-  border: none;
-  border-bottom: 1px solid #cccccc;
-  text-align: left;
-  padding: 3px;
-  margin: 0;
-}
-
-form select
-{
-  font: normal 12px Verdana, Arial, Sans-Serif;
-  width: 97%;
-}
-
-form input:focus, textarea:focus, select:focus
-{
-background: #cccccc;
-}
-
-/*********************************************************
-                FORM HEADER
-**********************************************************/
-
-.formHeader
-{
-  display: block;
-  padding: 4px;
-  vertical-align:top;
-  text-align:left;
-  font: bold 18px/18px georgia, verdana, sans-serif;
-  border: 0;
-  border-bottom: 1px solid #999999;
-  border-top: 2px solid #999999;
-  color: #000033;
-  background-color: #FF9D3C;
-  margin-bottom: 10px;
-}
-
-.formHeader a:link, .formHeader a:visited, .formHeader a:active
-{
-  color: #000000;
-}
-
-.formHeader a:hover
-{
-  color: #ffffff;
-  background-color: #000000;
-}
-
-/*********************************************************
-                COLLAPSIBLE FORM FIELD SETS
-**********************************************************/
-
-html.js fieldset.collapsed legend a:link, html.js fieldset.collapsed legend a:active, html.js fieldset.collapsed legend a:hover, html.js fieldset.collapsed legend a:visited
-{
-  color: #0066CC;
-}
-
-html.js fieldset.collapsible legend a:link, html.js fieldset.collapsible legend a:active, html.js fieldset.collapsible legend a:visited
-{
-  color: #0066CC;
-}
-
-html.js fieldset
-{
-padding-top: 7px;
-padding-bottom: 7px;
-}
-
-html.js fieldset legend
-{
-  margin-bottom: 10px;
-}
-
-html.js fieldset.collapsed
-{
-  border-bottom-width: 0;
-  border-left-width: 0;
-  border-right-width: 0;
-  margin-bottom: 0;
-  height: 1em;
-}
-html.js fieldset.collapsed *
-{
-  display: none;
-}
-html.js fieldset.collapsed legend
-{
-  display: inline;
-}
-
-html.js fieldset.collapsible legend a
-{
-  padding-left: 15px;
-  background: url(../images/menu-expanded.png) 5px 75% no-repeat;
-}
-html.js fieldset.collapsed legend a
-{
-  background-image: url(../images/menu-collapsed.png);
-  background-position: 5px 50%;
-
-}
-/* Note: IE-only fix due to '* html' (breaks Konqueror otherwise). */
-* html.js fieldset.collapsed legend,
-* html.js fieldset.collapsed legend *,
-* html.js fieldset.collapsed table *
-{
-  display: inline;
-}
-html.js fieldset.collapsible legend a
-{
-  display: block;
-}
-/* Avoid jumping around due to margins collapsing into collapsible fieldset border */
-html.js fieldset.collapsible .fieldset-wrapper
-{
-  overflow: auto;
-}
-
-.form-item
-{
-  margin-top: 1em;
-  margin-bottom: 1em;
-}
-
-.form-item .description
-{
-  font-size: 0.85em;
-}
-
-label
-{
-  display: block;
-  font-weight: bold;
-  color: #999999;
-}
-
-label.option
-{
-  display: inline;
-  font-weight: normal;
-}
-
-label:first-letter
-{
-  text-transform: capitalize;
-}
-
-/*********************************************************
-                SIDEBAR FORM
-**********************************************************/
-
-#search-sidebar, #browse-sidebar
-{
-  padding: 2px;
-}
-
-#search-sidebar form div:first-child, #browse-sidebar form div:first-child
-{
-  float: left;
-  width: 160px;
-}
-
-#search-sidebar .form-submit, #search-sidebar .form-submit:hover, #browse-sidebar .form-submit, #browse-sidebar .form-submit:hover
-{
-  float: none;
-  font: 11px Verdana, Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  width: 70px;
-}
-
-#search-sidebar .textbox
-{
-  background-color: #FFFFFF;
-  border: 1px solid #A3A3A3;
-  width: 145px;
-  font: bold 14px Verdana, Arial, sans-serif;
-}
-
-#search-sidebar .textbox:focus
-{
-  background: #CCCCCC;
-}
-
-#browse-sidebar select
-{
-  background-color: #FFFFFF;
-  border: 1px solid #A3A3A3;
-  width: 153px;
-  font: normal 12px Verdana, Arial, sans-serif;
-}
-
-#browse-sidebar select:focus
-{
-  background: #CCCCCC;
 }
 
 /*********************************************************
@@ -334,98 +85,6 @@ min-width: 130px;
 }
 
 /*********************************************************
-                LOGIN FORM
-**********************************************************/
-
-.login-form
-{
-  border: 0;
-  width: 450px;
-  margin: 0 0 0 20px;
-  font: bold 18px/19px georgia, serif;
-}
-
-.login-form legend
-{
-  font: bold 18px/20px georgia, serif;
-  color: #000000;
-  margin: 0;
-}
-
-.login-form input
-{
-  width: 400px;
-  font: bold 27px/27px georgia, serif;
-  border: 1px solid #999999;
-}
-
-.login-form input.form-submit
-{
-  text-decoration: none;
-  padding: 0 6px 1px 6px;
-  margin: 16px 15px 0 5px;
-  font: normal 15px/15px georgia, serif;
-  width: 60px;
-  height: 25px;
-  float: right;
-  color: #ffffff;
-  background-color: #000000;
-  border-right: 3px solid #999999;
-  border-bottom: 3px solid #999999;
-}
-
-.login-form input.form-submit:hover
-{
-  text-decoration: none;
-  padding: 0 6px 1px 6px;
-  margin: 16px 15px 0 5px;
-  font: normal 15px/15px georgia, serif;
-  width: 60px;
-  height: 25px;
-  float: right;
-  color: #000000;
-  background-color: #ffffff;
-  border-right: 3px solid #999999;
-  border-bottom: 3px solid #999999;
-}
-
-.login-form table
-{
-  margin-top: 15px;
-}
-
-.login-form table th
-{
-  border: 0;
-  vertical-align: center;
-  text-align: right;
-}
-
-.login-form table tr
-{
-  margin-top: 20px;
-}
-
-
-/*********************************************************
-                       FORM ERROR
-**********************************************************/
-
-.form_error
-{
-  padding: 0.1em 0.1em 0.1em 20px;
-  margin: 2px;
-  color: #a30000;
-  border: 1px solid #c52020;
-  background: #FFCCCC url(../images/exclamation.png) no-repeat 1px;
-}
-
-/* see also app/config/settings.yml
-     validation_error_prefix:    '! '
-     validation_error_suffix:    ' !'
-*/
-
-/*********************************************************
                EDIT FORM TRANSLATION BOXES
 **********************************************************/
 
@@ -439,60 +98,9 @@ min-width: 130px;
   border: 1px dashed #FFD700;
 }
 
-/*********************************************************
-                 AUTO-COMPLETE INPUTS
-**********************************************************/
-
-div.autoCompleteInput
-{
-  padding-bottom: 2em;
-  width: 99%;
-}
-
 .form-item li:hover
 {
   list-style-image: url(../images/delete.png);
-}
-
-/*********************************************************
-                LIST TEMPLATES SEARCH
-**********************************************************/
-
-#list-search
-{
-  margin: 30px 10px 10px 10px;
-  padding: 5px 3px 3px 3px;
-  height: 27px;
-  width: 95%;
-  background-color: #FF9933;
-  border: 1px solid #999999;
-}
-
-#list-search input#query
-{
-  float: left;
-  width: 250px;
-  font-size: 14px;
-}
-
-#list-search .form-submit, #list-search .form-submit:hover
-{
-  float: none;
-  font: 11px Verdana, Arial, sans-serif;
-  margin: 0 0 0 10px;
-  padding: 3px 3px 6px 3px;
-}
-
-#list-search .textbox
-{
-  background-color: #FFFFFF;
-  border: 1px solid #A3A3A3;
-  font: bold 20px Verdana, Arial, sans-serif;
-}
-
-#list-search .textbox:focus
-{
-  background: #CCCCCC;
 }
 
 /*********************************************************
@@ -502,8 +110,9 @@ div.autoCompleteInput
 .admin-info
 {
   background-color: #A0A9BC;
-  border: 1px solid #000000;
-  padding: 5px;
+  border: 3px solid #999;
+  width: 500px;
+  padding: 4px;
 }
 
 .admin-info table
@@ -516,5 +125,17 @@ div.autoCompleteInput
 
 .admin-info .form-item label
 {
-  color: #000000;
+  color: #494949;
+}
+
+.admin-info .form-item
+{
+  margin: 0;
+}
+
+span.form-required
+{
+  /* Reset garland style */
+
+  color: #f00;
 }

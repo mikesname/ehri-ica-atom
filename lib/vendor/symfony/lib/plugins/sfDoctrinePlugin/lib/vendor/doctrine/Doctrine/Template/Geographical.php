@@ -16,7 +16,7 @@
  *
  * This software consists of voluntary contributions made by many individuals
  * and is licensed under the LGPL. For more information, see
- * <http://www.phpdoctrine.org>.
+ * <http://www.doctrine-project.org>.
  */
 
 /**
@@ -26,7 +26,7 @@
  * @package     Doctrine
  * @subpackage  Template
  * @license     http://www.opensource.org/licenses/lgpl-license.php LGPL
- * @link        www.phpdoctrine.org
+ * @link        www.doctrine-project.org
  * @since       1.0
  * @version     $Revision$
  * @author      Konsta Vesterinen <kvesteri@cc.hut.fi>
@@ -40,24 +40,13 @@ class Doctrine_Template_Geographical extends Doctrine_Template
      * @var string
      */
     protected $_options = array('latitude' =>  array('name'     =>  'latitude',
-                                                     'type'     =>  'float',
+                                                     'type'     =>  'double',
                                                      'size'     =>  null,
                                                      'options'  =>  array()),
                                 'longitude' => array('name'     =>  'longitude',
-                                                     'type'     =>  'float',
+                                                     'type'     =>  'double',
                                                      'size'     =>  null,
                                                      'options'  =>  array()));
-
-    /**
-     * __construct
-     *
-     * @param string $array 
-     * @return void
-     */
-    public function __construct(array $options = array())
-    {
-        $this->_options = Doctrine_Lib::arrayDeepMerge($this->_options, $options);
-    }
 
     /**
      * Set table definition for Geographical behavior
@@ -89,10 +78,10 @@ class Doctrine_Template_Geographical extends Doctrine_Template
 
         $sql = "((ACOS(SIN(%s * PI() / 180) * SIN(" . $rootAlias . "." . $latName . " * PI() / 180) + COS(%s * PI() / 180) * COS(" . $rootAlias . "." . $latName . " * PI() / 180) * COS((%s - " . $rootAlias . "." . $longName . ") * PI() / 180)) * 180 / PI()) * 60 * %s) as %s";
 
-        $milesSql = sprintf($sql, $invoker->get('latitude'), $invoker->get('latitude'), $invoker->get('longitude'), '1.1515', 'miles');
+        $milesSql = sprintf($sql, $invoker->get($latName), $invoker->get($latName), $invoker->get($longName), '1.1515', 'miles');
         $query->addSelect($milesSql);
 
-        $kilometersSql = sprintf($sql, $invoker->get('latitude'), $invoker->get('latitude'), $invoker->get('longitude'), '1.1515 * 1.609344', 'kilometers');
+        $kilometersSql = sprintf($sql, $invoker->get($latName), $invoker->get($latName), $invoker->get($longName), '1.1515 * 1.609344', 'kilometers');
         $query->addSelect($kilometersSql);
 
         return $query;

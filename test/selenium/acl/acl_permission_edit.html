@@ -12,8 +12,8 @@
 <tr><td rowspan="1" colspan="3">acl_permission_edit.html</td></tr>
 </thead><tbody>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Admin</td>
+	<td>open</td>
+	<td>user/list</td>
 	<td></td>
 </tr>
 <tr>
@@ -28,7 +28,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=groups and permissions</td>
+	<td>link=ShowGroups and permissions</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,7 +53,7 @@
 </tr>
 <tr>
 	<td>click</td>
-	<td>link=groups and permissions</td>
+	<td>link=ShowGroups and permissions</td>
 	<td></td>
 </tr>
 <tr>
@@ -82,38 +82,38 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Log out</td>
+	<td>open</td>
+	<td>user/logout</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Log in</td>
+	<td>open</td>
+	<td>user/login</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>login_email</td>
+	<td>email</td>
 	<td>hilary@artefactual.com</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>login_password</td>
+	<td>password</td>
 	<td>hilary</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='log in']</td>
+	<td>//input[@value='Log in']</td>
 	<td></td>
 </tr>
 <tr>
 	<td>verifyTextNotPresent</td>
-	<td>admin</td>
+	<td>Admin</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Add/edit</td>
+	<td>open</td>
+	<td>informationobject/list</td>
 	<td></td>
 </tr>
 <tr>
@@ -127,12 +127,12 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='header-bottom']/div[2]/ul/li[1]/ul/li[1]/a</td>
+	<td>open</td>
+	<td>informationobject/list</td>
 	<td></td>
 </tr>
 <tr>
-	<td>click</td>
+	<td>clickAndWait</td>
 	<td>link=Simpson fonds</td>
 	<td></td>
 </tr>
@@ -142,28 +142,73 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Log out</td>
+	<td>open</td>
+	<td>user/logout</td>
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Log in</td>
+	<td>open</td>
+	<td>user/login</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>login_email</td>
+	<td>email</td>
 	<td>admin@artefactual.com</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>login_password</td>
+	<td>password</td>
 	<td>admin</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//input[@value='log in']</td>
+	<td>//input[@value='Log in']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>user/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Hilary Jenkinson</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowGroups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='userPermissions']/tbody/tr[1]//button[@name='delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='userPermissions']/tbody/tr[1]//button[@name='delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
 	<td></td>
 </tr>
 

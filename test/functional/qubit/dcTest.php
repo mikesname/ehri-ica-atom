@@ -1,6 +1,6 @@
 <?php
 
-include(dirname(__FILE__).'/../../bootstrap/functional.php');
+include dirname(__FILE__).'/../../bootstrap/functional.php';
 
 $browser = new sfTestFunctional(new sfBrowser);
 
@@ -17,7 +17,7 @@ $relation->userId = $user->id;
 $relation->roleId = QubitRole::ADMINISTRATOR_ID;
 $relation->save();
 
-$browser->post('/user/login', array('login' => array('email' => $email, 'password' => $password)));
+$browser->post(';user/login', array('login' => array('email' => $email, 'password' => $password)));
 
 $scopeAndContent = rand();
 $identifier = rand();
@@ -30,7 +30,7 @@ $informationObject->identifier = $identifier;
 $informationObject->title = $title;
 $informationObject->save();
 
-$browser->get('/object/export/format/dc/id/'.$informationObject->id);
+$browser->get('/'.$informationObject->id.';dc?sf_format=xml');
 
 $user->delete();
 $informationObject->delete();

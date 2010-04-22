@@ -17,6 +17,7 @@ propel.addGenericAccessors = false
 propel.addGenericMutators  = false
 propel.addTimeStamp        = false
 propel.addValidators       = false
+propel.addIncludes         = false
 
 propel.useDateTimeClass       = true
 propel.defaultTimeStampFormat = Y-m-d H:i:s
@@ -41,13 +42,11 @@ propel.datadump.mapper.from    = *schema.xml
 propel.datadump.mapper.to      = *data.xml
 
 ; builder settings
-propel.builder.peer.class              = lib.propel.builder.QubitObjectBuilder
 propel.builder.object.class            = lib.propel.builder.QubitObjectBuilder
 propel.builder.objectstub.class        = lib.propel.builder.QubitExtensionObjectBuilder
+propel.builder.peer.class              = lib.propel.builder.QubitObjectBuilder
 propel.builder.peerstub.class          = lib.propel.builder.QubitExtensionObjectBuilder
-propel.builder.objectmultiextend.class = plugins.sfPropelPlugin.lib.builder.SfMultiExtendObjectBuilder
-propel.builder.mapbuilder.class        = lib.propel.builder.QubitMapBuilderBuilder
+propel.builder.tablemap.class          = lib.propel.builder.QubitTableMapBuilder
 
-propel.builder.addIncludes  = false
 propel.builder.addComments  = false
 propel.builder.addBehaviors = false

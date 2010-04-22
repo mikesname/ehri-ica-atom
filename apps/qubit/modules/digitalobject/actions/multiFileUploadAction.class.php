@@ -21,22 +21,25 @@ class DigitalObjectMultiFileUploadAction extends sfAction
 {
   public function execute($request)
   {
-    $this->hasWarning = false;
+    $this->form = new sfForm;
 
-    // Add javascript libraries to allow selecting multiple access points
-    $this->getResponse()->addJavaScript('/vendor/jquery');
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
+    $this->informationObject = QubitInformationObject::getById($request->informationObject);
 
-    $this->getResponse()->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event.js');
-    $this->getResponse()->addJavaScript('/vendor/yui/element/element-min.js');
-    $this->getResponse()->addJavaScript('/vendor/yui/uploader/uploader-debug.js');
-    $this->getResponse()->addJavaScript('/vendor/yui/datasource/datasource-min.js');
-    $this->getResponse()->addJavaScript('/vendor/yui/datatable/datatable-min.js');
-    $this->getResponse()->addJavaScript('multiFileUpload.js');
+    // Check that object exists and that it is not the root
+    if (!isset($this->informationObject) || !isset($this->informationObject->parent))
+    {
+      $this->forward404();
+    }
 
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/collapse');
+    // Check user authorization
+    if (!QubitAcl::check($this->informationObject, 'update'))
+    {
+      QubitAcl::forwardUnauthorized();
+    }
 
-    $this->getResponse()->addStylesheet('/vendor/yui/datatable/assets/skins/sam/datatable');
+    // Add javascript libraries
+    $this->getResponse()->addJavaScript('/vendor/yui/uploader/uploader-min.js', 'last');
+    $this->getResponse()->addJavaScript('multiFileUpload.js', 'last');
 
     // Get max upload size limits
     $this->maxUploadSize = QubitDigitalObject::getMaxUploadSize();
@@ -46,62 +49,46 @@ class DigitalObjectMultiFileUploadAction extends sfAction
     $this->uploadResponsePath = $this->context->routing->generate(null, array('module' => 'digitalobject', 'action' => 'upload'));
     $this->uploadTmpDir = $this->getRequest()->getRelativeUrlRoot().'/uploads/tmp';
 
-    // Handle form submit
+    $this->form->setValidator('files', new QubitValidatorCountable(array('required' => true)));
+
+    $this->form->setValidator('informationObject', new sfValidatorInteger);
+    $this->form->setWidget('informationObject', new sfWidgetFormInputHidden);
+    $this->form->setDefault('informationObject', $this->informationObject->id);
+
+    $this->form->setValidator('title', new sfValidatorPass);
+    $this->form->setWidget('title', new sfWidgetFormInput(array()));
+    $this->form->setDefault('title', 'image %dd%');
+
+    $this->form->setValidator('levelOfDescription', new sfValidatorString);
+
+    $choices = array();
+    $choices[null] = null;
+    foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID) as $term)
+    {
+      $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+    }
+
+    $this->form->setWidget('levelOfDescription', new sfWidgetFormSelect(array('choices' => $choices)));
+
     if ($request->isMethod('post'))
     {
-      $this->processForm($request);
+      $this->form->bind($request->getPostParameters(), $request->getFiles());
 
-      // Redirect to show template on successful update
-      if (!$this->hasWarning)
+      if ($this->form->isValid())
       {
-        $this->redirect(array('module' => 'informationobject', 'action' => 'show', 'id' => $this->parentInfoObject->getId()));
+        $this->processForm();
       }
-      else
-      {
-        // New object template defaults
-        $this->infoObjectTemplate = new QubitInformationObject;
-        $this->infoObjectTemplate->setTitle($request->getParameter('title'));
-        $this->infoObjectTemplate->setLevelOfDescriptionId($request->getParameter('level_of_description_id'));
-      }
-    }
-    else
-    {
-      // New object template defaults
-      $this->infoObjectTemplate = new QubitInformationObject;
-      $this->infoObjectTemplate->setTitle('image %dd%');
-      $this->infoObjectTemplate->setLevelOfDescriptionByName('item');
     }
   }
 
-  public function processForm($request)
+  public function processForm()
   {
-    $parentInfoObjectId = null;
     $tmpPath = sfConfig::get('sf_upload_dir').'/tmp';
-
-    if (null != $request->getParameter('id'))
-    {
-      $this->parentInfoObject = QubitInformationObject::getById($request->getParameter('id'));
-    }
-
-    // Make sure we have a valid parent node
-    if (null == $this->parentInfoObject)
-    {
-      $this->hasWarning = true;
-      $this->warning = 'You must specify a valid parent object';
-      return;
-    }
-
-    // Check if there is at least one file
-    if (0 == count($request->getParameter('files')))
-    {
-      $this->hasWarning = true;
-      $this->warning = 'You must import at least one digital object';
-      return;
-    }
 
     // Upload files
     $i = 0;
-    foreach ($request->getParameter('files') as $file)
+
+    foreach ($this->form->getValue('files') as $file)
     {
       if (0 == strlen($file['infoObjectTitle'] || 0 == strlen($file['tmpName'])))
       {
@@ -112,15 +99,18 @@ class DigitalObjectMultiFileUploadAction extends sfAction
 
       // Create an information object for this digital object
       $informationObject = new QubitInformationObject;
-      $informationObject->setParentId($this->parentInfoObject->getId());
+      $informationObject->setParentId($this->informationObject->id);
+
       if (0 < strlen($title = $file['infoObjectTitle']))
       {
         $informationObject->setTitle($title);
       }
-      if (0 != intval($levelOfDescriptionId = $request->getParameter('level_of_description_id')))
+
+      if (0 != intval($levelOfDescriptionId = $this->form->getValue('level_of_description_id')))
       {
         $informationObject->setLevelOfDescriptionId($levelOfDescriptionId);
       }
+
       $informationObject->save();
 
       if (file_exists($tmpPath.'/'.$file['tmpName']))
@@ -145,5 +135,7 @@ class DigitalObjectMultiFileUploadAction extends sfAction
         unlink($tmpPath.'/'.$file['thumb']);
       }
     }
+
+    $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
   }
 }

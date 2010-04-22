@@ -32,36 +32,12 @@ class InformationObjectListAction extends sfAction
    */
   public function execute($request)
   {
-    if ($request->isXmlHttpRequest())
+    // Default items per page
+    if (!isset($request->limit))
     {
-      return $this->ajaxResponse($request);
-    }
-    else
-    {
-      $this->htmlResponse($request);
-    }
-  }
-
-  protected function ajaxResponse($request)
-  {
-    $criteria = new Criteria;
-    $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitInformationObjectI18n::TITLE, $request->query.'%', Criteria::LIKE);
-    $criteria->add(QubitInformationObjectI18n::CULTURE, $this->getUser()->getCulture(), Criteria::EQUAL);
-    $criteria->addAscendingOrderByColumn(QubitInformationObjectI18n::TITLE);
-    $criteria->setLimit(10);
-
-    $informationObjects = QubitInformationObject::get($criteria);
-    foreach ($informationObjects as $informationObject)
-    {
-      $results[] = array('id' => $informationObject->id, 'name' => $informationObject->title);
+      $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    return $this->renderText(json_encode(array('Results' => $results)));
-  }
-
-  protected function htmlResponse($request)
-  {
     $this->informationObject = QubitInformationObject::getById($request->id);
 
     if (!isset($this->informationObject))
@@ -81,11 +57,12 @@ class InformationObjectListAction extends sfAction
       $query = $request->query;
     }
 
-    $query = QubitAcl::searchFilterByRepository($query, QubitAclAction::READ_ID);
+    $query = QubitAcl::searchFilterByRepository($query, 'read');
     $query = QubitAcl::searchFilterDrafts($query);
 
-    $this->pager = new QubitSearchPager;
+    $this->pager = new QubitArrayPager;
     $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 
     $ids = array();
@@ -96,6 +73,7 @@ class InformationObjectListAction extends sfAction
 
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::ID, $ids, Criteria::IN);
+
     $this->informationObjects = QubitInformationObject::get($criteria);
   }
 }

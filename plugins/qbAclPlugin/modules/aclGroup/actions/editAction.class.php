@@ -21,7 +21,8 @@ class AclGroupEditAction extends sfAction
 {
   public static $NAMES = array(
     'name',
-    'description'
+    'description',
+    'translate'
   );
 
   protected function addField($name)
@@ -32,11 +33,36 @@ class AclGroupEditAction extends sfAction
         $this->form->setDefault($name, $this->group[$name]);
         $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormInput);
+
         break;
+
       case 'description':
         $this->form->setDefault($name, $this->group[$name]);
         $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
+
+      case 'translate':
+        $choices = array(1 => 'Yes', 0 => 'No');
+
+        // Check for grant permission
+        $criteria = new Criteria;
+        $criteria->add(QubitAclPermission::GROUP_ID, $this->group->id);
+        $criteria->add(QubitAclPermission::ACTION, 'translate');
+        $criteria->add(QubitAclPermission::GRANT_DENY, 1);
+
+        $default = 0;
+        if (null !== QubitAclPermission::getOne($criteria))
+        {
+          $default = 1;
+        }
+
+        // Search for translate permissions
+        $this->form->setDefault($name, $default);
+        $this->form->setValidator($name, new sfValidatorChoice(array('choices' => array_keys($choices))));
+        $this->form->setWidget($name, new sfWidgetFormChoice(array('expanded' => true, 'choices' => $choices)));
+
         break;
     }
   }
@@ -58,20 +84,12 @@ class AclGroupEditAction extends sfAction
     $this->form = new sfForm;
     $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-    $this->permissions = $this->group->getAclPermissions()->orderBy('action_id');
-
     // HACK: Use static::$NAMES in PHP 5.3,
     // http://php.net/oop5.late-static-bindings
     $class = new ReflectionClass($this);
     foreach ($class->getStaticPropertyValue('NAMES') as $name)
     {
       $this->addField($name);
-    }
-
-    $this->isAdministrator = false;
-    if ($this->getUser()->hasCredential('administrator'))
-    {
-      $this->isAdministrator = true;
     }
 
     if ($request->isMethod('post'))
@@ -81,15 +99,17 @@ class AclGroupEditAction extends sfAction
       if ($this->form->isValid())
       {
         $this->processForm();
-        $this->redirect(array('module' => 'aclGroup', 'action' => 'list'));
+        $this->redirect(array($this->group, 'module' => 'aclGroup'));
       }
     }
   }
 
   protected function processForm()
   {
-    $this->group->name = $this->request->getParameter('name');
-    $this->group->description = $this->request->getParameter('description');
+    foreach ($this->form as $field)
+    {
+      $this->processField($field);
+    }
 
     if (null === $this->group->parentId)
     {
@@ -98,67 +118,49 @@ class AclGroupEditAction extends sfAction
     }
 
     $this->group->save();
-
-    $this->updatePermissions();
-    $this->deletePermissions();
   }
 
-  protected function updatePermissions()
+  /**
+   * Process form fields
+   *
+   * @param $field mixed symfony form widget
+   * @return void
+   */
+  protected function processField($field)
   {
-    foreach ($this->request->getParameter('permission') as $key => $formData)
+    switch ($name = $field->getName())
     {
-      if ('new' == $key)
-      {
-        if (0 < intval($formData['actionId']))
-        {
-          $aclPermission = new QubitAclPermission;
-          $aclPermission->groupId = $this->group->id;
-          $aclPermission->objectId = QubitInformationObject::ROOT_ID;
-          $aclPermission->actionId = $formData['actionId'];
-        }
-        else
-        {
-          continue;
-        }
-      }
-      else
-      {
-        $aclPermission = QubitAclPermission::getById($key);
-        if (null === $aclPermission)
-        {
-          // If no valid aclPermission object, skip this row
-          continue;
-        }
-      }
+      case 'translate':
+        $criteria = new Criteria;
+        $criteria->add(QubitAclPermission::GROUP_ID, $this->group->id);
+        $criteria->add(QubitAclPermission::ACTION, 'translate');
 
-      $aclPermission->grantDeny = $formData['grantDeny'];
+        $translatePermission = QubitAclPermission::getOne($criteria);
 
-      // Set repository conditional for permission
-      if ('null' != $formData['repository'])
-      {
-        $params = $this->context->routing->parse(preg_replace('/.*'.preg_quote($this->request->getPathInfoPrefix(), '/').'/', null, $formData['repository']));
-        $aclPermission->setRepository(QubitRepository::getById($params['id']));
-      }
-      else
-      {
-        $aclPermission->setRepository(null);
-      }
-
-      $aclPermission->save();
-    }
-  }
-
-  protected function deletePermissions()
-  {
-    if (is_array($deletePermissions = $this->request->getParameter('deletePermission')))
-    {
-      foreach ($deletePermissions as $key => $value)
-      {
-        if (null !== $permission = QubitAclPermission::getById($key))
+        if (1 == $this->form->getValue($name))
         {
-          $permission->delete();
+          if (null === $translatePermission)
+          {
+            $translatePermission = new QubitAclPermission;
+            $translatePermission->action  = 'translate';
+            $translatePermission->grantDeny = 1;
+          }
+          else
+          {
+            $translatePermission->grantDeny = 1;
+          }
+
+          $this->group->aclPermissions[] = $translatePermission;
         }
-      }
+        else if (null !== $translatePermission)
+        {
+          $translatePermission->delete();
+        }
+
+        break;
+
+      default:
+        $this->group[$name] = $this->form->getValue($name);
     }
   }
 }

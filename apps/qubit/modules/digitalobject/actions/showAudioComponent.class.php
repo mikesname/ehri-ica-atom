@@ -18,7 +18,7 @@
  */
 
 /**
- * Digital Object video display component
+ * Digital Object audio display component
  *
  * @package    qubit
  * @subpackage digitalObject
@@ -35,11 +35,10 @@ class DigitalObjectShowAudioComponent extends sfComponent
    */
   public function execute($request)
   {
-    $this->getResponse()->addJavaScript('/vendor/jquery');
-    $this->getResponse()->addJavaScript('/vendor/flowplayer/flashembed.min.js');
-    $this->getResponse()->addStylesheet('flowPlayer');
-
-    $this->pathToFlowPlayer = public_path('flowplayer/flowplayer.swf');
-    $this->pathToFlowPlayerAudioPlugin = public_path('flowplayer/flowplayer.audio.swf');
+    if ($this->usageType != QubitTerm::THUMBNAIL_ID)
+    {
+      $this->getResponse()->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
+      $this->getResponse()->addJavaScript('flowplayer');
+    }
   }
 }

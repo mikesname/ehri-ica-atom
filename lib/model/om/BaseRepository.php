@@ -9,7 +9,6 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
 
     ID = 'q_repository.ID',
     IDENTIFIER = 'q_repository.IDENTIFIER',
-    TYPE_ID = 'q_repository.TYPE_ID',
     DESC_STATUS_ID = 'q_repository.DESC_STATUS_ID',
     DESC_DETAIL_ID = 'q_repository.DESC_DETAIL_ID',
     DESC_IDENTIFIER = 'q_repository.DESC_IDENTIFIER',
@@ -23,7 +22,6 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
 
     $criteria->addSelectColumn(QubitRepository::ID);
     $criteria->addSelectColumn(QubitRepository::IDENTIFIER);
-    $criteria->addSelectColumn(QubitRepository::TYPE_ID);
     $criteria->addSelectColumn(QubitRepository::DESC_STATUS_ID);
     $criteria->addSelectColumn(QubitRepository::DESC_DETAIL_ID);
     $criteria->addSelectColumn(QubitRepository::DESC_IDENTIFIER);
@@ -242,13 +240,6 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     }
 
     return $this;
-  }
-
-  public static function addJointypeCriteria(Criteria $criteria)
-  {
-    $criteria->addJoin(QubitRepository::TYPE_ID, QubitTerm::ID);
-
-    return $criteria;
   }
 
   public static function addJoindescStatusCriteria(Criteria $criteria)

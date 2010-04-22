@@ -25,7 +25,7 @@
  * @version    svn: $Id$
  * @author     David Juhasz <david@artefactual.com>
  */
-class QubitAclGroup extends BaseAclGroup
+class QubitAclGroup extends BaseAclGroup implements Zend_Acl_Role_Interface
 {
   const ROOT_ID          = 1;
   const ANONYMOUS_ID     = 98;
@@ -38,7 +38,35 @@ class QubitAclGroup extends BaseAclGroup
 
   public function __toString()
   {
-    return (string) $this->getName();
+    return (string) $this->getName(array('cultureFallback' => true));
+  }
+
+  /**
+   * Required for Zend_Acl_Role_Interface
+   */
+  public function getRoleId()
+  {
+    return $this->id;
+  }
+
+  public function save($connection = null)
+  {
+    parent::save($connection);
+
+    foreach ($this->aclPermissions as $aclPermission)
+    {
+      $aclPermission->group = $this;
+
+      try
+      {
+        $aclPermission->save($connection);
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    return $this;
   }
 
   public function isProtected()

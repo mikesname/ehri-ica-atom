@@ -27,14 +27,20 @@ class ProjectConfiguration extends sfProjectConfiguration
     $this->enablePlugins(array(
       'sfAuditPlugin',
       'sfDrupalPlugin',
+      'sfFormExtraPlugin',
       'sfHistoryPlugin',
-      'sfInstallPlugin',
       'sfLucenePlugin',
-      'sfPluginAdminPlugin',
+      'sfPropelPlugin',
       'sfSearchPlugin',
       'sfThemePlugin',
       'sfThumbnailPlugin',
       'sfTranslatePlugin',
-      'qbAclPlugin'));
+      'sfWebBrowserPlugin',
+      'qbAclPlugin',
+
+      // sfInstallPlugin and sfPluginAdminPlugin depend on sfPropelPlugin, so
+      // must be enabled last
+      'sfInstallPlugin',
+      'sfPluginAdminPlugin'));
   }
 }

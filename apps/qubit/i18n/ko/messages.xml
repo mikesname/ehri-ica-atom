@@ -1,101 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2009-10-26T08:57:41Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-21T15:21:56Z" product-name="messages">
     <body>
       <trans-unit id="2">
         <source>%1% profile</source>
-        <target/>
+        <target>%1% 프로필</target>
       </trans-unit>
       <trans-unit id="3">
-        <source>log in</source>
-        <target/>
+        <source>Log in</source>
+        <target>로그인</target>
       </trans-unit>
       <trans-unit id="8">
-        <source>list %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="9">
-        <source>Browse for '%1%' in '%2%' returned %3% results</source>
-        <target/>
+        <source>List %1%</source>
+        <target>목록 </target>
       </trans-unit>
       <trans-unit id="11">
-        <source>previous</source>
-        <target/>
+        <source>Previous</source>
+        <target>이전</target>
       </trans-unit>
       <trans-unit id="12">
-        <source>next</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="13">
-        <source>displaying %1% to %2% of %3% results</source>
-        <target/>
+        <source>Next</source>
+        <target>다음</target>
       </trans-unit>
       <trans-unit id="14">
-        <source>browse all %1%</source>
+        <source>Browse all %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="16">
-        <source>term name</source>
+        <source>Term name</source>
         <target/>
       </trans-unit>
       <trans-unit id="17">
-        <source>taxonomy</source>
-        <target/>
+        <source>Taxonomy</source>
+        <target>분류</target>
       </trans-unit>
       <trans-unit id="18">
-        <source>code</source>
+        <source>Code</source>
         <target/>
       </trans-unit>
       <trans-unit id="19">
-        <source>scope note</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="20">
-        <source>source note</source>
+        <source>Scope note</source>
         <target/>
       </trans-unit>
       <trans-unit id="21">
-        <source>delete</source>
-        <target/>
+        <source>Delete</source>
+        <target>삭제</target>
       </trans-unit>
       <trans-unit id="22">
-        <source>are you sure?</source>
-        <target/>
+        <source>Are you sure?</source>
+        <target>맞습니까?</target>
       </trans-unit>
       <trans-unit id="23">
-        <source>cancel</source>
-        <target/>
+        <source>Cancel</source>
+        <target>취소</target>
       </trans-unit>
       <trans-unit id="24">
-        <source>save</source>
-        <target/>
+        <source>Save</source>
+        <target>저장</target>
       </trans-unit>
       <trans-unit id="25">
-        <source>create</source>
+        <source>Create</source>
         <target/>
       </trans-unit>
       <trans-unit id="29">
-        <source>view term</source>
-        <target/>
+        <source>View term</source>
+        <target>용어 보기</target>
       </trans-unit>
       <trans-unit id="30">
-        <source>edit</source>
-        <target/>
+        <source>Edit</source>
+        <target>편집</target>
       </trans-unit>
       <trans-unit id="31">
-        <source>list all</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="35">
-        <source>list %taxonomy%</source>
+        <source>List all</source>
         <target/>
       </trans-unit>
       <trans-unit id="36">
-        <source>add/edit</source>
+        <source>Add/edit</source>
         <target/>
       </trans-unit>
       <trans-unit id="37">
-        <source>results</source>
+        <source>Results</source>
         <target/>
       </trans-unit>
       <trans-unit id="38">
@@ -103,1043 +87,807 @@
         <target/>
       </trans-unit>
       <trans-unit id="39">
-        <source>add new</source>
-        <target/>
+        <source>Add new</source>
+        <target>새항목 추가</target>
       </trans-unit>
       <trans-unit id="40">
-        <source>add/edit term</source>
+        <source>Add/edit term</source>
         <target/>
       </trans-unit>
       <trans-unit id="42">
-        <source>edit %1%</source>
-        <target/>
+        <source>Edit %1%</source>
+        <target>%1% 편집</target>
       </trans-unit>
       <trans-unit id="43">
-        <source>identity area</source>
-        <target/>
+        <source>Identity area</source>
+        <target>식별 영역</target>
       </trans-unit>
       <trans-unit id="44">
-        <source>reference code</source>
+        <source>Reference code</source>
         <target/>
       </trans-unit>
       <trans-unit id="45">
-        <source>identifier</source>
-        <target/>
+        <source>Identifier</source>
+        <target>식별자</target>
       </trans-unit>
       <trans-unit id="46">
-        <source>title</source>
-        <target/>
+        <source>Title</source>
+        <target>제목</target>
       </trans-unit>
       <trans-unit id="48">
-        <source>level of description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="49">
-        <source>parent level</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="50">
-        <source>extent and medium</source>
-        <target/>
+        <source>Level of description</source>
+        <target>기술 계층</target>
       </trans-unit>
       <trans-unit id="51">
-        <source>context area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="53">
-        <source>creator</source>
-        <target/>
+        <source>Context area</source>
+        <target>맥락 영역</target>
       </trans-unit>
       <trans-unit id="58">
-        <source>date display (defaults to date range)</source>
-        <target/>
+        <source>Date display (defaults to date range)</source>
+        <target>일자 표시(일자 범위에 디폴트) </target>
       </trans-unit>
       <trans-unit id="62">
-        <source>repository</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="63">
-        <source>immediate source of acquisition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="64">
-        <source>archival history</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="65">
-        <source>content and structure area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="66">
-        <source>scope and content</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="67">
-        <source>appraisal, destruction and scheduling</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="68">
-        <source>accruals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="69">
-        <source>system of arrangement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="70">
-        <source>conditions of access and use area</source>
-        <target/>
+        <source>Repository</source>
+        <target>기록보존소</target>
       </trans-unit>
       <trans-unit id="71">
-        <source>conditions governing access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="72">
-        <source>conditions governing reproduction</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="73">
-        <source>language of material</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="74">
-        <source>script of material</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="76">
-        <source>finding aids</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="77">
-        <source>allied materials area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="78">
-        <source>location of originals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="80">
-        <source>related units of description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="81">
-        <source>publication note</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="82">
-        <source>notes area</source>
+        <source>Conditions governing access</source>
         <target/>
       </trans-unit>
       <trans-unit id="84">
-        <source>note</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="85">
-        <source>note type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="86">
-        <source>access points</source>
-        <target/>
+        <source>Note</source>
+        <target>주기(노트)</target>
       </trans-unit>
       <trans-unit id="87">
-        <source>subject access points</source>
-        <target/>
+        <source>Subject access points</source>
+        <target>주제 접근점</target>
       </trans-unit>
       <trans-unit id="88">
-        <source>place access points</source>
-        <target/>
+        <source>Place access points</source>
+        <target>장소 접근점</target>
       </trans-unit>
       <trans-unit id="89">
-        <source>name access points</source>
-        <target/>
+        <source>Name access points</source>
+        <target>이름 접근점</target>
       </trans-unit>
       <trans-unit id="90">
-        <source>control area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="91">
-        <source>description record identifier</source>
-        <target/>
+        <source>Control area</source>
+        <target>제어 영역</target>
       </trans-unit>
       <trans-unit id="92">
-        <source>institution identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="93">
-        <source>rules or conventions</source>
-        <target/>
+        <source>Institution identifier</source>
+        <target>전거레코드 책임기관 식별자</target>
       </trans-unit>
       <trans-unit id="94">
-        <source>status</source>
-        <target/>
+        <source>Status</source>
+        <target>전거레코드 현지위</target>
       </trans-unit>
       <trans-unit id="95">
-        <source>level of detail</source>
-        <target/>
+        <source>Level of detail</source>
+        <target>전거레코드 상세정도</target>
       </trans-unit>
       <trans-unit id="96">
-        <source>dates of creation, revision and deletion</source>
-        <target/>
+        <source>Dates of creation, revision and deletion</source>
+        <target>생산 수정 삭제 일자</target>
       </trans-unit>
       <trans-unit id="99">
-        <source>sources</source>
-        <target/>
+        <source>Sources</source>
+        <target>자료</target>
       </trans-unit>
       <trans-unit id="106">
-        <source>date</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="107">
-        <source>coverage</source>
-        <target/>
+        <source>Date</source>
+        <target>일자</target>
       </trans-unit>
       <trans-unit id="110">
-        <source>format</source>
-        <target/>
+        <source>Format</source>
+        <target>포맷</target>
       </trans-unit>
       <trans-unit id="111">
-        <source>type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="112">
-        <source>contributor</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="113">
-        <source>publisher</source>
-        <target/>
+        <source>Type</source>
+        <target>형태</target>
       </trans-unit>
       <trans-unit id="115">
-        <source>description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="119">
-        <source>rights</source>
-        <target/>
+        <source>Description</source>
+        <target>기술</target>
       </trans-unit>
       <trans-unit id="120">
-        <source>language</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="121">
-        <source>subject</source>
+        <source>Language</source>
         <target/>
       </trans-unit>
       <trans-unit id="123">
         <source>Inherited from %ancestor%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="125">
-        <source>title notes</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="130">
-        <source>view %1%</source>
-        <target/>
+        <source>View %1%</source>
+        <target>%1% 보기</target>
       </trans-unit>
       <trans-unit id="132">
-        <source>dates</source>
-        <target/>
+        <source>Dates</source>
+        <target>시기</target>
       </trans-unit>
       <trans-unit id="133">
-        <source>description identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="134">
-        <source>rules</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="135">
-        <source>detail</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="136">
-        <source>dates of creation revision deletion</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="137">
-        <source>language of description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="138">
-        <source>script of description</source>
-        <target/>
+        <source>Description identifier</source>
+        <target>기술 식별자</target>
       </trans-unit>
       <trans-unit id="143">
-        <source>import an XML file</source>
-        <target/>
+        <source>Import an XML file</source>
+        <target>XML파일 가져오기</target>
       </trans-unit>
       <trans-unit id="144">
-        <source>select a file to import</source>
-        <target/>
+        <source>Select a file to import</source>
+        <target>가져올 파일 선택</target>
       </trans-unit>
       <trans-unit id="146">
-        <source>upload</source>
-        <target/>
+        <source>Upload</source>
+        <target>업로드</target>
       </trans-unit>
       <trans-unit id="147">
-        <source>export an XML file</source>
-        <target/>
+        <source>Export an XML file</source>
+        <target>XML 파일 내보내기</target>
       </trans-unit>
       <trans-unit id="148">
-        <source>export</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="149">
-        <source>&lt;span class=""&gt;No %1% found&lt;/span&gt;</source>
-        <target/>
+        <source>Export</source>
+        <target>내보내기</target>
       </trans-unit>
       <trans-unit id="150">
-        <source>download movie</source>
+        <source>Download movie</source>
         <target/>
       </trans-unit>
       <trans-unit id="151">
-        <source>mime-type</source>
+        <source>Mime-type</source>
         <target/>
       </trans-unit>
       <trans-unit id="152">
-        <source>media type</source>
+        <source>Media type</source>
         <target/>
       </trans-unit>
       <trans-unit id="153">
-        <source>filesize</source>
+        <source>Filesize</source>
         <target/>
       </trans-unit>
       <trans-unit id="154">
-        <source>uploaded</source>
+        <source>Uploaded</source>
         <target/>
       </trans-unit>
       <trans-unit id="157">
-        <source>name</source>
-        <target/>
+        <source>Name</source>
+        <target>이름</target>
       </trans-unit>
       <trans-unit id="158">
         <source>Add a new %1% representation</source>
         <target/>
       </trans-unit>
       <trans-unit id="160">
-        <source>back</source>
-        <target/>
+        <source>Back</source>
+        <target>뒤로</target>
       </trans-unit>
       <trans-unit id="164">
         <source>Part of</source>
         <target/>
       </trans-unit>
-      <trans-unit id="165">
-        <source>Delete this %1%? This cannot be undone!</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="166">
-        <source>filename</source>
+        <source>Filename</source>
         <target/>
       </trans-unit>
       <trans-unit id="167">
-        <source>place</source>
-        <target/>
+        <source>Place</source>
+        <target>장소</target>
       </trans-unit>
       <trans-unit id="168">
-        <source>address</source>
+        <source>Address</source>
         <target/>
       </trans-unit>
       <trans-unit id="169">
-        <source>country</source>
-        <target/>
+        <source>Country</source>
+        <target>국가</target>
       </trans-unit>
       <trans-unit id="170">
-        <source>latitude</source>
+        <source>Latitude</source>
         <target/>
       </trans-unit>
       <trans-unit id="171">
-        <source>longitude</source>
+        <source>Longitude</source>
         <target/>
       </trans-unit>
       <trans-unit id="172">
-        <source>maps</source>
+        <source>Maps</source>
         <target/>
       </trans-unit>
       <trans-unit id="173">
-        <source>list places</source>
+        <source>List places</source>
         <target/>
       </trans-unit>
       <trans-unit id="174">
-        <source>id</source>
+        <source>Id</source>
         <target/>
       </trans-unit>
       <trans-unit id="175">
-        <source>place name</source>
+        <source>Place name</source>
         <target/>
       </trans-unit>
       <trans-unit id="176">
-        <source>add new place</source>
+        <source>Add new place</source>
         <target/>
       </trans-unit>
       <trans-unit id="177">
-        <source>add/edit place</source>
+        <source>Add/edit place</source>
         <target/>
       </trans-unit>
       <trans-unit id="178">
-        <source>map relations</source>
+        <source>Map relations</source>
         <target/>
       </trans-unit>
       <trans-unit id="179">
-        <source>list all places</source>
+        <source>List all places</source>
         <target/>
       </trans-unit>
       <trans-unit id="180">
-        <source>new content translation</source>
-        <target/>
+        <source>New content translation</source>
+        <target>새 내용 번역</target>
       </trans-unit>
       <trans-unit id="181">
         <source>In an upcoming version of the software this page will list all newly added or revised content that requires translation.</source>
         <target/>
       </trans-unit>
       <trans-unit id="183">
-        <source>user interface translation</source>
-        <target/>
+        <source>User interface translation</source>
+        <target>사용자 인터페이스 번역</target>
       </trans-unit>
       <trans-unit id="184">
         <source>%1% module</source>
-        <target/>
+        <target>%1% 모듈</target>
       </trans-unit>
       <trans-unit id="185">
-        <source>create (ISAD)</source>
-        <target/>
+        <source>Create (ISAD)</source>
+        <target>생산 (ISAD)</target>
       </trans-unit>
       <trans-unit id="186">
-        <source>edit (ISAD)</source>
-        <target/>
+        <source>Edit (ISAD)</source>
+        <target>편집 (ISAD)</target>
       </trans-unit>
       <trans-unit id="187">
-        <source>edit (Dublin Core)</source>
-        <target/>
+        <source>Edit (Dublin Core)</source>
+        <target>편집 (더블린 코어)</target>
       </trans-unit>
       <trans-unit id="188">
-        <source>list</source>
-        <target/>
+        <source>List</source>
+        <target>목록</target>
       </trans-unit>
       <trans-unit id="189">
-        <source>view (ISAD)</source>
-        <target/>
+        <source>View (ISAD)</source>
+        <target>보기 (ISAD)</target>
       </trans-unit>
       <trans-unit id="190">
-        <source>view digital object</source>
-        <target/>
+        <source>View digital object</source>
+        <target>디지털 객체 보기</target>
       </trans-unit>
       <trans-unit id="191">
-        <source>view digital object master</source>
-        <target/>
+        <source>View digital object master</source>
+        <target>디지털 객체 매스터 보기</target>
       </trans-unit>
       <trans-unit id="193">
-        <source>edit (ISAAR)</source>
-        <target/>
+        <source>Edit (ISAAR)</source>
+        <target>편집 (ISAAR)</target>
       </trans-unit>
       <trans-unit id="194">
-        <source>view (ISAAR)</source>
-        <target/>
+        <source>View (ISAAR)</source>
+        <target>보기 (ISAAR)</target>
       </trans-unit>
       <trans-unit id="195">
-        <source>edit (ISDIAH)</source>
-        <target/>
+        <source>Edit (ISDIAH)</source>
+        <target>편집 (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="196">
-        <source>edit contact information</source>
-        <target/>
+        <source>Edit contact information</source>
+        <target>연락정보 편집</target>
       </trans-unit>
       <trans-unit id="197">
-        <source>view (ISDIAH)</source>
-        <target/>
+        <source>View (ISDIAH)</source>
+        <target>보기 (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="198">
-        <source>term module</source>
-        <target/>
+        <source>Term module</source>
+        <target>용어 모듈</target>
       </trans-unit>
       <trans-unit id="199">
-        <source>search</source>
-        <target/>
+        <source>Search</source>
+        <target>검색</target>
       </trans-unit>
       <trans-unit id="200">
-        <source>search results</source>
-        <target/>
+        <source>Search results</source>
+        <target>검색 결과</target>
       </trans-unit>
       <trans-unit id="201">
-        <source>admin module</source>
-        <target/>
+        <source>Admin module</source>
+        <target>관리자 모듈</target>
       </trans-unit>
       <trans-unit id="202">
-        <source>users</source>
-        <target/>
+        <source>Users</source>
+        <target>사용자</target>
       </trans-unit>
       <trans-unit id="203">
-        <source>login</source>
-        <target/>
+        <source>Login</source>
+        <target>로그인</target>
       </trans-unit>
       <trans-unit id="204">
-        <source>view user profile</source>
-        <target/>
+        <source>View user profile</source>
+        <target>사용자 프로필 보기</target>
       </trans-unit>
       <trans-unit id="205">
-        <source>edit user profile</source>
-        <target/>
+        <source>Edit user profile</source>
+        <target>사용자 프로필 편집</target>
       </trans-unit>
       <trans-unit id="206">
-        <source>reset password</source>
-        <target/>
+        <source>Reset password</source>
+        <target>비밀번호 변경</target>
       </trans-unit>
       <trans-unit id="207">
         <source> (warning: this form is active, click 'cancel' after translating)</source>
-        <target/>
+        <target>(주의: 이 형식은 활동상태임. 번역후 '취소'를 클릭하시오) </target>
       </trans-unit>
       <trans-unit id="208">
-        <source>static pages</source>
-        <target/>
+        <source>Static pages</source>
+        <target>정적 페이지</target>
       </trans-unit>
       <trans-unit id="212">
-        <source>settings</source>
-        <target/>
+        <source>Settings</source>
+        <target>설정</target>
       </trans-unit>
       <trans-unit id="213">
-        <source>site settings</source>
-        <target/>
+        <source>Site settings</source>
+        <target>사이트 설정</target>
       </trans-unit>
       <trans-unit id="214">
-        <source>import/export</source>
-        <target/>
+        <source>Import/export</source>
+        <target>가져오기/내보내기</target>
       </trans-unit>
       <trans-unit id="215">
-        <source>error messages</source>
-        <target/>
+        <source>Error messages</source>
+        <target>에러 메시지</target>
       </trans-unit>
       <trans-unit id="216">
-        <source>not found message</source>
-        <target/>
+        <source>Not found message</source>
+        <target>없는 메시지</target>
       </trans-unit>
       <trans-unit id="217">
-        <source>permission message</source>
-        <target/>
+        <source>Permission message</source>
+        <target>허용 메시지</target>
       </trans-unit>
       <trans-unit id="218">
-        <source>locked term message</source>
-        <target/>
+        <source>Locked term message</source>
+        <target>잠긴 용어 메시지</target>
       </trans-unit>
       <trans-unit id="219">
-        <source>translation permission</source>
-        <target/>
+        <source>Translation permission</source>
+        <target>번역 허가</target>
       </trans-unit>
       <trans-unit id="220">
-        <source>internationalization module</source>
-        <target/>
+        <source>Internationalization module</source>
+        <target>국제화 모듈</target>
       </trans-unit>
       <trans-unit id="221">
-        <source>user interface translation list</source>
-        <target/>
+        <source>User interface translation list</source>
+        <target>사용자 인터페이스 번역 목록</target>
       </trans-unit>
       <trans-unit id="222">
-        <source>this page</source>
-        <target/>
+        <source>This page</source>
+        <target>이 페이지</target>
       </trans-unit>
       <trans-unit id="223">
-        <source>default content translation list</source>
-        <target/>
+        <source>Default content translation list</source>
+        <target>디폴트 내용 번역 목록</target>
       </trans-unit>
       <trans-unit id="224">
-        <source>default content translation</source>
-        <target/>
+        <source>Default content translation</source>
+        <target>디폴트 내용 번역</target>
       </trans-unit>
       <trans-unit id="225">
-        <source>source content</source>
-        <target/>
+        <source>Source content</source>
+        <target>소스자료 내용</target>
       </trans-unit>
       <trans-unit id="226">
-        <source>translated content</source>
-        <target/>
+        <source>Translated content</source>
+        <target>번역된 내용</target>
       </trans-unit>
       <trans-unit id="227">
-        <source>taxonomies</source>
-        <target/>
+        <source>Taxonomies</source>
+        <target>분류</target>
       </trans-unit>
       <trans-unit id="228">
-        <source>terms</source>
-        <target/>
+        <source>Terms</source>
+        <target>용어</target>
       </trans-unit>
       <trans-unit id="230">
-        <source>advanced search</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="231">
-        <source>search for '%1%' resulted in %2% results</source>
+        <source>Advanced search</source>
         <target/>
       </trans-unit>
       <trans-unit id="233">
-        <source>browse</source>
-        <target/>
+        <source>Browse</source>
+        <target>찾아보기</target>
       </trans-unit>
       <trans-unit id="239">
-        <source>type of entity</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="240">
-        <source>other names</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="241">
-        <source>identifiers</source>
-        <target/>
+        <source>Type of entity</source>
+        <target>존재의 형태(조직/기관, 개인, 가족)</target>
       </trans-unit>
       <trans-unit id="242">
-        <source>dates of existence</source>
-        <target/>
+        <source>Dates of existence</source>
+        <target>존재 시기</target>
       </trans-unit>
       <trans-unit id="243">
-        <source>history</source>
-        <target/>
+        <source>History</source>
+        <target>조직사, 개인/가족이력</target>
       </trans-unit>
       <trans-unit id="244">
-        <source>places</source>
-        <target/>
+        <source>Places</source>
+        <target>장소</target>
       </trans-unit>
       <trans-unit id="245">
-        <source>legal status</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="246">
-        <source>functions occupations activities</source>
-        <target/>
+        <source>Legal status</source>
+        <target>조직/기관의 법적 지위</target>
       </trans-unit>
       <trans-unit id="249">
-        <source>general context</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="250">
-        <source>authority record identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="251">
-        <source>language of authority record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="252">
-        <source>script of authority record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="253">
-        <source>edit Contact Information</source>
-        <target/>
+        <source>General context</source>
+        <target>일반 맥락</target>
       </trans-unit>
       <trans-unit id="254">
         <source>Contact type</source>
-        <target/>
+        <target>연락 형태</target>
       </trans-unit>
       <trans-unit id="255">
         <source>Primary contact?</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="256">
-        <source>Contact Person</source>
-        <target/>
+        <target>1차연락처</target>
       </trans-unit>
       <trans-unit id="257">
         <source>Street address</source>
-        <target/>
+        <target>거리 주소</target>
       </trans-unit>
       <trans-unit id="258">
         <source>City</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="259">
-        <source>Region/Province</source>
-        <target/>
+        <target>도시명</target>
       </trans-unit>
       <trans-unit id="260">
         <source>Country</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="261">
-        <source>Postal Code</source>
-        <target/>
+        <target>국가</target>
       </trans-unit>
       <trans-unit id="262">
         <source>Latitude</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="263">
-        <source>Longtitude</source>
-        <target/>
+        <target>위도</target>
       </trans-unit>
       <trans-unit id="264">
         <source>Telephone</source>
-        <target/>
+        <target>전화</target>
       </trans-unit>
       <trans-unit id="265">
         <source>Fax</source>
-        <target/>
+        <target>팩스</target>
       </trans-unit>
       <trans-unit id="266">
         <source>Email</source>
-        <target/>
+        <target>E메일</target>
       </trans-unit>
       <trans-unit id="267">
         <source>Website</source>
-        <target/>
+        <target>웹사이트</target>
       </trans-unit>
       <trans-unit id="268">
         <source>Note</source>
-        <target/>
+        <target>노트</target>
       </trans-unit>
       <trans-unit id="269">
-        <source>authorized form of name</source>
-        <target/>
+        <source>Authorized form of name</source>
+        <target>승인된 이름 형식</target>
       </trans-unit>
       <trans-unit id="270">
-        <source>identifiers for corporate bodies</source>
-        <target/>
+        <source>Identifiers for corporate bodies</source>
+        <target>조직/기관 식별자</target>
       </trans-unit>
       <trans-unit id="271">
-        <source>description area</source>
-        <target/>
+        <source>Description area</source>
+        <target>기술 영역</target>
       </trans-unit>
       <trans-unit id="275">
-        <source>functions, occupations and activities</source>
-        <target/>
+        <source>Functions, occupations and activities</source>
+        <target>기능, 직업, 활동</target>
       </trans-unit>
       <trans-unit id="276">
-        <source>relationships area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="277">
-        <source>languages of authority record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="278">
-        <source>scripts of authority record</source>
-        <target/>
+        <source>Relationships area</source>
+        <target>관계 영역</target>
       </trans-unit>
       <trans-unit id="280">
-        <source>permalink</source>
-        <target/>
+        <source>Permalink</source>
+        <target>영구 링크</target>
       </trans-unit>
       <trans-unit id="281">
-        <source>content</source>
-        <target/>
+        <source>Content</source>
+        <target>내용</target>
       </trans-unit>
       <trans-unit id="282">
-        <source>created</source>
+        <source>Created</source>
         <target/>
       </trans-unit>
       <trans-unit id="283">
-        <source>updated</source>
-        <target/>
+        <source>Updated</source>
+        <target>업데이트 일시</target>
       </trans-unit>
       <trans-unit id="285">
-        <source>edit this page</source>
-        <target/>
+        <source>Edit this page</source>
+        <target>이 페이지 편집</target>
       </trans-unit>
       <trans-unit id="286">
-        <source>add/edit static page</source>
-        <target/>
+        <source>Add/edit static page</source>
+        <target>추가/편집 정적 페이지</target>
       </trans-unit>
       <trans-unit id="287">
-        <source>containers</source>
+        <source>Containers</source>
         <target/>
       </trans-unit>
       <trans-unit id="288">
-        <source>add container links (duplicate links will be ignored)</source>
+        <source>Add container links (duplicate links will be ignored)</source>
         <target/>
       </trans-unit>
       <trans-unit id="289">
-        <source>or, create a new container</source>
+        <source>Or, create a new container</source>
         <target/>
       </trans-unit>
       <trans-unit id="290">
-        <source>location</source>
-        <target/>
+        <source>Location</source>
+        <target>보관 위치</target>
       </trans-unit>
       <trans-unit id="291">
-        <source>container type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="292">
-        <source>container</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="293">
-        <source>contains</source>
+        <source>Container type</source>
         <target/>
       </trans-unit>
       <trans-unit id="296">
-        <source>value</source>
-        <target/>
+        <source>Value</source>
+        <target>값</target>
       </trans-unit>
       <trans-unit id="297">
-        <source>add</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="298">
-        <source>please log-in to access that page</source>
-        <target/>
+        <source>Add</source>
+        <target>추가</target>
       </trans-unit>
       <trans-unit id="299">
-        <source>user name</source>
-        <target/>
+        <source>User name</source>
+        <target>사용자 이름</target>
       </trans-unit>
       <trans-unit id="300">
-        <source>email</source>
-        <target/>
+        <source>Email</source>
+        <target>e메일</target>
       </trans-unit>
       <trans-unit id="301">
-        <source>password</source>
-        <target/>
+        <source>Password</source>
+        <target>비밀번호</target>
       </trans-unit>
       <trans-unit id="302">
-        <source>user roles</source>
-        <target/>
+        <source>User roles</source>
+        <target>사용자 역할</target>
       </trans-unit>
       <trans-unit id="304">
-        <source>list users</source>
-        <target/>
+        <source>List users</source>
+        <target>사용자 목록</target>
       </trans-unit>
       <trans-unit id="308">
-        <source>reset password: %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="311">
-        <source>you must provide an email address</source>
-        <target/>
+        <source>Reset password: %1%</source>
+        <target>비밀번호 재설정: %1%</target>
       </trans-unit>
       <trans-unit id="315">
-        <source>map</source>
+        <source>Map</source>
         <target/>
       </trans-unit>
       <trans-unit id="316">
-        <source>list maps</source>
+        <source>List maps</source>
         <target/>
       </trans-unit>
       <trans-unit id="317">
-        <source>add new map</source>
+        <source>Add new map</source>
         <target/>
       </trans-unit>
       <trans-unit id="318">
-        <source>edit place -&gt; map relation</source>
+        <source>Edit place -&gt; map relation</source>
         <target/>
       </trans-unit>
       <trans-unit id="319">
-        <source>map marker</source>
+        <source>Map marker</source>
         <target/>
       </trans-unit>
       <trans-unit id="320">
-        <source>icon image</source>
+        <source>Icon image</source>
         <target/>
       </trans-unit>
       <trans-unit id="321">
-        <source>icon description</source>
+        <source>Icon description</source>
         <target/>
       </trans-unit>
       <trans-unit id="322">
-        <source>add/edit map</source>
+        <source>Add/edit map</source>
         <target/>
       </trans-unit>
       <trans-unit id="323">
-        <source>list all maps</source>
+        <source>List all maps</source>
         <target/>
       </trans-unit>
       <trans-unit id="324">
-        <source>view map</source>
+        <source>View map</source>
         <target/>
       </trans-unit>
       <trans-unit id="325">
         <source>Contact information</source>
-        <target/>
+        <target>연락처 정보</target>
       </trans-unit>
       <trans-unit id="326">
-        <source>primary contact</source>
-        <target/>
+        <source>Primary contact</source>
+        <target>주 연락처</target>
       </trans-unit>
       <trans-unit id="327">
-        <source>geographical and cultural context</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="328">
-        <source>structure</source>
-        <target/>
+        <source>Geographical and cultural context</source>
+        <target>지리적 문화적 맥락</target>
       </trans-unit>
       <trans-unit id="329">
-        <source>records management and collecting policies</source>
-        <target/>
+        <source>Records management and collecting policies</source>
+        <target>현용기록관리와 수집정책</target>
       </trans-unit>
       <trans-unit id="330">
-        <source>buildings</source>
-        <target/>
+        <source>Buildings</source>
+        <target>건물</target>
       </trans-unit>
       <trans-unit id="331">
-        <source>holdings</source>
+        <source>Holdings</source>
         <target/>
       </trans-unit>
       <trans-unit id="333">
-        <source>opening times</source>
-        <target/>
+        <source>Opening times</source>
+        <target>개관 시간</target>
       </trans-unit>
       <trans-unit id="334">
-        <source>access conditions and requirements</source>
+        <source>Access conditions and requirements</source>
         <target/>
       </trans-unit>
       <trans-unit id="335">
-        <source>accessibility</source>
-        <target/>
+        <source>Accessibility</source>
+        <target>접근성</target>
       </trans-unit>
       <trans-unit id="336">
-        <source>research services</source>
-        <target/>
+        <source>Research services</source>
+        <target>조사 서비스</target>
       </trans-unit>
       <trans-unit id="337">
-        <source>reproduction services</source>
-        <target/>
+        <source>Reproduction services</source>
+        <target>복사 서비스</target>
       </trans-unit>
       <trans-unit id="338">
-        <source>public areas</source>
-        <target/>
+        <source>Public areas</source>
+        <target>공공영역</target>
       </trans-unit>
       <trans-unit id="339">
-        <source>contact area</source>
-        <target/>
+        <source>Contact area</source>
+        <target>연락 영역</target>
       </trans-unit>
       <trans-unit id="340">
-        <source>contact information</source>
-        <target/>
+        <source>Contact information</source>
+        <target>연락 정보</target>
       </trans-unit>
       <trans-unit id="341">
-        <source>new contact information</source>
-        <target/>
+        <source>New contact information</source>
+        <target>새 연락 정보</target>
       </trans-unit>
       <trans-unit id="342">
-        <source>contact type</source>
-        <target/>
+        <source>Contact type</source>
+        <target>연락 형태</target>
       </trans-unit>
       <trans-unit id="343">
-        <source>contact person</source>
-        <target/>
+        <source>Contact person</source>
+        <target>연락처</target>
       </trans-unit>
       <trans-unit id="344">
-        <source>street address</source>
-        <target/>
+        <source>Street address</source>
+        <target>주소</target>
       </trans-unit>
       <trans-unit id="345">
-        <source>city</source>
-        <target/>
+        <source>City</source>
+        <target>도시</target>
       </trans-unit>
       <trans-unit id="346">
-        <source>region/province</source>
-        <target/>
+        <source>Region/province</source>
+        <target>지역/도</target>
       </trans-unit>
       <trans-unit id="347">
-        <source>postal code</source>
-        <target/>
+        <source>Postal code</source>
+        <target>우편번호</target>
       </trans-unit>
       <trans-unit id="348">
-        <source>telephone</source>
-        <target/>
+        <source>Telephone</source>
+        <target>전화</target>
       </trans-unit>
       <trans-unit id="349">
-        <source>fax</source>
-        <target/>
+        <source>Fax</source>
+        <target>팩스</target>
       </trans-unit>
       <trans-unit id="350">
-        <source>website</source>
-        <target/>
+        <source>Website</source>
+        <target>웹사이트</target>
       </trans-unit>
       <trans-unit id="351">
-        <source>administrative structure</source>
-        <target/>
+        <source>Administrative structure</source>
+        <target>조직/기관 구조</target>
       </trans-unit>
       <trans-unit id="352">
-        <source>archival and other holdings</source>
-        <target/>
+        <source>Archival and other holdings</source>
+        <target>보존기록 및 기타 소장물</target>
       </trans-unit>
       <trans-unit id="353">
-        <source>access area</source>
-        <target/>
+        <source>Access area</source>
+        <target>접근 영역</target>
       </trans-unit>
       <trans-unit id="354">
-        <source>conditions and requirements</source>
-        <target/>
+        <source>Conditions and requirements</source>
+        <target>조건 및 요구사항</target>
       </trans-unit>
       <trans-unit id="355">
-        <source>services area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="356">
-        <source>institution responsible identifier</source>
-        <target/>
+        <source>Services area</source>
+        <target>서비스 영역</target>
       </trans-unit>
       <trans-unit id="359">
         <source>Sorry, you do not have permission to make %1% language translations</source>
         <target/>
       </trans-unit>
       <trans-unit id="360">
-        <source>back to previous page</source>
-        <target/>
+        <source>Back to previous page</source>
+        <target>이전 페이지로 돌아감</target>
       </trans-unit>
       <trans-unit id="361">
-        <source>go to homepage</source>
-        <target/>
+        <source>Go to homepage</source>
+        <target>홈페이지로 돌아감</target>
       </trans-unit>
       <trans-unit id="362">
-        <source>sorry, you do not have permission to access that page</source>
-        <target/>
+        <source>Sorry, you do not have permission to access that page</source>
+        <target>이 페이지에 대한 접근권이 없습니다.</target>
       </trans-unit>
       <trans-unit id="363">
-        <source>sorry, page not found</source>
-        <target/>
+        <source>Sorry, page not found</source>
+        <target>패이지가 없습니다.</target>
       </trans-unit>
       <trans-unit id="364">
-        <source>the server returned a 404 response</source>
-        <target/>
+        <source>The server returned a 404 response</source>
+        <target>서버가 404로 반환 응답함 </target>
       </trans-unit>
       <trans-unit id="365">
-        <source>did you type the URL correctly?</source>
-        <target/>
+        <source>Did you type the URL correctly?</source>
+        <target>URL을 정확히 입력했습니까?</target>
       </trans-unit>
       <trans-unit id="366">
-        <source>did you follow a broken link?</source>
-        <target/>
+        <source>Did you follow a broken link?</source>
+        <target>연결되지 않는 링크를 따라왔습니까?</target>
       </trans-unit>
       <trans-unit id="368">
-        <source>the existing term values are required by the application to operate correctly</source>
-        <target/>
+        <source>The existing term values are required by the application to operate correctly</source>
+        <target>기존 용어값은 어플리케이션의 정상 작동에 필요합니다.</target>
       </trans-unit>
       <trans-unit id="369">
-        <source>edit physical storage</source>
-        <target/>
+        <source>Edit physical storage</source>
+        <target>물리적 보존 편집</target>
       </trans-unit>
       <trans-unit id="370">
-        <source>create (ISAAR)</source>
-        <target/>
+        <source>Create (ISAAR)</source>
+        <target>생산 (ISAAR)</target>
       </trans-unit>
       <trans-unit id="371">
-        <source>create (ISDIAH)</source>
-        <target/>
+        <source>Create (ISDIAH)</source>
+        <target>생산 (ISDIAH)</target>
       </trans-unit>
       <trans-unit id="372">
-        <source>list static page</source>
-        <target/>
+        <source>List static page</source>
+        <target>정적 페이지 목록</target>
       </trans-unit>
       <trans-unit id="373">
-        <source>edit static page</source>
-        <target/>
+        <source>Edit static page</source>
+        <target>정적 페이지 편집</target>
       </trans-unit>
       <trans-unit id="374">
-        <source>view static page</source>
-        <target/>
+        <source>View static page</source>
+        <target>정적 페이지 보기</target>
       </trans-unit>
       <trans-unit id="375">
         <source>%1% of</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="376">
-        <source>display note</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="377">
-        <source>view archival description</source>
         <target/>
       </trans-unit>
       <trans-unit id="378">
@@ -1147,451 +895,255 @@
         <target/>
       </trans-unit>
       <trans-unit id="379">
-        <source>name of creator</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="380">
-        <source>Administrative</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="381">
-        <source>Biographic</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="384">
-        <source>title and statement of responsibility area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="385">
-        <source>title proper</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="386">
-        <source>general material designation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="387">
-        <source>parallel title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="388">
-        <source>other title information</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="390">
-        <source>title note type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="391">
-        <source>edition area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="392">
-        <source>edition statement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="393">
-        <source>class of material specific details area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="394">
-        <source>statement of scale (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="395">
-        <source>statement of projection (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="396">
-        <source>statement of coordinates (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="397">
-        <source>statement of scale (architectural)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="398">
-        <source>issuing jurisdiction and denomination (philatelic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="399">
-        <source>dates of creation area</source>
-        <target/>
+        <source>Name of creator</source>
+        <target>생산자 이름</target>
       </trans-unit>
       <trans-unit id="400">
         <source>Name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="401">
-        <source>Role</source>
-        <target/>
+        <target>이름</target>
       </trans-unit>
       <trans-unit id="402">
         <source>Event</source>
-        <target/>
+        <target>사건(이벤트)</target>
       </trans-unit>
       <trans-unit id="403">
         <source>Date(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="404">
-        <source>new event</source>
-        <target/>
+        <target>일자(시기)</target>
       </trans-unit>
       <trans-unit id="406">
-        <source>event type</source>
-        <target/>
+        <source>Event type</source>
+        <target>사건(이벤트) 형태</target>
       </trans-unit>
       <trans-unit id="408">
-        <source>administrative history</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="409">
-        <source>biographical sketch</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="410">
-        <source>physical description area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="411">
-        <source>physical description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="412">
-        <source>publisher's series area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="413">
-        <source>Title proper of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="415">
-        <source>Other title information of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="416">
-        <source>Statement of responsibility relating to publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="417">
-        <source>Numbering within publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="418">
-        <source>Note on publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="419">
-        <source>archival description area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="420">
-        <source>custodial history</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="421">
-        <source>physical condition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="422">
-        <source>arrangement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="424">
-        <source>availability of other formats</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="425">
-        <source>restrictions on access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="426">
-        <source>terms governing use, reproduction, and publication</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="427">
-        <source>associated / related material</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="428">
-        <source>other notes</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="429">
-        <source>standard number area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="430">
-        <source>standard number</source>
+        <source>Administrative history</source>
         <target/>
       </trans-unit>
       <trans-unit id="431">
-        <source>enter term and scope</source>
+        <source>Enter term and scope</source>
         <target/>
       </trans-unit>
       <trans-unit id="432">
-        <source>creator(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="433">
-        <source>title statements of responsibility</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="434">
-        <source>edition statement of responsibility</source>
+        <source>Creator(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="435">
-        <source>title proper of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="436">
-        <source>parallel titles of publisher's series</source>
+        <source>Title proper of publisher's series</source>
         <target/>
       </trans-unit>
       <trans-unit id="437">
-        <source>other title information of publisher's series</source>
+        <source>Other title information of publisher's series</source>
         <target/>
       </trans-unit>
       <trans-unit id="438">
-        <source>statement of responsibility relating to publisher's series</source>
+        <source>Statement of responsibility relating to publisher's series</source>
         <target/>
       </trans-unit>
       <trans-unit id="439">
-        <source>numbering within publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="440">
-        <source>unknown</source>
+        <source>Numbering within publisher's series</source>
         <target/>
       </trans-unit>
       <trans-unit id="441">
-        <source>create (RAD)</source>
+        <source>Create (RAD)</source>
         <target/>
       </trans-unit>
       <trans-unit id="442">
-        <source>edit (RAD)</source>
+        <source>Edit (RAD)</source>
         <target/>
       </trans-unit>
       <trans-unit id="443">
-        <source>view (RAD)</source>
+        <source>View (RAD)</source>
         <target/>
       </trans-unit>
       <trans-unit id="444">
-        <source>global</source>
-        <target/>
+        <source>Global</source>
+        <target>글로벌</target>
       </trans-unit>
       <trans-unit id="445">
-        <source>site information</source>
-        <target/>
+        <source>Site information</source>
+        <target>사이트 정보</target>
       </trans-unit>
       <trans-unit id="446">
         <source>The name of the website for display in the header</source>
-        <target/>
+        <target>헤더 디스플레이 웹사이트의 이름</target>
       </trans-unit>
       <trans-unit id="447">
         <source>A brief site description or &amp;quot;tagline&amp;quot; for the header</source>
-        <target/>
+        <target>헤더 부분을 위한 간략한 사이트 설명 혹은 태그라인</target>
       </trans-unit>
       <trans-unit id="448">
-        <source>default template</source>
-        <target/>
+        <source>Default template</source>
+        <target>디폴트 템플릿</target>
       </trans-unit>
       <trans-unit id="449">
-        <source>user interface label</source>
-        <target/>
+        <source>User interface label</source>
+        <target>사용자 인터페이스 레이블</target>
       </trans-unit>
       <trans-unit id="450">
-        <source>i18n languages</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="451">
-        <source>your email address was not found</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="452">
-        <source>your email and password do not match</source>
-        <target/>
+        <source>I18n languages</source>
+        <target>i18n 언어</target>
       </trans-unit>
       <trans-unit id="453">
-        <source>change language</source>
-        <target/>
+        <source>Change language</source>
+        <target>언어 변경</target>
       </trans-unit>
       <trans-unit id="454">
-        <source>site title</source>
-        <target/>
+        <source>Site title</source>
+        <target>사이트 제목</target>
       </trans-unit>
       <trans-unit id="455">
-        <source>site description</source>
-        <target/>
+        <source>Site description</source>
+        <target>사이트 설명</target>
       </trans-unit>
       <trans-unit id="456">
-        <source>top</source>
-        <target/>
+        <source>Top</source>
+        <target>위</target>
       </trans-unit>
       <trans-unit id="457">
-        <source>label</source>
-        <target/>
+        <source>Label</source>
+        <target>레이블</target>
       </trans-unit>
       <trans-unit id="458">
-        <source>path</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="459">
-        <source>parent menu</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="460">
-        <source>The menu must have a name</source>
-        <target/>
+        <source>Path</source>
+        <target>경로</target>
       </trans-unit>
       <trans-unit id="461">
-        <source>application version</source>
-        <target/>
+        <source>Application version</source>
+        <target>어플리케이션 버전</target>
       </trans-unit>
       <trans-unit id="462">
-        <source>upload directory</source>
-        <target/>
+        <source>Upload directory</source>
+        <target>업로드 디렉토리</target>
       </trans-unit>
       <trans-unit id="463">
-        <source>maximum image width (pixels)</source>
-        <target/>
+        <source>Maximum image width (pixels)</source>
+        <target>최대 이미지 너비(픽셀)</target>
       </trans-unit>
       <trans-unit id="464">
-        <source>results per page</source>
-        <target/>
+        <source>Results per page</source>
+        <target>페이지당 결과</target>
       </trans-unit>
       <trans-unit id="465">
-        <source>inherit reference code (information object)</source>
-        <target/>
+        <source>Inherit reference code (information object)</source>
+        <target>참조 코드 계승 (정보객체)</target>
       </trans-unit>
       <trans-unit id="466">
-        <source>multiple repositories</source>
-        <target/>
+        <source>Multiple repositories</source>
+        <target>다중 보존소</target>
       </trans-unit>
       <trans-unit id="467">
         <source>The current version of the application</source>
-        <target/>
+        <target>이 어플리케이션의 현재판</target>
       </trans-unit>
       <trans-unit id="468">
         <source>The destination directory for uploaded digital object files</source>
-        <target/>
+        <target>업로드된 디지털 객체 파일의 대상 디렉토리</target>
       </trans-unit>
       <trans-unit id="469">
         <source>The maximum width for derived reference images</source>
-        <target/>
+        <target>파생 참조 이미지의 최대 너비</target>
       </trans-unit>
       <trans-unit id="470">
         <source>The number of records shown per page on list pages</source>
-        <target/>
+        <target>목록 페이지에 페이지당 보여지는 기록의 수</target>
       </trans-unit>
       <trans-unit id="471">
         <source>When set to &amp;quot;yes&amp;quot;, the reference code string will be built using the information object identifier plus the identifiers of all its ancestors</source>
-        <target/>
+        <target>"yes"로 설정하면 정보객체 식별자에 그 어미 객체의 식별자를 더하여 참조코드 문자열이 구축될 것이다. </target>
       </trans-unit>
       <trans-unit id="472">
         <source>When set to &amp;quot;no&amp;quot;, the repository name is excluded from certain displays because it will be too repetitive</source>
-        <target/>
+        <target>"no"로 설정하면 보존소 이름이 반복적이기 때문에 특정 디스플레이에서 배제됨 </target>
       </trans-unit>
       <trans-unit id="473">
         <source>This field is required</source>
-        <target/>
+        <target>필수 필드</target>
       </trans-unit>
       <trans-unit id="474">
         <source>This value must be at least %min% pixels</source>
-        <target/>
+        <target>값이 최소 %min% 픽셀 이상</target>
       </trans-unit>
       <trans-unit id="475">
         <source>This value can not be greater than %max% pixels</source>
-        <target/>
+        <target>값이 %max% 픽셀 이상 불가 </target>
       </trans-unit>
       <trans-unit id="476">
         <source>You must show at least %min% hits per page</source>
-        <target/>
+        <target>페이지당 최소 %min% 검색일치 결과를 보여주어야 한다.</target>
       </trans-unit>
       <trans-unit id="477">
         <source>You cannot show more than %max% hits per page</source>
-        <target/>
+        <target>페이지당 %max% 이상 검색일치 결과를 보여줄 수 없다.</target>
       </trans-unit>
       <trans-unit id="478">
-        <source>enable OAI</source>
-        <target/>
+        <source>Enable OAI</source>
+        <target>OAI 작동</target>
       </trans-unit>
       <trans-unit id="479">
         <source>OAI repository code</source>
-        <target/>
+        <target>OAI 보존소 코드</target>
       </trans-unit>
       <trans-unit id="480">
         <source>OAI repository identifier</source>
-        <target/>
+        <target>OAI 보존소 식별자</target>
       </trans-unit>
       <trans-unit id="481">
-        <source>sample OAI identifier</source>
-        <target/>
+        <source>Sample OAI identifier</source>
+        <target>샘플 OAI 식별자</target>
       </trans-unit>
       <trans-unit id="482">
-        <source>resumption token limit</source>
-        <target/>
+        <source>Resumption token limit</source>
+        <target>재개 토큰 제한</target>
       </trans-unit>
       <trans-unit id="484">
-        <source>add an alpha-numeric code to uniquely identify this particular OAI repository within its network domain to create a unique, OAI-compliant identifier, e.g. oai:foo.org:repositorycode_10001</source>
-        <target/>
+        <source>Add an alpha-numeric code to uniquely identify this particular OAI repository within its network domain to create a unique, OAI-compliant identifier, e.g. oai:foo.org:repositorycode_10001</source>
+        <target>유일한 OAI 준수 식별자, 즉, oai:foo.org:repositorycode_10001를 생성하기 위해서 네트워크 도메인 안에 있는 이러한 특정한 OAI 보존소를 구별해서 식별하기 위해 알파베트-숫자 코드를 추가하라 </target>
       </trans-unit>
       <trans-unit id="485">
         <source>The number of entities to include in a single OAI response list before inserting a resumption token</source>
-        <target/>
+        <target>재개 토큰을 삽입하기 전에 단일한 OAI 대응 리스트 안에 포함되는 개체 수</target>
       </trans-unit>
       <trans-unit id="486">
         <source>This value must be at least %min%</source>
-        <target/>
+        <target>값이 최소 %min% 이상</target>
       </trans-unit>
       <trans-unit id="487">
         <source>This value cannot be more than %max%</source>
-        <target/>
+        <target>값이 %max% 이상 불가</target>
       </trans-unit>
       <trans-unit id="488">
-        <source>the code can only contain letters and numbers</source>
-        <target/>
+        <source>The code can only contain letters and numbers</source>
+        <target>코드는 문자와 숫자로만 구성될 수 있음</target>
       </trans-unit>
       <trans-unit id="489">
         <source>ISAD(G), 2nd ed. International Council on Archives</source>
-        <target/>
+        <target>ISAD(G), 2판. ICA 국제기술규칙</target>
       </trans-unit>
       <trans-unit id="490">
         <source>RAD, July 2008 version. Canadian Council of Archives</source>
-        <target/>
+        <target>RAD(보존기록기술규칙), 2008년 7월판. 캐나다 아카이브즈협회(CCA) </target>
       </trans-unit>
       <trans-unit id="491">
         <source>Dublin Core, Version 1.1. Dublin Core Metadata Initiative</source>
-        <target/>
+        <target>더블린코어(Dublin Core) 1.1판. 더블린코어 메타데이터 이니시에이티브(DCMI)</target>
       </trans-unit>
       <trans-unit id="492">
         <source>ISAAR(CPF), 2nd ed. International Council on Archives</source>
-        <target/>
+        <target>ISAAR(CPF), 2판. ICA 국제전거레코드 기술규칙</target>
       </trans-unit>
       <trans-unit id="493">
         <source>ISDIAH, 1st ed. International Council on Archives</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="494">
-        <source>your email address is not a valid format</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="495">
-        <source>you must provide a password</source>
-        <target/>
+        <target>ISDIAH, 1판. ICA 국제기록소장기관기술규칙</target>
       </trans-unit>
       <trans-unit id="496">
-        <source>max. size ~%1%</source>
+        <source>Max. size ~%1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="497">
-        <source>view full size</source>
+        <source>View full size</source>
         <target/>
       </trans-unit>
       <trans-unit id="498">
-        <source>download %1%</source>
+        <source>Download %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="501">
@@ -1599,15 +1151,15 @@
         <target/>
       </trans-unit>
       <trans-unit id="502">
-        <source>view children as a compound digital object?</source>
+        <source>View children as a compound digital object?</source>
         <target/>
       </trans-unit>
       <trans-unit id="503">
-        <source>yes</source>
+        <source>Yes</source>
         <target/>
       </trans-unit>
       <trans-unit id="504">
-        <source>no</source>
+        <source>No</source>
         <target/>
       </trans-unit>
       <trans-unit id="505">
@@ -1615,188 +1167,84 @@
         <target/>
       </trans-unit>
       <trans-unit id="509">
-        <source>view authority record</source>
-        <target/>
+        <source>View authority record</source>
+        <target>전거레코드 보기</target>
       </trans-unit>
       <trans-unit id="510">
-        <source>edit %1% - ISAAR</source>
-        <target/>
+        <source>Edit %1% - ISAAR</source>
+        <target>편집 ISAAR</target>
       </trans-unit>
       <trans-unit id="513">
         <source>Are you sure?</source>
-        <target/>
+        <target>확실합니까?</target>
       </trans-unit>
       <trans-unit id="515">
-        <source>digital object metadata</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="516">
-        <source>Update Error</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="517">
-        <source>Error! The update form contained no post data.  This error may be a result of attempting to upload a file that exceeds the max POST size of %1%.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="519">
-        <source>Return to the create/edit form</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="520">
-        <source>Go to the homepage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="523">
-        <source>edit archival description - RAD</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="526">
-        <source>edit archival description - ISAD(G)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="528">
-        <source>view resource metadata</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="529">
-        <source>relation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="530">
-        <source>is part of</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="531">
-        <source>source</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="533">
-        <source>Error! The update form contained no post data.  This error may be a result of attempting to upload a file that exceeds the max upload filesize of %1%.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="534">
-        <source>edit resource metadata - Dublin Core</source>
+        <source>Digital object metadata</source>
         <target/>
       </trans-unit>
       <trans-unit id="537">
         <source>Subject</source>
-        <target/>
+        <target>주제</target>
       </trans-unit>
       <trans-unit id="544">
-        <source>import/export module</source>
-        <target/>
+        <source>Import/export module</source>
+        <target>가져오기/내보내기 모듈</target>
       </trans-unit>
       <trans-unit id="545">
-        <source>menu</source>
-        <target/>
+        <source>Menu</source>
+        <target>메뉴</target>
       </trans-unit>
       <trans-unit id="546">
-        <source>edit menu</source>
-        <target/>
+        <source>Edit menu</source>
+        <target>메뉴 편집</target>
       </trans-unit>
       <trans-unit id="547">
-        <source>site menu list</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="549">
-        <source>%1% menu</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="550">
-        <source>"%1%" menu</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="551">
-        <source>protected</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="552">
-        <source>New menu</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="553">
-        <source>The name of this menu. The menu name is used internally and is not visible to users.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="554">
-        <source>This is the button or link label that users see.  For menu items that are not visible (i.e. are organizational only) this should be left blank.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="555">
-        <source>source text</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="556">
-        <source>This can be an external URL (starts with http(s)://) or an internal, symfony path (e.g. module/action).</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="557">
-        <source>A brief description of the menu and it's purpose.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="558">
-        <source>Move before</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="559">
-        <source>* This field is required.</source>
-        <target/>
+        <source>Site menu list</source>
+        <target>사이트 메뉴 목록</target>
       </trans-unit>
       <trans-unit id="560">
-        <source>this action will delete this menu and all it's descendants. Are you sure?</source>
-        <target/>
+        <source>This action will delete this menu and all it's descendants. Are you sure?</source>
+        <target>이 조치는 이 메뉴와 그 하위 메뉴를 삭제합니다. 삭제하겠습니까?</target>
       </trans-unit>
       <trans-unit id="561">
         <source>Hierarchical list of menus for the site, first column</source>
-        <target/>
+        <target>사이트 첫째 컬럼 메뉴의 위계목록 </target>
       </trans-unit>
       <trans-unit id="562">
-        <source>move up</source>
-        <target/>
+        <source>Move up</source>
+        <target>위로 이동</target>
       </trans-unit>
       <trans-unit id="563">
-        <source>move item up in list</source>
-        <target/>
+        <source>Move item up in list</source>
+        <target>아이템을 목록안의 위로 이동</target>
       </trans-unit>
       <trans-unit id="564">
-        <source>move down</source>
-        <target/>
+        <source>Move down</source>
+        <target>아래로 이동</target>
       </trans-unit>
       <trans-unit id="565">
-        <source>move item down in list</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="566">
-        <source>click to edit item</source>
-        <target/>
+        <source>Move item down in list</source>
+        <target>아이템을 목록안의 아래로 이동</target>
       </trans-unit>
       <trans-unit id="568">
         <source>Sorry, OAI harvesting is disabled for this system.</source>
         <target/>
       </trans-unit>
       <trans-unit id="569">
-        <source>edit %1% - ISDIAH</source>
-        <target/>
+        <source>Edit %1% - ISDIAH</source>
+        <target>편집 %1% - ISDIAH</target>
       </trans-unit>
       <trans-unit id="570">
         <source>MODS, Version 3.3. U.S. Library of Congress</source>
-        <target/>
+        <target>MODS, 3.3판. 미국 의회도서관 메타데이터 객체 기술스키마</target>
       </trans-unit>
       <trans-unit id="571">
         <source>URI</source>
-        <target/>
+        <target>주소</target>
       </trans-unit>
       <trans-unit id="573">
         <source>Mandates/Sources of authority</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="574">
-        <source>Internal structures/Genealogy</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="575">
-        <source>rules and/or conventions</source>
-        <target/>
+        <target>법규/근거권한</target>
       </trans-unit>
       <trans-unit id="576">
         <source>No import file selected, or the selected file exceeds the maximum upload size.</source>
@@ -1806,129 +1254,37 @@
         <source>Finding Aid</source>
         <target/>
       </trans-unit>
-      <trans-unit id="581">
-        <source>type of resource</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="582">
-        <source>internet media type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="583">
-        <source>access condition</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="584">
         <source>URL</source>
         <target/>
       </trans-unit>
-      <trans-unit id="585">
-        <source>Physical Location</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="586">
-        <source>Please choose one of the links below, or click the "back" button on your browser to return to the previous page.</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="587">
-        <source>date(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="588">
-        <source>immediate source of acquisition or transfer</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="589">
-        <source>physical characteristics and technical requirements</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="590">
-        <source>existence and location of originals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="591">
-        <source>existence and location of copies</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="592">
-        <source>description control area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="593">
-        <source>archivist's note</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="595">
-        <source>date display</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="596">
-        <source>Name of creator(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="599">
-        <source>Publication notes</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="600">
-        <source>Notes</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="601">
-        <source>Archivist's Notes</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="603">
-        <source>and/or dates</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="604">
-        <source>edit resource metadata - MODS</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="606">
-        <source> and/or Origin info</source>
-        <target/>
+        <source>Date(s)</source>
+        <target>일자(기간)</target>
       </trans-unit>
       <trans-unit id="608">
         <source>Parallel form(s) of name</source>
-        <target/>
+        <target>이름 병기 형식</target>
       </trans-unit>
       <trans-unit id="609">
         <source>Other form(s) of name</source>
-        <target/>
+        <target>다른 이름 형식</target>
       </trans-unit>
       <trans-unit id="610">
-        <source>finding aids, guides and publications</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="611">
-        <source>languages</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="612">
-        <source>scripts</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="613">
-        <source>parallel form of name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="614">
-        <source>other form of name</source>
-        <target/>
+        <source>Finding aids, guides and publications</source>
+        <target>검색보조도구, 가이드, 책자</target>
       </trans-unit>
       <trans-unit id="615">
         <source>Repository</source>
-        <target/>
+        <target>기록보존소</target>
       </trans-unit>
       <trans-unit id="616">
-        <source>recent updates</source>
-        <target/>
+        <source>Recent updates</source>
+        <target>최근 업데이트</target>
       </trans-unit>
       <trans-unit id="617">
         <source>Show updates to %1% in the last %2% days</source>
-        <target/>
+        <target>지난 %2%일간 업데이트 보기 </target>
       </trans-unit>
       <trans-unit id="618">
         <source>Repository Harvest</source>
@@ -1983,43 +1339,39 @@
         <target/>
       </trans-unit>
       <trans-unit id="631">
-        <source>deleted</source>
+        <source>Deleted</source>
         <target/>
       </trans-unit>
       <trans-unit id="632">
         <source>Add New Repository</source>
-        <target/>
+        <target>새 보존소 추가</target>
       </trans-unit>
       <trans-unit id="634">
         <source>When set to &amp;quot;yes&amp;quot;, this system will act as an OAI repository and respond to OAI harvesting requests</source>
-        <target/>
+        <target>"yes"로 설정하면 이 시스템은 OAI 보존소처럼 행동하고 OAI 수확 요청에 대응할 것이다.  </target>
       </trans-unit>
       <trans-unit id="635">
-        <source>sort treeview (information object)</source>
-        <target/>
+        <source>Sort treeview (information object)</source>
+        <target>트리보기 (정보 객체) 분류</target>
       </trans-unit>
       <trans-unit id="636">
         <source>Determines whether to sort siblings in the information object treeview control and, if so, what sort criteria to use</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="637">
-        <source>Edit event</source>
-        <target/>
+        <target>정보 객체 트리보기(treeview) 제어에서 자식형제를 분류할 수 있는지를 결정하고 만약 그렇다면 사용할 분류 기준을 결정하라.</target>
       </trans-unit>
       <trans-unit id="638">
         <source>Edit authority record</source>
-        <target/>
+        <target>전거레코드 편집</target>
       </trans-unit>
       <trans-unit id="639">
-        <source>identifier of the related entity</source>
+        <source>Identifier of the related entity</source>
         <target/>
       </trans-unit>
       <trans-unit id="640">
-        <source>category of the relationship</source>
+        <source>Category of the relationship</source>
         <target/>
       </trans-unit>
       <trans-unit id="641">
-        <source>dates of the relationship</source>
+        <source>Dates of the relationship</source>
         <target/>
       </trans-unit>
       <trans-unit id="642">
@@ -2027,12 +1379,12 @@
         <target/>
       </trans-unit>
       <trans-unit id="643">
-        <source>description of relationship</source>
+        <source>Description of relationship</source>
         <target/>
       </trans-unit>
       <trans-unit id="644">
         <source>Edit</source>
-        <target/>
+        <target>편집</target>
       </trans-unit>
       <trans-unit id="645">
         <source/>
@@ -2040,99 +1392,79 @@
       </trans-unit>
       <trans-unit id="646">
         <source>Delete</source>
-        <target/>
+        <target>삭제</target>
       </trans-unit>
       <trans-unit id="647">
         <source>Add new</source>
-        <target/>
+        <target>새항목 추가</target>
       </trans-unit>
       <trans-unit id="648">
         <source>List all</source>
-        <target/>
+        <target>전체 목록 열거</target>
       </trans-unit>
       <trans-unit id="649">
-        <source>search </source>
-        <target/>
+        <source>Search </source>
+        <target>검색</target>
       </trans-unit>
       <trans-unit id="650">
-        <source>new relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="651">
-        <source>actors</source>
-        <target/>
+        <source>New relationship</source>
+        <target>새 관계</target>
       </trans-unit>
       <trans-unit id="652">
         <source>Related corporate bodies, persons or families</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="653">
-        <source>Name of related entity</source>
-        <target/>
+        <target>관련 조직/기관, 개인, 가족 </target>
       </trans-unit>
       <trans-unit id="654">
         <source>Category of relationship</source>
-        <target/>
+        <target>관계 범주</target>
       </trans-unit>
       <trans-unit id="655">
         <source>Description of relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="656">
-        <source>date&amp;dagger</source>
-        <target/>
+        <target>관계 기술</target>
       </trans-unit>
       <trans-unit id="657">
-        <source>end date&amp;dagger;</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="658">
-        <source>%1% - required field</source>
-        <target/>
+        <source>End date&amp;dagger;</source>
+        <target>종료일자*</target>
       </trans-unit>
       <trans-unit id="659">
         <source>%1% - dates must be specified in ISO-8601 format (YYYY-MM-DD)</source>
-        <target/>
+        <target>일자는 ISO-8601 형식(YYYY-MM-DD)으로 구체적으로 기입 요망</target>
       </trans-unit>
       <trans-unit id="660">
         <source>Related resources</source>
-        <target/>
+        <target>관련 소스</target>
       </trans-unit>
       <trans-unit id="661">
-        <source>relationship</source>
-        <target/>
+        <source>Relationship</source>
+        <target>관계</target>
       </trans-unit>
       <trans-unit id="662">
-        <source>title of related resource</source>
-        <target/>
+        <source>Title of related resource</source>
+        <target>관련자료 제목</target>
       </trans-unit>
       <trans-unit id="663">
-        <source>nature of relationship</source>
-        <target/>
+        <source>Nature of relationship</source>
+        <target>관계 성격</target>
       </trans-unit>
       <trans-unit id="664">
-        <source>type of related resource</source>
-        <target/>
+        <source>Type of related resource</source>
+        <target>관련자료 형태</target>
       </trans-unit>
       <trans-unit id="665">
-        <source>end date</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="666">
-        <source>Maintenance Notes</source>
-        <target/>
+        <source>End date</source>
+        <target>종료일자</target>
       </trans-unit>
       <trans-unit id="667">
         <source>Cancel</source>
-        <target/>
+        <target>취소</target>
       </trans-unit>
       <trans-unit id="668">
         <source>Save</source>
-        <target/>
+        <target>저장</target>
       </trans-unit>
       <trans-unit id="669">
         <source>Create</source>
-        <target/>
+        <target>생산</target>
       </trans-unit>
       <trans-unit id="670">
         <source>Are you sure you want to delete %1%?</source>
@@ -2143,92 +1475,60 @@
         <target/>
       </trans-unit>
       <trans-unit id="672">
-        <source>user groups</source>
-        <target/>
+        <source>User groups</source>
+        <target>사용자 그룹</target>
       </trans-unit>
       <trans-unit id="673">
         <source>Edit user</source>
-        <target/>
+        <target>사용자 편집</target>
       </trans-unit>
       <trans-unit id="674">
         <source>Create new user</source>
         <target/>
       </trans-unit>
-      <trans-unit id="675">
-        <source>new user</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="676">
-        <source>basic info</source>
-        <target/>
+        <source>Basic info</source>
+        <target>기본 정보</target>
       </trans-unit>
       <trans-unit id="677">
-        <source>change password</source>
-        <target/>
+        <source>Change password</source>
+        <target>비밀번호 변경</target>
       </trans-unit>
       <trans-unit id="678">
-        <source>confirm password</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="679">
-        <source>groups and permissions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="680">
-        <source>groups</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="681">
-        <source>Existing permissions (archival descriptions)</source>
-        <target/>
+        <source>Confirm password</source>
+        <target>비밀번호 확인</target>
       </trans-unit>
       <trans-unit id="682">
-        <source>action</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="683">
-        <source>grant/deny</source>
-        <target/>
+        <source>Action</source>
+        <target>조치</target>
       </trans-unit>
       <trans-unit id="684">
-        <source>grant</source>
-        <target/>
+        <source>Grant</source>
+        <target>허용</target>
       </trans-unit>
       <trans-unit id="685">
-        <source>deny</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="686">
-        <source>Add a new permission (archival descriptions)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="687">
-        <source>No results found</source>
-        <target/>
+        <source>Deny</source>
+        <target>거부</target>
       </trans-unit>
       <trans-unit id="688">
-        <source>sorry, this Term is locked and cannot be deleted</source>
-        <target/>
+        <source>Sorry, this Term is locked and cannot be deleted</source>
+        <target>이 용어는 잠겨있으며 삭제될 수 없습니다.</target>
       </trans-unit>
       <trans-unit id="689">
-        <source>import</source>
-        <target/>
+        <source>Import</source>
+        <target>가져오기</target>
       </trans-unit>
       <trans-unit id="690">
         <source>Import completed</source>
         <target/>
       </trans-unit>
       <trans-unit id="691">
-        <source>elapsed time: %1% seconds.</source>
+        <source>Elapsed time: %1% seconds.</source>
         <target/>
       </trans-unit>
       <trans-unit id="692">
-        <source>actor name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="693">
-        <source>Edit resource metadata</source>
-        <target/>
+        <source>Actor name</source>
+        <target>행위자 이름</target>
       </trans-unit>
       <trans-unit id="694">
         <source>Type</source>
@@ -2236,59 +1536,15 @@
       </trans-unit>
       <trans-unit id="695">
         <source>Link physical storage</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="696">
-        <source>Edit archival description</source>
-        <target/>
+        <target>물리적 보관장소 링크</target>
       </trans-unit>
       <trans-unit id="697">
         <source>Edit identity area</source>
-        <target/>
+        <target>식별 영역 편집</target>
       </trans-unit>
       <trans-unit id="698">
         <source>Edit context area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="699">
-        <source>Edit content and structure area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="700">
-        <source>Edit conditions of access and use area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="701">
-        <source>Edit alied materials area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="702">
-        <source>Edit notes area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="703">
-        <source>Edit description control area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="704">
-        <source>institution identifiers</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="705">
-        <source>telephone: </source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="706">
-        <source>fax: </source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="707">
-        <source>email: </source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="708">
-        <source>Generated by </source>
-        <target/>
+        <target>맥락 영역 편집</target>
       </trans-unit>
       <trans-unit id="709">
         <source>Title proper</source>
@@ -2306,17 +1562,13 @@
         <source>Other title information</source>
         <target/>
       </trans-unit>
-      <trans-unit id="713">
-        <source>Statement of responsibility</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="714">
-        <source>add new child levels</source>
-        <target/>
+        <source>Add new child levels</source>
+        <target>새 하위계층 추가</target>
       </trans-unit>
       <trans-unit id="715">
-        <source>level</source>
-        <target/>
+        <source>Level</source>
+        <target>계층</target>
       </trans-unit>
       <trans-unit id="716">
         <source>Edition statement</source>
@@ -2344,10 +1596,6 @@
       </trans-unit>
       <trans-unit id="722">
         <source>Physical description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="723">
-        <source>Parallel title of publisher's series</source>
         <target/>
       </trans-unit>
       <trans-unit id="724">
@@ -2384,155 +1632,71 @@
       </trans-unit>
       <trans-unit id="732">
         <source>Rules or conventions</source>
-        <target/>
+        <target>규칙 혹은 표준규정 </target>
       </trans-unit>
       <trans-unit id="733">
         <source>Status</source>
-        <target/>
+        <target>지위(상태)</target>
       </trans-unit>
       <trans-unit id="734">
         <source>Level of detail</source>
-        <target/>
+        <target>상세 정도</target>
       </trans-unit>
       <trans-unit id="735">
         <source>Dates of creation, revision and deletion</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="736">
-        <source>Publication Status</source>
-        <target/>
+        <target>생산 수정 삭제 일자</target>
       </trans-unit>
       <trans-unit id="737">
-        <source>source language</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="738">
-        <source>Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="739">
-        <source>Record the level of this unit of description.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="740">
-        <source>Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="741">
-        <source>Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. The name should given in the standardized form as prescribed by international or national conventions in accordance with the principles of ISAAR(CPF).</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="742">
-        <source>Record the successive transfers of ownership, responsibility and/or custody of the unit of description and indicate those actions, such as history of the arrangement, production of contemporary finding aids, re-use of the records for other purposes or software migrations, that have contributed to its present structure and arrangement. Give the dates of these actions, insofar as they can be ascertained. If the archival history is unknown, record that information.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="743">
-        <source>Record the source from which the unit of description was acquired and the date and/or method of acquisition if any or all of this information is not confidential. If the source is unknown, record that information. Optionally, add accession numbers or codes.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="744">
-        <source>Immediate source of acqusition or transfer</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="745">
-        <source>Give a summary of the scope (such as, time periods, geography) and content, (such as documentary forms, subject matter, administrative processes) of the unit of description, appropriate to the level of description.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="746">
-        <source>Record appraisal, destruction and scheduling actions taken on or planned for the unit of description, especially if they may affect the interpretation of the material.</source>
-        <target/>
+        <source>Source language</source>
+        <target>소스 언어</target>
       </trans-unit>
       <trans-unit id="747">
         <source>Appraisal, destruction and scheduling</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="748">
-        <source>Indicate if accruals are expected. Where appropriate, give an estimate of their quantity and frequency.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="749">
-        <source>Specify the internal structure, order and/or the system of classification of the unit of description. Note how these have been treated by the archivist. For electronic records, record or reference information on system design.</source>
-        <target/>
+        <target>평가 폐기 보존기간 책정</target>
       </trans-unit>
       <trans-unit id="750">
         <source>System of arrangement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="751">
-        <source>Specify the law or legal status, contract, regulation or policy that affects access to the unit of description. Indicate the extent of the period of closure and the date at which the material will open when appropriate.</source>
-        <target/>
+        <target>정리 시스템</target>
       </trans-unit>
       <trans-unit id="752">
         <source>Conditions governing access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="753">
-        <source>Give information about conditions, such as copyright, governing the reproduction of the unit of description after access has been provided. If the existence of such conditions is unknown, record this. If there are no conditions, no statement is necessary.</source>
-        <target/>
+        <target>접근 조건</target>
       </trans-unit>
       <trans-unit id="754">
         <source>Conditions governing reproduction</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="755">
-        <source>Indicate any important physical conditions, such as preservation requirements, that affect the use of the unit of description. Note any software and/or hardware required to access the unit of description.</source>
-        <target/>
+        <target>복사조건</target>
       </trans-unit>
       <trans-unit id="756">
         <source>Physical characteristics and technical requirements</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="757">
-        <source>Give information about any finding aids that the repository or records creator may have that provide information relating to the context and contents of the unit of description. If appropriate, include information on where to obtain a copy.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="758">
-        <source>If the original of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. If the originals no longer exist, or their location is unknown, give that information.</source>
-        <target/>
+        <target>물리적 특성과 기술적 요구사항</target>
       </trans-unit>
       <trans-unit id="759">
         <source>Existence and location of originals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="760">
-        <source>If the copy of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers.</source>
-        <target/>
+        <target>원본 존재와 소장위치</target>
       </trans-unit>
       <trans-unit id="761">
         <source>Existence and location of copies</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="762">
-        <source>Record information about units of description in the same repository or elsewhere that are related by provenance or other association(s). Use appropriate introductory wording and explain the nature of the relationship . If the related unit of description is a finding aid, use the finding aids element of description (3.4.5) to make the reference to it.</source>
-        <target/>
+        <target>복사본의 존재와 소장위치</target>
       </trans-unit>
       <trans-unit id="763">
         <source>Related units of description</source>
-        <target/>
+        <target>관련 기술 단위</target>
       </trans-unit>
       <trans-unit id="764">
         <source>Description record identifier</source>
-        <target/>
+        <target>기록식별자 기술</target>
       </trans-unit>
       <trans-unit id="765">
         <source>Institution identifiers</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="766">
-        <source>Record the international, national and/or local rules or conventions followed in preparing the description.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="767">
-        <source>use</source>
-        <target/>
+        <target>조직/기관 식별자</target>
       </trans-unit>
       <trans-unit id="768">
         <source>Dublin Core 1.1 XML</source>
-        <target/>
+        <target>더블린코어(Dublin Core) 1.1 XML</target>
       </trans-unit>
       <trans-unit id="769">
         <source>EAD 2002 XML</source>
-        <target/>
+        <target>EAD 2002 XML</target>
       </trans-unit>
       <trans-unit id="770">
         <source>MODS 3.3 XML</source>
@@ -2542,29 +1706,21 @@
         <source>Edit digital object</source>
         <target/>
       </trans-unit>
-      <trans-unit id="772">
-        <source>Upload digital object</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="773">
         <source>Format</source>
-        <target/>
+        <target>포맷</target>
       </trans-unit>
       <trans-unit id="774">
         <source>Description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="775">
-        <source>Coverage - spatial</source>
-        <target/>
+        <target>기술</target>
       </trans-unit>
       <trans-unit id="776">
         <source>Source</source>
-        <target/>
+        <target>소스</target>
       </trans-unit>
       <trans-unit id="777">
         <source>Rights</source>
-        <target/>
+        <target>권한</target>
       </trans-unit>
       <trans-unit id="778">
         <source>Type of resource</source>
@@ -2572,10 +1728,10 @@
       </trans-unit>
       <trans-unit id="779">
         <source>Edit repository</source>
-        <target/>
+        <target>보존소 편집</target>
       </trans-unit>
       <trans-unit id="780">
-        <source>repository list</source>
+        <source>Repository list</source>
         <target/>
       </trans-unit>
       <trans-unit id="781">
@@ -2588,50 +1744,26 @@
       </trans-unit>
       <trans-unit id="783">
         <source>Import multiple digital objects</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="784">
-        <source>new object template</source>
-        <target/>
+        <target>복수 디지털객체 가져오기</target>
       </trans-unit>
       <trans-unit id="785">
         <source>The "&lt;b&gt;%dd%&lt;/b&gt;" placeholder will be replaced with a incremental number (e.g. 'image &lt;b&gt;01&lt;/b&gt;', 'image &lt;b&gt;02&lt;/b&gt;')</source>
-        <target/>
+        <target>"&lt;b&gt;%dd%&lt;/b&gt;" 위치 홀더는 증가하는 숫자로 대체될 것이다(예. '이미지&lt;b&gt;01&lt;/b&gt;', '이미지&lt;b&gt;02&lt;/b&gt;')</target>
       </trans-unit>
       <trans-unit id="786">
-        <source>digital objects</source>
-        <target/>
+        <source>Digital objects</source>
+        <target>디지털 객체</target>
       </trans-unit>
       <trans-unit id="787">
         <source>Uploading...</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="788">
-        <source>%1% title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="789">
-        <source>file name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="790">
-        <source>file size</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="791">
-        <source>These files couldn't be uploaded because of file size upload limits</source>
-        <target/>
+        <target>업로드중...</target>
       </trans-unit>
       <trans-unit id="792">
-        <source>browse %1%</source>
+        <source>Browse %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="793">
         <source>Select a digital object to upload</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="794">
-        <source>max. file size ~%1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="795">
@@ -2643,11 +1775,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="797">
-        <source>download audio</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="798">
-        <source>Search for "%1%" returned %2% results</source>
+        <source>Download audio</source>
         <target/>
       </trans-unit>
       <trans-unit id="799">
@@ -2655,11 +1783,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="800">
-        <source>use for</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="801">
-        <source>related term</source>
+        <source>Use for</source>
         <target/>
       </trans-unit>
       <trans-unit id="802">
@@ -2667,15 +1791,15 @@
         <target/>
       </trans-unit>
       <trans-unit id="803">
-        <source>scope note(s)</source>
+        <source>Scope note(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="804">
-        <source>source note(s)</source>
+        <source>Source note(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="805">
-        <source>display note(s)</source>
+        <source>Display note(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="806">
@@ -2710,60 +1834,636 @@
         <source>RT %1%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="814">
-        <source>Deleting this term will also delete %1% descendants.\n</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="815">
-        <source>Deleting this term will delete %1% related events.\n</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="816">
-        <source>Deleting this term will remove it from %1% descriptions.\n</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="817">
-        <source>Add New</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="818">
-        <source>list taxonomies</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="819">
-        <source>add row</source>
-        <target/>
+        <source>List taxonomies</source>
+        <target>목록 분류</target>
       </trans-unit>
       <trans-unit id="820">
-        <source>taxonomy hierarchy</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="821">
-        <source>new term</source>
-        <target/>
+        <source>Taxonomy hierarchy</source>
+        <target>분류 위계질서</target>
       </trans-unit>
       <trans-unit id="822">
-        <source>definition</source>
+        <source>Definition</source>
         <target/>
       </trans-unit>
       <trans-unit id="823">
-        <source>relationships</source>
+        <source>Relationships</source>
         <target/>
       </trans-unit>
       <trans-unit id="824">
-        <source>broad term</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="825">
-        <source>related terms</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="826">
-        <source>relationship type</source>
+        <source>Broad term</source>
         <target/>
       </trans-unit>
       <trans-unit id="827">
         <source>OAI Repository</source>
+        <target>OAI 보존소</target>
+      </trans-unit>
+      <trans-unit id="828">
+        <source>This page is valid XHTML 1.0</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="829">
+        <source>Home</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="830">
+        <source>Main menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="831">
+        <source>User menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="832">
+        <source>Add new menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="833">
+        <source>Provide an internal menu name.  This is not visible to users.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="834">
+        <source>Provide a menu label for users.  For menu items that are not visible (i.e. are organizational only) this should be left blank.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="835">
+        <source>Provide a link to an external website or an internal, symfony path (module/action).</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="836">
+        <source>Provide a brief description of the menu and it's purpose.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="837">
+        <source>Actions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="838">
+        <source>You are here</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="839">
+        <source>Move %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="840">
+        <source>Move here</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="841">
+        <source>Results %1% to %2% of %3%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="842">
+        <source>No results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="843">
+        <source>Pages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="844">
+        <source>Go to previous page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="845">
+        <source>Go to page %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="846">
+        <source>Go to next page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="847">
+        <source>%1% results per page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="848">
+        <source>Access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="849">
+        <source>Restricted</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="850">
+        <source>Are you sure you want to delete this reference/thumbnail representation?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="851">
+        <source>Are you sure you want to delete the digital object linked to %1%?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="852">
+        <source>Viewing 1-%1% of %2% images%3%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="853">
+        <source>Browse %1% - %2%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="854">
+        <source>Upload digital objects</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="855">
+        <source>Upload a digital object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="856">
+        <source>Link to an external digital object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="857">
+        <source>Your browser does not support Flash and/or JavaScript. See %1%minimum requirements%2%.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="858">
+        <source>Loading preview...</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="859">
+        <source>Waiting...</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="860">
+        <source>Upload error, retry?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="861">
+        <source>Start</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="862">
+        <source>This file couldn't be uploaded because of file size upload limits</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="863">
+        <source>Loading...</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="864">
+        <source>This term is used in %1% descriptions. The term will be deleted from these descriptions.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="865">
+        <source>The related object(s) will &lt;strong&gt;not&lt;/strong&gt; be deleted</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="866">
+        <source>It's used in %1% events that will also be deleted</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="867">
+        <source>It has %1% descendants that will also be deleted</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="868">
+        <source>Edit term</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="869">
+        <source>Related term(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="870">
+        <source>Create narrow terms</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="871">
+        <source>Sorry, this Term is locked</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="872">
+        <source>This is a non-preferred term and cannot be edited - please use &lt;a href="%1%"&gt;%2%&lt;/a&gt;.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="873">
+        <source>Biographical history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="874">
+        <source>Duplicate</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="875">
+        <source>Move</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="876">
+        <source>Link digital object</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="877">
+        <source>Import digital objects</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="878">
+        <source>Role/event</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="879">
+        <source>It has %1% descendants that will also be deleted:</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="880">
+        <source>Physical storage</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="881">
+        <source>Information Object Browse Options</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="882">
+        <source>Alphabetic</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="883">
+        <source>Event note</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="884">
+        <source>Publication status</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="885">
+        <source>%1%Type%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="886">
+        <source>%1%Authorized form of name%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="887">
+        <source>%1%Description identifier%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="888">
+        <source>Edit ISDF function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="889">
+        <source>Create ISDF function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="890">
+        <source>This is a mandatory element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="891">
+        <source>Related functions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="892">
+        <source>Category</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="893">
+        <source>Related authority records</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="894">
+        <source>Identifier/name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="895">
+        <source>Related authority record</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="896">
+        <source>Date&amp;dagger;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="897">
+        <source>Date display&amp;dagger;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="898">
+        <source>Identifier/title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="899">
+        <source>Related resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="900">
+        <source>Rules and/or conventions used</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="901">
+        <source>Dates of creation, revision or deletion</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="902">
+        <source>Language(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="903">
+        <source>Script(s)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="904">
+        <source>View ISDF function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="905">
+        <source>Edit function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="906">
+        <source>Classification</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="907">
+        <source>Legislation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="908">
+        <source>Edit relationships area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="909">
+        <source>Related function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="910">
+        <source>Dates of relationship</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="911">
+        <source>Edit control area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="912">
+        <source>Maintenance notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="913">
+        <source>Edit this function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="914">
+        <source>Delete this function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="915">
+        <source>Add new function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="916">
+        <source>List functions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="917">
+        <source>Are you sure you want to delete &lt;i&gt;"%1%"&lt;/i&gt;?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="918">
+        <source>At least 3 characters are required for wildcard (*) search</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="919">
+        <source>Search for "%1%"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="920">
+        <source>search for '%1%' resulted in %2% results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="921">
+        <source>Click Confirm to delete this physical storage from the system. This will also remove the physical storage location from the following records:</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="922">
+        <source>Box list</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="923">
+        <source>You must enter your email address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="924">
+        <source>This isn't a valid email address</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="925">
+        <source>You must enter your password</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="926">
+        <source>Please log in to access that page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="927">
+        <source>Edit %1% permissions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="928">
+        <source>User ACL menu</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="929">
+        <source>Are you sure you want to delete user %1%?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="930">
+        <source>&lt;h1 class="label"&gt;%1% profile&lt;/h1&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="931">
+        <source>View permissions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="932">
+        <source>All %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="933">
+        <source>Taxonomy: %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="934">
+        <source>All privileges</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="935">
+        <source>%1%: %2%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="936">
+        <source>All authority records</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="937">
+        <source>Access control</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="938">
+        <source>Allowed languages for translation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="939">
+        <source>Edit archival description permissions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="940">
+        <source>Permissions for all %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="941">
+        <source>Permission</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="942">
+        <source>Inherit</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="943">
+        <source>Permissions by archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="944">
+        <source>Permissions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="945">
+        <source>Archival description name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="946">
+        <source>Add permissions by archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="947">
+        <source>Add archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="948">
+        <source>Permissions by archival institution</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="949">
+        <source>Archival institution name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="950">
+        <source>Add permissions by archival institution</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="951">
+        <source>Add archival institution</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="952">
+        <source>All archival descriptions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="953">
+        <source>Repository: %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="954">
+        <source>Edit authority record permissions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="955">
+        <source>Add a person or organization</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="956">
+        <source>Add permissions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="957">
+        <source>functions</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="958">
+        <source>taxonomies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="959">
+        <source>digital objects</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="960">
+        <source>%1%Identifier%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="961">
+        <source>%1%Contact information%2% - You %3%must%4% at least include one of the following location or address fields: city, country, postal code, region or street address.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="962">
+        <source>%1%Contact information%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="963">
+        <source>Locality</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="964">
+        <source>Region</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="965">
+        <source>Country name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="966">
+        <source>This is a mandatory element</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="967">
+        <source>Repository Browse Options</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="968">
+        <source>displaying %1% to %2% of %3% results</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="969">
+        <source>List static pages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="970">
+        <source>Default page elements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="971">
+        <source>Enable or disable the display of certain page elements. Unless they have been overridden by a specific theme, these settings will be used site wide.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="972">
+        <source>%1%Dates of existence%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="973">
+        <source>%1%Type of entity%2% - This is a %3%mandatory%4% element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="974">
+        <source>Standardized form(s) of name according to other rules</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="975">
+        <source>Mandates/sources of authority</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="976">
+        <source>Internal structures/genealogy</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="977">
+        <source>Search %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="978">
+        <source>Related entity</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="979">
+        <source>Actor Browse Options</source>
         <target/>
       </trans-unit>
     </body>

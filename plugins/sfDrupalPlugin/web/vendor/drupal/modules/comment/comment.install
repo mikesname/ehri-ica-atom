@@ -1,24 +1,21 @@
 <?php
-// $Id: comment.install,v 1.30 2009/01/31 16:31:59 webchick Exp $
+// $Id: comment.install,v 1.58 2010/01/25 21:32:44 dries Exp $
 
 /**
- * Implementation of hook_install().
+ * @file
+ * Install, update and uninstall functions for the comment module.
  */
-function comment_install() {
-  // Create tables.
-  drupal_install_schema('comment');
-}
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_uninstall().
  */
 function comment_uninstall() {
-  // Remove tables.
-  drupal_uninstall_schema('comment');
+  // Delete comment_body field.
+  field_delete_field('comment_body');
 
   // Remove variables.
   variable_del('comment_block_count');
-  $node_types = array_keys(node_get_types());
+  $node_types = array_keys(node_type_get_types());
   foreach ($node_types as $node_type) {
     variable_del('comment_' . $node_type);
     variable_del('comment_anonymous_' . $node_type);
@@ -33,83 +30,49 @@ function comment_uninstall() {
 }
 
 /**
- * Implementation of hook_enable().
+ * Implements hook_enable().
  */
 function comment_enable() {
   // Insert records into the node_comment_statistics for nodes that are missing.
-  db_query("INSERT INTO {node_comment_statistics} (nid, last_comment_timestamp, last_comment_name, last_comment_uid, comment_count) SELECT n.nid, n.changed, NULL, n.uid, 0 FROM {node} n LEFT JOIN {node_comment_statistics} c ON n.nid = c.nid WHERE c.comment_count IS NULL");
-}
+  $query = db_select('node', 'n');
+  $query->leftJoin('node_comment_statistics', 'ncs', 'ncs.nid = n.nid');
+  $query->addField('n', 'changed', 'last_comment_timestamp');
+  $query->addField('n', 'uid', 'last_comment_uid');
+  $query->addField('n', 'nid');
+  $query->addExpression('0', 'comment_count');
+  $query->addExpression('NULL', 'last_comment_name');
+  $query->isNull('ncs.comment_count');
 
-/**
- * Changed node_comment_statistics to use node->changed to avoid future timestamps.
- */
-function comment_update_1() {
-  // Change any future last comment timestamps to current time.
-  db_query('UPDATE {node_comment_statistics} SET last_comment_timestamp = %d WHERE last_comment_timestamp > %d', REQUEST_TIME, REQUEST_TIME);
+  db_insert('node_comment_statistics')
+    ->from($query)
+    ->execute();
 
-  // Unstuck node indexing timestamp if needed.
-  if (($last = variable_get('node_cron_last', FALSE)) !== FALSE) {
-    variable_set('node_cron_last', min(REQUEST_TIME, $last));
+  // Create comment body field.
+  // @todo this should be done in comment_install, but causes exceptions
+  // in testing because the list of fields types is not available in
+  // hook_install(): _field_info_collate_types() returns an empty array.
+  if (!field_info_field('comment_body')) {
+    $field = array(
+      'field_name' => 'comment_body',
+      'type' => 'text_long',
+    );
+    field_create_field($field);
   }
 
-  return array();
-}
-
-/**
- * @defgroup updates-5.x-to-6.x Comment updates from 5.x to 6.x
- * @{
- */
-
-function comment_update_6001() {
-  $ret[] = update_sql("ALTER TABLE {comments} DROP score");
-  $ret[] = update_sql("ALTER TABLE {comments} DROP users");
-
-  return $ret;
-}
-
-/**
- * Changed comment settings from global to per-node -- copy global
- * settings to all node types.
- */
-function comment_update_6002() {
-  // Comment module might not be enabled when this is run, but we need the
-  // constants defined by the module for this update.
-  drupal_load('module', 'comment');
-  $settings = array(
-    'comment_default_mode' => COMMENT_MODE_THREADED_EXPANDED,
-    'comment_default_order' => COMMENT_ORDER_NEWEST_FIRST,
-    'comment_default_per_page' => 50,
-    'comment_controls' => COMMENT_CONTROLS_HIDDEN,
-    'comment_anonymous' => COMMENT_ANONYMOUS_MAYNOT_CONTACT,
-    'comment_subject_field' => 1,
-    'comment_preview' => COMMENT_PREVIEW_REQUIRED,
-    'comment_form_location' => COMMENT_FORM_SEPARATE_PAGE,
-  );
-  $types = node_get_types();
-  foreach ($settings as $setting => $default) {
-    $value = variable_get($setting, $default);
-    foreach ($types as $type => $object) {
-      variable_set($setting . '_' . $type, $value);
+  // There is a separate comment bundle for each node type to allow for
+  // per-node-type customization of comment fields. Each one of these bundles
+  // needs a comment body field instance. A comment bundle is needed even for
+  // node types whose comments are disabled by default, because individual nodes
+  // may override that default.
+  // @todo This should be changed to call field_attach_create_bundle() instead,
+  //   and a comment_field_attach_create_bundle() function should be added to
+  //   handle the creation of the comment body field instance.
+  foreach (node_type_get_types() as $type => $info) {
+    if (!field_info_instance('comment', 'comment_body', 'comment_node_' . $info->type)) {
+      _comment_body_field_instance_create($info);
     }
-    variable_del($setting);
   }
-  return array(array('success' => TRUE, 'query' => 'Global comment settings copied to all node types.'));
 }
-
-/**
- * Add index to parent ID field.
- */
-function comment_update_6003() {
-  $ret = array();
-  db_add_index($ret, 'comments', 'pid', array('pid'));
-
-  return $ret;
-}
-
-/**
- * @} End of "defgroup updates-5.x-to-6.x"
- * The next series of updates should start at 7000.
- */
 
 /**
  * @defgroup updates-6.x-to-7.x Comment updates from 6.x to 7.x
@@ -120,32 +83,250 @@ function comment_update_6003() {
  * Remove comment settings for page ordering.
  */
 function comment_update_7000() {
-  $types = node_get_types();
+  $types = node_type_get_types();
   foreach ($types as $type => $object) {
     variable_del('comment_default_order' . $type);
   }
-  return array(array('success' => TRUE, 'query' => 'Comment order settings removed.'));
+  return t('Comment order settings removed.');
 }
 
 /**
  * Change comment status from published being 0 to being 1
  */
 function comment_update_7001() {
-  $ret = array();
-  $ret[] = update_sql("UPDATE {comments} SET status = 3 WHERE status = 0");
-  $ret[] = update_sql("UPDATE {comments} SET status = 0 WHERE status = 1");
-  $ret[] = update_sql("UPDATE {comments} SET status = 1 WHERE status = 3");
+  $changes = array(
+    3 => 0,
+    0 => 1,
+    1 => 3,
+  );
 
-  return $ret;
+  foreach ($changes as $old => $new) {
+  db_update('comments')
+    ->fields(array('status' => $new))
+    ->condition('status', $old)
+    ->execute();
+  }
 }
 
 /**
  * Rename {comments} table to {comment}.
  */
 function comment_update_7002() {
-  $ret = array();
-  db_rename_table($ret, 'comments', 'comment');
-  return $ret;
+  db_rename_table('comments', 'comment');
+}
+
+/**
+ * Improve indexes on the comment table.
+ */
+function comment_update_7003() {
+  db_drop_index('comment', 'status');
+  db_drop_index('comment', 'pid');
+  db_add_index('comment', 'comment_pid_status', array('pid', 'status'));
+  db_add_index('comment', 'comment_num_new', array('nid', 'timestamp', 'status'));
+}
+
+/**
+ * Rename comment display setting variables.
+ */
+function comment_update_7004() {
+  $types = node_type_get_types();
+  foreach ($types as $type => $object) {
+    $setting = variable_get('comment_default_mode_' . $type, 4);
+    if ($setting == 3 || $setting == 4) {
+      variable_set('comment_default_mode_' . $type, 1);
+    }
+    else {
+      variable_set('comment_default_mode_' . $type, 0);
+    }
+  }
+}
+
+/**
+ * Create comment Field API bundles.
+ */
+function comment_update_7005() {
+  foreach (node_type_get_types() as $info) {
+    field_attach_create_bundle('comment', 'comment_node_' . $info->type);
+  }
+}
+
+/**
+ * Create user related indexes.
+ */
+function comment_update_7006() {
+  db_add_index('comment', 'comment_uid', array('uid'));
+  db_add_index('node_comment_statistics', 'last_comment_uid', array('last_comment_uid'));
+}
+
+/**
+ * Split {comment}.timestamp into {comment}.created and {comment}.changed.
+ */
+function comment_update_7007() {
+  // Drop the index associated to timestamp.
+  db_drop_index('comment', 'comment_num_new');
+
+  // Create a created column.
+  db_add_field('comment', 'created', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+  ));
+
+  // Rename the timestamp column to changed.
+  db_change_field('comment', 'timestamp', 'changed', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+  ));
+
+  // Recreate the index.
+  db_add_index('comment', 'comment_num_new', array('nid', 'changed', 'status'));
+
+  // Migrate the data.
+  // @todo db_update() should support this.
+  db_query('UPDATE {comment} SET created = changed');
+}
+
+/**
+ * Add language column to the {comment} table.
+ */
+function comment_update_7008() {
+  // Create a language column.
+  db_add_field('comment', 'language', array(
+    'type' => 'varchar',
+    'length' => 12,
+    'not null' => TRUE,
+    'default' => '',
+  ));
+
+  // Create the index.
+  db_add_index('comment', 'comment_nid_language', array('nid', 'language'));
+}
+
+/**
+ * Update preview setting variable to use new constants
+ */
+function comment_update_7009() {
+  foreach (node_type_get_types() as $type => $object) {
+    // There were only two comment modes in the past:
+    // - 1 was 'required' previously, convert into DRUPAL_REQUIRED (2).
+    // - 0 was 'optional' previously, convert into DRUPAL_OPTIONAL (1).
+    $original_preview = variable_get('comment_preview_' . $type, 1);
+    if ($original_preview) {
+      $preview = DRUPAL_REQUIRED;
+    }
+    else {
+      $preview = DRUPAL_OPTIONAL;
+    }
+    variable_set('comment_preview_' . $type, $preview);
+  }
+  return array();
+}
+
+/**
+ * Add {node_comment_statistics}.cid column.
+ */
+function comment_update_7010() {
+  db_add_field('node_comment_statistics', 'cid', array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'The {comment}.cid of the last comment.',
+  ));
+  db_add_index('node_comment_statistics', 'cid', array('cid'));
+}
+
+/**
+ * Add an index to node_comment_statistics on comment_count.
+ */
+function comment_update_7011() {
+  db_add_index('node_comment_statistics', 'comment_count', array('comment_count'));
+}
+
+/**
+ * Create the comment_body field.
+ */
+function comment_update_7012() {
+  // @todo Remove when http://drupal.org/node/211182 is fixed.
+  taxonomy_update_7002();
+
+  // Create comment body field.
+  $field = array(
+    'field_name' => 'comment_body',
+    'type' => 'text_long',
+  );
+  field_create_field($field);
+
+  // Add the field to comments for all existing bundles.
+  $body_instance = array(
+    'field_name' => 'comment_body',
+    'label' => 'Comment',
+    'object_type' => 'comment',
+    'settings' => array('text_processing' => 1),
+    // Hide field label by default.
+    'display' => array(
+      'full' => array(
+        'label' => 'hidden',
+      ),
+    ),
+  );
+  foreach (node_type_get_types() as $info) {
+    $body_instance['bundle'] = 'comment_node_' . $info->type;
+    field_create_instance($body_instance);
+  }
+}
+
+/**
+ * Migrate data from the comment field to field storage.
+ */
+function comment_update_7013(&$sandbox) {
+  // This is a multipass update. First set up some comment variables.
+  if (empty($sandbox['total'])) {
+    $comments = (bool) db_query_range('SELECT 1 FROM {comment}', 0, 1)->fetchField();
+    $sandbox['types'] = array();
+    if ($comments) {
+      $sandbox['etid'] = _field_sql_storage_etid('comment');
+      $sandbox['types'] = node_type_get_types();
+    }
+    $sandbox['total'] = count($sandbox['types']);
+  }
+
+  if (!empty($sandbox['types'])) {
+    $type = array_shift($sandbox['types']);
+
+    $query = db_select('comment', 'c');
+    $query->innerJoin('node', 'n', 'c.nid = n.nid AND n.type = :type', array(':type' => $type->type));
+    $query->addField('c', 'cid', 'entity_id');
+    $query->addExpression("'comment_node_$type->type'", 'bundle');
+    $query->addExpression($sandbox['etid'], 'etid');
+    $query->addExpression('0', 'deleted');
+    $query->addExpression("'" . LANGUAGE_NONE . "'", 'language');
+    $query->addExpression('0', 'delta');
+    $query->addField('c', 'comment', 'comment_body_value');
+    $query->addField('c', 'format', 'comment_body_format');
+
+    $comment_body = field_info_field('comment_body');
+    $comment_body_table = _field_sql_storage_tablename($comment_body);
+
+    db_insert($comment_body_table)
+      ->from($query)
+      ->execute();
+    // Update the comment body format in a similar manner as is done for other
+    // modules in filter_update_7005(), but we do this one here since we are
+    // already migrating the data.
+    db_update($comment_body_table)
+      ->fields(array('comment_body_format' => variable_get('filter_default_format', 1)))
+      ->condition('comment_body_format', 0)
+      ->execute();
+
+    $sandbox['#finished'] = 1 - count($sandbox['types']) / $sandbox['total'];
+  }
+
+  // On the last pass of the update, $sandbox['types'] will be empty.
+  if (empty($sandbox['types'])) {
+    db_drop_field('comment', 'comment');
+    db_drop_field('comment', 'format');
+  }
 }
 
 /**
@@ -154,7 +335,7 @@ function comment_update_7002() {
  */
 
 /**
- * Implementation of hook_schema().
+ * Implements hook_schema().
  */
 function comment_schema() {
   $schema['comment'] = array(
@@ -190,12 +371,6 @@ function comment_schema() {
         'default' => '',
         'description' => 'The comment title.',
       ),
-      'comment' => array(
-        'type' => 'text',
-        'not null' => TRUE,
-        'size' => 'big',
-        'description' => 'The comment body.',
-      ),
       'hostname' => array(
         'type' => 'varchar',
         'length' => 128,
@@ -203,11 +378,17 @@ function comment_schema() {
         'default' => '',
         'description' => "The author's host name.",
       ),
-      'timestamp' => array(
+      'created' => array(
         'type' => 'int',
         'not null' => TRUE,
         'default' => 0,
-        'description' => 'The time that the comment was created, or last edited by its author, as a Unix timestamp.',
+        'description' => 'The time that the comment was created, as a Unix timestamp.',
+      ),
+      'changed' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The time that the comment was last edited, as a Unix timestamp.',
       ),
       'status' => array(
         'type' => 'int',
@@ -216,13 +397,6 @@ function comment_schema() {
         'default' => 1,
         'size' => 'tiny',
         'description' => 'The published status of a comment. (0 = Not Published, 1 = Published)',
-      ),
-      'format' => array(
-        'type' => 'int',
-        'size' => 'small',
-        'not null' => TRUE,
-        'default' => 0,
-        'description' => 'The {filter_format}.format of the comment body.',
       ),
       'thread' => array(
         'type' => 'varchar',
@@ -247,15 +421,26 @@ function comment_schema() {
         'length' => 255,
         'not null' => FALSE,
         'description' => "The comment author's home page address from the comment form, if user is anonymous, and the 'Anonymous users may/must leave their contact information' setting is turned on.",
-      )
+      ),
+      'language' => array(
+        'description' => 'The {languages}.language of this comment.',
+        'type' => 'varchar',
+        'length' => 12,
+        'not null' => TRUE,
+        'default' => '',
+      ),
     ),
     'indexes' => array(
-      'pid' => array('pid'),
-      'nid' => array('nid'),
-      // This index is probably unused.
-      'status' => array('status'),
+      'comment_status_pid' => array('pid', 'status'),
+      'comment_num_new' => array('nid', 'changed', 'status'),
+      'comment_uid' => array('uid'),
+      'comment_nid_language' => array('nid', 'language'),
     ),
     'primary key' => array('cid'),
+    'foreign keys' => array(
+      'nid' => array('node' => 'nid'),
+      'uid' => array('users' => 'uid'),
+    ),
   );
 
   $schema['node_comment_statistics'] = array(
@@ -267,6 +452,12 @@ function comment_schema() {
         'not null' => TRUE,
         'default' => 0,
         'description' => 'The {node}.nid for which the statistics are compiled.',
+      ),
+      'cid' => array(
+        'type' => 'int',
+        'not null' => TRUE,
+        'default' => 0,
+        'description' => 'The {comment}.cid of the last comment.',
       ),
       'last_comment_timestamp' => array(
         'type' => 'int',
@@ -297,6 +488,12 @@ function comment_schema() {
     'primary key' => array('nid'),
     'indexes' => array(
       'node_comment_timestamp' => array('last_comment_timestamp'),
+      'comment_count' => array('comment_count'),
+      'last_comment_uid' => array('last_comment_uid'),
+    ),
+    'foreign keys' => array(
+      'nid' => array('node' => 'nid'),
+      'last_comment_uid' => array('users' => 'uid'),
     ),
   );
 
