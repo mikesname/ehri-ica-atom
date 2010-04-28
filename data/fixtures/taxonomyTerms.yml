@@ -369,7 +369,7 @@ QubitTerm:
       en: Publication
       es: Publicação
       fr: Publication
-      it: publicazione
+      it: Pubblicazione
       nl: Publicatie
       pt: Publicação
       sl: Publikaciranje
@@ -557,7 +557,7 @@ QubitTerm:
       en: Family
       es: Família
       fr: Famille
-      it: familiare
+      it: Famiglia
       nl: Familie
       pt: Família
       sl: Družina
@@ -596,7 +596,7 @@ QubitTerm:
     name:
       de: Text
       en: Text
-      fr: 'document textuel'
+      fr: 'documents textuels'
       it: Testo
       nl: Tekst
       pt: Texto
@@ -823,7 +823,7 @@ QubitTerm:
       en: family
       es: Família
       fr: Famille
-      it: familiare
+      it: Famiglia
       nl: Familie
       pt: Família
       sl: Družina
@@ -877,7 +877,7 @@ QubitTerm:
       en: publication
       es: Publicação
       fr: Publication
-      it: publicazione
+      it: Pubblicazione
       nl: Publicatie
       pt: Publicação
       sl: Publikaciranje
@@ -1186,7 +1186,7 @@ QubitTerm:
       it: Fondo
       nl: Archief
       pt: Fundo
-      sl: Fondi
+      sl: Fond/zbirka
   QubitTerm_174:
     taxonomy_id: QubitTaxonomy_4
     parent_id: QubitTerm_110
@@ -1395,7 +1395,7 @@ QubitTerm:
       it: Fondo
       nl: Archief
       pt: Fundo
-      sl: Fondi
+      sl: Fond/zbirka
   QubitTerm_194:
     taxonomy_id: QubitTaxonomy_11
     parent_id: QubitTerm_110
@@ -1751,7 +1751,7 @@ QubitTerm:
     name:
       de: Tonaufnahme
       en: 'Sound recording'
-      fr: 'enregistrements sonores'
+      fr: 'Enregistrement sonore'
       it: 'Registrazione sonora'
       pt: 'Documento sonoro'
       sl: 'Zvočni zapis'
@@ -1913,7 +1913,7 @@ QubitTerm:
     name:
       de: Text
       en: text
-      fr: 'document textuel'
+      fr: 'documents textuels'
       it: testo
       nl: Tekst
       pt: Texto
@@ -1941,7 +1941,7 @@ QubitTerm:
     name:
       de: Tonaufnahme
       en: 'sound recording'
-      fr: 'Enregistrement sonore'
+      fr: 'enregistrements sonores'
       it: 'registrazione sonora'
       pt: 'Documento sonoro'
       sl: 'Zvočni zapis'
@@ -1967,7 +1967,7 @@ QubitTerm:
     source_culture: en
     name:
       en: 'still image'
-      fr: 'image fixe'
+      fr: 'images fixes'
       it: 'immagine statica'
   QubitTerm_mods_resource_type_sound_recording_movingimage:
     taxonomy_id: QubitTaxonomy_mods_resource_type
@@ -1975,8 +1975,8 @@ QubitTerm:
     source_culture: en
     name:
       en: 'moving image'
-      fr: 'image animée'
-      it: 'immagine in movimento'
+      fr: 'images animées'
+      it: 'immagine immovimento'
   QubitTerm_mods_resource_type_sound_recording_three_dimensional_object:
     taxonomy_id: QubitTaxonomy_mods_resource_type
     parent_id: QubitTerm_110
@@ -2056,8 +2056,8 @@ QubitTerm:
     source_culture: en
     name:
       en: 'moving image'
-      fr: 'image animée'
-      it: 'immagine in movimento'
+      fr: 'images animées'
+      it: 'immagine immovimento'
   QubitTerm_dc_type_physical_object:
     taxonomy_id: QubitTaxonomy_dc_type
     parent_id: QubitTerm_110
@@ -2100,7 +2100,7 @@ QubitTerm:
     source_culture: en
     name:
       en: 'still image'
-      fr: 'image fixe'
+      fr: 'images fixes'
       it: 'immagine statica'
   QubitTerm_dc_type_text:
     taxonomy_id: QubitTaxonomy_dc_type
@@ -2109,7 +2109,7 @@ QubitTerm:
     name:
       de: Text
       en: text
-      fr: 'document textuel'
+      fr: 'documents textuels'
       it: testo
       nl: Tekst
       pt: Texto
