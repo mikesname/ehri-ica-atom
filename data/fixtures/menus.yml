@@ -34,13 +34,13 @@ QubitMenu:
       pt: adicionar
       sl: uporabniški
     path: informationobject/create
-  QubitMenu_mainmenu_taxonomy:
+  QubitMenu_mainmenu_taxonomies:
     id: <?php echo QubitMenu::TAXONOMY_ID."\n" ?>
     parent_id: QubitMenu_mainmenu
     source_culture: en
-    name: taxonomy
+    name: taxonomies
     label:
-      en: Taxonomy
+      en: Taxonomies
     path: term/list
   QubitMenu_mainmenu_import:
     id: <?php echo QubitMenu::IMPORT_ID."\n" ?>
@@ -384,14 +384,14 @@ QubitMenu:
     name: browseSubjects
     label:
       en: Subjects
-    path: term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>
+    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID ?>'
   QubitMenu_browse_places:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browsePlaces
     label:
       en: Places
-    path: term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID."\n" ?>
+    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID ?>'
   QubitMenu_browse_digital_objects:
     parent_id: QubitMenu_browse
     source_culture: en

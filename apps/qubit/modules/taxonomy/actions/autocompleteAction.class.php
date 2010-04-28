@@ -33,7 +33,11 @@ class TaxonomyAutocompleteAction extends sfAction
     }
 
     // Limit results by ACL
-    $criteria = QubitAcl::filterCriteria($criteria, QubitTaxonomy::getById(QubitTaxonomy::ROOT_ID), 'createTerm');
+    $criterion = QubitAcl::getFilterCriterion($criteria, QubitTaxonomy::getById(QubitTaxonomy::ROOT_ID), 'createTerm');
+    if (isset($criterion))
+    {
+      $criteria->addAnd($criterion);
+    }
 
     // Sort by name
     $criteria->addAscendingOrderByColumn(QubitTaxonomyI18n::NAME);

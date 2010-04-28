@@ -774,13 +774,13 @@ class QubitAcl
   }
 
   /**
-   * Filter db search criteria by resource specific ACL
+   * Get a new criterion to filter a SQL query by ACL rules 
    *
    * @param Criteria $criteria
    * @param mixed $root - root object for list
-   * @return Criteria
+   * @return Criterion
    */
-  public static function filterCriteria($criteria, $root, $action)
+  public static function getFilterCriterion($criteria, $root, $action)
   {
     $user = sfContext::getInstance()->getUser();
     $rootClass = get_class($root);
@@ -813,7 +813,7 @@ class QubitAcl
         if (!isset($resourceAccess[$id]))
         {
           $resource = call_user_func(array($rootClass, 'getById'), $id);
-          $resourceAccess[$id] = self::isAllowed($user, $resource, 'createTerm');
+          $resourceAccess[$id] = self::isAllowed($user, $resource, $action);
 
           if ($resourceAccess[$id])
           {
@@ -824,16 +824,16 @@ class QubitAcl
     }
 
     // If no grants then no results
+    $criterion = null;
     if (0 == $grants)
     {
-      $criteria->add(QubitObject::ID, '1 = 0', Criteria::CUSTOM);
+      $criterion = $criteria->getNewCriterion(QubitObject::ID, '1 = 0', Criteria::CUSTOM);
     }
 
     // If global deny is default, then list allowed resources
     else if (!self::isAllowed($user, $root, $action))
     {
       $allows = array_keys($resourceAccess, true, true);
-      $criterion = null;
 
       while ($resourceId = array_shift($allows))
       {
@@ -849,8 +849,8 @@ class QubitAcl
         else
         {
           $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::LFT'), $resource->lft, Criteria::GREATER_EQUAL);
-          $ct2 = $criteria->getNewCriterion(constant($rootClass.'::RGT'), $resource->rgt, Criteria::LESS_EQUAL);
-          $subCriterion->addAnd($ct2);
+          $subCriterion2 = $criteria->getNewCriterion(constant($rootClass.'::RGT'), $resource->rgt, Criteria::LESS_EQUAL);
+          $subCriterion->addAnd($subCriterion2);
         }
 
         if (isset($criterion))
@@ -862,8 +862,6 @@ class QubitAcl
           $criterion = $subCriterion;
         }
       }
-
-      $criteria->addAnd($criterion);
     }
 
     // Otherwise, build a list of banned resources
@@ -877,20 +875,28 @@ class QubitAcl
         // If object has no children, remove it by id
         if (1 == ($resource->rgt - $resource->lft))
         {
-          $criteria->addAnd(constant($rootClass.'::ID'), $resourceId, Criteria::NOT_EQUAL);
+          $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::ID'), $resourceId, Criteria::NOT_EQUAL);
         }
 
         else
         {
-          $ct1 = $criteria->getNewCriterion(constant($rootClass.'::LFT'), $resource->lft, Criteria::LESS_THAN);
-          $ct2 = $criteria->getNewCriterion(constant($rootClass.'::RGT'), $resource->rgt, Criteria::GREATER_THAN);
-          $ct1->addOr($ct2);
-          $criteria->addAnd($ct1);
+          $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::LFT'), $resource->lft, Criteria::LESS_THAN);
+          $subCriterion2 = $criteria->getNewCriterion(constant($rootClass.'::RGT'), $resource->rgt, Criteria::GREATER_THAN);
+          $subCriterion->addOr($subCriterion2);
+        }
+
+        if (isset($criterion))
+        {
+          $criterion->addAnd($subCriterion);
+        }
+        else
+        {
+          $criterion = $subCriterion;
         }
       }
     }
 
-    return $criteria;
+    return $criterion;
   }
 }
 
