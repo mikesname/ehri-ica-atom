@@ -30,15 +30,5 @@ class MenuMainMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    // Get menu objects
-    $this->mainMenu = QubitMenu::getById(QubitMenu::MAIN_MENU_ID);
-    $this->adminMenu = QubitMenu::getById(QubitMenu::ADMIN_ID);
-
-    // Hide menus that user cannot access
-    $this->options = array();
-    if (!$this->getUser()->hasCredential('administrator'))
-    {
-      $this->options['overrideVisibility']['admin'] = 'hidden';
-    }
   }
 }

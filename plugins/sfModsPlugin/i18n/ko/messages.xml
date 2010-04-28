@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-21T15:50:49Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-27T19:57:32Z" product-name="messages">
     <body>
       <trans-unit id="45">
         <source>Identifier</source>
@@ -69,10 +69,6 @@
       <trans-unit id="513">
         <source>Are you sure?</source>
         <target>확실합니까?</target>
-      </trans-unit>
-      <trans-unit id="537">
-        <source>Subject</source>
-        <target>주제</target>
       </trans-unit>
       <trans-unit id="584">
         <source>URL</source>
@@ -150,10 +146,6 @@
         <source>Description</source>
         <target>기술</target>
       </trans-unit>
-      <trans-unit id="778">
-        <source>Type of resource</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="828">
         <source>View resource metadata</source>
         <target/>
@@ -163,34 +155,42 @@
         <target/>
       </trans-unit>
       <trans-unit id="830">
-        <source>Internet media type</source>
+        <source>Type of resource</source>
         <target/>
       </trans-unit>
       <trans-unit id="831">
-        <source>Access condition</source>
+        <source>Internet media type</source>
         <target/>
       </trans-unit>
       <trans-unit id="832">
-        <source>Physical location</source>
+        <source>Subject</source>
         <target/>
       </trans-unit>
       <trans-unit id="833">
-        <source>Edit resource metadata - MODS</source>
+        <source>Access condition</source>
         <target/>
       </trans-unit>
       <trans-unit id="834">
-        <source>This is a duplicate of record %1%</source>
+        <source>Physical location</source>
         <target/>
       </trans-unit>
       <trans-unit id="835">
-        <source>Names and origin info</source>
+        <source>Edit resource metadata - MODS</source>
         <target/>
       </trans-unit>
       <trans-unit id="836">
-        <source>Add new name and/or origin info</source>
+        <source>This is a duplicate of record %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="837">
+        <source>Names and origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="838">
+        <source>Add new name and/or origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="839">
         <source>Add new child levels (if describing a collection)</source>
         <target/>
       </trans-unit>

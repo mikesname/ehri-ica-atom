@@ -21,7 +21,7 @@
         <?php endif; ?>
 
         <?php if (SecurityPriviliges::editCredentials($sf_user, 'term')): ?>
-          <?php echo link_to(__('Add/edit'), array($taxonomy, 'module' => 'term', 'action' => 'listTaxonomy')) ?>
+          <?php echo link_to('('.__('Add/edit').')', array($taxonomy, 'module' => 'term', 'action' => 'listTaxonomy')) ?>
         <?php endif; ?>
 
       </th><th>

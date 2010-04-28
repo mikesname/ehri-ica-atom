@@ -33,6 +33,7 @@
 thead th,
 .actions,
 .label,
+a.currentTextNode,
 #content .search
 {
   background: #ab6;
@@ -50,6 +51,7 @@ tr.odd
   background: #330;
 }
 
+.sidebar > .section > div > h2,
 .sidebar > .section > div > h3,
 .page h1
 {

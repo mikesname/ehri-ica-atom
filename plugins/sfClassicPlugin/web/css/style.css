@@ -54,7 +54,7 @@ body
 
 .sidebar > .section > :first-child + *
 {
-  margin-bottom: 3em;
+  margin-bottom: 0;
 }
 
 /* Link :focus and :hover */

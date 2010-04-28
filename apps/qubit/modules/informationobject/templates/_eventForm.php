@@ -13,7 +13,7 @@ $rowTemplate .= '<td>{updateEvent[dateDisplay]}</td>';
 $rowTemplate .= '<td style="text-align: right">'.$editImage.' '.$deleteBtn.'</td>';
 $rowTemplate .= '</tr>';
 
-// Omit edit buton if object is being duplicated
+// Omit edit button if object is being duplicated
 $addEditButtonJsCode = null;
 if (false == isset($sf_request->source))
 {
@@ -103,7 +103,7 @@ EOL
       <?php echo select_tag('updateEvent[typeId]', options_for_select($eventTypes, $defaultEventType))?>
     </td><td class="noline">
       <select id="updateEventPlace" name="updateEvent[place]" class="form-autocomplete"></select>
-      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'term', 'action' => 'autocomplete', 'taxonomyId' => '12')) ?>"/>
+      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'term', 'action' => 'autocomplete', 'taxonomyId' => QubitTaxonomy::PLACE_ID)) ?>"/>
     </td>
   </tr><tr>
     <td class="headerCell">

@@ -1028,26 +1028,30 @@ class QubitInformationObject extends BaseInformationObject
 
   public function setRepositoryByName($name)
   {
-    // see if Repository record already exists, if so link to it
-    $criteria = new Criteria;
-    $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
-    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $name);
-    if ($actor = QubitActor::getOne($criteria))
+    // ignore if repository URL instead of name is being passed
+    if (strtolower(substr($name, 0, 4)) !== 'http')
     {
-      if ($actor->getClassName() == 'QubitRepository')
+      // see if Repository record already exists, if so link to it
+      $criteria = new Criteria;
+      $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
+      $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $name);
+      if ($actor = QubitActor::getOne($criteria))
       {
-        $this->setRepositoryId($actor->getId());
+        if ($actor->getClassName() == 'QubitRepository')
+        {
+          $this->setRepositoryId($actor->getId());
+        }
+        //TODO: figure out how to create a Repository from an existing Actor
+        //e.g. if the Actor record exists but it is not yet been used as a Repository
       }
-      //TODO: figure out how to create a Repository from an existing Actor
-      //e.g. if the Actor record exists but it is not yet been used as a Repository
-    }
-    else
-    {
-      // if the repository does not already exist, create a new Repository and link to it
-      $repository = new QubitRepository;
-      $repository->setAuthorizedFormOfName($name);
-      $repository->save();
-      $this->setRepositoryId($repository->getId());
+      else
+      {
+        // if the repository does not already exist, create a new Repository and link to it
+        $repository = new QubitRepository;
+        $repository->setAuthorizedFormOfName($name);
+        $repository->save();
+        $this->setRepositoryId($repository->getId());
+      }
     }
   }
 
@@ -1506,108 +1510,192 @@ class QubitInformationObject extends BaseInformationObject
   /*****************************************************
    TreeView
   *****************************************************/
-  public function getTree($limit = false)
+
+  public function getFullYuiTree($limit = 0)
   {
-    $ancestors = $this->getAncestors()->andSelf()->orderBy('lft');
-    $path = array();
+    $tree = self::getFullTree($this, $limit);
 
-    foreach ($ancestors as $ancestor)
-    {
-      $path[] = $ancestor->id;
-    }
-
-    // return $this->buildInformationObjectTree($path, true === $limit ? sfConfig::get('app_hits_per_page', 10) : null);
-    return $this->buildInformationObjectTree($path, 2);
+    return self::renderYuiNodes($tree, array('currentNode' => $this));
   }
 
-  private function buildInformationObjectTree($path, $limit = null)
+  public function getChildYuiNodes($options = array())
   {
-    $parent = QubitInformationObject::getById(array_shift($path));
-    $tmp = array();
+    $limit = isset($options['limit']) ? $options['limit'] : 0;
+    $offset = isset($options['offset']) ? $options['offset'] : 0;
 
-    // Skip the root node
-    if (QubitInformationObject::ROOT_ID == $parent->id)
+    $nodes = array();
+
+    $criteria = new Criteria;
+    $criteria->add(QubitInformationObject::PARENT_ID, $this->id);
+    $criteria->addAscendingOrderByColumn(QubitInformationObject::LFT);
+
+    $countCriteria = clone $criteria;
+    $totalChildren = intval(BasePeer::doCount($countCriteria)->fetchColumn(0));
+
+    if (0 < $limit)
     {
-      $tmp = array_merge($tmp, $this->buildInformationObjectTree($path, $limit));
+      $criteria->setLimit($limit);
     }
-    else
+
+    if (0 < $offset)
     {
-      $tmp[] = $parent;
-      foreach ($parent->getChildren(array('sortBy' => sfConfig::get('app_sort_treeview_informationobject'))) as $index => $child)
+      $criteria->setOffset($offset);
+    }
+
+    if (0 < count($children = QubitInformationObject::get($criteria)))
+    {
+      foreach ($children as $child)
       {
-        if ($limit == $index++)
-        {
-          // Add null (see getTreeViewObjecs method)
-          // $tmp[] = null;
-          null;
-
-          // break;
-        }
-
-        // If it in path, we go on building the tree in that way
-        if (in_array($child->id, $path))
-        {
-          $tmp = array_merge($tmp, $this->buildInformationObjectTree($path, $limit));
-        }
-        else
-        {
-          // Add child
-          $tmp[] = $child;
-        }
+        $nodes[] = $child;
       }
     }
 
-    return $tmp;
+    $shownChildren = $offset + count($children);
+    if ($totalChildren > $shownChildren)
+    {
+      $nodes[] = array('total' => $totalChildren, 'limit' => $limit, 'parentId' => $this->id);
+    }
+
+    return self::renderYuiNodes($nodes);
   }
 
-  public static function getTreeViewObjects($informationObjects, $currentInformationObject, array $options = array())
+  private static function getFullTree($currentNode, $limit)
   {
-    $treeViewObjects = array();
-    $treeViewExpands = array();
+    $tree = array();
 
-    ProjectConfiguration::getActive()->loadHelpers('Qubit');
-
-    $lastParentId;
-
-    foreach ($informationObjects as $informationObject)
+    // Get direct ancestors
+    $ancestors = $currentNode->getAncestors()->orderBy('lft');
+    foreach ($ancestors as $ancestor)
     {
-      $treeViewObject = array();
-
-      if ($informationObject instanceof QubitInformationObject)
+      if (QubitInformationObject::ROOT_ID != $ancestor->id)
       {
-        $treeViewObject['label'] = render_title($informationObject->getLabel(array('truncate' => 50)));
-        $treeViewObject['href'] = sfContext::getInstance()->routing->generate(null, array($informationObject, 'module' => 'informationobject'));
-        $treeViewObject['id'] = $informationObject->id;
-        $treeViewObject['parentId'] = $informationObject->parentId;
-        $treeViewObject['isLeaf'] = (string) !$informationObject->hasChildren();
+        $tree[$ancestor->id] = $ancestor;
+      }
+    }
 
-        if ($informationObject->id == $currentInformationObject->id)
+    // Get siblings (with limit) - but don't show sibling collection roots
+    $totalSiblings = 0;
+    if (QubitInformationObject::ROOT_ID != $currentNode->parentId)
+    {
+      $criteria = new Criteria;
+      $criteria->add(QubitInformationObject::PARENT_ID, $currentNode->parentId);
+      if (0 < $limit)
+      {
+        $criteria->setLimit($limit);
+      }
+
+      foreach (QubitInformationObject::get($criteria) as $item)
+      {
+        // Keep track of position of $currentNode in array
+        if ($item === $currentNode)
         {
-          $treeViewObject['style'] = 'ygtvlabel currentTextNode';
+          $curIndex = count($tree);
         }
 
-        $lastParentId = $informationObject->parentId;
+        $tree[] = $item;
+      }
+
+      $totalSiblings = intval(BasePeer::doCount($criteria->setLimit(0))->fetchColumn(0));
+    }
+
+    // Add current object to $tree if it wasn't added as a sibling
+    if (!isset($curIndex))
+    {
+      if ($totalSiblings >= $limit)
+      {
+        // replace last sibling with current object
+        array_splice($tree, -1, 1, array($currentNode));
       }
       else
       {
-        $treeViewObject['label'] = sfContext::getInstance()->i18n->__('See all');
-        $treeViewObject['parentId'] = $lastParentId;
-        $treeViewObject['href'] = '#';
-        $treeViewObject['isLeaf'] = 'true';
-        $treeViewObject['style'] = 'seeAllNode';
+        $tree[] = $currentNode;
       }
 
-      $treeViewObjects[] = $treeViewObject;
+      $curIndex = count($tree) - 1;
     }
 
-    foreach ($currentInformationObject->getAncestors() as $ancestor)
+    if ($totalSiblings > $limit)
     {
-      $treeViewExpands[$id = $ancestor->id] = $id;
+      $tree[] = array('total' => $totalSiblings, 'limit' => $limit, 'parentId' => $currentNode->parentId);
     }
 
-    $treeViewExpands[$id = $currentInformationObject->id] = $id;
+    // Get children (with limit)
+    $totalChildren = 0;
+    $criteria = new Criteria;
+    $criteria->add(QubitInformationObject::PARENT_ID, $currentNode->id);
+    if (0 < $limit)
+    {
+      $criteria->setLimit($limit);
+    }
 
-    return array($treeViewObjects, $treeViewExpands);
+    if (0 < count($children = QubitInformationObject::get($criteria)))
+    {
+      foreach ($children as $item)
+      {
+        $childs[] = $item;
+      }
+
+      $totalChildren = intval(BasePeer::doCount($criteria->setLimit(0))->fetchColumn(0));
+
+      if ($totalChildren > $limit)
+      {
+        $childs[] = array('total' => $totalChildren, 'limit' => $limit, 'parentId' => $currentNode->id);
+      }
+
+      // Insert children right AFTER current info object in array
+      if ($curIndex == count($tree) - 1)
+      {
+        $tree = array_merge($tree, $childs);
+      }
+      else
+      {
+        array_splice($tree, $curIndex + 1, 0, $childs);
+      }
+    }
+
+    return $tree;
+  }
+
+  public static function renderYuiNodes($tree, $options = array())
+  {
+    ProjectConfiguration::getActive()->loadHelpers('Qubit');
+
+    $yuiTree = array();
+    foreach ($tree as $key => $item)
+    {
+      $node = array();
+
+      if ($item instanceof QubitInformationObject)
+      {
+        // Add info object node
+        $node['label'] = render_title($item->getLabel(array('truncate' => 50)));
+        $node['href'] = sfContext::getInstance()->routing->generate(null, array($item, 'module' => 'informationobject'));
+        $node['id'] = $item->id;
+        $node['parentId'] = $item->parentId;
+        $node['isLeaf'] = (string) !$item->hasChildren();
+
+        if (isset($options['currentNode']) && $options['currentNode'] === $item)
+        {
+          $node['style'] = 'ygtvlabel currentTextNode';
+        }
+      }
+
+      // "Show all" link
+      else
+      {
+        $count = intval($item['total']) - intval($item['limit']);
+
+        $node['label'] = sfContext::getInstance()->i18n->__('+%1% ...', array('%1%' => $count));
+        $node['parentId'] = $item['parentId'];
+        $node['href'] = '#';
+        $node['isLeaf'] = 'true';
+        $node['style'] = 'seeAllNode';
+      }
+
+      $yuiTree[] = $node;
+    }
+
+    return $yuiTree;
   }
 
   /**

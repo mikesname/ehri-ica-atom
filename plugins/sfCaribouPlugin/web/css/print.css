@@ -51,6 +51,7 @@ thead th
 thead th,
 .field > h3,
 .label,
+.sidebar > .section > div > h2,
 .sidebar > .section > div > h3
 {
   background: transparent;

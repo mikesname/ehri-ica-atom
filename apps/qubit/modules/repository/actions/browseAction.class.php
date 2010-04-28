@@ -25,36 +25,46 @@
  */
 class RepositoryBrowseAction extends sfAction
 {
-
-  /**
-   * Show hitlist of repositories
-   *
-   * @param sfRequest $request
-   */
   public function execute($request)
   {
-    $options = array();
-    $this->country = 0;
-
-    // Set culture and cultural fallback flag
-    $options['cultureFallback'] = true; // Do cultural fallback
-
-    // Set sort
-    $this->sort = $this->getRequestParameter('sort', 'nameUp');
-    $options['sort'] = $this->sort;
-
-    // Set current page
-    $this->page = $this->getRequestParameter('page', 1);
-    $options['page'] = $this->page;
-
-    // Filter by country
-    if ($this->getRequestParameter('country'))
+    if (!isset($request->limit))
     {
-      $this->country = strtoupper($this->getRequestParameter('country'));
-      $options['countryCode'] = $this->country;
+      $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    // Get repository hitlist
-    $this->repositories = QubitRepository::getList($options);
+    $criteria = new Criteria;
+
+    switch ($request->sort)
+    {
+      case 'nameDown':
+        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
+
+        break;
+
+      case 'nameUp':
+      default:
+        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+
+        break;
+
+      case 'updatedDown':
+        $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
+
+        break;
+
+      case 'updatedUp':
+        $criteria->addAscendingOrderByColumn(QubitObject::UPDATED_AT);
+
+        break;
+    }
+
+    // Do source culture fallback
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
+
+    // Page results
+    $this->pager = new QubitPager('QubitRepository');
+    $this->pager->setCriteria($criteria);
+    $this->pager->setMaxPerPage($request->limit);
+    $this->pager->setPage($request->page);
   }
 }

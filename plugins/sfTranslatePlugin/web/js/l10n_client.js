@@ -1,4 +1,5 @@
 // $Id$
+(function ($) {
 
 // Set "selected" string to unselected, i.e. -1
 jQuery.extend(Drupal, {
@@ -82,3 +83,5 @@ Drupal.behaviors.l10nEditor = {
     });
   }
 };
+
+})(jQuery);

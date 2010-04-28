@@ -19,9 +19,80 @@
 
 class StaticPageEditAction extends sfAction
 {
+  public static
+    $NAMES = array(
+      'title',
+      'permalink',
+      'content');
+
+  protected function addField($name)
+  {
+    switch ($name)
+    {
+      case 'content':
+        $this->form->setDefault('content', $this->staticPage->content);
+        $this->form->setValidator('content', new sfValidatorString);
+        $this->form->setWidget('content', new sfWidgetFormTextarea);
+
+        break;
+
+      default:
+        $this->form->setDefault($name, $this->staticPage[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+    }
+  }
+
+  protected function processField($field)
+  {
+    $this->staticPage[$field->getName()] = $this->form->getValue($field->getName());
+  }
+
+  protected function processForm()
+  {
+    foreach ($this->form as $field)
+    {
+      $this->processField($field);
+    }
+
+    $this->staticPage->save();
+  }
+
   public function execute($request)
   {
-    $this->staticPage = QubitStaticPage::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->staticPage);
+    $this->form = new sfForm;
+
+    $this->staticPage = new QubitStaticPage;
+
+    if (isset($request->id))
+    {
+      $this->staticPage = QubitStaticPage::getById($request->id);
+
+      if (!isset($this->staticPage))
+      {
+        $this->forward404();
+      }
+    }
+
+    // HACK: Use static::$NAMES in PHP 5.3,
+    // http://php.net/oop5.late-static-bindings
+    $class = new ReflectionClass($this);
+    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    {
+      $this->addField($name);
+    }
+
+    // Post form
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getPostParameters());
+
+      if ($this->form->isValid())
+      {
+        $this->processForm();
+
+        $this->redirect(array($this->staticPage, 'module' => 'staticpage'));
+      }
+    }
   }
 }

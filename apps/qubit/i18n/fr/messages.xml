@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2010-04-21T15:18:24Z" product-name="messages">
+  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2010-04-27T18:22:17Z" product-name="messages">
     <body>
       <trans-unit id="2">
         <source>%1% profile</source>
@@ -177,10 +177,6 @@
       <trans-unit id="133">
         <source>Id</source>
         <target>id</target>
-      </trans-unit>
-      <trans-unit id="137">
-        <source>Created</source>
-        <target/>
       </trans-unit>
       <trans-unit id="138">
         <source>Updated</source>
@@ -926,22 +922,6 @@
         <source>Creator(s)</source>
         <target/>
       </trans-unit>
-      <trans-unit id="503">
-        <source>Title proper of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="505">
-        <source>Other title information of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="506">
-        <source>Statement of responsibility relating to publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="507">
-        <source>Numbering within publisher's series</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="509">
         <source>Create (RAD)</source>
         <target>créer (RDDA)</target>
@@ -1182,10 +1162,6 @@
         <source>Digital object metadata</source>
         <target/>
       </trans-unit>
-      <trans-unit id="605">
-        <source>Subject</source>
-        <target>Sujet</target>
-      </trans-unit>
       <trans-unit id="612">
         <source>Import/export module</source>
         <target>module import/export</target>
@@ -1248,10 +1224,6 @@
       </trans-unit>
       <trans-unit id="644">
         <source>No import file selected, or the selected file exceeds the maximum upload size.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="645">
-        <source>Finding Aid</source>
         <target/>
       </trans-unit>
       <trans-unit id="652">
@@ -1402,10 +1374,6 @@
         <source>List all</source>
         <target/>
       </trans-unit>
-      <trans-unit id="717">
-        <source>Search </source>
-        <target/>
-      </trans-unit>
       <trans-unit id="718">
         <source>New relationship</source>
         <target/>
@@ -1546,22 +1514,6 @@
         <source>Edit context area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="777">
-        <source>Title proper</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="778">
-        <source>General material designation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="779">
-        <source>Parallel title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="780">
-        <source>Other title information</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="782">
         <source>Add new child levels</source>
         <target/>
@@ -1570,68 +1522,8 @@
         <source>Level</source>
         <target/>
       </trans-unit>
-      <trans-unit id="784">
-        <source>Edition statement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="785">
-        <source>Statement of scale (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="786">
-        <source>Statement of projection (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="787">
-        <source>Statement of coordinates (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="788">
-        <source>Statement of scale (architectural)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="789">
-        <source>Issuing jurisdiction and denomination (philatelic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="790">
-        <source>Physical description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="792">
-        <source>Custodial history</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="793">
-        <source>Physical condition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="794">
-        <source>Immediate source of acquisition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="795">
-        <source>Availability of other formats</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="796">
-        <source>Restrictions on access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="797">
-        <source>Terms governing use, reproduction, and publication</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="798">
-        <source>Associated / related material</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="799">
         <source>Institution identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="800">
-        <source>Rules or conventions</source>
         <target/>
       </trans-unit>
       <trans-unit id="801">
@@ -1650,44 +1542,8 @@
         <source>Source language</source>
         <target/>
       </trans-unit>
-      <trans-unit id="815">
-        <source>Appraisal, destruction and scheduling</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="818">
-        <source>System of arrangement</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="820">
         <source>Conditions governing access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="822">
-        <source>Conditions governing reproduction</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="824">
-        <source>Physical characteristics and technical requirements</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="827">
-        <source>Existence and location of originals</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="829">
-        <source>Existence and location of copies</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="831">
-        <source>Related units of description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="832">
-        <source>Description record identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="833">
-        <source>Institution identifiers</source>
         <target/>
       </trans-unit>
       <trans-unit id="836">
@@ -1712,18 +1568,6 @@
       </trans-unit>
       <trans-unit id="842">
         <source>Description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="844">
-        <source>Source</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="845">
-        <source>Rights</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="846">
-        <source>Type of resource</source>
         <target/>
       </trans-unit>
       <trans-unit id="847">
@@ -1955,7 +1799,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="920">
-        <source>Viewing 1-%1% of %2% images%3%</source>
+        <source>See all</source>
         <target/>
       </trans-unit>
       <trans-unit id="921">
@@ -2079,231 +1923,231 @@
         <target/>
       </trans-unit>
       <trans-unit id="951">
-        <source>Event note</source>
+        <source>Search %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="952">
-        <source>Publication status</source>
+        <source>Event note</source>
         <target/>
       </trans-unit>
       <trans-unit id="953">
-        <source>%1%Type%2% - This is a %3%mandatory%4% element.</source>
+        <source>Publication status</source>
         <target/>
       </trans-unit>
       <trans-unit id="954">
-        <source>%1%Authorized form of name%2% - This is a %3%mandatory%4% element.</source>
+        <source>%1%Type%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="955">
-        <source>%1%Description identifier%2% - This is a %3%mandatory%4% element.</source>
+        <source>%1%Authorized form of name%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="956">
-        <source>Edit ISDF function</source>
+        <source>%1%Description identifier%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="957">
-        <source>Create ISDF function</source>
+        <source>Edit ISDF function</source>
         <target/>
       </trans-unit>
       <trans-unit id="958">
-        <source>This is a mandatory element.</source>
+        <source>Create ISDF function</source>
         <target/>
       </trans-unit>
       <trans-unit id="959">
-        <source>Related functions</source>
+        <source>This is a mandatory element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="960">
-        <source>Category</source>
+        <source>Related functions</source>
         <target/>
       </trans-unit>
       <trans-unit id="961">
-        <source>Related authority records</source>
+        <source>Category</source>
         <target/>
       </trans-unit>
       <trans-unit id="962">
-        <source>Identifier/name</source>
+        <source>Related authority records</source>
         <target/>
       </trans-unit>
       <trans-unit id="963">
-        <source>Related authority record</source>
+        <source>Identifier/name</source>
         <target/>
       </trans-unit>
       <trans-unit id="964">
-        <source>Date&amp;dagger;</source>
+        <source>Related authority record</source>
         <target/>
       </trans-unit>
       <trans-unit id="965">
-        <source>Date display&amp;dagger;</source>
+        <source>Date&amp;dagger;</source>
         <target/>
       </trans-unit>
       <trans-unit id="966">
-        <source>Identifier/title</source>
+        <source>Date display&amp;dagger;</source>
         <target/>
       </trans-unit>
       <trans-unit id="967">
-        <source>Related resource</source>
+        <source>Identifier/title</source>
         <target/>
       </trans-unit>
       <trans-unit id="968">
-        <source>Rules and/or conventions used</source>
+        <source>Related resource</source>
         <target/>
       </trans-unit>
       <trans-unit id="969">
-        <source>Dates of creation, revision or deletion</source>
+        <source>Rules and/or conventions used</source>
         <target/>
       </trans-unit>
       <trans-unit id="970">
-        <source>Language(s)</source>
+        <source>Dates of creation, revision or deletion</source>
         <target/>
       </trans-unit>
       <trans-unit id="971">
-        <source>Script(s)</source>
+        <source>Language(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="972">
-        <source>View ISDF function</source>
+        <source>Script(s)</source>
         <target/>
       </trans-unit>
       <trans-unit id="973">
-        <source>Edit function</source>
+        <source>View ISDF function</source>
         <target/>
       </trans-unit>
       <trans-unit id="974">
-        <source>Classification</source>
+        <source>Edit function</source>
         <target/>
       </trans-unit>
       <trans-unit id="975">
-        <source>Legislation</source>
+        <source>Classification</source>
         <target/>
       </trans-unit>
       <trans-unit id="976">
-        <source>Edit relationships area</source>
+        <source>Legislation</source>
         <target/>
       </trans-unit>
       <trans-unit id="977">
-        <source>Related function</source>
+        <source>Edit relationships area</source>
         <target/>
       </trans-unit>
       <trans-unit id="978">
-        <source>Dates of relationship</source>
+        <source>Related function</source>
         <target/>
       </trans-unit>
       <trans-unit id="979">
-        <source>Edit control area</source>
+        <source>Dates of relationship</source>
         <target/>
       </trans-unit>
       <trans-unit id="980">
-        <source>Maintenance notes</source>
+        <source>Edit control area</source>
         <target/>
       </trans-unit>
       <trans-unit id="981">
-        <source>Edit this function</source>
+        <source>Maintenance notes</source>
         <target/>
       </trans-unit>
       <trans-unit id="982">
-        <source>Delete this function</source>
+        <source>Edit this function</source>
         <target/>
       </trans-unit>
       <trans-unit id="983">
-        <source>Add new function</source>
+        <source>Delete this function</source>
         <target/>
       </trans-unit>
       <trans-unit id="984">
-        <source>List functions</source>
+        <source>Add new function</source>
         <target/>
       </trans-unit>
       <trans-unit id="985">
-        <source>Are you sure you want to delete &lt;i&gt;"%1%"&lt;/i&gt;?</source>
+        <source>List functions</source>
         <target/>
       </trans-unit>
       <trans-unit id="986">
-        <source>At least 3 characters are required for wildcard (*) search</source>
+        <source>Are you sure you want to delete &lt;i&gt;"%1%"&lt;/i&gt;?</source>
         <target/>
       </trans-unit>
       <trans-unit id="987">
-        <source>Search for "%1%"</source>
+        <source>At least 3 characters are required for wildcard (*) search</source>
         <target/>
       </trans-unit>
       <trans-unit id="988">
-        <source>search for '%1%' resulted in %2% results</source>
+        <source>Search for "%1%"</source>
         <target/>
       </trans-unit>
       <trans-unit id="989">
-        <source>Click Confirm to delete this physical storage from the system. This will also remove the physical storage location from the following records:</source>
+        <source>search for '%1%' resulted in %2% results</source>
         <target/>
       </trans-unit>
       <trans-unit id="990">
-        <source>Box list</source>
+        <source>Click Confirm to delete this physical storage from the system. This will also remove the physical storage location from the following records:</source>
         <target/>
       </trans-unit>
       <trans-unit id="991">
-        <source>You must enter your email address</source>
+        <source>Box list</source>
         <target/>
       </trans-unit>
       <trans-unit id="992">
-        <source>This isn't a valid email address</source>
+        <source>You must enter your email address</source>
         <target/>
       </trans-unit>
       <trans-unit id="993">
-        <source>You must enter your password</source>
+        <source>This isn't a valid email address</source>
         <target/>
       </trans-unit>
       <trans-unit id="994">
-        <source>Please log in to access that page</source>
+        <source>You must enter your password</source>
         <target/>
       </trans-unit>
       <trans-unit id="995">
-        <source>Edit %1% permissions</source>
+        <source>Please log in to access that page</source>
         <target/>
       </trans-unit>
       <trans-unit id="996">
-        <source>User ACL menu</source>
+        <source>Edit %1% permissions</source>
         <target/>
       </trans-unit>
       <trans-unit id="997">
-        <source>Are you sure you want to delete user %1%?</source>
+        <source>User ACL menu</source>
         <target/>
       </trans-unit>
       <trans-unit id="998">
-        <source>&lt;h1 class="label"&gt;%1% profile&lt;/h1&gt;</source>
+        <source>Are you sure you want to delete user %1%?</source>
         <target/>
       </trans-unit>
       <trans-unit id="999">
-        <source>View permissions</source>
+        <source>&lt;h1 class="label"&gt;%1% profile&lt;/h1&gt;</source>
         <target/>
       </trans-unit>
       <trans-unit id="1000">
-        <source>All %1%</source>
+        <source>View permissions</source>
         <target/>
       </trans-unit>
       <trans-unit id="1001">
-        <source>Taxonomy: %1%</source>
+        <source>All %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="1002">
-        <source>All privileges</source>
+        <source>Taxonomy: %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="1003">
-        <source>%1%: %2%</source>
+        <source>All privileges</source>
         <target/>
       </trans-unit>
       <trans-unit id="1004">
-        <source>All authority records</source>
+        <source>%1%: %2%</source>
         <target/>
       </trans-unit>
       <trans-unit id="1005">
-        <source>Access control</source>
+        <source>All authority records</source>
         <target/>
       </trans-unit>
       <trans-unit id="1006">
-        <source>Allowed languages for translation</source>
+        <source>Access control</source>
         <target/>
       </trans-unit>
       <trans-unit id="1007">
-        <source>Edit archival description permissions</source>
+        <source>Allowed languages for translation</source>
         <target/>
       </trans-unit>
       <trans-unit id="1008">
@@ -2319,7 +2163,7 @@
         <target/>
       </trans-unit>
       <trans-unit id="1011">
-        <source>Permissions by archival description</source>
+        <source>Permissions by %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="1012">
@@ -2327,142 +2171,106 @@
         <target/>
       </trans-unit>
       <trans-unit id="1013">
-        <source>Archival description name</source>
+        <source>%1% name</source>
         <target/>
       </trans-unit>
       <trans-unit id="1014">
-        <source>Add permissions by archival description</source>
+        <source>Add permissions by %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="1015">
-        <source>Add archival description</source>
+        <source>Add %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="1016">
-        <source>Permissions by archival institution</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1017">
-        <source>Archival institution name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1018">
-        <source>Add permissions by archival institution</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1019">
-        <source>Add archival institution</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1020">
-        <source>All archival descriptions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1021">
-        <source>Repository: %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1022">
         <source>Edit authority record permissions</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1023">
+      <trans-unit id="1017">
         <source>Add a person or organization</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1024">
+      <trans-unit id="1018">
         <source>Add permissions</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1025">
+      <trans-unit id="1019">
         <source>functions</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1026">
-        <source>taxonomies</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1027">
+      <trans-unit id="1020">
         <source>digital objects</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1028">
+      <trans-unit id="1021">
         <source>%1%Identifier%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1029">
+      <trans-unit id="1022">
         <source>%1%Contact information%2% - You %3%must%4% at least include one of the following location or address fields: city, country, postal code, region or street address.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1030">
+      <trans-unit id="1023">
         <source>%1%Contact information%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1031">
+      <trans-unit id="1024">
         <source>Locality</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1032">
+      <trans-unit id="1025">
         <source>Region</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1033">
+      <trans-unit id="1026">
         <source>Country name</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1034">
+      <trans-unit id="1027">
         <source>This is a mandatory element</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1035">
+      <trans-unit id="1028">
         <source>Repository Browse Options</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1036">
-        <source>displaying %1% to %2% of %3% results</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1037">
+      <trans-unit id="1029">
         <source>List static pages</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1038">
+      <trans-unit id="1030">
         <source>Default page elements</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1039">
+      <trans-unit id="1031">
         <source>Enable or disable the display of certain page elements. Unless they have been overridden by a specific theme, these settings will be used site wide.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1040">
+      <trans-unit id="1032">
         <source>%1%Dates of existence%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1041">
+      <trans-unit id="1033">
         <source>%1%Type of entity%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1042">
+      <trans-unit id="1034">
         <source>Standardized form(s) of name according to other rules</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1043">
+      <trans-unit id="1035">
         <source>Mandates/sources of authority</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1044">
+      <trans-unit id="1036">
         <source>Internal structures/genealogy</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1045">
-        <source>Search %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="1046">
+      <trans-unit id="1037">
         <source>Related entity</source>
         <target/>
       </trans-unit>
-      <trans-unit id="1047">
+      <trans-unit id="1038">
         <source>Actor Browse Options</source>
         <target/>
       </trans-unit>

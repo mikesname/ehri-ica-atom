@@ -21,18 +21,21 @@ class QubitRoute extends sfRoute
 {
   protected function filterParams($params)
   {
-    foreach (array_diff_key($this->variables, $params) as $key => $ignore)
+    if (isset($params[0]))
     {
-      try
+      foreach (array_diff_key($this->params + $this->variables, $params) as $key => $ignore)
       {
-        $params[$key] = @$params[0][$key];
+        try
+        {
+          $params[$key] = $params[0][$key];
+        }
+        catch (sfException $e)
+        {
+        }
       }
-      catch (sfException $e)
-      {
-      }
-    }
 
-    unset($params[0]);
+      unset($params[0]);
+    }
 
     return $params;
   }

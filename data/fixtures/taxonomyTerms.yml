@@ -149,14 +149,14 @@ QubitTaxonomy:
     id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
     parent_id: QubitTaxonomy_root
     name:
-      de: ISDF Funktionen
-      en: ISDF Function Types
-      es: ISDF Tipos de Funcion
-      fr: ISDF Types de Fonction
-      it: ISDF Tipi di Funzion
-      nl: ISDF Functie Soorten
-      pt: ISDF Tipos de Funções
-      sl: ISDF Tip Funkcija
+      de: 'ISDF Funktionen'
+      en: 'ISDF Function Types'
+      es: 'ISDF Tipos de Funcion'
+      fr: 'ISDF Types de Fonction'
+      it: 'ISDF Tipi di Funzion'
+      nl: 'ISDF Functie Soorten'
+      pt: 'ISDF Tipos de Funções'
+      sl: 'ISDF Tip Funkcija'
   QubitTaxonomy_14:
     source_culture: en
     id: <?php echo QubitTaxonomy::HISTORICAL_EVENT_ID."\n" ?>
@@ -369,7 +369,7 @@ QubitTerm:
       en: Publication
       es: Publicação
       fr: Publication
-      it: Pubblicazione
+      it: publicazione
       nl: Publicatie
       pt: Publicação
       sl: Publikaciranje
@@ -395,6 +395,7 @@ QubitTerm:
     name:
       de: Sammlung
       en: Collection
+      es: Colección
       fr: Collection
       it: Collezione
       nl: Collectie
@@ -556,7 +557,7 @@ QubitTerm:
       en: Family
       es: Família
       fr: Famille
-      it: Famiglia
+      it: familiare
       nl: Familie
       pt: Família
       sl: Družina
@@ -595,7 +596,7 @@ QubitTerm:
     name:
       de: Text
       en: Text
-      fr: Texte
+      fr: 'document textuel'
       it: Testo
       nl: Tekst
       pt: Texto
@@ -632,8 +633,8 @@ QubitTerm:
     id: <?php echo QubitTerm::EXTERNAL_URI_ID."\n" ?>
     source_culture: en
     name:
-      es: 'URI externo'
       en: 'External URI'
+      es: 'URI externo'
   QubitTerm_137:
     taxonomy_id: QubitTaxonomy_17
     parent_id: QubitTerm_110
@@ -803,6 +804,7 @@ QubitTerm:
     source_culture: en
     name:
       en: hierarchical
+      it: gerarchica
   QubitTerm_actor_relationship_temporal:
     taxonomy_id: QubitTaxonomy_actor_relation_type
     parent_id: QubitTerm_110
@@ -810,13 +812,21 @@ QubitTerm:
     source_culture: en
     name:
       en: temporal
+      it: temporale
   QubitTerm_actor_relationship_family:
     taxonomy_id: QubitTaxonomy_actor_relation_type
     parent_id: QubitTerm_110
     id: <?php echo QubitTerm::FAMILY_RELATION_ID."\n" ?>
     source_culture: en
     name:
+      de: Familie
       en: family
+      es: Família
+      fr: Famille
+      it: familiare
+      nl: Familie
+      pt: Família
+      sl: Družina
   QubitTerm_actor_relationship_associative:
     taxonomy_id: QubitTaxonomy_actor_relation_type
     parent_id: QubitTerm_110
@@ -824,6 +834,7 @@ QubitTerm:
     source_culture: en
     name:
       en: associative
+      it: associativa
   QubitTerm_actor_relation_description:
     taxonomy_id: QubitTaxonomy_actor_relation_note_type
     parent_id: QubitTerm_110
@@ -831,6 +842,7 @@ QubitTerm:
     source_culture: en
     name:
       en: description
+      it: descrizione
   QubitTerm_actor_relation_date_display:
     taxonomy_id: QubitTaxonomy_actor_relation_note_type
     parent_id: QubitTerm_110
@@ -838,6 +850,7 @@ QubitTerm:
     source_culture: en
     name:
       en: 'date display'
+      it: 'data visualizzata'
   QubitTerm_term_relation_equivalence:
     taxonomy_id: QubitTaxonomy_term_relation_type
     parent_id: QubitTerm_110
@@ -845,6 +858,7 @@ QubitTerm:
     source_culture: en
     name:
       en: equivalence
+      it: equivalenza
   QubitTerm_term_relation_associative:
     taxonomy_id: QubitTaxonomy_term_relation_type
     parent_id: QubitTerm_110
@@ -852,13 +866,21 @@ QubitTerm:
     source_culture: en
     name:
       en: associative
+      it: associativa
   QubitTerm_status_type_publication:
     taxonomy_id: QubitTaxonomy_status_types
     parent_id: QubitTerm_110
     id: <?php echo QubitTerm::STATUS_TYPE_PUBLICATION_ID."\n" ?>
     source_culture: en
     name:
+      de: Veröffentlichung
       en: publication
+      es: Publicação
+      fr: Publication
+      it: publicazione
+      nl: Publicatie
+      pt: Publicação
+      sl: Publikaciranje
   QubitTerm_publication_status_draft:
     taxonomy_id: QubitTaxonomy_publication_status
     parent_id: QubitTerm_110
@@ -880,6 +902,7 @@ QubitTerm:
     source_culture: en
     name:
       en: published
+      it: pubblicato
   QubitTerm_maintenance_note:
     taxonomy_id: QubitTaxonomy_7
     parent_id: QubitTerm_110
@@ -915,6 +938,7 @@ QubitTerm:
     source_culture: en
     name:
       en: hierarchical
+      it: gerarchica
   QubitTerm_isdf_relationship_temporal:
     taxonomy_id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
     parent_id: QubitTerm_110
@@ -922,6 +946,7 @@ QubitTerm:
     source_culture: en
     name:
       en: temporal
+      it: temporale
   QubitTerm_isdf_relationship_associative:
     taxonomy_id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
     parent_id: QubitTerm_110
@@ -929,6 +954,7 @@ QubitTerm:
     source_culture: en
     name:
       en: associative
+      it: associativa
   QubitTerm_standardized_form_of_name:
     id: <?php echo QubitTerm::STANDARDIZED_FORM_OF_NAME_ID."\n" ?>
     taxonomy_id: QubitTaxonomy_6
@@ -1160,7 +1186,7 @@ QubitTerm:
       it: Fondo
       nl: Archief
       pt: Fundo
-      sl: Fond/zbirka
+      sl: Fondi
   QubitTerm_174:
     taxonomy_id: QubitTaxonomy_4
     parent_id: QubitTerm_110
@@ -1168,7 +1194,7 @@ QubitTerm:
     name:
       de: Teilbestand
       en: Subfonds
-      es: Sub-fundo
+      es: Sub-fondo
       fr: Sous-fonds
       it: Sub-fondo
       nl: Deelarchief
@@ -1310,7 +1336,7 @@ QubitTerm:
       it: Soggetto
       nl: Onderwerp
       pt: Assunto
-      sl: Osebek
+      sl: Oseba
   QubitTerm_189:
     taxonomy_id: QubitTaxonomy_11
     parent_id: QubitTerm_110
@@ -1318,6 +1344,7 @@ QubitTerm:
     name:
       de: Sammlung
       en: Collection
+      es: Colección
       fr: Collection
       it: Collezione
       nl: Collectie
@@ -1368,7 +1395,7 @@ QubitTerm:
       it: Fondo
       nl: Archief
       pt: Fundo
-      sl: Fond/zbirka
+      sl: Fondi
   QubitTerm_194:
     taxonomy_id: QubitTaxonomy_11
     parent_id: QubitTerm_110
@@ -1724,7 +1751,7 @@ QubitTerm:
     name:
       de: Tonaufnahme
       en: 'Sound recording'
-      fr: 'Enregistrement sonore'
+      fr: 'enregistrements sonores'
       it: 'Registrazione sonora'
       pt: 'Documento sonoro'
       sl: 'Zvočni zapis'
@@ -1791,7 +1818,7 @@ QubitTerm:
     parent_id: QubitTerm_110
     source_culture: en
     name:
-      de: Herausgeberreihen(?)Reihenwerk(?)
+      de: 'Herausgeberreihen(?)Reihenwerk(?)'
       en: 'Publisher''s series'
       fr: Collection
       sl: 'Izdajateljeve serije'
@@ -1884,9 +1911,13 @@ QubitTerm:
     parent_id: QubitTerm_110
     source_culture: en
     name:
+      de: Text
       en: text
-      fr: 'documents textuels'
+      fr: 'document textuel'
       it: testo
+      nl: Tekst
+      pt: Texto
+      sl: Besedilo
   QubitTerm_mods_resource_type_cartographic:
     taxonomy_id: QubitTaxonomy_mods_resource_type
     parent_id: QubitTerm_110
@@ -1908,9 +1939,12 @@ QubitTerm:
     parent_id: QubitTerm_110
     source_culture: en
     name:
+      de: Tonaufnahme
       en: 'sound recording'
-      fr: 'enregistrements sonores'
+      fr: 'Enregistrement sonore'
       it: 'registrazione sonora'
+      pt: 'Documento sonoro'
+      sl: 'Zvočni zapis'
   QubitTerm_mods_resource_type_sound_recording_musical:
     taxonomy_id: QubitTaxonomy_mods_resource_type
     parent_id: QubitTerm_110
@@ -1933,7 +1967,7 @@ QubitTerm:
     source_culture: en
     name:
       en: 'still image'
-      fr: 'images fixes'
+      fr: 'image fixe'
       it: 'immagine statica'
   QubitTerm_mods_resource_type_sound_recording_movingimage:
     taxonomy_id: QubitTaxonomy_mods_resource_type
@@ -1941,8 +1975,8 @@ QubitTerm:
     source_culture: en
     name:
       en: 'moving image'
-      fr: 'images animées'
-      it: 'immagine immovimento'
+      fr: 'image animée'
+      it: 'immagine in movimento'
   QubitTerm_mods_resource_type_sound_recording_three_dimensional_object:
     taxonomy_id: QubitTaxonomy_mods_resource_type
     parent_id: QubitTerm_110
@@ -1972,9 +2006,14 @@ QubitTerm:
     parent_id: QubitTerm_110
     source_culture: en
     name:
+      de: Sammlung
       en: collection
+      es: Colección
       fr: collection
       it: collezione
+      nl: Collectie
+      pt: Coleção
+      sl: Zbirka
   QubitTerm_dc_type_dataset:
     taxonomy_id: QubitTaxonomy_dc_type
     parent_id: QubitTerm_110
@@ -1996,9 +2035,13 @@ QubitTerm:
     parent_id: QubitTerm_110
     source_culture: en
     name:
+      de: Bild
       en: image
       fr: image
       it: immagine
+      nl: Afbeelding
+      pt: Imagem
+      sl: Slike
   QubitTerm_dc_type_interactive_resource:
     taxonomy_id: QubitTaxonomy_dc_type
     parent_id: QubitTerm_110
@@ -2013,16 +2056,20 @@ QubitTerm:
     source_culture: en
     name:
       en: 'moving image'
-      fr: 'images animées'
-      it: 'immagine immovimento'
+      fr: 'image animée'
+      it: 'immagine in movimento'
   QubitTerm_dc_type_physical_object:
     taxonomy_id: QubitTaxonomy_dc_type
     parent_id: QubitTerm_110
     source_culture: en
     name:
+      de: 'physisches Objekt'
       en: 'physical object'
       fr: 'objet physique'
       it: 'oggetto fisico'
+      nl: 'fysiek object'
+      pt: 'Objeto tridimensional'
+      sl: 'Fizični objekt'
   QubitTerm_dc_type_service:
     taxonomy_id: QubitTaxonomy_dc_type
     parent_id: QubitTerm_110
@@ -2053,16 +2100,20 @@ QubitTerm:
     source_culture: en
     name:
       en: 'still image'
-      fr: 'images fixes'
+      fr: 'image fixe'
       it: 'immagine statica'
   QubitTerm_dc_type_text:
     taxonomy_id: QubitTaxonomy_dc_type
     parent_id: QubitTerm_110
     source_culture: en
     name:
+      de: Text
       en: text
-      fr: 'documents textuels'
+      fr: 'document textuel'
       it: testo
+      nl: Tekst
+      pt: Texto
+      sl: Besedilo
   QubitTerm_function_function:
     taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
     parent_id: QubitTerm_110
@@ -2083,25 +2134,25 @@ QubitTerm:
     parent_id: QubitTerm_110
     source_culture: en
     name:
-      en: 'Business process' 
+      en: 'Business process'
   QubitTerm_function_activity:
     taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
     parent_id: QubitTerm_110
     source_culture: en
     name:
-      en: Activity 
+      en: Activity
   QubitTerm_function_task:
     taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
     parent_id: QubitTerm_110
     source_culture: en
     name:
-      en: Task 
+      en: Task
   QubitTerm_function_transaction:
     taxonomy_id: <?php echo QubitTaxonomy::FUNCTION_ID."\n" ?>
     parent_id: QubitTerm_110
     source_culture: en
     name:
-      en: Transaction 
+      en: Transaction
 QubitNote:
   QubitNote_1:
     object_id: QubitTerm_111

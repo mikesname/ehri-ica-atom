@@ -52,6 +52,10 @@ tr:hover
 #page .browse :visited
 {
   color: #069;
+
+  /* Reset */
+
+  display: inline;
 }
 
 #name-and-slogan,
@@ -137,6 +141,11 @@ tr:hover
   width: 100%;
 }
 
+#page .browse .content
+{
+  text-transform: lowercase;
+}
+
 #navigation
 {
   background: #069;
@@ -155,10 +164,6 @@ tr:hover
   width: 770px;
   margin-left: auto;
   margin-right: auto;
-}
-
-#mainMenu {
-
 }
 
 #navigation :link,
@@ -201,6 +206,13 @@ tr:hover
 #navigation .active :visited:focus
 {
   background-color: #000;
+}
+
+#navigation .leaf :link,
+#navigation .leaf :visited
+{
+  background-image: none;
+  padding: 4px 1em;
 }
 
 #navigation .links .links

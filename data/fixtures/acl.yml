@@ -112,5 +112,5 @@ QubitAclPermission:
     grant_deny: 1
   QubitAclPermission_translator_translate:
     group_id: QubitAclGroup_translator
-    action: translate 
+    action: translate
     grant_deny: 1

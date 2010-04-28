@@ -3,6 +3,7 @@
 
 homepage:
   url:   /
+  class: QubitRoute
   param:
     module: staticpage
     action: static

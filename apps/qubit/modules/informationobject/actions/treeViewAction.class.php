@@ -21,22 +21,22 @@ class InformationObjectTreeViewAction extends sfAction
 {
   public function execute($request)
   {
-    $informationObject = QubitInformationObject::getById($request->id);
-
     $this->response->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
 
-    $treeViewObjects = array();
-    foreach ($informationObject->getChildren()->orderBy('lft') as $item)
-    {
-      $treeViewObject = array();
-      $treeViewObject['label'] = $item->getLabel(array('truncate' => 50)); // call render_title
-      $treeViewObject['href'] = $this->context->routing->generate(null, array($item, 'module' => 'informationobject'));
-      $treeViewObject['id'] = $item->id;
-      $treeViewObject['parentId'] = $item->parentId;
-      $treeViewObject['isLeaf'] = !$item->hasChildren();
+    $informationObject = QubitInformationObject::getById($request->id);
 
-      $treeViewObjects[] = $treeViewObject;
+    $options = array();
+    if (isset($request->limit))
+    {
+      $options['limit'] = $request->limit;
     }
+
+    if (isset($request->offset))
+    {
+      $options['offset'] = $request->offset;
+    }
+
+    $treeViewObjects = $informationObject->getChildYuiNodes($options);
 
     return $this->renderText(json_encode($treeViewObjects));
   }

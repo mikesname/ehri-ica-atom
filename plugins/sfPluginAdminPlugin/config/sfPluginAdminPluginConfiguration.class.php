@@ -34,13 +34,13 @@ class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
       return;
     }
 
-    // http://qubit-toolkit.org/wiki/index.php?title=Autoload
-    $this->dispatcher->disconnect('autoload.filter_config', array($this->configuration, 'filterAutoloadConfig'));
-
     $criteria = new Criteria;
     $criteria->add(QubitSetting::NAME, 'plugins');
     if (1 == count($query = QubitSetting::get($criteria)))
     {
+      // http://qubit-toolkit.org/wiki/index.php?title=Autoload
+      $this->dispatcher->disconnect('autoload.filter_config', array($this->configuration, 'filterAutoloadConfig'));
+
       $pluginNames = unserialize($query[0]->__get('value', array('sourceCulture' => true)));
       $this->configuration->enablePlugins($pluginNames);
 
@@ -68,6 +68,8 @@ class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
         $configuration->initializeAutoload();
         $configuration->initialize();
       }
+
+      $this->dispatcher->connect('autoload.filter_config', array($this->configuration, 'filterAutoloadConfig'));
     }
   }
 }

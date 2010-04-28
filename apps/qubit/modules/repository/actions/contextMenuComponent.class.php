@@ -37,7 +37,7 @@ class RepositoryContextMenuComponent extends sfComponent
     $this->pager = new QubitPager('QubitInformationObject');
     $this->pager->setCriteria($criteria);
     $this->pager->setMaxPerPage($request->limit);
-    $this->pager->setPage($request->holdingsPage);
+    $this->pager->setPage($request->page);
 
     $this->holdings = $this->pager->getResults();
   }

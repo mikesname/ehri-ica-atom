@@ -57,7 +57,7 @@ class InformationObjectIndexAction extends sfAction
     $this->digitalObjectLink = null;
     if (0 < count($this->object->digitalObjects)
       && (QubitAcl::check($this->object, 'readMaster')
-        || QubitTerm::TEXT_ID == $this->object->digitalObjects[0]->getMediaTypeId()))
+        || in_array($this->object->digitalObjects[0]->mediaTypeId, array(QubitTerm::TEXT_ID, QubitTerm::AUDIO_ID))))
     {
       if (QubitTerm::EXTERNAL_URI_ID == $this->object->digitalObjects[0]->usageId)
       {

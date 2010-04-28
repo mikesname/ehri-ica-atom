@@ -21,7 +21,13 @@ class StaticPageIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->staticPage = QubitStaticPage::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->staticPage);
+    $this->staticPage = QubitStaticPage::getById($request->id);
+
+    if (!isset($this->staticPage))
+    {
+      $this->forward404();
+    }
+
+    $request->setAttribute('staticPage', $this->staticPage);
   }
 }

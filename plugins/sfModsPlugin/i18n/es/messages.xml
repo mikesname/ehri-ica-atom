@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2010-04-21T15:49:44Z" product-name="messages">
+  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2010-04-27T19:56:36Z" product-name="messages">
     <body>
       <trans-unit id="8">
         <source>Title</source>
@@ -68,10 +68,6 @@
       </trans-unit>
       <trans-unit id="581">
         <source>Are you sure?</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="605">
-        <source>Subject</source>
         <target/>
       </trans-unit>
       <trans-unit id="652">
@@ -150,10 +146,6 @@
         <source>Description</source>
         <target/>
       </trans-unit>
-      <trans-unit id="846">
-        <source>Type of resource</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="896">
         <source>View resource metadata</source>
         <target/>
@@ -163,34 +155,42 @@
         <target/>
       </trans-unit>
       <trans-unit id="898">
-        <source>Internet media type</source>
+        <source>Type of resource</source>
         <target/>
       </trans-unit>
       <trans-unit id="899">
-        <source>Access condition</source>
+        <source>Internet media type</source>
         <target/>
       </trans-unit>
       <trans-unit id="900">
-        <source>Physical location</source>
+        <source>Subject</source>
         <target/>
       </trans-unit>
       <trans-unit id="901">
-        <source>Edit resource metadata - MODS</source>
+        <source>Access condition</source>
         <target/>
       </trans-unit>
       <trans-unit id="902">
-        <source>This is a duplicate of record %1%</source>
+        <source>Physical location</source>
         <target/>
       </trans-unit>
       <trans-unit id="903">
-        <source>Names and origin info</source>
+        <source>Edit resource metadata - MODS</source>
         <target/>
       </trans-unit>
       <trans-unit id="904">
-        <source>Add new name and/or origin info</source>
+        <source>This is a duplicate of record %1%</source>
         <target/>
       </trans-unit>
       <trans-unit id="905">
+        <source>Names and origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="906">
+        <source>Add new name and/or origin info</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="907">
         <source>Add new child levels (if describing a collection)</source>
         <target/>
       </trans-unit>

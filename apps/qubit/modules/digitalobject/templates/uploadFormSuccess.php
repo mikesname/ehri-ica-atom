@@ -4,9 +4,9 @@
 
 <h1 class="label"><?php echo render_title(QubitIsad::getLabel($informationObject)) ?> </h1>
 
-<?php echo $form->renderFormTag(url_for(array('module' => 'digitalobject', 'action' => 'create')), array('id' => 'uploadForm')) ?>
+<?php echo $form->renderGlobalErrors() ?>
 
-  <?php echo $form->renderGlobalErrors() ?>
+<?php echo $form->renderFormTag(url_for(array('module' => 'digitalobject', 'action' => 'create')), array('id' => 'uploadForm')) ?>
 
   <?php echo $form->renderHiddenFields() ?>
 

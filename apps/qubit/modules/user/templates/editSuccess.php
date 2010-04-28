@@ -18,9 +18,9 @@
 
     <legend><?php echo __('Basic info')?></legend>
 
-    <?php echo render_field($form->username, $user) ?>
+    <?php echo $form->username->renderRow() ?>
 
-    <?php echo render_field($form->email, $user) ?>
+    <?php echo $form->email->renderRow() ?>
 
     <?php $settings = json_encode(array('password' => array('strengthTitle' => 'Password strength:', 'hasWeaknesses' => 'To make your password stronger:', 'tooShort' => 'Make it at least six characters', 'addLowerCase' => 'Add lowercase letters', 'addUpperCase' => 'Add uppercase letters', 'addNumbers' => 'Add numbers', 'addPunctuation' => 'Add punctuation', 'sameAsUsername' => 'Make it different from your username', 'confirmSuccess' => 'yes', 'confirmFailure' => 'no', 'confirmTitle' => 'Passwords match:', 'username' => ''))) ?>
     <?php echo javascript_tag(<<<EOF

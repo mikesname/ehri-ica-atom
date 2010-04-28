@@ -60,18 +60,7 @@ class QubitSetting extends BaseSetting
         $key = 'app_'.$qubitSetting->getName();
       }
 
-      // Determine appropriate culture for return value
-      switch ($qubitSetting->getScope())
-      {
-        // Localized values
-        case 'ui_label':
-        case 'site_information':
-          $settings[$key] = $qubitSetting->getValue(array('cultureFallback' => true));
-          break;
-        // non-localized values (default)
-        default:
-          $settings[$key] = $qubitSetting->getValue(array('sourceCulture' => true));
-      }
+      $settings[$key] = $qubitSetting->getValue(array('cultureFallback' => true));
     }
 
     return $settings;

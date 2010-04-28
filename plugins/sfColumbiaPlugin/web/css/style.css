@@ -35,6 +35,7 @@
 thead th,
 .actions,
 .label,
+a.currentTextNode,
 #content .search
 {
   background: #def;
@@ -91,6 +92,7 @@ thead th,
 #name-and-slogan
 {
   text-align: center;
+  width: 540px;
 }
 
 #page .browse

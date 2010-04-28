@@ -1,2 +1,14 @@
 editSuccess:
-  javascripts: [/sfDrupalPlugin/vendor/drupal/misc/textarea]
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/form:
+    /sfDrupalPlugin/vendor/drupal/misc/textarea:
+
+indexSuccess:
+  javascripts:
+    blank:
+
+listSuccess:
+  javascripts:
+    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /sfDrupalPlugin/vendor/drupal/misc/tableheader:

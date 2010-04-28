@@ -14,14 +14,14 @@
       <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
         <td>
 
-          <?php echo link_to($term->getName(array('cultureFallback' => true)), array($term, 'module' => 'term')) ?>
+          <?php if ($term->isProtected()): ?>
+            <?php echo link_to($term->getName(array('cultureFallback' => true)), array($term, 'module' => 'term'), array('class' => 'readOnly')) ?>
+          <?php else: ?>
+            <?php echo link_to($term->getName(array('cultureFallback' => true)), array($term, 'module' => 'term')) ?>
+          <?php endif; ?>
 
           <?php if (0 < count($term->descendants)): ?>
             <span class="note2">(<?php echo count($term->descendants) ?>)</span>
-          <?php endif; ?>
-
-          <?php if ($term->isProtected()): ?>
-            <?php echo image_tag('lock_mini') ?>
           <?php endif; ?>
 
         </td><td>

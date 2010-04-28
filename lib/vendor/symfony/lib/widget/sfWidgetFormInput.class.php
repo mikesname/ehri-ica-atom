@@ -50,6 +50,12 @@ class sfWidgetFormInput extends sfWidgetForm
    */
   public function render($name, $value = null, $attributes = array(), $errors = array())
   {
+    // http://trac.symfony-project.org/ticket/7726
+    if (0 < count($errors))
+    {
+      $attributes += array('class' => 'error');
+    }
+
     return $this->renderTag('input', array_merge(array('type' => $this->getOption('type'), 'name' => $name, 'value' => $value), $attributes));
   }
 }

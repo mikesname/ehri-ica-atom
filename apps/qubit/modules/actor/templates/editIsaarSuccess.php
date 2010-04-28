@@ -303,7 +303,7 @@ EOL
         <?php foreach ($events as $event): ?>
           <tr id="<?php echo url_for(array($event, 'module' => 'event')) ?>" class="<?php echo 'related_obj_'.$event->id ?>">
             <td>
-              <?php echo $event->informationObject->__toString() ?>
+              <?php echo render_title($event->informationObject) ?>
             </td><td>
               <?php echo $event->type ?>
             </td><td>

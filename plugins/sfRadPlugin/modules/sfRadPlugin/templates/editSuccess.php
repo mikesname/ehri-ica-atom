@@ -133,9 +133,7 @@
 
     <legend><?php echo __('Dates of creation area') ?></legend>
 
-    <?php if (0 < count($object->events)): ?>
-      <?php echo get_partial('informationobject/relatedEvents', array('informationObject' => $object)) ?>
-    <?php endif; ?>
+    <?php echo get_partial('informationobject/relatedEvents', array('informationObject' => $object)) ?>
 
     <div class="form-item">
       <label for="">Add new name and/or date(s)</label>
@@ -181,29 +179,24 @@
 
     <legend><?php echo __('Archival description area') ?></legend>
 
-    <div class="form-item">
-      <?php foreach ($object->getCreators() as $creator): ?>
-        <div class="form-item">
-          <label>
-            <?php if (QubitTerm::CORPORATE_BODY_ID == $creator->entityType->id): ?>
-              <?php echo __('Administrative history') ?>:
-            <?php else: ?>
-              <?php echo __('Biographical sketch') ?>:
-            <?php endif; ?>
-            <?php echo $creator->getAuthorizedFormOfName(array('culturalFallback' => 'true')) ?>
-          </label>
-          <table class="inline" style="margin: 0">
-            <tr>
-              <td>
-                <?php echo $creator->getHistory(array('cultureFallback' => 'true')) ?>
-              </td><td style="width: 20px">
-                <?php echo link_to(image_tag('pencil', 'align=top'), 'actor/edit?id='.$creator->id.'&informationObjectReroute='.$object->id) ?>
-              </td>
-            </tr>
-          </table>
+    <?php foreach ($object->getCreators() as $creator): ?>
+      <div class="field">
+
+        <h3>
+          <?php if (QubitTerm::CORPORATE_BODY_ID == $creator->entityType->id): ?>
+            <?php echo __('Administrative history') ?>
+          <?php else: ?>
+            <?php echo __('Biographical sketch') ?>
+          <?php endif; ?>
+        </h3>
+
+        <div>
+          <?php echo link_to('<h3>'.render_title($creator).'</h3>', array($creator, 'module' => 'actor', 'action' => 'edit'), array('title' => __('Edit authority record'))) ?>
+          <?php echo $creator->getHistory(array('cultureFallback' => 'true')) ?>
         </div>
-      <?php endforeach; ?>
-    </div>
+
+      </div>
+    <?php endforeach; ?>
 
     <?php echo render_field($form->archivalHistory->label(__('Custodial history')), $object, array('class' => 'resizable')) ?>
 

@@ -254,9 +254,31 @@ class DigitalObjectEditAction extends sfAction
 
     foreach ($uploadedFiles as $usageId => $uploadFile)
     {
+      $content = file_get_contents($uploadFile->getTempName());
+
+      if (QubitDigitalObject::isImageFile($uploadFile->getOriginalName()))
+      {
+        $tmpFile = Qubit::saveTemporaryFile($uploadFile->getOriginalName(), $content);
+
+        if (QubitTerm::REFERENCE_ID == $usageId)
+        {
+          $maxwidth = (sfConfig::get('app_reference_image_maxwidth')) ? sfConfig::get('app_reference_image_maxwidth') : 480;
+          $maxheight = null;
+        }
+        else if (QubitTerm::THUMBNAIL_ID == $usageId)
+        {
+          $maxwidth = 100;
+          $maxheight = 100;
+        }
+
+        $content = QubitDigitalObject::resizeImage($tmpFile, $maxwidth, $maxheight);
+
+        @unlink($tmpFile);
+      }
+
       $representation = new QubitDigitalObject;
       $representation->usageId = $usageId;
-      $representation->assets[] = new QubitAsset($uploadFile->getOriginalName(), file_get_contents($uploadFile->getTempName()));
+      $representation->assets[] = new QubitAsset($uploadFile->getOriginalName(), $content);
       $representation->parentId = $this->digitalObject->id;
       $representation->createDerivatives = false;
       $representation->save();

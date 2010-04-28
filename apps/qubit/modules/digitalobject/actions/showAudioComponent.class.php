@@ -35,10 +35,28 @@ class DigitalObjectShowAudioComponent extends sfComponent
    */
   public function execute($request)
   {
-    if ($this->usageType != QubitTerm::THUMBNAIL_ID)
+    // Get representation by usage type
+    $this->representation = $this->digitalObject->getRepresentationByUsage($this->usageType);
+
+    // If we can't find a representation for this object, try their parent
+    if (!$this->representation && ($parent = $this->digitalObject->getParent()))
     {
+      $this->representation = $parent->getRepresentationByUsage($this->usageType);
+    }
+
+    // Set up display of video in flowplayer
+    if ($this->representation)
+    {
+      $this->showFlashPlayer = true;
+
       $this->getResponse()->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
       $this->getResponse()->addJavaScript('flowplayer');
+    }
+    else
+    {
+      $this->showFlashPlayer = false;
+
+      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
     }
   }
 }

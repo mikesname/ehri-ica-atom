@@ -9,9 +9,6 @@
     <tr>
       <th>
         <?php echo __('Title') ?>
-        <?php if (QubitAcl::check($informationObject, 'create')): ?>
-          <?php echo link_to(__('Add new'), array('module' => 'informationobject', 'action' => 'create', 'parent' => url_for(array($informationObject, 'module' => 'informationobject')))) ?>
-        <?php endif; ?>
       </th><th>
         <?php if (sfConfig::get('app_multi_repository')): ?>
           <?php echo __(sfConfig::get('app_ui_label_repository')) ?>
@@ -44,3 +41,17 @@
 </table>
 
 <?php echo get_partial('default/pager', array('pager' => $pager)) ?>
+
+<div class="actions section">
+
+  <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+
+  <div class="content">
+    <ul class="clearfix links">
+      <?php if (QubitAcl::check($informationObject, 'create')): ?>
+        <li><?php echo link_to(__('Add new'), array('module' => 'informationobject', 'action' => 'create', 'parent' => url_for(array($informationObject, 'module' => 'informationobject')))) ?></li>
+      <?php endif; ?>
+    </ul>
+  </div>
+
+</div>

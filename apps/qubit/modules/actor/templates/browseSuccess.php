@@ -1,4 +1,4 @@
-<div class="section tabs" id="browseTabs">
+<div class="section tabs">
   <h2 class="element-invisible"><?php echo __('Actor Browse Options') ?></h2>
   <div class="content">
     <ul class="clearfix links">
@@ -76,6 +76,6 @@
 <div class="search">
   <form action="<?php echo url_for(array('module' => 'actor', 'action' => 'list')) ?>">
     <?php echo input_tag('query', $sf_request->query) ?>
-    <?php echo submit_tag(__('Search ').sfConfig::get('app_ui_label_actor')) ?>
+    <?php echo submit_tag(__('Search %1%', array('%1%' => sfConfig::get('app_ui_label_actor')))) ?>
   </form>
 </div>

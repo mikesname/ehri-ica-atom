@@ -15,7 +15,9 @@ QubitMenu:
     id: <?php echo QubitMenu::BROWSE_ID."\n" ?>
     parent_id: QubitMenu_root
     source_culture: en
-    name: 'Browse'
+    name: browse
+    label:
+      en: Browse
   QubitMenu_mainmenu_addedit:
     id: <?php echo QubitMenu::ADD_EDIT_ID."\n" ?>
     parent_id: QubitMenu_mainmenu
@@ -30,7 +32,7 @@ QubitMenu:
       it: aggiungi
       nl: toevoegen
       pt: adicionar
-      sl: 'uporabniški'
+      sl: uporabniški
     path: informationobject/create
   QubitMenu_mainmenu_taxonomy:
     id: <?php echo QubitMenu::TAXONOMY_ID."\n" ?>
@@ -159,68 +161,68 @@ QubitMenu:
     path: user/list
   QubitMenu_mainmenu_admin_users_profile:
     parent_id: QubitMenu_mainmenu_admin_users
-    name: 'userProfile'
-    path: user/index?id=%currentId%
+    name: userProfile
+    path: 'user/index?id=%currentId%'
     source_culture: en
     label:
       en: Profile
       fr: Profil
   QubitMenu_mainmenu_admin_users_infoObjectAcl:
     parent_id: QubitMenu_mainmenu_admin_users
-    name: 'userInformationObjectAcl'
-    path: user/indexInformationObjectAcl?id=%currentId%
+    name: userInformationObjectAcl
+    path: 'user/indexInformationObjectAcl?id=%currentId%'
     source_culture: en
-    label: 
+    label:
       en: 'Archival description permissions'
   QubitMenu_mainmenu_admin_users_actorAcl:
     parent_id: QubitMenu_mainmenu_admin_users
-    name: 'userActorAcl'
-    path: user/indexActorAcl?id=%currentId%
+    name: userActorAcl
+    path: 'user/indexActorAcl?id=%currentId%'
     source_culture: en
-    label: 
+    label:
       en: 'Authority record permissions'
   QubitMenu_mainmenu_admin_users_termAcl:
     parent_id: QubitMenu_mainmenu_admin_users
-    name: 'userTermAcl'
-    path: user/indexTermAcl?id=%currentId%
+    name: userTermAcl
+    path: 'user/indexTermAcl?id=%currentId%'
     source_culture: en
-    label: 
+    label:
       en: 'Taxonomy permissions'
   QubitMenu_mainmenu_admin_groups:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
-    name: groups 
+    name: groups
     label:
-      en: Groups 
+      en: Groups
     path: aclGroup/list
   QubitMenu_mainmenu_admin_groups_profile:
     parent_id: QubitMenu_mainmenu_admin_groups
-    name: 'groupProfile'
-    path: aclGroup/index?id=%currentId%
+    name: groupProfile
+    path: 'aclGroup/index?id=%currentId%'
     source_culture: en
     label:
       en: Profile
       fr: Profil
   QubitMenu_mainmenu_admin_groups_infoObjectAcl:
     parent_id: QubitMenu_mainmenu_admin_groups
-    name: 'groupInformationObjectAcl'
-    path: aclGroup/indexInformationObjectAcl?id=%currentId%
+    name: groupInformationObjectAcl
+    path: 'aclGroup/indexInformationObjectAcl?id=%currentId%'
     source_culture: en
-    label: 
+    label:
       en: 'Archival description permissions'
   QubitMenu_mainmenu_admin_groups_actorAcl:
     parent_id: QubitMenu_mainmenu_admin_groups
-    name: 'groupActorAcl'
-    path: aclGroup/indexActorAcl?id=%currentId%
+    name: groupActorAcl
+    path: 'aclGroup/indexActorAcl?id=%currentId%'
     source_culture: en
-    label: 
+    label:
       en: 'Authority record permissions'
   QubitMenu_mainmenu_admin_groups_termAcl:
     parent_id: QubitMenu_mainmenu_admin_groups
-    name: 'groupTermAcl'
-    path: aclGroup/indexTermAcl?id=%currentId%
+    name: groupTermAcl
+    path: 'aclGroup/indexTermAcl?id=%currentId%'
     source_culture: en
-    label: 
+    label:
       en: 'Taxonomy permissions'
   QubitMenu_mainmenu_admin_staticpages:
     parent_id: QubitMenu_mainmenu_admin
@@ -280,7 +282,7 @@ QubitMenu:
       nl: home
       pt: inicio
       sl: domov
-    path: staticpage/static?permalink=homepage
+    path: 'staticpage/static?permalink=homepage'
   QubitMenu_quicklinks_about:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -295,7 +297,7 @@ QubitMenu:
       nl: over
       pt: sobre
       sl: 'o tem'
-    path: staticpage/static?permalink=about
+    path: 'staticpage/static?permalink=about'
   QubitMenu_quicklinks_help:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -351,49 +353,49 @@ QubitMenu:
   QubitMenu_browse_informationobjects:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse information objects'
+    name: browseInformationObjects
     label:
-      en: 'information objects'
+      en: 'Information objects'
     path: informationobject/browse
   QubitMenu_browse_actors:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse actors'
+    name: browseActors
     label:
-      en: 'actors'
+      en: Actors
     path: actor/browse
   QubitMenu_browse_repositories:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse repositories'
+    name: browseRepositories
     label:
-      en: 'repositories'
+      en: Repositories
     path: repository/browse
   QubitMenu_browse_functions:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse functions'
+    name: browseFunctions
     label:
-      en: 'functions'
+      en: Functions
     path: function/list
   QubitMenu_browse_subjects:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse subjects'
+    name: browseSubjects
     label:
-      en: 'subjects'
-    path: term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>
+      en: Subjects
+    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>'
   QubitMenu_browse_places:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse places'
+    name: browsePlaces
     label:
-      en: 'places'
-    path: term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID."\n" ?>
+      en: Places
+    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID."\n" ?>'
   QubitMenu_browse_digital_objects:
     parent_id: QubitMenu_browse
     source_culture: en
-    name: 'browse digital objects'
+    name: browseDigitalObjects
     label:
-      en: 'digital objects'
+      en: 'Digital objects'
     path: digitalobject/list

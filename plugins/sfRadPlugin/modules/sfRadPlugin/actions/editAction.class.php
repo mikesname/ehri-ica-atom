@@ -243,7 +243,7 @@ class sfRadPluginEditAction extends InformationObjectEditAction
 
   protected function updateNotes()
   {
-    if (isset($this->request->rad_title_note))
+    if (isset($this->request->rad_title_note) && 0 < strlen($this->request->rad_title_note))
     {
       $note = new QubitNote;
       $note->content = $this->request->rad_title_note;
@@ -253,7 +253,7 @@ class sfRadPluginEditAction extends InformationObjectEditAction
       $this->object->notes[] = $note;
     }
 
-    if (isset($this->request->rad_note))
+    if (isset($this->request->rad_note) && 0 < strlen($this->request->rad_note))
     {
       $note = new QubitNote;
       $note->content = $this->request->rad_note;

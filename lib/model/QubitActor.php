@@ -155,12 +155,6 @@ class QubitActor extends BaseActor
 
   public function save($connection = null)
   {
-    // Make sure all orphan actors are parented to ROOT
-    if ((!isset($this->id) || QubitActor::ROOT_ID != $this->id) && !isset($this->parentId))
-    {
-      $this->parentId = QubitActor::ROOT_ID;
-    }
-
     parent::save($connection);
 
     // Save related event objects

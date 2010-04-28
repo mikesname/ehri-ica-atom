@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>
-        <?php echo __('User name') ?> <?php echo link_to(__('Add new'), array('module' => 'user', 'action' => 'create')) ?>
+        <?php echo __('User name') ?> <?php echo link_to('('.__('Add new').')', array('module' => 'user', 'action' => 'create')) ?>
       </th><th>
         <?php echo __('Email') ?>
       </th><th>

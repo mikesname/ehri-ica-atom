@@ -8,13 +8,14 @@
           $('.section, .field', context)
             .filter(function ()
               {
-                return !jQuery.trim($(':not(h2, h2 *, h3, h3 *)', this)
-                  .contents()
-                  .filter(function ()
-                    {
-                      return 3 == this.nodeType;
-                    })
-                  .text());
+                return !$('input, #treeView', this).length
+                  && !jQuery.trim($(':not(h2, h2 *, h3, h3 *)', this)
+                    .contents()
+                    .filter(function ()
+                      {
+                        return 3 == this.nodeType;
+                      })
+                    .text());
               })
             .remove();
         } };

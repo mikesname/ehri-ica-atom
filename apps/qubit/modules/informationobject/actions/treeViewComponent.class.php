@@ -23,16 +23,20 @@ class InformationObjectTreeViewComponent extends sfComponent
   {
     $this->informationObject = $request->getAttribute('informationObject');
 
-    // Get info object tree
-    $this->informationObjects = $this->informationObject->getTree(array('limit' => true));
+    // Get info object tree (limit to max 10 siblings and children)
+    $this->treeViewObjects = $this->informationObject->getFullYuiTree(10);
 
     // Check if treeview worth it
-    if (1 > count($this->informationObjects))
+    if (1 > count($this->treeViewObjects))
     {
       return sfView::NONE;
     }
 
-    list($this->treeViewObjects, $this->treeViewExpands) = QubitInformationObject::getTreeViewObjects($this->informationObjects, $this->informationObject, array('limit' => true));
+    $this->treeViewExpands = array();
+    foreach ($this->informationObject->ancestors->andSelf()->orderBy('lft') as $item)
+    {
+      $this->treeViewExpands[$item->id] = $item->id;
+    }
 
     // Is it draggable?
     $this->treeViewDraggable = json_encode(QubitAcl::check(QubitInformationObject::getRoot(), 'update'));

@@ -105,7 +105,7 @@ function QubitDialog(table, options, $)
   // Replace dialog table with "add" link and move into dialog wrapper
   $(this.table)
     .replaceWith(addLink)
-    .appendTo(yuiDialogWrapper.find('form'))
+    .appendTo(yuiDialogWrapper.find('form'));
 
   // prepend yuiDialogWrapper to document body
   $('body').prepend(yuiDialogWrapper);

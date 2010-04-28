@@ -93,7 +93,7 @@
     <?php echo $defaultPageElementsForm->toggleLogo->label('Logo')->renderRow() ?>
     <?php echo $defaultPageElementsForm->toggleTitle->label('Title')->renderRow() ?>
     <?php echo $defaultPageElementsForm->toggleDescription->label('Description')->renderRow() ?>
-  <?php echo submit_tag('Save') ?>
+  <?php echo submit_tag(__('Save')) ?>
 </form>
 
 

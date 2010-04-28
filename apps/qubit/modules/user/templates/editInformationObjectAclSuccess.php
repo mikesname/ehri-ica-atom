@@ -1,6 +1,6 @@
 <?php use_helper('Javascript') ?>
 
-<h1><?php echo __('Edit archival description permissions') ?></h1>
+<h1><?php echo __('Edit %1% permissions', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></h1>
 
 <h1 class="label">
   <?php echo link_to(__('%1% profile', array('%1%' => $user->username)), array($user, 'module' => 'user', 'action' => 'indexInformationObjectAcl')) ?>
@@ -47,7 +47,7 @@
 </fieldset>
 
 <fieldset class="collapsible collapsed" id="informationObjectArea">
-  <legend><?php echo __('Permissions by archival description') ?></legend>
+  <legend><?php echo __('Permissions by %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></legend>
 
   <?php if (0 < count($informationObjects)): ?>
     <?php foreach ($informationObjects as $informationObjectId => $actions): ?>
@@ -131,20 +131,20 @@ EOL
 
     <!-- Add info object div - cut by aclDialog.js -->
     <div class="form-item" id="addInformationObject">
-      <label for="addInformationObject"><?php echo __('Archival description name') ?></label>
+      <label for="addInformationObject"><?php echo __('%1% name', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></label>
       <select name="addInformationObject" id="addInformationObject" class="form-autocomplete"></select>
       <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'informationobject', 'action' => 'autocomplete')) ?>"/>
     </div>
 
     <div class="form-item">
-      <label for="addInformationObjectLink"><?php echo __('Add permissions by archival description') ?></label>
-      <a id="addInformationObjectLink" href="javascript:Qubit.infoObjectDialog.show()"><?php echo __('Add archival description') ?></a>
+      <label for="addInformationObjectLink"><?php echo __('Add permissions by %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></label>
+      <a id="addInformationObjectLink" href="javascript:Qubit.infoObjectDialog.show()"><?php echo __('Add %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></a>
     </div>
 
 </fieldset>
 
 <fieldset class="collapsible collapsed" id="repositoryArea">
-  <legend><?php echo __('Permissions by archival institution') ?></legend>
+  <legend><?php echo __('Permissions by %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?></legend>
 
   <?php if (0 < count($repositories)): ?>
     <?php foreach ($repositories as $repositoryId => $actions): ?>
@@ -228,14 +228,14 @@ EOL
 
     <!-- Add repository div - cut by aclDialog.js -->
     <div class="form-item" id="addRepository">
-      <label for="addRepository"><?php echo __('Archival institution name') ?></label>
+      <label for="addRepository"><?php echo __('%1% name', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?></label>
       <select name="addRepository" id="addRepository" class="form-autocomplete"></select>
       <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'repository', 'action' => 'autocomplete')) ?>"/>
     </div>
 
     <div class="form-item">
-      <label for="addRepositoryLink"><?php echo __('Add permissions by archival institution') ?></label>
-      <a id="addRepositoryLink" href="javascript:Qubit.repoDialog.show()"><?php echo __('Add archival institution') ?></a>
+      <label for="addRepositoryLink"><?php echo __('Add permissions by %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?></label>
+      <a id="addRepositoryLink" href="javascript:Qubit.repoDialog.show()"><?php echo __('Add %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?></a>
     </div>
 
 </fieldset>

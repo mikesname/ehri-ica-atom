@@ -176,7 +176,7 @@ class QubitMenu extends BaseMenu
     }
 
     // son of hack
-    if ($currentModule == 'term' && $currentAction == 'list')
+    if ($currentModule == 'term')
     {
 
       return ($this->getPath() == 'term/list');
@@ -487,42 +487,44 @@ class QubitMenu extends BaseMenu
    * @param array $options optional parameters
    * @return string an indented, nested XHTML list
    */
-  public static function displayHierarchyAsList($parent, $depth=0, $options=array())
+  public static function displayHierarchyAsList($parent, $depth = 0, $options = array())
   {
-    $str = str_repeat("\t", $depth * 2)."<ul class=\"clearfix links\">\n";
+    $li = array();
     foreach ($parent->getChildren() as $child)
     {
       // Skip this menu and children if marked "hidden"
-      if (isset($options['overrideVisibility'][$child->getName()]))
+      if (isset($options['overrideVisibility'][$child->getName()])
+        && !$options['overrideVisibility'][$child->getName()])
       {
-        if ('hidden' == $options['overrideVisibility'][$child->getName()])
-        {
-          continue;
-        }
+        continue;
       }
 
-      $class = '';
+      $class = array();
       if ($child->isSelected() || $child->isDescendantSelected())
       {
-        $class = ' class="active"';
+        $class[] = 'active';
       }
 
-      $str .= str_repeat("\t", ($depth * 2) + 1).'<li'.$class.'>';
-      $str .= link_to($child->getLabel(array('cultureFallback'=>true)), $child->getPath(array('getUrl' => true, 'resolveAlias' => true)));
+      $a = link_to($child->getLabel(array('cultureFallback'=>true)), $child->getPath(array('getUrl' => true, 'resolveAlias' => true)));
 
       if ($child->hasChildren())
       {
-        $str .= "\n";
-        $str .= self::displayHierarchyAsList($child, $depth + 1, $options);
-        $str .= str_repeat("\t", ($depth * 2) + 1)."</li>\n";
+        $a .= self::displayHierarchyAsList($child, $depth + 1, $options);
       }
       else
       {
-        $str .= "</li>\n";
+        $class[] = 'leaf';
       }
-    }
-    $str .= str_repeat("\t", $depth * 2)."</ul>\n";
 
-    return $str;
+      $class = implode(' ', $class);
+      if (0 < strlen($class))
+      {
+        $class = ' class="'.$class.'"';
+      }
+
+      $li[] = '<li'.$class.'>'.$a.'</li>';
+    }
+
+    return '<ul class="clearfix links">'.implode($li).'</ul>';
   }
 }

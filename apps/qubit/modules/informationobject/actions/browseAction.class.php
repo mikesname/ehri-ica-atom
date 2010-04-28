@@ -25,23 +25,15 @@
  */
 class InformationObjectBrowseAction extends sfAction
 {
-
-  /**
-   * Show hitlist of information objects
-   *
-   * @param sfRequest $request
-   */
   public function execute($request)
   {
-    $this->sort = $this->getRequestParameter('sort', 'titleUp');
-
     if (!isset($request->limit))
     {
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitInformationObject::PARENT_ID, QubitInformationObject::ROOT_ID, Criteria::EQUAL);
+    $criteria->add(QubitInformationObject::PARENT_ID, QubitInformationObject::ROOT_ID);
 
     if (isset($request->repositoryId))
     {
@@ -53,37 +45,49 @@ class InformationObjectBrowseAction extends sfAction
       $criteria->add(QubitInformationObject::COLLECTION_TYPE_ID, $request->collectionType);
     }
 
+    $fallbackTable = 'QubitInformationObject';
+
     // Sort results
-    switch($this->sort)
+    switch ($request->sort)
     {
-      case 'titleDown':
-        $fallbackTable = 'QubitInformationObject';
-        $criteria->addDescendingOrderByColumn('title');
-        break;
       case 'repositoryUp':
         $fallbackTable = 'QubitActor';
         $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
         $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+
         break;
+
       case 'repositoryDown':
         $fallbackTable = 'QubitActor';
         $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
         $criteria->addDescendingOrderByColumn('authorized_form_of_name');
+
         break;
-      case 'updatedUp':
-        $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('updated_at');
-      case 'updatedDown':
-        $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID, Criteria::LEFT_JOIN);
-        $criteria->addDescendingOrderByColumn('updated_at');
+
+      case 'titleDown':
+        $criteria->addDescendingOrderByColumn('title');
+
+        break;
+
       case 'titleUp':
       default:
-        $fallbackTable = 'QubitInformationObject';
         $criteria->addAscendingOrderByColumn('title');
+
+        break;
+
+      case 'updatedUp':
+        $criteria->addAscendingOrderByColumn(QubitObject::UPDATED_AT);
+
+        break;
+
+      case 'updatedDown':
+        $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
+
+        break;
     }
 
     // Do source culture fallback
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, array('returnClass'=>'QubitInformationObjec'));
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable);
 
     // Page results
     $this->pager = new QubitPager('QubitInformationObject');

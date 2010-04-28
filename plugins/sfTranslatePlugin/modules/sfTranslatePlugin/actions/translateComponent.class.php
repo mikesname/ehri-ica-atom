@@ -12,19 +12,12 @@ class sfTranslatePluginTranslateComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->messages = $this->getRequest()->getAttribute('messages', array());
+    $this->messages = $request->getAttribute('messages');
     if (empty($this->messages))
     {
       return sfView::NONE;
     }
 
     ksort($this->messages);
-
-    $this->getResponse()->addJavaScript('/vendor/jquery');
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
-    $this->getResponse()->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/textarea');
-    $this->getResponse()->addJavaScript('/sfTranslatePlugin/js/l10n_client');
-
-    $this->getResponse()->addStylesheet('/sfTranslatePlugin/css/l10n_client');
   }
 }

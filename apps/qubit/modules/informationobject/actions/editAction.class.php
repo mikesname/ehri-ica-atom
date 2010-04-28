@@ -531,6 +531,8 @@ class InformationObjectEditAction extends sfAction
       {
         QubitAcl::forwardUnauthorized();
       }
+
+      $this->object->parentId = $params['id'];
     }
 
     // HACK: Use static::$NAMES in PHP 5.3,
@@ -819,7 +821,7 @@ class InformationObjectEditAction extends sfAction
 
       // only update publicationStatus if its value has changed because it triggers a resource-intensive update of all its descendants
       $status = $this->object->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
-      if (isset($status) && $pubStatusId !== $status->statusId)
+      if (!isset($status) && isset($pubStatusId) || $pubStatusId !== $status->statusId)
       {
         $this->object->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
 

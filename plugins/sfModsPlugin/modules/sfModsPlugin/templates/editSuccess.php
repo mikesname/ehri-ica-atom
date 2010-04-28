@@ -24,12 +24,10 @@
 
   <?php echo render_field($form->title, $object) ?>
 
-  <?php if (0 < count($object->events)): ?>
-    <div class="form-item">
-      <label for="events"><?php echo __('Names and origin info') ?></label>
-      <?php echo get_partial('informationobject/relatedEvents', array('informationObject' => $object)) ?>
-    </div>
-  <?php endif; ?>
+  <div class="form-item">
+    <label for="events"><?php echo __('Names and origin info') ?></label>
+    <?php echo get_partial('informationobject/relatedEvents', array('informationObject' => $object)) ?>
+  </div>
 
   <div class="form-item">
     <label for=""><?php echo __('Add new name and/or origin info') ?></label>

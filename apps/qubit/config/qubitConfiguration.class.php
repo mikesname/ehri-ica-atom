@@ -18,7 +18,7 @@
  */
 class qubitConfiguration extends sfApplicationConfiguration
 {
-  const VERSION = '1.1';
+  const VERSION = '1.0.9';
 
   public function contextLoadFactories(sfEvent $event)
   {

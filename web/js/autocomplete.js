@@ -154,7 +154,9 @@
                   // http://developer.yahoo.com/yui/autocomplete/#delay
                   autoComplete.queryDelay = 1;
 
-                  if (-1 != dataSource.liveData.indexOf('?'))
+                  // Alternatively use try/catch?
+                  if ('undefined' !== typeof dataSource.liveData.indexOf
+                    && -1 != dataSource.liveData.indexOf('?'))
                   {
                     autoComplete.generateRequest = function (query)
                       {

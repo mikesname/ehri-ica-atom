@@ -185,6 +185,18 @@ class QubitMigrate108 extends QubitMigrate
 
       case 31:
         $this->removeThemesConfigureMenuOptions();
+
+      case 32:
+        $this->addTaxonomyToMainMenu();
+
+      case 33:
+        $this->addBrowseMenu();
+
+      case 34:
+        $this->ensureCompoundRepTerm();
+
+      case 35:
+        $this->removeRepoAndUserParent();
     }
 
     // Delete "stub" objects
@@ -1093,14 +1105,16 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 31: Change 'Admin -> Themes' menu to 'Admin -> Plugins' , like revision 6320
+   * Ver 31: Change 'Admin -> Themes' menu to 'Admin -> Plugins', like r6320
    *
    * @return QubitMigrate108 this object
    */
   protected function changeThemesMenuToPlugins()
   {
     // Try to find existing 'Themes' menu
-    if ($pluginMenuKey = $this->getRowKey('QubitMenu', 'name', 'themes'))
+    if (($pluginMenuKey = $this->getRowKey('QubitMenu', 'name', 'themes'))
+      || ($pluginMenuKey = $this->getRowKey('QubitMenu', 'name', 'plugins'))
+    )
     {
       $this->data['QubitMenu'][$pluginMenuKey]['name'] = 'plugins';
       $this->data['QubitMenu'][$pluginMenuKey]['label'] = array('en' => 'Plugins');
@@ -1110,7 +1124,8 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 32: Remove Themes 'List | Configure' menu option. Has been moved to Settings -> Default Page Elements
+   * Ver 32: Remove Themes 'List | Configure' menu option. Has been moved to
+   * Settings -> Default Page Elements
    *
    * @return QubitMigrate108 this object
    */
@@ -1123,9 +1138,193 @@ class QubitMigrate108 extends QubitMigrate
     }
 
     $themesConfigureKey = $this->getRowKey('QubitMenu', 'name', 'configure');
-    if ($themeseConfigureKey)
+    if ($themesConfigureKey)
     {
       $this->data['QubitMenu'] = QubitMigrate::cascadeDelete($this->data['QubitMenu'], $themesConfigureKey);
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ver 33: Add taxonomy link to main menu
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function addTaxonomyToMainMenu()
+  {
+    $taxonomyMenu = array(
+      'id' => '<?php echo QubitMenu::TAXONOMY_ID."\n" ?>',
+      'parent_id' => '<?php echo QubitMenu::MAIN_MENU_ID."\n" ?>',
+      'source_culture' => 'en',
+      'name' => 'taxonomy',
+      'label' => array(
+        'en' => 'Taxonomy',
+      ),
+      'path' => 'term/list',
+    );
+
+    if (($pivotKey = $this->getRowKey('QubitMenu', 'id', '<?php echo QubitMenu::IMPORT_ID."\n" ?>'))
+      || ($pivotKey = $this->getRowKey('QubitMenu', 'id', '<?php echo QubitMenu::TRANSLATE_ID."\n" ?>'))
+      || ($pivotKey = $this->getRowKey('QubitMenu', 'id', '<?php echo QubitMenu::ADMIN_ID."\n" ?>'))
+    )
+    {
+      self::insertBeforeNestedSet($this->data['QubitMenu'], $pivotKey, array('QubitMenu_mainmenu_taxonomy' => $taxonomyMenu));
+    }
+    else
+    {
+      $this->data['QubitMenu']['QubitMenu_mainmenu_taxonomy'] = $taxonomyMenu;
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ver 34: Add browse menu, like r6431, r6432 & r6440
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function addBrowseMenu()
+  {
+    // Add parent menu
+    $browseMenu = array(
+      'id' => '<?php echo QubitMenu::BROWSE_ID."\n" ?>',
+      'parent_id' => '<?php echo QubitMenu::ROOT_ID."\n" ?>',
+      'source_culture' => 'en',
+      'name' => 'browse',
+      'label' => array(
+        'en' => 'Browse'
+      )
+    );
+
+    if ($addEditKey = $this->getRowKey('QubitMenu', 'id', '<?php echo QubitMenu::ADD_EDIT_ID."\n" ?>'))
+    {
+      self::insertBeforeNestedSet($this->data['QubitMenu'], $addEditKey, array('QubitMenu_browse' => $browseMenu));
+    }
+    else
+    {
+      $this->data['QubitMenu']['QubitMenu_browse'] = $browseMenu;
+    }
+
+    // Add sub-menus
+    $this->data['QubitMenu']['QubitMenu_browse_informationobjects'] = array(
+      'parent_id' => '<?php echo QubitMenu::BROWSE_ID."\n" ?>',
+      'source_culture' => 'en',
+      'name' => 'browseInformationObjects',
+      'label' => array(
+        'en' => 'Information objects'
+      ),
+      'path' => 'informationobject/browse'
+    );
+
+    $this->data['QubitMenu']['QubitMenu_browse_actors'] = array(
+      'parent_id' => 'QubitMenu_browse',
+      'source_culture' => 'en',
+      'name' => 'browseActors',
+      'label' => array(
+        'en' => 'Actors'
+      ),
+      'path' => 'actor/browse'
+    );
+
+    $this->data['QubitMenu']['QubitMenu_browse_repositories'] = array(
+      'parent_id' => 'QubitMenu_browse',
+      'source_culture' => 'en',
+      'name' => 'browseRepositories',
+      'label' => array(
+        'en' => 'Repositories'
+      ),
+      'path' => 'repository/browse',
+    );
+
+    $this->data['QubitMenu']['QubitMenu_browse_functions'] = array(
+      'parent_id' => 'QubitMenu_browse',
+      'source_culture' => 'en',
+      'name' => 'browseFunctions',
+      'label' => array(
+        'en' => 'Functions'
+      ),
+      'path' => 'function/list',
+    );
+
+    $this->data['QubitMenu']['QubitMenu_browse_subjects'] = array(
+      'parent_id' => 'QubitMenu_browse',
+      'source_culture' => 'en',
+      'name' => 'browseSubjects',
+      'label' => array(
+        'en' => 'Subjects'
+      ),
+      'path' => 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID ?>'
+    );
+
+    $this->data['QubitMenu']['QubitMenu_browse_places'] = array(
+      'parent_id' => 'QubitMenu_browse',
+      'source_culture' => 'en',
+      'name' => 'browsePlaces',
+      'label' => array(
+        'en' => 'Places'
+      ),
+      'path' => 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID ?>'
+    );
+
+    $this->data['QubitMenu']['QubitMenu_browse_digital_objects'] = array(
+      'parent_id' => 'QubitMenu_browse',
+      'source_culture' => 'en',
+      'name' => 'browseDigitalObjects',
+      'label' => array(
+        'en' => 'Digital objects'
+      ),
+      'path' => 'digitalobject/list'
+    );
+
+    return $this;
+  }
+
+  /**
+   * Ver 35: Ensure that COMPOUND_ID term is added to data migrated from
+   * release 1.0.4 before revision 6459.
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function ensureCompoundRepTerm()
+  {
+    if (!$this->getRowKey('QubitTerm', 'id', '<?php echo QubitTerm::COMPOUND_ID."\n" ?>'))
+    {
+      $this->data['QubitTerm']['QubitTerm_compound_id'] = array(
+        'taxonomy_id' => '<?php echo QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID."\n" ?>',
+        'class_name' => 'QubitTerm',
+        'id' => '<?php echo QubitTerm::COMPOUND_ID."\n" ?>',
+        'source_culture' => 'en',
+        'name' => array(
+          'en' => 'Compound representation'
+        )
+      );
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ver 36: Remove Actor::ROOT_ID parent from QubitRepository and QubitUser
+   * rows (See http://code.google.com/p/qubit-toolkit/issues/detail?id=1509)
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function removeRepoAndUserParent()
+  {
+    foreach (array('QubitRepository', 'QubitUser') as $class)
+    {
+      if (isset($this->data[$class]) && 0 < count($this->data[$class]))
+      {
+        foreach ($this->data[$class] as $key => $row)
+        {
+          if (isset($row['parent_id']) && (QubitActor::ROOT_ID == $row['parent_id']
+            || '<?php echo QubitActor::ROOT_ID."\n" ?>' == $this->data['QubitActor'][$row['parent_id']]['id']))
+          {
+            unset($this->data[$class][$key]['parent_id']);
+          }
+        }
+      }
     }
 
     return $this;

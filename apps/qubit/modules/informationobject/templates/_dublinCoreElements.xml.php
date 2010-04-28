@@ -16,7 +16,7 @@
 <?php foreach ($informationObject->getContributors() as $contributor): ?>
 <dc:contributor><?php echo htmlspecialchars($contributor) ?></dc:contributor>
 <?php endforeach; ?>
-<?php foreach (QubitDc::getDates($informationObject) as $dcDate): ?>
+<?php foreach (QubitDc::getDates($informationObject, array('export' => true)) as $dcDate): ?>
 <dc:date><?php echo htmlspecialchars($dcDate) ?></dc:date>
 <?php endforeach; ?>
 <?php if (count($dcTypes = QubitDc::getTypes($informationObject)) > 0): ?>
@@ -30,9 +30,9 @@
   <?php endforeach; ?>
 <?php endif; ?>
 <?php if ($informationObject->getIdentifier()): ?>
+<dc:identifier><?php echo url_for(array('module' => 'informationobject', 'id' =>$informationObject->getId()), $absolute = true) ?></dc:identifier>
 <dc:identifier><?php echo htmlspecialchars(QubitDc::getIdentifier($informationObject)) ?></dc:identifier>
 <?php endif; ?>
-<dc:identifier><?php echo url_for(array('module' => 'informationobject', 'id' =>$informationObject->getId()), $absolute = true) ?></dc:identifier>
 <?php if ($source = $informationObject->getLocationOfOriginals()): ?>
 <dc:source><?php echo htmlspecialchars($source) ?></dc:source>
 <?php endif; ?>
@@ -42,8 +42,8 @@
   <?php endforeach; ?>
 <?php endif; ?>
 <?php if ($informationObject->getRepository()): ?>
-<dc:relation><?php echo htmlspecialchars($informationObject->getRepository()) ?></dc:relation>
 <dc:relation><?php echo url_for(array('module' => 'repository', 'id' => $informationObject->getRepository()->id), $absolute = true) ?></dc:relation>
+<dc:relation><?php echo htmlspecialchars($informationObject->getRepository()) ?></dc:relation>
 <?php endif; ?>
 <?php foreach (QubitDc::getCoverage($informationObject, array('spatial' => true)) as $coverageSpatial): ?>
 <dc:coverage><?php echo htmlspecialchars($coverageSpatial) ?></dc:coverage>

@@ -429,6 +429,17 @@ class QubitMigrate104 extends QubitMigrate
       unset($this->data['QubitTerm'][$findingAidTermKey]);
     }
 
+    // Add compound digital object usage_id term
+    $this->data['QubitTerm']['QubitTerm_compound_id'] = array(
+      'taxonomy_id' => '<?php echo QubitTaxonomy::DIGITAL_OBJECT_USAGE_ID."\n" ?>',
+      'class_name' => 'QubitTerm',
+      'id' => '<?php echo QubitTerm::COMPOUND_ID."\n" ?>',
+      'source_culture' => 'en',
+      'name' => array(
+        'en' => 'Compound representation'
+      )
+    );
+
     return $this;
   }
 

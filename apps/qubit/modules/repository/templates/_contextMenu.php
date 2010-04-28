@@ -9,26 +9,6 @@
     </ul>
   </div>
 
-  <?php if ($pager->haveToPaginate()): ?>
-    <div class="pager">
-
-      <?php if (1 < $pager->getPage()): ?>
-        <?php echo link_to('< '.__('Previous'), array('holdingsPage' => $pager->getPage()-1) + $sf_request->getParameterHolder()->getAll()) ?>
-      <?php endif; ?>
-
-      <?php foreach ($pager->getLinks(5) as $page): ?>
-        <?php if ($pager->getPage() == $page): ?>
-          <strong><?php echo $page ?></strong>
-        <?php else: ?>
-          <?php echo link_to($page, array('holdingsPage' => $page) + $sf_request->getParameterHolder()->getAll()) ?>
-        <?php endif; ?>
-      <?php endforeach ?>
-
-      <?php if ($pager->getLastPage() > $pager->getPage()): ?>
-        <?php echo link_to(__('Next').' >', array('holdingsPage' => $pager->getPage()+1) + $sf_request->getParameterHolder()->getAll()) ?>
-      <?php endif; ?>
-
-    </div>
-  <?php endif; ?>
+  <?php echo get_partial('default/pager', array('pager' => $pager)) ?>
 
 </div>

@@ -2,23 +2,13 @@
 
 <?php echo link_to_if(QubitAcl::check($object, 'update'), '<h1 class="label">'.render_title(QubitRad::getLabel($object)).'</h1>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('title' => __('Edit archival description'))) ?>
 
-<?php if (isset($errorSchema)): ?>
-  <div class="messages error">
-    <ul>
-      <?php foreach ($errorSchema as $error): ?>
-        <li><?php echo $error ?></li>
-      <?php endforeach; ?>
-    </ul>
-  </div>
-<?php endif; ?>
-
 <?php if (0 < count($object->digitalObjects)): ?>
   <?php echo get_component('digitalobject', 'show', array( 'digitalObject' => $object->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID, 'link' => $digitalObjectLink)) ?>
 <?php endif; ?>
 
 <div class="section" id="titleAndStatementOfResponsibilityArea">
 
-  <h2><?php echo __('Title and statement of responsibility area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Title and statement of responsibility area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'titleAndStatementOfResponsibilityArea', 'title' => __('Edit title and statement of responsibility area'))) ?>
 
   <?php echo render_show(__('Title proper'), $object->getTitle(array('cultureFallback' => true))) ?>
 
@@ -62,7 +52,7 @@
 
 <div class="section" id="editionArea">
 
-  <h2><?php echo __('Edition area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Edition area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'editionArea', 'title' => __('Edit edition area'))) ?>
 
   <?php echo render_show(__('Edition statement'), $object->getEdition(array('cultureFallback' => true))) ?>
 
@@ -72,7 +62,7 @@
 
 <div class="section" id="classOfMaterialSpecificDetailsArea">
 
-  <h2><?php echo __('Class of material specific details area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Class of material specific details area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'classOfMaterialSpecificDetailsArea', 'title' => __('Edit class of material specific details area'))) ?>
 
   <?php echo render_show(__('Statement of scale (cartographic)'), $object->getPropertyByName('statementOfScaleCartographic', array('scope' => 'rad'))->getValue(array('cultureFallback' => true))) ?>
 
@@ -88,7 +78,7 @@
 
 <div class="section" id="datesOfCreationArea">
 
-  <h2><?php echo __('Dates of creation area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Dates of creation area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'datesOfCreationArea', 'title' => __('Edit dates of creation area'))) ?>
 
   <?php echo get_partial('informationobject/dates', array('informationObject' => $object)) ?>
 
@@ -98,7 +88,7 @@
 
 <div class="section" id="physicalDescriptionArea">
 
-  <h2><?php echo __('Physical description area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Physical description area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'physicalDescriptionArea', 'title' => __('Edit physical description area'))) ?>
 
   <?php echo render_show(__('Physical description'), $object->getExtentAndMedium(array('cultureFallback' => true))) ?>
 
@@ -106,7 +96,7 @@
 
 <div class="section" id="publishersSeriesArea">
 
-  <h2><?php echo __('Publisher\'s series area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Publisher\'s series area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'publishersSeriesArea', 'title' => __('Edit publisher\'s series area'))) ?>
 
   <?php echo render_show(__('Title proper of publisher\'s series'), $object->getPropertyByName('titleProperOfPublishersSeries', array('scope' => 'rad'))->getValue(array('cultureFallback' => true))) ?>
 
@@ -124,7 +114,7 @@
 
 <div class="section" id="archivalDescriptionArea">
 
-  <h2><?php echo __('Archival description area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Archival description area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'archivalDescriptionArea', 'title' => __('Edit archival description area'))) ?>
 
   <?php echo render_show(__('Custodial history'), $object->getArchivalHistory(array('cultureFallback' => true))) ?>
 
@@ -134,7 +124,7 @@
 
 <div class="section" id="notesArea">
 
-  <h2><?php echo __('Notes area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Notes area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'notesArea', 'title' => __('Edit notes area'))) ?>
 
   <?php echo render_show(__('Physical condition'), $object->getPhysicalCharacteristics(array('cultureFallback' => true))) ?>
 
@@ -193,15 +183,15 @@
 
 <div class="section" id="standardNumberArea">
 
-  <h2><?php echo __('Standard number area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Standard number area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'standardNumberArea', 'title' => __('Edit standard number area'))) ?>
 
   <?php echo render_show(__('Standard number'), $object->getPropertyByName('standardNumber', array('scope' => 'rad'))->getValue(array('cultureFallback' => true))) ?>
 
 </div> <!-- /.section#standardNumberArea -->
 
-<div class="section">
+<div class="section" id="accessPointsArea">
 
-  <h2><?php echo __('Access points') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Access points').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'accessPointsArea', 'title' => __('Edit access points'))) ?>
 
   <?php echo get_partial('informationobject/subjectAccessPoints', array('informationObject' => $object)) ?>
 
@@ -211,9 +201,9 @@
 
 </div> <!-- /.section -->
 
-<div class="section">
+<div class="section" id="controlArea">
 
-  <h2><?php echo __('Control area') ?></h2>
+  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Control area').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'controlArea', 'title' => __('Edit control area'))) ?>
 
   <?php echo render_show(__('Description record identifier'), $object->descriptionIdentifier) ?>
 

@@ -8,7 +8,7 @@
   <?php endif; ?>
 </h1>
 
-<h1 class="label"><?php echo $func->getLabel() ?></h1>
+<h1 class="label"><?php echo render_title($func->getLabel()) ?></h1>
 
 <?php echo $form->renderGlobalErrors() ?>
 

@@ -175,7 +175,7 @@
 <!--   START ACCESS POINTS                        -->
 <!-- ******************************************** -->
 
-<div class="section">
+<div class="section" id="accessPointsArea">
 
   <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('Access points').'</h2>', array($object, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'accessPointsArea', 'title' => __('Edit access points'))) ?>
 

@@ -21,10 +21,14 @@ class StaticPageStaticAction extends sfAction
 {
   public function execute($request)
   {
-  $criteria = new Criteria;
-  $criteria->add(QubitStaticPage::PERMALINK, $this->getRequestParameter('permalink'));
-  $this->staticPage = QubitStaticPage::getOne($criteria);
+    $criteria = new Criteria;
+    $criteria->add(QubitStaticPage::PERMALINK, $request->permalink);
 
-  $this->forward404Unless($this->staticPage);
+    $this->staticPage = QubitStaticPage::getOne($criteria);
+
+    if (!isset($this->staticPage))
+    {
+      $this->forward404();
+    }
   }
 }

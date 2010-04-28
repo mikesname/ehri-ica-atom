@@ -28,4 +28,6 @@
   </div>
 </div>
 
+<?php echo get_partial('informationobject/format', array('informationObject' => $informationObject)) ?>
+
 <?php echo get_component('physicalobject', 'contextMenu', array('informationObject' => $informationObject)) ?>

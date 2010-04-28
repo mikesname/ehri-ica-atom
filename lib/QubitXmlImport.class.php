@@ -85,6 +85,7 @@ class QubitXmlImport
       //'record' => 'marc',
       'record' => 'oai_dc_record',
       'dc' => 'dc',
+      'oai_dc:dc' => 'dc',
       'dublinCore' => 'dc',
       'metadata' => 'dc',
       //'mets' => 'mets',

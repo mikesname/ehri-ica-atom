@@ -19,5 +19,8 @@
 
 class QubitStaticPage extends BaseStaticPage
 {
-
+  public function __toString()
+  {
+    return (string) $this->title;
+  }
 }

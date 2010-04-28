@@ -78,6 +78,15 @@ body,
   border-top: 2px solid #000;
 }
 
+#l10n-client .label
+{
+  /* Reset .label */
+
+  background: transparent;
+  font-size: inherit;
+  padding: 0;
+}
+
 #l10n-client .labels
 {
   background: #fd0;

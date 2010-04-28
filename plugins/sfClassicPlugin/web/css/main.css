@@ -3,6 +3,49 @@ body
   margin: 1em;
 }
 
+form .field
+{
+  /* Reset .field */
+
+  border: 0;
+}
+
+form .field > div
+{
+  /* Reset .field > div */
+
+  margin: 0;
+  padding: 0;
+}
+
+form .field > h3
+{
+  /* Reset h3 */
+
+  font-family: inherit;
+
+  /* Reset .field */
+
+  background: transparent;
+  color: inherit;
+  float: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  width: auto;
+}
+
+/* e.g. RAD administrative history */
+
+form .field :link h3,
+form .field :visited h3
+{
+  background-image: url(../images/pencil.png);
+  background-position: right;
+  background-repeat: no-repeat;
+  padding-right: 16px;
+}
+
 h1
 {
   color: #ccc;
@@ -56,25 +99,6 @@ table
   clear: both;
 }
 
-th :link,
-th :visited
-{
-  color: #000;
-  font-weight: normal;
-}
-
-th :link:after,
-th :visited:after
-{
-  content: ')';
-}
-
-th :link:before,
-th :visited:before
-{
-  content: '(';
-}
-
 thead th
 {
   border: 1px solid #999;
@@ -86,7 +110,6 @@ thead th
 thead th,
 .actions,
 .label,
-.sidebar > .section > div > h3,
 #content .search
 {
   background: #f93;
@@ -172,6 +195,7 @@ thead th,
 .label,
 .page h1,
 .search .field > h3,
+.sidebar > .section > div > h2,
 .sidebar > .section > div > h3
 {
   border-radius: 2px;
@@ -227,7 +251,7 @@ thead th,
 :visited:focus .label,
 :visited:hover .label
 {
-  background: #000;
+  background-color: #000;
   color: #fff;
 }
 
@@ -290,6 +314,7 @@ thead th,
 
 .label,
 .page h1,
+.sidebar > .section > div > h2,
 .sidebar > .section > div > h3
 {
   font-size: 140%;
@@ -586,8 +611,6 @@ thead th,
 
 .delete #navigation,
 .delete #sidebar-first,
-.edit #navigation,
-.edit #sidebar-first,
 .move #navigation,
 .move #sidebar-first,
 .overlay #footer,
@@ -659,6 +682,7 @@ body.overlay
 /* Blue background */
 
 .page h1,
+.sidebar > .section > div > h2,
 .sidebar > .section > div > h3
 {
   background: #069;
@@ -695,10 +719,12 @@ body.overlay
   margin: 0;
 }
 
+.sidebar > .section > div > h2,
 .sidebar > .section > div > h3
 {
   font-size: inherit;
   font-weight: bold;
+  line-height: inherit;
 
   /* Reset .field */
 
@@ -708,6 +734,21 @@ body.overlay
   width: auto;
 }
 
+.sidebar
+{
+  margin: 31px 0 0;
+}
+
+.sidebar .field ul
+{
+  margin: 0;
+}  
+
+.imageflow
+{
+  padding: 10px 0;
+}
+  
 /* Radio button lists */
 
 ul.radio

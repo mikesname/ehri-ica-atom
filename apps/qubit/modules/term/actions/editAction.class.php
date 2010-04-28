@@ -325,6 +325,15 @@ class TermEditAction extends sfAction
 
         break;
 
+      case 'name':
+
+        if (!$this->term->isProtected())
+        {
+          $this->term[$field->getName()] = $this->form->getValue($field->getName());
+        }
+
+        break;
+
       case 'relatedTerms':
 
         $current = $new = array();

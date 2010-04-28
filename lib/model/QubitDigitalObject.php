@@ -412,10 +412,10 @@ class QubitDigitalObject extends BaseDigitalObject
 
     // Fail if asset's intended usage is a reference or thumbnail object and
     // it's *not* an image mimetype
-    $isImage = QubitDigitalObject::isImageFile($asset->getName());
-    if (($this->getUsageId() == QubitTerm::REFERENCE_ID || $this->getUsageId() == QubitTerm::THUMBNAIL_ID) && $isImage === false)
+    $allowed = QubitDigitalObject::isImageFile($asset->getName()) || QubitDigitalObject::isAudioFile($asset->getName());
+    if (in_array($this->usageId, array(QubitTerm::REFERENCE_ID, QubitTerm::THUMBNAIL_ID)) && false == $allowed)
     {
-      throw new sfException('Reference or thumbnail asset must be mime-type image/*');
+      throw new sfException('Reference or thumbnail asset is not compatible with current mime-type');
     }
 
     // Get clean file name (no bad chars)
@@ -443,7 +443,7 @@ class QubitDigitalObject extends BaseDigitalObject
     // Write file
     if (false === file_put_contents($filePathName, $asset->getContents()))
     {
-      throw sfException('File write to '.$filePathName.' failed');
+      throw new sfException('File write to '.$filePathName.' failed. See setting directory and file permissions documentation.');
     }
 
     // Test asset checksum against generated checksum from file
@@ -459,7 +459,7 @@ class QubitDigitalObject extends BaseDigitalObject
     // set file permissions
     if (!chmod($filePathName, 0644))
     {
-      throw sfException('Failed to set permissions on '.$filePathName);
+      throw new sfException('Failed to set permissions on '.$filePathName);
     }
 
     // Iterate through new directories and set permissions (mkdir() won't do this properly)
@@ -493,7 +493,7 @@ class QubitDigitalObject extends BaseDigitalObject
     $uriComponents = parse_url($uri);
 
     // Initialize web browser
-    $browser = new sfWebBrowser(array(), null, array('Timeout' => 3));
+    $browser = new sfWebBrowser(array(), null, array('Timeout' => 10));
 
     // Add asset to digital object assets array
     if (true !== $browser->get($uri)->responseIsError() && 0 < strlen(($filename = basename($uriComponents['path']))))
@@ -504,7 +504,7 @@ class QubitDigitalObject extends BaseDigitalObject
     }
     else
     {
-      throw new sfException();
+      throw new sfException('Encountered error fetching external resource.');
     }
 
     // Set digital object as external URI
@@ -908,12 +908,19 @@ class QubitDigitalObject extends BaseDigitalObject
       }
     }
 
-    if ($this->getMediaTypeId() == QubitTerm::VIDEO_ID)
+    if ($this->mediaTypeId == QubitTerm::VIDEO_ID)
     {
-      if ($usageId == QubitTerm::MASTER_ID)
+      if ($usageId == QubitTerm::EXTERNAL_URI_ID || $usageId == QubitTerm::MASTER_ID)
       {
         $this->createVideoDerivative(QubitTerm::REFERENCE_ID);
         $this->createVideoDerivative(QubitTerm::THUMBNAIL_ID);
+      }
+    }
+    else if ($this->mediaTypeId == QubitTerm::AUDIO_ID)
+    {
+      if ($usageId == QubitTerm::EXTERNAL_URI_ID || $usageId == QubitTerm::MASTER_ID)
+      {
+        $this->createAudioDerivative(QubitTerm::REFERENCE_ID);
       }
     }
 
@@ -1464,6 +1471,120 @@ class QubitDigitalObject extends BaseDigitalObject
     }
   }
 
+  public static function isAudioFile($filename)
+  {
+    $mimeType = self::deriveMimeType($filename);
+    if (strtolower(substr($mimeType, 0, 5)) == 'audio')
+    {
+      return true;
+    }
+    else
+    {
+      return false;
+    }
+  }
+
+  /*
+   * -----------------------------------------------------------------------
+   * VIDEO
+   * -----------------------------------------------------------------------
+   */
+  public function createAudioDerivative($usageId)
+  {
+    if (QubitTerm::REFERENCE_ID != $usageId)
+    {
+
+      return false;
+    }
+
+    if (QubitTerm::EXTERNAL_URI_ID == $this->usageId)
+    {
+      $originalFullPath = $this->localPath;
+
+      list($originalNameNoExtension) = explode('.', $this->getName());
+      $derivativeName = $originalNameNoExtension.'_'.$usageId.'.mp3';
+
+      $pathParts = pathinfo($this->localPath);
+
+      $derivativeFullPath = $pathParts['dirname'].'/'.$derivativeName;
+
+      self::convertAudioToMp3($originalFullPath, $derivativeFullPath);
+
+      if (file_exists($derivativeFullPath) && 0 < ($byteSize = filesize($derivativeFullPath)))
+      {
+        $derivative = new QubitDigitalObject;
+        $derivative->setParentId($this->getId());
+        $derivative->setUsageId($usageId);
+        $derivative->assets[] = new QubitAsset($derivativeName, file_get_contents($derivativeFullPath));
+        $derivative->createDerivatives = false;
+        $derivative->indexOnSave = false;
+        $derivative->save();
+      }
+    }
+    else
+    {
+      $originalFullPath = sfConfig::get('sf_web_dir').$this->getFullPath();
+
+      list($originalNameNoExtension) = explode('.', $this->getName());
+      $derivativeName = $originalNameNoExtension.'_'.$usageId.'.mp3';
+
+      $derivativeFullPath = sfConfig::get('sf_web_dir').$this->getPath().$derivativeName;
+
+      self::convertAudioToMp3($originalFullPath, $derivativeFullPath);
+
+      if (file_exists($derivativeFullPath) && 0 < ($byteSize = filesize($derivativeFullPath)))
+      {
+        $derivative = new QubitDigitalObject;
+        $derivative->setPath($this->getPath());
+        $derivative->setName($derivativeName);
+        $derivative->setParentId($this->getId());
+        $derivative->setByteSize($byteSize);
+        $derivative->setUsageId($usageId);
+        $derivative->setMimeAndMediaType();
+        $derivative->createDerivatives = false;
+        $derivative->indexOnSave = false;
+        $derivative->save();
+      }
+    }
+  }
+
+  public static function convertAudioToMp3($originalPath, $newPath)
+  {
+    // Test for FFmpeg library
+    if (!self::hasFfmpeg())
+    {
+
+      return false;
+    }
+
+    $command = 'ffmpeg -y -i '.$originalPath.' '.$newPath.' 2>&1';
+    exec($command, $output, $status);
+
+    if ($status)
+    {
+      $error = true;
+
+      for ($i = count($output) - 1; $i >= 0; $i--)
+      {
+        if (strpos($output[$i], 'output buffer too small'))
+        {
+          $error = false;
+
+          break;
+        }
+      }
+
+      if ($error)
+      {
+        throw new sfException('Encountered error while running ffmpeg to convert audio file to MP3.');
+      }
+    }
+
+    chmod($newPath, 0644);
+
+    return true;
+  }
+
   /*
    * -----------------------------------------------------------------------
    * VIDEO
@@ -1554,7 +1675,7 @@ class QubitDigitalObject extends BaseDigitalObject
     // If return value is non-zero, an error occured
     if ($status)
     {
-      throw new sfException($command.' '.$output.' '.$status);
+      throw new sfException('Encountered error while running ffmpeg to convert video file to FLV.');
     }
 
     chmod($newPath, 0644);
@@ -1589,7 +1710,7 @@ class QubitDigitalObject extends BaseDigitalObject
     // If return value is non-zero, an error occured
     if ($status)
     {
-      throw new sfException($command.' '.$output.' '.$status);
+      throw new sfException('Encountered error while running ffmpeg to create a flash video derivative.');
     }
 
     chmod($newPath, 0644);
@@ -1658,7 +1779,7 @@ class QubitDigitalObject extends BaseDigitalObject
     // If return value is non-zero, an error occured
     if ($status)
     {
-      throw new sfException($command.' '.$output.' '.$status);
+      throw new sfException('Encountered error while running ffmpeg to create a thumbnail from video file.');
     }
 
     chmod($tmpFilePath, 0644);
