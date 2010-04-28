@@ -312,7 +312,7 @@ QubitMenu:
       nl: help
       pt: ajuda
       sl: pomoč
-    path: 'http://ica-atom.org/docs/index.php?title=User_manual'
+    path: 'http://ica-atom.org/doc/index.php?title=User_manual'
   QubitMenu_quicklinks_myProfile:
     parent_id: QubitMenu_quicklinks
     source_culture: en
