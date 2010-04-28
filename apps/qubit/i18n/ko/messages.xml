@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-27T18:23:54Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-28T11:51:56Z" product-name="messages">
     <body>
       <trans-unit id="2">
         <source>%1% profile</source>
@@ -922,6 +922,22 @@
         <source>Creator(s)</source>
         <target/>
       </trans-unit>
+      <trans-unit id="435">
+        <source>Title proper of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="437">
+        <source>Other title information of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="438">
+        <source>Statement of responsibility relating to publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="439">
+        <source>Numbering within publisher's series</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="441">
         <source>Create (RAD)</source>
         <target/>
@@ -1161,6 +1177,10 @@
       <trans-unit id="515">
         <source>Digital object metadata</source>
         <target/>
+      </trans-unit>
+      <trans-unit id="537">
+        <source>Subject</source>
+        <target>주제</target>
       </trans-unit>
       <trans-unit id="544">
         <source>Import/export module</source>
@@ -1514,6 +1534,22 @@
         <source>Edit context area</source>
         <target>맥락 영역 편집</target>
       </trans-unit>
+      <trans-unit id="709">
+        <source>Title proper</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="710">
+        <source>General material designation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="711">
+        <source>Parallel title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="712">
+        <source>Other title information</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="714">
         <source>Add new child levels</source>
         <target>새 하위계층 추가</target>
@@ -1522,9 +1558,69 @@
         <source>Level</source>
         <target>계층</target>
       </trans-unit>
+      <trans-unit id="716">
+        <source>Edition statement</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="717">
+        <source>Statement of scale (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="718">
+        <source>Statement of projection (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="719">
+        <source>Statement of coordinates (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="720">
+        <source>Statement of scale (architectural)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="721">
+        <source>Issuing jurisdiction and denomination (philatelic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="722">
+        <source>Physical description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="724">
+        <source>Custodial history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="725">
+        <source>Physical condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="726">
+        <source>Immediate source of acquisition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="727">
+        <source>Availability of other formats</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="728">
+        <source>Restrictions on access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="729">
+        <source>Terms governing use, reproduction, and publication</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="730">
+        <source>Associated / related material</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="731">
         <source>Institution identifier</source>
         <target/>
+      </trans-unit>
+      <trans-unit id="732">
+        <source>Rules or conventions</source>
+        <target>규칙 혹은 표준규정 </target>
       </trans-unit>
       <trans-unit id="733">
         <source>Status</source>
@@ -1542,9 +1638,45 @@
         <source>Source language</source>
         <target>소스 언어</target>
       </trans-unit>
+      <trans-unit id="747">
+        <source>Appraisal, destruction and scheduling</source>
+        <target>평가 폐기 보존기간 책정</target>
+      </trans-unit>
+      <trans-unit id="750">
+        <source>System of arrangement</source>
+        <target>정리 시스템</target>
+      </trans-unit>
       <trans-unit id="752">
         <source>Conditions governing access</source>
         <target>접근 조건</target>
+      </trans-unit>
+      <trans-unit id="754">
+        <source>Conditions governing reproduction</source>
+        <target>복사조건</target>
+      </trans-unit>
+      <trans-unit id="756">
+        <source>Physical characteristics and technical requirements</source>
+        <target>물리적 특성과 기술적 요구사항</target>
+      </trans-unit>
+      <trans-unit id="759">
+        <source>Existence and location of originals</source>
+        <target>원본 존재와 소장위치</target>
+      </trans-unit>
+      <trans-unit id="761">
+        <source>Existence and location of copies</source>
+        <target>복사본의 존재와 소장위치</target>
+      </trans-unit>
+      <trans-unit id="763">
+        <source>Related units of description</source>
+        <target>관련 기술 단위</target>
+      </trans-unit>
+      <trans-unit id="764">
+        <source>Description record identifier</source>
+        <target>기록식별자 기술</target>
+      </trans-unit>
+      <trans-unit id="765">
+        <source>Institution identifiers</source>
+        <target>조직/기관 식별자</target>
       </trans-unit>
       <trans-unit id="768">
         <source>Dublin Core 1.1 XML</source>
@@ -1569,6 +1701,18 @@
       <trans-unit id="774">
         <source>Description</source>
         <target>기술</target>
+      </trans-unit>
+      <trans-unit id="776">
+        <source>Source</source>
+        <target>소스</target>
+      </trans-unit>
+      <trans-unit id="777">
+        <source>Rights</source>
+        <target>권한</target>
+      </trans-unit>
+      <trans-unit id="778">
+        <source>Type of resource</source>
+        <target/>
       </trans-unit>
       <trans-unit id="779">
         <source>Edit repository</source>

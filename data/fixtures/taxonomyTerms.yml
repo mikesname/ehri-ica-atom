@@ -596,7 +596,7 @@ QubitTerm:
     name:
       de: Text
       en: Text
-      fr: 'documents textuels'
+      fr: Texte
       it: Testo
       nl: Tekst
       pt: Texto
@@ -1913,7 +1913,7 @@ QubitTerm:
     name:
       de: Text
       en: text
-      fr: 'documents textuels'
+      fr: Texte
       it: testo
       nl: Tekst
       pt: Texto
@@ -1941,7 +1941,7 @@ QubitTerm:
     name:
       de: Tonaufnahme
       en: 'sound recording'
-      fr: 'enregistrements sonores'
+      fr: 'Enregistrement sonore'
       it: 'registrazione sonora'
       pt: 'Documento sonoro'
       sl: 'Zvočni zapis'
@@ -2109,7 +2109,7 @@ QubitTerm:
     name:
       de: Text
       en: text
-      fr: 'documents textuels'
+      fr: Texte
       it: testo
       nl: Tekst
       pt: Texto

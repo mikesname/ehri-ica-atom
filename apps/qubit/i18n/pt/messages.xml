@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-27T18:24:53Z" product-name="messages">
+  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-28T11:54:20Z" product-name="messages">
     <body>
       <trans-unit id="2">
         <source>%1% profile</source>
@@ -922,6 +922,22 @@
         <source>Creator(s)</source>
         <target/>
       </trans-unit>
+      <trans-unit id="503">
+        <source>Title proper of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="505">
+        <source>Other title information of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="506">
+        <source>Statement of responsibility relating to publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="507">
+        <source>Numbering within publisher's series</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="509">
         <source>Create (RAD)</source>
         <target/>
@@ -1160,6 +1176,10 @@
       </trans-unit>
       <trans-unit id="583">
         <source>Digital object metadata</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="605">
+        <source>Subject</source>
         <target/>
       </trans-unit>
       <trans-unit id="612">
@@ -1514,6 +1534,22 @@
         <source>Edit context area</source>
         <target/>
       </trans-unit>
+      <trans-unit id="777">
+        <source>Title proper</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="778">
+        <source>General material designation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="779">
+        <source>Parallel title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="780">
+        <source>Other title information</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="782">
         <source>Add new child levels</source>
         <target/>
@@ -1522,8 +1558,68 @@
         <source>Level</source>
         <target/>
       </trans-unit>
+      <trans-unit id="784">
+        <source>Edition statement</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="785">
+        <source>Statement of scale (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="786">
+        <source>Statement of projection (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="787">
+        <source>Statement of coordinates (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="788">
+        <source>Statement of scale (architectural)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="789">
+        <source>Issuing jurisdiction and denomination (philatelic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="790">
+        <source>Physical description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="792">
+        <source>Custodial history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="793">
+        <source>Physical condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="794">
+        <source>Immediate source of acquisition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="795">
+        <source>Availability of other formats</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="796">
+        <source>Restrictions on access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="797">
+        <source>Terms governing use, reproduction, and publication</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="798">
+        <source>Associated / related material</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="799">
         <source>Institution identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="800">
+        <source>Rules or conventions</source>
         <target/>
       </trans-unit>
       <trans-unit id="801">
@@ -1542,8 +1638,44 @@
         <source>Source language</source>
         <target/>
       </trans-unit>
+      <trans-unit id="815">
+        <source>Appraisal, destruction and scheduling</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="818">
+        <source>System of arrangement</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="820">
         <source>Conditions governing access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="822">
+        <source>Conditions governing reproduction</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="824">
+        <source>Physical characteristics and technical requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="827">
+        <source>Existence and location of originals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="829">
+        <source>Existence and location of copies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="831">
+        <source>Related units of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="832">
+        <source>Description record identifier</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="833">
+        <source>Institution identifiers</source>
         <target/>
       </trans-unit>
       <trans-unit id="836">
@@ -1568,6 +1700,18 @@
       </trans-unit>
       <trans-unit id="842">
         <source>Description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="844">
+        <source>Source</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="845">
+        <source>Rights</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="846">
+        <source>Type of resource</source>
         <target/>
       </trans-unit>
       <trans-unit id="847">

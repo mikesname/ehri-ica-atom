@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-27T20:00:03Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-28T12:17:48Z" product-name="messages">
     <body>
       <trans-unit id="44">
         <source>Reference code</source>
@@ -110,6 +110,22 @@
         <source>Administrative history</source>
         <target/>
       </trans-unit>
+      <trans-unit id="435">
+        <source>Title proper of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="437">
+        <source>Other title information of publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="438">
+        <source>Statement of responsibility relating to publisher's series</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="439">
+        <source>Numbering within publisher's series</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="513">
         <source>Are you sure?</source>
         <target>확실합니까?</target>
@@ -162,9 +178,85 @@
         <source>Type</source>
         <target/>
       </trans-unit>
+      <trans-unit id="709">
+        <source>Title proper</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="710">
+        <source>General material designation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="711">
+        <source>Parallel title</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="712">
+        <source>Other title information</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="716">
+        <source>Edition statement</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="717">
+        <source>Statement of scale (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="718">
+        <source>Statement of projection (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="719">
+        <source>Statement of coordinates (cartographic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="720">
+        <source>Statement of scale (architectural)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="721">
+        <source>Issuing jurisdiction and denomination (philatelic)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="722">
+        <source>Physical description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="724">
+        <source>Custodial history</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="725">
+        <source>Physical condition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="726">
+        <source>Immediate source of acquisition</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="727">
+        <source>Availability of other formats</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="728">
+        <source>Restrictions on access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="729">
+        <source>Terms governing use, reproduction, and publication</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="730">
+        <source>Associated / related material</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="731">
         <source>Institution identifier</source>
         <target/>
+      </trans-unit>
+      <trans-unit id="732">
+        <source>Rules or conventions</source>
+        <target>규칙 혹은 표준규정 </target>
       </trans-unit>
       <trans-unit id="733">
         <source>Status</source>
@@ -178,9 +270,17 @@
         <source>Dates of creation, revision and deletion</source>
         <target>생산 수정 삭제 일자</target>
       </trans-unit>
+      <trans-unit id="747">
+        <source>Appraisal, destruction and scheduling</source>
+        <target>평가 폐기 보존기간 책정</target>
+      </trans-unit>
       <trans-unit id="752">
         <source>Conditions governing access</source>
         <target>접근 조건</target>
+      </trans-unit>
+      <trans-unit id="764">
+        <source>Description record identifier</source>
+        <target>기록식별자 기술</target>
       </trans-unit>
       <trans-unit id="773">
         <source>Format</source>
@@ -251,278 +351,178 @@
         <target/>
       </trans-unit>
       <trans-unit id="843">
-        <source>Title proper</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="844">
-        <source>General material designation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="845">
-        <source>Parallel title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="846">
-        <source>Other title information</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="847">
         <source>Title statements of responsibility</source>
         <target/>
       </trans-unit>
-      <trans-unit id="848">
+      <trans-unit id="844">
         <source>Title notes</source>
         <target/>
       </trans-unit>
-      <trans-unit id="849">
+      <trans-unit id="845">
         <source>Edition area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="850">
+      <trans-unit id="846">
         <source>Edit edition area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="851">
-        <source>Edition statement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="852">
+      <trans-unit id="847">
         <source>Edition statement of responsibility</source>
         <target/>
       </trans-unit>
-      <trans-unit id="853">
+      <trans-unit id="848">
         <source>Class of material specific details area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="854">
+      <trans-unit id="849">
         <source>Edit class of material specific details area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="855">
-        <source>Statement of scale (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="856">
-        <source>Statement of projection (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="857">
-        <source>Statement of coordinates (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="858">
-        <source>Statement of scale (architectural)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="859">
-        <source>Issuing jurisdiction and denomination (philatelic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="860">
+      <trans-unit id="850">
         <source>Dates of creation area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="861">
+      <trans-unit id="851">
         <source>Edit dates of creation area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="862">
+      <trans-unit id="852">
         <source>Physical description area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="863">
+      <trans-unit id="853">
         <source>Edit physical description area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="864">
-        <source>Physical description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="865">
+      <trans-unit id="854">
         <source>Publisher's series area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="866">
+      <trans-unit id="855">
         <source>Edit publisher's series area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="867">
-        <source>Title proper of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="868">
+      <trans-unit id="856">
         <source>Parallel titles of publisher's series</source>
         <target/>
       </trans-unit>
-      <trans-unit id="869">
-        <source>Other title information of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="870">
-        <source>Statement of responsibility relating to publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="871">
-        <source>Numbering within publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="872">
+      <trans-unit id="857">
         <source>Note on publisher's series</source>
         <target/>
       </trans-unit>
-      <trans-unit id="873">
+      <trans-unit id="858">
         <source>Archival description area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="874">
+      <trans-unit id="859">
         <source>Edit archival description area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="875">
-        <source>Custodial history</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="876">
+      <trans-unit id="860">
         <source>Scope and content</source>
         <target/>
       </trans-unit>
-      <trans-unit id="877">
+      <trans-unit id="861">
         <source>Notes area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="878">
+      <trans-unit id="862">
         <source>Edit notes area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="879">
-        <source>Physical condition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="880">
-        <source>Immediate source of acquisition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="881">
-        <source>Appraisal, destruction and scheduling</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="882">
+      <trans-unit id="863">
         <source>Arrangement</source>
         <target/>
       </trans-unit>
-      <trans-unit id="883">
+      <trans-unit id="864">
         <source>Language of material</source>
         <target/>
       </trans-unit>
-      <trans-unit id="884">
+      <trans-unit id="865">
         <source>Script of material</source>
         <target/>
       </trans-unit>
-      <trans-unit id="885">
+      <trans-unit id="866">
         <source>Location of originals</source>
         <target/>
       </trans-unit>
-      <trans-unit id="886">
-        <source>Availability of other formats</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="887">
-        <source>Restrictions on access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="888">
-        <source>Terms governing use, reproduction, and publication</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="889">
+      <trans-unit id="867">
         <source>Finding aids</source>
         <target/>
       </trans-unit>
-      <trans-unit id="890">
-        <source>Associated / related material</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="891">
+      <trans-unit id="868">
         <source>Accruals</source>
         <target/>
       </trans-unit>
-      <trans-unit id="892">
+      <trans-unit id="869">
         <source>Other notes</source>
         <target/>
       </trans-unit>
-      <trans-unit id="893">
+      <trans-unit id="870">
         <source>Standard number area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="894">
+      <trans-unit id="871">
         <source>Edit standard number area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="895">
+      <trans-unit id="872">
         <source>Standard number</source>
         <target/>
       </trans-unit>
-      <trans-unit id="896">
+      <trans-unit id="873">
         <source>Access points</source>
         <target/>
       </trans-unit>
-      <trans-unit id="897">
+      <trans-unit id="874">
         <source>Edit access points</source>
         <target/>
       </trans-unit>
-      <trans-unit id="898">
+      <trans-unit id="875">
         <source>Edit control area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="899">
-        <source>Description record identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="900">
-        <source>Rules or conventions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="901">
+      <trans-unit id="876">
         <source>Detail</source>
         <target/>
       </trans-unit>
-      <trans-unit id="902">
+      <trans-unit id="877">
         <source>Language of description</source>
         <target/>
       </trans-unit>
-      <trans-unit id="903">
+      <trans-unit id="878">
         <source>Script of description</source>
         <target/>
       </trans-unit>
-      <trans-unit id="904">
+      <trans-unit id="879">
         <source>Edit archival description - RAD</source>
         <target/>
       </trans-unit>
-      <trans-unit id="905">
+      <trans-unit id="880">
         <source>This is a duplicate of record %1%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="906">
+      <trans-unit id="881">
         <source>Statement of responsibility</source>
         <target/>
       </trans-unit>
-      <trans-unit id="907">
+      <trans-unit id="882">
         <source>Title note type</source>
         <target/>
       </trans-unit>
-      <trans-unit id="908">
+      <trans-unit id="883">
         <source>Parallel title of publisher's series</source>
         <target/>
       </trans-unit>
-      <trans-unit id="909">
+      <trans-unit id="884">
         <source>Biographical sketch</source>
         <target/>
       </trans-unit>
-      <trans-unit id="910">
+      <trans-unit id="885">
         <source>Associated/related material</source>
         <target/>
       </trans-unit>
-      <trans-unit id="911">
+      <trans-unit id="886">
         <source>Note type</source>
         <target/>
       </trans-unit>

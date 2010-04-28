@@ -1573,11 +1573,6 @@ class QubitDigitalObject extends BaseDigitalObject
           break;
         }
       }
-
-      if ($error)
-      {
-        throw new sfException('Encountered error while running ffmpeg to convert audio file to MP3.');
-      }
     }
 
     chmod($newPath, 0644);
@@ -1672,12 +1667,6 @@ class QubitDigitalObject extends BaseDigitalObject
     $command = 'ffmpeg -y -i '.$originalPath.' '.$newPath.' 2>&1';
     exec($command, $output, $status);
 
-    // If return value is non-zero, an error occured
-    if ($status)
-    {
-      throw new sfException('Encountered error while running ffmpeg to convert video file to FLV.');
-    }
-
     chmod($newPath, 0644);
 
     return true;
@@ -1706,12 +1695,6 @@ class QubitDigitalObject extends BaseDigitalObject
     // Do conversion to jpeg
     $command = 'ffmpeg -i '.$originalPath.' -vframes 1 -an -f image2 -s '.$width.'x'.$height.' '.$newPath;
     exec($command.' 2>&1', $output, $status);
-
-    // If return value is non-zero, an error occured
-    if ($status)
-    {
-      throw new sfException('Encountered error while running ffmpeg to create a flash video derivative.');
-    }
 
     chmod($newPath, 0644);
 
@@ -1775,12 +1758,6 @@ class QubitDigitalObject extends BaseDigitalObject
     // Do conversion to jpeg
     $command = 'ffmpeg -i '.$originalPath.' -vframes 1 -an -f image2 -s '.$width.'x'.$height.' '.$tmpFilePath.' 2>&1';
     exec($command, $output, $status);
-
-    // If return value is non-zero, an error occured
-    if ($status)
-    {
-      throw new sfException('Encountered error while running ffmpeg to create a thumbnail from video file.');
-    }
 
     chmod($tmpFilePath, 0644);
 

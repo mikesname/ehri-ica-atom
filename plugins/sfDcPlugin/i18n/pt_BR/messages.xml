@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-27T19:49:32Z" product-name="messages">
+  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-28T12:06:33Z" product-name="messages">
     <body>
       <trans-unit id="8">
         <source>Title</source>
@@ -82,6 +82,10 @@
         <source>Are you sure?</source>
         <target/>
       </trans-unit>
+      <trans-unit id="605">
+        <source>Subject</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="655">
         <source>Date(s)</source>
         <target/>
@@ -152,6 +156,14 @@
       </trans-unit>
       <trans-unit id="842">
         <source>Description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="844">
+        <source>Source</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="845">
+        <source>Rights</source>
         <target/>
       </trans-unit>
     </body>

@@ -47,7 +47,7 @@
 
               data: { id: nodeId, limit: 10 },
               dataType: 'json',
-              timeout: 7000,
+              timeout: 15000,
               url: Qubit.treeView.Url,
 
               error: fnLoadComplete,
@@ -213,7 +213,7 @@
               var lastChild = parentNode.children[parentNode.children.length-2];
               if (Qubit.treeView.currentNodeId == lastChild.data.id)
               {
-                offset = 8;
+                offset = 9;
               }
 
               // Show loading text
@@ -231,7 +231,7 @@
 
                 success: function (data)
                   {
-                    if (8 == offset)
+                    if (9 == offset)
                     {
                       Qubit.treeView.treeView.removeNode(lastChild);
                     }

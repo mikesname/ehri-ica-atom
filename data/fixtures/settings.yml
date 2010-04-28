@@ -303,7 +303,7 @@ QubitSetting:
     value: 1
   plugins:
     name: plugins
-    value: 'a:5:{i:0;s:10:"sfDcPlugin";i:1;s:11:"sfEadPlugin";i:2;s:12:"sfIsadPlugin";i:3;s:12:"sfModsPlugin";i:4;s:11:"sfRadPlugin";}'
+    value: 'a:6:{i:0;s:15:"sfCaribouPlugin";i:1;s:10:"sfDcPlugin";i:2;s:11:"sfEadPlugin";i:3;s:12:"sfIsadPlugin";i:4;s:12:"sfModsPlugin";i:5;s:11:"sfRadPlugin";}'
   toggleDescription:
     name: toggleDescription
     value: 1

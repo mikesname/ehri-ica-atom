@@ -1511,6 +1511,26 @@ class QubitInformationObject extends BaseInformationObject
    TreeView
   *****************************************************/
 
+  public static function addTreeViewSortCriteria($criteria)
+  {
+    switch (sfConfig::get('app_sort_treeview_informationobject'))
+    {
+      case 'identifierTitle':
+        $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+        $criteria->addAscendingOrderByColumn('identifier');
+        $criteria->addAscendingOrderByColumn('title');
+        break;
+      case 'title':
+        $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+        $criteria->addAscendingOrderByColumn('title');
+        break;
+      default:
+        $criteria->addAscendingOrderByColumn(self::LFT);
+    }
+
+    return $criteria;
+  }
+
   public function getFullYuiTree($limit = 0)
   {
     $tree = self::getFullTree($this, $limit);
@@ -1527,7 +1547,7 @@ class QubitInformationObject extends BaseInformationObject
 
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::PARENT_ID, $this->id);
-    $criteria->addAscendingOrderByColumn(QubitInformationObject::LFT);
+    $criteria = self::addTreeViewSortCriteria($criteria);
 
     $countCriteria = clone $criteria;
     $totalChildren = intval(BasePeer::doCount($countCriteria)->fetchColumn(0));
@@ -1579,6 +1599,8 @@ class QubitInformationObject extends BaseInformationObject
     {
       $criteria = new Criteria;
       $criteria->add(QubitInformationObject::PARENT_ID, $currentNode->parentId);
+      $criteria = self::addTreeViewSortCriteria($criteria);
+
       if (0 < $limit)
       {
         $criteria->setLimit($limit);
@@ -1623,6 +1645,8 @@ class QubitInformationObject extends BaseInformationObject
     $totalChildren = 0;
     $criteria = new Criteria;
     $criteria->add(QubitInformationObject::PARENT_ID, $currentNode->id);
+    $criteria = self::addTreeViewSortCriteria($criteria);
+
     if (0 < $limit)
     {
       $criteria->setLimit($limit);

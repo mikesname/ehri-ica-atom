@@ -384,14 +384,14 @@ QubitMenu:
     name: browseSubjects
     label:
       en: Subjects
-    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>'
+    path: term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID."\n" ?>
   QubitMenu_browse_places:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browsePlaces
     label:
       en: Places
-    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID."\n" ?>'
+    path: term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID."\n" ?>
   QubitMenu_browse_digital_objects:
     parent_id: QubitMenu_browse
     source_culture: en

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-27T19:55:32Z" product-name="messages">
+  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-28T12:13:00Z" product-name="messages">
     <body>
       <trans-unit id="8">
         <source>Title</source>
@@ -206,6 +206,10 @@
         <source>Institution identifier</source>
         <target/>
       </trans-unit>
+      <trans-unit id="800">
+        <source>Rules or conventions</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="801">
         <source>Status</source>
         <target/>
@@ -218,8 +222,36 @@
         <source>Dates of creation, revision and deletion</source>
         <target/>
       </trans-unit>
+      <trans-unit id="815">
+        <source>Appraisal, destruction and scheduling</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="818">
+        <source>System of arrangement</source>
+        <target/>
+      </trans-unit>
       <trans-unit id="820">
         <source>Conditions governing access</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="822">
+        <source>Conditions governing reproduction</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="824">
+        <source>Physical characteristics and technical requirements</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="827">
+        <source>Existence and location of originals</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="829">
+        <source>Existence and location of copies</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="831">
+        <source>Related units of description</source>
         <target/>
       </trans-unit>
       <trans-unit id="841">
