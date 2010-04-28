@@ -123,7 +123,14 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: Sammlung
       en: Fonds
+      es: fundo
+      fr: collection
+      it: collezione
+      nl: collectie
+      pt: fundo/coleção
+      sl: zbirke
   QubitSetting_18:
     name: holdings
     scope: ui_label
