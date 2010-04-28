@@ -54,12 +54,7 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      en: 'Information object'
-      fr: 'Objet d''information'
-      it: 'Oggetto informativo'
-      nl: 'Information object'
-      pt: 'Objeto informacional'
-      sl: 'Informacijski objekt'
+      en: 'Archival description'
   QubitSetting_12:
     name: actor
     scope: ui_label
@@ -67,13 +62,7 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      de: Person/Einrichtung
-      en: Person/organization
-      fr: Personne/organisation
-      it: Persona/organizzazione
-      nl: Persoon/organisatie
-      pt: Pessoa/organização
-      sl: Oseba/organizacija
+      en: 'Authority record'
   QubitSetting_13:
     name: creator
     scope: ui_label
@@ -96,12 +85,7 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      en: Repository
-      fr: Service
-      it: 'Soggetto conservatore'
-      nl: Depot
-      pt: 'Entidade custodiadora'
-      sl: Skladišče
+      en: 'Archival institution'
   QubitSetting_15:
     name: term
     scope: ui_label
@@ -139,12 +123,7 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
-      en: Collection
-      fr: Collection
-      it: Collezione
-      nl: Collectie
-      pt: Coleção
-      sl: Zbirka
+      en: Fonds
   QubitSetting_18:
     name: holdings
     scope: ui_label

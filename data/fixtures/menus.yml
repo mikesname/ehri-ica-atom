@@ -355,21 +355,21 @@ QubitMenu:
     source_culture: en
     name: browseInformationObjects
     label:
-      en: 'Information objects'
+      en: 'Archival descriptions'
     path: informationobject/browse
   QubitMenu_browse_actors:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browseActors
     label:
-      en: Actors
+      en: 'Authority records'
     path: actor/browse
   QubitMenu_browse_repositories:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browseRepositories
     label:
-      en: Repositories
+      en: 'Archival institutions'
     path: repository/browse
   QubitMenu_browse_functions:
     parent_id: QubitMenu_browse
