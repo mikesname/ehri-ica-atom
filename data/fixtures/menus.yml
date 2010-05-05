@@ -173,14 +173,14 @@ QubitMenu:
     path: 'user/indexInformationObjectAcl?id=%currentId%'
     source_culture: en
     label:
-      en: 'Information object permissions'
+      en: 'Archival description permissions'
   QubitMenu_mainmenu_admin_users_actorAcl:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userActorAcl
     path: 'user/indexActorAcl?id=%currentId%'
     source_culture: en
     label:
-      en: 'Actor permissions'
+      en: 'Authority record permissions'
   QubitMenu_mainmenu_admin_users_termAcl:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userTermAcl
@@ -209,14 +209,14 @@ QubitMenu:
     path: 'aclGroup/indexInformationObjectAcl?id=%currentId%'
     source_culture: en
     label:
-      en: 'Information object permissions'
+      en: 'Archival description permissions'
   QubitMenu_mainmenu_admin_groups_actorAcl:
     parent_id: QubitMenu_mainmenu_admin_groups
     name: groupActorAcl
     path: 'aclGroup/indexActorAcl?id=%currentId%'
     source_culture: en
     label:
-      en: 'Actor permissions'
+      en: 'Authority record permissions'
   QubitMenu_mainmenu_admin_groups_termAcl:
     parent_id: QubitMenu_mainmenu_admin_groups
     name: groupTermAcl
