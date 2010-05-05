@@ -21,22 +21,22 @@ class TermTreeViewAction extends sfAction
 {
   public function execute($request)
   {
+    $this->response->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
+
     $term = QubitTerm::getById($request->id);
 
-    $this->getResponse()->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
-
-    $treeViewObjects = array();
-    foreach ($term->getChildren(array('sortBy' => 'name')) as $item)
+    $options = array();
+    if (isset($request->limit))
     {
-      $treeViewObject = array();
-      $treeViewObject['label'] = $item->getName(array('cultureFallback' => true, 'truncate' => 50));
-      $treeViewObject['href'] = $this->context->routing->generate(null, array($item, 'module' => 'term'));
-      $treeViewObject['id'] = $item->id;
-      $treeViewObject['parentId'] = $item->parentId;
-      $treeViewObject['isLeaf'] = !$item->hasChildren();
-
-      $treeViewObjects[] = $treeViewObject;
+      $options['limit'] = $request->limit;
     }
+
+    if (isset($request->offset))
+    {
+      $options['offset'] = $request->offset;
+    }
+
+    $treeViewObjects = $term->getChildYuiNodes($options);
 
     return $this->renderText(json_encode($treeViewObjects));
   }

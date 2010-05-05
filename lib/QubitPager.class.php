@@ -33,8 +33,13 @@ class QubitPager extends sfPropelPager
   /**
    * BasePeer::doCount() returns PDOStatement
    */
-  public static function doCount(Criteria $criteria)
+  public function doCount(Criteria $criteria)
   {
+    // Set primary table name incase there are no WHERE columns, in which case
+    // BasePeer::createSelectSql() can't determine which tables go in the FROM
+    // clause
+    $criteria->setPrimaryTableName($this->tableName);
+
     return BasePeer::doCount($criteria)->fetchColumn(0);
   }
 
@@ -46,7 +51,7 @@ class QubitPager extends sfPropelPager
   public function init()
   {
     $class = $this->class;
-    $this->class = 'QubitPager';
+    $this->class = $this;
 
     parent::init();
 

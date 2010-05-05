@@ -7,7 +7,7 @@
         {
           $('form:has(select.form-autocomplete)', context).each(function ()
             {
-              // Share <form> with nested scopes
+              // Share <form/> with nested scopes
               var form = this;
 
               // Support multiple submit listeners which must all complete
@@ -29,26 +29,26 @@
 
               $('select.form-autocomplete', this).each(function ()
                 {
-                  // Share <select> with nested scopes
+                  // Share <select/> with nested scopes
                   var select = this;
 
-                  // Make autocomplete <input>, copy @class from <select>, copy
-                  // @id from <select> so <label for="..."> is correct
+                  // Make autocomplete <input/>, copy @class from <select/>, copy
+                  // @id from <select/> so <label for="..."/> is correct
                   var $input = $('<input class="' + $(this).attr('class') + '" id="' + $(this).attr('id') + '"/>').insertAfter(this);
 
                   if ($(this).attr('multiple'))
                   {
-                    // If multiple <select>, make <ul> of selected <option>s
+                    // If multiple <select/>, make <ul/> of selected <option/>s
                     var $ul = $('<ul/>').insertAfter(this);
 
                     $('option:selected', this).each(function ()
                       {
-                        // Make <li> of hidden <input> with <option> value, and
-                        // <span> with <option> HTML contents
+                        // Make <li/> of hidden <input/> with <option/> value, and
+                        // <span/> with <option/> HTML contents
                         $('<li title="Remove item"><input name="' + $(select).attr('name') + '" type="hidden" value="' + $(this).val() + '"/><span>' + $(this).html() + '</span></li>')
                           .click(function ()
                             {
-                              // On click, remove <li>
+                              // On click, remove <li/>
                               $(this).hide('fast', function ()
                                 {
                                   $(this).remove();
@@ -59,11 +59,11 @@
                   }
                   else
                   {
-                    // If single <select>, make one hidden <input> with
-                    // <option> value,
+                    // If single <select/>, make one hidden <input/> with
+                    // <option/> value,
                     var $hidden = $('<input name="' + $(this).attr('name') + '" type="hidden" value="' + $(this).val() + '"/>').insertAfter(this);
 
-                    // - and copy <option> value to autocomplete <input>
+                    // - and copy <option/> value to autocomplete <input/>
                     $input.val($('option:selected', this).text());
                   }
 
@@ -79,7 +79,7 @@
                     var dataSource = new YAHOO.util.XHRDataSource(components[0]);
 
                     // Cache at least one query so autocomplete items are only
-                    // requested if the value of the autocomplete <input>
+                    // requested if the value of the autocomplete <input/>
                     // changes
                     dataSource.maxCacheEntries = 1;
 
@@ -94,7 +94,7 @@
                         $('tbody tr', response).each(function ()
                           {
                             // For each item, select HTML contents and @href of
-                            // <a> in first cell
+                            // <a/> in first cell
                             results.push([$('td a', this).html(), $('td a', this).attr('href')]);
                           });
 
@@ -103,7 +103,7 @@
                   }
                   else
                   {
-                    // Otherwise add each enabled <option> to static list of
+                    // Otherwise add each enabled <option/> to static list of
                     // items
                     var dataSource = new YAHOO.util.LocalDataSource();
 
@@ -112,7 +112,7 @@
                         if ($(this).val())
                         {
                           // For each item, select HTML contents and value of
-                          // <option>
+                          // <option/>
                           //
                           // Selecting HTML contents is important for
                           // <em>Untitled</em>
@@ -213,18 +213,18 @@
                             })
                           .length)
                         {
-                          // Make <li> of hidden <input> with item value, and
-                          // <span> with item HTML
+                          // Make <li/> of hidden <input/> with item value, and
+                          // <span/> with item HTML
                           //
                           // Use XML() constructor to insert parsed HTML, works
-                          // for strings without an <element> and strings with
-                          // one root <element>, but not, I suspect, for
-                          // strings with multiple root <element>s or text
-                          // outside the root <element>
+                          // for strings without an <element/> and strings with
+                          // one root <element/>, but not, I suspect, for
+                          // strings with multiple root <element/>s or text
+                          // outside the root <element/>
                           $('<li title="Remove item"><input name="' + $(select).attr('name') + '" type="hidden" value="' + args[2][1] + '"/><span>' + args[2][0] + '</span></li>')
                             .click(function ()
                               {
-                                // On click, remove <li>
+                                // On click, remove <li/>
                                 $(this).hide('fast', function ()
                                   {
                                     $(this).remove();
@@ -233,28 +233,29 @@
                             .appendTo($ul);
                         }
 
-                        // Select autocomplete <input> contents so typing will
+                        // Select autocomplete <input/> contents so typing will
                         // replace it
                         $input.select();
                       }
                       else
                       {
-                        // On single <select> item select, simply update the
+                        // On single <select/> item select, simply update the
                         // value of this input
                         $hidden.val(args[2][1]);
                       }
 
-                      // Update the value of the autocomplete <input> here with
-                      // text of parsed HTML, instead of source
+                      // Update the value of the autocomplete <input/> here
+                      // with text of parsed HTML, instead of source
                       //
-                      // Use XML() constructor as with multiple <select>, but
+                      // Use XML() constructor as with multiple <select/>, but
                       // use toString() to get text of parsed HTML
                       $input.val(args[2][0]);
                     });
 
                   if ($(select).attr('multiple'))
                   {
-                    // If multiple <select>, clear autocomplete <input> on blur
+                    // If multiple <select/>, clear autocomplete <input/> on
+                    // blur
                     //
                     // TODO Don't clear if event.preventDefault() was called?
                     autoComplete.textboxBlurEvent.subscribe(function ()
@@ -287,13 +288,17 @@
                   // selecting existing item, but not changing focus
                   $input.click(sendQuery);
 
+                  // Function assignment instead of function declaration,
+                  // http://piecesofrakesh.blogspot.com/2008/12/function-declaration-vs-function.html
+                  var submit;
+
                   // A following sibling with class .add and a value specifies
                   // that new choices can be added to this input with a form at
                   // the specified URI, by copying the value of the
-                  // autocomplete <input> to the element at the specified
+                  // autocomplete <input/> to the element at the specified
                   // selector
                   //
-                  // Use <iframe>s instead of XHR because I can't figure out
+                  // Use <iframe/>s instead of XHR because I can't figure out
                   // how to get access to the Location: header of redirect
                   // responses, and can't figure out how to get access to the
                   // URI of the final response,
@@ -306,12 +311,12 @@
 
                     if (!$(select).attr('multiple'))
                     {
-                      // Add hidden <iframe>, set width, height, and border to
+                      // Add hidden <iframe/>, set width, height, and border to
                       // zero, don't use display: none, i.e. hide() because it
                       // might get ignored by some browsers,
                       // http://developer.apple.com/internet/webcontent/iframe.html
                       //
-                      // Append to <body> instead of insert after <select> to
+                      // Append to <body/> instead of insert after <select/> to
                       // avoid interfering with tabbing between inputs
                       var $iframe = $('<iframe src="' + components[0] + '"/>')
                         .width(0)
@@ -319,9 +324,9 @@
                         .css('border', 0)
                         .appendTo('body');
 
-                      // One submit handler per single <select>, use named
+                      // One submit handler per single <select/>, use named
                       // function so it can be unbound on item select
-                      function submit(event)
+                      submit = function (event)
                       {
                         // Delay submit till all listeners done
                         event.preventDefault();
@@ -338,9 +343,9 @@
                             done();
                           });
 
-                        // Apply selector to <iframe> contents, update value of
-                        // selected element with value of the autocomplete
-                        // <input>, and submit selected element's form
+                        // Apply selector to <iframe/> contents, update value
+                        // of selected element with value of the autocomplete
+                        // <input/>, and submit selected element's form
                         $($(components[1], $iframe[0].contentWindow.document).val($input.val())[0].form).submit();
                       }
 
@@ -353,7 +358,7 @@
                     }
 
                     // The following applies to both single and multiple
-                    // <select>
+                    // <select/>
 
                     autoComplete.unmatchedItemSelectEvent.subscribe(function ()
                       {
@@ -371,7 +376,7 @@
                               event.preventDefault();
                             }
 
-                            // Add hidden <iframe> for each new choice
+                            // Add hidden <iframe/> for each new choice
                             var $iframe = $('<iframe src="' + components[0] + '"/>')
                               .width(0)
                               .height(0)
@@ -381,7 +386,7 @@
                             // One submit handler for each new choice, use
                             // named function so it can be unbound if choice is
                             // removed
-                            function submit(event)
+                            submit = function (event)
                             {
                               // Delay submit till all listeners done
                               event.preventDefault();
@@ -389,7 +394,7 @@
 
                               $iframe.one('load', function ()
                                 {
-                                  // Make <input> with URI of new resource as
+                                  // Make <input/> with URI of new resource as
                                   // its value
                                   $('<input name="' + $(select).attr('name') + '" type="hidden" value="' + this.contentWindow.document.location + '"/>').appendTo($li);
 
@@ -398,19 +403,19 @@
                                   done();
                                 });
 
-                              // Apply selector to <iframe> contents, update
+                              // Apply selector to <iframe/> contents, update
                               // value of selected element with text of the new
                               // choice, and submit selected element's form
                               $($(components[1], $iframe[0].contentWindow.document).val($clone.val())[0].form).submit();
                             }
 
-                            // Make <li>
+                            // Make <li/>
                             var $li = $('<li title="Remove item"/>')
                               .click(function (event)
                                 {
-                                  // On click, remove <li> and cancel addition
+                                  // On click, remove <li/> and cancel addition
                                   // of new choice, unless user clicked on new
-                                  // choice <input>
+                                  // choice <input/>
                                   if ($clone[0] != event.target)
                                   {
                                     $(this).hide('fast', function ()
@@ -424,8 +429,8 @@
                                 })
                               .appendTo($ul);
 
-                            // Make new choice <input> by cloning autocomplete
-                            // <input>
+                            // Make new choice <input/> by cloning autocomplete
+                            // <input/>
                             var $clone = $input
                               .clone()
 
@@ -434,7 +439,7 @@
 
                               .blur(function ()
                                 {
-                                  // On blur, remove <li> and cancel addition
+                                  // On blur, remove <li/> and cancel addition
                                   // of new choice, if text of the new choice
                                   // was cleared
                                   if (!$(this).val())
@@ -450,15 +455,15 @@
                                 })
                               .appendTo($li);
 
-                            // Select autocomplete <input> contents so typing
+                            // Select autocomplete <input/> contents so typing
                             // will replace it
                             $input.select();
                           }
 
                           // Listen for form submit
                           //
-                          // Trick, if single <select>, listener will be from
-                          // parent scope. If multiple <select>, listener will
+                          // Trick, if single <select/>, listener will be from
+                          // parent scope. If multiple <select/>, listener will
                           // be from this scope, where it's wrapped in, if
                           // ($(select).attr('multiple')) ...
                           //
@@ -472,7 +477,7 @@
                           $hidden.val('');
 
                           // If unmatched item is empty, cancel addition of new
-                          // single <select> choice
+                          // single <select/> choice
                           $(form).unbind('submit', submit);
                         }
                       });
@@ -481,10 +486,16 @@
                   {
                     // Otherwise new choices can't be added to this input,
                     // http://developer.yahoo.com/yui/autocomplete/#force
-                    autoComplete.forceSelection = true;
+
+                    // Clear both autocomplete <input/> and hidden <input/>
+                    autoComplete.unmatchedItemSelectEvent.subscribe(function ()
+                      {
+                        $hidden.val('');
+                        $input.val('');
+                      });
                   }
 
-                  // Finally remove <select> element
+                  // Finally remove <select/> element
                   $(this).remove();
                 });
             });

@@ -16,6 +16,7 @@
  * You should have received a copy of the GNU General Public License
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 class qubitConfiguration extends sfApplicationConfiguration
 {
   const VERSION = '1.0.9';
@@ -119,6 +120,8 @@ class qubitConfiguration extends sfApplicationConfiguration
     // other way around
     $dirs = $this->getPluginSubPaths('/modules/'.$moduleName.'/templates');
     $dirs[] = sfConfig::get('sf_app_module_dir').'/'.$moduleName.'/templates';
+
+    $dirs = array_merge($dirs, $this->getDecoratorDirs());
 
     return $dirs;
   }

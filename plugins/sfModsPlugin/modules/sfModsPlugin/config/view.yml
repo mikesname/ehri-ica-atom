@@ -15,7 +15,6 @@ editSuccess:
     /vendor/yui/dragdrop/dragdrop-min:
     /vendor/yui/container/container-min:
     autocomplete:
-    description:
     multiDelete:
     multiInstanceInput:
     multiInstanceSelect:

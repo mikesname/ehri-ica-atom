@@ -13,6 +13,8 @@ $user->setPassword('test1234');
 $user->save();
 
 $browser
+  ->info('Log in')
+
   ->post(';user/login', array('email' => 'test@example.com', 'password' => 'test1234'))
 
   ->with('request')->begin()
@@ -27,6 +29,8 @@ $browser->test()->isa_ok($browser->getUser()->user, 'QubitUser',
   'myUser->user is QubitUser');
 
 $browser
+  ->info('Log out')
+
   ->get('/')
 
   ->with('request')->begin()
@@ -47,6 +51,8 @@ $browser->test()->ok(!$browser->getUser()->isAuthenticated(),
 $browser = new sfTestFunctional(new sfBrowser);
 
 $browser
+  ->info('Incorrect log in')
+
   ->post(';user/login', array('email' => 'test@example.com', 'password' => 'wrongpass'))
 
   ->with('request')->begin()
@@ -60,11 +66,30 @@ $browser->test()->ok(!$browser->getUser()->isAuthenticated(),
 $browser->test()->is($browser->getUser()->user, null,
   'myUser->user is null');
 
-// Issue 1342
 $browser = new sfTestFunctional(new sfBrowser);
 
 $browser
+  ->info('"localhost" "next" parameter, issue 1342')
+
   ->post(';user/login', array('email' => 'test@example.com', 'password' => 'test1234', 'next' => 'http://localhost/example'))
+
+  ->with('request')->begin()
+    ->isParameter('module', 'user')
+    ->isParameter('action', 'login')
+  ->end();
+
+$browser->test()->ok($browser->getUser()->isAuthenticated(),
+  'User is authenticated');
+
+$browser->test()->isa_ok($browser->getUser()->user, 'QubitUser',
+  'myUser->user is QubitUser');
+
+$browser = new sfTestFunctional(new sfBrowser);
+
+$browser
+  ->info('Empty "next" parameter')
+
+  ->post(';user/login', array('email' => 'test@example.com', 'password' => 'test1234', 'next' => ''))
 
   ->with('request')->begin()
     ->isParameter('module', 'user')

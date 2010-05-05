@@ -367,7 +367,7 @@ EOL
         </tr><tr>
           <td colspan="4">
             <?php echo $form['relatedEntity[object]']->render(array('class' => 'form-autocomplete')) ?>
-            <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
+            <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete', 'showOnlyActors' => 'true')) ?>"/>
           </td>
         </tr><tr>
           <th colspan="4">

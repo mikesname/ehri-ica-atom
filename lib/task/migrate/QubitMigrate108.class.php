@@ -18,7 +18,7 @@
  */
 
 /**
- * Upgrade qubit data from version 1.0.7 to 1.0.8 schema
+ * Upgrade qubit data from version 1.0.8 to 1.0.9 schema
  *
  * @package    qubit
  * @subpackage migration
@@ -197,6 +197,12 @@ class QubitMigrate108 extends QubitMigrate
 
       case 35:
         $this->removeRepoAndUserParent();
+
+      case 36:
+        $this->camelCaseMenuNames();
+
+      case 37:
+        $this->switchFromClassicToCaribouTheme();
     }
 
     // Delete "stub" objects
@@ -626,7 +632,7 @@ class QubitMigrate108 extends QubitMigrate
         'path' => 'user/showInformationObjectAcl?id=%currentId%',
         'source_culture' => 'en',
         'label' => array(
-          'en' => 'Archival description permissions'
+          'en' => 'Information object permissions'
         )
       );
     }
@@ -759,7 +765,7 @@ class QubitMigrate108 extends QubitMigrate
         'name' => 'userActorAcl',
         'path' => 'user/showActorAcl?id=%currentId%',
         'source_culture' => 'en',
-        'label' => array('en' => 'Authority record permissions')
+        'label' => array('en' => 'Actor permissions')
       );
     }
 
@@ -809,7 +815,7 @@ class QubitMigrate108 extends QubitMigrate
         'path' => 'aclGroup/showInformationObjectAcl?id=%currentId%',
         'source_culture' => 'en',
         'label' => array(
-          'en' => 'Archival description permissions'
+          'en' => 'Information object permissions'
         )
       );
 
@@ -818,7 +824,7 @@ class QubitMigrate108 extends QubitMigrate
         'name' => 'groupActorAcl',
         'path' => 'aclGroup/showActorAcl?id=%currentId%',
         'source_culture' => 'en',
-        'label' => array('en' => 'Authority record permissions')
+        'label' => array('en' => 'Actor permissions')
       );
     }
 
@@ -1157,9 +1163,9 @@ class QubitMigrate108 extends QubitMigrate
       'id' => '<?php echo QubitMenu::TAXONOMY_ID."\n" ?>',
       'parent_id' => '<?php echo QubitMenu::MAIN_MENU_ID."\n" ?>',
       'source_culture' => 'en',
-      'name' => 'taxonomy',
+      'name' => 'taxonomies',
       'label' => array(
-        'en' => 'Taxonomy',
+        'en' => 'Taxonomies',
       ),
       'path' => 'term/list',
     );
@@ -1244,7 +1250,7 @@ class QubitMigrate108 extends QubitMigrate
       'label' => array(
         'en' => 'Functions'
       ),
-      'path' => 'function/list',
+      'path' => 'function/browse',
     );
 
     $this->data['QubitMenu']['QubitMenu_browse_subjects'] = array(
@@ -1324,6 +1330,92 @@ class QubitMigrate108 extends QubitMigrate
             unset($this->data[$class][$key]['parent_id']);
           }
         }
+      }
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ver 37: Update names of "add" menus, like r6787
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function camelCaseMenuNames()
+  {
+    foreach ($this->data['QubitMenu'] as $key => $row)
+    {
+      if (!isset($row['name']))
+      {
+        continue;
+      }
+
+      switch ($name = $row['name'])
+      {
+        case 'information object':
+          $name = 'addInformationObject';
+          break;
+
+        case 'actor':
+          $name = 'addActor';
+          break;
+
+        case 'repository':
+          $name = 'addRepository';
+          break;
+
+        case 'term':
+          $name = 'addTerm';
+          break;
+
+        case 'functions':
+          $name = 'addFunction';
+          break;
+
+        case 'log in':
+          $name = 'login';
+          break;
+
+        default:
+          if (false !== strpos($name, ' '))
+          {
+            $name = strtolower(trim($row['name']));
+            $name = preg_replace('/ (.)/e', 'strtoupper($1)', $name);
+          }
+      }
+
+      $this->data['QubitMenu'][$key]['name'] = $name;
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ver 38: Migrate to sfCaribou theme to users that are currently using sfClassic
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function switchFromClassicToCaribouTheme()
+  {
+    $plugin = 'sfClassicPlugin';
+    $replacement = 'sfCaribouPlugin';
+
+    // Find setting
+    foreach ($this->data['QubitSetting'] as $key => $value)
+    {
+      if ('plugins' == $value['name'])
+      {
+        $settings = unserialize($value['value'][$value['source_culture']]);
+
+        // Find plugin
+        if (-1 < ($index = array_search($plugin, $settings)))
+        {
+          // Replace
+          $settings[$index] = $replacement;
+          $this->data['QubitSetting'][$key]['value'][$value['source_culture']] = serialize($settings);
+        }
+
+        break;
       }
     }
 

@@ -25,7 +25,8 @@ class ActorDeleteAction extends sfAction
 
     $this->actor = QubitActor::getById($request->id);
 
-    if (!isset($this->actor))
+    // Check that object exists and that it's not the root
+    if (!isset($this->actor) || !isset($this->actor->parent))
     {
       $this->forward404();
     }

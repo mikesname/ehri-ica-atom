@@ -36,15 +36,13 @@ class TermBrowseTaxonomyAction extends sfAction
     $criteria = new Criteria;
     $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomy->id);
 
-    // Add joins to get count of information objects related via object term
-    // relations. The "object2" alias is necessary because the query silently
-    // adds a join on (QubitTerm::ID = QubitObject::ID).
-    $criteria->addAlias('object2', QubitObject::TABLE_NAME);
-    $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::INNER_JOIN);
-    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, 'object2.id', Criteria::INNER_JOIN);
-    $criteria->add('object2.class_name', 'QubitInformationObject');
-    $criteria->addAsColumn('hits', 'COUNT('.QubitTerm::ID.')');
+    $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID);
+    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, QubitInformationObject::ID);
+
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
+
     $criteria->addGroupByColumn(QubitTerm::ID);
+    $criteria->addAsColumn('hits', 'COUNT('.QubitTerm::ID.')');
 
     switch ($request->sort)
     {
@@ -63,8 +61,11 @@ class TermBrowseTaxonomyAction extends sfAction
 
         break;
 
+      case 'termNameUp':
       default:
         $criteria->addAscendingOrderByColumn('name');
+
+        break;
     }
 
     // Do culture fallback

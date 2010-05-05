@@ -33,7 +33,7 @@ class InformationObjectIndexAction extends sfAction
   {
     $this->object = QubitInformationObject::getById($request->id);
 
-    // Check that object exists and that it is not the root
+    // Check that object exists and that it's not the root
     if (!isset($this->object) || !isset($this->object->parent))
     {
       $this->forward404();
@@ -42,7 +42,7 @@ class InformationObjectIndexAction extends sfAction
     // Check user authorization
     if (!QubitAcl::check($this->object, 'read'))
     {
-      QubitAcl::forwardUnauthorized();
+      QubitAcl::forwardToSecureAction();
     }
 
     QubitImageFlow::addAssets($this->response);

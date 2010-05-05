@@ -27,11 +27,15 @@ class RepositoryContextMenuComponent extends sfComponent
     }
 
     $criteria = new Criteria;
+    $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID, Criteria::INNER_JOIN);
     $criteria->add(QubitInformationObject::REPOSITORY_ID, $request->id);
     $criteria->addAscendingOrderByColumn('title');
 
     // Sort holdings alphabetically (w/ fallback)
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
+
+    // Filter draft descriptions
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     // Paginate holdings list
     $this->pager = new QubitPager('QubitInformationObject');

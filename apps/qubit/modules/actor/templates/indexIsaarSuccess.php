@@ -67,7 +67,7 @@
 
 <?php echo render_show(__('General context'), render_value($actor->getGeneralContext(array('cultureFallback' => true)))) ?>
 
-<?php foreach ($actorRelations as $relation): ?>
+<?php foreach ($actor->getActorRelations() as $relation): ?>
   <div class="field">
     <h3><?php echo __('Related entity') ?></h3>
     <div>
@@ -141,8 +141,8 @@
   </div>
 <?php endforeach; ?>
 
-<?php foreach ($functionRelations as $relation): ?>
-  <?php echo render_show(__('Related function'), link_to(render_value($relation->subject->getLabel()), array($relation->subject, 'module' => 'function'))) ?>
+<?php foreach ($functions as $item): ?>
+  <?php echo render_show(__('Related function'), link_to(render_title($item), array($item, 'module' => 'function'))) ?>
 <?php endforeach; ?>
 
 <?php echo render_show(__('Description identifier'), render_value($actor->descriptionIdentifier)) ?>

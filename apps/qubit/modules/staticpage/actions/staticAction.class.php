@@ -26,7 +26,7 @@ class StaticPageStaticAction extends sfAction
 
     $this->staticPage = QubitStaticPage::getOne($criteria);
 
-    if (!isset($this->staticPage))
+    if (!$this->staticPage instanceof QubitStaticPage)
     {
       $this->forward404();
     }

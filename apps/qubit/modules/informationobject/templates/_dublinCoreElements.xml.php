@@ -31,16 +31,14 @@
 <?php endif; ?>
 <?php if ($informationObject->getIdentifier()): ?>
 <dc:identifier><?php echo url_for(array('module' => 'informationobject', 'id' =>$informationObject->getId()), $absolute = true) ?></dc:identifier>
-<dc:identifier><?php echo htmlspecialchars(QubitDc::getIdentifier($informationObject)) ?></dc:identifier>
+<dc:identifier><?php echo htmlspecialchars($informationObject->identifier) ?></dc:identifier>
 <?php endif; ?>
 <?php if ($source = $informationObject->getLocationOfOriginals()): ?>
 <dc:source><?php echo htmlspecialchars($source) ?></dc:source>
 <?php endif; ?>
-<?php if (count($languages = $informationObject->getProperties($name = 'information_object_language')) > 0): ?>
-  <?php foreach ($languages as $languageCode): ?>
-<dc:language><?php echo htmlspecialchars($languageCode->getValue()) ?></dc:language>
-  <?php endforeach; ?>
-<?php endif; ?>
+<?php foreach ($informationObject->language as $code): ?>
+<dc:language><?php echo format_language($code) ?></dc:language>
+<?php endforeach; ?>
 <?php if ($informationObject->getRepository()): ?>
 <dc:relation><?php echo url_for(array('module' => 'repository', 'id' => $informationObject->getRepository()->id), $absolute = true) ?></dc:relation>
 <dc:relation><?php echo htmlspecialchars($informationObject->getRepository()) ?></dc:relation>

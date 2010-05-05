@@ -4,13 +4,8 @@
 
   <div class="content">
     <ul class="clearfix links">
-      <?php if ('updatedUp' == $sf_request->sort || 'updatedDown' == $sf_request->sort): ?>
-        <li><?php echo link_to(__('Alphabetic'), array('sort' => 'nameUp') + $sf_request->getParameterHolder()->getAll()) ?></li> 
-        <li class="active"><?php echo link_to(__('Recent updates'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
-      <?php else: ?>
-        <li class="active"><?php echo link_to(__('Alphabetic'), array('sort' => 'nameUp') + $sf_request->getParameterHolder()->getAll()) ?></li> 
-        <li><?php echo link_to(__('Recent updates'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?></li>
-      <?php endif; ?>
+      <li<?php if ('nameDown' != $sf_request->sort && 'nameUp' != $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Recent updates'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?></li>
+      <li<?php if ('nameDown' == $sf_request->sort || 'nameUp' == $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Alphabetic'), array('sort' => 'nameUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
     </ul>
   </div>
 
@@ -26,25 +21,25 @@
         <?php echo __('Name') ?>
         <?php if ('nameDown' == $sf_request->sort): ?>
           <?php echo link_to(image_tag('up.gif'), array('sort' => 'nameUp') + $sf_request->getParameterHolder()->getAll()) ?>
-        <?php else: ?>
+        <?php elseif ('nameUp' == $sf_request->sort): ?>
           <?php echo link_to(image_tag('down.gif'), array('sort' => 'nameDown') + $sf_request->getParameterHolder()->getAll()) ?>
         <?php endif; ?>
       </th>
 
-      <?php if ('updatedUp' == $sf_request->sort || 'updatedDown' == $sf_request->sort): ?>
-        <th>
-          <?php echo __('Updated') ?>
-          <?php if ('updatedDown' == $sf_request->sort): ?>
-            <?php echo link_to(image_tag('down.gif'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?>
-          <?php else: ?>
-            <?php echo link_to(image_tag('up.gif'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?>
-          <?php endif; ?>
-        </th>
-      <?php else: ?>
+      <?php if ('nameDown' == $sf_request->sort || 'nameUp' == $sf_request->sort): ?>
         <th>
           <?php echo __('Type') ?>
         </th><th>
           <?php echo __('Country') ?>
+        </th>
+      <?php else: ?>
+        <th>
+          <?php echo __('Updated') ?>
+          <?php if ('updatedUp' == $sf_request->sort): ?>
+            <?php echo link_to(image_tag('up.gif'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?>
+          <?php else: ?>
+            <?php echo link_to(image_tag('down.gif'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?>
+          <?php endif; ?>
         </th>
       <?php endif; ?>
 
@@ -57,11 +52,7 @@
           <?php echo link_to(render_title($item), array($item, 'module' => 'repository')) ?>
         </td>
 
-        <?php if ('updatedUp' == $sf_request->sort || 'updatedDown' == $sf_request->sort): ?>
-          <td>
-            <?php echo $item->updatedAt ?>
-          </td>
-        <?php else: ?>
+        <?php if ('nameDown' == $sf_request->sort || 'nameUp' == $sf_request->sort): ?>
           <td>
             <ul>
               <?php foreach ($item->getTermRelations(QubitTaxonomy::REPOSITORY_TYPE_ID) as $relation): ?>
@@ -70,6 +61,10 @@
             </ul>
           </td><td>
             <?php echo $item->getCountry() ?>
+          </td>
+        <?php else: ?>
+          <td>
+            <?php echo $item->updatedAt ?>
           </td>
         <?php endif; ?>
 

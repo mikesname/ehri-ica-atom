@@ -31,7 +31,7 @@ class UserLoginAction extends sfAction
       $this->form->setDefault('next', $request->getReferer());
     }
 
-    $this->form->setValidator('next', new sfValidatorPass);
+    $this->form->setValidator('next', new sfValidatorString);
     $this->form->setWidget('next', new sfWidgetFormInputHidden);
 
     $this->form->setValidator('email', new sfValidatorEmail(array('required' => true), array(

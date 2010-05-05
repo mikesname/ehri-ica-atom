@@ -92,6 +92,9 @@ EOL
   </tr><tr>
     <td colspan="3" class="noline">
       <select id="updateEventActor" name="updateEvent[actor]" class="form-autocomplete"></select>
+      <?php if (QubitAcl::check(QubitActor::getRoot(), 'create')): ?>
+        <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'create')) ?> #authorizedFormOfName"/>
+      <?php endif; ?>
       <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
     </td>
   </tr><tr>
@@ -103,8 +106,10 @@ EOL
       <?php echo select_tag('updateEvent[typeId]', options_for_select($eventTypes, $defaultEventType))?>
     </td><td class="noline">
       <select id="updateEventPlace" name="updateEvent[place]" class="form-autocomplete"></select>
-      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'term', 'action' => 'autocomplete', 'taxonomyId' => QubitTaxonomy::PLACE_ID)) ?>"/>
-    </td>
+      <?php if (QubitAcl::check(QubitTaxonomy::getById(QubitTaxonomy::PLACE_ID), 'createTerm')): ?>
+        <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'term', 'action' => 'create', 'taxonomyId' => QubitTaxonomy::PLACE_ID)) ?> #name"/>
+      <?php endif; ?>
+      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'term', 'action' => 'autocomplete', 'taxonomyId' => QubitTaxonomy::PLACE_ID)) ?>"/> </td>
   </tr><tr>
     <td class="headerCell">
       <?php echo __('Date') ?>

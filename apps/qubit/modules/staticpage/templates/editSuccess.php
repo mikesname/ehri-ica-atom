@@ -10,11 +10,21 @@
 
   <?php echo $form->renderHiddenFields() ?>
 
-  <?php echo $form->title->renderRow() ?>
+  <?php echo render_field($form->title, $staticPage) ?>
 
-  <?php echo $form->permalink->renderRow() ?>
+  <div class="form-item">
 
-  <?php echo render_field($form->content, $staticPage, array('class' => 'resizable')) ?>
+    <?php echo $form->permalink->renderLabel() ?><?php if ($staticPage->isProtected()): ?><?php echo image_tag('lock_mini') ?><?php endif; ?>
+
+    <?php if ($staticPage->isProtected()): ?>
+      <?php echo $form->permalink->render(array('class' => 'disabled', 'disabled' => 'disabled')) ?>
+    <?php else: ?>
+      <?php echo $form->permalink ?>
+    <?php endif; ?>
+
+  </div>
+
+  <?php echo render_field($form->content, $staticPage, array('class' => 'resizable', 'id' => 'staticpage-content')) ?>
 
   <div class="actions section">
 

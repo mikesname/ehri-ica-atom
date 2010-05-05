@@ -100,6 +100,7 @@ tr:hover
   height: 27px;
   margin: 4px;
   position: absolute;
+  top: 0;
   right: 0;
   text-indent: -32767px;
   width: 27px;

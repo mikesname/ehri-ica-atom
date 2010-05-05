@@ -35,7 +35,10 @@ class TermBrowseTermAction extends sfAction
 
     $criteria = new Criteria;
     $criteria->add(QubitObjectTermRelation::TERM_ID, $this->term->id);
-    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, QubitInformationObject::ID);
+    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, QubitInformationObject::ID, Criteria::INNER_JOIN);
+    $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID, Criteria::INNER_JOIN);
+
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
 

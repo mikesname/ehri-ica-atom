@@ -17,6 +17,8 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once 'Zend/Acl/Role/Interface.php';
+
 class myUser extends sfBasicSecurityUser implements Zend_Acl_Role_Interface
 {
   public $user = null;
@@ -121,7 +123,7 @@ class myUser extends sfBasicSecurityUser implements Zend_Acl_Role_Interface
 
   public function getQubitUser()
   {
-    return $this->user; 
+    return $this->user;
   }
 
   public function getAclGroups()

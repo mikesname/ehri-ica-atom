@@ -42,12 +42,12 @@ class RepositoryBrowseAction extends sfAction
         break;
 
       case 'nameUp':
-      default:
         $criteria->addAscendingOrderByColumn('authorized_form_of_name');
 
         break;
 
       case 'updatedDown':
+      default:
         $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
 
         break;
@@ -59,6 +59,7 @@ class RepositoryBrowseAction extends sfAction
     }
 
     // Do source culture fallback
+    $criteria->addJoin(QubitRepository::ID, QubitActor::ID);
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
 
     // Page results

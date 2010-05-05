@@ -4,11 +4,6 @@
   {
     Qubit.treeView = Qubit.treeView || {};
 
-    function getMoveActionUrl(href)
-    {
-      return href.replace(/(\d+)([;!\/]).*/, '$1$2default/move');
-    }
-
     Drupal.behaviors.treeView = {
 
       attach: function (context)
@@ -109,7 +104,7 @@
                   jQuery.ajax({
                     data: { parent: newParent.href },
                     type: 'POST',
-                    url: getMoveActionUrl(textNode.href)
+                    url: textNode.href.replace(/(\d+)([;!\/]).*/, '$1$2default/move')
                   });
 
                   parentNode.tree.popNode(textNode);
@@ -283,10 +278,9 @@
           // Render tree
           Qubit.treeView.treeView.render();
 
-
           // Enable logger (useful for debugging)
           // $('body').prepend('<div id="logw" style="position: absolute; top: 10px; left: 10px; width: 320px; height: 400px;"></div>');
           // var myLogReader = new YAHOO.widget.LogReader("logw");
-        } 
+        }
     };
   })(jQuery);

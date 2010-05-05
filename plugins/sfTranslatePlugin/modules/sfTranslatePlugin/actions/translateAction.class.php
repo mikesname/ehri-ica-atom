@@ -24,6 +24,11 @@ class sfTranslatePluginTranslateAction extends sfAction
    */
   public function execute($request)
   {
+    if (!QubitAcl::check('userInterface', 'translate'))
+    {
+      QubitAcl::forwardUnauthorized();
+    }
+
     $user = $this->getUser();
 
     $error = array();
@@ -35,13 +40,13 @@ class sfTranslatePluginTranslateAction extends sfAction
     $targetMessages = $request->getParameter('target', array());
     foreach ($sourceMessages as $key => $sourceMessage)
     {
-      if (!$messageSource->update($sourceMessage, $targetMessages[$key]))
+      if (!$messageSource->update($sourceMessage, $targetMessages[$key], null))
       {
-        $error[] = $sourceMessage.$targetMessage;
+        $error[] = $sourceMessage.$targetMessages[$key];
       }
       else
       {
-        $status[] = $sourceMessage.$targetMessage;
+        $status[] = $sourceMessage.$targetMessages[$key];
       }
     }
 
@@ -52,6 +57,6 @@ class sfTranslatePluginTranslateAction extends sfAction
 
     $messageSource->getCache()->clean();
 
-    $this->redirect($user->getAttribute('currentInternalUri', null, 'sfHistoryPlugin'));
+    $this->redirect($request->getReferer());
   }
 }

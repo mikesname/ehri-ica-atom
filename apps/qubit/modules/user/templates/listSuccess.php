@@ -4,7 +4,7 @@
   <thead>
     <tr>
       <th>
-        <?php echo __('User name') ?> <?php echo link_to('('.__('Add new').')', array('module' => 'user', 'action' => 'create')) ?>
+        <?php echo __('User name') ?>
       </th><th>
         <?php echo __('Email') ?>
       </th><th>
@@ -31,3 +31,15 @@
 </table>
 
 <?php echo get_partial('default/pager', array('pager' => $pager)) ?>
+
+<div class="actions section">
+
+  <h2 class="element-invisible"><?php __('Actions') ?></h2>
+
+  <div class="content">
+    <ul class="clearfix links">
+      <li><?php echo link_to(__('Add new'), array('module' => 'user', 'action' => 'create')) ?></li>
+    </ul>
+  </div>
+
+</div>

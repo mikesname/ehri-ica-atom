@@ -30,51 +30,59 @@ class ActorBrowseAction extends sfAction
 {
   public function execute($request)
   {
-    // Set sort
-    $this->sort = $this->getRequestParameter('sort', 'nameUp');
-
     if (!isset($request->limit))
     {
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitActor::PARENT_ID, QubitActor::ROOT_ID, Criteria::EQUAL);
+    $criteria->add(QubitActor::PARENT_ID, QubitActor::ROOT_ID);
 
     // Add criteria to exclude actors that are users or repository objects
     $criteria = QubitActor::addGetOnlyActorsCriteria($criteria);
 
-    // Add sort criteria
-    switch($this->sort)
+    $fallbackTable = 'QubitActor';
+
+    switch ($request->sort)
     {
+      case 'nameDown':
+        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
+
+        break;
+
+      case 'nameUp':
+        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+
+        break;
+
       case 'typeDown':
         $fallbackTable = 'QubitTerm';
         $criteria->addJoin(QubitActor::ENTITY_TYPE_ID, QubitTerm::ID, Criteria::LEFT_JOIN);
         $criteria->addDescendingOrderByColumn('name');
+
         break;
+
       case 'typeUp':
         $fallbackTable = 'QubitTerm';
         $criteria->addJoin(QubitActor::ENTITY_TYPE_ID, QubitTerm::ID, Criteria::LEFT_JOIN);
         $criteria->addAscendingOrderByColumn('name');
+
         break;
-      case 'updatedUp':
-        $criteria->addJoin(QubitActor::ID, QubitObject::ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('updated_at');
+
       case 'updatedDown':
-        $criteria->addJoin(QubitActor::ID, QubitObject::ID, Criteria::LEFT_JOIN);
-        $criteria->addDescendingOrderByColumn('updated_at');
-      case 'nameDown':
-        $fallbackTable = 'QubitActor';
-        $criteria->addDescendingOrderByColumn('authorized_form_of_name');
-        break;
-      case 'nameUp':
       default:
-        $fallbackTable = 'QubitActor';
-        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+        $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
+
+        break;
+
+      case 'updatedUp':
+        $criteria->addAscendingOrderByColumn(QubitObject::UPDATED_AT);
+
+        break;
     }
 
     // Do source culture fallback
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable, array('returnClass'=>'QubitActor'));
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable);
 
     // Page results
     $this->pager = new QubitPager('QubitActor');

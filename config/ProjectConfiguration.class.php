@@ -25,6 +25,7 @@ class ProjectConfiguration extends sfProjectConfiguration
   public function setup()
   {
     $this->enablePlugins(array(
+      'qbAclPlugin',
       'sfAuditPlugin',
       'sfDrupalPlugin',
       'sfFormExtraPlugin',
@@ -36,7 +37,6 @@ class ProjectConfiguration extends sfProjectConfiguration
       'sfThumbnailPlugin',
       'sfTranslatePlugin',
       'sfWebBrowserPlugin',
-      'qbAclPlugin',
 
       // sfInstallPlugin and sfPluginAdminPlugin depend on sfPropelPlugin, so
       // must be enabled last

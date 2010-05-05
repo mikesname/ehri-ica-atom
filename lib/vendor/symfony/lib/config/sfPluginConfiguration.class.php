@@ -138,17 +138,18 @@ abstract class sfPluginConfiguration
     if (!isset($config['autoload'][$this->name.'_lib']))
     {
       $config['autoload'] = array_merge(array(
-        $this->name.'_lib' => array(
+        $this->name => array(
           'path'      => $this->rootDir.'/lib',
           'recursive' => true,
+          'exclude'   => array('vendor'),
         ),
       ), $config['autoload']);
     }
 
-    if (!isset($config['autoload'][$this->name.'_module_libs']))
+    if (!isset($config['autoload'][$this->name.'_modules']))
     {
       $config['autoload'] = array_merge(array(
-        $this->name.'_module_libs' => array(
+        $this->name.'_modules' => array(
           'path'      => $this->rootDir.'/modules/*/lib',
           'recursive' => true,
           'prefix'    => 1,

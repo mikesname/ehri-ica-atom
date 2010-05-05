@@ -22,17 +22,25 @@ class TermTreeViewComponent extends sfComponent
   public function execute($request)
   {
     $this->term = $request->getAttribute('term');
-
-    // Get term tree
-    $this->terms = $this->term->getTree(array('limit' => true));
-
-    // Check if treeview worth it
-    if (1 > count($this->terms))
+    if (!isset($this->term->id))
     {
       return sfView::NONE;
     }
 
-    list($this->treeViewObjects, $this->treeViewExpands) = QubitTerm::getTreeViewObjects($this->terms, $this->term);
+    // Get term tree (limit to max 10 siblings and children)
+    $this->treeViewObjects = $this->term->getFullYuiTree(10);
+
+    // Check if treeview worth it
+    if (1 > count($this->treeViewObjects))
+    {
+      return sfView::NONE;
+    }
+
+    $this->treeViewExpands = array();
+    foreach ($this->term->ancestors->andSelf()->orderBy('lft') as $item)
+    {
+      $this->treeViewExpands[$item->id] = $item->id;
+    }
 
     // Is it draggable?
     $this->treeViewDraggable = json_encode(SecurityPriviliges::editCredentials($this->context->user, 'term'));

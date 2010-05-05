@@ -39,6 +39,11 @@ class RepositoryDeleteAction extends sfAction
         $informationObject->save();
       }
 
+      foreach (QubitRelation::getBySubjectOrObjectId($this->repository->id) as $relation)
+      {
+        $relation->delete();
+      }
+
       $this->repository->delete();
 
       $this->redirect(array('module' => 'repository', 'action' => 'list'));

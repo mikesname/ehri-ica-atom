@@ -74,13 +74,17 @@ class QubitDc
   public static function getDates($informationObject, array $options = array())
   {
     $dcDate = array();
-    // only return normalized (ISO format) start date if exporting
+    // only return normalized (ISO format) dates if exporting
     if (isset($options['export']))
     {
       foreach (QubitDc::getDcEvents($informationObject) as $event)
       {
         if (null !== $exportDate = $event->getStartDate())
         {
+          if (null !== $event->getEndDate())
+          {
+            $exportDate .= '/'.$event->getEndDate();
+          }
           $dcDate[] = $exportDate;
         }
       }

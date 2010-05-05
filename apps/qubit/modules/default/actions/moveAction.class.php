@@ -48,7 +48,14 @@ class DefaultMoveAction extends sfAction
     $this->form->setWidget('parent', new sfWidgetFormInputHidden);
 
     // Root is default parent
-    $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array(QubitInformationObject::getById(QubitInformationObject::ROOT_ID), 'module' => 'informationobject'))));
+    if ($this->object instanceof QubitInformationObject)
+    {
+      $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array(QubitInformationObject::getById(QubitInformationObject::ROOT_ID), 'module' => 'informationobject'))));
+    }
+    else if ($this->object instanceof QubitTerm)
+    {
+      $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array(QubitTerm::getById(QubitTerm::ROOT_ID), 'module' => 'term'))));
+    }
 
     if ($request->isMethod('post'))
     {
@@ -57,7 +64,16 @@ class DefaultMoveAction extends sfAction
       if ($this->form->isValid())
       {
         $params = $this->context->routing->parse(Qubit::pathInfo($this->form->parent->getValue()));
-        $this->object->parentId = $params['id'];
+
+        // In term treeview, root node links (href) to taxonomy, but it represents the term root object
+        if ($this->object instanceOf QubitTerm && QubitObject::getById($params['id']) instanceof QubitTaxonomy)
+        {
+          $this->object->parentId = QubitTerm::ROOT_ID;
+        }
+        else
+        {
+          $this->object->parentId = $params['id'];
+        }
 
         $this->object->save();
 

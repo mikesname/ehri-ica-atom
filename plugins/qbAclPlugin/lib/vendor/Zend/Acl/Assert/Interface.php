@@ -19,7 +19,6 @@
  * @version    $Id: Interface.php 20096 2010-01-06 02:05:09Z bkarwin $
  */
 
-set_include_path(get_include_path().PATH_SEPARATOR.'../plugins/qbAclPlugin/lib/vendor/');
 
 /**
  * @see Zend_Acl

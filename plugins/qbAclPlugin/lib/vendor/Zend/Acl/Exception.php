@@ -22,10 +22,8 @@
 
 /**
  * @see Zend_Exception
- *
- * Included via symfony auto-load
  */
-//require_once 'Zend/Exception.php';
+require_once 'Zend/Exception.php';
 
 
 /**

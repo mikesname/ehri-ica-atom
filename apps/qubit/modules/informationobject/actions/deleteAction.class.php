@@ -25,7 +25,7 @@ class InformationObjectDeleteAction extends sfAction
 
     $this->informationObject = QubitInformationObject::getById($request->id);
 
-    // Check that object exists and that it is not the root
+    // Check that object exists and that it's not the root
     if (!isset($this->informationObject) || !isset($this->informationObject->parent))
     {
       $this->forward404();

@@ -436,6 +436,8 @@ class TermEditAction extends sfAction
         QubitAcl::forwardUnauthorized();
       }
 
+      QubitTreeView::addAssets($this->response);
+
       // Add optimistic lock
       $this->form->setDefault('serialNumber', $this->term->serialNumber);
       $this->form->setValidator('serialNumber', new sfValidatorInteger);
@@ -452,8 +454,6 @@ class TermEditAction extends sfAction
         QubitAcl::forwardUnauthorized();
       }
     }
-
-    QubitTreeView::addAssets($this->response);
 
     $request->setAttribute('term', $this->term);
 

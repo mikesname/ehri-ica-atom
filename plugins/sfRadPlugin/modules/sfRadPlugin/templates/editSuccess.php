@@ -316,7 +316,7 @@
       <?php if (QubitAcl::check(QubitActor::getRoot(), 'create')): ?>
         <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'create')) ?> #authorizedFormOfName"/>
       <?php endif; ?>
-      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
+      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete', 'showOnlyActors' => 'true')) ?>"/>
     </div>
 
   </fieldset>

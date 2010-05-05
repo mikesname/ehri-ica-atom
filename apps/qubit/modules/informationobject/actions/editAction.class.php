@@ -87,7 +87,6 @@ class InformationObjectEditAction extends sfAction
 
       case 'publicationStatus':
         $choices = array();
-        $choices[null] = null;
 
         if (null !== $publicationStatus = $this->object->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID)))
         {
@@ -190,7 +189,6 @@ class InformationObjectEditAction extends sfAction
             break;
 
           case 'placeAccessPoints':
-
             $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
 
             break;
@@ -219,8 +217,8 @@ class InformationObjectEditAction extends sfAction
         $choices = array();
         foreach (QubitRelation::get($criteria) as $item)
         {
-          $values[] = $this->context->routing->generate(null, array($item, 'module' => 'actor'));
-          $choices[$this->context->routing->generate(null, array($item, 'module' => 'actor'))] = $item->object;
+          $values[] = $this->context->routing->generate(null, array($item->object, 'module' => 'actor'));
+          $choices[$this->context->routing->generate(null, array($item->object, 'module' => 'actor'))] = $item->object;
         }
 
         $this->form->setDefault($name, $values);
@@ -270,13 +268,11 @@ class InformationObjectEditAction extends sfAction
         switch ($field->getName())
         {
           case 'subjectAccessPoints':
-
             $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::SUBJECT_ID);
 
             break;
 
           case 'placeAccessPoints':
-
             $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
 
             break;
@@ -335,6 +331,7 @@ class InformationObjectEditAction extends sfAction
         foreach ($filtered as $id)
         {
           $relation = new QubitRelation;
+
           $relation->objectId = $id;
           $relation->typeId = QubitTerm::NAME_ACCESS_POINT_ID;
 
@@ -456,11 +453,15 @@ class InformationObjectEditAction extends sfAction
 
     $this->object = new QubitInformationObject;
 
+    QubitImageFlow::addAssets($this->response);
+
+    QubitTreeView::addAssets($this->response);
+
     if (isset($request->id))
     {
       $this->object = QubitInformationObject::getById($request->id);
 
-      // Check that object exists and that it is not the root
+      // Check that object exists and that it's not the root
       if (!isset($this->object) || !isset($this->object->parent))
       {
         $this->forward404();
@@ -471,10 +472,6 @@ class InformationObjectEditAction extends sfAction
       {
         QubitAcl::forwardUnauthorized();
       }
-
-      QubitImageFlow::addAssets($this->response);
-
-      QubitTreeView::addAssets($this->response);
 
       // Add optimistic lock
       $this->form->setDefault('serialNumber', $this->object->serialNumber);
@@ -813,40 +810,34 @@ class InformationObjectEditAction extends sfAction
     if (!QubitAcl::check($this->object, 'publish'))
     {
       // if the user does not have 'publish' permission, automatically set publication status to 'draft'
-      $this->object->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => QubitTerm::PUBLICATION_STATUS_DRAFT_ID));
+      $pubStatusId = QubitTerm::PUBLICATION_STATUS_DRAFT_ID;
     }
     else
     {
       $pubStatusId = $this->form->getValue('publicationStatus');
+    }
 
-      // only update publicationStatus if its value has changed because it triggers a resource-intensive update of all its descendants
-      $status = $this->object->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
-      if (!isset($status) && isset($pubStatusId) || $pubStatusId !== $status->statusId)
+    // Only update publicationStatus if its value has changed because it
+    // triggers a resource-intensive update of all its descendants
+    $oldStatus = $this->object->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
+    if (!isset($oldStatus) && isset($pubStatusId) || $pubStatusId !== $oldStatus->statusId)
+    {
+      $this->object->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+
+      // Update pub status of descendants
+      foreach ($this->object->descendants as $descendant)
       {
-        $this->object->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
-
-        // if publication status has changed, set the status of all its
-        // descendants to null so that they inherit the newly changed status,
-        // and update their search index document so that the changed status is
-        // reflected in search and list browse results
-        foreach ($this->object->descendants as $descendant)
+        if (null === $descendantPubStatus = $descendant->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID)))
         {
-          $prevPubStatus = null;
+          $descendantPubStatus = new QubitStatus;
+          $descendantPubStatus->typeId = QubitTerm::STATUS_TYPE_PUBLICATION_ID;
+          $descendantPubStatus->objectId = $descendant->id;
+        }
 
-          // Delete publication status of all its descendants so that they
-          // inherit the newly changed status
-          if (null !== $currentStatus = $descendant->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID)))
-          {
-            $prevPubStatus = $currentStatus->statusId;
-            $currentStatus->delete();
-          }
-
-          // Update search index document so that the changed status is
-          // reflected in search and list browse results
-          if (null === $prevPubStatus || $prevPubStatus != $pubStatusId)
-          {
-            SearchIndex::updateTranslatedLanguages($descendant);
-          }
+        if ($pubStatusId != $descendantPubStatus->statusId)
+        {
+          $descendantPubStatus->statusId = $pubStatusId;
+          $descendantPubStatus->save();
         }
       }
     }

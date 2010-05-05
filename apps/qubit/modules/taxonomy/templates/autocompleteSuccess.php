@@ -8,7 +8,7 @@
   </thead>
   <tbody>
   <?php foreach ($taxonomies as $taxonomy): ?>
-    <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+    <tr>
       <td>
         <?php echo link_to(render_title($taxonomy), array($taxonomy, 'module' => 'taxonomy')) ?>
       </td>

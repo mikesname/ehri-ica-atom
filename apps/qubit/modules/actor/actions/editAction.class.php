@@ -34,44 +34,383 @@ class ActorEditAction extends sfAction
    *
    * @var string
    */
-  public static $NAMES = array(
-    'entityType',
-    'authorizedFormOfName',
-    'parallelName',
-    'standardizedName',
-    'otherName',
-    'corporateBodyIdentifiers',
-    'datesOfExistence',
-    'history',
-    'places',
-    'legalStatus',
-    'functions',
-    'mandates',
-    'internalStructures',
-    'generalContext',
-    'descriptionIdentifier',
-    'institutionResponsibleIdentifier',
-    'rules',
-    'descriptionStatus',
-    'descriptionDetail',
-    'revisionHistory',
-    'language',
-    'script',
-    'sources',
-    'maintenanceNotes',
-    'relatedActor[authorizedFormOfName]',
-    'relatedActor[type]',
-    'relatedActor[description]',
-    'relatedActor[startDate]',
-    'relatedActor[endDate]',
-    'relatedActor[dateDisplay]',
-    'relatedResource[informationObject]',
-    'relatedResource[type]',
-    'relatedResource[resourceType]',
-    'relatedResource[startDate]',
-    'relatedResource[endDate]',
-    'relatedResource[dateDisplay]',
-  );
+  public static
+    $NAMES = array(
+      'authorizedFormOfName',
+      'corporateBodyIdentifiers',
+      'datesOfExistence',
+      'descriptionDetail',
+      'descriptionIdentifier',
+      'descriptionStatus',
+      'entityType',
+      'functions',
+      'generalContext',
+      'history',
+      'institutionResponsibleIdentifier',
+      'internalStructures',
+      'language',
+      'legalStatus',
+      'maintenanceNotes',
+      'mandates',
+      'otherName',
+      'parallelName',
+      'places',
+      'relatedActor[authorizedFormOfName]',
+      'relatedActor[dateDisplay]',
+      'relatedActor[endDate]',
+      'relatedActor[description]',
+      'relatedActor[startDate]',
+      'relatedActor[type]',
+      'relatedResource[dateDisplay]',
+      'relatedResource[endDate]',
+      'relatedResource[informationObject]',
+      'relatedResource[resourceType]',
+      'relatedResource[startDate]',
+      'relatedResource[type]',
+      'revisionHistory',
+      'rules',
+      'script',
+      'sources',
+      'standardizedName');
+
+  public function addField($name)
+  {
+    switch ($name)
+    {
+      case 'entityType':
+        $this->form->setDefault('entityType', $this->context->routing->generate(null, array($this->actor->entityType, 'module' => 'term')));
+        $this->form->setValidator('entityType', new sfValidatorPass);
+
+        $choices = array();
+        $choices[null] = null;
+        foreach (QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::ACTOR_ENTITY_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setWidget('entityType', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'otherName':
+      case 'parallelName':
+      case 'standardizedName':
+        $criteria = new Criteria;
+        $criteria = $this->actor->addotherNamesCriteria($criteria);
+
+        switch ($name)
+        {
+          case 'parallelName':
+            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::PARALLEL_FORM_OF_NAME_ID);
+            break;
+
+          case 'standardizedName':
+            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::STANDARDIZED_FORM_OF_NAME_ID);
+
+            break;
+
+          default:
+            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID);
+        }
+
+        $values = $defaults = array();
+        foreach (QubitOtherName::get($criteria) as $otherName)
+        {
+          $values[] = $otherName->id;
+          $defaults[$otherName->id] = $otherName;
+        }
+
+        $this->form->setDefault($name, $values);
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults)));
+
+        break;
+
+      case 'descriptionDetail':
+      case 'descriptionStatus':
+        $this->form->setDefault($name, $this->context->routing->generate(null, array($this->actor[$name], 'module' => 'term')));
+
+        if ('descriptionStatus' == $name)
+        {
+          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID);
+        }
+        else
+        {
+          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID);
+        }
+
+        $choices = array();
+        $choices[null] = null;
+        foreach ($terms as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'language':
+        $this->form->setDefault('language', $this->actor->language);
+        $this->form->setValidator('language', new sfValidatorI18nChoiceLanguage(array('multiple' => true)));
+        $this->form->setWidget('language', new sfWidgetFormI18nSelectLanguage(array('culture' => $this->context->user->getCulture(), 'multiple' => true)));
+
+        break;
+
+      case 'script':
+        $this->form->setDefault('script', $this->actor->script);
+
+        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
+
+        $this->form->setValidator('script', new sfValidatorChoice(array('choices' => array_keys($c->getScripts()), 'multiple' => true)));
+        $this->form->setWidget('script', new sfWidgetFormSelect(array('choices' => $c->getScripts(), 'multiple' => true)));
+
+        break;
+
+      case 'maintenanceNotes':
+        $this->maintenanceNote = null;
+
+        // Check for existing maintenance note related to this object
+        $maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
+        if (0 < count($maintenanceNotes))
+        {
+          $this->maintenanceNote = $maintenanceNotes[0];
+          $this->form->setDefault('maintenanceNotes', $this->maintenanceNote->content);
+        }
+
+        $this->form->setValidator('maintenanceNotes', new sfValidatorString);
+        $this->form->setWidget('maintenanceNotes', new sfWidgetFormTextarea);
+
+        break;
+
+      case 'authorizedFormOfName':
+      case 'corporateBodyIdentifiers':
+      case 'datesOfExistence':
+      case 'descriptionIdentifier':
+      case 'institutionResponsibleIdentifier':
+        $this->form->setDefault($name, $this->actor[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'functions':
+      case 'generalContext':
+      case 'history':
+      case 'internalStructures':
+      case 'legalStatus':
+      case 'mandates':
+      case 'places':
+      case 'revisionHistory':
+      case 'rules':
+      case 'sources':
+        $this->form->setDefault($name, $this->actor[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormTextarea);
+
+        break;
+
+      case 'relatedActor[authorizedFormOfName]':
+      case 'relatedResource[informationObject]':
+        $choices = array();
+
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedActor[type]':
+        $this->form->setValidator('relatedActor[type]', new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::ACTOR_RELATION_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setWidget('relatedActor[type]', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedResource[type]':
+        $this->form->setValidator('relatedResource[type]', new sfValidatorString);
+
+        $choices = array();
+        $choices[null] = null;
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::EVENT_TYPE_ID) as $term)
+        {
+          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+        }
+
+        $this->form->setWidget('relatedResource[type]', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedResource[resourceType]':
+        $term = QubitTerm::getById(QubitTerm::ARCHIVAL_MATERIAL_ID);
+
+        $this->form->setValidator('relatedResource[resourceType]', new sfValidatorPass);
+        $this->form->setDefault('relatedResource[resourceType]', $this->context->routing->generate(null, array($term, 'module' => 'term')));
+        $this->form->setWidget('relatedResource[resourceType]', new sfWidgetFormSelect(array('choices' => array($this->context->routing->generate(null, array($term, 'module' => 'term')) => $term))));
+
+        break;
+
+      case 'relatedActor[dateDisplay]':
+      case 'relatedActor[endDate]':
+      case 'relatedActor[startDate]':
+      case 'relatedResource[dateDisplay]':
+      case 'relatedResource[endDate]':
+      case 'relatedResource[startDate]':
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'relatedActor[description]':
+        $this->form->setValidator('relatedActor[description]', new sfValidatorString);
+        $this->form->setWidget('relatedActor[description]', new sfWidgetFormTextarea);
+
+        break;
+    }
+  }
+
+  /**
+   * Process form fields
+   *
+   * @param $field mixed symfony form widget
+   * @return void
+   */
+  protected function processField($field)
+  {
+    switch ($name = $field->getName())
+    {
+      case 'entityType':
+        unset($this->actor->entityType);
+
+        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue('entityType')));
+        if (isset($params['id']))
+        {
+          $this->actor->entityTypeId = $params['id'];
+        }
+
+        break;
+
+      case 'otherName':
+      case 'parallelName':
+      case 'standardizedName':
+        $defaults = $this->form->getWidget($name)->getOption('defaults');
+
+        if (null !== $this->form->getValue($name))
+        {
+          foreach ($this->form->getValue($name) as $key => $thisName)
+          {
+            if ('new' == substr($key, 0, 3) && 0 < strlen(trim($thisName)))
+            {
+              $otherName = new QubitOtherName;
+
+              switch ($name)
+              {
+                case 'parallelName':
+                  $otherName->typeId = QubitTerm::PARALLEL_FORM_OF_NAME_ID;
+
+                  break;
+
+                case 'standardizedName':
+                  $otherName->typeId = QubitTerm::STANDARDIZED_FORM_OF_NAME_ID;
+
+                  break;
+
+                default:
+                  $otherName->typeId = QubitTerm::OTHER_FORM_OF_NAME_ID;
+              }
+            }
+            else
+            {
+              $otherName = QubitOtherName::getById($key);
+              if (!isset($otherName))
+              {
+                continue;
+              }
+
+              // Don't delete this name
+              unset($defaults[$key]);
+            }
+
+            $otherName->name = $thisName;
+            $this->actor->otherNames[] = $otherName;
+          }
+        }
+
+        // Delete any names that are missing from form data
+        foreach ($defaults as $key => $val)
+        {
+          if (null !== ($otherName = QubitOtherName::getById($key)))
+          {
+            $otherName->delete();
+          }
+        }
+
+        break;
+
+      case 'descriptionDetail':
+      case 'descriptionStatus':
+        unset($this->actor[$field->getName()]);
+
+        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
+        if (isset($params['id']))
+        {
+          $this->actor[$field->getName().'Id'] = $params['id'];
+        }
+
+        break;
+
+      case 'maintenanceNotes':
+
+        // Check for existing maintenance note related to this object
+        $maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
+
+        if (0 < count($maintenanceNotes))
+        {
+          $note = $maintenanceNotes[0];
+        }
+        else if (null !== $this->form->getValue('maintenanceNotes'))
+        {
+          // Create a maintenance note for this object if one doesn't exist
+          $note = new QubitNote;
+          $note->typeId = QubitTerm::MAINTENANCE_NOTE_ID;
+        }
+        else
+        {
+          break;
+        }
+
+        $note->content = $this->form->getValue('maintenanceNotes');
+
+        $this->actor->notes[] = $note;
+
+        break;
+
+      default:
+        $this->actor[$field->getName()] = $this->form->getValue($field->getName());
+    }
+  }
+
+  protected function processForm()
+  {
+    foreach ($this->form as $field)
+    {
+      $this->processField($field);
+    }
+
+    $this->updateActorRelations();
+    $this->deleteActorRelations();
+    $this->updateEvents();
+    $this->deleteEvents();
+
+    $this->actor->save();
+  }
 
   public function execute($request)
   {
@@ -80,11 +419,15 @@ class ActorEditAction extends sfAction
 
     $this->actor = new QubitActor;
 
+     // Make root actor the parent of new actors
+    $this->actor->parentId = QubitActor::ROOT_ID;
+
     if (isset($request->id))
     {
       $this->actor = QubitActor::getById($request->id);
 
-      if (!isset($this->actor))
+      // Check that object exists and that it's not the root
+      if (!isset($this->actor) || !isset($this->actor->parent))
       {
         $this->forward404();
       }
@@ -108,13 +451,6 @@ class ActorEditAction extends sfAction
         QubitAcl::forwardUnauthorized();
       }
     }
-
-    //Actor Relations
-    $this->actorRelations = $this->actor->getActorRelations();
-
-    //Related resources (events)
-    $this->events = $this->actor->getEvents();
-    $this->resourceTypeTerms = array(QubitTerm::getById(QubitTerm::ARCHIVAL_MATERIAL_ID));
 
     if ($this->getRequestParameter('repositoryReroute'))
     {
@@ -166,341 +502,6 @@ class ActorEditAction extends sfAction
     }
   }
 
-  public function addField($name)
-  {
-    switch ($name)
-    {
-      case 'entityType':
-        $choices = array();
-        $choices[null] = null;
-
-        foreach (QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::ACTOR_ENTITY_TYPE_ID) as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        if (null !== $this->actor->entityTypeId)
-        {
-          $this->form->setDefault($name, $this->context->routing->generate(null, array('module' => 'term', 'id' => $this->actor->entityTypeId)));
-        }
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'parallelName':
-      case 'standardizedName':
-      case 'otherName':
-        $criteria = new Criteria;
-        $criteria = $this->actor->addotherNamesCriteria($criteria);
-
-        switch ($name)
-        {
-          case 'parallelName':
-            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::PARALLEL_FORM_OF_NAME_ID);
-            break;
-          case 'standardizedName':
-            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::STANDARDIZED_FORM_OF_NAME_ID);
-            break;
-          default:
-            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID);
-        }
-
-        $values = $defaults = array();
-        if (0 < count($otherNames = QubitOtherName::get($criteria)))
-        {
-          foreach ($otherNames as $otherName)
-          {
-            $values[] = $otherName->id;
-            $defaults[$otherName->id] = $otherName;
-          }
-        }
-
-        $this->form->setDefault($name, $values);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults)));
-
-        break;
-
-      case 'descriptionStatus':
-      case 'descriptionDetail':
-        if (null !== $this->actor[$name.'Id'])
-        {
-          $this->form->setDefault($name, $this->context->routing->generate(null, array('module' => 'term', 'id' => $this->actor[$name.'Id'])));
-        }
-
-        $choices = array();
-        $choices[null] = null;
-
-        if ('descriptionStatus' == $name)
-        {
-          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID);
-        }
-        else
-        {
-          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID);
-        }
-
-        foreach ($terms as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'language':
-        $this->form->setDefault($name, $this->actor[$name]);
-        $this->form->setValidator($name, new sfValidatorI18nChoiceLanguage(array('multiple' => true)));
-        $this->form->setWidget($name, new sfWidgetFormI18nSelectLanguage(array('culture' => $this->context->user->getCulture(), 'multiple' => true)));
-
-        break;
-
-      case 'script':
-        $this->form->setDefault($name, $this->actor[$name]);
-        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
-        $this->form->setValidator($name, new sfValidatorChoice(array('choices' => array_keys($c->getScripts()), 'multiple' => true)));
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $c->getScripts(), 'multiple' => true)));
-
-        break;
-
-      case 'maintenanceNotes':
-        $this->maintenanceNote = null;
-
-        // Check for existing maintenance note related to this object
-        $maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
-
-        if (0 < count($maintenanceNotes))
-        {
-          $this->maintenanceNote = $maintenanceNotes[0];
-          $this->form->setDefault($name, $this->maintenanceNote->content);
-        }
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormTextarea);
-
-        break;
-
-      case 'authorizedFormOfName':
-      case 'corporateBodyIdentifiers':
-      case 'datesOfExistence':
-      case 'descriptionIdentifier':
-      case 'institutionResponsibleIdentifier':
-        $this->form->setDefault($name, $this->actor[$name]);
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormInput);
-
-        break;
-
-      case 'history':
-      case 'places':
-      case 'legalStatus':
-      case 'functions':
-      case 'mandates':
-      case 'internalStructures':
-      case 'generalContext':
-      case 'rules':
-      case 'revisionHistory':
-      case 'sources':
-        $this->form->setDefault($name, $this->actor[$name]);
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormTextarea);
-
-        break;
-
-      case 'relatedActor[authorizedFormOfName]':
-      case 'relatedResource[informationObject]':
-        $choices = array();
-
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'relatedActor[type]':
-        $this->form->setValidator($name, new sfValidatorString);
-
-        $choices = array();
-        $choices[null] = null;
-
-        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::ACTOR_RELATION_TYPE_ID) as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'relatedResource[type]':
-        $this->form->setValidator($name, new sfValidatorString);
-
-        $choices = array();
-        $choices[null] = null;
-
-        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::EVENT_TYPE_ID) as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'relatedResource[resourceType]':
-        $term = QubitTerm::getById(QubitTerm::ARCHIVAL_MATERIAL_ID);
-
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setDefault($name, $this->context->routing->generate(null, array($term, 'module' => 'term')));
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' =>
-          array($this->context->routing->generate(null, array($term, 'module' => 'term')) => $term))));
-
-        break;
-
-      case 'relatedActor[startDate]':
-      case 'relatedActor[endDate]':
-      case 'relatedActor[dateDisplay]':
-      case 'relatedResource[startDate]':
-      case 'relatedResource[endDate]':
-      case 'relatedResource[dateDisplay]':
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormInput);
-
-        break;
-
-      case 'relatedActor[description]':
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormTextarea);
-
-        break;
-    }
-  }
-
-  /**
-   * Process form fields
-   *
-   * @param $field mixed symfony form widget
-   * @return void
-   */
-  protected function processField($field)
-  {
-    switch ($name = $field->getName())
-    {
-      case 'entityType':
-        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
-        $fieldId = (isset($params['id'])) ? $params['id'] : null;
-        $this->actor[$name.'Id'] = $fieldId;
-
-        break;
-
-      case 'parallelName':
-      case 'standardizedName':
-      case 'otherName':
-        $defaults = $this->form->getWidget($name)->getOption('defaults');
-
-        if (null !== $this->form->getValue($name))
-        {
-          foreach ($this->form->getValue($name) as $key => $thisName)
-          {
-            if ('new' == substr($key, 0, 3) && 0 < strlen(trim($thisName)))
-            {
-              $otherName = new QubitOtherName;
-
-              switch ($name)
-              {
-                case 'parallelName':
-                  $otherName->typeId = QubitTerm::PARALLEL_FORM_OF_NAME_ID;
-                  break;
-                case 'standardizedName':
-                  $otherName->typeId = QubitTerm::STANDARDIZED_FORM_OF_NAME_ID;
-                  break;
-                default:
-                  $otherName->typeId = QubitTerm::OTHER_FORM_OF_NAME_ID;
-              }
-            }
-            else
-            {
-              $otherName = QubitOtherName::getById($key);
-              if (null === $otherName)
-              {
-                continue;
-              }
-
-              // Don't delete this name
-              unset($defaults[$key]);
-            }
-
-            $otherName->name = $thisName;
-            $this->actor->otherNames[] = $otherName;
-          }
-        }
-
-        // Delete any names that are missing from form data
-        foreach ($defaults as $key => $val)
-        {
-          if (null !== ($otherName = QubitOtherName::getById($key)))
-          {
-            $otherName->delete();
-          }
-        }
-
-        break;
-
-      case 'descriptionStatus':
-      case 'descriptionDetail':
-        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
-        $fieldId = (isset($params['id'])) ? $params['id'] : null;
-        $this->actor[$name.'Id'] = $fieldId;
-
-        break;
-
-      case 'maintenanceNotes':
-        // Check for existing maintenance note related to this object
-        $maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
-
-        if (0 < count($maintenanceNotes))
-        {
-          $note = $maintenanceNotes[0];
-        }
-        else if (null !== $this->form->getValue($name))
-        {
-          // Create a maintenance note for this object if one doesn't exist
-          $note = new QubitNote;
-          $note->typeId = QubitTerm::MAINTENANCE_NOTE_ID;
-        }
-        else
-        {
-
-          break;
-        }
-
-        $note->content = $this->form->getValue($name);
-
-        $this->actor->notes[] = $note;
-
-        break;
-
-      default:
-        $this->actor[$field->getName()] = $this->form->getValue($field->getName());
-    }
-  }
-
-  protected function processForm()
-  {
-    foreach ($this->form as $field)
-    {
-      $this->processField($field);
-    }
-
-    $this->updateActorRelations();
-    $this->deleteActorRelations();
-    $this->updateEvents();
-    $this->deleteEvents();
-
-    $this->actor->save();
-  }
-
   /**
    * Update actor relationships
    */
@@ -508,12 +509,12 @@ class ActorEditAction extends sfAction
   {
     if ($this->hasRequestParameter('relatedActors'))
     {
-      // Javascript (multiple) update
+      // JavaScript (multiple) update
       $relationsData = $this->getRequestParameter('relatedActors');
     }
     else if ($this->hasRequestParameter('relatedActor'))
     {
-      // Non-javascript (single) update
+      // Non-JavaScript (single) update
       $relationsData = array($this->getRequestParameter('relatedActor'));
     }
     else

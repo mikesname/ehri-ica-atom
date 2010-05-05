@@ -100,7 +100,7 @@ class SearchIndex
    * @param mixed $object Object to update
    * @return void
    */
-  public static function updateTranslatedLanguages($object)
+  public static function updateTranslatedLanguages($object, $options = array())
   {
     xfLuceneZendManager::load();
     Zend_Search_Lucene_Analysis_Analyzer::setDefault(self::getIndexAnalyzer());
@@ -109,7 +109,7 @@ class SearchIndex
     {
       foreach ($languages as $languageCode)
       {
-        self::updateIndexDocument($object, $languageCode);
+        self::updateIndexDocument($object, $languageCode, $options);
       }
     }
   }
@@ -122,14 +122,19 @@ class SearchIndex
    * @param string $encoding encoding code
    * @return void
    */
-  public static function createIndexDocument($object, $language, $encoding='utf-8')
+  public static function createIndexDocument($object, $language, $options)
   {
+    if (!isset($options['encoding']))
+    {
+      $options['encoding'] = 'utf-8';
+    }
+
     static $counter = 1;
     //echo 'Search index document #'.$counter.'<br/>';
     switch (get_class($object))
     {
       case 'QubitInformationObject':
-        $doc = self::createInformationObjectDocument($object, $language, $options = array('encoding' => $encoding));
+        $doc = self::createInformationObjectDocument($object, $language, $options);
         break;
     }
 
@@ -181,7 +186,7 @@ class SearchIndex
    * @param string $language ISO-639-1 language code
    * @return void
    */
-  public static function updateIndexDocument($object, $language)
+  public static function updateIndexDocument($object, $language, $options = array())
   {
     // first delete existing index entries
     self::deleteIndexDocument($object, $language);
@@ -189,7 +194,7 @@ class SearchIndex
     $search = new QubitSearch;
 
     // create and add document to index
-    $doc = self::createIndexDocument($object, $language);
+    $doc = self::createIndexDocument($object, $language, $options);
 
     if (null !== $doc)
     {
@@ -230,8 +235,17 @@ class SearchIndex
 
     $doc->addField(Zend_Search_Lucene_Field::Keyword('culture', $language));
 
-    // getPublicationStatus() loops up hierarchy tree for status
-    $doc->addField(Zend_Search_Lucene_Field::Unstored('publicationStatusId', $informationObject->getPublicationStatus()->statusId));
+    // PUBLICATION STATUS
+    if (isset($options['statusId']))
+    {
+      // Explicitly set publication status when ancestor object has not been
+      // saved yet (from informationobject/editAction)
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('publicationStatusId', $options['statusId']));
+    }
+    else
+    {
+      $doc->addField(Zend_Search_Lucene_Field::Unstored('publicationStatusId', $informationObject->getPublicationStatus()->statusId));
+    }
 
     // IDENTIFIER
     $identifierField = Zend_Search_Lucene_Field::Unstored('identifier', $informationObject->getIdentifier(), $encoding);

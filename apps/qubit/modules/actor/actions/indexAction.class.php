@@ -21,8 +21,13 @@ class ActorIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->actor = QubitActor::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->actor);
+    $this->actor = QubitActor::getById($request->id);
+
+    // Check that object exists and that it's not the root
+    if (!isset($this->actor) || !isset($this->actor->parent))
+    {
+      $this->forward404();
+    }
 
     // Check user authorization
     if (!QubitAcl::check($this->actor, 'read'))
@@ -33,19 +38,13 @@ class ActorIndexAction extends sfAction
     $this->maintenanceNote = null;
     if (0 < count($maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID))))
     {
-      $this->maintenanceNote = $maintenanceNotes->offsetGet(0);
+      $this->maintenanceNote = $maintenanceNotes[0];
     }
 
-    //Actor Relations
-    $this->actorRelations = $this->actor->getActorRelations();
-
-    //Function relations
     $criteria = new Criteria;
-    $criteria->addAlias('so', QubitObject::TABLE_NAME);
-    $criteria->addJoin(QubitRelation::SUBJECT_ID, 'so.id', Criteria::INNER_JOIN);
     $criteria->add(QubitRelation::OBJECT_ID, $this->actor->id);
-    $criteria->add('so.class_name', 'QubitFunction');
+    $criteria->addJoin(QubitRelation::SUBJECT_ID, QubitFunction::ID);
 
-    $this->functionRelations = QubitRelation::get($criteria);
+    $this->functions = QubitFunction::get($criteria);
   }
 }

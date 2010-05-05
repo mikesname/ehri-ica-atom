@@ -39,6 +39,7 @@ class DigitalObjectBrowseAction extends sfAction
     $criteria = new Criteria;
     $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $this->mediaType->id);
     $criteria->add(QubitDigitalObject::SEQUENCE, null, Criteria::ISNULL);
+    $criteria->addJoin(QubitDigitalObject::ID, QubitObject::ID, Criteria::INNER_JOIN);
     $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
 
     // Sort by name ascending
@@ -48,6 +49,9 @@ class DigitalObjectBrowseAction extends sfAction
     {
       $request->limit = sfConfig::get('app_hits_per_page');
     }
+
+    // Filter draft descriptions
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     $this->pager = new QubitPager('QubitDigitalObject');
     $this->pager->setCriteria($criteria);

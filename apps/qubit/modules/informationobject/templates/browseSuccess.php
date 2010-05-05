@@ -4,13 +4,8 @@
 
   <div class="content">
     <ul class="clearfix links">
-      <?php if ('updatedUp' == $sf_request->sort || 'updatedDown' == $sf_request->sort): ?>
-        <li><?php echo link_to(__('Alphabetic'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
-        <li class="active"><?php echo link_to(__('Recent updates'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
-      <?php else: ?>
-        <li class="active"><?php echo link_to(__('Alphabetic'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
-        <li><?php echo link_to(__('Recent updates'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?></li>
-      <?php endif; ?>
+      <li<?php if ('titleDown' != $sf_request->sort && 'titleUp' != $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Recent updates'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?></li>
+      <li<?php if ('titleDown' == $sf_request->sort || 'titleUp' == $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Alphabetic'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
     </ul>
   </div>
 
@@ -25,23 +20,25 @@
         <?php echo __('Title') ?>
         <?php if ('titleDown' == $sf_request->sort): ?>
           <?php echo link_to(image_tag('up.gif'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll()) ?>
-        <?php else: ?>
+        <?php elseif ('titleUp' == $sf_request->sort): ?>
           <?php echo link_to(image_tag('down.gif'), array('sort' => 'titleDown') + $sf_request->getParameterHolder()->getAll()) ?>
         <?php endif; ?>
       </th><th>
         <?php echo __('Level') ?>
       </th><th>
-        <?php if ('updatedUp' == $sf_request->sort || 'updatedDown' == $sf_request->sort): ?>
-          <?php echo __('Updated') ?>
-          <?php if ('updatedDown' == $sf_request->sort): ?>
-            <?php echo link_to(image_tag('down.gif'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?>
+        <?php if ('titleDown' == $sf_request->sort || 'titleUp' == $sf_request->sort): ?>
+          <?php if (sfConfig::get('app_multi_repository')): ?>
+            <?php echo __(sfConfig::get('app_ui_label_repository')) ?>
           <?php else: ?>
-            <?php echo link_to(image_tag('up.gif'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?>
+            <?php echo __(sfConfig::get('app_ui_label_creator')) ?>
           <?php endif; ?>
-        <?php elseif (sfConfig::get('app_multi_repository')): ?>
-          <?php echo __(sfConfig::get('app_ui_label_repository')) ?>
         <?php else: ?>
-          <?php echo __(sfConfig::get('app_ui_label_creator')) ?>
+          <?php echo __('Updated') ?>
+          <?php if ('updatedUp' == $sf_request->sort): ?>
+            <?php echo link_to(image_tag('up.gif'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?>
+          <?php else: ?>
+            <?php echo link_to(image_tag('down.gif'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?>
+          <?php endif; ?>
         <?php endif; ?>
       </th>
     </tr>
@@ -53,18 +50,20 @@
         </td><td>
           <?php echo $item->levelOfDescription ?>
         </td><td>
-          <?php if ('updatedUp' == $sf_request->sort || 'updatedDown' == $sf_request->sort): ?>
-            <?php echo $item->updatedAt ?>
-          <?php elseif (sfConfig::get('app_multi_repository')): ?>
-            <?php if (null !== $repository = $item->getRepository(array('inherit' => true))): ?>
-              <?php echo link_to(render_title($repository), array($repository, 'module' => 'repository')) ?>
+          <?php if ('titleDown' == $sf_request->sort || 'titleUp' == $sf_request->sort): ?>
+            <?php if (sfConfig::get('app_multi_repository')): ?>
+              <?php if (null !== $repository = $item->getRepository(array('inherit' => true))): ?>
+                <?php echo link_to(render_title($repository), array($repository, 'module' => 'repository')) ?>
+              <?php endif; ?>
+            <?php else: ?>
+              <ul>
+                <?php foreach ($item->getCreators(array('inherit' => true)) as $creator): ?>
+                  <li><?php echo link_to(render_title($creator), array($creator, 'module' => 'actor')) ?></li>
+                <?php endforeach; ?>
+              </ul>
             <?php endif; ?>
           <?php else: ?>
-            <ul>
-              <?php foreach ($item->getCreators(array('inherit' => true)) as $creator): ?>
-                <li><?php echo link_to(render_title($creator), array($creator, 'module' => 'actor')) ?></li>
-              <?php endforeach; ?>
-            </ul>
+            <?php echo $item->updatedAt ?>
           <?php endif; ?>
         </td>
       </tr>

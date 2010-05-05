@@ -20,7 +20,7 @@
 
         <?php endif; ?>
 
-        <?php if (SecurityPriviliges::editCredentials($sf_user, 'term')): ?>
+        <?php if (QubitAcl::check($taxonomy, array('edit', 'createTerm'))): ?>
           <?php echo link_to('('.__('Add/edit').')', array($taxonomy, 'module' => 'term', 'action' => 'listTaxonomy')) ?>
         <?php endif; ?>
 
@@ -47,7 +47,7 @@
         <td>
           <?php echo link_to(render_title($term), array($term, 'module' => 'term', 'action' => 'browseTerm')) ?>
         </td><td>
-          <?php echo $term->getObjectTermRelationCountByObjectClass('QubitInformationObject') ?>
+          <?php echo $term->countRelatedInformationObjects() ?>
         </td>
       </tr>
     <?php endforeach; ?>

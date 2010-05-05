@@ -138,7 +138,12 @@
               {
                 if (event.keyCode == 13 || event.charCode == 13)
                 {
-                  $(this).parents('table:first').find('tfoot a').trigger('click');
+                  var table = $(this).parents('table:first');
+
+                  if (0 == table.find(':animated').length)
+                  {
+                    table.find('tfoot a').trigger('click');
+                  }
 
                   return false;
                 }

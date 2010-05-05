@@ -18,9 +18,12 @@
   <?php echo $form->renderFormTag(url_for(array('module' => 'menu', 'action' => 'create'))) ?>
 <?php endif; ?>
 
-  <?php echo render_field($form->name
-    ->help(__('Provide an internal menu name.  This is not visible to users.'))
-    ->label(__('Name')), $menu) ?>
+  <div class="form-item">
+    <?php echo $form->name
+      ->help(__('Provide an internal menu name.  This is not visible to users.'))
+      ->label(__('Name'))
+      ->renderRow() ?>
+  </div>
 
   <?php echo render_field($form['label']
     ->help(__('Provide a menu label for users.  For menu items that are not visible (i.e. are organizational only) this should be left blank.'))
@@ -30,9 +33,10 @@
     ->label('Parent')
     ->renderRow() ?>
 
-  <?php echo render_field($form['path']
+  <?php echo $form['path']
     ->help(__('Provide a link to an external website or an internal, symfony path (module/action).'))
-    ->label(__('Path')), $menu) ?>
+    ->label(__('Path'))
+    ->renderRow() ?>
 
   <?php echo render_field($form['description']
     ->help(__('Provide a brief description of the menu and it\'s purpose.'))

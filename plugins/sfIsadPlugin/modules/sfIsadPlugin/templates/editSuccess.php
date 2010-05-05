@@ -32,6 +32,7 @@
     <?php endif; ?>
 
     <?php echo $form->identifier
+      ->help(__('Provide a specific local reference code, control number, or other unique identifier. The country and repository code will be automatically added from the linked Repository record to form a full reference code.'))
       ->label(__('Identifier').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
@@ -104,6 +105,7 @@
           </tr>
         </tbody>
       </table>
+      <div class="description">Identify and record the date(s) of the unit of description. Identify the type of date given. Record as a single date or a range of dates as appropriate. Use YYYY-MM-DD format for the <i>Date</i> field. The <i>End Date</i> field can be used to indicate a date range. The <i>Date Display</i> field can be used to enter free-text date information.</div>
     </div>
 
     <?php echo $form->levelOfDescription
@@ -114,7 +116,7 @@
     <?php echo get_partial('informationobject/childLevels') ?>
 
     <?php echo render_field($form->extentAndMedium
-      ->help(__('Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description.'))
+      ->help(__('Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description. Seperate multiple extents with a linebreak.'))
       ->label(__('Extent and medium').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $object, array('class' => 'resizable')) ?>
 
   </fieldset> <!-- /#identityArea -->
@@ -129,7 +131,7 @@
         ->renderLabel() ?>
       <?php echo $form->creators->render(array('class' => 'form-autocomplete')) ?>
       <?php echo $form->creators
-        ->help(__('Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. The name should given in the standardized form as prescribed by international or national conventions in accordance with the principles of ISAAR(CPF).'))
+        ->help(__('Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. Search for an existing name in the authority records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new authority record.'))
         ->renderHelp() ?>
       <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'create')) ?> #authorizedFormOfName"/>
       <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
@@ -140,6 +142,7 @@
       <?php echo $form->repository->render(array('class' => 'form-autocomplete')) ?>
       <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'repository', 'action' => 'create')) ?> #authorizedFormOfName"/>
       <input class="list" type="hidden" value="<?php echo url_for($repoAcParams) ?>"/>
+      <div class="description">Record the name of the organization which has custody of the archival material. Search for an existing name in the archival institution records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new archival institution record.</div>
     </div>
 
     <?php echo render_field($form->archivalHistory
@@ -183,9 +186,13 @@
       ->help(__('Give information about conditions, such as copyright, governing the reproduction of the unit of description after access has been provided. If the existence of such conditions is unknown, record this. If there are no conditions, no statement is necessary.'))
       ->label(__('Conditions governing reproduction')), $object, array('class' => 'resizable')) ?>
 
-    <?php echo $form->language->renderRow(array('class' => 'form-autocomplete')) ?>
+    <?php echo $form->language
+    ->help(__('Record the language(s) of the materials comprising the unit of description'))
+    ->renderRow(array('class' => 'form-autocomplete')) ?>
 
-    <?php echo $form->script->renderRow(array('class' => 'form-autocomplete')) ?>
+    <?php echo $form->script
+    ->help(__('Record the script(s) of the materials comprising the unit of description'))
+    ->renderRow(array('class' => 'form-autocomplete')) ?>
 
     <?php echo render_field($form->physicalCharacteristics
       ->help(__('Indicate any important physical conditions, such as preservation requirements, that affect the use of the unit of description. Note any software and/or hardware required to access the unit of description.'))
@@ -242,6 +249,7 @@
           </td>
         </tr>
       </table>
+     <div class="description">Record a citation to, and/or information about a publication that is about or based on the use, study, or analysis of the unit of description. Include references to published facsimiles or transcriptions.</div>
     </div>
 
   </fieldset> <!-- /#alliedMaterialsArea -->
@@ -280,6 +288,7 @@
           </td>
         </tr>
       </table>
+      <div class="description">Record specialized or other important information not accommodated by any of the defined elements of description.</div>
     </div>
 
   </fieldset> <!-- /#notesArea -->
@@ -318,7 +327,7 @@
       <?php if (QubitAcl::check(QubitActor::getRoot(), 'create')): ?>
         <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'create')) ?> #authorizedFormOfName"/>
       <?php endif; ?>
-      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
+      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete', 'showOnlyActors' => 'true')) ?>"/>
     </div>
 
   </fieldset>
@@ -328,10 +337,12 @@
     <legend><?php echo __('Control area') ?></legend>
 
     <?php echo $form->descriptionIdentifier
+      ->help(__('Record a unique description identifier in accordance with local and/or national conventions. If the description is to be used internationally, record the code of the country in which the description was created in accordance with the latest version of ISO 3166 - Codes for the representation of names of countries. Where the creator of the description is an international organisation, give the organisational identifier in place of the country code.'))
       ->label(__('Description identifier'))
       ->renderRow() ?>
 
     <?php echo render_field($form->institutionResponsibleIdentifier
+      ->help(__('Record the full authorised form of name(s) of the agency(ies) responsible for creating, modifying or disseminating the description or, alternatively, record a code for the agency in accordance with the national or international agency code standard.'))
       ->label(__('Institution identifier')), $object) ?>
 
     <?php echo render_field($form->rules
@@ -340,18 +351,26 @@
 
     <?php echo $form->descriptionStatus
       ->label(__('Status'))
+      ->help(__('Record the current status of the description, indicating whether it is a draft, finalized and/or revised or deleted.'))
+
       ->renderRow() ?>
 
     <?php echo $form->descriptionDetail
+      ->help(__('Record whether the description consists of a minimal, partial or full level of detail in accordance with relevant international and/or national guidelines and/or rules.'))
       ->label(__('Level of detail'))
       ->renderRow() ?>
 
     <?php echo render_field($form->revisionHistory
+      ->help(__('Record the date(s) the entry was prepared and/or revised.'))
       ->label(__('Dates of creation, revision and deletion')), $object, array('class' => 'resizable')) ?>
 
-    <?php echo $form->languageOfDescription->label(__('Language(s)'))->renderRow(array('class' => 'form-autocomplete')) ?>
+    <?php echo $form->languageOfDescription
+    ->help(__('Indicate the language(s) used to create the description of the archival material.'))
+    ->label(__('Language(s)'))->renderRow(array('class' => 'form-autocomplete')) ?>
 
-    <?php echo $form->scriptOfDescription->label(__('Script(s)'))->renderRow(array('class' => 'form-autocomplete')) ?>
+    <?php echo $form->scriptOfDescription
+    ->help(__('Indicate the script(s) used to create the description of the archival material.'))
+    ->label(__('Script(s)'))->renderRow(array('class' => 'form-autocomplete')) ?>
 
     <?php echo render_field($form->sources, $object, array('class' => 'resizable')) ?>
 
@@ -385,6 +404,7 @@
           </td>
         </tr>
       </table>
+      <div class="description">Record notes on sources consulted in preparing the description and who prepared it.</div>
     </div>
 
   </fieldset> <!-- /#descriptionControlArea -->

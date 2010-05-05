@@ -234,31 +234,34 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
    */
   public function updateEvents()
   {
-    // Update dates
-    foreach ($this->getRequestParameter('updateEvents') as $updateDate)
+    if (isset($this->request->updateEvents))
     {
-      if (isset($updateDate['id']))
+      foreach ($this->request->updateEvents as $updateDate)
       {
-        if (null === ($event = QubitEvent::getById($updateDate['id'])))
+        if (isset($updateDate['id']))
         {
-          continue; // If event id isn't valid, skip this row
+          $event = QubitEvent::getById($updateDate['id']);
+          if (!isset($event))
+          {
+            continue; // If event id isn't valid, skip this row
+          }
         }
-      }
-      else if (0 < strlen($updateDate['startDate']) || 0 < strlen($updateDate['dateDisplay']))
-      {
-        $event = new QubitEvent;
-      }
-      else
-      {
-        continue;
-      }
+        else if (0 < strlen($updateDate['startDate']) || 0 < strlen($updateDate['dateDisplay']))
+        {
+          $event = new QubitEvent;
+        }
+        else
+        {
+          continue;
+        }
 
-      $event->setTypeId($updateDate['typeId']);
-      $event->setStartDate(QubitDate::standardize($updateDate['startDate']));
-      $event->setEndDate(QubitDate::standardize($updateDate['endDate']));
-      $event->setDateDisplay($updateDate['dateDisplay']);
+        $event->setTypeId($updateDate['typeId']);
+        $event->setStartDate(QubitDate::standardize($updateDate['startDate']));
+        $event->setEndDate(QubitDate::standardize($updateDate['endDate']));
+        $event->setDateDisplay($updateDate['dateDisplay']);
 
-      $this->object->events[] = $event;
+        $this->object->events[] = $event;
+      }
     }
   }
 }

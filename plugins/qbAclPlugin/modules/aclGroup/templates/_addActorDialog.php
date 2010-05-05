@@ -6,7 +6,7 @@
       <div class="form-item">
         <label for="addActor"><?php echo __('Actor name') ?></label>
         <select name="addActor" id="addActor" class="form-autocomplete"></select>
-        <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
+        <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete', 'showOnlyActors' => 'true')) ?>"/>
       </div>
     </form>
   </div>

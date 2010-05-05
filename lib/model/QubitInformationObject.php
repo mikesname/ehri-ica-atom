@@ -40,12 +40,13 @@ class QubitInformationObject extends BaseInformationObject
    */
   public function __toString()
   {
-    if (null === $title = $this->getTitle())
+    $string = $this->title;
+    if (!isset($string))
     {
-      $title = $this->getTitle(array('sourceCulture' => true));
+      $string = $this->getTitle(array('sourceCulture' => true));
     }
 
-    return (string) $title;
+    return (string) $string;
   }
 
   public function __get($name)
@@ -77,7 +78,7 @@ class QubitInformationObject extends BaseInformationObject
           }
         }
 
-        if (isset($this->values[$name]) && null !== ($value = unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)))))
+        if (isset($this->values[$name]) && null !== $value = unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true))))
         {
           return $value;
         }
@@ -1095,6 +1096,10 @@ class QubitInformationObject extends BaseInformationObject
     if (null === $actor = QubitActor::getOne($criteria))
     {
       $actor = new QubitActor;
+
+      // Make root actor the parent of new actors
+      $actor->parentId = QubitActor::ROOT_ID;
+
       $actor->setAuthorizedFormOfName($name);
       if (isset($options['entity_type_id']))
       {

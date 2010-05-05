@@ -49,6 +49,7 @@ class DigitalObjectMultiFileUploadAction extends sfAction
     $this->uploadResponsePath = $this->context->routing->generate(null, array('module' => 'digitalobject', 'action' => 'upload'));
     $this->uploadTmpDir = $this->getRequest()->getRelativeUrlRoot().'/uploads/tmp';
 
+    // Build form
     $this->form->setValidator('files', new QubitValidatorCountable(array('required' => true)));
 
     $this->form->setValidator('informationObject', new sfValidatorInteger);
@@ -110,6 +111,12 @@ class DigitalObjectMultiFileUploadAction extends sfAction
       {
         $informationObject->setLevelOfDescriptionId($levelOfDescriptionId);
       }
+
+      // Set publication status to 'draft'
+      $status = new QubitStatus;
+      $status->typeId = QubitTerm::STATUS_TYPE_PUBLICATION_ID;
+      $status->statusId = QubitTerm::PUBLICATION_STATUS_DRAFT_ID;
+      $informationObject->statuss[] = $status;
 
       $informationObject->save();
 

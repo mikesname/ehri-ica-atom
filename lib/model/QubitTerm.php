@@ -625,22 +625,19 @@ class QubitTerm extends BaseTerm
    * @param string $objectClassName related object class_name column value
    * @return integer count of related object.
    */
-  public function getObjectTermRelationCountByObjectClass($objectClassName)
+  public function countRelatedInformationObjects()
   {
-    $sql  = 'SELECT COUNT(*) FROM '.QubitTerm::TABLE_NAME;
-    $sql .= ' INNER JOIN '.QubitObjectTermRelation::TABLE_NAME.' ON ('.QubitTerm::ID.'='.QubitObjectTermRelation::TERM_ID.')';
-    $sql .= ' INNER JOIN '.QubitObject::TABLE_NAME.' ON ('.QubitObjectTermRelation::OBJECT_ID.'='.QubitObject::ID.')';
-    $sql .= ' WHERE '.QubitObject::CLASS_NAME.' = :p1 AND '.QubitTerm::ID.' = :p2';
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::ID, $this->id);
 
-    $conn = Propel::getConnection();
-    $stmt = $conn->prepare($sql);
-    $stmt->bindValue(':p1', $objectClassName);
-    $stmt->bindValue(':p2', $this->getId());
-    $stmt->execute();
+    $criteria->addJoin(QubitTerm::ID, QubitObject::ID, Criteria::INNER_JOIN);
+    $criteria->addJoin(QubitTerm::ID, QubitObjectTermRelation::TERM_ID, Criteria::INNER_JOIN);
+    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, QubitInformationObject::ID, Criteria::INNER_JOIN);
 
-    $count = (count($row = $stmt->fetch())) ? $count = intval($row[0]) : 0;
+    // Only get published info objects
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
-    return $count;
+    return BasePeer::doCount($criteria)->fetchColumn(0);
   }
 
   /**
@@ -877,27 +874,36 @@ class QubitTerm extends BaseTerm
   /*****************************************************
    TreeView
   *****************************************************/
-  public function getTree($limit = false)
+
+  public function getFullYuiTree($limit = 0)
   {
-    $path = array();
+    $tree = self::getFullTree($this, $limit);
 
-    foreach (($ancestors = $this->getAncestors()->andSelf()->orderBy('lft')) as $ancestor)
-    {
-      $path[] = $ancestor->id;
-    }
-
-    return $this->buildTermTree($path, $limit ? 3 : null);
+    return self::renderYuiNodes($tree, array('currentNode' => $this));
   }
 
-  private function buildTermTree($path, $limit = null)
+  public function getChildYuiNodes($options = array())
   {
-    $parent = QubitTerm::getById(array_shift($path));
-    $tmp = array();
+    $limit = isset($options['limit']) ? $options['limit'] : 0;
+    $offset = isset($options['offset']) ? $options['offset'] : 0;
 
-    // Build query
+    $nodes = array();
+
     $criteria = new Criteria;
-    $criteria->add(QubitTerm::PARENT_ID, $parent->id);
-    $criteria->add(QubitTerm::TAXONOMY_ID, $this->taxonomyId);
+    $criteria->add(QubitTerm::PARENT_ID, $this->id);
+
+    if (QubitTerm::ROOT_ID == $this->id)
+    {
+      $params = sfContext::getInstance()->routing->parse(Qubit::pathInfo(sfContext::getInstance()->request->getHttpHeader('Referer')));
+
+      $refererTerm = QubitTerm::getById($params['id']);
+
+      if (isset($params['id']) && isset($refererTerm))
+      {
+        $criteria->add(QubitTerm::TAXONOMY_ID, $refererTerm->taxonomyId);
+      }
+    }
+
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
     $criteria->addAscendingOrderByColumn('name');
 
@@ -908,97 +914,205 @@ class QubitTerm extends BaseTerm
     $criterion1->addOr($criterion2);
     $criteria->add($criterion1);
 
-    $filtered = false;
+    $countCriteria = clone $criteria;
+    $totalChildren = intval(BasePeer::doCount($countCriteria)->fetchColumn(0));
 
-    $tmp[] = $parent;
-    foreach (($terms = QubitTerm::get($criteria)) as $index => $child)
+    if (0 < $limit)
     {
-      // DEBUG
-      $child->name = ($index + 1).'/'.$limit.' - '.$child->name;
+      $criteria->setLimit($limit);
+    }
 
-      // If it in path, we go on building the tree in that way
-      if (in_array($child->id, $path))
+    if (0 < $offset)
+    {
+      $criteria->setOffset($offset);
+    }
+
+    if (0 < count($children = QubitTerm::get($criteria)))
+    {
+      foreach ($children as $child)
       {
-        $tmp = array_merge($tmp, $this->buildTermTree($path, $limit));
+        $nodes[] = $child;
+      }
+    }
+
+    $shownChildren = $offset + count($children);
+    if ($totalChildren > $shownChildren)
+    {
+      $nodes[] = array('total' => $totalChildren, 'limit' => $limit, 'parentId' => $this->id);
+    }
+
+    return self::renderYuiNodes($nodes);
+  }
+
+  private static function getFullTree($currentNode, $limit)
+  {
+    $tree = array();
+
+    // Get direct ancestors
+    $ancestors = $currentNode->getAncestors()->orderBy('lft');
+    foreach ($ancestors as $ancestor)
+    {
+      $tree[$ancestor->id] = $ancestor;
+    }
+
+    // Get siblings (with limit) - but don't show sibling collection roots
+    $totalSiblings = 0;
+
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::PARENT_ID, $currentNode->parentId);
+
+    if (QubitTerm::ROOT_ID == $currentNode->parentId)
+    {
+      $criteria->add(QubitTerm::TAXONOMY_ID, $currentNode->taxonomyId);
+    }
+
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+    $criteria->addAscendingOrderByColumn('name');
+
+    // Exclude non-preferred terms
+    $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
+    $criterion1->addOr($criterion2);
+    $criteria->add($criterion1);
+
+    if (0 < $limit)
+    {
+      $criteria->setLimit($limit);
+    }
+
+    foreach (QubitTerm::get($criteria) as $item)
+    {
+      // Keep track of position of $currentNode in array
+      if ($item === $currentNode)
+      {
+        $curIndex = count($tree);
+      }
+
+      $tree[] = $item;
+    }
+
+    $totalSiblings = intval(BasePeer::doCount($criteria->setLimit(0))->fetchColumn(0));
+
+    // Add current object to $tree if it wasn't added as a sibling
+    if (!isset($curIndex))
+    {
+      if ($totalSiblings >= $limit)
+      {
+        // replace last sibling with current object
+        array_splice($tree, -1, 1, array($currentNode));
       }
       else
       {
-        // Add child
-        $tmp[] = $child;
+        $tree[] = $currentNode;
       }
 
-      if ($index + 1 == $limit)
-      {
-        $filtered = true;
-
-        break;
-      }
+      $curIndex = count($tree) - 1;
     }
 
-    // Add SEEALL button
-    if ($filtered)
+    if ($totalSiblings > $limit)
     {
-      $tmp[] = array('parentId' => $parent->id, 'remainingItems' => count($terms) - $limit);
+      $tree[] = array('total' => $totalSiblings, 'limit' => $limit, 'parentId' => $currentNode->parentId);
     }
 
-    return $tmp;
+    // Get children (with limit)
+    $totalChildren = 0;
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::PARENT_ID, $currentNode->id);
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+    $criteria->addAscendingOrderByColumn('name');
+
+    // Exclude non-preferred terms
+    $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
+    $criterion1->addOr($criterion2);
+    $criteria->add($criterion1);
+
+    if (0 < $limit)
+    {
+      $criteria->setLimit($limit);
+    }
+
+    if (0 < count($children = QubitTerm::get($criteria)))
+    {
+      foreach ($children as $item)
+      {
+        $childs[] = $item;
+      }
+
+      $totalChildren = intval(BasePeer::doCount($criteria->setLimit(0))->fetchColumn(0));
+
+      if ($totalChildren > $limit)
+      {
+        $childs[] = array('total' => $totalChildren, 'limit' => $limit, 'parentId' => $currentNode->id);
+      }
+
+      // Insert children right AFTER current info object in array
+      if ($curIndex == count($tree) - 1)
+      {
+        $tree = array_merge($tree, $childs);
+      }
+      else
+      {
+        array_splice($tree, $curIndex + 1, 0, $childs);
+      }
+    }
+
+    return $tree;
   }
 
-  public static function getTreeViewObjects($terms, $currentTerm)
+  public static function renderYuiNodes($tree, $options = array())
   {
-    $treeViewObjects = array();
-    $treeViewExpands = array();
-
     ProjectConfiguration::getActive()->loadHelpers('Qubit');
 
-    foreach ($terms as $term)
+    $yuiTree = array();
+    foreach ($tree as $key => $item)
     {
-      $treeViewObject = array();
+      $node = array();
 
-      if ($term instanceof QubitTerm)
+      if ($item instanceof QubitTerm)
       {
-        if (QubitTerm::ROOT_ID != $term->id)
+        if (QubitTerm::ROOT_ID != $item->id)
         {
-          $treeViewObject['label'] = render_title($term->getName(array('cultureFallback' => true, 'truncate' => 50)));
-          $treeViewObject['href'] = sfContext::getInstance()->routing->generate(null, array($term, 'module' => 'term'));
-          $treeViewObject['id'] = $term->id;
-          $treeViewObject['parentId'] = $term->parentId;
-          $treeViewObject['isLeaf'] = (string) !$term->hasChildren();
+          // Add info object node
+          $node['label'] = render_title($item->getName(array('cultureFallback' => true, 'truncate' => 50)));
+          $node['href'] = sfContext::getInstance()->routing->generate(null, array($item, 'module' => 'term'));
+          $node['id'] = $item->id;
+          $node['parentId'] = $item->parentId;
+          $node['isLeaf'] = (string) !$item->hasChildren();
         }
         else
         {
-          $treeViewObject['label'] = render_title($currentTerm->taxonomy->getName(array('cultureFallback' => true, 'truncate' => 50)));
-          $treeViewObject['href'] = sfContext::getInstance()->routing->generate(null, array($currentTerm->taxonomy, 'module' => 'term', 'action' => 'listTaxonomy'));
-          $treeViewObject['id'] = $term->id;
-          $treeViewObject['parentId'] = null;
-          $treeViewObject['isLeaf'] = (string) !$term->hasChildren();
+          $node['label'] = render_title($options['currentNode']->taxonomy->getName(array('cultureFallback' => true, 'truncate' => 50)));
+          $node['href'] = sfContext::getInstance()->routing->generate(null, array($options['currentNode']->taxonomy, 'module' => 'term', 'action' => 'listTaxonomy'));
+          $node['id'] = $item->id;
+          $node['parentId'] = null;
+          $node['isLeaf'] = (string) !$item->hasChildren();
         }
 
-        if ($term->id == $currentTerm->id)
+        if (isset($options['currentNode']) && $options['currentNode'] === $item)
         {
-          $treeViewObject['style'] = 'ygtvlabel currentTextNode';
+          $node['style'] = 'ygtvlabel currentTextNode';
         }
       }
+
+      // "Show all" link
       else
       {
-        // $treeViewObject['label'] = sfContext::getInstance()->i18n->__('See all');
-        $treeViewObject['label'] = '+'.$term['remainingItems'].' ...';
-        $treeViewObject['parentId'] = $term['parentId'];
-        $treeViewObject['href'] = '#';
-        $treeViewObject['isLeaf'] = 'true';
-        $treeViewObject['style'] = 'seeAllNode';
+        $count = intval($item['total']) - intval($item['limit']);
+
+        $node['label'] = sfContext::getInstance()->i18n->__('+%1% ...', array('%1%' => $count));
+        $node['parentId'] = $item['parentId'];
+        $node['href'] = '#';
+        $node['isLeaf'] = 'true';
+        $node['style'] = 'seeAllNode';
       }
 
-      $treeViewObjects[] = $treeViewObject;
+      $yuiTree[] = $node;
     }
 
-    foreach ($currentTerm->getAncestors() as $ancestor)
-    {
-      $treeViewExpands[$id = $ancestor->id] = $id;
-    }
-    $treeViewExpands[$id = $currentTerm->id] = $id;
-
-    return array($treeViewObjects, $treeViewExpands);
+    return $yuiTree;
   }
 
   /**

@@ -8,3 +8,7 @@ configureSiteSuccess:
   javascripts:
     /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /sfDrupalPlugin/vendor/drupal/modules/user/user:
+
+all:
+  components:
+    sidebar: [sfInstallPlugin, task]

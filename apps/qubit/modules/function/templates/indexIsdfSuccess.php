@@ -1,6 +1,6 @@
 <h1><?php echo __('View ISDF function') ?></h1>
 
-<?php echo link_to_if(QubitAcl::check($func, 'update'), '<h1 class="label">'.$func->getLabel().'</h1>', array($func, 'module' => 'function', 'action' => 'edit'), array('title' => __('Edit function'))) ?>
+<?php echo link_to_if(QubitAcl::check($func, 'update'), '<h1 class="label">'.render_title($func).'</h1>', array($func, 'module' => 'function', 'action' => 'edit'), array('title' => __('Edit function'))) ?>
 
 <?php if (isset($errorSchema)): ?>
   <div class="messages error">

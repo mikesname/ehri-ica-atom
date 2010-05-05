@@ -20,8 +20,6 @@
  */
 
 
-set_include_path(get_include_path().PATH_SEPARATOR.'../plugins/qbAclPlugin/lib/vendor/');
-
 /**
  * @see Zend_Acl_Resource_Interface
  */

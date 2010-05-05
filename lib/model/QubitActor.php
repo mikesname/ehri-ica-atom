@@ -30,13 +30,13 @@ class QubitActor extends BaseActor
 
   public function __toString()
   {
-    $authorizedFormOfName = $this->getAuthorizedFormOfName();
-    if (empty($authorizedFormOfName))
+    $string = $this->authorizedFormOfName;
+    if (!isset($string))
     {
-      $authorizedFormOfName = $this->getAuthorizedFormOfName(array('sourceCulture' => true));
+      $string = $this->getAuthorizedFormOfName(array('sourceCulture' => true));
     }
 
-    return (string) $authorizedFormOfName;
+    return (string) $string;
   }
 
   public function __get($name)
@@ -53,6 +53,7 @@ class QubitActor extends BaseActor
     {
       case 'language':
       case 'script':
+
         if (!isset($this->values[$name]))
         {
           $criteria = new Criteria;
@@ -65,12 +66,12 @@ class QubitActor extends BaseActor
           }
         }
 
-        if (isset($this->values[$name]))
+        if (isset($this->values[$name]) && null !== $value = unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true))))
         {
-          return unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)));
+          return $value;
         }
 
-        return;
+        return array();
     }
 
     return call_user_func_array(array($this, 'BaseActor::__get'), $args);
@@ -427,20 +428,6 @@ class QubitActor extends BaseActor
     $criteria->addDescendingOrderByColumn(QubitRelation::START_DATE);
 
     return QubitRelation::get($criteria);
-  }
-
-  public function getInformationObjectRelations()
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitEvent::ACTOR_ID, $this->getId());
-    $criteria->addJoin(QubitEvent::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
-    $criteria->addAscendingOrderByColumn(QubitEvent::TYPE_ID);
-
-    // Sort info objects alphabetically (w/ fallback)
-    $criteria->addAscendingOrderByColumn('title');
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitInformationObject');
-
-    return QubitEvent::get($criteria);
   }
 
   /**

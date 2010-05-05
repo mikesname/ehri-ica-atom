@@ -41,7 +41,7 @@ class QubitRoute extends sfRoute
   }
 
   /**
-   * @see sfRequestRoute
+   * @see sfRoute
    */
   public function matchesParameters($params, $context = array())
   {
@@ -49,7 +49,7 @@ class QubitRoute extends sfRoute
   }
 
   /**
-   * @see sfRequestRoute
+   * @see sfRoute
    */
   public function generate($params, $context = array(), $absolute = false)
   {

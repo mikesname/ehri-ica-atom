@@ -46,6 +46,12 @@ class TermDeleteAction extends sfAction
         $this->forward('admin', 'termPermission');
       }
 
+      // Remove non-preferred terms
+      foreach (QubitRelation::getRelationsBySubjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_EQUIVALENCE_ID)) as $item)
+      {
+        $item->object->delete();
+      }
+
       foreach ($this->term->descendants->andSelf()->orderBy('rgt') as $descendant)
       {
         if (QubitAcl::check($descendant, 'delete'))

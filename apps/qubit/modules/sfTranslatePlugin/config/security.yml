@@ -1,2 +1,2 @@
-translate:
-  credentials: translator
+all:
+  is_secure: false

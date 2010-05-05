@@ -13,7 +13,7 @@
     <div id="page-wrapper">
       <div id="page">
 
-        <?php echo get_partial('global/header') ?>
+        <?php echo get_partial('header') ?>
 
         <?php if ($sf_user->isAuthenticated()): ?>
           <div id="navigation">
@@ -32,12 +32,12 @@
               </div> <!-- /.section -->
             </div> <!-- /.column#content -->
 
-            <?php echo get_partial('global/sidebar') ?>
+            <?php echo get_partial('sidebar') ?>
 
           </div> <!-- /#main -->
         </div> <!-- /#main-wrapper -->
 
-        <?php echo get_partial('global/footer') ?>
+        <?php echo get_partial('footer') ?>
 
       </div> <!-- /#page -->
     </div> <!-- /#page-wrapper -->

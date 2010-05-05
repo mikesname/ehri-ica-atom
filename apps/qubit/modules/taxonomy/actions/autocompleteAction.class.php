@@ -27,16 +27,21 @@ class TaxonomyAutocompleteAction extends sfAction
     $criteria->add(QubitTaxonomyI18n::CULTURE, $this->context->user->getCulture());
 
     // Narrow results by query
-    if (isset($request->query))
+    if (0 < strlen($request->query))
     {
       $criteria->add(QubitTaxonomyI18n::NAME, $request->query.'%', Criteria::LIKE);
     }
 
     // Limit results by ACL
     $criterion = QubitAcl::getFilterCriterion($criteria, QubitTaxonomy::getById(QubitTaxonomy::ROOT_ID), 'createTerm');
-    if (isset($criterion))
+    if (isset($criterion) && true !== $criterion)
     {
       $criteria->addAnd($criterion);
+    }
+    else if (false === $criterion)
+    {
+      // If access denied to all taxonomies, then return nothing
+      return sfView::NONE;
     }
 
     // Sort by name

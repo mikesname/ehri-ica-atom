@@ -50,17 +50,17 @@ class InformationObjectBrowseAction extends sfAction
     // Sort results
     switch ($request->sort)
     {
-      case 'repositoryUp':
-        $fallbackTable = 'QubitActor';
-        $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
-        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
-
-        break;
-
       case 'repositoryDown':
         $fallbackTable = 'QubitActor';
         $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
         $criteria->addDescendingOrderByColumn('authorized_form_of_name');
+
+        break;
+
+      case 'repositoryUp':
+        $fallbackTable = 'QubitActor';
+        $criteria->addJoin(QubitInformationObject::REPOSITORY_ID, QubitActor::ID, Criteria::LEFT_JOIN);
+        $criteria->addAscendingOrderByColumn('authorized_form_of_name');
 
         break;
 
@@ -70,8 +70,13 @@ class InformationObjectBrowseAction extends sfAction
         break;
 
       case 'titleUp':
-      default:
         $criteria->addAscendingOrderByColumn('title');
+
+        break;
+
+      case 'updatedDown':
+      default:
+        $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
 
         break;
 
@@ -79,15 +84,12 @@ class InformationObjectBrowseAction extends sfAction
         $criteria->addAscendingOrderByColumn(QubitObject::UPDATED_AT);
 
         break;
-
-      case 'updatedDown':
-        $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
-
-        break;
     }
 
     // Do source culture fallback
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable);
+
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     // Page results
     $this->pager = new QubitPager('QubitInformationObject');

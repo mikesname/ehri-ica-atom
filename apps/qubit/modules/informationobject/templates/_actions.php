@@ -29,7 +29,6 @@
         <?php endif; ?>
 
         <li><?php echo link_to(__('Import digital objects'), array('module' => 'digitalobject', 'action' => 'multiFileUpload', 'informationObject' => $informationObject->id)) ?></li>
-
         <li><?php echo link_to(__('Link physical storage'), array($informationObject, 'module' => 'informationobject', 'action' => 'editPhysicalObjects')) ?></li>
 
       <?php endif; ?>

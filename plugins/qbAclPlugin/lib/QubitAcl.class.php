@@ -773,6 +773,37 @@ class QubitAcl
     return $query;
   }
 
+  public static function addFilterDraftsCriteria($criteria)
+  {
+    $criteria->addJoin(QubitInformationObject::ID, QubitStatus::OBJECT_ID, Criteria::LEFT_JOIN);
+
+    // Either object must be published, or
+    $ct1 = $criteria->getNewCriterion(QubitStatus::TYPE_ID, QubitTerm::STATUS_TYPE_PUBLICATION_ID);
+    $ct2 = $criteria->getNewCriterion(QubitStatus::STATUS_ID, QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID);
+    $ct1->addAnd($ct2);
+
+    // The user has view drafts permission
+    $ct3 = self::getFilterCriterion($criteria, QubitInformationObject::getRoot(), 'viewDraft');
+
+    if (!isset($ct3) || false === $ct3)
+    {
+      // Show ONLY published descriptions
+      return $criteria->addAnd($ct1);
+    }
+    else if (true === $ct3)
+    {
+      // Show ALL drafts and published descriptions (don't add to criteria)
+      return $criteria;
+    }
+    else
+    {
+      // Show a limited set of draft descriptions + all published descriptions
+      $ct1->addOr($ct3);
+
+      return $criteria->addAnd($ct1);
+    }
+  }
+
   /**
    * Get a new criterion to filter a SQL query by ACL rules 
    *
@@ -795,7 +826,7 @@ class QubitAcl
     }
 
     // Build access control list
-    $grants = 0;
+    $allows = $bans = array();
     if (0 < count($permissions))
     {
       foreach ($permissions as $permission)
@@ -817,24 +848,31 @@ class QubitAcl
 
           if ($resourceAccess[$id])
           {
-            $grants++;
+            $allows[] = $id;
           }
+          else
+          {
+            $bans[] = $id;
+          }
+
         }
       }
     }
 
-    // If no grants then no results
-    $criterion = null;
-    if (0 == $grants)
+    // Special cases - avoid adding unnecessary criteria
+    if (0 == count($allows) && !QubitAcl::isAllowed($user, $root, $action))
     {
-      $criterion = $criteria->getNewCriterion(QubitObject::ID, '1 = 0', Criteria::CUSTOM);
+      return false; // No allows, always false
+    }
+    else if (0 == count($bans) && QubitAcl::isAllowed($user, $root, $action))
+    {
+      return true; // No bans, always true
     }
 
-    // If global deny is default, then list allowed resources
-    else if (!self::isAllowed($user, $root, $action))
+    // If more allows then bans, then add list of allowed resources
+    $criterion = null;
+    if (count($allows) >= count($bans))
     {
-      $allows = array_keys($resourceAccess, true, true);
-
       while ($resourceId = array_shift($allows))
       {
         $resource = call_user_func(array($rootClass, 'getById'), $resourceId);
@@ -864,10 +902,9 @@ class QubitAcl
       }
     }
 
-    // Otherwise, build a list of banned resources
+    // Otherwise, add list of banned resources
     else
     {
-      $bans = array_keys($resourceAccess, false, true);
       while ($resourceId = array_shift($bans))
       {
         $resource = call_user_func(array($rootClass, 'getById'), $resourceId);
@@ -900,7 +937,7 @@ class QubitAcl
   }
 }
 
-set_include_path(dirname(__FILE__).'/vendor'.PATH_SEPARATOR.get_include_path());
+require_once 'Zend/Acl/Assert/Interface.php';
 
 class ConditionalAssert implements Zend_Acl_Assert_Interface
 {

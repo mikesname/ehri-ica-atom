@@ -23,4 +23,9 @@ class QubitStaticPage extends BaseStaticPage
   {
     return (string) $this->title;
   }
+
+  public function isProtected()
+  {
+    return $this->permalink == 'homepage' || $this->permalink == 'about';
+  }
 }

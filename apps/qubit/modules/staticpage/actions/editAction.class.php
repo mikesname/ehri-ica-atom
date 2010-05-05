@@ -45,7 +45,21 @@ class StaticPageEditAction extends sfAction
 
   protected function processField($field)
   {
-    $this->staticPage[$field->getName()] = $this->form->getValue($field->getName());
+    switch ($name = $field->getName())
+    {
+      case 'permalink':
+
+        if (!$this->staticPage->isProtected())
+        {
+          $this->staticPage[$name] = $this->form->getValue($name);
+        }
+
+        break;
+
+      default:
+
+        $this->staticPage[$name] = $this->form->getValue($name);
+    }
   }
 
   protected function processForm()

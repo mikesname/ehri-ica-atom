@@ -6,17 +6,18 @@
 .form-item .description
 {
   background: #def;
-  color: #000;
 
   border-radius: 1em;
   -moz-border-radius: 1em;
   -webkit-border-radius: 1em;
 
+  color: #000;
+  display: none;
   left: 100%;
   margin-left: 3em;
   opacity: 0.8;
   padding: 1em;
   position: absolute;
   top: 0;
-  width: 40%;
+  width: 30%;
 }

@@ -155,7 +155,12 @@ class SettingsListAction extends sfAction
   protected function populateGlobalForm()
   {
     // Get global settings
-    $version = QubitSetting::getSettingByName('version');
+    $version = qubitConfiguration::VERSION;
+    if (null !== $setting = QubitSetting::getSettingByName('version'))
+    {
+      $version .= ' - '.$setting->getValue(array('sourceCulture' => true));
+    }
+
     $uploadDir = QubitSetting::getSettingByName('upload_dir');
     $refImageMaxWidth = QubitSetting::getSettingByName('reference_image_maxwidth');
     $hitsPerPage = QubitSetting::getSettingByName('hits_per_page');
@@ -165,7 +170,7 @@ class SettingsListAction extends sfAction
 
     // Set defaults for global form
     $this->globalForm->setDefaults(array(
-      'version' => (isset($version)) ? $version->getValue(array('sourceCulture'=>true)) : null,
+      'version' => $version,
       'upload_dir' => (isset($uploadDir)) ? $uploadDir->getValue(array('sourceCulture'=>true)) : null,
       'reference_image_maxwidth' => (isset($refImageMaxWidth)) ? $refImageMaxWidth->getValue(array('sourceCulture'=>true)) : null,
       'hits_per_page' => (isset($hitsPerPage)) ? $hitsPerPage->getValue(array('sourceCulture'=>true)) : null,

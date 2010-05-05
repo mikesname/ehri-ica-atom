@@ -17,7 +17,7 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-// TODO: Integrate with symfony/data/bin/check_configuration.php
+// TODO Integrate with symfony/data/bin/check_configuration.php
 class sfInstall
 {
   public static $MINIMUM_MEMORY_LIMIT_MB = 64;
@@ -34,9 +34,9 @@ class sfInstall
   }
 
   // Returns an array of missing dependencies
-  // TODO: This is already implemented in PEAR.  Make this check more robust by
+  // TODO This is already implemented in PEAR.  Make this check more robust by
   // calling their code.
-  // TODO: Break this up so we can give more detailed output (like which
+  // TODO Break this up so we can give more detailed output (like which
   // extensions *are* loaded?
   public static function checkDependencies()
   {
@@ -64,7 +64,7 @@ class sfInstall
 
     foreach ($xpath->query('p:dependencies/*/p:extension/p:name') as $node)
     {
-      // nodeValue or textContent? http://php.net/DOMNode
+      // nodeValue or textContent?  http://php.net/DOMNode
       if (!extension_loaded($node->nodeValue))
       {
         $dependencies['extensions'][] = $node->nodeValue;
@@ -76,7 +76,7 @@ class sfInstall
 
   public static function checkWritablePaths()
   {
-    // FIXME: This is a late night hack.  It should probably get moved into its
+    // FIXME This is a late night hack.  It should probably get moved into its
     // own check.
     // Copied from sfFileLogger::initialize()
     if (!is_dir(sfConfig::get('sf_log_dir')))
@@ -90,7 +90,7 @@ class sfInstall
 
     foreach (array(sfConfig::get('sf_cache_dir'), sfConfig::get('sf_data_dir'), sfConfig::get('sf_log_dir')) as $path)
     {
-      // FIXME: sfFinder::in() does not include the argument path
+      // FIXME sfFinder::in() does not include the argument path
       if (!is_writable($path))
       {
         $writablePaths[] = $path;
@@ -168,7 +168,7 @@ class sfInstall
     return $propelIni;
   }
 
-  // TODO: Use sfWebBrowserPlugin
+  // TODO Use sfWebBrowserPlugin
   protected static function get($url)
   {
     $request = sfContext::getInstance()->request;
@@ -178,18 +178,18 @@ class sfInstall
     {
       if (true !== $browser->get($request->getUriPrefix().$url)->responseIsError())
       {
-        // Successful response (eg. 200, 201, etc)
+        // Successful response (e.g. 200, 201, etc.)
         return $browser->getResponseText();
       }
       else
       {
-        // Error response (eg. 404, 500, etc)
+        // Error response (e.g. 404, 500, etc.)
         return false;
       }
     }
     catch (Exception $e)
     {
-      // Adapter error [curl,fopen,fsockopen] (eg. Host not found)
+      // Adapter error [curl,fopen,fsockopen] (e.g. Host not found)
       return false;
     }
   }
@@ -280,8 +280,8 @@ EOF;
       return $htaccess;
     }
 
-    // FIXME: We created a new .htaccess file.  Make it world readable or
-    // Apache may not be able to read it.
+    // FIXME We created a new .htaccess file.  Make it world readable or Apache
+    // may not be able to read it.
     if (!$htaccessExists)
     {
       chmod($htaccessPath, 0644);
@@ -322,7 +322,7 @@ EOF;
       return array();
     }
 
-    // TODO: Discriminate between mod_rewrite not enabled and mod_rewrite not
+    // TODO Discriminate between mod_rewrite not enabled and mod_rewrite not
     // configured by putting valid mod_rewrite directives outside <IfModule>
     $checkHtaccessContents[] = $checkModRewriteContents;
     file_put_contents($htaccessPath, implode("\n", $checkHtaccessContents));
@@ -338,7 +338,7 @@ EOF;
 
   public static function setNoScriptName($noScriptName, $settingsYmlContents)
   {
-    // TODO: Make this pattern more robust, or parse the YAML?
+    // TODO Make this pattern more robust, or parse the YAML?
     $pattern = '/^(prod:\v+  .settings:\v+    no_script_name:\h*)[^\v]+/';
     $replacement = '\1'.($noScriptName ? 'on' : 'off');
 
@@ -379,13 +379,13 @@ EOF;
 
     chdir(sfConfig::get('sf_root_dir'));
 
-    // FIXME: By instantiating a new application configuration the cache clear
+    // FIXME By instantiating a new application configuration the cache clear
     // task may change these settings, leading to bugs in code which expects
     // them to remain constant
     $saveDebug = sfConfig::get('sf_debug');
     $saveLoggingEnabled = sfConfig::get('sf_logging_enabled');
 
-    // FIXME: We do not want to cache anything during install, but currently we
+    // FIXME We do not want to cache anything during install, but currently we
     // must clear the cache after adding enabling sfInstallPlugin : (
     $cacheClear = new sfCacheClearTask($dispatcher, $formatter);
     $cacheClear->run();
@@ -461,13 +461,13 @@ EOF;
     $configureDatabase = new sfPropelConfigureDatabaseTask($dispatcher, $formatter);
     $configureDatabase->run($arguments);
 
-    // FIXME: By instantiating a new application configuration the cache clear
+    // FIXME By instantiating a new application configuration the cache clear
     // task may change these settings, leading to bugs in code which expects
     // them to remain constant
     $saveDebug = sfConfig::get('sf_debug');
     $saveLoggingEnabled = sfConfig::get('sf_logging_enabled');
 
-    // FIXME: We do not want to cache anything during install, but currently we
+    // FIXME We do not want to cache anything during install, but currently we
     // must clear the cache after configuring the database : (
     $cacheClear = new sfCacheClearTask($dispatcher, $formatter);
     $cacheClear->run();
@@ -477,7 +477,7 @@ EOF;
 
     $databaseManager = sfContext::getInstance()->databaseManager;
 
-    // FIXME: Currently need to reload after configuring the database
+    // FIXME Currently need to reload after configuring the database
     $databaseManager->loadConfiguration();
 
     try
@@ -511,11 +511,11 @@ EOF;
   public static function loadRoot()
   {
     $object = new QubitInformationObject;
-    $object->setId(QubitInformationObject::ROOT_ID);
+    $object->id = QubitInformationObject::ROOT_ID;
     $object->save();
 
     $object = new QubitActor;
-    $object->setId(QubitActor::ROOT_ID);
+    $object->id = QubitActor::ROOT_ID;
     $object->save();
   }
 

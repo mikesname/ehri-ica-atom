@@ -51,7 +51,7 @@ class sfPropelPager extends sfPager
     $criteriaForCount
       ->setOffset(0)
       ->setLimit(0)
-      ->clearGroupByColumns()
+      // http://trac.symfony-project.org/ticket/487
     ;
 
     $count = call_user_func(array($this->getClassPeer(), $this->getPeerCountMethod()), $criteriaForCount);

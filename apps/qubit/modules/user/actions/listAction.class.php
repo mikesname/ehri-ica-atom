@@ -27,7 +27,6 @@ class UserListAction extends sfAction
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitUser::ID, null, Criteria::ISNOTNULL);
     $criteria->addAscendingOrderByColumn(QubitUser::USERNAME);
 
     $this->pager = new QubitPager('QubitUser');

@@ -25,14 +25,6 @@
  * @author     Peter Van Garderen <peter@artefactual.com>
  * @version    SVN: $Id$
  */
-
 class ActorEditIsaarAction extends ActorEditAction
 {
-  public function execute($request)
-  {
-    // run the core actor edit action commands
-    parent::execute($request);
-
-    // add ISAAR specific commands
-  }
 }

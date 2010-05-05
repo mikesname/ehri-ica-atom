@@ -44,7 +44,7 @@ class PhysicalObjectEditAction extends sfAction
     }
 
     $this->form->setDefault('next', $request->getReferer());
-    $this->form->setValidator('next', new sfValidatorPass);
+    $this->form->setValidator('next', new sfValidatorString);
     $this->form->setWidget('next', new sfWidgetFormInputHidden);
 
     $this->form->setDefault('location', $this->physicalObject->location);

@@ -89,7 +89,7 @@
             <?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?>
           </th>
         </tr>
-        <?php foreach ($actorRelations as $item): ?>
+        <?php foreach ($actor->getActorRelations() as $item): ?>
           <tr id="<?php echo url_for(array($item, 'module' => 'relation')) ?>" class="<?php echo 'related_obj_'.$item->id ?>">
             <td>
               <?php if ($actor->id == $item->objectId): ?>
@@ -300,7 +300,7 @@ EOL
             <?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?>
           </th>
         </tr>
-        <?php foreach ($events as $event): ?>
+        <?php foreach ($actor->getEvents() as $event): ?>
           <tr id="<?php echo url_for(array($event, 'module' => 'event')) ?>" class="<?php echo 'related_obj_'.$event->id ?>">
             <td>
               <?php echo render_title($event->informationObject) ?>

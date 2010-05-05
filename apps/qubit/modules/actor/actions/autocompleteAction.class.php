@@ -29,6 +29,12 @@ class ActorAutocompleteAction extends sfAction
     $criteria = new Criteria;
     $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
     $criteria->add(QubitActorI18n::CULTURE, $this->context->user->getCulture());
+    $criteria->add(QubitObject::CLASS_NAME, 'QubitUser', Criteria::NOT_EQUAL);
+
+    if (isset($request->showOnlyActors) && 'true' == $request->showOnlyActors)
+    {
+      $criteria->add(QubitObject::CLASS_NAME, 'QubitActor');
+    }
 
     if (isset($request->query))
     {
