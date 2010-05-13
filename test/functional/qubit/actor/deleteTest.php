@@ -1,5 +1,7 @@
 <?php
 
+$app = 'qubit';
+
 include dirname(__FILE__).'/../../../bootstrap/functional.php';
 
 $browser = new QubitTestFunctional(new sfBrowser);

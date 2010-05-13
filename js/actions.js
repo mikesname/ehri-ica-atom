@@ -5,7 +5,7 @@ Drupal.behaviors.actions = {
     {
       $('.actions').each(function ()
         {
-          var img = $('<img src="' + Qubit.relativeUrlRoot + '/sfDrupalPlugin/vendor/drupal/misc/menu-expanded.png"/>').replaceAll(this).get(0);
+          var img = $('<img src="' + Qubit.relativeUrlRoot + '/plugins/sfDrupalPlugin/vendor/drupal/misc/menu-expanded.png"/>').replaceAll(this).get(0);
 
           // HACK: YAHOO.widget.Menu() requires a string argument
           var menu = new YAHOO.widget.Menu(Math.random().toString(), { context: [img, 'tl', 'bl' ] });

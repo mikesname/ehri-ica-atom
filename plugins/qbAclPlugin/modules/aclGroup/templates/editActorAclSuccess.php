@@ -1,6 +1,6 @@
 <?php use_helper('Javascript') ?>
 
-<h1><?php echo __('Edit authority record permissions') ?></h1>
+<h1><?php echo __('Edit %1% permissions', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></h1>
 
 <h1 class="label"><?php echo __('%1% group', array('%1%' => $group->__toString())) ?></h1>
 
@@ -13,7 +13,7 @@
   <table id="actorPermission_<?php echo $objectId ?>" class="inline">
     <caption>
     <?php if (QubitActor::ROOT_ID == $objectId): ?>
-      <em><?php echo __('All authority records') ?></em>
+      <em><?php echo __('All %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></em>
     <?php else: ?>
       <?php echo render_title(QubitActor::getById($objectId)) ?>
     <?php endif; ?> 
@@ -51,8 +51,8 @@
 <?php endforeach; ?>
 
   <div class="form-item">
-    <label for="addActorLink"><?php echo __('Add a person or organization') ?></label>
-    <a id="addActorLink" href="javascript:myDialog.show()"><?php echo __('Add permissions') ?></a>
+    <label for="addActorLink"><?php echo __('Add permissions by %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></label>
+    <a id="addActorLink" href="javascript:myDialog.show()"><?php echo __('Add %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></a>
   </div>
 
   <div class="actions section">

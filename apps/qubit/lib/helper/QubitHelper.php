@@ -133,7 +133,7 @@ function object_select_tree($object, $method, array $options = array())
   $response = sfContext::getInstance()->getResponse();
 
   $response->addJavaScript('/vendor/jquery');
-  $response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
+  $response->addJavaScript('/plugins/sfDrupalPlugin/vendor/drupal/misc/drupal');
   $response->addJavaScript('/vendor/yui/yahoo-dom-event/yahoo-dom-event');
   $response->addJavaScript('/vendor/yui/element/element-min');
   $response->addJavaScript('/vendor/yui/button/button-min');

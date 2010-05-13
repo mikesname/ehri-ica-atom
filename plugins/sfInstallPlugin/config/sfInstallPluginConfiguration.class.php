@@ -10,20 +10,28 @@
  */
 class sfInstallPluginConfiguration extends sfPluginConfiguration
 {
+  public function contextLoadFactories(sfEvent $event)
+  {
+    $context = $event->getSubject();
+
+    if ('sfInstallPlugin' != $context->request->module)
+    {
+      $context->controller->redirect(array('module' => 'sfInstallPlugin'));
+    }
+  }
+
   public function controllerChangeAction(sfEvent $event)
   {
+    $controller = $event->getSubject();
+
     if ('sfInstallPlugin' != $event->module)
     {
       return;
     }
 
-    $credential = $event->getSubject()->getActionStack()->getLastEntry()->getActionInstance()->getCredential();
+    $credential = $controller->getActionStack()->getLastEntry()->getActionInstance()->getCredential();
 
-    try
-    {
-      new sfDatabaseManager($this->configuration);
-    }
-    catch (sfConfigurationException $e)
+    if (!file_exists(sfConfig::get('sf_config_dir').'/config.php'))
     {
       sfContext::getInstance()->user->addCredential($credential);
 
@@ -54,7 +62,7 @@ class sfInstallPluginConfiguration extends sfPluginConfiguration
   {
     $routing = $event->getSubject();
 
-    $routing->insertRouteBefore('default', 'sfInstallPlugin/help', new sfRoute('http://qubit-toolkit.org/wiki/index.php?title=Installer_Warnings', array('module' => 'sfInstallPlugin', 'action' => 'help')));
+    $routing->insertRouteBefore('default', 'sfInstallPlugin/help', new sfRoute('http://qubit-toolkit.org/wiki/index.php?title=Installer_warnings', array('module' => 'sfInstallPlugin', 'action' => 'help')));
   }
 
   /**
@@ -62,46 +70,11 @@ class sfInstallPluginConfiguration extends sfPluginConfiguration
    */
   public function initialize()
   {
-    // Setup for test if this is the install.php front controller
-    foreach (array('SCRIPT_NAME', 'ORIG_SCRIPT_NAME') as $key)
+    if (!file_exists(sfConfig::get('sf_config_dir').'/config.php'))
     {
-      if (isset($_SERVER[$key]))
-      {
-        $scriptName = $_SERVER[$key];
-
-        break;
-      }
-    }
-
-    $installScriptName = sfConfig::get('sf_relative_url_root', preg_replace('/\/[^\/]+\.php5?$/', null, $scriptName)).'/install.php';
-
-    if ($installScriptName == $scriptName)
-    {
-      sfConfig::set('sf_no_script_name', false);
       sfConfig::set('sf_use_database', false);
-    }
-    else
-    {
-      // All other front controllers test that a database connection can be
-      // made and redirect to the install.php front controller if not
-      if (sfConfig::get('sf_use_database'))
-      {
-        try
-        {
-          new sfDatabaseManager($this->configuration);
-        }
-        catch (sfConfigurationException $e)
-        {
-          $installUrl = $installScriptName.'/;sfInstallPlugin';
 
-          header('Location: '.$installUrl);
-
-          echo '<html><head><meta http-equiv="refresh" content="0;url='.htmlspecialchars($installUrl, ENT_QUOTES, sfConfig::get('sf_charset')).'" /></head></html>';
-
-          // Going any further may stop this redirect
-          exit;
-        }
-      }
+      $this->dispatcher->connect('context.load_factories', array($this, 'contextLoadFactories'));
     }
 
     // Enable sfInstallPlugin module

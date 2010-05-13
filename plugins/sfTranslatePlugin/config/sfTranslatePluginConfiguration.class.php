@@ -2,7 +2,7 @@
 
 /**
  * sfTranslatePlugin configuration.
- * 
+ *
  * @package     sfTranslatePlugin
  * @subpackage  config
  * @author      Your name here
@@ -14,13 +14,21 @@ class sfTranslatePluginConfiguration extends sfPluginConfiguration
   {
     $context = $event->getSubject();
 
-    $context->response->addJavaScript('/vendor/jquery');
-    $context->response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js');
-    $context->response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/drupal');
-    $context->response->addJavaScript('/sfDrupalPlugin/vendor/drupal/misc/textarea');
-    $context->response->addJavaScript('/sfTranslatePlugin/js/l10n_client');
+    $action = $context->controller->getAction('sfTranslatePlugin', 'translate');
+    if ($action->isSecure()
+      && (!$context->user->isAuthenticated()
+        || !$context->user->hasCredential($action->getCredential())))
+    {
+      return;
+    }
 
-    $context->response->addStylesheet('/sfTranslatePlugin/css/l10n_client');
+    $context->response->addJavaScript('/vendor/jquery');
+    $context->response->addJavaScript('/plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js');
+    $context->response->addJavaScript('/plugins/sfDrupalPlugin/vendor/drupal/misc/drupal');
+    $context->response->addJavaScript('/plugins/sfDrupalPlugin/vendor/drupal/misc/textarea');
+    $context->response->addJavaScript('/plugins/sfTranslatePlugin/js/l10n_client');
+
+    $context->response->addStylesheet('/plugins/sfTranslatePlugin/css/l10n_client');
   }
 
   /**

@@ -17,6 +17,8 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+require_once 'Zend/Acl.php';
+
 class StubAcl extends Zend_Acl
 {
   public function allow($roles = null, $resource = null, $privileges = null, Zend_Acl_Assert_Interface $assert = null)

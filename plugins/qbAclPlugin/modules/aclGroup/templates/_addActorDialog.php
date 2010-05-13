@@ -1,10 +1,10 @@
 <!-- form for yui dialog -->
 <div id="myDialog">
-  <div class="hd"><?php echo __('Add a person or organization') ?></div>
+  <div class="hd"><?php echo __('Add %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
   <div class="bd">
     <form name="actorAcl" method="POST">
       <div class="form-item">
-        <label for="addActor"><?php echo __('Actor name') ?></label>
+        <label for="addActor"><?php echo __('%1% name', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></label>
         <select name="addActor" id="addActor" class="form-autocomplete"></select>
         <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete', 'showOnlyActors' => 'true')) ?>"/>
       </div>

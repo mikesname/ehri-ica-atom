@@ -15,16 +15,20 @@
 <?php elseif (QubitTerm::THUMBNAIL_ID == $usageType): ?>
 
   <?php if ($iconOnly): ?>
-    <?php echo link_to(image_tag('play.png'), $link); ?>
+
+    <?php echo link_to(image_tag('play.png'), $link) ?>
+
   <?php else: ?>
+
     <div class="digitalObject">
       <div class="digitalObjectRep">
-        <?php echo link_to(image_tag('play.png'), $link); ?>
+        <?php echo link_to(image_tag('play.png'), $link) ?>
       </div>
       <div class="digitalObjectDesc">
-        <?php echo string_wrap($digitalObject->getName(), 18); ?>
+        <?php echo string_wrap($digitalObject->getName(), 18) ?>
       </div>
     </div>
+
   <?php endif; ?>
 
 <?php endif; ?>

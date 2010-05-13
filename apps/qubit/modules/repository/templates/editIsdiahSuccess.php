@@ -17,20 +17,11 @@
     <legend><?php echo __('Identity area') ?></legend>
 
     <?php echo $form->identifier
-      ->label(__('Identifier').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
+      ->label(__('Identifier').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
-    <div class="form-item">
-      <label for="authorized_form_of_name">
-        <?php echo link_to_if(isset($repository->id), __('Authorized form of name'), array($repository, 'module' => 'actor', 'action' => 'edit', 'repositoryReroute' => $repository->id)) ?> <span title="<?php echo __('This is a mandatory element') ?>" class="form-required">*</span>
-      </label>
-      <?php if (isset($repository->authorizedFormOfName) && $sf_user->getCulture() != $repository->sourceCulture): ?>
-        <div class="default-translation">
-          <?php echo $repository->getAuthorizedFormOfName(array('sourceCulture' => true)) ?>
-        </div>
-      <?php endif; ?>
-      <?php echo $form->authorizedFormOfName ?>
-    </div>
+    <?php echo render_field($form->authorizedFormOfName
+      ->label(link_to_if(isset($sf_request->id), __('Authorized form of name'), array($repository, 'module' => 'actor', 'action' => 'edit', 'repositoryReroute' => $repository->id)).' <span class="form-required" title="'.__('This is a mandatory element').'">*</span>'), $repository) ?>
 
     <?php echo $form->parallelName
       ->label('Parallel form(s) of name')
@@ -40,12 +31,9 @@
       ->label('Other form(s) of name')
       ->renderRow() ?>
 
-    <div class="form-item">
-      <?php echo $form->types
-        ->label(__('Type'))
-        ->renderLabel() ?>
-      <?php echo $form->types->render(array('class' => 'form-autocomplete')) ?>
-    </div>
+    <?php echo $form->types
+      ->label(__('Type'))
+      ->renderRow(array('class' => 'form-autocomplete')) ?>
 
   </fieldset>
 

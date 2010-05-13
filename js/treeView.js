@@ -104,7 +104,7 @@
                   jQuery.ajax({
                     data: { parent: newParent.href },
                     type: 'POST',
-                    url: textNode.href.replace(/(\d+)([;!\/]).*/, '$1$2default/move')
+                    url: textNode.href.replace(/(\d+)([;!\/])(isad|mods|dc|rad)$/, '$1$2default/move')
                   });
 
                   parentNode.tree.popNode(textNode);

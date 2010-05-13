@@ -80,5 +80,6 @@
   Qubit.multiFileUpload.i18nDelete = "'.__('Delete').'";
   Qubit.multiFileUpload.i18nCancel = "'.__('Cancel').'";
   Qubit.multiFileUpload.i18nStart = "'.__('Start').'";
+  Qubit.multiFileUpload.i18nDuplicateFile = "'.__('Warning: duplicate of %1%').'";
   Qubit.multiFileUpload.i18nOversizedFile = "'.__('This file couldn\'t be uploaded because of file size upload limits').'";
 '); ?>

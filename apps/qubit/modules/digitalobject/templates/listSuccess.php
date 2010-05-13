@@ -12,13 +12,12 @@
 <?php foreach ($terms as $term): ?>
 <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
   <td>
-    <?php $linkAction = ($editCredentials) ? 'browse' : 'show'; ?>
     <div style="padding-left: 17px;">
-      <?php echo link_to($term->getName(array('cultureFallback'=>true)), 'digitalobject/browse?mediatype='.$term->getId()); ?>
+      <?php echo link_to($term->getName(array('cultureFallback'=>true)), array('module' => 'digitalobject', 'action' => 'browse', 'mediatype' => $term->id)); ?>
     </div>
   </td>
   <td>
-    <?php echo QubitDigitalObject::getCount($term->getId()); ?>
+    <?php echo QubitDigitalObject::getCount($term->id); ?>
   </td>
 </tr>
 <?php endforeach; ?>

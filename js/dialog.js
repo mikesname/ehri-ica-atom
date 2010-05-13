@@ -42,6 +42,8 @@ function QubitDialog(table, options, $)
   this.options = options;
   this.fieldNameFilter = /(\w+)\[(\w+)\]/;
   this.fieldPrefix = null;
+  this.iframes = [];
+  this.count = 0;
 
   var thisDialog = this;
 
@@ -142,11 +144,46 @@ function QubitDialog(table, options, $)
   this.yuiDialog.showEvent.unsubscribeAll();
 
   // Append hidden fields to form on submit
-  $(this.form).submit(function ()
+  this.onSubmit = function (event)
+  {
+    event.preventDefault();
+    thisDialog.appendHiddenFields();
+
+    // Apply selector to <iframe/> contents, update value
+    // of selected element with value of the autocomplete
+    // <input/>, and submit selected element's form
+    var iframe;
+    while (iframe = thisDialog.iframes.shift())
     {
-      thisDialog.appendHiddenFields();
+      thisDialog.count++;
+
+      $($(iframe.selector, iframe.iframe[0].contentWindow.document).val(iframe.value)[0].form).submit();
     }
-  );
+
+    // If no iframes, just submit
+    if (0 == thisDialog.count)
+    {
+      thisDialog.done();
+    }
+  }
+
+  // Bind onSubmit method
+  $(this.form).submit(this.onSubmit);
+
+  // Wait for all iframes to finish before submitting main form
+  this.done = function()
+  {
+    // Decrement count of listeners and submit if all done
+    if (1 > --this.count)
+    {
+      $(thisDialog.form)
+
+        // Unbind submit listeners to avoid triggering again
+        .unbind('submit', this.onSubmit)
+
+        .submit();
+    }
+  }
 
   /*
    * Methods
@@ -198,13 +235,13 @@ function QubitDialog(table, options, $)
   {
     if (undefined == arguments[0])
     {
-      // If no 'id' passed as argument then create unique id and skip the 
+      // If no 'id' passed as argument then create unique id and skip the
       // data load
       this.id = 'new' + this.instances++;
     }
     else
     {
-      this.id = arguments[0]; 
+      this.id = arguments[0];
     }
 
     if (0 == arguments.length)
@@ -228,10 +265,9 @@ function QubitDialog(table, options, $)
     }
     else
     {
-      var id = arguments[0]; 
+      var id = arguments[0];
     }
 
-    var callback = undefined;
     if (1 < arguments.length)
     {
       var callback = arguments[1];
@@ -273,11 +309,11 @@ function QubitDialog(table, options, $)
     }
   }
 
-  this.updateDialog = function () 
+  this.updateDialog = function ()
   {
     var thisId = arguments[0];
     var thisData = arguments[1];
-    var callback = arguments[2]; 
+    var callback = arguments[2];
 
     if (undefined == this.data[thisId])
     {
@@ -294,8 +330,8 @@ function QubitDialog(table, options, $)
       if ($(this.fields[fieldname]).next('input').hasClass('form-autocomplete'))
       {
         var hiddenInput = this.fields[fieldname];
-        
-        // First check if a 'Display' value is include in "thisData" 
+
+        // First check if a 'Display' value is include in "thisData"
         var displayField = fieldname.substr(0, fieldname.length-1)+'Display]';
         if (undefined != thisData[displayField])
         {
@@ -303,7 +339,7 @@ function QubitDialog(table, options, $)
         }
         else if (0 < hiddenInput.value.length)
         {
-          // If necessary, get name via Ajax request to show page 
+          // If necessary, get name via Ajax request to show page
           var dataSource = new YAHOO.util.XHRDataSource(hiddenInput.value);
           dataSource.responseType = YAHOO.util.DataSourceBase.TYPE_TEXT;
           dataSource.parseTextData = function (request, response)
@@ -320,7 +356,7 @@ function QubitDialog(table, options, $)
           }
 
           // Set visible input field of yui-autocomplete
-          dataSource.sendRequest(null, myCallback); 
+          dataSource.sendRequest(null, myCallback);
         }
       }
     }
@@ -333,6 +369,69 @@ function QubitDialog(table, options, $)
 
   this.save = function (yuiDialogData)
   {
+    $(thisDialog.table).find('input.form-autocomplete').each(function ()
+      {
+        $hidden = $(this).prev('input:hidden');
+
+        // Test for existing iframe
+        for (var i in thisDialog.iframes)
+        {
+          if (thisDialog.id == thisDialog.iframes[i].dialogId && $hidden.attr('name') == thisDialog.iframes[i].inputName)
+          {
+            var index = i;
+          }
+        }
+
+        // Test if autocomplete has a value
+        if (0 < this.value.length)
+        {
+          // If no URI is set, then selecting unmatched value
+          if (0 == $hidden.val().length)
+          {
+            // Store display value
+            var dname = $hidden.attr('name');
+            dname = dname.substr(0, dname.length-1)+'Display]';
+            yuiDialogData[dname] = this.value;
+
+            // Allowing adding new values via iframe
+            var value = $('~ .add', this).val();
+            if (value)
+            {
+              var components = value.split(' ', 2);
+
+              if (undefined == index)
+              {
+                // Add hidden <iframe/> for each new choice
+                $iframe = $('<iframe src="' + components[0] + '"/>')
+                  .width(0)
+                  .height(0)
+                  .css('border', 0)
+                  .appendTo('body');
+
+                thisDialog.iframes.push({
+                  'dialogId': thisDialog.id,
+                  'inputName': $(this).prev('input:hidden').attr('name'),
+                  'iframe': $iframe,
+                  'selector': components[1],
+                  'value': this.value
+                });
+              }
+              else
+              {
+                // Update existing iframe
+                thisDialog.iframes[index].value = this.value;
+              }
+            }
+          }
+
+          // Remove iframe if selecting a pre-existing value
+          else if (undefined != index && this.value != thisDialog.iframes[index].iframe.value)
+          {
+            delete thisDialog.iframes[index];
+          }
+        }
+      } );
+
     this.data[this.id] = yuiDialogData;
 
     return this;
@@ -466,7 +565,6 @@ function QubitDialog(table, options, $)
   this.appendHiddenFields = function ()
   {
     // Build hidden form input fields
-    var newHiddens = '';
     var i = 0;
     if (null != this.fieldPrefix)
     {
@@ -486,16 +584,14 @@ function QubitDialog(table, options, $)
       if (null != id && 'new' != id.substr(0,3))
       {
         var name = outputPrefix + '[' + i + '][id]';
-        newHiddens += '<input type="hidden" name="' + name + '" value="' + id + '" />\n';
+        $(this.form).append('<input type="hidden" name="' + name + '" value="' + id + '" />');
       }
 
-      // Convert all event data into a hidden input fields
+      // Convert all event data into hidden input fields
       for (var j in thisData)
       {
-        var name = j;
-        var matches = name.match(this.fieldNameFilter);
-
         // Format name according to input and output name formats
+        var matches = j.match(this.fieldNameFilter);
         if (null != matches)
         {
           name = outputPrefix + '[' + i + '][' + matches[2] + ']';
@@ -505,7 +601,24 @@ function QubitDialog(table, options, $)
           name = outputPrefix + '[' + i + '][' + name + ']';
         }
 
-        newHiddens += '<input type="hidden" name="' + name + '" value="' + thisData[j] + '" />\n';
+        var $hidden = $('<input type="hidden" name="' + name + '" value="' + thisData[j] + '" />');
+        $hidden.appendTo(this.form);
+
+        // Update this value from iframe
+        for(var k in this.iframes)
+        {
+          if (id == this.iframes[k].dialogId && j == this.iframes[k].inputName)
+          {
+            this.iframes[k].iframe.one('load', {'hdn': $hidden}, function (e)
+              {
+                // Update value of hidden input with URI of new resource
+                e.data.hdn.val(this.contentWindow.document.location);
+
+                // Decrement count of listeners and submit if all done
+                thisDialog.done();
+              } );
+          }
+        }
       }
       i++;
     }
@@ -513,9 +626,8 @@ function QubitDialog(table, options, $)
     // Delete relations that have been removed
     for (var k=0; k < this.deletes.length; k++)
     {
-      newHiddens += '<input type="hidden" name="deleteRelations[' + this.deletes[k] + ']" value="delete" />';
+      $(this.form).append('<input type="hidden" name="deleteRelations[' + this.deletes[k] + ']" value="delete" />');
     }
-
-    $(this.form).append(newHiddens);
   }
+
 }

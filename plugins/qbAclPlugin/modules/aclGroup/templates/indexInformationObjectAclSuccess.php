@@ -22,9 +22,9 @@
       <tr>
         <td colspan="<?php echo $tableCols ?>"><strong>
         <?php if ('' == $repoId && '' == $objectId): ?>
-          <em><?php echo __('All archival descriptions') ?></em>
+          <em><?php echo __('All %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></em>
         <?php elseif ('' != $repoId): ?> 
-          <?php echo __('Repository: %1%', array('%1%' => render_title(QubitRepository::getById($repoId)))) ?>
+          <?php echo __('%1%: %2%', array('%1%' => sfConfig::get('app_ui_label_repository'), '%2%' => render_title(QubitRepository::getById($repoId)))) ?>
         <?php else: ?>
           <?php echo render_title(QubitInformationObject::getById($objectId)) ?>
         <?php endif; ?>

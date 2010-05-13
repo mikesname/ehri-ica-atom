@@ -17,6 +17,46 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+class sfInstallDatabaseConfigHandler extends sfDatabaseConfigHandler
+{
+  public static
+    $options;
+
+  public static function getConfiguration(array $files)
+  {
+    $config = parent::getConfiguration($files);
+
+    $config['propel']['class'] = 'sfPropelDatabase';
+
+    // FIXME
+    $config['propel']['param']['encoding'] = 'utf8';
+
+    $config['propel']['param']['dsn'] = 'mysql:dbname='.self::$options['databaseName'];
+    
+    if (isset(self::$options['databaseHost']))
+    {
+      $config['propel']['param']['dsn'] .= ';host='.self::$options['databaseHost'];
+    }
+
+    if (isset(self::$options['databasePort']))
+    {
+      $config['propel']['param']['dsn'] .= ';port='.self::$options['databasePort'];
+    }
+
+    if (isset(self::$options['databaseUsername']))
+    {
+      $config['propel']['param']['username'] = self::$options['databaseUsername'];
+
+      if (isset(self::$options['databasePassword']))
+      {
+        $config['propel']['param']['password'] = self::$options['databasePassword'];
+      }
+    }
+
+    return $config;
+  }
+}
+
 // TODO Integrate with symfony/data/bin/check_configuration.php
 class sfInstall
 {
@@ -434,46 +474,10 @@ EOF;
   {
     $database = array();
 
-    $dsn = 'mysql:dbname='.$options['databaseName'].';host='.$options['databaseHost'];
-    if (isset($options['databasePort']))
-    {
-      $dsn .= ';port='.$options['databasePort'];
-    }
+    $configHandler = new sfInstallDatabaseConfigHandler;
 
-    $arguments = array();
-    $arguments[] = $dsn;
-
-    if (isset($options['databaseUsername']))
-    {
-      $arguments[] = $options['databaseUsername'];
-
-      if (isset($options['databasePassword']))
-      {
-        $arguments[] = $options['databasePassword'];
-      }
-    }
-
-    $dispatcher = sfContext::getInstance()->getEventDispatcher();
-    $formatter = new sfAnsiColorFormatter;
-
-    chdir(sfConfig::get('sf_root_dir'));
-
-    $configureDatabase = new sfPropelConfigureDatabaseTask($dispatcher, $formatter);
-    $configureDatabase->run($arguments);
-
-    // FIXME By instantiating a new application configuration the cache clear
-    // task may change these settings, leading to bugs in code which expects
-    // them to remain constant
-    $saveDebug = sfConfig::get('sf_debug');
-    $saveLoggingEnabled = sfConfig::get('sf_logging_enabled');
-
-    // FIXME We do not want to cache anything during install, but currently we
-    // must clear the cache after configuring the database : (
-    $cacheClear = new sfCacheClearTask($dispatcher, $formatter);
-    $cacheClear->run();
-
-    sfConfig::set('sf_debug', $saveDebug);
-    sfConfig::set('sf_logging_enabled', $saveLoggingEnabled);
+    sfInstallDatabaseConfigHandler::$options = $options;
+    file_put_contents(sfConfig::get('sf_config_dir').'/config.php', $configHandler->execute(sfProjectConfiguration::getActive()->getConfigPaths('config/databases.yml')));
 
     $databaseManager = sfContext::getInstance()->databaseManager;
 

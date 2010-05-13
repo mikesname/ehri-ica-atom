@@ -557,22 +557,16 @@ class QubitDigitalObject extends BaseDigitalObject
   /**
    * Get count of digital objects by media-type
    */
-  public static function getCount($mediaTypeId=null)
+  public static function getCount($mediaTypeId)
   {
-    $sql = 'SELECT COUNT(*) as hits FROM '.QubitDigitalObject::TABLE_NAME.'
-    WHERE '.QubitDigitalObject::PARENT_ID.' IS NULL';
+    $criteria = new Criteria;
+    $criteria->add(QubitDigitalObject::PARENT_ID, null, Criteria::ISNULL);
 
-    if (isset($mediaTypeId))
-    {
-      $sql .= ' AND '.QubitDigitalObject::MEDIA_TYPE_ID.'='.$mediaTypeId;
-    }
+    $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $mediaTypeId);
+    $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
-    $conn = Propel::getConnection();
-    $stmt = $conn->prepare($sql);
-    $stmt->execute();
-    $rs = $stmt->fetch();
-
-    return $rs['hits'];
+    return BasePeer::doCount($criteria)->fetchColumn(0);
   }
 
   /**

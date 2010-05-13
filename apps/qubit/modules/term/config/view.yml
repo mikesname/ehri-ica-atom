@@ -1,15 +1,15 @@
 browseTaxonomySuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
     
 editSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
     /vendor/yui/autocomplete/autocomplete-min:
@@ -21,15 +21,15 @@ editSuccess:
 
 listSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /sfDrupalPlugin/vendor/drupal/misc/form:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 listTaxonomySuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 indexSuccess:
   components:

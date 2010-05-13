@@ -13,11 +13,11 @@ default:
     #robots:       index, follow
 
   stylesheets:
-    /sfDrupalPlugin/vendor/drupal/modules/system/system: { media: all, position: first }
-    /sfDrupalPlugin/vendor/drupal/modules/system/system-behavior: { media: all, position: first }
-    /sfDrupalPlugin/vendor/drupal/modules/system/system-menus: { media: all, position: first }
-    /sfDrupalPlugin/vendor/drupal/themes/garland/style: { media: all, position: first }
-    /sfDrupalPlugin/vendor/drupal/themes/garland/print: { media: print, position: first }
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/system/system: { media: all, position: first }
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/system/system-behavior: { media: all, position: first }
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/system/system-menus: { media: all, position: first }
+    /plugins/sfDrupalPlugin/vendor/drupal/themes/garland/style: { media: all, position: first }
+    /plugins/sfDrupalPlugin/vendor/drupal/themes/garland/print: { media: print, position: first }
     /vendor/yui/button/assets/skins/sam/button: { position: first }
     /vendor/yui/menu/assets/skins/sam/menu: { position: first }
     form:
@@ -27,7 +27,7 @@ default:
 
   javascripts:
     /vendor/jquery:
-    /sfDrupalPlugin/vendor/drupal/misc/drupal:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/drupal:
     qubit:
     /vendor/yui/yahoo-dom-event/yahoo-dom-event:
     /vendor/yui/element/element-min:

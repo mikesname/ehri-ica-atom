@@ -34,6 +34,8 @@ class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
       return;
     }
 
+    new sfDatabaseManager($this->configuration);
+
     $criteria = new Criteria;
     $criteria->add(QubitSetting::NAME, 'plugins');
     if (1 == count($query = QubitSetting::get($criteria)))
@@ -67,6 +69,8 @@ class sfPluginAdminPluginConfiguration extends sfPluginConfiguration
         // Is this cached?
         $configuration->initializeAutoload();
         $configuration->initialize();
+
+        $this->configuration->pluginConfigurations[$name] = $configuration;
       }
 
       $this->dispatcher->connect('autoload.filter_config', array($this->configuration, 'filterAutoloadConfig'));

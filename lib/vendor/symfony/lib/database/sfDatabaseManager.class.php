@@ -62,15 +62,8 @@ class sfDatabaseManager
    */
   public function loadConfiguration()
   {
-    if ($this->configuration instanceof sfApplicationConfiguration)
-    {
-      $databases = include($this->configuration->getConfigCache()->checkConfig('config/databases.yml'));
-    }
-    else
-    {
-      $configHandler = new sfDatabaseConfigHandler();
-      $databases = $configHandler->evaluate(array($this->configuration->getRootDir().'/config/databases.yml'));
-    }
+// http://qubit-toolkit.org/wiki/index.php?title=Config
+$databases = include sfConfig::get('sf_config_dir').'/config.php';
 
     foreach ($databases as $name => $database)
     {

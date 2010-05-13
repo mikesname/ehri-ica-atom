@@ -125,4 +125,14 @@ class qubitConfiguration extends sfApplicationConfiguration
 
     return $dirs;
   }
+
+  /**
+   * @see sfProjectConfiguration
+   */
+  public function setRootDir($path)
+  {
+    parent::setRootDir($path);
+
+    $this->setWebDir($path);
+  }
 }

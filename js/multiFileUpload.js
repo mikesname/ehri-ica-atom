@@ -79,12 +79,19 @@
 
                 if (-1 < $.inArray(md5sum, memMd5))
                 {
-                  var fileName = $('input.filename', $(this)).val();
-                  $(this).addClass('multiFileUploadWarning');
+                  var fileName = $('div.multiFileUploadItem:has(input.md5sum[value=' + md5sum + ']):first div.multiFileUploadInfoFilename span.value').text();
+
+                  $(this)
+                    .addClass('multiFileUploadWarning')
+                    .find('div.messages').remove()
+                    .end().prepend('<div class=\"messages status\">' + Qubit.multiFileUpload.i18nDuplicateFile.replace('%1%', '"' + fileName + '"') + '</div>');
                 }
                 else
                 {
-                  $(this).removeClass('multiFileUploadWarning');
+                  $(this)
+                    .removeClass('multiFileUploadWarning')
+                    .find('div.messages').remove();
+
                   memMd5[memMd5.length] = md5sum;
                 }
               });

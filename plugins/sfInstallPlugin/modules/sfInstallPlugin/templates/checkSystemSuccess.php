@@ -2,8 +2,8 @@
 
 <h2>System checks</h2>
 
-<div id="progress" />
-<?php use_javascript('/sfDrupalPlugin/vendor/drupal/misc/progress') ?>
+<div id="progress"></div>
+<?php use_javascript('/plugins/sfDrupalPlugin/vendor/drupal/misc/progress') ?>
 <?php $checkHtaccessUrl = json_encode(url_for(array('module' => 'sfInstallPlugin', 'action' =>  'checkHtaccess'))) ?>
 <?php echo javascript_tag(<<<EOF
 progress = new Drupal.progressBar('checkSystem');

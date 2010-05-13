@@ -74,7 +74,7 @@ class sfDatabaseConfigHandler extends sfYamlConfigHandler
   protected function parse($configFiles)
   {
     // parse the yaml
-    $config = self::getConfiguration($configFiles);
+    $config = call_user_func(array(get_class($this), 'getConfiguration'), $configFiles);
 
     // init our data and includes arrays
     $data      = array();

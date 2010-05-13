@@ -39,30 +39,15 @@ class DigitalObjectListAction extends sfAction
     $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
     $criteria->addAsColumn('hits', 'COUNT('.QubitDigitalObject::ID.')');
     $criteria->addGroupByColumn(QubitTerm::ID);
-    $criteria->addAscendingOrderByColumn('name');
 
     // Add I18n fallback
-    $options = array();
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm', $options);
+    $criteria->addAscendingOrderByColumn('name');
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+
+    // Filter drafts
+    $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID, Criteria::INNER_JOIN);
+    $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     $this->terms = QubitTerm::get($criteria);
-
-    //determine if user has edit priviliges
-    $this->editCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'actor'))
-    {
-      $this->editCredentials = true;
-    }
-
-    //set view template
-    switch ($this->getRequestParameter('template'))
-    {
-      case 'anotherTemplate' :
-        $this->setTemplate('anotherTemplate');
-        break;
-      default :
-        //$this->setTemplate(sfConfig::get('app_default_template_mediatype_list'));
-        $this->setTemplate('list');
-    }
   }
 }

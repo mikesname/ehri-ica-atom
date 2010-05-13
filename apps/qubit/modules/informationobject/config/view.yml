@@ -4,10 +4,10 @@ editPhysicalObjectsSuccess:
 
 listSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 physicalObjects:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:

@@ -25,8 +25,10 @@ class sfProjectConfiguration
     $plugins               = array(),
     $pluginPaths           = array(),
     $overriddenPluginPaths = array(),
-    $pluginConfigurations  = array(),
     $pluginsLoaded         = false;
+
+  public
+    $pluginConfigurations  = array();
 
   static protected
     $active = null;

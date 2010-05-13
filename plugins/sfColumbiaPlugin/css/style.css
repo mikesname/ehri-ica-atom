@@ -86,13 +86,13 @@ a.currentTextNode,
 #logo,
 #name-and-slogan
 {
-  margin: 1em 0;
+  margin: 1em 0 0 0;
 }
 
-#name-and-slogan
+#name-and-slogan,
+#site-name
 {
   text-align: center;
-  width: 540px;
 }
 
 #page .browse
@@ -286,7 +286,8 @@ a.currentTextNode,
 
   color: #c30;
   opacity: 0.8;
-  padding: 0 1em;
+  padding: 0 0.4em;
+  text-align: center;
 }
 
 #site-slogan

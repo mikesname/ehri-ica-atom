@@ -2,6 +2,8 @@
 
 (function ($)
   {
+    Qubit.multiInstanceInput = Qubit.multiInstanceInput || {};
+
     // Add string method for removing trailing numeric characters
     String.prototype.trimTrailingDigits = function()
     {
@@ -127,10 +129,10 @@
 
     function addDeleteIconTd(thisElement)
     {
-      thisElement.parents('tr').find('td:last').html('<button name="delete" class="delete-small" onclick="removeTr(this); return false;" />');
+      thisElement.parents('tr').find('td:last').html('<button name="delete" class="delete-small" onclick="Qubit.multiInstanceInput.removeTr(this); return false;" />');
     }
 
-    function removeTr(thisElement)
+    Qubit.multiInstanceInput.removeTr = function (thisElement)
     {
       var thisRow = $(thisElement).parents('tr').eq(0);
       thisRow.find('td').wrapInner('<div class="niceHide"></div>');

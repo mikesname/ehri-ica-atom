@@ -2,11 +2,11 @@ editSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
   javascripts: 
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /sfDrupalPlugin/vendor/drupal/misc/form:
-    /sfDrupalPlugin/vendor/drupal/misc/textarea:
-    /sfDrupalPlugin/vendor/drupal/modules/user/user:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
     /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
@@ -19,11 +19,11 @@ editActorAclSuccess:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
     /vendor/yui/container/assets/skins/sam/container: { position: first }
   javascripts: 
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /sfDrupalPlugin/vendor/drupal/misc/form:
-    /sfDrupalPlugin/vendor/drupal/misc/textarea:
-    /sfDrupalPlugin/vendor/drupal/modules/user/user:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
     /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
@@ -38,11 +38,11 @@ editInformationObjectAclSuccess:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
     /vendor/yui/container/assets/skins/sam/container: { position: first }
   javascripts: 
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /sfDrupalPlugin/vendor/drupal/misc/form:
-    /sfDrupalPlugin/vendor/drupal/misc/textarea:
-    /sfDrupalPlugin/vendor/drupal/modules/user/user:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
     /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
@@ -57,11 +57,11 @@ editTermAclSuccess:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
     /vendor/yui/container/assets/skins/sam/container: { position: first }
   javascripts: 
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /sfDrupalPlugin/vendor/drupal/misc/form:
-    /sfDrupalPlugin/vendor/drupal/misc/textarea:
-    /sfDrupalPlugin/vendor/drupal/modules/user/user:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
     /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
@@ -73,24 +73,24 @@ editTermAclSuccess:
 
 listSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 indexActorAclSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
  
 indexTermAclSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 indexInformationObjectAclSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /sfDrupalPlugin/vendor/drupal/misc/tableheader:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 passwordEditSuccess:
   javascripts:
-    /sfDrupalPlugin/vendor/drupal/modules/user/user:
+    /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:

@@ -46,8 +46,8 @@ EOF
         <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
 
           <td>
-            <?php if (file_exists($plugin->getRootDir().'/web/images/image.png')): ?>
-              <?php echo image_tag('/'.$name.'/images/image', array('alt' => $name)) ?>
+            <?php if (file_exists($plugin->getRootDir().'/images/image.png')): ?>
+              <?php echo image_tag('/plugins/'.$name.'/images/image', array('alt' => $name)) ?>
             <?php endif; ?>
 
             <h2><?php echo $name ?></h2>

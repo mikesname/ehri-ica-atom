@@ -308,6 +308,7 @@
                   {
                     // Split into URI and selector like jQuery load()
                     var components = value.split(' ', 2);
+                    var $iframe;
 
                     if (!$(select).attr('multiple'))
                     {
@@ -318,7 +319,7 @@
                       //
                       // Append to <body/> instead of insert after <select/> to
                       // avoid interfering with tabbing between inputs
-                      var $iframe = $('<iframe src="' + components[0] + '"/>')
+                      $iframe = $('<iframe src="' + components[0] + '"/>')
                         .width(0)
                         .height(0)
                         .css('border', 0)
@@ -377,7 +378,7 @@
                             }
 
                             // Add hidden <iframe/> for each new choice
-                            var $iframe = $('<iframe src="' + components[0] + '"/>')
+                            $iframe = $('<iframe src="' + components[0] + '"/>')
                               .width(0)
                               .height(0)
                               .css('border', 0)
@@ -470,7 +471,22 @@
                           // This is because listeners have the same name in
                           // each scope, and it will get overridden if the if
                           // statement evaluates
-                          $(form).submit(submit);
+                          if (0 == $input.parents('div.yui-dialog').length)
+                          {
+                            $(form).submit(submit);
+                          }
+                          else
+                          {
+                            // Clear hidden field value when selecting an un-
+                            // matched value in a dialog
+                            $hidden.val('');
+
+                            // Link input to iframe for dialog submit behaviour
+                            if (undefined == $input.data('iframe'))
+                            {
+                              $input.data('iframe', $iframe);
+                            }
+                          }
                         }
                         else
                         {

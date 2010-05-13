@@ -27,13 +27,13 @@ class sfClassicPluginConfiguration extends sfPluginConfiguration
   {
     $context = $event->getSubject();
 
-    $context->response->addStylesheet('/sfClassicPlugin/css/main', 'last', array('media' => 'all'));
-    $context->response->addStylesheet('/sfClassicPlugin/css/style', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/plugins/sfClassicPlugin/css/main', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/plugins/sfClassicPlugin/css/style', 'last', array('media' => 'all'));
 
-    $context->response->addStylesheet('/sfCaribouPlugin/css/print', 'last', array('media' => 'print'));
-    $context->response->addStylesheet('/sfClassicPlugin/css/print', 'last', array('media' => 'print'));
+    $context->response->addStylesheet('/plugins/sfCaribouPlugin/css/print', 'last', array('media' => 'print'));
+    $context->response->addStylesheet('/plugins/sfClassicPlugin/css/print', 'last', array('media' => 'print'));
 
-    $context->response->addStylesheet('/sfCaribouPlugin/css/print-ie', 'last', array('condition' => 'IE', 'media' => 'print'));
+    $context->response->addStylesheet('/plugins/sfCaribouPlugin/css/print-ie', 'last', array('condition' => 'IE', 'media' => 'print'));
   }
 
   /**
