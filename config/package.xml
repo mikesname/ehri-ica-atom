@@ -4,7 +4,7 @@
   <channel>pear.qubit-toolkit.org</channel>
   <summary>Open archival description system</summary>
   <description>
-ICA-AtoM is web-based archival description software that is based on International Council on Archives (ICA) standards.  'AtoM' is an acronymn for 'Access to Memory'.  ICA-AtoM is multi-lingual and supports multi-repository collections.
+ICA-AtoM is web-based archival description software that is based on International Council on Archives (ICA) standards. "AtoM" is an acronymn for "Access to Memory". ICA-AtoM is multilingual and supports multi-repository collections.
   </description>
   <lead>
     <name>Jack Bates</name>
@@ -27,11 +27,14 @@ ICA-AtoM is web-based archival description software that is based on Internation
     <file name="apps/qubit//*" role="php"/>
     <file name="config//*" role="data"/>
     <file name="COPYRIGHT" role="doc"/>
+    <file name="css//*" role="data"/>
     <file name="data//*" role="data"/>
+    <file name="images//*" role="data"/>
 
-    <!-- Do not use www role, this file is not intended for the web root -->
+    <!-- Don't use www role, this file is not intended for the web root -->
     <file name="index.php" role="php"/>
 
+    <file name="js//*" role="data"/>
     <file name="lib//*" role="php"/>
     <file name="lib/vendor/symfony/data//*" role="data"/>
     <file name="LICENSE" role="doc"/>
@@ -39,7 +42,8 @@ ICA-AtoM is web-based archival description software that is based on Internation
     <file name="README" role="doc"/>
     <file name="symfony" role="script"/>
     <file name="test//*" role="test"/>
-    <file name="web//*" role="data"/>
+    <file name="uploads//*" role="data"/>
+    <file name="vendor//*" role="php"/>
   </contents>
   <dependencies>
     <required>

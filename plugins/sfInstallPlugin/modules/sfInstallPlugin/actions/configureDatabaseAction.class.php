@@ -15,6 +15,7 @@ class sfInstallPluginConfigureDatabaseAction extends sfAction
     $this->form->setValidator('databaseHost', new sfValidatorString);
     $this->form->setWidget('databaseHost', new sfWidgetFormInput);
 
+    $this->form->setDefault('databaseName', 'qubit');
     $this->form->setValidator('databaseName', new sfValidatorString(array('required' => true)));
     $this->form->setWidget('databaseName', new sfWidgetFormInput);
 
@@ -24,6 +25,7 @@ class sfInstallPluginConfigureDatabaseAction extends sfAction
     $this->form->setValidator('databasePort', new sfValidatorString);
     $this->form->setWidget('databasePort', new sfWidgetFormInput);
 
+    $this->form->setDefault('databaseUsername', 'root');
     $this->form->setValidator('databaseUsername', new sfValidatorString);
     $this->form->setWidget('databaseUsername', new sfWidgetFormInput);
 
