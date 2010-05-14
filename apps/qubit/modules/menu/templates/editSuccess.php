@@ -49,7 +49,7 @@
     <div class="content">
       <ul class="clearfix links">
 
-        <li><?php echo link_to(__('Cancel'), 'menu/list?page='.$page) ?></li>
+        <li><?php echo link_to(__('Cancel'), array('module' => 'menu', 'action' => 'list')) ?></li>
 
         <?php if (!$menu->isProtected()): ?>
           <li><?php echo link_to(__('Delete'), array('module' => 'menu', 'action' => 'delete', 'id' => $menu->getId()), array('confirm' => __('This action will delete this menu and all it\'s descendants. Are you sure?'))) ?></li>

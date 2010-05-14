@@ -10,11 +10,13 @@
  */
 class sfInstallPluginConfiguration extends sfPluginConfiguration
 {
-  public function contextLoadFactories(sfEvent $event)
+  public function applicationThrowException(sfEvent $event)
   {
-    $context = $event->getSubject();
+    $context = sfContext::getInstance();
 
-    if ('sfInstallPlugin' != $context->request->module)
+    // Check $event->getSubject() is PropelException?
+    if ('sfInstallPlugin' != $context->request->module
+      && !file_exists(sfConfig::get('sf_config_dir').'/config.php'))
     {
       $context->controller->redirect(array('module' => 'sfInstallPlugin'));
     }
@@ -70,18 +72,12 @@ class sfInstallPluginConfiguration extends sfPluginConfiguration
    */
   public function initialize()
   {
-    if (!file_exists(sfConfig::get('sf_config_dir').'/config.php'))
-    {
-      sfConfig::set('sf_use_database', false);
-
-      $this->dispatcher->connect('context.load_factories', array($this, 'contextLoadFactories'));
-    }
-
     // Enable sfInstallPlugin module
     $enabledModules = sfConfig::get('sf_enabled_modules');
     $enabledModules[] = 'sfInstallPlugin';
     sfConfig::set('sf_enabled_modules', $enabledModules);
 
+    $this->dispatcher->connect('application.throw_exception', array($this, 'applicationThrowException'));
     $this->dispatcher->connect('controller.change_action', array($this, 'controllerChangeAction'));
 
     // Connect event listener to add routes

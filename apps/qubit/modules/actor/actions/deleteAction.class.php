@@ -54,7 +54,7 @@ class ActorDeleteAction extends sfAction
 
       $this->actor->delete();
 
-      $this->redirect(array('module' => 'actor', 'action' => 'list'));
+      $this->redirect(array('module' => 'actor', 'action' => 'browse'));
     }
   }
 }

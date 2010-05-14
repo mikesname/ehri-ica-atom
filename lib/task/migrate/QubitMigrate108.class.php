@@ -37,7 +37,7 @@ class QubitMigrate108 extends QubitMigrate
     switch ($version)
     {
       default:
-        $this->alterQubitStaticPages();
+        $this->updateStaticPageVersionNumber();
 
       case 1:
         $this->addIsdfFunctionTypes();
@@ -76,7 +76,7 @@ class QubitMigrate108 extends QubitMigrate
         }
 
       case 4:
-        $this->alterQubitMenus();
+        $this->dropImportDigitalObjectMenu();
 
       case 5:
         $this->alterMenuRecentUpdatesToFunctions();
@@ -203,6 +203,9 @@ class QubitMigrate108 extends QubitMigrate
 
       case 37:
         $this->switchFromClassicToCaribouTheme();
+
+      case 38:
+        $this->updateEnMenuLabels();
     }
 
     // Delete "stub" objects
@@ -337,11 +340,11 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 5: Alter QubitMenu data
+   * Ver 5: Drop the "Import digital object" menu 
    *
    * @return QubitMigrate108 this object
    */
-  protected function alterQubitMenus()
+  protected function dropImportDigitalObjectMenu()
   {
     // Remove 'import digital objects' menu
     $importDigitalObjectMenuKey = $this->getRowKey('QubitMenu', 'name', 'import digital objects');
@@ -1423,18 +1426,69 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 1: Alter QubitStaticPage data
+   * Ver 39: Update menu labels to match data fixtures as of r6802 (English 
+   * only)  
    *
    * @return QubitMigrate108 this object
    */
-  protected function alterQubitStaticPages()
+  protected function updateEnMenuLabels()
+  {
+    foreach ($this->data['QubitMenu'] as $key => $row)
+    {
+      if (!isset($row['label']))
+      {
+        continue;
+      }
+
+      switch ($label = strtolower($row['label']['en']))
+      {
+        case 'information object':
+          $label = 'Information objects';
+          break;
+
+        case 'person/organization':
+          $label = 'Persons/organizations';
+          break;
+
+        case 'repository':
+          $label = 'Repositories';
+          break;
+
+        case 'term':
+          $label = 'Terms';
+          break;
+
+        case 'xml':
+          $label = 'XML';
+          break;
+
+        case 'oai':
+          $label = 'OAI';
+          break;
+
+        default:
+          $label = preg_replace('/^(\w)/e', 'strtoupper($1)', $label);
+      }
+
+      $this->data['QubitMenu'][$key]['label']['en'] = $label;
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ver 1: Update version number in static pages 
+   *
+   * @return QubitMigrate108 this object
+   */
+  protected function updateStaticPageVersionNumber()
   {
     // Update version number
     foreach ($this->data['QubitStaticPage'] as $key => $page)
     {
       if ($page['permalink'] == 'homepage' || $page['permalink'] == 'about')
       {
-        array_walk($this->data['QubitStaticPage'][$key]['content'], create_function('&$x', '$x=preg_replace(\'/1\\.0\\.8(\\.1)?/\', \'1.1\', $x);'));
+        array_walk($this->data['QubitStaticPage'][$key]['content'], create_function('&$x', '$x=preg_replace(\'/1\\.0\\.8(\\.1)?/\', \'1.0.9\', $x);'));
       }
     }
 

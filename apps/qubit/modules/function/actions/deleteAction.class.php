@@ -40,7 +40,7 @@ class FunctionDeleteAction extends sfAction
 
       $this->func->delete();
 
-      $this->redirect(array('module' => 'function', 'action' => 'list'));
+      $this->redirect(array('module' => 'function', 'action' => 'browse'));
     }
   }
 }

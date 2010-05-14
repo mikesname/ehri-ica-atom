@@ -46,7 +46,7 @@ class RepositoryDeleteAction extends sfAction
 
       $this->repository->delete();
 
-      $this->redirect(array('module' => 'repository', 'action' => 'list'));
+      $this->redirect(array('module' => 'repository', 'action' => 'browse'));
     }
   }
 }

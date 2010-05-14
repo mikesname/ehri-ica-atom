@@ -1,4 +1,4 @@
-<h1><?php echo __('Add/edit term') ?></h1>
+<h1><?php echo (isset($sf_request->id)) ? __('Edit term') : __('Create term'); ?></h1>
 
 <h1 class="label"><?php echo render_title($term) ?></h1>
 

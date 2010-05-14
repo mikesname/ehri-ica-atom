@@ -30,10 +30,7 @@ ICA-AtoM is web-based archival description software that is based on Internation
     <file name="css//*" role="data"/>
     <file name="data//*" role="data"/>
     <file name="images//*" role="data"/>
-
-    <!-- Don't use www role, this file is not intended for the web root -->
     <file name="index.php" role="php"/>
-
     <file name="js//*" role="data"/>
     <file name="lib//*" role="php"/>
     <file name="lib/vendor/symfony/data//*" role="data"/>

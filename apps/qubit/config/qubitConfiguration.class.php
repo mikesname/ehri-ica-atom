@@ -25,25 +25,42 @@ class qubitConfiguration extends sfApplicationConfiguration
   {
     $context = $event->getSubject();
 
-    // Go no further if a database connection doesn't exist, for example in
-    // install
-    if (!sfConfig::get('sf_use_database'))
-    {
-      return;
-    }
-
     $criteria = new Criteria;
     $criteria->add(QubitSetting::NAME, 'siteTitle');
-    if (1 == count($query = QubitSetting::get($criteria)))
+
+    try
     {
-      $context->response->addMeta('title', $query[0]->__get('value', array('cultureFallback' => true)));
+      if (1 == count($query = QubitSetting::get($criteria)))
+      {
+        $context->response->addMeta('title', $query[0]->__get('value', array('cultureFallback' => true)));
+      }
+    }
+    catch (PropelException $e)
+    {
+      // Silently swallow PropelException in install
+      if ('sfInstallPlugin' != $context->request->module)
+      {
+        throw $e;
+      }
     }
 
     $criteria = new Criteria;
     $criteria->add(QubitSetting::NAME, 'siteDescription');
-    if (1 == count($query = QubitSetting::get($criteria)))
+
+    try
     {
-      $context->response->addMeta('description', $query[0]->__get('value', array('cultureFallback' => true)));
+      if (1 == count($query = QubitSetting::get($criteria)))
+      {
+        $context->response->addMeta('description', $query[0]->__get('value', array('cultureFallback' => true)));
+      }
+    }
+    catch (PropelException $e)
+    {
+      // Silently swallow PropelException in install
+      if ('sfInstallPlugin' != $context->request->module)
+      {
+        throw $e;
+      }
     }
 
     foreach (array('actor_template', 'informationobject_template', 'repository_template') as $name)
@@ -57,9 +74,21 @@ class qubitConfiguration extends sfApplicationConfiguration
         $criteria = new Criteria;
         $criteria->add(QubitSetting::NAME, substr($name, 0, -9));
         $criteria->add(QubitSetting::SCOPE, 'default_template');
-        if (1 == count($query = QubitSetting::get($criteria)))
+
+        try
         {
-          $context->routing->setDefaultParameter($name, $query[0]->__get('value', array('sourceCulture' => true)));
+          if (1 == count($query = QubitSetting::get($criteria)))
+          {
+            $context->routing->setDefaultParameter($name, $query[0]->__get('value', array('sourceCulture' => true)));
+          }
+        }
+        catch (PropelException $e)
+        {
+          // Silently swallow PropelException in install
+          if ('sfInstallPlugin' != $context->request->module)
+          {
+            throw $e;
+          }
         }
       }
     }
