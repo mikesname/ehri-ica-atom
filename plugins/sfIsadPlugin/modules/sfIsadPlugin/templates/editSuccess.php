@@ -33,15 +33,15 @@
 
     <?php echo $form->identifier
       ->help(__('Provide a specific local reference code, control number, or other unique identifier. The country and repository code will be automatically added from the linked Repository record to form a full reference code.'))
-      ->label(__('Identifier').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
+      ->label(__('Identifier').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
     <?php echo render_field($form->title
       ->help(__('Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.'))
-      ->label(__('Title').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $object) ?>
+      ->label(__('Title').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $object) ?>
 
     <div class="form-item">
-      <label for="dates"><?php echo __('Date(s)') ?><span class="form-required" title="<?php __('This is a mandatory element.') ?>">*</span></label>
+      <label for="dates"><?php echo __('Date(s)') ?> <span class="form-required" title="<?php __('This is a mandatory element.') ?>">*</span></label>
       <table class="inline">
         <thead>
           <tr>
@@ -110,14 +110,14 @@
 
     <?php echo $form->levelOfDescription
       ->help(__('Record the level of this unit of description.'))
-      ->label(__('Level of description').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
+      ->label(__('Level of description').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
     <?php echo get_partial('informationobject/childLevels') ?>
 
     <?php echo render_field($form->extentAndMedium
       ->help(__('Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description. Seperate multiple extents with a linebreak.'))
-      ->label(__('Extent and medium').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $object, array('class' => 'resizable')) ?>
+      ->label(__('Extent and medium').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $object, array('class' => 'resizable')) ?>
 
   </fieldset> <!-- /#identityArea -->
 
@@ -127,7 +127,7 @@
 
     <div class="form-item">
       <?php echo $form->creators
-        ->label(__('Name of creator(s)').'<span class="form-required" title="'.__('This archival description, or one of its higher levels, requires at least one creator.').'">*</span>')
+        ->label(__('Name of creator(s)').' <span class="form-required" title="'.__('This archival description, or one of its higher levels, requires at least one creator.').'">*</span>')
         ->renderLabel() ?>
       <?php echo $form->creators->render(array('class' => 'form-autocomplete')) ?>
       <?php echo $form->creators

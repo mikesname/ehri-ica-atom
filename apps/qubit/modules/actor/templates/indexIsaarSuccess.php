@@ -68,27 +68,21 @@
 <?php echo render_show(__('General context'), render_value($actor->getGeneralContext(array('cultureFallback' => true)))) ?>
 
 <?php foreach ($actor->getActorRelations() as $relation): ?>
+  <?php $relatedActor = $relation->getOpposedObject($actor->id) ?>
   <div class="field">
     <h3><?php echo __('Related entity') ?></h3>
     <div>
-
-      <?php if ($actor->id == $relation->object->id): ?>
-        <?php echo link_to($relation->subject, array($relation->subject, 'module' => 'actor')) ?><?php if ($existence = $relation->subject->getDatesOfExistence(array('cultureFallback' => true))): ?> <span class="note2">(<?php echo render_value($existence) ?>)</span><?php endif; ?>
-      <?php else: ?>
-        <?php echo link_to($relation->object, array($relation->object, 'module' => 'actor')) ?>
-        <?php if ($existence = $relation->object->getDatesOfExistence(array('cultureFallback' => true))): ?><span class="note2"> (<?php echo render_value($existence) ?>)</span><?php endif; ?>
-      <?php endif; ?>
+      <?php echo link_to($relatedActor, array($relatedActor, 'module' => 'actor')) ?><?php if ($existence = $relatedActor->getDatesOfExistence(array('cultureFallback' => true))): ?> <span class="note2">(<?php echo render_value($existence) ?>)</span><?php endif; ?>
 
       <table class="inline" style="margin-top: 5px">
-
-        <?php if (isset($relation->object->corporateBodyIdentifiers)): ?>
+        <?php if (isset($relatedActor->descriptionIdentifier)): ?>
           <tr>
             <th style="text-align: left; padding: 1px">
               <?php echo __('Identifier of the related entity') ?>
             </th>
           </tr><tr>
             <td>
-              <?php echo render_value($relation->object->corporateBodyIdentifiers) ?>
+              <?php echo render_value($relatedActor->descriptionIdentifier) ?>
             </td>
           </tr>
         <?php endif; ?>

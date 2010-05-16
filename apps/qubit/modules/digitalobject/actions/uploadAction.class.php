@@ -25,9 +25,7 @@ class DigitalObjectUploadAction extends sfAction
     $this->informationObject = QubitInformationObject::getById($request->informationObjectId);
     if (!QubitAcl::check($this->informationObject, 'update'))
     {
-      $this->response->setStatusCode(500);
-
-      throw new sfException();
+      throw new sfException;
     }
 
     sfContext::getInstance()->getConfiguration()->loadHelpers('Qubit');
