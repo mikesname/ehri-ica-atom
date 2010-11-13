@@ -17,32 +17,66 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UserEditAction extends sfAction
+class UserEditAction extends DefaultEditAction
 {
+  // Arrays not allowed in class constants
   public static
     $NAMES = array(
-      'username',
-      'email',
-      'password',
       'confirmPassword',
+      'email',
       'groups',
-      'translate');
+      'password',
+      'translate',
+      'username');
+
+  protected function earlyExecute()
+  {
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+    $this->form->getValidatorSchema()->setPostValidator(new sfValidatorSchemaCompare(
+      'password', '==', 'confirmPassword',
+      array(),
+      array('invalid' => $this->context->i18n->__('Your password confirmation did not match you password.'))));
+
+    $this->resource = new QubitUser;
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+    }
+
+    // HACK: because $this->user->getAclPermissions() is erroneously calling
+    // QubitObject::getaclPermissionsById()
+    $this->permissions = null;
+    if (isset($this->resource->id))
+    {
+      $permissions = QubitUser::getaclPermissionsById($this->resource->id, array('self' => $this))->orderBy('constants')->orderBy('object_id');
+
+      foreach ($permissions as $item)
+      {
+        $repoId = $item->getConstants(array('name' => 'repositoryId'));
+        $this->permissions[$repoId][$item->objectId][$item->action] = $item->grantDeny;
+      }
+    }
+
+    // List of actions without translate
+    $this->basicActions = QubitInformationObjectAcl::$ACTIONS;
+    unset($this->basicActions['translate']);
+  }
 
   protected function addField($name)
   {
     switch ($name)
     {
       case 'username':
-        $this->form->setDefault($name, $this->user[$name]);
-        $this->form->setValidator($name, new sfValidatorString(array('required' => true)));
-        $this->form->setWidget($name, new sfWidgetFormInput);
+        $this->form->setDefault('username', $this->resource->username);
+        $this->form->setValidator('username', new sfValidatorString(array('required' => true)));
+        $this->form->setWidget('username', new sfWidgetFormInput);
 
         break;
 
       case 'email':
-        $this->form->setDefault($name, $this->user[$name]);
-        $this->form->setValidator($name, new sfValidatorEmail(array('required' => true)));
-        $this->form->setWidget($name, new sfWidgetFormInput);
+        $this->form->setDefault('email', $this->resource->email);
+        $this->form->setValidator('email', new sfValidatorEmail(array('required' => true)));
+        $this->form->setWidget('email', new sfWidgetFormInput);
 
         break;
 
@@ -50,7 +84,7 @@ class UserEditAction extends sfAction
       case 'confirmPassword':
         $this->form->setDefault($name, null);
         // Required field only if a new user is being created
-        $this->form->setValidator($name, new sfValidatorString(array('required' => !isset($this->request->id))));
+        $this->form->setValidator($name, new sfValidatorString(array('required' => !isset($this->getRoute()->resource))));
         $this->form->setWidget($name, new sfWidgetFormInputPassword);
 
         break;
@@ -58,42 +92,42 @@ class UserEditAction extends sfAction
       case 'groups':
         $values = array();
         $criteria = new Criteria;
-        $criteria->add(QubitAclUserGroup::USER_ID, $this->user->id, Criteria::EQUAL);
-        foreach (QubitAclUserGroup::get($criteria) as $userGroup)
+        $criteria->add(QubitAclUserGroup::USER_ID, $this->resource->id);
+        foreach (QubitAclUserGroup::get($criteria) as $item)
         {
-          $values[] = $userGroup->groupId;
+          $values[] = $item->groupId;
         }
 
         $choices = array();
         $criteria = new Criteria;
         $criteria->add(QubitAclGroup::ID, 99, Criteria::GREATER_THAN);
-        foreach (QubitAclGroup::get($criteria) as $group)
+        foreach (QubitAclGroup::get($criteria) as $item)
         {
-          $choices[$group->id] = $group->getName(array('cultureFallback' => true));
+          $choices[$item->id] = $item->getName(array('cultureFallback' => true));
         }
 
-        $this->form->setDefault($name, $values);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+        $this->form->setDefault('groups', $values);
+        $this->form->setValidator('groups', new sfValidatorPass);
+        $this->form->setWidget('groups', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
 
         break;
 
       case 'translate':
-        $c = sfCultureInfo::getInstance($this->getContext()->getUser()->getCulture());
+        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
         $languages = $c->getLanguages();
 
         $choices = array();
         if (0 < count($langSettings = QubitSetting::getByScope('i18n_languages')))
         {
-          foreach ($langSettings as $setting)
+          foreach ($langSettings as $item)
           {
-            $choices[$setting->name] = $languages[$setting->name];
+            $choices[$item->name] = $languages[$item->name];
           }
         }
 
         // Find existing translate permissions
         $criteria = new Criteria;
-        $criteria->add(QubitAclPermission::USER_ID, $this->user->id);
+        $criteria->add(QubitAclPermission::USER_ID, $this->resource->id);
         $criteria->add(QubitAclPermission::ACTION, 'translate');
 
         $defaults = null;
@@ -102,9 +136,9 @@ class UserEditAction extends sfAction
           $defaults = $permission->getConstants(array('name' => 'languages'));
         }
 
-        $this->form->setDefault($name, $defaults);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices'  => $choices, 'multiple' => true)));
+        $this->form->setDefault('translate', $defaults);
+        $this->form->setValidator('translate', new sfValidatorPass);
+        $this->form->setWidget('translate', new sfWidgetFormSelect(array('choices'  => $choices, 'multiple' => true)));
 
         break;
     }
@@ -115,9 +149,10 @@ class UserEditAction extends sfAction
     switch ($name = $field->getName())
     {
       case 'password':
+
         if (0 < strlen(trim($this->form->getValue('password'))))
         {
-          $this->user->setPassword($this->form->getValue('password'));
+          $this->resource->setPassword($this->form->getValue('password'));
         }
 
         break;
@@ -131,9 +166,9 @@ class UserEditAction extends sfAction
 
         if (null != ($groups = $this->form->getValue('groups')))
         {
-          foreach ($groups as $groupId)
+          foreach ($groups as $item)
           {
-            $newGroupIds[$groupId] = $formGroupIds[$groupId] = $groupId;
+            $newGroupIds[$item] = $formGroupIds[$item] = $item;
           }
         }
         else
@@ -143,24 +178,24 @@ class UserEditAction extends sfAction
 
         // Don't re-add existing groups + delete exiting groups that are no longer
         // in groups list
-        foreach ($this->user->aclUserGroups as $existingUserGroup)
+        foreach ($this->resource->aclUserGroups as $item)
         {
-          if (in_array($existingUserGroup->groupId, $formGroupIds))
+          if (in_array($item->groupId, $formGroupIds))
           {
-            unset($newGroupIds[$existingUserGroup->groupId]);
+            unset($newGroupIds[$item->groupId]);
           }
           else
           {
-            $existingUserGroup->delete();
+            $item->delete();
           }
         }
 
-        foreach ($newGroupIds as $groupId)
+        foreach ($newGroupIds as $item)
         {
           $userGroup = new QubitAclUserGroup;
-          $userGroup->groupId = $groupId;
+          $userGroup->groupId = $item;
 
-          $this->user->aclUserGroups[] = $userGroup;
+          $this->resource->aclUserGroups[] = $userGroup;
         }
 
         break;
@@ -169,14 +204,14 @@ class UserEditAction extends sfAction
         $languages = $this->form->getValue('translate');
 
         $criteria = new Criteria;
-        $criteria->add(QubitAclPermission::USER_ID, $this->user->id);
+        $criteria->add(QubitAclPermission::USER_ID, $this->resource->id);
         $criteria->addAnd(QubitAclPermission::USER_ID, null, Criteria::ISNOTNULL);
         $criteria->add(QubitAclPermission::ACTION, 'translate');
 
         if (null === $permission = QubitAclPermission::getOne($criteria))
         {
           $permission = new QubitAclPermission;
-          $permission->userId = $this->user->id;
+          $permission->userId = $this->resource->id;
           $permission->action = 'translate';
           $permission->grantDeny = 1;
           $permission->conditional = 'in_array(%p[language], %k[languages])';
@@ -196,70 +231,13 @@ class UserEditAction extends sfAction
         break;
 
       default:
-        $this->user[$name] = $this->form->getValue($name);
+        $this->resource[$name] = $this->form->getValue($name);
     }
-  }
-
-  protected function processForm()
-  {
-    foreach ($this->form as $field)
-    {
-      $this->processField($field);
-    }
-
-    // Save changes
-    $this->user->save();
-
-    return $this;
   }
 
   public function execute($request)
   {
-    $this->form = new sfForm;
-
-    $this->user = new QubitUser;
-
-    if (isset($this->request->id))
-    {
-      $this->user = QubitUser::getById($this->request->id);
-
-      if (!isset($this->user))
-      {
-        $this->forward404();
-      }
-    }
-
-    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
-    $this->form->getValidatorSchema()->setPostValidator(new sfValidatorSchemaCompare(
-      'password', '==', 'confirmPassword',
-      array(),
-      array('invalid' => 'Your password confirmation did not match you password.')));
-
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
-    {
-      $this->addField($name);
-    }
-
-    // HACK: because $this->user->getAclPermissions() is erroneously calling
-    // QubitObject::getaclPermissionsById()
-    $this->permissions = null;
-    if (isset($request->id))
-    {
-      $permissions = QubitUser::getaclPermissionsById($this->user->id, array('self' => $this))->orderBy('constants')->orderBy('object_id');
-
-      foreach ($permissions as $item)
-      {
-        $repoId = $item->getConstants(array('name' => 'repositoryId'));
-        $this->permissions[$repoId][$item->objectId][$item->action] = $item->grantDeny;
-      }
-    }
-
-    // List of actions without translate
-    $this->basicActions = QubitInformationObjectAcl::$ACTIONS;
-    unset($this->basicActions['translate']);
+    parent::execute($request);
 
     if ($request->isMethod('post'))
     {
@@ -269,7 +247,9 @@ class UserEditAction extends sfAction
       {
         $this->processForm();
 
-        $this->redirect(array($this->user, 'module' => 'user'));
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'user'));
       }
     }
   }

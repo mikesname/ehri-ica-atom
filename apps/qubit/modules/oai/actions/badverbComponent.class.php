@@ -32,7 +32,7 @@ class OaiBadVerbComponent extends sfComponent
     $request->setRequestFormat('xml');
     $this->date = gmdate('Y-m-d\TH:i:s\Z');
     $this->path = $request->getUriPrefix().$request->getPathInfo();
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';

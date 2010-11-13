@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_contact_information' table.
+ * This class defines the structure of the 'contact_information' table.
  *
  *
  *
@@ -30,13 +30,13 @@ class ContactInformationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_contact_information');
+		$this->setName('contact_information');
 		$this->setPhpName('contactInformation');
 		$this->setClassname('QubitContactInformation');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'q_actor', 'ID', true, null, null);
+		$this->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'actor', 'ID', true, null, null);
 		$this->addColumn('PRIMARY_CONTACT', 'primaryContact', 'BOOLEAN', false, null, null);
 		$this->addColumn('CONTACT_PERSON', 'contactPerson', 'VARCHAR', false, 255, null);
 		$this->addColumn('STREET_ADDRESS', 'streetAddress', 'LONGVARCHAR', false, null, null);

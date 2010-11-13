@@ -6,6 +6,7 @@ propel:
     description_status_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     description_detail_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     description_identifier: varchar(255)
+    source_standard: varchar(255)
     parent_id: { type: integer, foreignTable: actor, foreignReference: id }
     lft: { type: integer, required: true, nestedSetLeftKey: true }
     rgt: { type: integer, required: true, nestedSetRightKey: true }
@@ -24,7 +25,7 @@ propel:
     rules: longvarchar
     sources: longvarchar
     revision_history: longvarchar
-    
+
   contact_information:
     actor_id: { type: integer, required: true, foreignTable: actor, foreignReference: id, onDelete: cascade }
     primary_contact: boolean
@@ -76,7 +77,7 @@ propel:
   event_i18n:
     name: varchar(255)
     description: longvarchar
-    date_display: varchar(255)
+    date: varchar(255)
 
   function:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
@@ -85,21 +86,22 @@ propel:
     description_status_id: { type: integer, foreignTable: term, foreignReference: id }
     description_detail_id: { type: integer, foreignTable: term, foreignReference: id }
     description_identifier: varchar(255)
+    source_standard: varchar(255)
     lft: integer
     rgt: integer
 
   function_i18n:
-    authorized_form_of_name: { type: varchar(255) }
-    classification: varchar(255) 
+    authorized_form_of_name: varchar(255)
+    classification: varchar(255)
     dates: varchar(255)
     description: longvarchar
     history: longvarchar
     legislation: longvarchar
-    institution_identifier: longvarchar 
+    institution_identifier: longvarchar
     revision_history: longvarchar
     rules: longvarchar
     sources: longvarchar
-    
+
   historical_event:
     id: { type: integer, required: true, primaryKey: true, foreignTable: term, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     type_id: { type: integer, foreignTable: term, foreignReference: id }
@@ -119,6 +121,7 @@ propel:
     description_status_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     description_detail_id: { type: integer, foreignTable: term, foreignReference: id, onDelete: setnull }
     description_identifier: varchar(255)
+    source_standard: varchar(255)
     lft: { type: integer, required: true, nestedSetLeftKey: true }
     rgt: { type: integer, required: true, nestedSetRightKey: true }
 
@@ -152,7 +155,7 @@ propel:
   map_i18n:
     title: varchar(255)
     description: longvarchar
-  
+
   menu:
     parent_id: { type: integer, foreignTable: menu, foreignReference: id, onDelete: cascade }
     name: varchar(255)
@@ -190,9 +193,9 @@ propel:
     metadataPrefix: varchar(255)
     set: varchar(255)
     created_at:
-  
+
   oai_repository:
-    id: 
+    id:
     name:  varchar(512)
     uri: varchar(255)
     admin_email: varchar(255)
@@ -247,7 +250,7 @@ propel:
     city: varchar(255)
     region: varchar(255)
     postal_code: varchar(255)
-  
+
   place_map_relation:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
     place_id: { type: integer, required: true, foreignTable: place, foreignReference: id, onDelete: cascade }
@@ -330,9 +333,12 @@ propel:
   setting_i18n:
     value: longvarchar
 
+  slug:
+    object_id: { type: integer, index: unique, required: true, foreignTable: object, foreignReference: id }
+    slug: { index: unique, required: true }
+
   static_page:
     id: { type: integer, required: true, primaryKey: true, foreignTable: object, foreignReference: id, onDelete: cascade, inheritanceKey: true }
-    permalink: { type: varchar(255), unique: true }
 
   static_page_i18n:
     title: varchar(255)

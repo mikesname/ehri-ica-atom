@@ -1,11 +1,13 @@
+<?php use_helper('Date') ?>
+
 <div class="section tabs">
 
   <h2 class="element-invisible"><?php echo __('Information Object Browse Options') ?></h2>
 
   <div class="content">
     <ul class="clearfix links">
-      <li<?php if ('titleDown' != $sf_request->sort && 'titleUp' != $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Recent updates'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?></li>
-      <li<?php if ('titleDown' == $sf_request->sort || 'titleUp' == $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Alphabetic'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll()) ?></li>
+      <li<?php if ('titleDown' != $sf_request->sort && 'titleUp' != $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Recent changes'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll(), array('title' => __('Sort'))) ?></li>
+      <li<?php if ('titleDown' == $sf_request->sort || 'titleUp' == $sf_request->sort): ?> class="active"<?php endif; ?>><?php echo link_to(__('Alphabetic'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll(), array('title' => __('Sort'))) ?></li>
     </ul>
   </div>
 
@@ -19,9 +21,9 @@
       <th>
         <?php echo __('Title') ?>
         <?php if ('titleDown' == $sf_request->sort): ?>
-          <?php echo link_to(image_tag('up.gif'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll()) ?>
+          <?php echo link_to(image_tag('up.gif'), array('sort' => 'titleUp') + $sf_request->getParameterHolder()->getAll(), array('title' => __('Sort'))) ?>
         <?php elseif ('titleUp' == $sf_request->sort): ?>
-          <?php echo link_to(image_tag('down.gif'), array('sort' => 'titleDown') + $sf_request->getParameterHolder()->getAll()) ?>
+          <?php echo link_to(image_tag('down.gif'), array('sort' => 'titleDown') + $sf_request->getParameterHolder()->getAll(), array('title' => __('Sort'))) ?>
         <?php endif; ?>
       </th><th>
         <?php echo __('Level') ?>
@@ -35,9 +37,9 @@
         <?php else: ?>
           <?php echo __('Updated') ?>
           <?php if ('updatedUp' == $sf_request->sort): ?>
-            <?php echo link_to(image_tag('up.gif'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll()) ?>
+            <?php echo link_to(image_tag('up.gif'), array('sort' => 'updatedDown') + $sf_request->getParameterHolder()->getAll(), array('title' => __('Sort'))) ?>
           <?php else: ?>
-            <?php echo link_to(image_tag('down.gif'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll()) ?>
+            <?php echo link_to(image_tag('down.gif'), array('sort' => 'updatedUp') + $sf_request->getParameterHolder()->getAll(), array('title' => __('Sort'))) ?>
           <?php endif; ?>
         <?php endif; ?>
       </th>
@@ -63,7 +65,7 @@
               </ul>
             <?php endif; ?>
           <?php else: ?>
-            <?php echo $item->updatedAt ?>
+            <?php echo format_date($item->updatedAt, 'f') ?>
           <?php endif; ?>
         </td>
       </tr>
@@ -75,7 +77,7 @@
 
 <div class="search">
   <form action="<?php echo url_for(array('module' => 'search')) ?>">
-    <?php echo input_tag('query', $sf_request->query) ?>
-    <?php echo submit_tag(__('Search %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject')))) ?>
+    <input name="query" value="<?php echo $sf_request->query ?>"/>
+    <input class="form-submit" type="submit" value="<?php echo __('Search %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?>"/>
   </form>
 </div>

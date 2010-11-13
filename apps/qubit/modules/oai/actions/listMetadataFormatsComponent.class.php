@@ -31,8 +31,8 @@ class OaiListMetadataFormatsComponent extends sfComponent
   {
     $request->setRequestFormat('xml');
     $this->date = gmdate('Y-m-d\TH:i:s\Z');
-    $this->path = $this->getRequest()->getUriPrefix().$this->getRequest()->getPathInfo();
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->path = $this->request->getUriPrefix().$this->request->getPathInfo();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';
@@ -52,6 +52,5 @@ class OaiListMetadataFormatsComponent extends sfComponent
     {
       $this->adminEmail[] = $user->getEmail()."\n";
     }
-
   }
 }

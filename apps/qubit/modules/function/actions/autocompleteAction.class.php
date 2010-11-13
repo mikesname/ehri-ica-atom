@@ -35,17 +35,16 @@ class FunctionAutocompleteAction extends sfAction
     }
 
     $criteria = new Criteria;
-    $criteria->addJoin(QubitFunction::ID, QubitFunctionI18n::ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitFunction::ID, null, Criteria::ISNOTNULL);
+    $criteria->addJoin(QubitFunction::ID, QubitFunctionI18n::ID);
+    $criteria->add(QubitFunctionI18n::CULTURE, $this->context->user->getCulture());
 
     if (isset($request->query))
     {
-      $criteria->add(QubitFunctionI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
+      $criteria->add(QubitFunctionI18n::AUTHORIZED_FORM_OF_NAME, "$request->query%", Criteria::LIKE);
     }
-    $criteria->add(QubitFunctionI18n::CULTURE, $this->getUser()->getCulture(), Criteria::EQUAL);
 
     // Exclude the calling function from the list
-    $params = $this->context->routing->parse(Qubit::pathInfo($request->getHttpHeader('Referer')));
+    $params = $this->context->routing->parse(Qubit::pathInfo($request->getReferer()));
     if (0 < strlen ($refId = $params['id']))
     {
       $criteria->add(QubitFunction::ID, $refId, Criteria::NOT_EQUAL);
@@ -56,9 +55,7 @@ class FunctionAutocompleteAction extends sfAction
     $this->pager->setCriteria($criteria);
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage(1);
-    $this->pager->init();
 
     $this->setTemplate('list');
   }
 }
-

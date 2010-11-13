@@ -19,7 +19,7 @@
 
 /**
  * Actor contextMenu component
- * 
+ *
  * @package qubit
  * @subpackage actor
  * @version svn: $Id$
@@ -30,10 +30,10 @@ class ActorContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->actor = QubitActor::getById($request->id);
+    $this->resource = $request->getAttribute('sf_route')->resource;
 
     $criteria = new Criteria;
-    $criteria->add(QubitEvent::ACTOR_ID, $this->actor->id);
+    $criteria->add(QubitEvent::ACTOR_ID, $this->resource->id);
     $criteria->addJoin(QubitEvent::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
     $criteria->addAscendingOrderByColumn(QubitEvent::TYPE_ID);
 
@@ -45,16 +45,9 @@ class ActorContextMenuComponent extends sfComponent
     $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     $this->relatedInfoObjects = array();
-    if (0 < count($events = QubitEvent::get($criteria)))
+    foreach (QubitEvent::get($criteria) as $item)
     {
-      foreach ($events as $event)
-      {
-        $this->relatedInfoObjects[$event->type->getRole()][] = $event->informationObject;
-      }
-    }
-    else
-    {
-      return sfView::NONE;
+      $this->relatedInfoObjects[$item->type->getRole()][] = $item->informationObject;
     }
   }
 }

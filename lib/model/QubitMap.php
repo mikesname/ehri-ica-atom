@@ -29,7 +29,7 @@ public function getPlaceRelations()
    $placeRelations = array();
 
    $criteria = new Criteria;
-   $criteria->add(QubitPlaceMapRelation::MAP_ID, $this->getId());
+   $criteria->add(QubitPlaceMapRelation::MAP_ID, $this->id);
    $placeRelations = QubitPlaceMapRelation::get($criteria);
 
    return $placeRelations;

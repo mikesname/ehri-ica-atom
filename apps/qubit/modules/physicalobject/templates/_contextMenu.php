@@ -2,15 +2,19 @@
   <h3><?php echo sfConfig::get('app_ui_label_physicalobject') ?></h3>
   <div>
     <ul>
-      <?php foreach($physicalObjects as $physicalObject): ?>
+      <?php foreach ($physicalObjects as $item): ?>
         <li>
-          <?php if (isset($physicalObject->type)): ?>
-            <?php echo $physicalObject->type ?>:
+
+          <?php if (isset($item->type)): ?>
+            <?php echo $item->type ?>:
           <?php endif; ?>
-          <?php echo link_to_if(QubitAcl::check($informationObject, 'update'), render_title($physicalObject), array($physicalObject, 'module' => 'physicalobject')) ?>
-          <?php if (isset($physicalObject->location)): ?>
-            - <?php echo $physicalObject->getLocation(array('cultureFallback' => 'true')) ?>
+
+          <?php echo link_to_if(QubitAcl::check($resource, 'update'), render_title($item), array($item, 'module' => 'physicalobject')) ?>
+
+          <?php if (isset($item->location) && $sf_user->isAuthenticated()): ?>
+            - <?php echo $item->getLocation(array('cultureFallback' => 'true')) ?>
           <?php endif; ?>
+
         </li>
       <?php endforeach; ?>
     </ul>

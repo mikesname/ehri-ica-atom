@@ -48,7 +48,6 @@
             $(this).children().hide();
           });
 
-
         table.children('tbody')
 
           // Append the row to body
@@ -123,7 +122,7 @@
 
           // Add delete button to existing rows
           $('thead tr:first', tables).append('<th>&nbsp;</th>');
-          $('tbody tr:first', tables).append('<td><button name="delete" class="delete-small" onclick="Qubit.multiRow.removeRow(this); return false;" /></td>');
+          $('tbody tr:first', tables).append('<td><button name="delete" class="delete-small" onclick="Qubit.multiRow.removeRow(this); return false;"/></td>');
 
           tables
 
@@ -149,5 +148,4 @@
                 }
               });
         }};
-
   })(jQuery);

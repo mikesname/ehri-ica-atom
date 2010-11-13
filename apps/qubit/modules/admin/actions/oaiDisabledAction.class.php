@@ -21,7 +21,7 @@ class AdminOaiDisabledAction extends sfAction
 {
   public function execute($request)
   {
-    $this->getResponse()->setStatusCode(503, 'Service Temporarily Unavailable');
-    $this->getResponse()->setHttpHeader('Retry-After', '86400');
+    $this->response->setStatusCode(503, 'Service Temporarily Unavailable');
+    $this->response->setHttpHeader('Retry-After', '86400');
   }
 }

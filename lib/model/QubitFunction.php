@@ -21,7 +21,13 @@ class QubitFunction extends BaseFunction
 {
   public function __toString()
   {
-    return $this->getAuthorizedFormOfName(array('cultureFallback' => true));
+    $string = $this->authorizedFormOfName;
+    if (!isset($string))
+    {
+      $string = $this->getAuthorizedFormOfName(array('sourceCulture' => true));
+    }
+
+    return (string) $string;
   }
 
   public function __get($name)
@@ -51,12 +57,12 @@ class QubitFunction extends BaseFunction
           }
         }
 
-        if (isset($this->values[$name]))
+        if (isset($this->values[$name]) && null !== $value = unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true))))
         {
-          return unserialize($this->values[$name]->__get('value', $options + array('sourceCulture' => true)));
+          return $value;
         }
 
-        return;
+        return array();
     }
 
     return call_user_func_array(array($this, 'BaseFunction::__get'), $args);
@@ -101,6 +107,16 @@ class QubitFunction extends BaseFunction
     }
 
     return call_user_func_array(array($this, 'BaseFunction::__set'), $args);
+  }
+
+  protected function insert($connection = null)
+  {
+    if (!isset($this->slug))
+    {
+      $this->slug = QubitSlug::slugify($this->authorizedFormOfName);
+    }
+
+    return parent::insert($connection);
   }
 
   public function getLabel()

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-04-28T12:18:22Z" product-name="messages">
+  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-11-12T09:28:03Z" product-name="messages">
     <body>
       <trans-unit id="41">
         <source>Reference code</source>
@@ -100,7 +100,7 @@
       </trans-unit>
       <trans-unit id="446">
         <source>Place</source>
-        <target/>
+        <target>local</target>
       </trans-unit>
       <trans-unit id="468">
         <source>Name</source>
@@ -128,11 +128,11 @@
       </trans-unit>
       <trans-unit id="581">
         <source>Are you sure?</source>
-        <target/>
+        <target>você tem certeza</target>
       </trans-unit>
       <trans-unit id="655">
         <source>Date(s)</source>
-        <target/>
+        <target>Data(s)</target>
       </trans-unit>
       <trans-unit id="683">
         <source>Repository</source>
@@ -144,19 +144,19 @@
       </trans-unit>
       <trans-unit id="712">
         <source>Edit</source>
-        <target/>
+        <target>editar</target>
       </trans-unit>
       <trans-unit id="714">
         <source>Delete</source>
-        <target/>
+        <target>apagar</target>
       </trans-unit>
       <trans-unit id="715">
         <source>Add new</source>
-        <target/>
+        <target>Adicionar</target>
       </trans-unit>
       <trans-unit id="716">
         <source>List all</source>
-        <target/>
+        <target>Listar todo(a)s</target>
       </trans-unit>
       <trans-unit id="723">
         <source>Description of relationship</source>
@@ -164,19 +164,19 @@
       </trans-unit>
       <trans-unit id="735">
         <source>Cancel</source>
-        <target/>
+        <target>cancelar</target>
       </trans-unit>
       <trans-unit id="736">
         <source>Save</source>
-        <target/>
+        <target>salvar</target>
       </trans-unit>
       <trans-unit id="737">
         <source>Create</source>
-        <target/>
+        <target>criar</target>
       </trans-unit>
       <trans-unit id="762">
         <source>Type</source>
-        <target/>
+        <target>tipo</target>
       </trans-unit>
       <trans-unit id="777">
         <source>Title proper</source>
@@ -276,7 +276,7 @@
       </trans-unit>
       <trans-unit id="820">
         <source>Conditions governing access</source>
-        <target/>
+        <target>Condições de acesso</target>
       </trans-unit>
       <trans-unit id="832">
         <source>Description record identifier</source>
@@ -284,11 +284,11 @@
       </trans-unit>
       <trans-unit id="841">
         <source>Format</source>
-        <target/>
+        <target>formato</target>
       </trans-unit>
       <trans-unit id="842">
         <source>Description</source>
-        <target/>
+        <target>descrição</target>
       </trans-unit>
     </body>
   </file>

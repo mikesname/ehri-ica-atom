@@ -11,12 +11,12 @@ function QubitAclDialog(dialogId, tableTemplate, $)
     '<div id="'+dialogId+'Wrapper">' +
       '<div class="hd">' + this.label + '</div>' +
       '<div class="bd">' +
-        '<form action="" method="POST" style="border: none"></form>' +
+        '<form action="" method="post" style="border: none"></form>' +
       '</div>' +
     '</div>' +
   '</div>');
 
-  $('#'+dialogId).remove().appendTo(this.wrapper.find('form')); 
+  $('#'+dialogId).remove().appendTo(this.wrapper.find('form'));
   $('#editForm').before(this.wrapper);
 
   // YUI dialog config
@@ -38,7 +38,7 @@ function QubitAclDialog(dialogId, tableTemplate, $)
         // Highlight caption of duplicate table
         var caption = $('#'+tableId+' caption');
         caption.css('background', 'yellow');
-        
+
         setTimeout(function () {
           caption.css('background', 'none');
         }, 1000);
@@ -46,13 +46,13 @@ function QubitAclDialog(dialogId, tableTemplate, $)
       else
       {
         var newTable = tableTemplate;
-        
+
         // Search and replace '{objectId}'
         while (0 <= newTable.indexOf('{objectId}'))
         {
           newTable = newTable.replace('{objectId}', objectId);
         }
-          
+
         newTable = $(newTable);
         newTable.find('caption').text(input.next('input').val());
         newTable.hide();
@@ -77,9 +77,7 @@ function QubitAclDialog(dialogId, tableTemplate, $)
     visible: false,
     modal: true,
     constraintoviewport: true,
-    postmethod: "none",
-    effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.25 }
-  }
+    postmethod: "none" }
 
   this.buttons = [
     { text: "Submit", handler: this.handleSubmit, isDefault: true },
@@ -95,10 +93,9 @@ function QubitAclDialog(dialogId, tableTemplate, $)
   this.yuiDialog.showEvent.unsubscribeAll();
 
   // Focus on first visible input field
-  this.yuiDialog.showEvent.subscribe(function () { 
+  this.yuiDialog.showEvent.subscribe(function () {
     $('#'+dialogId).find('input:visible').get(0).focus();
   }, this, true);
-
 
   // Wrap YUI dialog show method
   this.show = function()

@@ -21,6 +21,81 @@ require_once 'Zend/Acl/Resource/Interface.php';
 
 class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
 {
+  public function __isset($name)
+  {
+    $args = func_get_args();
+
+    switch ($name)
+    {
+      case 'slug':
+
+        if (!array_key_exists('slug', $this->values))
+        {
+          $connection = Propel::getConnection(QubitObject::DATABASE_NAME);
+
+          $statement = $connection->prepare('
+            SELECT '.QubitSlug::SLUG.'
+            FROM '.QubitSlug::TABLE_NAME.'
+            WHERE ? = '.QubitSlug::OBJECT_ID);
+          $statement->execute(array($this->id));
+          $row = $statement->fetch();
+          $this->values['slug'] = $row[0];
+        }
+
+        return isset($this->values['slug']);
+
+      default:
+
+        return call_user_func_array(array($this, 'BaseObject::__isset'), $args);
+    }
+  }
+
+  public function __get($name)
+  {
+    $args = func_get_args();
+
+    switch ($name)
+    {
+      case 'slug':
+
+        if (!array_key_exists('slug', $this->values))
+        {
+          $connection = Propel::getConnection(QubitObject::DATABASE_NAME);
+
+          $statement = $connection->prepare('
+            SELECT '.QubitSlug::SLUG.'
+            FROM '.QubitSlug::TABLE_NAME.'
+            WHERE ? = '.QubitSlug::OBJECT_ID);
+          $statement->execute(array($this->id));
+          $row = $statement->fetch();
+          $this->values['slug'] = $row[0];
+        }
+
+        return $this->values['slug'];
+
+      default:
+
+        return call_user_func_array(array($this, 'BaseObject::__get'), $args);
+    }
+  }
+
+  public function __set($name, $value)
+  {
+    $args = func_get_args();
+
+    switch ($name)
+    {
+      case 'slug':
+        $this->values['slug'] = $value;
+
+        return $this;
+
+      default:
+
+        return call_user_func_array(array($this, 'BaseObject::__set'), $args);
+    }
+  }
+
   public function save($connection = null)
   {
     parent::save($connection);
@@ -117,6 +192,67 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
     return $this;
   }
 
+  protected function insert($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitObject::DATABASE_NAME);
+    }
+
+    parent::insert($connection);
+
+    if (isset($this->slug))
+    {
+      $statement = $connection->prepare('
+        INSERT INTO '.QubitSlug::TABLE_NAME.' ('.QubitSlug::OBJECT_ID.', '.QubitSlug::SLUG.')
+        VALUES (?, ?)');
+
+      if (1 > strlen($this->slug))
+      {
+        $statement->execute(array($this->id, QubitSlug::random()));
+
+        return $this;
+      }
+
+      try
+      {
+        $statement->execute(array($this->id, $this->slug));
+      }
+
+      // Collision?  Try random, digit and letter slug
+      catch (PDOException $e)
+      {
+        $statement->execute(array($this->id, QubitSlug::random()));
+      }
+    }
+
+    return $this;
+  }
+
+  public function delete($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitObject::DATABASE_NAME);
+    }
+
+    $statement = $connection->prepare('
+      DELETE FROM '.QubitSlug::TABLE_NAME.'
+      WHERE '.QubitSlug::OBJECT_ID.' = ?');
+    $statement->execute(array($this->id));
+
+    // Delete other names
+    if (0 < count($this->otherNames))
+    {
+      foreach ($this->otherNames as $otherName)
+      {
+        $otherName->delete();
+      }
+    }
+
+    parent::delete($connection);
+  }
+
   /**
    * Required by Zend_Acl_Resource_Interface interface
    */
@@ -147,7 +283,7 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
   public function getStatus($options = array())
   {
     $criteria = new Criteria;
-    $criteria->add(QubitStatus::OBJECT_ID, $this->getId());
+    $criteria->add(QubitStatus::OBJECT_ID, $this->id);
     $criteria->add(QubitStatus::TYPE_ID, $options['typeId']);
 
     return QubitStatus::getOne($criteria);
@@ -157,7 +293,7 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
   {
     $criteria = new Criteria;
     $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
-    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
+    $criteria->add(QubitNote::OBJECT_ID, $this->id);
     if (isset($options['noteTypeId']))
     {
       $criteria->add(QubitNote::TYPE_ID, $options['noteTypeId']);
@@ -180,7 +316,7 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
   {
     $criteria = new Criteria;
     $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
-    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
+    $criteria->add(QubitNote::OBJECT_ID, $this->id);
     if (isset($options['taxonomyId']))
     {
       $criteria->add(QubitTerm::TAXONOMY_ID, $options['taxonomyId']);
@@ -189,7 +325,6 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
     return QubitNote::get($criteria);
   }
 
-
   /********************
        Other names
   *********************/
@@ -197,7 +332,7 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
   public function getOtherNames($options = array())
   {
     $criteria = new Criteria;
-    $criteria->add(QubitOtherName::OBJECT_ID, $this->getId());
+    $criteria->add(QubitOtherName::OBJECT_ID, $this->id);
 
     if (isset($options['typeId']))
     {

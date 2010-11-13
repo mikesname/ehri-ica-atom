@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_digital_object' table.
+ * This class defines the structure of the 'digital_object' table.
  *
  *
  *
@@ -30,24 +30,24 @@ class DigitalObjectTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_digital_object');
+		$this->setName('digital_object');
 		$this->setPhpName('digitalObject');
 		$this->setClassname('QubitDigitalObject');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('INFORMATION_OBJECT_ID', 'informationObjectId', 'INTEGER', 'q_information_object', 'ID', false, null, null);
-		$this->addForeignKey('USAGE_ID', 'usageId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('INFORMATION_OBJECT_ID', 'informationObjectId', 'INTEGER', 'information_object', 'ID', false, null, null);
+		$this->addForeignKey('USAGE_ID', 'usageId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('MIME_TYPE', 'mimeType', 'VARCHAR', false, 50, null);
-		$this->addForeignKey('MEDIA_TYPE_ID', 'mediaTypeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('MEDIA_TYPE_ID', 'mediaTypeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('PATH', 'path', 'VARCHAR', false, 1000, null);
 		$this->addColumn('SEQUENCE', 'sequence', 'INTEGER', false, null, null);
 		$this->addColumn('BYTE_SIZE', 'byteSize', 'INTEGER', false, null, null);
 		$this->addColumn('CHECKSUM', 'checksum', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('CHECKSUM_TYPE_ID', 'checksumTypeId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_digital_object', 'ID', false, null, null);
+		$this->addForeignKey('CHECKSUM_TYPE_ID', 'checksumTypeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'digital_object', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		// validators

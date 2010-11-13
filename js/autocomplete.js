@@ -39,7 +39,7 @@
                   if ($(this).attr('multiple'))
                   {
                     // If multiple <select/>, make <ul/> of selected <option/>s
-                    var $ul = $('<ul/>').insertAfter(this);
+                    var $ul = $('<ul/>').hide().insertAfter(this);
 
                     $('option:selected', this).each(function ()
                       {
@@ -48,23 +48,41 @@
                         $('<li title="Remove item"><input name="' + $(select).attr('name') + '" type="hidden" value="' + $(this).val() + '"/><span>' + $(this).html() + '</span></li>')
                           .click(function ()
                             {
-                              // On click, remove <li/>
+                              // On click, remove <li/> and hide <ul/> if has not siblings
                               $(this).hide('fast', function ()
                                 {
                                   $(this).remove();
+
+                                  // Toggle <ul/> based on children length
+                                  // jQuery.toggle() expects a boolean parameter
+                                  $ul.toggle(!!$ul.children().length);
                                 });
                             })
-                          .appendTo($ul);
+                          .appendTo($ul.show());
                       });
                   }
                   else
                   {
                     // If single <select/>, make one hidden <input/> with
                     // <option/> value,
-                    var $hidden = $('<input name="' + $(this).attr('name') + '" type="hidden" value="' + $(this).val() + '"/>').insertAfter(this);
+                    // TODO Upgrade to jQuery 1.4.3,
+                    // http://dev.jquery.com/ticket/5163
+                    var $hidden = $('<input name="' + $(this).attr('name') + '" type="hidden" value="' + ($(this).val() ? $(this).val() : '') + '"/>').insertAfter(this);
 
-                    // - and copy <option/> value to autocomplete <input/>
-                    $input.val($('option:selected', this).text());
+                    $input
+
+                      // Copy <option/> value to autocomplete <input/>
+                      .val($('option:selected', this).text())
+
+                      // Give user chance to remove a selection, in case the text
+                      // field is completely removed, hidden value is cleared.
+                      .change(function ()
+                      {
+                        if (!$input.val().length)
+                        {
+                          $hidden.val('');
+                        }
+                      });
                   }
 
                   // A following sibling with class .list and a value specifies
@@ -141,7 +159,7 @@
                         // unmatched item select custom YUI events
                         autoComplete._onTextboxBlur(event, autoComplete);
                       }
-                    });
+                    })
 
                   var autoComplete = new YAHOO.widget.AutoComplete($input[0], $('<div/>').insertAfter(this)[0], dataSource);
 
@@ -199,19 +217,19 @@
                         // If this item is already selected, highlight it,
                         // otherwise add it to list of selected items
                         if (!$('li:has(input[value=' + args[2][1] + '])', $ul)
-                          .each(function ()
-                            {
-                              // Make background yellow for one second
-                              //
-                              // TODO Use CSS class
-                              var $span = $('span', this).css('background', 'yellow');
+                            .each(function ()
+                              {
+                                // Make background yellow for one second
+                                //
+                                // TODO Use CSS class
+                                var $span = $('span', this).css('background', 'yellow');
 
-                              setTimeout(function ()
-                                {
-                                  $span.css('background', 'none');
-                                }, 1000);
-                            })
-                          .length)
+                                setTimeout(function ()
+                                  {
+                                    $span.css('background', 'none');
+                                  }, 1000);
+                              })
+                            .length)
                         {
                           // Make <li/> of hidden <input/> with item value, and
                           // <span/> with item HTML
@@ -228,9 +246,13 @@
                                 $(this).hide('fast', function ()
                                   {
                                     $(this).remove();
+
+                                    // Toggle <ul/> based on children length
+                                    // jQuery.toggle() expects a boolean parameter
+                                    $ul.toggle(!!$ul.children().length);
                                   });
                               })
-                            .appendTo($ul);
+                            .appendTo($ul.show());
                         }
 
                         // Select autocomplete <input/> contents so typing will
@@ -308,6 +330,7 @@
                   {
                     // Split into URI and selector like jQuery load()
                     var components = value.split(' ', 2);
+
                     var $iframe;
 
                     if (!$(select).attr('multiple'))
@@ -366,6 +389,8 @@
                         // Stop throbbing
                         $input.removeClass('throbbing');
 
+                        var $iframe;
+
                         if ($input.val())
                         {
                           if ($(select).attr('multiple'))
@@ -422,13 +447,17 @@
                                     $(this).hide('fast', function ()
                                       {
                                         $(this).remove();
+
+                                        // Toggle <ul/> based on children length
+                                        // jQuery.toggle() expects a boolean parameter
+                                        $ul.toggle(!!$ul.children().length);
                                       });
 
                                     // Cancel addition of new choice
                                     $(form).unbind('submit', submit);
                                   }
                                 })
-                              .appendTo($ul);
+                              .appendTo($ul.show());
 
                             // Make new choice <input/> by cloning autocomplete
                             // <input/>
@@ -471,7 +500,7 @@
                           // This is because listeners have the same name in
                           // each scope, and it will get overridden if the if
                           // statement evaluates
-                          if (0 == $input.parents('div.yui-dialog').length)
+                          if (!$input.parents('div.yui-dialog').length)
                           {
                             $(form).submit(submit);
                           }
@@ -514,6 +543,16 @@
                   // Finally remove <select/> element
                   $(this).remove();
                 });
+
+               // Fix z-index autocomplete bug in IE6/7
+               // See http://developer.yahoo.com/yui/examples/autocomplete/ac_combobox.html
+               if ($.browser.msie && $.browser.version < 8)
+               {
+                 $('.form-item.yui-ac').each(function(index)
+                   {
+                     this.style.zIndex = 20100 - index;
+                   });
+               }
             });
         } };
   })(jQuery);

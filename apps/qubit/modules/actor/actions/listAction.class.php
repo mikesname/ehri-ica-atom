@@ -40,15 +40,36 @@ class ActorListAction extends sfAction
     $query = new Zend_Search_Lucene_Search_Query_Boolean;
     $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitActor', 'className')), true /* required */);
 
-    if (isset($request->query))
+    if (isset($request->subquery))
     {
-      $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->query), true /* required */);
+      try
+      {
+        // Parse query string
+        $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->subquery), true /* required */);
+      }
+      catch (Exception $e)
+      {
+        $this->error = $e->getMessage();
+
+        return;
+      }
     }
 
     $query = QubitAcl::searchFilterByResource($query, QubitActor::getById(QubitActor::ROOT_ID));
 
     $this->pager = new QubitArrayPager;
-    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+
+    try
+    {
+      $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    }
+    catch (Exception $e)
+    {
+      $this->error = $e->getMessage();
+
+      return;
+    }
+
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 

@@ -18,19 +18,23 @@
  */
 
 /**
- * Browse list for digital objects 
+ * Browse list for digital objects
  *
  * @package    qubit
  * @subpackage digitalobject
- * @author     David Juhasz <david@artefactual.com> 
+ * @author     David Juhasz <david@artefactual.com>
  * @version    SVN: $Id$
  */
 class DigitalObjectBrowseAction extends sfAction
 {
   public function execute($request)
   {
-    $this->mediaType = QubitTerm::getById($request->mediatype);
+    if (!isset($request->limit))
+    {
+      $request->limit = sfConfig::get('app_hits_per_page');
+    }
 
+    $this->mediaType = QubitTerm::getById($request->mediatype);
     if (!$this->mediaType instanceOf QubitTerm)
     {
       $this->forward404();
@@ -38,17 +42,11 @@ class DigitalObjectBrowseAction extends sfAction
 
     $criteria = new Criteria;
     $criteria->add(QubitDigitalObject::MEDIA_TYPE_ID, $this->mediaType->id);
-    $criteria->add(QubitDigitalObject::SEQUENCE, null, Criteria::ISNULL);
-    $criteria->addJoin(QubitDigitalObject::ID, QubitObject::ID, Criteria::INNER_JOIN);
+    $criteria->add(QubitDigitalObject::SEQUENCE);
     $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
 
     // Sort by name ascending
     $criteria->addAscendingOrderByColumn(QubitDigitalObject::NAME);
-
-    if (!isset($request->limit))
-    {
-      $request->limit = sfConfig::get('app_hits_per_page');
-    }
 
     // Filter draft descriptions
     $criteria = QubitAcl::addFilterDraftsCriteria($criteria);

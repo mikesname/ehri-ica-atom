@@ -19,11 +19,12 @@
 
 class AclGroupEditAction extends sfAction
 {
-  public static $NAMES = array(
-    'name',
-    'description',
-    'translate'
-  );
+  // Arrays not allowed in class constants
+  public static
+    $NAMES = array(
+      'name',
+      'description',
+      'translate');
 
   protected function addField($name)
   {

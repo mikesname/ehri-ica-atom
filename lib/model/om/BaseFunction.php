@@ -5,17 +5,18 @@ abstract class BaseFunction extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_function',
+    TABLE_NAME = 'function',
 
-    ID = 'q_function.ID',
-    TYPE_ID = 'q_function.TYPE_ID',
-    PARENT_ID = 'q_function.PARENT_ID',
-    DESCRIPTION_STATUS_ID = 'q_function.DESCRIPTION_STATUS_ID',
-    DESCRIPTION_DETAIL_ID = 'q_function.DESCRIPTION_DETAIL_ID',
-    DESCRIPTION_IDENTIFIER = 'q_function.DESCRIPTION_IDENTIFIER',
-    LFT = 'q_function.LFT',
-    RGT = 'q_function.RGT',
-    SOURCE_CULTURE = 'q_function.SOURCE_CULTURE';
+    ID = 'function.ID',
+    TYPE_ID = 'function.TYPE_ID',
+    PARENT_ID = 'function.PARENT_ID',
+    DESCRIPTION_STATUS_ID = 'function.DESCRIPTION_STATUS_ID',
+    DESCRIPTION_DETAIL_ID = 'function.DESCRIPTION_DETAIL_ID',
+    DESCRIPTION_IDENTIFIER = 'function.DESCRIPTION_IDENTIFIER',
+    SOURCE_STANDARD = 'function.SOURCE_STANDARD',
+    LFT = 'function.LFT',
+    RGT = 'function.RGT',
+    SOURCE_CULTURE = 'function.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -29,6 +30,7 @@ abstract class BaseFunction extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitFunction::DESCRIPTION_STATUS_ID);
     $criteria->addSelectColumn(QubitFunction::DESCRIPTION_DETAIL_ID);
     $criteria->addSelectColumn(QubitFunction::DESCRIPTION_IDENTIFIER);
+    $criteria->addSelectColumn(QubitFunction::SOURCE_STANDARD);
     $criteria->addSelectColumn(QubitFunction::LFT);
     $criteria->addSelectColumn(QubitFunction::RGT);
     $criteria->addSelectColumn(QubitFunction::SOURCE_CULTURE);
@@ -119,7 +121,7 @@ abstract class BaseFunction extends QubitObject implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -187,7 +189,7 @@ abstract class BaseFunction extends QubitObject implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)

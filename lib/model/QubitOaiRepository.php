@@ -27,18 +27,6 @@
  */
 class QubitOaiRepository extends BaseOaiRepository
 {
-
-  /**
-   * Get all OAI-PMH Repositories
-   * @return QubitQuery collection of OAI-PMH Repositories 
-   */
-  public static function getRepositories()
-  {
-    $criteria = new Criteria;
-    $criteria->addAscendingOrderByColumn(QubitOaiRepository::NAME);
-    return self::get($criteria);
-  }
-
   /**
    * Get repository by URI
    * @param string $url the url of the repository to find
@@ -51,5 +39,4 @@ class QubitOaiRepository extends BaseOaiRepository
     $criteria->addAscendingOrderByColumn(QubitOaiRepository::NAME);
     return self::get($criteria);
   }
-
 }

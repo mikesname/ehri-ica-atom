@@ -169,7 +169,7 @@ a.currentTextNode,
   background-color: #abc;
 }
 
-#header #query
+#header [name=query]
 {
   border-radius: 3px;
   -moz-border-radius: 3px;
@@ -271,7 +271,7 @@ a.currentTextNode,
 #navigation :visited:focus,
 #navigation :visited:hover
 {
-  background-image: url(../../sfUsablePlugin/images/arrow.png);
+  background-image: url(../../sfCaribouPlugin/images/arrow.png);
 }
 
 #site-name,

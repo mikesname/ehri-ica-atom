@@ -20,7 +20,7 @@
 class sfClassicPluginConfiguration extends sfPluginConfiguration
 {
   public static
-    $summary = 'Theme plugin. The original ICA-AtoM 1.0 fixed width theme.',
+    $summary = 'Theme plugin.  The original ICA-AtoM 1.0 fixed width theme.',
     $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)

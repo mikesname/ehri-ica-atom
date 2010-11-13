@@ -6,7 +6,7 @@
 <?php use_javascript('/plugins/sfDrupalPlugin/vendor/drupal/misc/progress') ?>
 <?php $checkHtaccessUrl = json_encode(url_for(array('module' => 'sfInstallPlugin', 'action' =>  'checkHtaccess'))) ?>
 <?php echo javascript_tag(<<<EOF
-progress = new Drupal.progressBar('checkSystem');
+var progress = new Drupal.progressBar('checkSystem');
 progress.setProgress(-1, 'Check system');
 jQuery('#progress').append(progress.element);
 progress.setProgress(0, 'Check .htaccess');
@@ -19,11 +19,9 @@ jQuery.ajax({
     } });
 EOF
 ) ?>
-<!-- FIXME: We currently do this logic in the template instead of the action to give the user more immediate feedback, but symfony apparently buffers output and does not start sending it to the user until it is finished being generated : ( -->
+<!-- TODO We currently do this logic in the template instead of the action to give the user more immediate feedback, but symfony apparently buffers output and does not start sending it to the user until it is finished being generated : ( -->
 
-<?php sfInstall::publishAssets() ?>
-
-<!-- TODO: Consider using array keys for wiki anchors -->
+<!-- TODO Consider using array keys for wiki anchors -->
 <?php $error = false ?>
 
 <?php $error |= count($dependencies = sfInstall::checkDependencies()) > 0 ?>

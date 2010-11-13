@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_static_page_i18n' table.
+ * This class defines the structure of the 'static_page_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class StaticPageI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_static_page_i18n');
+		$this->setName('static_page_i18n');
 		$this->setPhpName('staticPageI18n');
 		$this->setClassname('QubitStaticPageI18n');
 		$this->setPackage('lib.model');
@@ -38,7 +38,7 @@ class StaticPageI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('TITLE', 'title', 'VARCHAR', false, 255, null);
 		$this->addColumn('CONTENT', 'content', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_static_page', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'static_page', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

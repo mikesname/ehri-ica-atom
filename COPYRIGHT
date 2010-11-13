@@ -1,143 +1,146 @@
 COPYRIGHTS
 ==========
 
-ICA-AtoM
---------
-URL: http://ica-atom.org
-Copyright: International Council on Archives <ica@ica.org>
-License: GPL version 2 - see LICENSE file
-
 Qubit Toolkit
 -------------
-ICA-AtoM is based on the Qubit Toolkit
-
-Url:       http://www.qubit-toolkit.org/
-Copyright: 2006 - 2009, Peter Van Garderen <peter@artefactual.com> and other original authors as attributed in each file
+Url:       http://qubit-toolkit.org/
+Copyright: 2006-2010, Peter Van Garderen <peter@artefactual.com> and other
+           original authors as attributed in each file
 License:   GPL version 2 or any later version - see LICENSE file
 
 Qubit Logo
 ----------
-The blue circle in the Qubit logo is derived from a Blochsphere representation of a Qubit (quantum bit) that was made available as a vector graphic under a GNU Free Documentation License. As such, the derived circle used in the Qubit logo is also made available under the GFDL.
+The blue circle in the logo is derived from a Blochsphere representation of a
+Qubit (quantum bit) that was made available as a vector graphic under a GNU
+Free Documentation License.  As such, the derived circle used in the logo is
+also made available under the GFDL.
 
 URL:       http://commons.wikimedia.org/wiki/Image:Blochsphere.svg
-Copyright: MuncherOfSpleens at en.wikipedia.org (http://en.wikipedia.org/wiki/User:MuncherOfSpleens)
+Copyright: http://en.wikipedia.org/wiki/User:MuncherOfSpleens
 License:   GNU Free Documentation License
 
 Installer
-----------------
-Url: http://www.carl-abrc.ca/
+---------
+Url:       http://www.carl-abrc.ca/
+Author:    Mark Jordan
 Copyright: Canadian Association of Research Libraries
-Author: Mark Jordan
-License: GPL version 2
+License:   GPL version 2
 
 symfony
 -------
-Qubit Toolkit is based on the symfony framework.
+Qubit Toolkit is based on the symfony framework
 
-Url:       http://www.symfony-project.com/
+Url:       http://www.symfony-project.org/
 Copyright: Fabien Potencier <fabien.potencier@symfony-project.com>
-License:   MIT - see lib/vendor/symfony/LICENSE
+License:   MIT - see vendor/symfony/LICENSE
 
-symfony contains additional software.  See lib/vendor/symfony/COPYRIGHT and
-lib/vendor/symfony/licenses/
+symfony contains additional software.  See vendor/symfony/COPYRIGHT and
+vendor/symfony/licenses
 
-In addition to the core symfony framework, Qubit also uses the following symfony plugins:
+Qubit Toolkit also uses the following symfony plugins:
 
 sfAuditPlugin
 -------------
 Copyright: Jack Bates
-License: MIT
+License:   MIT
 
 sfHistoryPlugin
 ---------------
 Copyright: Jack Bates
-License: MIT
+License:   MIT
 
 sfInstallPlugin
 ---------------
 Copyright: Jack Bates
-License: GPL version 2
-
-sfThumbnailPlugin
------------------
-Copyright: Fabien Potencer
-License: MIT
-
-sfTranslatePlugin
------------------
-Copyright: Jack Bates
-License: MIT
+License:   GPL version 2
 
 sfLucenePlugin
 --------------
 Copyright: Carl Vondrick
-License: MIT
+License:   MIT
 
 sfSearchPlugin
 --------------
 Copyright: Carl Vondrick
-License: MIT
+License:   MIT
+
+sfThumbnailPlugin
+-----------------
+Copyright: Fabien Potencer
+License:   MIT
+
+sfTranslatePlugin
+-----------------
+Copyright: Jack Bates
+License:   MIT
 
 sfWebBrowserPlugin
 --------------
 Copyright: Francois Zaninotto
-License: MIT
+License:   MIT
 
-In addition to symfony and its external libraries and plugins, Qubit Toolkit also uses:
+Qubit Toolkit also uses:
 
 Drupal
 ------
 Url:       http://drupal.org/
 Copyright: Original authors - see http://association.drupal.org/about/copyright
-License:   GPL version 2 - see LICENSE.txt
+License:   GPL version 2 - see LICENSE.txt file
+
+Flowplayer
+----------
+Url:       http://flowplayer.org/
+Copyright: 2009 Anssi Piirainen
+License:   GPL version 3
+
+FluentDOM
+---------
+Url:       http://fluentdom.org/
+Copyright: 2009 Bastian Feder, Thomas Weinert
+License:   MIT - see licence.txt file
+
+FreeBeer ISO639 Map
+-------------------
+Url:       http://sourceforge.net/projects/freebeer/
+Copyright: 2002-2004, Ross Smith
+License:   BSD or LGPL
 
 GoogleMapAPI
 ------------
-Url:       http://www.phpinsider.com/php/code/GoogleMapAPI/
+Url:       http://phpinsider.com/php/code/GoogleMapAPI/
 Author:    Monte Ohrt <monte@ohrt.com>
 Copyright: New Digital Group, Inc.
 License:   LGPL - see LICENSE file
+
+ImageFlow
+---------
+Url:       http://imageflow.finnrudolph.de/
+Copyright: Finn Rudolph
+License:   Creative Commons Attribution-NonCommercial 3.0 Unported
 
 jQuery
 ------
 Url:       http://jquery.com/
 Copyright: John Resig <jeresig@gmail.com>
-License:   Dual licensed under the MIT and GPL version 2 - see MIT-LICENSE.txt and GPL-LICENSE.txt
+License:   Dual licensed under the MIT and GPL version 2 - see MIT-LICENSE.txt
+           and GPL-LICENSE.txt
 
 Silk Icons
 ----------
-Url:       http://www.famfamfam.com/lab/icons/silk/
+Url:       http://famfamfam.com/lab/icons/silk/
 Copyright: Mark James <mjames@gmail.com>
-License:   Creative Commons Attribution 2.5 - see http://creativecommons.org/licenses/by/2.5/
+License:   Creative Commons Attribution 2.5
 
 Yahoo! User Interface Library
 -----------------------------
 Url:       http://developer.yahoo.com/yui/
 Copyright: Yahoo! Inc.
-License:   BSD - see http://developer.yahoo.com/yui/license.html
+License:   BSD
 
 Zend Framework
 --------------
-Qubit Toolkit uses the Zend Search component.
+Qubit Toolkit uses the Zend Search component
 
-Url:       http://zend.framework.com
+Url:       http://framework.zend.com/
 Copyright: Zend Technologies USA Inc.
-License:   New BSD - see http://framework.zend.com/license
-
-ImageFlow
----------
-Url:       http://194.95.111.244/~countzero/scripts/_myImageFlow/
-Copyright: Finn Rudolph
-License:   None - "You are free to use this in any product, or on any web site.", see http://194.95.111.244/~countzero/scripts/_myImageFlow/ (Accessed: June 16, 2008)
-
-Flowplayer
-----------
-Url:       http://flowplayer.org
-Copyright: 2009 Anssi Piirainen
-License:   GPL3 - http://www.gnu.org/licenses/gpl-3.0.html
-
-FreeBeer ISO639 Map
--------------------
-Url:      http://sourceforge.net/projects/freebeer/
-Copyright: 2002-2004, Ross Smith
-License: BSD or LGPL License
+License:   New BSD

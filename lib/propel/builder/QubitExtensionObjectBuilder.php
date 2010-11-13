@@ -17,7 +17,9 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class QubitExtensionObjectBuilder extends SfExtensionObjectBuilder
+require_once 'propel/engine/builder/om/php5/PHP5ExtensionObjectBuilder.php';
+
+class QubitExtensionObjectBuilder extends PHP5ExtensionObjectBuilder
 {
   public function getClassName()
   {

@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_note' table.
+ * This class defines the structure of the 'note' table.
  *
  *
  *
@@ -30,17 +30,17 @@ class NoteTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_note');
+		$this->setName('note');
 		$this->setPhpName('note');
 		$this->setClassname('QubitNote');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('SCOPE', 'scope', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'q_user', 'ID', false, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_note', 'ID', false, null, null);
+		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'user', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'note', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);

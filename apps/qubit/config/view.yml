@@ -23,7 +23,6 @@ default:
     form:
     graphic:
     main: { position: last }
-    menu:
 
   javascripts:
     /vendor/jquery:

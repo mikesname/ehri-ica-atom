@@ -22,17 +22,16 @@ class RepositoryAutocompleteAction extends sfAction
   public function execute($request)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitObject::CLASS_NAME, 'QubitRepository');
-    $criteria->addJoin(QubitActorI18n::ID, QubitActor::ID);
-    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
+    $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
+    $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, "$request->query%", Criteria::LIKE);
     $criteria->addAscendingOrderByColumn('authorized_form_of_name');
     $criteria->setDistinct();
     $criteria->setLimit(sfConfig::get('app_hits_per_page', 10));
 
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
 
-    // Filter 'denied' repositories if list for repository auto-complete on info
-    // object form
+    // Filter "denied" repositories if list for repository autocomplete on
+    // information object form
     if (isset($request->aclAction))
     {
       $repositoryList = array();
@@ -41,7 +40,6 @@ class RepositoryAutocompleteAction extends sfAction
       // If all repositories are denied, no response
       if (1 == count($repositoryAccess) && QubitAcl::DENY == $repositoryAccess[0]['access'])
       {
-
         return sfView::NONE;
       }
       else
@@ -56,18 +54,18 @@ class RepositoryAutocompleteAction extends sfAction
           {
             if (QubitAcl::DENY == $repo['access'])
             {
-              // Require repos to be specifically allowed (all others prohibited)
+              // Require repositories to be specifically allowed (all others
+              // prohibited)
               $criteria->add(QubitRepository::ID, $repositoryList + array('null'), Criteria::IN);
             }
             else
             {
-              // Prohibit specified repos (all others allowed)
+              // Prohibit specified repositories (all others allowed)
               $criteria->add(QubitRepository::ID, $repositoryList, Criteria::NOT_IN);
             }
           }
         }
       }
-
     }
 
     $this->repositories = QubitRepository::get($criteria);

@@ -1,3 +1,5 @@
+<?php use_helper('Text') ?>
+
 <?php if (QubitTerm::REFERENCE_ID == $usageType): ?>
 
   <?php if ($showFlashPlayer): ?>
@@ -8,7 +10,7 @@
     </div>
   <?php endif;?>
 
-  <?php if ($link != null && QubitAcl::check($digitalObject->informationObject, 'readMaster')): ?>
+  <?php if (isset($link) && QubitAcl::check($resource->informationObject, 'readMaster')): ?>
     <?php echo link_to(__('Download audio'), $link) ?>
   <?php endif; ?>
 
@@ -16,17 +18,20 @@
 
   <?php if ($iconOnly): ?>
 
-    <?php echo link_to(image_tag('play.png'), $link) ?>
+    <?php echo link_to(image_tag('play'), $link) ?>
 
   <?php else: ?>
 
-    <div class="digitalObject">
-      <div class="digitalObjectRep">
-        <?php echo link_to(image_tag('play.png'), $link) ?>
+    <div class="resource">
+
+      <div class="resourceRep">
+        <?php echo link_to(image_tag('play'), $link) ?>
       </div>
-      <div class="digitalObjectDesc">
-        <?php echo string_wrap($digitalObject->getName(), 18) ?>
+
+      <div class="resourceDesc">
+        <?php echo wrap_text($resource->name, 18) ?>
       </div>
+
     </div>
 
   <?php endif; ?>

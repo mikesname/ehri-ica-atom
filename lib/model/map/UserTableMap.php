@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_user' table.
+ * This class defines the structure of the 'user' table.
  *
  *
  *
@@ -30,13 +30,13 @@ class UserTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_user');
+		$this->setName('user');
 		$this->setPhpName('user');
 		$this->setClassname('QubitUser');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_actor', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'actor', 'ID', true, null, null);
 		$this->addColumn('USERNAME', 'username', 'VARCHAR', false, 255, null);
 		$this->addColumn('EMAIL', 'email', 'VARCHAR', false, 255, null);
 		$this->addColumn('SHA1_PASSWORD', 'sha1Password', 'VARCHAR', false, 255, null);

@@ -46,6 +46,7 @@ class AclGroupDeleteAction extends sfAction
     if ($request->isMethod('delete'))
     {
       $this->group->delete();
+
       $this->redirect(array('module' => 'aclGroup', 'action' => 'list'));
     }
   }

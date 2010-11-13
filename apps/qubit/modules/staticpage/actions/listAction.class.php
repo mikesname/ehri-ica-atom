@@ -27,15 +27,11 @@ class StaticPageListAction extends sfAction
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitStaticPage::ID, null, Criteria::ISNOTNULL);
-    $criteria->addAscendingOrderByColumn(QubitStaticPage::PERMALINK);
 
     // Page results
     $this->pager = new QubitPager('QubitStaticPage');
     $this->pager->setCriteria($criteria);
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
-
-    $this->staticPages = $this->pager->getResults();
   }
 }

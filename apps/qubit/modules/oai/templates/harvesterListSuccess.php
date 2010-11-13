@@ -1,61 +1,43 @@
-<h1>Harvested Sites</h1>
-<table class="list">
-<thead>
-  <tr>
-      <th>
-            <a href="/Qubit/web/actor/list/role/all/sort/nameDown/page/1">Repository Name</a>
-            <img style="padding-bottom: 3px" src="/Qubit/web/images/up.gif" alt="Up" />
-      </th>
-      <th>Harvest</th>
-      <th>Delete</th>
-  </tr>
-</thead>
-<tbody>
+<h1><?php echo __('OAI-PMH - harvested sites') ?></h1>
 
-
-
-<?php foreach($repositories as $rep): ?>
-  <tr>
+<?php if (0 < count($repositories)): ?>
+<table class="sticky-enabled">
+  <thead>
+    <tr>
+      <th><?php echo __('Repository') ?></th>
+      <th><?php echo __('Harvest') ?></th>
+      <th><?php echo __('Delete') ?></th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php foreach($repositories as $rep): ?>
+    <tr>
       <td>
         <div>
-          <a href="<?php echo $rep->getUri();?>?verb=Identify"><?php echo $rep->getName(); ?></a><br>Last Harvest: <?php $harvest = QubitOaiHarvest::getLastHarvestByID($rep->getId()); echo $harvest->getLastHarvest();;?>
+          <a href="<?php echo $rep->getUri();?>?verb=Identify"><?php echo $rep->getName(); ?></a><br>Last Harvest: <?php $harvest = QubitOaiHarvest::getLastHarvestByID($rep->id); echo $harvest->getLastHarvest();;?>
         </div>
-      </td>
-      <td>
+      </td><td>
       <?php foreach($rep->getOaiHarvests() as $harvestJob): ?>
-        <a href ="<?php echo url_for('oai/harvest')?>/next/<?php echo $harvestJob->getId().'/'?>">Harvest</a>
+        <?php echo link_to(__('Harvest'), array('module' => 'oai', 'action' => 'harvest', 'next' => $harvestJob->id)) ?>
       <?php endforeach; ?>
-        </td><td><a href ="<?php echo url_for('oai/deleteRepository').'/'.$rep->getId().'/'?>">Delete</a></td>
-
-  </tr>
-<?php endforeach; ?>
-
-</tbody>
-</table>
-<br>
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('Add New Repository') ?></div>
-  <form action="<?php echo url_for('oai/harvesterList') ?>" method="POST">
-
-      <table class="List">
-      <thead>
-    <tr>
-      <th width="30%"><?php echo __('Name')?></th>
-      <th><?php echo __('Value')?></th>
+      </td><td>
+        <?php echo link_to(__('Delete'), array('module' => 'oai', 'action' => 'deleteRepository')) ?>
+      </td>
     </tr>
-
-      </thead>
-      <tbody>
-            <?php echo $form ?>
-    <tr>
-            <td>&nbsp;</td>
-            <td>
-              <div style="float: right; margin: 3px 8px 0 0;">
-                <?php echo submit_tag(__('Save')) ?>
-              </div>
-            </td>
-          </tr>
-
-      </tbody>
+  <?php endforeach; ?>
+  </tbody>
 </table>
-      </form>
-</div>
+<?php endif; ?>
+
+<fieldset class="collapsible" id="addOaiRepository">
+  <legend><?php echo __('Add new repository') ?></legend>
+
+  <form action="<?php echo url_for('oai/harvesterList') ?>" method="post">
+    <?php echo $form->renderGlobalErrors() ?>
+
+    <?php echo $form->uri
+      ->help(__('Enter a valid URI (e.g. http://www.example.com/oai) for an OAI-PMH repository'))
+      ->renderRow() ?>
+    <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
+  </form>
+</fieldset>

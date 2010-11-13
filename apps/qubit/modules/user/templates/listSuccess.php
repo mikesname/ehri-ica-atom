@@ -8,19 +8,19 @@
       </th><th>
         <?php echo __('Email') ?>
       </th><th>
-        <?php echo __('User roles') ?>
+        <?php echo __('User groups') ?>
       </th>
     </tr>
   </thead><tbody>
-    <?php foreach ($users as $user): ?>
+    <?php foreach ($users as $item): ?>
       <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
         <td>
-          <?php echo link_to($user->username, array($user, 'module' => 'user')) ?>
+          <?php echo link_to($item->username, array($item, 'module' => 'user')) ?>
         </td><td>
-          <?php echo $user->email ?>
+          <?php echo $item->email ?>
         </td><td>
           <ul>
-            <?php foreach ($user->getAclGroups() as $group): ?>
+            <?php foreach ($item->getAclGroups() as $group): ?>
               <li><?php echo render_title($group) ?></li>
             <?php endforeach; ?>
           </ul>
@@ -34,11 +34,11 @@
 
 <div class="actions section">
 
-  <h2 class="element-invisible"><?php __('Actions') ?></h2>
+  <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
 
   <div class="content">
     <ul class="clearfix links">
-      <li><?php echo link_to(__('Add new'), array('module' => 'user', 'action' => 'create')) ?></li>
+      <li><?php echo link_to(__('Add new'), array('module' => 'user', 'action' => 'add')) ?></li>
     </ul>
   </div>
 

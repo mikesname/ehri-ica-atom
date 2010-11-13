@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_acl_permission' table.
+ * This class defines the structure of the 'acl_permission' table.
  *
  *
  *
@@ -30,16 +30,16 @@ class AclPermissionTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_acl_permission');
+		$this->setName('acl_permission');
 		$this->setPhpName('aclPermission');
 		$this->setClassname('QubitAclPermission');
 		$this->setPackage('plugins.qbAclPlugin.lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
-		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'q_user', 'ID', false, null, null);
-		$this->addForeignKey('GROUP_ID', 'groupId', 'INTEGER', 'q_acl_group', 'ID', false, null, null);
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', false, null, null);
+		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'user', 'ID', false, null, null);
+		$this->addForeignKey('GROUP_ID', 'groupId', 'INTEGER', 'acl_group', 'ID', false, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', false, null, null);
 		$this->addColumn('ACTION', 'action', 'VARCHAR', false, 255, null);
 		$this->addColumn('GRANT_DENY', 'grantDeny', 'INTEGER', true, null, 0);
 		$this->addColumn('CONDITIONAL', 'conditional', 'LONGVARCHAR', false, null, null);

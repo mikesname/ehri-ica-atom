@@ -32,99 +32,81 @@ class sfIsadPluginIndexAction extends InformationObjectIndexAction
   {
     parent::execute($request);
 
-    if (1 > strlen($title = QubitIsad::getLabel($this->object)))
+    $this->isad = new sfIsadPlugin($this->resource);
+
+    if (1 > strlen($title = $this->resource))
     {
       $title = $this->context->i18n->__('Untitled');
     }
-    $this->response->setTitle($title.' - '.$this->response->getTitle());
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
 
     // Function relations
     $criteria = new Criteria;
-    $criteria->addAlias('so', QubitObject::TABLE_NAME);
-    $criteria->addJoin(QubitRelation::SUBJECT_ID, 'so.id', Criteria::INNER_JOIN);
-    $criteria->add(QubitRelation::OBJECT_ID, $this->object->id);
-    $criteria->add('so.class_name', 'QubitFunction');
+    $criteria->add(QubitRelation::OBJECT_ID, $this->resource->id);
+    $criteria->addJoin(QubitRelation::SUBJECT_ID, QubitFunction::ID);
 
     $this->functionRelations = QubitRelation::get($criteria);
 
-    if (QubitAcl::check($this->object, 'update'))
+    if (QubitAcl::check($this->resource, 'update'))
     {
       $validatorSchema = new sfValidatorSchema;
-      $validatorSchema->creators = new QubitValidatorCountable(array('required' => true), array('required' => $this->context->i18n->__('This archival description, or one of its higher levels, %1%requires%2% at least one %3%creator%4%.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.2.1">', '%4%' => '</a>'))));
-      $validatorSchema->dateRange = new QubitValidatorIsadDates(array(), array('invalid' => $this->context->i18n->__('%1%Date(s)%2% - are not consistent with %3%higher levels%2%.', array('%1%' => '<a href="http://www.ica-atom.org/docs/index.php?title=RS-1#3.1.3">', '%2%' => '</a>', '%3%' => '<a href="%ancestor%">'))));
-      $validatorSchema->dates = new QubitValidatorCountable(array('required' => true), array('required' => $this->context->i18n->__('%1%Date(s)%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.1.3">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%4%' => '</a>'))));
-      $validatorSchema->extentAndMedium = new sfValidatorString(array('required' => true), array('required' => $this->context->i18n->__('%1%Extent and medium%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.1.5">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%4%' => '</a>'))));
-      $validatorSchema->identifier = new sfValidatorString(array('required' => true), array('required' => $this->context->i18n->__('%1%Identifier%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.1.1">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%4%' => '</a>'))));
-      $validatorSchema->levelOfDescription = new sfValidatorString(array('required' => true), array('required' => $this->context->i18n->__('%1%Level of description%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.1.4">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%4%' => '</a>'))));
-      $validatorSchema->title = new sfValidatorString(array('required' => true), array('required' => $this->context->i18n->__('%1%Title%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.1.2">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%4%' => '</a>'))));
+      $values = array();
 
-      // Forbidden values for this level of description (based on the parent level of description)
-      $forbiddenValues = array();
+      $validatorSchema->creators = new QubitValidatorCountable(array(
+        'required' => true), array(
+        'required' => $this->context->i18n->__('This archival description, or one of its higher levels, %1%requires%2% at least one %3%creator%4%.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#I.12">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-1#3.2.1">', '%4%' => '</a>'))));
 
-      // Greater levels first
-      $levels = array('Collection', 'Fonds', 'Subfonds', 'Sub-subfonds', 'Series', 'Subseries', 'Sub-subseries', 'File', 'Item');
-
-      // Check that object has a parent level of description, i.e. a parent which is not the root
-      if (null !== $this->object->parent->levelOfDescription && null !== $this->object->levelOfDescription)
+      foreach ($this->resource->ancestors->andSelf()->orderBy('rgt') as $item)
       {
-        $parentLevelOfDescription = $this->object->getParent()->getLevelOfDescription()->getName(array('sourceCulture' => 'en'));
-
-        // We validate that an ancestor level is not added as a descendant
-        for ($i = 0; $i <= array_search($parentLevelOfDescription, $levels); $i++)
+        $values['creators'] = $item->getCreators();
+        if (0 < count($values['creators']))
         {
-          $forbiddenValues[] = $levels[$i];
-        }
-
-        // Special cases
-        switch ($parentLevelOfDescription)
-        {
-          // Fonds cannot be child of Collection
-          // Sub-fonds cannot be child of Collection
-          case 'Collection':
-            $forbiddenValues[] = 'Fonds';
-            $forbiddenValues[] = 'Subfonds';
-            break;
-          // Collection cannot be child of Fonds
-          case 'Fonds':
-            $forbiddenValues[] = 'Collection';
-            break;
+          break;
         }
       }
 
-      if (0 == count($creators = $this->object->getCreators()))
+      $validatorSchema->dateRange = new QubitValidatorIsadDates(array(), array(
+        'invalid' => $this->context->i18n->__('%1%Date(s)%2% - are not consistent with %3%higher levels%2%.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.3">', '%2%' => '</a>', '%3%' => '<a href="%ancestor%">'))));
+      $values['dateRange'] = $this->resource;
+
+      $validatorSchema->dates = new QubitValidatorCountable(array(
+        'required' => true), array(
+        'required' => $this->context->i18n->__('%1%Date(s)%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.3">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-1#I.12">', '%4%' => '</a>'))));
+      $values['dates'] = $this->resource->getDates();
+
+      $validatorSchema->extentAndMedium = new sfValidatorString(array(
+        'required' => true), array(
+        'required' => $this->context->i18n->__('%1%Extent and medium%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.5">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-1#I.12">', '%4%' => '</a>'))));
+      $values['extentAndMedium'] = $this->resource->getExtentAndMedium(array('cultureFallback' => true));
+
+      $validatorSchema->identifier = new sfValidatorString(array(
+        'required' => true), array(
+        'required' => $this->context->i18n->__('%1%Identifier%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.1">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-1#I.12">', '%4%' => '</a>'))));
+      $values['identifier'] = $this->resource->identifier;
+
+      $this->addField($validatorSchema, 'levelOfDescription');
+      $validatorSchema->levelOfDescription->setMessage('forbidden', $this->context->i18n->__('%1%Level of description%2% - Value "%value%" is not consistent with higher levels.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.4">', '%2%' => '</a>')));
+      $validatorSchema->levelOfDescription->setMessage('required', $this->context->i18n->__('%1%Level of description%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.4">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-1#I.12">', '%4%' => '</a>')));
+
+      if (isset($this->resource->levelOfDescription))
       {
-        foreach ($this->object->getAncestors() as $ancestor)
-        {
-          if (0 < count($creators = $ancestor->getCreators()))
-          {
-            // We don't need creators, just to know that we have at least one
-            break;
-          }
-        }
+        $values['levelOfDescription'] = $this->resource->levelOfDescription->getName(array('sourceCulture' => true));
       }
 
-      $validatorSchema->levelOfDescription = new sfValidatorBlacklist(array('forbidden_values' => $forbiddenValues, 'required' => true), array('forbidden' => $this->context->i18n->__('%1%Level of description%2% - Value "%value%" is not consistent with higher levels.', array('%1%' => '<a href="http://www.ica-atom.org/docs/index.php?title=RS-1#3.1.4">', '%2%' => '</a>')), 'required' => $this->context->i18n->__('%1%Level of description%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#3.1.4">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/docs/index.php?title=RS-1#I.12">', '%4%' => '</a>'))));
+      $validatorSchema->title = new sfValidatorString(array(
+        'required' => true), array(
+        'required' => $this->context->i18n->__('%1%Title%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-1#3.1.2">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-1#I.12">', '%4%' => '</a>'))));
+      $values['title'] = $this->resource->getTitle(array('cultureFallback' => true));
 
       try
       {
-        $validatorSchema->clean(array(
-          'identifier' => $this->object->identifier,
-          'title' => $this->object->getTitle(array('cultureFallback' => true)),
-          'dates' => $this->object->getDates(),
-          'dateRange' => $this->object,
-          'levelOfDescription' => null !== $this->object->levelOfDescription ? $this->object->levelOfDescription->getName(array('culture' => 'en')) : null,
-          'extentAndMedium' => $this->object->getExtentAndMedium(array('cultureFallback' => true)),
-          'creators' => $creators));
+        $validatorSchema->clean($values);
       }
       catch (sfValidatorErrorSchema $e)
       {
         $this->errorSchema = $e;
       }
     }
-
-    // Split notes into "Notes" (general notes), "Title notes", and "Publication notes"
-    $this->notes = $this->object->getNotesByType(array('noteTypeId' => QubitTerm::GENERAL_NOTE_ID));
-    $this->archivistsNotes = $this->object->getNotesByType(array('noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID));
-    $this->publicationNotes = $this->object->getNotesByType(array('noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
   }
 }

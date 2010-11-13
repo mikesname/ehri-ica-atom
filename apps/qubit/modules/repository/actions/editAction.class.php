@@ -27,167 +27,100 @@
  * @author     Jack Bates <jack@artefactual.com>
  * @author     David Juhasz <david@artefactual.com>
  */
-class RepositoryEditAction extends sfAction
+class RepositoryEditAction extends DefaultEditAction
 {
-  /**
-   * Define form field names
-   *
-   * @var string
-   */
-  public static
-    $NAMES = array(
-      'identifier',
-      'authorizedFormOfName',
-      'parallelName',
-      'otherName',
-      'types',
-      'history',
-      'geoculturalContext',
-      'mandates',
-      'internalStructures',
-      'collectingPolicies',
-      'buildings',
-      'holdings',
-      'findingAids',
-      'openingTimes',
-      'accessConditions',
-      'disabledAccess',
-      'researchServices',
-      'reproductionServices',
-      'publicFacilities',
-      'descIdentifier',
-      'descInstitutionIdentifier',
-      'descRules',
-      'descStatus',
-      'descDetail',
-      'descRevisionHistory',
-      'language',
-      'script',
-      'descSources',
-      'maintenanceNotes');
+  protected function earlyExecute()
+  {
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-  public function addField($name)
+    $this->resource = new QubitRepository;
+
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+
+      // Check that this isn't the root
+      if (!isset($this->resource->parent))
+      {
+        $this->forward404();
+      }
+
+      // Check user authorization
+      if (!QubitAcl::check($this->resource, 'update'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      // Add optimistic lock
+      $this->form->setDefault('serialNumber', $this->resource->serialNumber);
+      $this->form->setValidator('serialNumber', new sfValidatorInteger);
+      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
+    }
+    else
+    {
+      // Check user authorization
+      if (!QubitAcl::check($this->resource, 'create'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+    }
+  }
+
+  protected function addField($name)
   {
     switch ($name)
     {
-      case 'types':
-        $this->repoTypes = array();
-        $values = array();
-        $choices = array();
-
+      case 'type':
         $criteria = new Criteria;
-        $criteria = $this->repository->addobjectTermRelationsRelatedByobjectIdCriteria($criteria);
-        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID, Criteria::INNER_JOIN);
+        $criteria = $this->resource->addObjectTermRelationsRelatedByObjectIdCriteria($criteria);
+        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID);
         $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::REPOSITORY_TYPE_ID);
 
-        if (0 < count($otRelations = QubitObjectTermRelation::get($criteria)))
+        $value = array();
+        foreach ($this->relations = QubitObjectTermRelation::get($criteria) as $item)
         {
-          $this->repoTypes = $otRelations;
-
-          foreach ($otRelations as $otRelation)
-          {
-            $values[] = $this->context->routing->generate(null, array('module' => 'term', 'id' => $otRelation->termId));
-          }
+          $value[] = $this->context->routing->generate(null, array($item->term, 'module' => 'term'));
         }
 
-        foreach (QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::REPOSITORY_TYPE_ID) as $term)
+        $this->form->setDefault('type', $value);
+        $this->form->setValidator('type', new sfValidatorPass);
+
+        $choices = array();
+        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::REPOSITORY_TYPE_ID) as $item)
         {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+          $choices[$this->context->routing->generate(null, array($item, 'module' => 'term'))] = $item->__toString();
         }
 
-        $this->form->setDefault($name, $values);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+        $this->form->setWidget('type', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
 
         break;
 
-      case 'parallelName':
-      case 'otherName':
-        $criteria = new Criteria;
-        $criteria = $this->repository->addotherNamesCriteria($criteria);
+      case 'descDetail':
+      case 'descStatus':
+        $this->form->setDefault($name, $this->context->routing->generate(null, array($this->resource[$name], 'module' => 'term')));
+        $this->form->setValidator($name, new sfValidatorString);
 
         switch ($name)
         {
-          case 'parallelName':
-            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::PARALLEL_FORM_OF_NAME_ID);
+          case 'descDetail':
+            $id = QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID;
+
             break;
-          default:
-            $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID);
-        }
 
-        $values = $defaults = array();
-        if (0 < count($otherNames = QubitOtherName::get($criteria)))
-        {
-          foreach ($otherNames as $otherName)
-          {
-            $values[] = $otherName->id;
-            $defaults[$otherName->id] = $otherName;
-          }
-        }
+          case 'descStatus':
+            $id = QubitTaxonomy::DESCRIPTION_STATUS_ID;
 
-        $this->form->setDefault($name, $values);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults)));
-
-        break;
-
-      case 'descStatus':
-      case 'descDetail':
-        if (null !== $this->repository[$name.'Id'])
-        {
-          $this->form->setDefault($name, $this->context->routing->generate(null, array('module' => 'term', 'id' => $this->repository[$name.'Id'])));
+            break;
         }
 
         $choices = array();
         $choices[null] = null;
-
-        if ('descStatus' == $name)
+        foreach (QubitTaxonomy::getTermsById($id) as $item)
         {
-          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID);
-        }
-        else
-        {
-          $terms = QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID);
+          $choices[$this->context->routing->generate(null, array($item, 'module' => 'term'))] = $item;
         }
 
-        foreach ($terms as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'language':
-        $this->form->setDefault($name, $this->repository[$name]);
-        $this->form->setValidator($name, new sfValidatorI18nChoiceLanguage(array('multiple' => true)));
-        $this->form->setWidget($name, new sfWidgetFormI18nSelectLanguage(array('culture' => $this->context->user->getCulture(), 'multiple' => true)));
-
-        break;
-
-      case 'script':
-        $this->form->setDefault($name, $this->repository[$name]);
-        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
-        $this->form->setValidator($name, new sfValidatorChoice(array('choices' => array_keys($c->getScripts()), 'multiple' => true)));
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $c->getScripts(), 'multiple' => true)));
-
-        break;
-
-      case 'maintenanceNotes':
-        $this->maintenanceNote = null;
-
-        // Check for existing maintenance note related to this object
-        $maintenanceNotes = $this->repository->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
-
-        if (0 < count($maintenanceNotes))
-        {
-          $this->maintenanceNote = $maintenanceNotes[0];
-          $this->form->setDefault($name, $this->maintenanceNote->content);
-        }
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormTextarea);
 
         break;
 
@@ -195,7 +128,7 @@ class RepositoryEditAction extends sfAction
       case 'authorizedFormOfName':
       case 'descIdentifier':
       case 'descInstitutionIdentifier':
-        $this->form->setDefault($name, $this->repository[$name]);
+        $this->form->setDefault($name, $this->resource[$name]);
         $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormInput);
 
@@ -218,11 +151,15 @@ class RepositoryEditAction extends sfAction
       case 'descRules':
       case 'descRevisionHistory':
       case 'descSources':
-        $this->form->setDefault($name, $this->repository[$name]);
+        $this->form->setDefault($name, $this->resource[$name]);
         $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormTextarea);
 
         break;
+
+      default:
+
+        return parent::addField($name);
     }
   }
 
@@ -234,224 +171,117 @@ class RepositoryEditAction extends sfAction
    */
   protected function processField($field)
   {
-    switch ($name = $field->getName())
+    switch ($field->getName())
     {
-      case 'types':
-        $current = $new = array();
-        foreach ($this->form->getValue('types') as $value)
+      case 'type':
+        $value = $filtered = array();
+        foreach ($this->form->getValue('type') as $item)
         {
-          $params = $this->context->routing->parse(Qubit::pathInfo($value));
-          $current[$params['id']] = $new[$params['id']] = $params['id'];
+          $params = $this->context->routing->parse(Qubit::pathInfo($item));
+          $resource = $params['_sf_route']->resource;
+          $value[$resource->id] = $filtered[$resource->id] = $resource;
         }
 
-        foreach ($this->repoTypes as $otRelation)
+        foreach ($this->relations as $item)
         {
-          if (isset($current[$otRelation->termId]))
+          if (isset($value[$item->termId]))
           {
-            // If it's current, then don't add/delete
-            unset($new[$otRelation->termId]);
+            unset($filtered[$item->termId]);
           }
           else
           {
-            // If not in current list, then delete
-            $otRelation->delete();
+            $item->delete();
           }
         }
 
-        // Create 'new' relations
-        foreach ($new as $id)
+        foreach ($filtered as $item)
         {
-          $otRelation = new QubitObjectTermRelation;
-          $otRelation->termId = $id;
+          $relation = new QubitObjectTermRelation;
+          $relation->term = $item;
 
-          $this->repository->objectTermRelationsRelatedByobjectId[] = $otRelation;
-        }
-
-        break;
-
-      case 'parallelName':
-      case 'otherName':
-        $defaults = $this->form->getWidget($name)->getOption('defaults');
-
-        if (null !== $this->form->getValue($name))
-        {
-          foreach ($this->form->getValue($name) as $key => $thisName)
-          {
-            if ('new' == substr($key, 0, 3) && 0 < strlen(trim($thisName)))
-            {
-              $otherName = new QubitOtherName;
-
-              if ('parallelName' == $name)
-              {
-                $otherName->typeId = QubitTerm::PARALLEL_FORM_OF_NAME_ID;
-              }
-              else
-              {
-                $otherName->typeId = QubitTerm::OTHER_FORM_OF_NAME_ID;
-              }
-            }
-            else
-            {
-              $otherName = QubitOtherName::getById($key);
-              if (null === $otherName)
-              {
-                continue;
-              }
-
-              // Don't delete this name
-              unset($defaults[$key]);
-            }
-
-            $otherName->name = $thisName;
-            $this->repository->otherNames[] = $otherName;
-          }
-        }
-
-        // Delete any names that are missing from form data
-        foreach ($defaults as $key => $val)
-        {
-          if (null !== ($otherName = QubitOtherName::getById($key)))
-          {
-            $otherName->delete();
-          }
+          $this->resource->objectTermRelationsRelatedByobjectId[] = $relation;
         }
 
         break;
 
       case 'descStatus':
       case 'descDetail':
-        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
-        $fieldId = (isset($params['id'])) ? $params['id'] : null;
-        $this->repository[$name.'Id'] = $fieldId;
+        unset($this->resource[$field->getName()]);
 
-        break;
-
-      case 'maintenanceNotes':
-        // Check for existing maintenance note related to this object
-        $maintenanceNotes = $this->repository->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID));
-
-        if (0 < count($maintenanceNotes))
+        $value = $this->form->getValue($field->getName());
+        if (isset($value))
         {
-          $note = $maintenanceNotes[0];
+          $params = $this->context->routing->parse(Qubit::pathInfo($value));
+          $this->resource[$field->getName()] = $params['_sf_route']->resource;
         }
-        else if (null !== $this->form->getValue($name))
-        {
-          // Create a maintenance note for this object if one doesn't exist
-          $note = new QubitNote;
-          $note->typeId = QubitTerm::MAINTENANCE_NOTE_ID;
-        }
-        else
-        {
-
-          break;
-        }
-
-        $note->content = $this->form->getValue($name);
-
-        $this->repository->notes[] = $note;
 
         break;
 
       default:
-        $this->repository[$field->getName()] = $this->form->getValue($field->getName());
+
+        return parent::processField($field);
     }
-  }
-
-  protected function processForm()
-  {
-    foreach ($this->form as $field)
-    {
-      $this->processField($field);
-    }
-
-    $this->repository->save();
-
-    $this->updateContactInformation();
   }
 
   public function execute($request)
   {
-    $this->form = new sfForm;
-    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+    parent::execute($request);
 
-    $this->repository = new QubitRepository;
-
-    if (isset($request->id))
-    {
-      $this->repository = QubitRepository::getById($request->id);
-
-      if (!isset($this->repository))
-      {
-        $this->forward404();
-      }
-
-      // Add optimistic lock
-      $this->form->setDefault('serialNumber', $this->repository->serialNumber);
-      $this->form->setValidator('serialNumber', new sfValidatorInteger);
-      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
-    }
-
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
-    {
-      $this->addField($name);
-    }
-
-    $this->contactInformation = $this->repository->getContactInformation();
-    $this->newContactInformation = new QubitContactInformation;
+    $this->form->setValidator('country_code', new sfValidatorI18nChoiceCountry);
+    $this->form->setWidget('country_code', new sfWidgetFormI18nChoiceCountry(array('add_empty' => true, 'culture' => $this->context->user->getCulture())));
 
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
-
       if ($this->form->isValid())
       {
         $this->processForm();
-        $this->redirect(array($this->repository, 'module' => 'repository'));
+
+        $this->resource->save();
+
+        $this->updateContactInformation();
+
+        $this->redirect(array($this->resource, 'module' => 'repository'));
       }
     }
+
+    QubitDescription::addAssets($this->response);
   }
 
-  public function updateContactInformation()
+  protected function updateContactInformation()
   {
-    if ($this->repository->getId())
+    if ($this->request->contact_type
+        || $this->request->contact_person
+        || $this->request->street_address
+        || $this->request->city
+        || $this->request->region
+        || $this->request->country_code
+        || $this->request->postal_code
+        || $this->request->telephone
+        || $this->request->fax
+        || $this->request->email
+        || $this->request->website)
     {
-      if (($this->getRequestParameter('contact_type')) ||
-      ($this->getRequestParameter('contact_person')) ||
-      ($this->getRequestParameter('street_address')) ||
-      ($this->getRequestParameter('city')) ||
-      ($this->getRequestParameter('region')) ||
-      ($this->getRequestParameter('country_code')) ||
-      ($this->getRequestParameter('postal_code')) ||
-      ($this->getRequestParameter('telephone')) ||
-      ($this->getRequestParameter('fax')) ||
-      ($this->getRequestParameter('email')) ||
-      ($this->getRequestParameter('website')))
+      $contactInformation = new QubitContactInformation;
+      $contactInformation->actor = $this->resource;
+      $contactInformation->contactType = $this->request->contact_type;
+      $contactInformation->contactPerson = $this->request->contact_person;
+      $contactInformation->streetAddress = $this->request->street_address;
+      $contactInformation->city = $this->request->city;
+      $contactInformation->region = $this->request->region;
+      $contactInformation->countryCode = $this->request->country_code;
+      $contactInformation->postalCode = $this->request->postal_code;
+      $contactInformation->telephone = $this->request->telephone;
+      $contactInformation->fax = $this->request->fax;
+      $contactInformation->email = $this->request->email;
+      $contactInformation->website = $this->request->website;
+      $contactInformation->note = $this->request->contact_information_note;
+
+      $contactInformation->save();
+
+      if ($this->request->primary_contact)
       {
-        $contactInformation = new QubitContactInformation;
-        $contactInformation->setActorId($this->repository->getId());
-        $contactInformation->setContactType($this->getRequestParameter('contact_type'));
-        $contactInformation->setPrimaryContact($this->getRequestParameter('primary_contact'));
-        $contactInformation->setContactPerson($this->getRequestParameter('contact_person'));
-        $contactInformation->setStreetAddress($this->getRequestParameter('street_address'));
-        $contactInformation->setCity($this->getRequestParameter('city'));
-        $contactInformation->setRegion($this->getRequestParameter('region'));
-        $contactInformation->setCountryCode($this->getRequestParameter('country_code'));
-        $contactInformation->setPostalCode($this->getRequestParameter('postal_code'));
-        $contactInformation->setTelephone($this->getRequestParameter('telephone'));
-        $contactInformation->setFax($this->getRequestParameter('fax'));
-        $contactInformation->setEmail($this->getRequestParameter('email'));
-        $contactInformation->setWebsite($this->getRequestParameter('website'));
-        $contactInformation->setNote($this->getRequestParameter('contact_information_note'));
-
-        $contactInformation->save();
-
-        if ($contactInformation->getPrimaryContact())
-        {
-          $contactInformation->makePrimaryContact();
-        }
+        $contactInformation->makePrimaryContact();
       }
     }
   }

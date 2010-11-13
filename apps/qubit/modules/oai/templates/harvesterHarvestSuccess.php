@@ -1,4 +1,4 @@
-<h1><?php __('Repository Harvest')?></h1>
+<h1><?php echo __('Repository Harvest')?></h1>
 <h3><?php echo __('Repository: ').$repositoryName ?></h3>
 <?php echo __('Repository harvested successfuly') ?>
 <br/>

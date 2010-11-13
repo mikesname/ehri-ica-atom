@@ -33,7 +33,7 @@
                 timeout = setTimeout(function ()
                   {
                     $('.links:not(.links .links .links)', li).show();
-                  }, 512);
+                  }, 256);
               }, function ()
               {
                 clearTimeout(timeout);

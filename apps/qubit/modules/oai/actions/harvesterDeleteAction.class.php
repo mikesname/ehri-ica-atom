@@ -27,7 +27,6 @@
  */
 class oaiHarvesterDeleteAction extends sfAction
 {
-
    /*
    * Executes action
    *
@@ -35,7 +34,7 @@ class oaiHarvesterDeleteAction extends sfAction
    */
   public function execute($request)
   {
-    $repositoryId = $request->getParameter('repositoryId');
+    $repositoryId = $request->repositoryId;
     $repository = QubitOaiRepository::getById($repositoryId);
     $this->repositoryName = $repository->getName();
     $repository->delete();

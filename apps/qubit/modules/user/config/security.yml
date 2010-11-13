@@ -10,20 +10,16 @@ edit:
   credentials: [[ administrator, translator ]]
   is_secure: true
 
+index:
+  credentials: [[ researcher, contributor, editor, administrator, translator, authenticated ]]
+  is_secure: true
+
 list:
   credentials: administrator
   is_secure: true
 
 passwordEdit:
-  credentials: [[ researcher, contributor, editor, administrator, translator ]]
-  is_secure: true
-
-passwordUpdate:
-  credentials: [[ researcher, contributor, editor, administrator, translator ]]
-  is_secure: true
-
-show:
-  credentials: [[ researcher, contributor, editor, administrator, translator ]]
+  credentials: [[ researcher, contributor, editor, administrator, translator, authenticated ]]
   is_secure: true
 
 update:

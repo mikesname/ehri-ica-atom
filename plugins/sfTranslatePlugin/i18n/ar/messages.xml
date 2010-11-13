@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
+<xliff version="1.0">
+  <file source-language="EN" target-language="ar" datatype="plaintext" original="messages" date="2010-11-11T15:18:01Z" product-name="messages">
+    <header/>
+    <body>
+      <trans-unit id="1">
+        <source>X</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Translate User Interface</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="3">
+        <source>Page Text</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="4">
+        <source>Source</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="5">
+        <source>%language% Translation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="6">
+        <source>Save translation</source>
+        <target/>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>

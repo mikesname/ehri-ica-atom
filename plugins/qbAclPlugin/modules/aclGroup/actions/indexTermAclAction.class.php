@@ -21,7 +21,7 @@ class AclGroupIndexTermAclAction extends sfAction
 {
   public function execute($request)
   {
-    $this->group = QubitAclGroup::getById($this->getRequestParameter('id'));
+    $this->group = QubitAclGroup::getById($this->request->id);
     $this->forward404Unless($this->group);
 
     $this->groups = array();

@@ -69,7 +69,7 @@ class QubitSetting extends BaseSetting
   public function getCulture(array $options = array())
   {
     // get culture based on i18n fallback criteria
-    if ($settingI18n = QubitSettingI18n::getByIdAndCulture($this->getId(), sfContext::getInstance()->getUser()->getCulture()))
+    if ($settingI18n = QubitSettingI18n::getByIdAndCulture($this->id, sfContext::getInstance()->user->getCulture()))
     {
       return $settingI18n->getCulture();
     }
@@ -87,7 +87,6 @@ class QubitSetting extends BaseSetting
   {
     if (strlen($sourceCultureValue = $this->getValue(array('sourceCulture' => true))) > 0 && $culture != $this->getSourceCulture())
     {
-
       return $sourceCultureValue;
     }
 
@@ -119,7 +118,7 @@ class QubitSetting extends BaseSetting
     $criteria = new Criteria;
     if (null !== $scope)
     {
-      $criteria->add(QubitSetting::SCOPE, $scope, Criteria::EQUAL);
+      $criteria->add(QubitSetting::SCOPE, $scope);
     }
     else
     {
@@ -137,7 +136,7 @@ class QubitSetting extends BaseSetting
   static public function getSettingByName($name)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitSetting::NAME, $name, Criteria::EQUAL);
+    $criteria->add(QubitSetting::NAME, $name);
 
     return QubitSetting::getOne($criteria);
   }
@@ -150,8 +149,8 @@ class QubitSetting extends BaseSetting
   static public function getByNameAndScope($name, $scope)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitSetting::NAME, $name, Criteria::EQUAL);
-    $criteria->add(QubitSetting::SCOPE, $scope, Criteria::EQUAL);
+    $criteria->add(QubitSetting::NAME, $name);
+    $criteria->add(QubitSetting::SCOPE, $scope);
 
     return QubitSetting::getOne($criteria);
   }

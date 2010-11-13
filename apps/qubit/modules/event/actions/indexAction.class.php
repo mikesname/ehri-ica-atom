@@ -21,41 +21,44 @@ class EventIndexAction extends sfAction
 {
   public function execute($request)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Qubit');
+    $this->resource = $this->getRoute()->resource;
 
-    $event = QubitEvent::getById($request->id);
+    $value = array();
 
-    if (!isset($event))
+    if (isset($this->resource->actor))
     {
-      $this->forward404();
+      $value['actor'] = $this->context->routing->generate(null, array($this->resource->actor, 'module' => 'actor'));
     }
 
-    $properties['id'] = $event->id;
-    $properties['informationObject'] = $this->context->routing->generate(null, array('module' => 'informationobject', 'id' => $event->informationObjectId));
-    $properties['informationObjectDisplay'] = $event->informationObject->__toString();
-
-    $properties['actor'] = null;
-    if (null !== $event->actorId)
+    if (isset($this->resource->date))
     {
-      $properties['actor'] = $this->context->routing->generate(null, array('module' => 'actor', 'id' => $event->actorId));
-      $properties['actorDisplay'] = $event->actor->__toString();
+      $value['date'] = $this->resource->date;
     }
 
-    $properties['place'] = null;
-    if (null !== $place = $event->getPlace())
+    $value['endDate'] = Qubit::renderDate($this->resource->endDate);
+    $value['startDate'] = Qubit::renderDate($this->resource->startDate);
+
+    if (isset($this->resource->description))
     {
-      $properties['place'] = $this->context->routing->generate(null, array($place, 'module' => 'term'));
-      $properties['placeDisplay'] = $place->__toString();
+      $value['description'] = $this->resource->description;
     }
 
-    $properties['type'] = $this->context->routing->generate(null, array('module' => 'term', 'id' => $event->typeId));
-    $properties['typeDisplay'] = $event->type->__toString();
+    if (isset($this->resource->informationObject))
+    {
+      $value['informationObject'] = $this->context->routing->generate(null, array($this->resource->informationObject, 'module' => 'informationobject'));
+    }
 
-    $properties['startDate'] = collapse_date($event->startDate);
-    $properties['endDate'] = collapse_date($event->endDate);
-    $properties['dateDisplay'] = $event->dateDisplay;
-    $properties['description'] = $event->description;
+    $place = $this->resource->getPlace();
+    if (isset($place))
+    {
+      $value['place'] = $this->context->routing->generate(null, array($place, 'module' => 'term'));
+    }
 
-    return $this->renderText(json_encode($properties));
+    if (isset($this->resource->type))
+    {
+      $value['type'] = $this->context->routing->generate(null, array($this->resource->type, 'module' => 'term'));
+    }
+
+    return $this->renderText(json_encode($value));
   }
 }

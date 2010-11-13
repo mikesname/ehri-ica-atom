@@ -26,17 +26,11 @@ class TermBrowseTermAction extends sfAction
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $this->term = QubitTerm::getById($request->id);
-
-    if (!isset($this->term))
-    {
-      $this->forward404();
-    }
+    $this->resource = $this->getRoute()->resource;
 
     $criteria = new Criteria;
-    $criteria->add(QubitObjectTermRelation::TERM_ID, $this->term->id);
-    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, QubitInformationObject::ID, Criteria::INNER_JOIN);
-    $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID, Criteria::INNER_JOIN);
+    $criteria->add(QubitObjectTermRelation::TERM_ID, $this->resource->id);
+    $criteria->addJoin(QubitObjectTermRelation::OBJECT_ID, QubitInformationObject::ID);
 
     $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 

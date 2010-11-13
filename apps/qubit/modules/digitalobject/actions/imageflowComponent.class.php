@@ -38,15 +38,15 @@ class DigitalObjectImageflowComponent extends sfComponent
     }
 
     // Add thumbs
-    foreach ($this->informationObject->descendants as $descendant)
+    foreach ($this->resource->descendants as $item)
     {
-      if (null !== $digitalObject = $descendant->getDigitalObject())
+      if (null !== $digitalObject = $item->getDigitalObject())
       {
         $thumbnail = $digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
 
         if (!$thumbnail)
         {
-          $thumbnail = QubitDigitalObject::getGenericRepresentation($digitalObject->getMimeType(), QubitTerm::THUMBNAIL_ID);
+          $thumbnail = QubitDigitalObject::getGenericRepresentation($digitalObject->mimeType, QubitTerm::THUMBNAIL_ID);
           $thumbnail->setParent($digitalObject);
         }
 
@@ -61,12 +61,12 @@ class DigitalObjectImageflowComponent extends sfComponent
 
     // Get total number of descendant digital objects
     $this->total = 0;
-    if (isset($this->informationObject->id))
+    if (isset($this->resource))
     {
       $criteria = new Criteria;
-      $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID, Criteria::INNER_JOIN);
-      $criteria->add(QubitInformationObject::LFT, $this->informationObject->lft, Criteria::GREATER_THAN);
-      $criteria->add(QubitInformationObject::RGT, $this->informationObject->rgt, Criteria::LESS_THAN);
+      $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID);
+      $criteria->add(QubitInformationObject::LFT, $this->resource->lft, Criteria::GREATER_THAN);
+      $criteria->add(QubitInformationObject::RGT, $this->resource->rgt, Criteria::LESS_THAN);
 
       $this->total = BasePeer::doCount($criteria)->fetchColumn(0);
     }

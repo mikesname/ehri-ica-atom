@@ -25,6 +25,16 @@
  */
 class QubitRepository extends BaseRepository
 {
+  public function save($connection = null)
+  {
+    if (self::ROOT_ID != $this->id && !isset($this->parentId) && 'QubitRepository' == $this->className)
+    {
+      $this->parentId = self::ROOT_ID;
+    }
+
+    parent::save($connection);
+  }
+
   /**
    * Save new link to a term.
    *
@@ -38,7 +48,7 @@ class QubitRepository extends BaseRepository
 
     //TODO: move to QubitNote
     //  $newTermRelation->setRelationNote($relationNote);
-    $newTermRelation->setObjectId($this->getId());
+    $newTermRelation->setObjectId($this->id);
     $newTermRelation->save();
   }
 
@@ -51,7 +61,7 @@ class QubitRepository extends BaseRepository
   public function getTermRelations($taxonomyId = 'all')
   {
     $criteria = new Criteria;
-    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->getId());
+    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->id);
 
     if ($taxonomyId != 'all')
     {
@@ -72,7 +82,7 @@ class QubitRepository extends BaseRepository
   public function setRepositoryNote($userId, $note, $noteTypeId)
   {
     $newNote = new QubitNote;
-    $newNote->setObjectId($this->getId());
+    $newNote->setObjectId($this->id);
     $newNote->setScope('QubitRepository');
     $newNote->setUserId($userId);
     $newNote->setContent($note);
@@ -89,7 +99,7 @@ class QubitRepository extends BaseRepository
   {
     $criteria = new Criteria;
     $criteria->addJoin(QubitNote::TYPE_ID, QubitTerm::ID);
-    $criteria->add(QubitNote::OBJECT_ID, $this->getId());
+    $criteria->add(QubitNote::OBJECT_ID, $this->id);
     $criteria->add(QubitNote::SCOPE, 'QubitRepository');
     QubitNote::addOrderByPreorder($criteria);
 
@@ -105,7 +115,6 @@ class QubitRepository extends BaseRepository
   {
     if ($this->getCountryCode())
     {
-
       return format_country($this->getCountryCode());
     }
   }
@@ -116,7 +125,6 @@ class QubitRepository extends BaseRepository
     {
       if ($countryCode = $this->getPrimaryContact()->getCountryCode())
       {
-
         return $countryCode;
       }
     }
@@ -126,7 +134,6 @@ class QubitRepository extends BaseRepository
         {
         if ($countryCode = $contact->getCountryCode())
         {
-
           return $countryCode;
         }
       }
@@ -151,7 +158,7 @@ class QubitRepository extends BaseRepository
   {
     if ($countryCode !== null)
     {
-      $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID, Criteria::INNER_JOIN);
+      $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID);
       $criteria->add(QubitContactInformation::PRIMARY_CONTACT, true);
       $criteria->add(QubitContactInformation::COUNTRY_CODE, $countryCode);
     }
@@ -175,25 +182,11 @@ class QubitRepository extends BaseRepository
       // Don't display repositories with no name
       if ($name = $repository->getAuthorizedFormOfName($options))
       {
-        $selectOptions[$repository->getId()] = $name;
+        $selectOptions[$repository->id] = $name;
       }
     }
 
     return options_for_select($selectOptions, $default, $options);
-  }
-
-  /**
-   * Add search criteria for find records updated in last $numberOfDays
-   *
-   * @param Criteria $criteria current search criteria
-   * @param string $cutoff earliest date to show
-   * @return Criteria modified criteria object
-   */
-  public static function addRecentUpdatesCriteria($criteria, $cutoff)
-  {
-    $criteria->add(QubitRepository::UPDATED_AT, $cutoff, Criteria::GREATER_EQUAL);
-
-    return $criteria;
   }
 
   /**************
@@ -209,7 +202,7 @@ class QubitRepository extends BaseRepository
     $criteria->add(QubitTermI18n::NAME, $term);
     if ($existingTerm = QubitTerm::getOne($criteria))
     {
-      $this->setTypeId($existingTerm->getId());
+      $this->setTypeId($existingTerm->id);
     }
     else
     {
@@ -217,7 +210,7 @@ class QubitRepository extends BaseRepository
       $newTerm->setTaxonomyId(QubitTaxonomy::REPOSITORY_TYPE_ID);
       $newTerm->setName($term);
       $newTerm->save();
-      $this->setTypeId($newTerm->getId());
+      $this->setTypeId($newTerm->id);
     }
   }
 }

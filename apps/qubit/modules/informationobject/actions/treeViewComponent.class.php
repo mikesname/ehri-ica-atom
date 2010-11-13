@@ -21,19 +21,19 @@ class InformationObjectTreeViewComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->informationObject = $request->getAttribute('informationObject');
+    $this->resource = $request->getAttribute('sf_route')->resource;
 
-    // Get info object tree (limit to max 10 siblings and children)
-    $this->treeViewObjects = $this->informationObject->getFullYuiTree(10);
+    // Get tree (limit 10 siblings and children)
+    $this->treeViewObjects = $this->resource->getFullYuiTree(10);
 
-    // Check if treeview worth it
+    // Check if tree view worth it
     if (1 > count($this->treeViewObjects))
     {
       return sfView::NONE;
     }
 
     $this->treeViewExpands = array();
-    foreach ($this->informationObject->ancestors->andSelf()->orderBy('lft') as $item)
+    foreach ($this->resource->ancestors->andSelf()->orderBy('lft') as $item)
     {
       $this->treeViewExpands[$item->id] = $item->id;
     }

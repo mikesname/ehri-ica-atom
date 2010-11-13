@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_oai_repository' table.
+ * This class defines the structure of the 'oai_repository' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class OaiRepositoryTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_oai_repository');
+		$this->setName('oai_repository');
 		$this->setPhpName('oaiRepository');
 		$this->setClassname('QubitOaiRepository');
 		$this->setPackage('lib.model');

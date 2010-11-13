@@ -29,7 +29,8 @@
  */
 class QubitRelation extends BaseRelation
 {
-  protected $indexOnSave = true;
+  protected
+    $indexOnSave = true;
 
   /**
    * Additional save functionality (e.g. update search index)
@@ -39,10 +40,10 @@ class QubitRelation extends BaseRelation
    */
   public function save($connection = null)
   {
-    // TODO: $cleanObject = $this->object->clean;
+    // TODO $cleanObject = $this->object->clean;
     $cleanObjectId = $this->__get('objectId', array('clean' => true));
 
-    // TODO: $cleanSubject = $this->subject->clean;
+    // TODO $cleanSubject = $this->subject->clean;
     $cleanSubjectId = $this->__get('subjectId', array('clean' => true));
 
     parent::save($connection);
@@ -71,6 +72,13 @@ class QubitRelation extends BaseRelation
     }
 
     return $this;
+  }
+
+  protected function insert($connection = null)
+  {
+    $this->slug = QubitSlug::slugify($this->slug);
+
+    return parent::insert($connection);
   }
 
   /**
@@ -171,14 +179,14 @@ class QubitRelation extends BaseRelation
   {
     $criteria = new Criteria;
 
-    $criterion1 = $criteria->getNewCriterion(QubitRelation::OBJECT_ID, $id, Criteria::EQUAL);
-    $criterion2 = $criteria->getNewCriterion(QubitRelation::SUBJECT_ID, $id, Criteria::EQUAL);
+    $criterion1 = $criteria->getNewCriterion(QubitRelation::OBJECT_ID, $id);
+    $criterion2 = $criteria->getNewCriterion(QubitRelation::SUBJECT_ID, $id);
     $criterion1->addOr($criterion2);
 
     // If restricting by relation type
     if (isset($options['typeId']))
     {
-      $criterion3 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, $options['typeId'], Criteria::EQUAL);
+      $criterion3 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, $options['typeId']);
       $criterion1->addAnd($criterion3);
     }
 
@@ -240,16 +248,25 @@ class QubitRelation extends BaseRelation
    * @param integer $referenceId primary key of reference object
    * @return mixed other object in relationship
    */
-  public function getOpposedObject($referenceId)
+  public function getOpposedObject($reference)
   {
+    if (is_object($reference))
+    {
+      $refid = $reference->id;
+    }
+    else
+    {
+      $refid = $reference;
+    }
+
     $opposite = null;
-    if ($this->subjectId == $referenceId)
+    if ($this->subjectId == $refid)
     {
       $opposite = $this->getObject();
     }
-    else if ($this->objectId == $referenceId)
+    else if ($this->objectId == $refid)
     {
-      $opposite = $this->getSubject();
+     $opposite = $this->getSubject();
     }
 
     return $opposite;
@@ -329,30 +346,9 @@ class QubitRelation extends BaseRelation
   public function getNoteByTypeId($noteTypeId)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitNote::OBJECT_ID, $this->getId(), Criteria::EQUAL);
-    $criteria->add(QubitNote::TYPE_ID, $noteTypeId, Criteria::EQUAL);
+    $criteria->add(QubitNote::OBJECT_ID, $this->id);
+    $criteria->add(QubitNote::TYPE_ID, $noteTypeId);
 
     return QubitNote::getOne($criteria);
-  }
-
-  /**
-   * Get start and end date as an array
-   *
-   * @return array start date and/or end date
-   */
-  public function getDates()
-  {
-    $dateArray = array();
-    if (null !== $this->getStartDate())
-    {
-      $dateArray['start'] = $this->getStartDate();
-    }
-
-    if (null !== $this->getEndDate())
-    {
-      $dateArray['end'] = $this->getEndDate();
-    }
-
-    return $dateArray;
   }
 }

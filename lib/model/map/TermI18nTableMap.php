@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_term_i18n' table.
+ * This class defines the structure of the 'term_i18n' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class TermI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_term_i18n');
+		$this->setName('term_i18n');
 		$this->setPhpName('termI18n');
 		$this->setClassname('QubitTermI18n');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_term', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'term', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

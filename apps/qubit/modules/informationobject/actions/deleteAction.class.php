@@ -23,38 +23,33 @@ class InformationObjectDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->informationObject = QubitInformationObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists and that it's not the root
-    if (!isset($this->informationObject) || !isset($this->informationObject->parent))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
 
     // Check user authorization
-    if (!QubitAcl::check($this->informationObject, 'delete'))
+    if (!QubitAcl::check($this->resource, 'delete'))
     {
       QubitAcl::forwardUnauthorized();
     }
 
-    $request->setAttribute('informationObject', $this->informationObject);
-
     if ($request->isMethod('delete'))
     {
-      $parent = $this->informationObject->parent;
+      $parent = $this->resource->parent;
 
-      foreach ($this->informationObject->descendants->andSelf()->orderBy('rgt') as $descendant)
+      foreach ($this->resource->descendants->andSelf()->orderBy('rgt') as $item)
       {
-        if (QubitAcl::check($this->informationObject, 'delete'))
+        // Delete related digitalObjects
+        foreach ($item->digitalObjects as $digitalObject)
         {
-          // Delete related digitalObjects
-          foreach ($descendant->digitalObjects as $digitalObject)
-          {
-            $digitalObject->delete();
-          }
-
-          $descendant->delete();
+          $digitalObject->delete();
         }
+
+        $item->delete();
       }
 
       if (isset($parent->parent))

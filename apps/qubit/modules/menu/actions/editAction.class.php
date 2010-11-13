@@ -90,11 +90,11 @@ class MenuEditAction extends sfAction
     switch ($name = $field->getName())
     {
       case 'parentId':
-        if (null == $parentId = $this->form->getValue('parentId'))
+
+        if (null == $this->menu['parentId'] = $this->form->getValue('parentId'))
         {
-          $parentId = QubitMenu::ROOT_ID;
+          $this->menu['parentId'] = QubitMenu::ROOT_ID;
         }
-        $this->menu['parentId'] = $parentId;
 
         break;
 
@@ -112,8 +112,6 @@ class MenuEditAction extends sfAction
         $this->processField($field);
       }
     }
-
-    $this->menu->save();
 
     return $this;
   }
@@ -152,8 +150,12 @@ class MenuEditAction extends sfAction
       {
         $this->processForm();
 
+        $this->menu->save();
+
         $this->redirect(array('module' => 'menu', 'action' => 'list'));
       }
     }
+
+    QubitDescription::addAssets($this->response);
   }
 }

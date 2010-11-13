@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_place' table.
+ * This class defines the structure of the 'place' table.
  *
  *
  *
@@ -30,15 +30,15 @@ class PlaceTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_place');
+		$this->setName('place');
 		$this->setPhpName('place');
 		$this->setClassname('QubitPlace');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_term', 'ID', true, null, null);
-		$this->addForeignKey('COUNTRY_ID', 'countryId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'term', 'ID', true, null, null);
+		$this->addForeignKey('COUNTRY_ID', 'countryId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('LONGTITUDE', 'longtitude', 'FLOAT', false, null, null);
 		$this->addColumn('LATITUDE', 'latitude', 'FLOAT', false, null, null);
 		$this->addColumn('ALTITUDE', 'altitude', 'FLOAT', false, null, null);

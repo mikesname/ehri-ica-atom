@@ -21,7 +21,7 @@ class SettingsDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $setting = QubitSetting::getById($this->getRequestParameter('id'));
+    $setting = QubitSetting::getById($this->request->id);
 
     $this->forward404Unless($setting);
 

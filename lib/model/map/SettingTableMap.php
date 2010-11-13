@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_setting' table.
+ * This class defines the structure of the 'setting' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class SettingTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_setting');
+		$this->setName('setting');
 		$this->setPhpName('setting');
 		$this->setClassname('QubitSetting');
 		$this->setPackage('lib.model');

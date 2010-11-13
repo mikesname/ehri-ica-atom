@@ -36,8 +36,8 @@ class oailistSetsComponent extends sfComponent
   {
     $request->setRequestFormat('xml');
     $this->date = QubitOai::getDate();
-    $this->path = $this->getRequest()->getUriPrefix().$this->getRequest()->getPathInfo();
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->path = $this->request->getUriPrefix().$this->request->getPathInfo();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';
@@ -49,7 +49,7 @@ class oailistSetsComponent extends sfComponent
 
     foreach (QubitInformationObject::getCollections() as $el)
     {
-      $this->sets[] = $el->getLabel();
+      $this->sets[] = new sfIsadPlugin($el);
     }
   }
 }

@@ -13,7 +13,6 @@ editSuccess:
     autocomplete:
     multiDelete:
     multiInstanceInput:
-    multiInstanceSelect:
     multiRow:
     select:
 

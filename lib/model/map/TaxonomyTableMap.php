@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_taxonomy' table.
+ * This class defines the structure of the 'taxonomy' table.
  *
  *
  *
@@ -30,17 +30,17 @@ class TaxonomyTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_taxonomy');
+		$this->setName('taxonomy');
 		$this->setPhpName('taxonomy');
 		$this->setClassname('QubitTaxonomy');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
 		$this->addColumn('USAGE', 'usage', 'VARCHAR', false, 255, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_taxonomy', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'taxonomy', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

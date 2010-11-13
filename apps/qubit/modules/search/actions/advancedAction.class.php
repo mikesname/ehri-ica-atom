@@ -22,11 +22,11 @@ class SearchAdvancedAction extends sfAction
   public function execute($request)
   {
     setlocale(LC_CTYPE, 'en_US.utf-8');
-    $this->query = $this->getRequestParameter('search_query');
+    $this->query = $this->request->search_query;
 
     if ($this->query)
     {
-    $this->getResponse()->setTitle('Search for \''.$this->query.'\'', true);
+    $this->response->setTitle('Search for \''.$this->query.'\'', true);
     }
 
     $search_index = SearchIndex::getIndexLocation();

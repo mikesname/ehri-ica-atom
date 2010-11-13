@@ -22,7 +22,6 @@
 
             if (null != yuiId && !isNaN(parseInt(yuiId)))
             {
-
               return yuiId;
             }
           };
@@ -63,7 +62,7 @@
                // Calculate new value
                var newValue = replacePlaceHolder(title, i + 1);
 
-               // Replace title value 
+               // Replace title value
                $(this).find('input[type=text]').val(newValue);
              });
           }
@@ -151,6 +150,7 @@
             {
               // Allows multiple file selection in "Browse" dialog.
               uploader.setAllowMultipleFiles(true);
+              uploader.setAllowLogging(true);
             });
 
           uploader.addListener('fileSelect', function (event)
@@ -174,7 +174,7 @@
                       .addClass('multiFileUploadWarning')
 
                       // Set error message
-                      .html('<p><b>' + file.name + '</b><br />' + Qubit.multiFileUpload.i18nOversizedFile + '</p>');
+                      .html('<p><strong>' + file.name + '</strong><br/>' + Qubit.multiFileUpload.i18nOversizedFile + '</p>');
 
                     // Remove file from uploader queue
                     uploader.removeFile(file.id);
@@ -235,7 +235,7 @@
               var statusLayer = $('div.uploadStatus', thumbnailLayer);
 
               var progress = Math.round(Qubit.multiFileUpload.thumbWidth * (event.bytesLoaded / event.bytesTotal));
-              var progressBar = '<div style="background-color: #fd3; height: 5px; width: ' + progress + 'px" />';
+              var progressBar = '<div style="background-color: #fd3; height: 5px; width: ' + progress + 'px"/>';
 
               // Update progress bar
               $('div.progressBar', thumbnailLayer).html(progressBar);
@@ -256,7 +256,7 @@
               var thumbnailLayer = $('#thumbnail-' + event.id);
               var infoLayer = thumbnailLayer.next();
 
-              var progressBar = '<div style="background-color: #0f0; height: 5px; width: ' + Qubit.multiFileUpload.thumbWidth + 'px" />';
+              var progressBar = '<div style="background-color: #0f0; height: 5px; width: ' + Qubit.multiFileUpload.thumbWidth + 'px"/>';
 
               // Update progress bar
               $('div.progressBar', thumbnailLayer).html(progressBar);
@@ -294,12 +294,12 @@
               $('<div class="form-item">' +
                   '<label>' + Qubit.multiFileUpload.i18nInfoObjectTitle + '</label>' +
                   '<input type="text" name="files[' + fileId + '][infoObjectTitle]" value="" style="width: 250px"/>' +
-                  '<input type="hidden" class="md5sum" value="' + upload.md5sum + '" />' +
-                  '<input type="hidden" class="filename" value="' + upload.name + '" />' +
-                  '<input type="hidden" name="files[' + fileId + '][name]" value="' + upload.name + '" />' +
-                  '<input type="hidden" name="files[' + fileId + '][md5sum]" value="' + upload.md5sum + '" />' +
-                  '<input type="hidden" name="files[' + fileId + '][tmpName]" value="' + upload.tmpName + '" />' +
-                  '<input type="hidden" name="files[' + fileId + '][thumb]" value="' + upload.thumb + '" />' +
+                  '<input type="hidden" class="md5sum" value="' + upload.md5sum + '"/>' +
+                  '<input type="hidden" class="filename" value="' + upload.name + '"/>' +
+                  '<input type="hidden" name="files[' + fileId + '][name]" value="' + upload.name + '"/>' +
+                  '<input type="hidden" name="files[' + fileId + '][md5sum]" value="' + upload.md5sum + '"/>' +
+                  '<input type="hidden" name="files[' + fileId + '][tmpName]" value="' + upload.tmpName + '"/>' +
+                  '<input type="hidden" name="files[' + fileId + '][thumb]" value="' + upload.thumb + '"/>' +
                 '</div>')
                 .prependTo(thumbnailLayer.next());
 

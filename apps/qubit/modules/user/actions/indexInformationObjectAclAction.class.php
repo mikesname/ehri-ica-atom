@@ -21,13 +21,12 @@ class UserIndexInformationObjectAclAction extends sfAction
 {
   public function execute($request)
   {
-    $this->user = QubitUser::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->user);
+    $this->resource = $this->getRoute()->resource;
 
-    //except for administrators, only allow users to see their own profile
-    if (!$this->getUser()->hasCredential('administrator'))
+    // Except for administrators, only allow users to see their own profile
+    if (!$this->context->user->hasCredential('administrator'))
     {
-      if ($this->getRequestParameter('id') != $this->getUser()->getAttribute('user_id'))
+      if ($this->resource->id != $this->context->user->getAttribute('user_id'))
       {
         $this->redirect('admin/secure');
       }
@@ -35,7 +34,7 @@ class UserIndexInformationObjectAclAction extends sfAction
 
     // Get user's groups
     $this->userGroups = array();
-    if (0 < count($aclUserGroups = $this->user->aclUserGroups))
+    if (0 < count($aclUserGroups = $this->resource->aclUserGroups))
     {
       foreach ($aclUserGroups as $aclUserGroup)
       {
@@ -54,7 +53,7 @@ class UserIndexInformationObjectAclAction extends sfAction
     // Get access control permissions
     $criteria = new Criteria;
     $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID, Criteria::LEFT_JOIN);
-    $c1 = $criteria->getNewCriterion(QubitAclPermission::USER_ID, $this->request->id);
+    $c1 = $criteria->getNewCriterion(QubitAclPermission::USER_ID, $this->resource->id);
 
     // Add group criteria
     if (1 == count($this->userGroups))
@@ -81,22 +80,22 @@ class UserIndexInformationObjectAclAction extends sfAction
     $criteria->addAscendingOrderByColumn(QubitAclPermission::GROUP_ID);
 
     // Add user as final "group"
-    $this->userGroups[] = $this->user->username;
+    $this->userGroups[] = $this->resource->username;
 
     // Build ACL
     $this->acl = array();
     if (0 < count($permissions = QubitAclPermission::get($criteria)))
     {
-      foreach ($permissions as $permission)
+      foreach ($permissions as $item)
       {
         // In this context permissions for all objects (null) and root actor
         // object are equivalent
-        $objectId = (QubitInformationObject::ROOT_ID != $permission->objectId) ? $permission->objectId : null;
+        $objectId = (QubitInformationObject::ROOT_ID != $item->objectId) ? $item->objectId : null;
 
         // Use username as "group" for permissions specific to user
-        $groupKey = (null !== $permission->groupId) ? $permission->groupId : $this->user->username;
+        $groupKey = (null !== $item->groupId) ? $item->groupId : $this->resource->username;
 
-        $this->acl[$permission->getConstants(array('name' => 'repositoryId'))][$objectId][$permission->action][$groupKey] = $permission;
+        $this->acl[$item->getConstants(array('name' => 'repositoryId'))][$objectId][$item->action][$groupKey] = $item;
       }
     }
   }

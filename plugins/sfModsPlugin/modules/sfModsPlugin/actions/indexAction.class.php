@@ -28,4 +28,17 @@
 
 class sfModsPluginIndexAction extends InformationObjectIndexAction
 {
+  public function execute($request)
+  {
+    parent::execute($request);
+
+    $this->mods = new sfModsPlugin($this->resource);
+
+    if (1 > strlen($title = $this->resource))
+    {
+      $title = $this->context->i18n->__('Untitled');
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+  }
 }

@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_actor' table.
+ * This class defines the structure of the 'actor' table.
  *
  *
  *
@@ -30,19 +30,20 @@ class ActorTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_actor');
+		$this->setName('actor');
 		$this->setPhpName('actor');
 		$this->setClassname('QubitActor');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
 		$this->addColumn('CORPORATE_BODY_IDENTIFIERS', 'corporateBodyIdentifiers', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('ENTITY_TYPE_ID', 'entityTypeId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('DESCRIPTION_STATUS_ID', 'descriptionStatusId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('DESCRIPTION_DETAIL_ID', 'descriptionDetailId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('ENTITY_TYPE_ID', 'entityTypeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('DESCRIPTION_STATUS_ID', 'descriptionStatusId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('DESCRIPTION_DETAIL_ID', 'descriptionDetailId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('DESCRIPTION_IDENTIFIER', 'descriptionIdentifier', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_actor', 'ID', false, null, null);
+		$this->addColumn('SOURCE_STANDARD', 'sourceStandard', 'VARCHAR', false, 255, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'actor', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

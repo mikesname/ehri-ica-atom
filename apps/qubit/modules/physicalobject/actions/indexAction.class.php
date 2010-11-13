@@ -21,7 +21,13 @@ class PhysicalObjectIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->physicalObject = QubitPhysicalObject::getById($request->id);
-    $this->forward404Unless($this->physicalObject);
+    $this->resource = $this->getRoute()->resource;
+
+    if (1 > strlen($title = $this->resource))
+    {
+      $title = $this->context->i18n->__('Untitled');
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
   }
 }

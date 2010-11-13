@@ -27,47 +27,31 @@
 class QubitPager extends sfPropelPager
 {
   protected
-    $nbResults = null, /* Override sfPager::$nbResults = 0 */
-    $peer_method_name = 'get';
+
+    // Override sfPager::$nbResults = 0
+    $nbResults = null;
 
   /**
    * BasePeer::doCount() returns PDOStatement
    */
   public function doCount(Criteria $criteria)
   {
-    // Set primary table name incase there are no WHERE columns, in which case
-    // BasePeer::createSelectSql() can't determine which tables go in the FROM
-    // clause
-    $criteria->setPrimaryTableName($this->tableName);
+    call_user_func(array($this->class, 'addSelectColumns'), $criteria);
 
     return BasePeer::doCount($criteria)->fetchColumn(0);
   }
 
-  /**
-   * Override ::init() to call BasePeer::doCount()
-   *
-   * @see sfPropelPager
-   */
-  public function init()
+  public function doSelect(Criteria $criteria)
   {
-    $class = $this->class;
-    $this->class = $this;
-
-    parent::init();
-
-    $this->class = $class;
+    return call_user_func(array($this->class, 'get'), $criteria);
   }
 
   /**
-   * Override ::getResults() to call ->init() first
-   *
-   * @see sfPager
+   * @see sfPropelPager
    */
-  public function getResults()
+  public function getClassPeer()
   {
-    $this->init();
-
-    return parent::getResults();
+    return $this;
   }
 
   /**
@@ -86,12 +70,14 @@ class QubitPager extends sfPropelPager
   }
 
   /**
-   * For Qubit we only have the BasePeer peer class
+   * Override ::getResults() to call ->init() first
    *
-   * @see sfPropelPager
+   * @see sfPager
    */
-  public function getClassPeer()
+  public function getResults()
   {
-    return $this->class;
+    $this->init();
+
+    return parent::getResults();
   }
 }

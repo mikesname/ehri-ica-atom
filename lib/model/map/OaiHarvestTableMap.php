@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_oai_harvest' table.
+ * This class defines the structure of the 'oai_harvest' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class OaiHarvestTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_oai_harvest');
+		$this->setName('oai_harvest');
 		$this->setPhpName('oaiHarvest');
 		$this->setClassname('QubitOaiHarvest');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
-		$this->addForeignKey('OAI_REPOSITORY_ID', 'oaiRepositoryId', 'INTEGER', 'q_oai_repository', 'ID', true, null, null);
+		$this->addForeignKey('OAI_REPOSITORY_ID', 'oaiRepositoryId', 'INTEGER', 'oai_repository', 'ID', true, null, null);
 		$this->addColumn('START_TIMESTAMP', 'startTimestamp', 'TIMESTAMP', false, null, null);
 		$this->addColumn('END_TIMESTAMP', 'endTimestamp', 'TIMESTAMP', false, null, null);
 		$this->addColumn('LAST_HARVEST', 'lastHarvest', 'TIMESTAMP', false, null, null);

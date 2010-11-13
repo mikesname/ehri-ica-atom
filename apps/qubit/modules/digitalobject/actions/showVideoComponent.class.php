@@ -36,10 +36,10 @@ class DigitalObjectShowVideoComponent extends sfComponent
   public function execute($request)
   {
     // Get representation by usage type
-    $this->representation = $this->digitalObject->getRepresentationByUsage($this->usageType);
+    $this->representation = $this->resource->getRepresentationByUsage($this->usageType);
 
     // If we can't find a representation for this object, try their parent
-    if (!$this->representation && ($parent = $this->digitalObject->getParent()))
+    if (!$this->representation && ($parent = $this->resource->parent))
     {
       $this->representation = $parent->getRepresentationByUsage($this->usageType);
     }
@@ -47,15 +47,15 @@ class DigitalObjectShowVideoComponent extends sfComponent
     // Set up display of video in flowplayer
     if ($this->representation)
     {
-      $this->getResponse()->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
-      $this->getResponse()->addJavaScript('flowplayer');
+      $this->response->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
+      $this->response->addJavaScript('flowplayer');
 
       // If this is a reference movie, get the thumbnail representation for the
       // place holder image
       $this->showFlashPlayer = true;
-      if ($this->usageType == QubitTerm::REFERENCE_ID)
+      if (QubitTerm::REFERENCE_ID == $this->usageType)
       {
-        $this->thumbnail = $this->digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+        $this->thumbnail = $this->resource->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
       }
 
       list($this->width, $this->height) = QubitDigitalObject::getImageMaxDimensions($this->usageType);
@@ -67,7 +67,7 @@ class DigitalObjectShowVideoComponent extends sfComponent
     else
     {
       $this->showFlashPlayer = false;
-      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
+      $this->representation = QubitDigitalObject::getGenericRepresentation($this->resource->mimeType, $this->usageType);
     }
   }
 }

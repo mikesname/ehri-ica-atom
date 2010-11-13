@@ -2,11 +2,11 @@
 
 <h1><?php echo __('View permissions') ?></h1>
 
-<h1 class="label"><?php echo __('%1% group', array('%1%' => $group->__toString())) ?></h1>
+<?php echo link_to_if(QubitAcl::check($group, 'edit'), '<h1 class="label">'.render_title($group).'</h1>', array($group, 'module' => 'aclGroup', 'action' => 'edit'), array('title' => __('Edit group'))) ?>
 
 <div class="section">
   <?php if (0 < count($acl)): ?>
-  <table id="userPermissions" class="inline">
+  <table id="userPermissions">
     <thead>
       <tr>
       <th colspan="2">&nbsp;</th>
@@ -27,7 +27,7 @@
         <?php endif; ?>
         </strong></td>
       </tr>
-      
+
     <?php $row = 0; ?>
     <?php foreach ($actions as $action => $groupPermission): ?>
       <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
@@ -38,8 +38,8 @@
         <?php else: ?>
           <em><?php echo __('All privileges') ?></em>
         <?php endif; ?>
-        </td> 
-        
+        </td>
+
         <?php foreach ($roles as $roleId): ?>
         <td>
         <?php if (isset($groupPermission[$roleId]) && $permission = $groupPermission[$roleId]): ?>

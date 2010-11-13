@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_status' table.
+ * This class defines the structure of the 'status' table.
  *
  *
  *
@@ -30,15 +30,15 @@ class StatusTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_status');
+		$this->setName('status');
 		$this->setPhpName('status');
 		$this->setClassname('QubitStatus');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('STATUS_ID', 'statusId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('STATUS_ID', 'statusId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);

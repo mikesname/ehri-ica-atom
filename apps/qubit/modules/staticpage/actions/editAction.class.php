@@ -17,95 +17,96 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class StaticPageEditAction extends sfAction
+class StaticPageEditAction extends DefaultEditAction
 {
   public static
     $NAMES = array(
       'title',
-      'permalink',
+      'slug',
       'content');
+
+  protected function earlyExecute()
+  {
+    $this->form->getWidgetSchema()->setIdFormat('edit-%s');
+
+    $this->resource = new QubitStaticPage;
+    $title = $this->context->i18n->__('Add new page');
+
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+
+      if (1 > strlen($title = $this->resource))
+      {
+        $title = $this->context->i18n->__('Untitled');
+      }
+
+      $title = $this->context->i18n->__('Edit %1%', array('%1%' => $title));
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+  }
 
   protected function addField($name)
   {
     switch ($name)
     {
       case 'content':
-        $this->form->setDefault('content', $this->staticPage->content);
+        $this->form->setDefault('content', $this->resource->content);
         $this->form->setValidator('content', new sfValidatorString);
         $this->form->setWidget('content', new sfWidgetFormTextarea);
 
         break;
 
+      case 'slug':
+        $this->form->setDefault('slug', $this->resource->slug);
+        $this->form->setValidator('slug', new sfValidatorRegex(array('pattern' => '/^[^;]*$/'), array('invalid' => $this->context->i18n->__('Mustn\'t contain ";"'))));
+        $this->form->setWidget('slug', new sfWidgetFormInput);
+
+      case 'title':
+        $this->form->setDefault('title', $this->resource->title);
+        $this->form->setValidator('title', new sfValidatorString);
+        $this->form->setWidget('title', new sfWidgetFormInput);
+
       default:
-        $this->form->setDefault($name, $this->staticPage[$name]);
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        return parent::addField($name);
     }
   }
 
   protected function processField($field)
   {
-    switch ($name = $field->getName())
+    switch ($field->getName())
     {
-      case 'permalink':
+      case 'slug':
 
-        if (!$this->staticPage->isProtected())
+        if (!$this->resource->isProtected())
         {
-          $this->staticPage[$name] = $this->form->getValue($name);
+          $this->resource->slug = $this->form->getValue('slug');
         }
 
         break;
 
       default:
 
-        $this->staticPage[$name] = $this->form->getValue($name);
+        return parent::processField($field);
     }
-  }
-
-  protected function processForm()
-  {
-    foreach ($this->form as $field)
-    {
-      $this->processField($field);
-    }
-
-    $this->staticPage->save();
   }
 
   public function execute($request)
   {
-    $this->form = new sfForm;
+    parent::execute($request);
 
-    $this->staticPage = new QubitStaticPage;
-
-    if (isset($request->id))
-    {
-      $this->staticPage = QubitStaticPage::getById($request->id);
-
-      if (!isset($this->staticPage))
-      {
-        $this->forward404();
-      }
-    }
-
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
-    {
-      $this->addField($name);
-    }
-
-    // Post form
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
-
       if ($this->form->isValid())
       {
         $this->processForm();
 
-        $this->redirect(array($this->staticPage, 'module' => 'staticpage'));
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'staticpage'));
       }
     }
   }

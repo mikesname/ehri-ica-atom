@@ -5,17 +5,17 @@ abstract class BaseEvent extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_event',
+    TABLE_NAME = 'event',
 
-    ID = 'q_event.ID',
-    START_DATE = 'q_event.START_DATE',
-    START_TIME = 'q_event.START_TIME',
-    END_DATE = 'q_event.END_DATE',
-    END_TIME = 'q_event.END_TIME',
-    TYPE_ID = 'q_event.TYPE_ID',
-    INFORMATION_OBJECT_ID = 'q_event.INFORMATION_OBJECT_ID',
-    ACTOR_ID = 'q_event.ACTOR_ID',
-    SOURCE_CULTURE = 'q_event.SOURCE_CULTURE';
+    ID = 'event.ID',
+    START_DATE = 'event.START_DATE',
+    START_TIME = 'event.START_TIME',
+    END_DATE = 'event.END_DATE',
+    END_TIME = 'event.END_TIME',
+    TYPE_ID = 'event.TYPE_ID',
+    INFORMATION_OBJECT_ID = 'event.INFORMATION_OBJECT_ID',
+    ACTOR_ID = 'event.ACTOR_ID',
+    SOURCE_CULTURE = 'event.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -114,7 +114,7 @@ abstract class BaseEvent extends QubitObject implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -165,7 +165,7 @@ abstract class BaseEvent extends QubitObject implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)

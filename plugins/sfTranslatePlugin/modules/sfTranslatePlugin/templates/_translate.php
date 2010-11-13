@@ -1,5 +1,6 @@
 <?php use_helper('Javascript') ?>
 <?php use_helper('Text') ?>
+
 <div id="l10n-client">
   <div class="labels">
     <span id="l10n-client-hide"><?php echo __('X') ?></span>
@@ -27,7 +28,7 @@
       </div>
       <div class="translation">
       </div>
-      <?php echo submit_tag(__('Save translation')) ?>
+      <input class="form-submit" type="submit" value="<?php echo __('Save translation') ?>"/>
     </form>
   </div>
 </div>

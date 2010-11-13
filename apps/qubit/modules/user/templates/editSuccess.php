@@ -1,18 +1,16 @@
 <?php use_helper('Javascript') ?>
 
 <h1>
-  <?php if (isset($sf_request->id)): ?>
+  <?php if (isset($sf_request->getAttribute('sf_route')->resource)): ?>
     <?php echo __('Edit user') ?>
   <?php else: ?>
-    <?php echo __('Create new user') ?>
+    <?php echo __('Add new user') ?>
   <?php endif; ?>
 </h1>
 
-<?php if (isset($sf_request->id)): ?>
-  <h1 class="label"><?php echo __('%1% profile', array('%1%' => $user->username)) ?></h1>
-<?php endif; ?>
+<h1 class="label"><?php echo render_title($resource) ?></h1>
 
-<?php echo $form->renderFormTag(url_for(array($user, 'module' => 'user', 'action' => 'edit')), array('id' => 'editForm')) ?>
+<?php echo $form->renderFormTag(url_for(array($resource, 'module' => 'user', 'action' => 'edit')), array('id' => 'editForm')) ?>
 
   <fieldset class="collapsible" id="basicInfo">
 
@@ -22,7 +20,20 @@
 
     <?php echo $form->email->renderRow() ?>
 
-    <?php $settings = json_encode(array('password' => array('strengthTitle' => 'Password strength:', 'hasWeaknesses' => 'To make your password stronger:', 'tooShort' => 'Make it at least six characters', 'addLowerCase' => 'Add lowercase letters', 'addUpperCase' => 'Add uppercase letters', 'addNumbers' => 'Add numbers', 'addPunctuation' => 'Add punctuation', 'sameAsUsername' => 'Make it different from your username', 'confirmSuccess' => 'yes', 'confirmFailure' => 'no', 'confirmTitle' => 'Passwords match:', 'username' => ''))) ?>
+    <?php $settings = json_encode(array(
+      'password' => array(
+        'strengthTitle' => __('Password strength:'),
+        'hasWeaknesses' => __('To make your password stronger:'),
+        'tooShort' => __('Make it at least six characters'),
+        'addLowerCase' => __('Add lowercase letters'),
+        'addUpperCase' => __('Add uppercase letters'),
+        'addNumbers' => __('Add numbers'),
+        'addPunctuation' => __('Add punctuation'),
+        'sameAsUsername' => __('Make it different from your username'),
+        'confirmSuccess' => __('yes'),
+        'confirmFailure' => __('no'),
+        'confirmTitle' => __('Passwords match:'),
+        'username' => ''))) ?>
     <?php echo javascript_tag(<<<EOF
 jQuery.extend(Drupal.settings, $settings);
 EOF
@@ -74,12 +85,12 @@ EOF
 
     <div class="content">
       <ul class="clearfix links">
-        <?php if (isset($sf_request->id)): ?>
-          <li><?php echo link_to(__('Cancel'), array($user, 'module' => 'user')) ?></li>
-          <li><?php echo submit_tag(__('Save')) ?></li>
+        <?php if (isset($sf_request->getAttribute('sf_route')->resource)): ?>
+          <li><?php echo link_to(__('Cancel'), array($resource, 'module' => 'user')) ?></li>
+          <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>
         <?php else: ?>
           <li><?php echo link_to(__('Cancel'), array('module' => 'user', 'action' => 'list')) ?></li>
-          <li><?php echo submit_tag(__('Create')) ?></li>
+          <li><input class="form-submit" type="submit" value="<?php echo __('Create') ?>"/></li>
         <?php endif; ?>
       </ul>
     </div>

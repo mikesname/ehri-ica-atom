@@ -21,18 +21,12 @@ class RepositoryIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->repository = QubitRepository::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->repository);
+    $this->resource = $this->getRoute()->resource;
 
-    $this->otherNames = $this->repository->getOtherNames();
-    $this->maintenanceNote = null;
-    if (0 < count($maintenanceNotes = $this->repository->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID))))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
-      $this->maintenanceNote = $maintenanceNotes->offsetGet(0);
+      $this->forward404();
     }
-
-    $this->types = $this->repository->getTermRelations(QubitTaxonomy::REPOSITORY_TYPE_ID);
-
-    $this->contactInformation = $this->repository->getContactInformation();
   }
 }

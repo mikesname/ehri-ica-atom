@@ -1,2 +1,1 @@
-<?php echo get_component('digitalobject', $showComponent,
-  array('digitalObject' => $digitalObject, 'usageType' => $usageType, 'link' => $link, 'iconOnly' => $iconOnly)) ?>
+<?php echo get_component('digitalobject', $showComponent, array('iconOnly' => $iconOnly, 'link' => $link, 'resource' => $resource, 'usageType' => $usageType)) ?>

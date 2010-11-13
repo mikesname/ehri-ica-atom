@@ -18,7 +18,7 @@
  */
 
 /**
- * Represent the time, place and/or agent of events in an artifact's history 
+ * Represent the time, place and/or agent of events in an artifact's history
  *
  * @package    qubit
  * @subpackage event
@@ -29,7 +29,8 @@
  */
 class QubitEvent extends BaseEvent
 {
-  public $indexOnSave = true;
+  public
+    $indexOnSave = true;
 
   /**
    * Additional save functionality, e.g. update search index
@@ -39,7 +40,7 @@ class QubitEvent extends BaseEvent
    */
   public function save($connection = null)
   {
-    // TODO: $cleanInformationObject = $this->informationObject->clean;
+    // TODO $cleanInformationObject = $this->informationObject->clean;
     $cleanInformationObjectId = $this->__get('informationObjectId', array('clean' => true));
 
     parent::save($connection);
@@ -58,6 +59,13 @@ class QubitEvent extends BaseEvent
     }
 
     return $this;
+  }
+
+  protected function insert($connection = null)
+  {
+    $this->slug = QubitSlug::slugify($this->slug);
+
+    return parent::insert($connection);
   }
 
   /**
@@ -84,7 +92,7 @@ class QubitEvent extends BaseEvent
   {
     parent::delete($connection);
 
-    if ($this->getInformationObject() !== null)
+    if (isset($this->informationObject))
     {
       SearchIndex::updateTranslatedLanguages($this->getInformationObject());
     }
@@ -93,19 +101,17 @@ class QubitEvent extends BaseEvent
   public function getPlace(array $options = array())
   {
     $criteria = new Criteria;
-    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->getId());
+    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->id);
     $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID);
     $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
     $relation = QubitObjectTermRelation::get($criteria);
 
     if (count($relation) > 0)
     {
-
       return $relation[0]->getTerm();
     }
     else
     {
-
       return null;
     }
   }

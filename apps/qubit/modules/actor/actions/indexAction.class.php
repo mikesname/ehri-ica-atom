@@ -21,28 +21,22 @@ class ActorIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->actor = QubitActor::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists and that it's not the root
-    if (!isset($this->actor) || !isset($this->actor->parent))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
 
     // Check user authorization
-    if (!QubitAcl::check($this->actor, 'read'))
+    if (!QubitAcl::check($this->resource, 'read'))
     {
       QubitAcl::forwardUnauthorized();
     }
 
-    $this->maintenanceNote = null;
-    if (0 < count($maintenanceNotes = $this->actor->getNotesByType(array('noteTypeId' => QubitTerm::MAINTENANCE_NOTE_ID))))
-    {
-      $this->maintenanceNote = $maintenanceNotes[0];
-    }
-
     $criteria = new Criteria;
-    $criteria->add(QubitRelation::OBJECT_ID, $this->actor->id);
+    $criteria->add(QubitRelation::OBJECT_ID, $this->resource->id);
     $criteria->addJoin(QubitRelation::SUBJECT_ID, QubitFunction::ID);
 
     $this->functions = QubitFunction::get($criteria);

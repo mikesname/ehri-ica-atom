@@ -19,27 +19,60 @@
 
 class TermIndexAction extends sfAction
 {
+  public function checkForRepeatedNames($validator, $value)
+  {
+    $criteria = new Criteria;
+    $criteria->add(QubitTerm::ID, $this->resource->id, Criteria::NOT_EQUAL);
+    $criteria->add(QubitTerm::TAXONOMY_ID, $this->resource->taxonomyId);
+    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+    $criteria->add(QubitTermI18n::CULTURE, $this->context->user->getCulture());
+    $criteria->add(QubitTermI18n::NAME, $value);
+
+    if (0 < intval(BasePeer::doCount($criteria)->fetchColumn(0)))
+    {
+      throw new sfValidatorError($validator, $this->context->i18n->__('Name - A term with this name already exists.'));
+    }
+  }
+
   public function execute($request)
   {
-    $this->term = QubitTerm::getById($request->id);
-
-    if (!$this->term instanceof QubitTerm)
+    $this->resource = $this->getRoute()->resource;
+    if (!$this->resource instanceof QubitTerm)
     {
       $this->forward404();
     }
 
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
+    {
+      $this->forward404();
+    }
+
+    if (1 > strlen($title = $this->resource))
+    {
+      $title = $this->context->i18n->__('Untitled');
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+
+    if (QubitAcl::check($this->resource, 'update'))
+    {
+      $validatorSchema = new sfValidatorSchema;
+      $values = array();
+
+      $validatorSchema->name = new sfValidatorCallback(array('callback' => array($this, 'checkForRepeatedNames')));
+      $values['name'] = $this->resource->getName(array('cultureFallback' => true));
+
+      try
+      {
+        $validatorSchema->clean($values);
+      }
+      catch (sfValidatorErrorSchema $e)
+      {
+        $this->errorSchema = $e;
+      }
+    }
+
     QubitTreeView::addAssets($this->response);
-
-    $request->setAttribute('term', $this->term);
-
-    $this->scopeNotes = $this->term->getNotesByType($options = array('noteTypeId' => QubitTerm::SCOPE_NOTE_ID));
-    $this->sourceNotes = $this->term->getNotesByType($options = array('noteTypeId' => QubitTerm::SOURCE_NOTE_ID));
-    $this->displayNotes = $this->term->getNotesByType($options = array('noteTypeId' => QubitTerm::DISPLAY_NOTE_ID));
-
-    $this->children = $this->term->getChildren(array('sortBy' => 'name'));
-
-    $this->uses    = QubitRelation::getRelationsByObjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_EQUIVALENCE_ID));
-    $this->useFors = QubitRelation::getRelationsBySubjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_EQUIVALENCE_ID));
-    $this->associateRelations = QubitRelation::getBySubjectOrObjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_ASSOCIATIVE_ID));
   }
 }

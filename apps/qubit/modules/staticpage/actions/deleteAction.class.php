@@ -23,18 +23,17 @@ class StaticPageDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->staticPage = QubitStaticPage::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    if (!isset($this->staticPage))
+    // Check user authorization
+    if ($this->resource->isProtected())
     {
-      $this->forward404();
+      QubitAcl::forwardUnauthorized();
     }
-
-    $request->setAttribute('staticPage', $this->staticPage);
 
     if ($request->isMethod('delete'))
     {
-      $this->staticPage->delete();
+      $this->resource->delete();
 
       $this->redirect(array('module' => 'staticpage', 'action' => 'list'));
     }

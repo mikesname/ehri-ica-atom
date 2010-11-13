@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_property_i18n' table.
+ * This class defines the structure of the 'property_i18n' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class PropertyI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_property_i18n');
+		$this->setName('property_i18n');
 		$this->setPhpName('propertyI18n');
 		$this->setClassname('QubitPropertyI18n');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
 		$this->addColumn('VALUE', 'value', 'VARCHAR', false, 255, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_property', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'property', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

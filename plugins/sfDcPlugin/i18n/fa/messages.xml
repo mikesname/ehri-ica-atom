@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2010-04-28T12:04:37Z" product-name="messages">
+  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2010-11-12T09:27:57Z" product-name="messages">
     <body>
       <trans-unit id="45">
         <source>Identifier</source>
@@ -80,7 +80,7 @@
       </trans-unit>
       <trans-unit id="544">
         <source>Date(s)</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; (&#x647;&#x627;)</target>
       </trans-unit>
       <trans-unit id="571">
         <source>Subject</source>
@@ -88,27 +88,27 @@
       </trans-unit>
       <trans-unit id="600">
         <source>Repository</source>
-        <target/>
+        <target>&#x645;&#x646;&#x628;&#x639;</target>
       </trans-unit>
       <trans-unit id="608">
         <source>Are you sure?</source>
-        <target/>
+        <target>&#x622;&#x64A;&#x627; &#x648;&#x627;&#x642;&#x639;&#x627; &#x645;&#x637;&#x645;&#x626;&#x646; &#x647;&#x633;&#x62A;&#x64A;&#x62F;&#x61F;</target>
       </trans-unit>
       <trans-unit id="637">
         <source>Edit</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="639">
         <source>Delete</source>
-        <target/>
+        <target>&#x62D;&#x630;&#x641;</target>
       </trans-unit>
       <trans-unit id="640">
         <source>Add new</source>
-        <target/>
+        <target> &#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x622;&#x64A;&#x62A;&#x645; &#x62C;&#x62F;&#x64A;&#x62F; </target>
       </trans-unit>
       <trans-unit id="641">
         <source>List all</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644;</target>
       </trans-unit>
       <trans-unit id="648">
         <source>Description of relationship</source>
@@ -116,15 +116,15 @@
       </trans-unit>
       <trans-unit id="660">
         <source>Cancel</source>
-        <target/>
+        <target>&#x644;&#x63A;&#x648;</target>
       </trans-unit>
       <trans-unit id="661">
         <source>Save</source>
-        <target/>
+        <target>&#x630;&#x62E;&#x64A;&#x631;&#x647;</target>
       </trans-unit>
       <trans-unit id="662">
         <source>Create</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="687">
         <source>Type</source>
@@ -132,23 +132,23 @@
       </trans-unit>
       <trans-unit id="724">
         <source>Institution identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x645;&#x648;&#x633;&#x633;&#x647;</target>
       </trans-unit>
       <trans-unit id="726">
         <source>Status</source>
-        <target/>
+        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="727">
         <source>Level of detail</source>
-        <target/>
+        <target>&#x633;&#x637;&#x62D; &#x62C;&#x632;&#x64A;&#x64A;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="728">
         <source>Dates of creation, revision and deletion</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F;/&#x628;&#x627;&#x632;&#x646;&#x6AF;&#x631;&#x64A;/&#x62D;&#x630;&#x641;</target>
       </trans-unit>
       <trans-unit id="745">
         <source>Conditions governing access</source>
-        <target/>
+        <target>&#x634;&#x631;&#x627;&#x64A;&#x637; &#x62F;&#x633;&#x62A;&#x64A;&#x627;&#x628;&#x64A;</target>
       </trans-unit>
       <trans-unit id="766">
         <source>Format</source>
@@ -284,6 +284,42 @@
       </trans-unit>
       <trans-unit id="850">
         <source>Information about rights held in and over the resource (e.g. copyright, access conditions, etc.).</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="851">
+        <source>Add new resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="852">
+        <source>Untitled</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="853">
+        <source>Select the type of activity (creation, publication or contribution) that established the relation between the authority record and the archival description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="854">
+        <source>An abstract, table of contents or description of the resource's scope and contents.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="855">
+        <source>&lt;p&gt;The nature or genre of the resource.&lt;/p&gt;&lt;p&gt;Assign as many types as applicable. The &lt;em&gt;Type&lt;/em&gt; options are limited to the DCMI Type vocabulary.&lt;/p&gt;&lt;p&gt;Assign the &lt;em&gt;Collection&lt;/em&gt; value if this resource is the top-level for a set of lower-level (child) resources.&lt;/p&gt;&lt;p&gt;Please note: if this resource is linked to a digital object, the &lt;em&gt;image&lt;/em&gt;, &lt;em&gt;text&lt;/em&gt;, &lt;em&gt;sound&lt;/em&gt; or &lt;em&gt;moving image&lt;/em&gt; types are added automatically upon output, so do not duplicate those values here.&lt;/p&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="856">
+        <source>&lt;p&gt;&lt;strong&gt;Child levels&lt;/strong&gt;&lt;br/&gt;Use these two fields to add lower levels to a collection level description. Click &lt;em&gt;Add new&lt;/em&gt; to create as many child levels as necessary.&lt;/p&gt;&lt;p&gt;These fields can also be used to add any number of intermediate levels of description (e.g. series, file, etc) between the top and bottom levels in a descriptive hierarchy. Use the hierarchy treeview to re-order hierarchy levels as necessary.&lt;/p&gt;&lt;p&gt;&lt;em&gt;Identifier&lt;/em&gt;: The unambiguous reference code used to uniquely identify the child-level resource.&lt;/p&gt;&lt;p&gt;&lt;em&gt;Title&lt;/em&gt;: The name given to the child-level resource.&lt;/p&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="857">
+        <source>&lt;p&gt;The file format, physical medium, or dimensions of the resource.&lt;/p&gt;&lt;p&gt;Please note: if this resource is linked to a digital object, the Internet Media Types (MIME) will be added automatically upon output, so don't duplicate those values here.&lt;/p&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="858">
+        <source>&lt;p&gt;The name of the organization which has custody of the resource.&lt;/p&gt;&lt;p&gt;Search for an existing name in the organization records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new organization record.&lt;/p&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="859">
+        <source>&lt;p&gt;The name of a place or geographic area which is a topic of the resource or relevant to its jurisdiction.&lt;/p&gt;&lt;p&gt;Search for an existing term in the Place taxonomy by typing the first few characters of the place name. Alternatively, type a new name to create and link to a new place.&lt;/p&gt;&lt;p&gt;Please note: if you entered a place of creation, publication or contribution that will be output automatically, so don&#x2019;t repeat that place name here.&lt;/p&gt;</source>
         <target/>
       </trans-unit>
     </body>

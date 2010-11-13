@@ -23,36 +23,36 @@ class ActorDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->actor = QubitActor::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists and that it's not the root
-    if (!isset($this->actor) || !isset($this->actor->parent))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
 
     if ($request->isMethod('delete'))
     {
-      foreach ($this->actor->events as $event)
+      foreach ($this->resource->events as $item)
       {
-        if (isset($event->informationObject) && isset($event->type))
+        if (isset($item->informationObject) && isset($item->type))
         {
-          unset($event->actor);
+          unset($item->actor);
 
-          $event->save();
+          $item->save();
         }
         else
         {
-          $event->delete();
+          $item->delete();
         }
       }
 
-      foreach (QubitRelation::getBySubjectOrObjectId($this->actor->id) as $relation)
+      foreach (QubitRelation::getBySubjectOrObjectId($this->resource->id) as $relation)
       {
         $relation->delete();
       }
 
-      $this->actor->delete();
+      $this->resource->delete();
 
       $this->redirect(array('module' => 'actor', 'action' => 'browse'));
     }

@@ -28,6 +28,7 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
 
     $statement = null,
     $objects = null,
+    $count = null,
 
     $offset = 0,
 
@@ -58,7 +59,7 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
   // Not recursive: Only ever called from the root.
   protected function getStatement(QubitQuery $leaf)
   {
-    // HACK: Tell the caller whether we sorted according to the leaf
+    // HACK Tell the caller whether we sorted according to the leaf
     $sorted = false;
 
     if (!isset($this->statement))
@@ -72,13 +73,13 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
       $this->statement = BasePeer::doSelect($this->criteria);
     }
 
-    // TODO: Determine whether the sort order matches the previous sort order
+    // TODO Determine whether the sort order matches the previous sort order
     return array($this->statement, $sorted);
   }
 
   protected function getObjects(QubitQuery $leaf)
   {
-    // HACK: Tell the caller whether we sorted according to the leaf
+    // HACK Tell the caller whether we sorted according to the leaf
     $sorted = false;
 
     if (!isset($this->objects))
@@ -113,7 +114,7 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
             // $this->parent is unset, so we should have a className?
             $object = call_user_func(array($this->className, 'getFromRow'), $row);
 
-            // TODO: $this->parent is unset, so we probably do not have
+            // TODO $this->parent is unset, so we probably do not have
             // $this->indexByName, but it would be nice to use the indexByName
             // of the leaf
             if (isset($this->indexByName))
@@ -185,6 +186,11 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
   {
     if ('transient' === $name)
     {
+      if (!isset($this->objects))
+      {
+        return array();
+      }
+
       return $this->objects;
     }
 
@@ -240,19 +246,22 @@ class QubitQuery implements ArrayAccess, Countable, Iterator
   {
     if (!isset($this->objects))
     {
+      $count = 0;
+
       if (isset($this->parent))
       {
         $count = $this->parent->getCount($leaf);
       }
-      else
+      else if (isset($this->count))
       {
-        $count = 0;
+        $count = $this->count;
+      }
+      else if (isset($this->criteria))
+      {
+        $countCriteria = clone $this->criteria;
+        $this->count = intval(BasePeer::doCount($countCriteria)->fetchColumn(0));
 
-        if (isset($this->criteria))
-        {
-          list ($statement, $sorted) = $this->getStatement($leaf);
-          $count = $statement->rowCount();
-        }
+        $count = $this->count;
       }
 
       if (isset($this->andSelf))

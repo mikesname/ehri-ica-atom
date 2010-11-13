@@ -8,5 +8,5 @@
      </set>\n";
    }
    echo $formatedSets;
-?>  
+?>
    </ListSets>

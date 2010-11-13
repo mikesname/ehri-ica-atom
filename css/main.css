@@ -39,6 +39,13 @@ body,
   font-size: 115%;
 }
 
+/* Drop decoration, margin, and padding from lists in YUI autocomplete widgets (IE6/IE7) */
+
+.yui-ac ul
+{
+  list-style-image: none;
+}
+
 /* Drop decoration, margin, and padding from lists in the context menu */
 
 .contextMenu ul
@@ -193,13 +200,26 @@ body,
 
 /* odd&even divs */
 .odd {
-background-color:#EDF5FA;
-border-bottom:1px solid #CCCCCC;
-padding:0.2em 0.6em;
+  background-color: #edf5fa;
+  border-bottom: 1px solid #ccc;
+  padding: 0.2em 0.6em;
 }
 
 .even {
-background-color:#FFFFFF;
-border-bottom:1px solid #CCCCCC;
-padding:0.2em 0.6em;
+  background-color: #fff;
+  border-bottom: 1px solid #ccc;
+  padding: 0.2em 0.6em;
+}
+
+/* Override Drupal's default list style for Symfony .radio-list */
+ul.radio_list, ul.radio_list li, ul.radio_list li:hover {
+  list-style: none;
+}
+
+ul.radio_list {
+  padding-left: 0;
+}
+
+ul.radio_list label {
+  display: inline;
 }

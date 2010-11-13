@@ -22,7 +22,7 @@ class sfTranslateMessageFormat extends sfMessageFormat
 
     $this->loadCatalogue($catalogue);
 
-    $messages = sfContext::getInstance()->getRequest()->getAttribute('messages', array());
+    $messages = sfContext::getInstance()->request->getAttribute('messages', array());
     foreach ($this->messages[$catalogue] as $variant)
     {
       if (isset($variant[$string]))
@@ -35,7 +35,7 @@ class sfTranslateMessageFormat extends sfMessageFormat
         }
 
         $messages[$string] = $target;
-        sfContext::getInstance()->getRequest()->setAttribute('messages', $messages);
+        sfContext::getInstance()->request->setAttribute('messages', $messages);
 
         if (empty($target))
         {

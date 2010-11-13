@@ -5,24 +5,24 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=<?php echo sfConfig::get('sf_charset', 'utf-8') ?>" />
-<meta name="title" content="Qubit" />
-<meta name="robots" content="index, follow" />
-<meta name="language" content="en" />
+<meta http-equiv="Content-Type" content="text/html; charset=<?php echo sfConfig::get('sf_charset', 'utf-8') ?>"/>
+<meta name="title" content="Qubit"/>
+<meta name="robots" content="index, follow"/>
+<meta name="language" content="en"/>
 <title>Qubit</title>
 
-<link rel="shortcut icon" href="/favicon.ico" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/screen.css" />
+<link rel="shortcut icon" href="/favicon.ico"/>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/screen.css"/>
 <!--[if lt IE 7.]>
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/ie.css" />
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/sf/sf_default/css/ie.css"/>
 <![endif]-->
 
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/modules/system/defaults.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/modules/system/system.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/style.css" />
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/minnelli/minnelli.css" />
-<link rel="stylesheet" type="text/css" media="print" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/print.css" />
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/css/main.css" />
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/modules/system/defaults.css"/>
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/modules/system/system.css"/>
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/style.css"/>
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/minnelli/minnelli.css"/>
+<link rel="stylesheet" type="text/css" media="print" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/print.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/css/main.css"/>
 
 </head>
 <body>
@@ -31,7 +31,7 @@
 
     <div id="header">
       <div id="logo-floater">
-        <h1><img alt="Qubit" id="logo" src="<?php echo $path ?>/images/logo.png" /><div>Qubit</div></h1>
+        <h1><img alt="Qubit" id="logo" src="<?php echo $path ?>/images/logo.png"/><div>Qubit</div></h1>
       </div>
     </div>
 
@@ -41,7 +41,7 @@
           <div class="left-corner">
 
             <div class="sfTMessageContainer sfTAlert">
-              <img alt="page not found" class="sfTMessageIcon" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48" />
+              <img alt="page not found" class="sfTMessageIcon" src="<?php echo $path ?>/sf/sf_default/images/icons/tools48.png" height="48" width="48"/>
               <div class="sfTMessageWrap">
                 <h1>Website Temporarily Unavailable</h1>
                 <h5>Please try again in a few seconds...</h5>

@@ -17,7 +17,6 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-
 /**
  * Shared functions for OAI-PMH module
  *
@@ -132,8 +131,7 @@ class QubitOai
     {
       $time = substr($parts[2], $T_pos);
       $parts[2] = substr($parts[2], 0, $T_pos);
-      $ck = eregi('^T(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$', $time);
-      if (!$ck)
+      if (!preg_match('/^T(0[0-9]|1[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]Z$/i', $time))
       {
         return false;
       }
@@ -279,7 +277,7 @@ class QubitOai
 
   public static function getRepositoryIdentifier()
   {
-    $repositoryIdentifier = sfContext::getInstance()->getRequest()->getHost();
+    $repositoryIdentifier = sfContext::getInstance()->request->getHost();
     if ($repositoryCode = sfConfig::get('app_oai_oai_repository_code'))
     {
       $repositoryIdentifier .= ':'.$repositoryCode;
@@ -290,7 +288,7 @@ class QubitOai
 
   public static function getSampleIdentifier()
   {
-    $sampleIdentifier = sfContext::getInstance()->getRequest()->getHost().':';
+    $sampleIdentifier = sfContext::getInstance()->request->getHost().':';
     if ($repositoryCode = sfConfig::get('app_oai_oai_repository_code'))
     {
       $sampleIdentifier .= $repositoryCode;
@@ -443,5 +441,4 @@ class QubitOai
 
     return $doc;
   }
-
 }

@@ -1,13 +1,12 @@
 editSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-  javascripts: 
+  javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
     /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
-    /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
     /vendor/yui/autocomplete/autocomplete-min:
@@ -17,76 +16,67 @@ editSuccess:
 editActorAclSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-    /vendor/yui/container/assets/skins/sam/container: { position: first }
-  javascripts: 
+  javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
     /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
-    /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
     /vendor/yui/autocomplete/autocomplete-min:
-    /vendor/yui/container/container-min:
     autocomplete:
     select:
-    multiDelete:
 
 editInformationObjectAclSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
     /vendor/yui/container/assets/skins/sam/container: { position: first }
-  javascripts: 
+  javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
     /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
-    /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
     /vendor/yui/autocomplete/autocomplete-min:
-    /vendor/yui/container/container-min:
     autocomplete:
-    select:
+    /vendor/yui/container/container-min:
     aclDialog:
+    select:
 
 editTermAclSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
-    /vendor/yui/container/assets/skins/sam/container: { position: first }
-  javascripts: 
+  javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
     /plugins/sfDrupalPlugin/vendor/drupal/modules/user/user:
-    /vendor/yui/animation/animation-min:
     /vendor/yui/connection/connection-min:
     /vendor/yui/datasource/datasource-min:
     /vendor/yui/autocomplete/autocomplete-min:
-    /vendor/yui/container/container-min:
     autocomplete:
     select:
-    aclDialog:
-
-listSuccess:
-  javascripts:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 indexActorAclSuccess:
   javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
- 
+
 indexTermAclSuccess:
   javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
 
 indexInformationObjectAclSuccess:
+  javascripts:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
+
+listSuccess:
   javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:

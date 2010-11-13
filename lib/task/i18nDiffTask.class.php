@@ -32,7 +32,7 @@ class i18nDiffTask extends sfBaseTask
 {
   const FORMAT_CSV = 'csv';
   const FORMAT_TAB = 'tab';
-  
+
   /**
    * @see sfTask
    */
@@ -81,44 +81,44 @@ EOF;
   public function execute($arguments = array(), $options = array())
   {
     $output = "";
-    
+
     if (strtolower($options['file']) != 'stdout')
     {
       $this->logSection('i18n', sprintf('Diff i18n strings for the "%s" application', $arguments['application']));
     }
-    
+
     // get i18n configuration from factories.yml
     $config = sfFactoryConfigHandler::getConfiguration($this->configuration->getConfigPaths('config/factories.yml'));
 
     $class = $config['i18n']['class'];
     $params = $config['i18n']['param'];
     unset($params['cache']);
-    
+
     $this->i18n = new $class($this->configuration, new sfNoCache(), $params);
     $extract = new sfI18nApplicationExtract($this->i18n, $arguments['culture']);
     $extract->extract();
-    
+
     if (strtolower($options['file']) != 'stdout')
     {
       $this->logSection('i18n', sprintf('found "%d" new i18n strings', count($extract->getNewMessages())));
       $this->logSection('i18n', sprintf('found "%d" old i18n strings', count($extract->getOldMessages())));
     }
-    
+
     // Column headers
-    $rows[0] = array('Action', 'Source', 'Target'); 
-    
+    $rows[0] = array('Action', 'Source', 'Target');
+
     // Old messages
     foreach ($this->getOldTranslations($extract) as $source=>$target)
     {
       $rows[] = array('Removed', $source, $target);
     }
-    
+
     // New messages
     foreach ($extract->getNewMessages() as $message)
     {
       $rows[] = array('Added', $message);
     }
-    
+
     // Choose output format
     switch (strtolower($options['format']))
     {
@@ -134,7 +134,7 @@ EOF;
           $output .= implode("\t", $row)."\n";
         }
         break;
-    } 
+    }
 
     // Output file
     if (strtolower($options['file']) != 'stdout')
@@ -172,7 +172,7 @@ EOF;
     {
       $oldTranslations[$message] = $allTranslations[$message];
     }
- 
+
     return $oldTranslations;
   }
 }

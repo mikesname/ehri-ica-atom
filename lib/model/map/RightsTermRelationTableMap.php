@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_rights_term_relation' table.
+ * This class defines the structure of the 'rights_term_relation' table.
  *
  *
  *
@@ -30,15 +30,15 @@ class RightsTermRelationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_rights_term_relation');
+		$this->setName('rights_term_relation');
 		$this->setPhpName('rightsTermRelation');
 		$this->setClassname('QubitRightsTermRelation');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('RIGHTS_ID', 'rightsId', 'INTEGER', 'q_rights', 'ID', true, null, null);
-		$this->addForeignKey('TERM_ID', 'termId', 'INTEGER', 'q_term', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('RIGHTS_ID', 'rightsId', 'INTEGER', 'rights', 'ID', true, null, null);
+		$this->addForeignKey('TERM_ID', 'termId', 'INTEGER', 'term', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);

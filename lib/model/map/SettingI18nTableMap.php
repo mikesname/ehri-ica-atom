@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_setting_i18n' table.
+ * This class defines the structure of the 'setting_i18n' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class SettingI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_setting_i18n');
+		$this->setName('setting_i18n');
 		$this->setPhpName('settingI18n');
 		$this->setClassname('QubitSettingI18n');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
 		$this->addColumn('VALUE', 'value', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_setting', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'setting', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

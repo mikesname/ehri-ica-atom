@@ -26,12 +26,47 @@ class QubitPhysicalObject extends BasePhysicalObject
    */
   public function __toString()
   {
-    if (!$this->getName())
+    $string = $this->name;
+    if (!isset($string))
     {
-      return (string) $this->getName(array('sourceCulture' => true));
+      $string = $this->getName(array('sourceCulture' => true));
     }
 
-    return (string) $this->getName();
+    return (string) $string;
+  }
+
+  public function insert($connection = null)
+  {
+    if (!isset($this->slug))
+    {
+      $this->slug = QubitSlug::slugify($this->name);
+    }
+
+    return parent::insert($connection);
+  }
+
+  public function getLabel()
+  {
+    $label = '';
+
+    if ($this->type)
+    {
+      $label .= ' '.$this->type.': ';
+    }
+
+    $label .= $this;
+
+    if (1 > strlen($location = $this->getLocation()))
+    {
+      $location = $this->getLocation(array('sourceCulture' => true));
+    }
+
+    if (0 < strlen($location))
+    {
+      $label .= ' - '.$location;
+    }
+
+    return $label;
   }
 
   /**
@@ -52,7 +87,7 @@ class QubitPhysicalObject extends BasePhysicalObject
    */
   public function deleteInformationObjectRelations()
   {
-    $informationObjectRelations = QubitRelation::getRelationsBySubjectId($this->getId(),
+    $informationObjectRelations = QubitRelation::getRelationsBySubjectId($this->id,
     array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
     foreach ($informationObjectRelations as $relation)
@@ -72,9 +107,8 @@ class QubitPhysicalObject extends BasePhysicalObject
     $criteria = new Criteria;
     $criteria->addJoin(QubitPhysicalObject::ID, QubitRelation::SUBJECT_ID);
     $criteria->addJoin(QubitRelation::OBJECT_ID, QubitInformationObject::ID);
-    $criteria->add(QubitPhysicalObject::ID, $this->getId());
+    $criteria->add(QubitPhysicalObject::ID, $this->id);
 
     return QubitQuery::createFromCriteria($criteria, 'QubitInformationObject', $options);
   }
-
 }

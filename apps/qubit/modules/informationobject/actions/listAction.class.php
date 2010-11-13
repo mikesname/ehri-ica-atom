@@ -32,25 +32,21 @@ class InformationObjectListAction extends sfAction
    */
   public function execute($request)
   {
-    // Default items per page
     if (!isset($request->limit))
     {
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $this->informationObject = QubitInformationObject::getById($request->id);
-
-    if (!isset($this->informationObject))
+    $this->resource = QubitInformationObject::getById(QubitInformationObject::ROOT_ID);
+    if (isset($this->getRoute()->resource))
     {
-      $this->forward404();
+      $this->resource = $this->getRoute()->resource;
     }
-
-    $request->setAttribute('informationObject', $this->informationObject);
 
     $search = new QubitSearch;
 
     $query = new Zend_Search_Lucene_Search_Query_Boolean;
-    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($request->id, 'parentId')), true);
+    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->resource->id, 'parentId')), true);
 
     if (isset($request->query))
     {

@@ -5,12 +5,15 @@
 
 class sfInstallPluginConfigureDatabaseAction extends sfAction
 {
-  // TODO Load values from existing database configuration
   public function execute($request)
   {
     $this->database = array();
 
     $this->form = new sfForm;
+
+    // Do *NOT* load defaults from existing database configuration because
+    // anyone can access install actions if the database can't be accessed.
+    // Never expose the database configuration, even to administrators
 
     $this->form->setValidator('databaseHost', new sfValidatorString);
     $this->form->setWidget('databaseHost', new sfWidgetFormInput);
@@ -29,52 +32,6 @@ class sfInstallPluginConfigureDatabaseAction extends sfAction
     $this->form->setValidator('databaseUsername', new sfValidatorString);
     $this->form->setWidget('databaseUsername', new sfWidgetFormInput);
 
-    $this->form->setValidator('tablePrefix', new sfValidatorString);
-    $this->form->setWidget('tablePrefix', new sfWidgetFormInput);
-
-    if (!isset($this->context->databaseManager))
-    {
-      $this->context->databaseManager = new sfDatabaseManager(sfProjectConfiguration::getActive());
-    }
-
-    try
-    {
-      // TODO Can we avoid hardcoding the database name?
-      $database = $this->context->databaseManager->getDatabase('propel');
-
-      // TODO This should be handled by sfPdoDatabase::parseDsn()
-      $pattern = '/([^=]*)=([^;]*);?/';
-      $subject = preg_replace('/[^:]*:/', null, $database->getParameter('dsn'));
-      if (false === preg_match_all($pattern, $subject, $matches))
-      {
-        // TODO Error handling
-      }
-
-      $parameters = array_combine($matches[1], $matches[2]);
-
-      if (isset($parameters['host']))
-      {
-        $this->form->setDefault('databaseHost', $parameters['host']);
-      }
-
-      if (isset($parameters['dbname']))
-      {
-        $this->form->setDefault('databaseName', $parameters['dbname']);
-      }
-
-      $this->form->setDefault('databasePassword', $database->getParameter('password'));
-
-      if (isset($parameters['port']))
-      {
-        $this->form->setDefault('databasePort', $parameters['port']);
-      }
-
-      $this->form->setDefault('databaseUsername', $database->getParameter('username'));
-    }
-    catch (sfDatabaseException $e)
-    {
-    }
-
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
@@ -84,6 +41,8 @@ class sfInstallPluginConfigureDatabaseAction extends sfAction
         $this->database = sfInstall::configureDatabase($this->form->getValues());
         if (count($this->database) < 1)
         {
+          $symlinks = sfInstall::addSymlinks();
+
           $this->redirect(array('module' => 'sfInstallPlugin', 'action' => 'loadData'));
         }
       }

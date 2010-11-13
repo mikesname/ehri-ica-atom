@@ -19,24 +19,22 @@
 
 class QubitMenu extends BaseMenu
 {
-  // The following Menu ids are assigned constant values because they are used
-  // in application code and can't rely on database id values, since these could
-  // be changed
+  const
 
-  // Root menu
-  const ROOT_ID = 1;
+    // Root menu
+    ROOT_ID = 1,
 
-  // 2nd generation constant ids
-  const MAIN_MENU_ID = 2;
-  const QUICK_LINKS_ID  = 3;
-  const BROWSE_ID = 4;
+    // 2nd generation constant ids
+    MAIN_MENU_ID = 2,
+    QUICK_LINKS_ID  = 3,
+    BROWSE_ID = 4,
 
-  // 3rd generation constant ids
-  const ADD_EDIT_ID = 5;
-  const TAXONOMY_ID = 6;
-  const IMPORT_ID = 7;
-  const TRANSLATE_ID = 8;
-  const ADMIN_ID = 9;
+    // 3rd generation constant ids
+    ADD_EDIT_ID = 5,
+    TAXONOMY_ID = 6,
+    IMPORT_ID = 7,
+    TRANSLATE_ID = 8,
+    ADMIN_ID = 9;
 
   /**
    * Wrapper for BaseMenu::getPath() call to allow additional functionality
@@ -49,8 +47,9 @@ class QubitMenu extends BaseMenu
   public function getPath($options = array())
   {
     $aliases = array(
-      '%profile%' => sfContext::getInstance()->routing->generate(null, array('module' => 'user', 'id' => sfContext::getInstance()->getUser()->getUserId())),
-      '%currentId%' => sfContext::getInstance()->getRequest()->id
+      '%profile%' => sfContext::getInstance()->routing->generate(null, array('module' => 'user', 'slug' => sfContext::getInstance()->user->getUserSlug())),
+      '%currentId%' => sfContext::getInstance()->request->id,
+      '%currentSlug%' => @sfContext::getInstance()->request->getAttribute('sf_route')->resource->slug
     );
 
     $path = parent::offsetGet('path', $options);
@@ -93,11 +92,12 @@ class QubitMenu extends BaseMenu
    */
   public function isProtected()
   {
-    return $this->getId() == QubitMenu::ROOT_ID ||
-    $this->getId() == QubitMenu::MAIN_MENU_ID ||
-    $this->getId() == QubitMenu::QUICK_LINKS_ID ||
-    $this->getId() == QubitMenu::ADD_EDIT_ID ||
-    $this->getId() == QubitMenu::ADMIN_ID;
+    return in_array($this->id, array(
+      QubitMenu::ROOT_ID,
+      QubitMenu::MAIN_MENU_ID,
+      QubitMenu::QUICK_LINKS_ID,
+      QubitMenu::ADD_EDIT_ID,
+      QubitMenu::ADMIN_ID));
   }
 
   /**
@@ -120,7 +120,7 @@ class QubitMenu extends BaseMenu
   public static function getByName($menuName, $options = array())
   {
     $criteria = new Criteria;
-    $criteria->add(QubitMenu::NAME, $menuName, Criteria::EQUAL);
+    $criteria->add(QubitMenu::NAME, $menuName);
 
     return QubitMenu::getOne($criteria);
   }
@@ -147,39 +147,34 @@ class QubitMenu extends BaseMenu
     $currentUrl = url_for($currentModule.'/'.$currentAction);
     $isSelected = false;
 
-    // Yucky Hack: Don't display "static" menu as selected when displaying a
-    // staticpage (See FIXME below)
-    if ($currentModule == 'staticpage' && $currentAction == 'static')
+    // Yucky Hack: Don't display "static" menu as selected when displaying
+    // an action from staticpage module (See FIXME below)
+    if ($currentModule == 'staticpage' && in_array($currentAction, array('edit', 'index', 'list', 'static')))
     {
-
       return false;
     }
     // Yucky Hack, Part Deux: Don't display any active menu options when
     // displaying search results
     if ($currentModule == 'search' && $currentAction == 'search')
     {
-
       return false;
     }
     // 'Hacks 3: Return of the Hack' Select the 'archival description' button
     // when uploading digital object
     if ($currentModule == 'digitalobject' && $currentAction == 'edit')
     {
-
       return ($this->getPath() == 'informationobject/list');
     }
     // And even more hacks
     else if (in_array($currentModule, array('sfIsadPlugin', 'sfRadPlugin', 'sfDcPlugin', 'sfModsPlugin')))
     {
-
       return ($this->getPath() == 'informationobject/list');
     }
 
     // son of hack
-    if ($currentModule == 'term')
+    if (in_array($currentModule, array('term', 'taxonomy')))
     {
-
-      return ($this->getPath() == 'term/list');
+      return ($this->getPath() == 'taxonomy/list');
     }
 
     // If passed $url matches the url for this menu AND is not the base url
@@ -219,7 +214,6 @@ class QubitMenu extends BaseMenu
     {
       if ($menu->isSelected())
       {
-
         return true;
       }
     }
@@ -235,7 +229,7 @@ class QubitMenu extends BaseMenu
   public function getChildren()
   {
     $c = new Criteria;
-    $c->add(QubitMenu::PARENT_ID, $this->getId(), Criteria::EQUAL);
+    $c->add(QubitMenu::PARENT_ID, $this->id);
     $c->addAscendingOrderByColumn(QubitMenu::LFT);
 
     return QubitMenu::get($c);
@@ -252,10 +246,10 @@ class QubitMenu extends BaseMenu
   public function insertBefore(QubitMenu $newMenu, $referenceMenu = null)
   {
     // TODO: Test if object already exists in hierarchy
-    //$sql = "SELECT count(*) as exists FROM q_menu WHERE id = ".$newMenu->getId();
+    //$sql = "SELECT count(*) as exists FROM '.QubitMenu::TABLE_NAME.' WHERE id = ".$newMenu->id;
 
     // Lock db, start transaction
-    $sql = 'LOCK TABLE q_menu WRITE;';
+    $sql = 'LOCK TABLE '.QubitMenu::TABLE_NAME.' WRITE;';
 
     // TODO: Currently NOT testing for $existingObject
     $existingObject = false;
@@ -272,40 +266,40 @@ class QubitMenu extends BaseMenu
         $newLft = $this->getRgt();
       }
 
-      $sql .= 'SELECT @oldlft := lft, @oldrgt := rgt FROM q_menu WHERE id = '.$newMenu->getId().';';
+      $sql .= 'SELECT @oldlft := lft, @oldrgt := rgt FROM '.QubitMenu::TABLE_NAME.' WHERE id = '.$newMenu->id.';';
       $sql .= 'SELECT @width  := @oldrgt - @oldlft + 1;';
       $sql .= 'SELECT @newlft := '.$newLft.';';
       $sql .= 'SELECT @newrgt := @newlft + @width - 1;';
       $sql .= 'SELECT @shift  := @newlft - @oldlft;';
 
       // Make room for $newMenu in new location
-      $sql .= 'UPDATE q_menu SET lft = lft + @width WHERE lft >= @newlft;';
-      $sql .= 'UPDATE q_menu SET rgt = rgt + @width WHERE rgt >= @newlft;';
+      $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET lft = lft + @width WHERE lft >= @newlft;';
+      $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET rgt = rgt + @width WHERE rgt >= @newlft;';
 
       if ($newMenu->getLft() < $newLft)
       {
         // Move $newMenu (+ children) to new location
-        $sql .= 'UPDATE q_menu SET lft = lft + @shift WHERE lft >= @oldlft AND lft <= @oldrgt;';
-        $sql .= 'UPDATE q_menu SET rgt = rgt + @shift WHERE rgt >= @oldlft AND rgt <= @oldrgt;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET lft = lft + @shift WHERE lft >= @oldlft AND lft <= @oldrgt;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET rgt = rgt + @shift WHERE rgt >= @oldlft AND rgt <= @oldrgt;';
 
         // Close gap left in $newMenu's old location
-        $sql .= 'UPDATE q_menu SET lft = lft - @width WHERE lft > @oldrgt;';
-        $sql .= 'UPDATE q_menu SET rgt = rgt - @width WHERE rgt > @oldrgt;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET lft = lft - @width WHERE lft > @oldrgt;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET rgt = rgt - @width WHERE rgt > @oldrgt;';
       }
       else
       {
         // Move $newMenu (+ children) to new location (taking into account that
         // current lft/right values of $newMenu are + $width)
-        $sql .= 'UPDATE q_menu SET lft = lft + @shift - @width WHERE lft >= @oldlft + @width AND lft <= @oldrgt + @width;';
-        $sql .= 'UPDATE q_menu SET rgt = rgt + @shift - @width WHERE rgt >= @oldlft + @width AND rgt <= @oldrgt + @width;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET lft = lft + @shift - @width WHERE lft >= @oldlft + @width AND lft <= @oldrgt + @width;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET rgt = rgt + @shift - @width WHERE rgt >= @oldlft + @width AND rgt <= @oldrgt + @width;';
 
         // Close gap left in $newMenu's old location
-        $sql .= 'UPDATE q_menu SET lft = lft - @width WHERE lft > @oldrgt + @width;';
-        $sql .= 'UPDATE q_menu SET rgt = rgt - @width WHERE rgt > @oldrgt + @width;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET lft = lft - @width WHERE lft > @oldrgt + @width;';
+        $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET rgt = rgt - @width WHERE rgt > @oldrgt + @width;';
       }
 
       // Update parent_id
-      $sql .= 'UPDATE q_menu SET parent_id = '.$this->getId().' WHERE id = '.$newMenu->getId().';';
+      $sql .= 'UPDATE '.QubitMenu::TABLE_NAME.' SET parent_id = '.$this->id.' WHERE id = '.$newMenu->id.';';
     }
 
     $sql .= 'UNLOCK TABLES';
@@ -319,7 +313,7 @@ class QubitMenu extends BaseMenu
     $conn->clearStatementCache();
 
     // TODO: return id for newly inserted $newMenu (last insert id?)
-    return QubitMenu::getById($newMenu->getId());
+    return QubitMenu::getById($newMenu->id);
   }
 
   /**
@@ -331,10 +325,10 @@ class QubitMenu extends BaseMenu
   public function moveBeforeById($referenceMenuId)
   {
     // Limit re-sorting to list of siblings
-    $parent = $this->getParent();
+    $parent = $this->parent;
 
     $criteria = new Criteria;
-    $criteria->add(QubitMenu::ID, $referenceMenuId, Criteria::EQUAL);
+    $criteria->add(QubitMenu::ID, $referenceMenuId);
     $criteria->addAnd(QubitMenu::LFT, $parent->getLft(), Criteria::GREATER_THAN);
     $criteria->addAnd(QubitMenu::RGT, $parent->getRgt(), Criteria::LESS_THAN);
 
@@ -358,10 +352,10 @@ class QubitMenu extends BaseMenu
   public function moveAfterById($referenceMenuId)
   {
     // Limit re-sorting to list of siblings
-    $parent = $this->getParent();
+    $parent = $this->parent;
 
     $criteria = new Criteria;
-    $criteria->add(QubitMenu::ID, $referenceMenuId, Criteria::EQUAL);
+    $criteria->add(QubitMenu::ID, $referenceMenuId);
     $criteria->addAnd(QubitMenu::LFT, $parent->getLft(), Criteria::GREATER_THAN);
     $criteria->addAnd(QubitMenu::RGT, $parent->getRgt(), Criteria::LESS_THAN);
 
@@ -404,7 +398,6 @@ class QubitMenu extends BaseMenu
     // Attempt to grab topMenu object via id
     if (null === $topMenu = QubitMenu::getById($id))
     {
-
       return false;
     }
 
@@ -438,7 +431,7 @@ class QubitMenu extends BaseMenu
 
     // labouriously calculate depth of current menu from top of hierarchy by
     // looping through results and tracking "ancestors"
-    $ancestors = array($topMenu->getId());
+    $ancestors = array($topMenu->id);
     foreach ($menus as $menu)
     {
       $thisParentId = $menu->getParentId();
@@ -462,7 +455,7 @@ class QubitMenu extends BaseMenu
       if ($maxDepth == 0 || $depth <= $maxDepth)
       {
         $menuTree[] = array(
-          'id' => $menu->getId(),
+          'id' => $menu->id,
           'parentId' => $menu->getParentId(),
           'name' => $menu->getName(array('cultureFallback' => true)),
           'label' => $menu->getLabel(array('cultureFallback' => true)),

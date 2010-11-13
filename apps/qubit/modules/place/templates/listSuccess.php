@@ -12,8 +12,8 @@
 <tbody>
 <?php foreach ($places as $place): ?>
 <tr>
-      <td><?php echo $place->getId() ?></td>
-      <td><?php echo link_to($place->getName(), 'place/edit?id='.$place->getId()) ?></td>
+      <td><?php echo $place->id ?></td>
+      <td><?php echo link_to($place->getName(), 'place/edit?id='.$place->id) ?></td>
       <td><?php echo $place->getAddress() ?></td>
       <td><?php echo $place->getCountry() ?></td>
   </tr>

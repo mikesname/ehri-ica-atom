@@ -20,7 +20,7 @@
 class sfCaribouPluginConfiguration extends sfPluginConfiguration
 {
   public static
-    $summary = 'Theme plugin. Adaptation of Classic theme that uses drop-down menus and mixes fixed and fluid width elements.',
+    $summary = 'Theme plugin.  Adaptation of Classic theme that uses drop-down menus and mixes fixed and fluid width elements.',
     $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)

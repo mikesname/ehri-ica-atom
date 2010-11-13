@@ -19,7 +19,7 @@
 
 /**
  * Qubit specific functionality extending the BaseInformationObjectI18n class.
- * 
+ *
  * @see lib/model/om/BaseInformationObjectI18n.php
  */
 class QubitInformationObjectI18n extends BaseInformationObjectI18n

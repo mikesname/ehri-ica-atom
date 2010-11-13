@@ -17,7 +17,7 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
+ProjectConfiguration::getActive()->loadHelpers('I18N');
 
 /**
  * Settings module - "site information" form definition

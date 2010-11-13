@@ -30,52 +30,13 @@ class InformationObjectContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->informationObject = $request->getAttribute('informationObject');
-
-    // Get repository for current object if system is multi-repository
-    // (No point showing repository context if there is only one repository)
-    $this->repository = null;
-    $this->repositoryOptions = array();
-    if (sfConfig::get('app_multi_repository'))
+    if (isset($request->getAttribute('sf_route')->resource))
     {
-      if (null === $repository = $this->informationObject->getRepository())
-      {
-        // Ascend up object hierarchy until a related repository is found
-        foreach ($this->informationObject->getAncestors() as $ancestor)
-        {
-          if (null !== $repository = $ancestor->getRepository())
-          {
-            $repositoryOptions['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor));
-            $this->repositoryOptions = $repositoryOptions;
-            break;
-          }
-        }
-      }
-
-      if (null !== $repository)
-      {
-        $this->repository = $repository;
-      }
+      $this->resource = $request->getAttribute('sf_route')->resource;
     }
-
-    // Get Creators
-    $this->creators = array();
-    $this->creatorOptions = array();
-    if (0 == count($creators = $this->informationObject->getCreators(array('cultureFallback' => true))))
+    else
     {
-      foreach ($this->informationObject->getAncestors() as $ancestor)
-      {
-        if (0 < count($creators = $ancestor->getCreators(array('cultureFallback' => true))))
-        {
-          $creatorOptions['title'] = __('Inherited from %ancestor%', array('%ancestor%' => $ancestor));
-          $this->creatorOptions = $creatorOptions;
-          break;
-        }
-      }
-    }
-    if (count($creators))
-    {
-      $this->creators = $creators;
+      return sfView::NONE;
     }
   }
 }

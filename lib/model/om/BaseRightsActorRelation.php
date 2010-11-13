@@ -5,12 +5,12 @@ abstract class BaseRightsActorRelation extends QubitObject implements ArrayAcces
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_rights_actor_relation',
+    TABLE_NAME = 'rights_actor_relation',
 
-    ID = 'q_rights_actor_relation.ID',
-    RIGHTS_ID = 'q_rights_actor_relation.RIGHTS_ID',
-    ACTOR_ID = 'q_rights_actor_relation.ACTOR_ID',
-    TYPE_ID = 'q_rights_actor_relation.TYPE_ID';
+    ID = 'rights_actor_relation.ID',
+    RIGHTS_ID = 'rights_actor_relation.RIGHTS_ID',
+    ACTOR_ID = 'rights_actor_relation.ACTOR_ID',
+    TYPE_ID = 'rights_actor_relation.TYPE_ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {

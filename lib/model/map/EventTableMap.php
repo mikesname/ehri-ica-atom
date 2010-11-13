@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_event' table.
+ * This class defines the structure of the 'event' table.
  *
  *
  *
@@ -30,20 +30,20 @@ class EventTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_event');
+		$this->setName('event');
 		$this->setPhpName('event');
 		$this->setClassname('QubitEvent');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
 		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
 		$this->addColumn('START_TIME', 'startTime', 'TIME', false, null, null);
 		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);
 		$this->addColumn('END_TIME', 'endTime', 'TIME', false, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', true, null, null);
-		$this->addForeignKey('INFORMATION_OBJECT_ID', 'informationObjectId', 'INTEGER', 'q_information_object', 'ID', false, null, null);
-		$this->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'q_actor', 'ID', false, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', true, null, null);
+		$this->addForeignKey('INFORMATION_OBJECT_ID', 'informationObjectId', 'INTEGER', 'information_object', 'ID', false, null, null);
+		$this->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'actor', 'ID', false, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

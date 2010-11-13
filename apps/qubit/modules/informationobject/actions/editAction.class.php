@@ -26,59 +26,115 @@
  * @author     Peter Van Garderen <peter@artefactual.com>
  * @author     David Juhasz <david@artefactual.com>
  */
-class InformationObjectEditAction extends sfAction
+class InformationObjectEditAction extends DefaultEditAction
 {
+  protected function earlyExecute()
+  {
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+
+    $this->resource = new QubitInformationObject;
+
+    // Edit
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+
+      // Check that this isn't the root
+      if (!isset($this->resource->parent))
+      {
+        $this->forward404();
+      }
+
+      // Check user authorization
+      if (!QubitAcl::check($this->resource, 'update') && !QubitAcl::check($this->resource, 'translate'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      // Add optimistic lock
+      $this->form->setDefault('serialNumber', $this->resource->serialNumber);
+      $this->form->setValidator('serialNumber', new sfValidatorInteger);
+      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
+    }
+
+    // Duplicate
+    else if (isset($this->request->source))
+    {
+      $this->resource = QubitInformationObject::getById($this->request->source);
+
+      // Check that object exists and that it is not the root
+      if (!isset($this->resource) || !isset($this->resource->parent))
+      {
+        $this->forward404();
+      }
+
+      // Check user authorization
+      if (!QubitAcl::check($this->resource, 'create'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      // Store source label
+      $this->sourceInformationObjectLabel = new sfIsadPlugin($this->resource);
+
+      // Remove identifier
+      unset($this->resource->identifier);
+
+      // Inherit parent level
+      $this->form->setDefault('parent', $this->context->routing->generate(null, array($this->resource->parent, 'module' => 'informationobject')));
+      $this->form->setValidator('parent', new sfValidatorString);
+      $this->form->setWidget('parent', new sfWidgetFormInputHidden);
+
+      // Add id of the information object source
+      $this->form->setDefault('sourceId', $this->request->source);
+      $this->form->setValidator('sourceId', new sfValidatorInteger);
+      $this->form->setWidget('sourceId', new sfWidgetFormInputHidden);
+
+      // Set publication status to "draft"
+      $this->resource->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID)));
+    }
+
+    // Create
+    else
+    {
+      $this->form->setValidator('parent', new sfValidatorString);
+      $this->form->setWidget('parent', new sfWidgetFormInputHidden);
+
+      $getParams = $this->request->getGetParameters();
+      if (isset($getParams['parent']))
+      {
+        $params = $this->context->routing->parse(Qubit::pathInfo($getParams['parent']));
+        $this->parent = $params['_sf_route']->resource;
+        $this->form->setDefault('parent', $getParams['parent']);
+      }
+      else
+      {
+        // Root is default parent
+        $this->parent = QubitInformationObject::getById(QubitInformationObject::ROOT_ID);
+        $this->form->setDefault('parent', $this->context->routing->generate(null, array($this->parent, 'module' => 'informationobject')));
+      }
+
+      // Check authorization
+      if (!QubitAcl::check($this->parent, 'create'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+    }
+  }
+
   protected function addField($name)
   {
     switch ($name)
     {
-      case 'descriptionDetail':
-        $this->form->setDefault('descriptionDetail', $this->context->routing->generate(null, array($this->object->descriptionDetail, 'module' => 'term')));
-        $this->form->setValidator('descriptionDetail', new sfValidatorString);
-
-        $choices = array();
-        $choices[null] = null;
-        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_DETAIL_LEVEL_ID) as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        $this->form->setWidget('descriptionDetail', new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'descriptionStatus':
-        $this->form->setDefault('descriptionStatus', $this->context->routing->generate(null, array($this->object->descriptionStatus, 'module' => 'term')));
-        $this->form->setValidator('descriptionStatus', new sfValidatorString);
-
-        $choices = array();
-        $choices[null] = null;
-        foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::DESCRIPTION_STATUS_ID) as $term)
-        {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
-        }
-
-        $this->form->setWidget('descriptionStatus', new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'language':
-      case 'languageOfDescription':
-        $this->form->setDefault($name, $this->object[$name]);
-        $this->form->setValidator($name, new sfValidatorI18nChoiceLanguage(array('multiple' => true)));
-        $this->form->setWidget($name, new sfWidgetFormI18nSelectLanguage(array('culture' => $this->context->user->getCulture(), 'multiple' => true)));
-
-        break;
-
       case 'levelOfDescription':
-        $this->form->setDefault('levelOfDescription', $this->context->routing->generate(null, array($this->object->levelOfDescription, 'module' => 'term')));
+        $this->form->setDefault('levelOfDescription', $this->context->routing->generate(null, array($this->resource->levelOfDescription, 'module' => 'term')));
         $this->form->setValidator('levelOfDescription', new sfValidatorString);
 
         $choices = array();
         $choices[null] = null;
-        foreach (QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID) as $term)
+        foreach (QubitTaxonomy::getTaxonomyTerms(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID) as $item)
         {
-          $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+          $choices[$this->context->routing->generate(null, array($item, 'module' => 'term'))] = $item;
         }
 
         $this->form->setWidget('levelOfDescription', new sfWidgetFormSelect(array('choices' => $choices)));
@@ -86,42 +142,60 @@ class InformationObjectEditAction extends sfAction
         break;
 
       case 'publicationStatus':
-        $choices = array();
-
-        if (null !== $publicationStatus = $this->object->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID)))
+        $publicationStatus = $this->resource->getStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
+        if (isset($publicationStatus))
         {
           $this->form->setDefault('publicationStatus', $publicationStatus->statusId);
         }
+        else
+        {
+          $this->form->setDefault('publicationStatus', sfConfig::get('app_defaultPubStatus'));
+        }
+
         $this->form->setValidator('publicationStatus', new sfValidatorString);
 
-        if (QubitAcl::check($this->object, 'publish'))
+        if (isset($this->resource) && QubitAcl::check($this->resource, 'publish') || !isset($this->resurce) && QubitAcl::check($this->parent, 'publish'))
         {
-          foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::PUBLICATION_STATUS_ID) as $term)
+          $choices = array();
+          foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::PUBLICATION_STATUS_ID) as $item)
           {
-            $choices[$term->id] = $term->getName(array('cultureFallback' => true));
+            $choices[$item->id] = $item;
           }
 
           $this->form->setWidget('publicationStatus', new sfWidgetFormSelect(array('choices' => $choices)));
         }
         else
         {
+          $choices = array();
           if (isset($publicationStatus))
           {
-            $choices = array($publicationStatus->id => QubitTerm::getById($publicationStatus->statusId)->__toString());
+            $choices = array($publicationStatus->id => $publicationStatus->status->__toString());
+          }
+          else
+          {
+            $status = QubitTerm::getById(sfConfig::get('app_defaultPubStatus'));
+            $choices = array($status->id => $status->__toString());
           }
 
-          // disable widget if user does not have 'publish' permission
+          // Disable widget if user doesn't have "publish" permission
           $this->form->setWidget('publicationStatus', new sfWidgetFormSelect(array('choices' => $choices), array('disabled' => true)));
         }
 
         break;
 
       case 'repository':
-        $this->form->setDefault('repository', $this->context->routing->generate(null, array($this->object->repository, 'module' => 'repository')));
+        $this->form->setDefault('repository', $this->context->routing->generate(null, array($this->resource->repository, 'module' => 'repository')));
         $this->form->setValidator('repository', new sfValidatorString);
-        $this->form->setWidget('repository', new sfWidgetFormSelect(array('choices' => array($this->context->routing->generate(null, array($this->object->repository, 'module' => 'repository')) => $this->object->repository))));
 
-        if (isset($this->request->id))
+        $choices = array();
+        if (isset($this->resource->repository))
+        {
+          $choices[$this->context->routing->generate(null, array($this->resource->repository, 'module' => 'repository'))] = $this->resource->repository;
+        }
+
+        $this->form->setWidget('repository', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        if (isset($this->getRoute()->resource))
         {
           $this->repoAcParams = array('module' => 'repository', 'action' => 'autocomplete', 'aclAction' => 'update');
         }
@@ -129,17 +203,6 @@ class InformationObjectEditAction extends sfAction
         {
           $this->repoAcParams = array('module' => 'repository', 'action' => 'autocomplete', 'aclAction' => 'create');
         }
-
-        break;
-
-      case 'script':
-      case 'scriptOfDescription':
-        $this->form->setDefault($name, $this->object[$name]);
-
-        $c = sfCultureInfo::getInstance($this->context->user->getCulture());
-
-        $this->form->setValidator($name, new sfValidatorChoice(array('choices' => array_keys($c->getScripts()), 'multiple' => true)));
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $c->getScripts(), 'multiple' => true)));
 
         break;
 
@@ -159,7 +222,7 @@ class InformationObjectEditAction extends sfAction
       case 'rules':
       case 'scopeAndContent':
       case 'sources':
-        $this->form->setDefault($name, $this->object[$name]);
+        $this->form->setDefault($name, $this->resource[$name]);
         $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormTextarea);
 
@@ -169,7 +232,7 @@ class InformationObjectEditAction extends sfAction
       case 'identifier':
       case 'institutionResponsibleIdentifier':
       case 'title':
-        $this->form->setDefault($name, $this->object[$name]);
+        $this->form->setDefault($name, $this->resource[$name]);
         $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormInput);
 
@@ -178,10 +241,9 @@ class InformationObjectEditAction extends sfAction
       case 'subjectAccessPoints':
       case 'placeAccessPoints':
         $criteria = new Criteria;
-        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID, Criteria::INNER_JOIN);
-        $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->object->id);
-
-        switch($name)
+        $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->resource->id);
+        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID);
+        switch ($name)
         {
           case 'subjectAccessPoints':
             $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::SUBJECT_ID);
@@ -194,15 +256,13 @@ class InformationObjectEditAction extends sfAction
             break;
         }
 
-        $values = array();
-        $choices = array();
-        foreach (QubitObjectTermRelation::get($criteria) as $item)
+        $value = $choices = array();
+        foreach ($this[$name] = QubitObjectTermRelation::get($criteria) as $item)
         {
-          $values[] = $this->context->routing->generate(null, array($item->term, 'module' => 'term'));
-          $choices[$this->context->routing->generate(null, array($item->term, 'module' => 'term'))] = $item->term;
+          $choices[$value[] = $this->context->routing->generate(null, array($item->term, 'module' => 'term'))] = $item->term;
         }
 
-        $this->form->setDefault($name, $values);
+        $this->form->setDefault($name, $value);
         $this->form->setValidator($name, new sfValidatorPass);
         $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
 
@@ -210,77 +270,58 @@ class InformationObjectEditAction extends sfAction
 
       case 'nameAccessPoints':
         $criteria = new Criteria;
-        $criteria->add(QubitRelation::SUBJECT_ID, $this->object->id);
+        $criteria->add(QubitRelation::SUBJECT_ID, $this->resource->id);
         $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
 
-        $values = array();
-        $choices = array();
-        foreach (QubitRelation::get($criteria) as $item)
+        $value = $choices = array();
+        foreach ($this->nameAccessPoints = QubitRelation::get($criteria) as $item)
         {
-          $values[] = $this->context->routing->generate(null, array($item->object, 'module' => 'actor'));
-          $choices[$this->context->routing->generate(null, array($item->object, 'module' => 'actor'))] = $item->object;
+          $choices[$value[] = $this->context->routing->generate(null, array($item->object, 'module' => 'actor'))] = $item->object;
         }
 
-        $this->form->setDefault($name, $values);
+        $this->form->setDefault($name, $value);
         $this->form->setValidator($name, new sfValidatorPass);
         $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
 
         break;
+
+      default:
+
+        return parent::addField($name);
     }
   }
 
   protected function processField($field)
   {
-    switch ($name = $field->getName())
+    switch ($field->getName())
     {
-      case 'descriptionDetail':
-      case 'descriptionStatus':
       case 'levelOfDescription':
       case 'parent':
       case 'repository':
-        unset($this->object[$field->getName()]);
+        unset($this->resource[$field->getName()]);
 
-        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($field->getName())));
-        if (isset($params['id']))
+        $value = $this->form->getValue($field->getName());
+        if (isset($value))
         {
-          $this->object[$field->getName().'Id'] = $params['id'];
+          $params = $this->context->routing->parse(Qubit::pathInfo($value));
+          $this->resource[$field->getName()] = $params['_sf_route']->resource;
         }
 
         break;
 
       case 'subjectAccessPoints':
       case 'placeAccessPoints':
-        $filtered = $selected = array();
-        $values = $this->form->getValue($name);
-        if (is_array($values) && 0 < count($values))
+        $value = $filtered = array();
+        foreach ($this->form->getValue($field->getName()) as $item)
         {
-          foreach ($values as $value)
-          {
-            $params = $this->context->routing->parse(Qubit::pathInfo($value));
-            $filtered[$params['id']] = $selected[$params['id']] = $params['id'];
-          }
+          $params = $this->context->routing->parse(Qubit::pathInfo($item));
+          $resource = $params['_sf_route']->resource;
+          $value[$resource->id] = $filtered[$resource->id] = $resource;
         }
 
-        $criteria = new Criteria;
-        $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTerm::ID);
-        $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->object->id);
-
-        switch ($field->getName())
+        foreach ($this[$field->getName()] as $item)
         {
-          case 'subjectAccessPoints':
-            $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::SUBJECT_ID);
-
-            break;
-
-          case 'placeAccessPoints':
-            $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PLACE_ID);
-
-            break;
-        }
-
-        foreach (QubitObjectTermRelation::get($criteria) as $item)
-        {
-          if (isset($selected[$item->term->id]))
+          if (isset($value[$item->term->id]))
           {
             unset($filtered[$item->term->id]);
           }
@@ -290,35 +331,28 @@ class InformationObjectEditAction extends sfAction
           }
         }
 
-        foreach ($filtered as $id)
+        foreach ($filtered as $item)
         {
-          $objectTermRelation = new QubitObjectTermRelation;
-          $objectTermRelation->termId = $id;
+          $relation = new QubitObjectTermRelation;
+          $relation->term = $item;
 
-          $this->object->objectTermRelationsRelatedByobjectId[] = $objectTermRelation;
+          $this->resource->objectTermRelationsRelatedByobjectId[] = $relation;
         }
 
         break;
 
       case 'nameAccessPoints':
-        $filtered = $selected = array();
-        $values = $this->form->getValue($name);
-        if (is_array($values) && 0 < count($values))
+        $value = $filtered = array();
+        foreach ($this->form->getValue('nameAccessPoints') as $item)
         {
-          foreach ($values as $value)
-          {
-            $params = $this->context->routing->parse(Qubit::pathInfo($value));
-            $filtered[$params['id']] = $selected[$params['id']] = $params['id'];
-          }
+          $params = $this->context->routing->parse(Qubit::pathInfo($item));
+          $resource = $params['_sf_route']->resource;
+          $value[$resource->id] = $filtered[$resource->id] = $resource;
         }
 
-        $criteria = new Criteria;
-        $criteria->add(QubitRelation::SUBJECT_ID, $this->object->id);
-        $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
-
-        foreach (QubitRelation::get($criteria) as $item)
+        foreach ($this->nameAccessPoints as $item)
         {
-          if (isset($selected[$item->objectId]))
+          if (isset($value[$item->objectId]))
           {
             unset($filtered[$item->objectId]);
           }
@@ -328,33 +362,25 @@ class InformationObjectEditAction extends sfAction
           }
         }
 
-        foreach ($filtered as $id)
+        foreach ($filtered as $item)
         {
           $relation = new QubitRelation;
-
-          $relation->objectId = $id;
+          $relation->object = $item;
           $relation->typeId = QubitTerm::NAME_ACCESS_POINT_ID;
 
-          $this->object->relationsRelatedBysubjectId[] = $relation;
+          $this->resource->relationsRelatedBysubjectId[] = $relation;
         }
 
         break;
 
       default:
-        $this->object[$field->getName()] = $this->form->getValue($field->getName());
+
+        return parent::processField($field);
     }
   }
 
   protected function processForm()
   {
-    foreach ($this->form as $field)
-    {
-      if (isset($this->request[$field->getName()]))
-      {
-        $this->processField($field);
-      }
-    }
-
     // If object is being duplicated
     if (isset($this->request->sourceId))
     {
@@ -363,20 +389,20 @@ class InformationObjectEditAction extends sfAction
       // Duplicate physical object relations
       foreach ($sourceInformationObject->getPhysicalObjects() as $physicalObject)
       {
-        $this->object->addPhysicalObject($physicalObject);
+        $this->resource->addPhysicalObject($physicalObject);
       }
 
       // Duplicate notes
       foreach ($sourceInformationObject->notes as $sourceNote)
       {
-        if (false == isset($this->request->delete_notes[$sourceNote->id]))
+        if (!isset($this->request->delete_notes[$sourceNote->id]))
         {
           $note = new QubitNote;
           $note->content = $sourceNote->content;
           $note->typeId = $sourceNote->type->id;
           $note->userId = $this->context->user->getAttribute('user_id');
 
-          $this->object->notes[] = $note;
+          $this->resource->notes[] = $note;
         }
       }
 
@@ -384,10 +410,9 @@ class InformationObjectEditAction extends sfAction
       {
         foreach ($sourceInformationObject->events as $sourceEvent)
         {
-          if (false == isset($this->request->deleteEvents[$sourceEvent->id]))
+          if (false === array_search($this->context->routing->generate(null, array($sourceEvent, 'module' => 'event')), (array)$this->request->deleteEvents))
           {
             $event = new QubitEvent;
-
             $event->actorId = $sourceEvent->actorId;
             $event->typeId = $sourceEvent->typeId;
             $event->startDate = $sourceEvent->startDate;
@@ -397,7 +422,7 @@ class InformationObjectEditAction extends sfAction
             // I18n
             $event->name = $sourceEvent->name;
             $event->description = $sourceEvent->description;
-            $event->dateDisplay = $sourceEvent->dateDisplay;
+            $event->date = $sourceEvent->date;
 
             foreach ($sourceEvent->eventI18ns as $sourceEventI18n)
             {
@@ -407,175 +432,58 @@ class InformationObjectEditAction extends sfAction
               }
 
               $eventI18n = new QubitEventI18n;
-
               $eventI18n->name = $sourceEventI18n->name;
               $eventI18n->description = $sourceEventI18n->description;
-              $eventI18n->dateDisplay = $sourceEventI18n->dateDisplay;
+              $eventI18n->date = $sourceEventI18n->date;
               $eventI18n->culture = $sourceEventI18n->culture;
 
               $event->eventI18ns[] = $eventI18n;
             }
 
             // Place
-            if (null !== ($place = QubitObjectTermRelation::getOneByObjectId($sourceEvent->id)))
+            if (null !== $place = QubitObjectTermRelation::getOneByObjectId($sourceEvent->id))
             {
-              $event->objectTermRelationsRelatedByobjectId[] = $place;
+              $termRelation = new QubitObjectTermRelation;
+              $termRelation->term = $place->term;
+
+              $event->objectTermRelationsRelatedByobjectId[] = $termRelation;
             }
 
-            $this->object->events[] = $event;
+            $this->resource->events[] = $event;
           }
         }
       }
     }
 
-    // Set the informationObject's attributes
-    $this->updateCollectionType();
+    parent::processForm();
 
-    // Save related objects (save on $this->object->save())
-    $this->updateObjectTermRelations();
-    $this->updateEvents();
-    $this->updateStatus();
-    $this->updateChildLevels();
-
-    // Save informationObject after setting all of its attributes...
-    $this->object->save();
-
-    // Delete related objects marked for deletion
     $this->deleteNotes();
-    $this->deleteEvents();
-    $this->deleteObjectTermRelations();
+    $this->updateChildLevels();
+    $this->updateStatus(); // Must come after updateChildLevels()
   }
 
   public function execute($request)
   {
-    $this->form = new sfForm;
-    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
-
-    $this->object = new QubitInformationObject;
-
-    QubitImageFlow::addAssets($this->response);
-
-    QubitTreeView::addAssets($this->response);
-
-    if (isset($request->id))
-    {
-      $this->object = QubitInformationObject::getById($request->id);
-
-      // Check that object exists and that it's not the root
-      if (!isset($this->object) || !isset($this->object->parent))
-      {
-        $this->forward404();
-      }
-
-      // Check user authorization
-      if (!QubitAcl::check($this->object, 'update') && !QubitAcl::check($this->object, 'translate'))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-
-      // Add optimistic lock
-      $this->form->setDefault('serialNumber', $this->object->serialNumber);
-      $this->form->setValidator('serialNumber', new sfValidatorInteger);
-      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
-    }
-    else if (isset($request->source))
-    {
-      $this->object = QubitInformationObject::getById($request->source);
-
-      // Check that object exists and that it is not the root
-      if (!isset($this->object) || !isset($this->object->parent))
-      {
-        $this->forward404();
-      }
-
-      // Check user authorization
-      if (!QubitAcl::check($this->object, 'create'))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-
-      // Store source label
-      $this->sourceInformationObjectLabel = $this->object->getLabel();
-
-      // Remove identifier
-      unset($this->object->identifier);
-
-      // Inherit parent level
-      $this->form->setDefault('parent', $this->context->routing->generate(null, array($this->object->parent, 'module' => 'informationobject')));
-      $this->form->setValidator('parent', new sfValidatorString);
-      $this->form->setWidget('parent', new sfWidgetFormInputHidden);
-
-      // Add id of the information object source
-      $this->form->setDefault('sourceId', $request->source);
-      $this->form->setValidator('sourceId', new sfValidatorInteger);
-      $this->form->setWidget('sourceId', new sfWidgetFormInputHidden);
-
-      // Set publication status to 'draft'
-      $this->object->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => QubitTerm::PUBLICATION_STATUS_DRAFT_ID));
-    }
-    else
-    {
-      $this->form->setValidator('parent', new sfValidatorString);
-      $this->form->setWidget('parent', new sfWidgetFormInputHidden);
-
-      // Root is default parent
-      $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array(QubitInformationObject::getById(QubitInformationObject::ROOT_ID), 'module' => 'informationobject'))));
-
-      $params = $this->context->routing->parse(Qubit::pathInfo($this->form->parent->getValue()));
-
-      // Check authorization
-      if (!QubitAcl::check(QubitInformationObject::getById($params['id']), 'create'))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-
-      $this->object->parentId = $params['id'];
-    }
-
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
-    {
-      $this->addField($name);
-    }
-
-    $request->setAttribute('informationObject', $this->object);
-
-    // Determine if user has edit priviliges
-    $this->editTaxonomyCredentials = false;
-    if (SecurityPriviliges::editCredentials($this->getUser(), 'term'))
-    {
-      $this->editTaxonomyCredentials = true;
-    }
-
-    //Actor (Event) Relations
-    $this->newEvent = new QubitEvent;
+    parent::execute($request);
 
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
-
       if ($this->form->isValid())
       {
         $this->processForm();
 
-        $this->redirect(array($this->object, 'module' => 'informationobject'));
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'informationobject'));
       }
     }
-  }
 
-  public function updateCollectionType()
-  {
-    if ($this->hasRequestParameter('collection_type_id'))
-    {
-      $this->object->setCollectionTypeId($this->getRequestParameter('collection_type_id'));
-    }
-    else
-    {
-      // set default to 'archival material'
-      $this->object->setCollectionTypeId(QubitTerm::ARCHIVAL_MATERIAL_ID);
-    }
+    QubitDescription::addAssets($this->response);
+
+    QubitImageFlow::addAssets($this->response);
+
+    QubitTreeView::addAssets($this->response);
   }
 
   /**
@@ -583,9 +491,9 @@ class InformationObjectEditAction extends sfAction
    *
    * @param sfRequest request object
    */
-  public function deleteNotes()
+  protected function deleteNotes()
   {
-    if (false == isset($this->request->sourceId) && is_array($deleteNotes = $this->request->getParameter('delete_notes')) && count($deleteNotes))
+    if (false == isset($this->request->sourceId) && is_array($deleteNotes = $this->request->delete_notes) && count($deleteNotes))
     {
       foreach ($deleteNotes as $noteId => $doDelete)
       {
@@ -597,181 +505,9 @@ class InformationObjectEditAction extends sfAction
     }
   }
 
-  /**
-   * Update ObjectTermRelations - Subject, name and place access points and
-   * Material types.
-   *
-   * @param QubitInformationObject $informationObject current information object
-   */
-  public function updateObjectTermRelations()
+  protected function updateChildLevels()
   {
-    // Add name access points
-    if ($name_ids = $this->getRequestParameter('name_id'))
-    {
-      // Make sure that $name_ids is an array, even if it's only got one value
-      $name_ids = (is_array($name_ids)) ? $name_ids : array($name_ids);
-
-      foreach ($name_ids as $name_id)
-      {
-        if (intval($name_id))
-        {
-          $relation = new QubitRelation;
-          $relation->typeId = QubitTerm::NAME_ACCESS_POINT_ID;
-          $relation->objectId = $name_id;
-
-          $this->object->relationsRelatedBysubjectId[] = $relation;
-        }
-      }
-    }
-
-    // Add material types
-    if ($material_type_ids = $this->getRequestParameter('material_type_id'))
-    {
-      // Make sure that $material_type_id is an array, even if it's only got one value
-      $material_type_ids = (is_array($material_type_ids)) ? $material_type_ids : array($material_type_ids);
-
-      foreach ($material_type_ids as $material_type_id)
-      {
-        if (intval($material_type_id))
-        {
-          $this->object->addTermRelation($material_type_id);
-        }
-      }
-    }
-  }
-
-  /**
-   * Delete object->term relations marked for deletion.
-   *
-   * @param sfRequest request object
-   */
-  public function deleteObjectTermRelations()
-  {
-    if (is_array($deleteRelations = $this->request->getParameter('delete_object_term_relations')) && count($deleteRelations))
-    {
-      foreach ($deleteRelations as $thisId => $doDelete)
-      {
-        if ($doDelete == 'delete' && !is_null($relation = QubitObjectTermRelation::getById($thisId)))
-        {
-          $relation->delete();
-        }
-      }
-    }
-  }
-
-  /**
-   * Add new actor events for this info object.
-   *
-   * @param QubitInformationObject $informationObject
-   */
-  protected function updateEvents()
-  {
-    // if the eventDialog javascript has done it's work, then use the array of
-    // updated events
-    if ($this->hasRequestParameter('updateEvents'))
-    {
-      $updatedEvents = $this->getRequestParameter('updateEvents');
-    }
-
-    // else, grab the new event values from the 'newEvent' form
-    else
-    {
-      $updatedEvents = array($this->getRequestParameter('updateEvent'));
-    }
-
-    // Loop through actor events
-    foreach ($updatedEvents as $eventFormData)
-    {
-      // Create new event or update an existing one
-      if (isset($eventFormData['id']) && !isset($this->request->sourceId))
-      {
-        $params = $this->context->routing->parse(Qubit::pathInfo($eventFormData['id']));
-        if (!isset($params['id']) || null === $event = QubitEvent::getById($params['id']))
-        {
-          continue; // If we can't find the object, then skip this row
-        }
-      }
-      else
-      {
-        $event = new QubitEvent;
-      }
-
-      // Use existing actor if one is selected (overrides new actor creation)
-      if (0 < strlen($eventFormData['actor']))
-      {
-        $params = $this->context->routing->parse(Qubit::pathInfo($eventFormData['actor']));
-        $event->actorId = $params['id'];
-      }
-
-      $event->setStartDate(QubitDate::standardize($eventFormData['startDate']));
-      $event->setEndDate(QubitDate::standardize($eventFormData['endDate']));
-      $event->setDateDisplay($eventFormData['dateDisplay']);
-      $event->setTypeId($eventFormData['typeId']);
-
-      if (0 < strlen($eventFormData['description']))
-      {
-        $event->description = $eventFormData['description'];
-      }
-      else
-      {
-        unset($event->description);
-      }
-
-      // Save the event if it's valid (has an actor OR date)
-      if (0 < strlen($eventFormData['actor'])
-        || 0 < strlen($eventFormData['startDate'])
-        || 0 < strlen($eventFormData['endDate'])
-        || 0 < strlen($eventFormData['dateDisplay']))
-      {
-        // Update the "place" object term relation object
-        if (0 < strlen($eventFormData['place']))
-        {
-          // If this event didn't exist or didn't have a 'place' associated
-          if (null === $event->id || null === ($place = QubitObjectTermRelation::getOneByObjectId($event->id)))
-          {
-            $place = new QubitObjectTermRelation;
-          }
-
-          $params = $this->context->routing->parse(Qubit::pathInfo($eventFormData['place']));
-          $place->termId = $params['id'];
-
-          $event->objectTermRelationsRelatedByobjectId[] = $place;
-        }
-
-        // Or delete an existing "place" object term relation, if it's no
-        // longer needed
-        else if (0 < $event->getId() && null !== ($place = QubitObjectTermRelation::getOneByObjectId($event->getId())))
-        {
-          $place->delete();
-        }
-
-        $this->object->events[] = $event;
-      }
-    }
-  }
-
-  /**
-   * Delete related actor events marked for deletion.
-   *
-   * @param sfRequest request object
-   */
-  public function deleteEvents()
-  {
-    if (false == isset($this->request->sourceId) && is_array($deleteEvents = $this->request->getParameter('deleteEvents')) && count($deleteEvents))
-    {
-      foreach ($deleteEvents as $deleteId => $doDelete)
-      {
-        if ('delete' == $doDelete && !is_null($event = QubitEvent::getById($deleteId)))
-        {
-          $event->delete();
-        }
-      }
-    }
-  }
-
-  public function updateChildLevels()
-  {
-    if (is_array($updateChildLevels = $this->request->getParameter('updateChildLevels')) && count($updateChildLevels))
+    if (is_array($updateChildLevels = $this->request->updateChildLevels) && count($updateChildLevels))
     {
       foreach ($updateChildLevels as $childLevelFormData)
       {
@@ -792,25 +528,26 @@ class InformationObjectEditAction extends sfAction
 
         if (0 < $childLevelFormData['levelOfDescription'] && (null !== QubitTerm::getById($childLevelFormData['levelOfDescription'])))
         {
-          $childLevel->setLevelOfDescriptionId($childLevelFormData['levelOfDescription']);
+          $childLevel->levelOfDescriptionId = $childLevelFormData['levelOfDescription'];
         }
 
         if (0 < $childLevelFormData['levelOfDescription']
-          || 0 < strlen($childLevelFormData['identifier'])
-          || 0 < strlen($childLevelFormData['title']))
+            || 0 < strlen($childLevelFormData['identifier'])
+            || 0 < strlen($childLevelFormData['title']))
         {
-          $this->object->informationObjectsRelatedByparentId[] = $childLevel;
+          $this->resource->informationObjectsRelatedByparentId[] = $childLevel;
         }
       }
     }
   }
 
-  public function updateStatus()
+  protected function updateStatus()
   {
-    if (!QubitAcl::check($this->object, 'publish'))
+    if (!QubitAcl::check($this->resource, 'publish'))
     {
-      // if the user does not have 'publish' permission, automatically set publication status to 'draft'
-      $pubStatusId = QubitTerm::PUBLICATION_STATUS_DRAFT_ID;
+      // if the user does not have 'publish' permission, use default publication
+      // status setting
+      $pubStatusId = sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID);
     }
     else
     {
@@ -819,15 +556,21 @@ class InformationObjectEditAction extends sfAction
 
     // Only update publicationStatus if its value has changed because it
     // triggers a resource-intensive update of all its descendants
-    $oldStatus = $this->object->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
+    $oldStatus = $this->resource->getStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
     if (!isset($oldStatus) && isset($pubStatusId) || $pubStatusId !== $oldStatus->statusId)
     {
-      $this->object->setStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+      $this->resource->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+
+      // Set pub status for child levels
+      foreach ($this->resource->informationObjectsRelatedByparentId as $child)
+      {
+        $child->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+      }
 
       // Update pub status of descendants
-      foreach ($this->object->descendants as $descendant)
+      foreach ($this->resource->descendants as $descendant)
       {
-        if (null === $descendantPubStatus = $descendant->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID)))
+        if (null === $descendantPubStatus = $descendant->getStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID)))
         {
           $descendantPubStatus = new QubitStatus;
           $descendantPubStatus->typeId = QubitTerm::STATUS_TYPE_PUBLICATION_ID;

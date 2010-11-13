@@ -25,102 +25,106 @@
  * @author     david juhasz <david@artefactual.com>
  * @version    SVN: $Id
  */
-class InformationObjectEditPhysicalObjectsAction extends sfAction
+class InformationObjectEditPhysicalObjectsAction extends DefaultEditAction
 {
-  public function execute($request)
+  public static
+    $NAMES = array(
+      'containers',
+      'location',
+      'name',
+      'type');
+
+  protected function earlyExecute()
   {
-    $this->form = new sfForm;
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-    $this->informationObject = QubitInformationObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists and that it is not the root
-    if (!isset($this->informationObject) || !isset($this->informationObject->parent))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
+  }
 
-    $request->setAttribute('informationObject', $this->informationObject);
-
-    $this->relations = QubitRelation::getRelationsByObjectId($this->informationObject->getId(), array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
-
-    if ($request->isMethod('post'))
+  protected function addField($name)
+  {
+    switch ($name)
     {
-      $this->updatePhysicalObjects();
-      $this->deleteRelations();
+      case 'containers':
+        $this->form->setValidator('containers', new sfValidatorPass);
+        $this->form->setWidget('containers', new sfWidgetFormSelect(array('choices' => array(), 'multiple' => true)));
 
-      $this->informationObject->save();
+        break;
 
-      $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
+      case 'location':
+      case 'name':
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'type':
+        $this->form->setValidator('type', new sfValidatorString);
+        $this->form->setWidget('type', new sfWidgetFormSelect(array('choices' => QubitTerm::getIndentedChildTree(QubitTerm::CONTAINER_ID, '&nbsp;', array('returnObjectInstances' => true)))));
+
+        break;
+
+      default:
+
+        return parent::addField($name);
     }
   }
 
-  /**
-   * Update physical object relations.
-   *
-   * @param  informationObject The current informationObject object
-   */
-  public function updatePhysicalObjects()
+  protected function processForm()
   {
-    $oldPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->informationObject->getId(),
-    array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    foreach ($this->form->getValue('containers') as $item)
+    {
+      $params = $this->context->routing->parse(Qubit::pathInfo($item));
+      $this->resource->addPhysicalObject($params['_sf_route']->resource);
+    }
 
-    // Preferentially use "new container" input data over the selector so that
-    // new object data is not lost (but only if an object name is entered)
-    if (strlen($physicalObjectName = $this->getRequestParameter('physicalObjectName')))
+    $value = $this->form->getValue('name');
+    if (isset($value))
     {
       $physicalObject = new QubitPhysicalObject;
+      $physicalObject->name = $value;
+      $physicalObject->location = $this->form->getValue('location');
 
-      $physicalObject->setName($physicalObjectName);
+      $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue('type')));
+      $physicalObject->type = $params['_sf_route']->resource;
 
-      if ($this->hasRequestParameter('physicalObjectLocation'))
-      {
-        $physicalObject->setLocation($this->getRequestParameter('physicalObjectLocation'));
-      }
-
-      if (intval($this->getRequestParameter('physicalObjectTypeId')))
-      {
-        $physicalObject->setTypeId($this->getRequestParameter('physicalObjectTypeId'));
-      }
       $physicalObject->save();
 
-      // Link info object to physical object
-      $this->informationObject->addPhysicalObject($physicalObject);
+      $this->resource->addPhysicalObject($physicalObject);
     }
 
-    // If form is not populated, Add any existing physical objects that are selected
-    else if ($physicalObjectIds = $this->getRequestParameter('physicalObjectId'))
+    if (isset($this->request->delete_relations))
     {
-      // Make sure that $physicalObjectIds is an array, even if it's only got one value
-      $physicalObjectIds = (is_array($physicalObjectIds)) ? $physicalObjectIds : array($physicalObjectIds);
-
-      foreach ($physicalObjectIds as $physicalObjectId)
+      foreach ($this->request->delete_relations as $item)
       {
-        // If a value is set for this select box, and the physical object exists,
-        // add a relation to this info object
-        if (intval($physicalObjectId) && (null !== $physicalObject = QubitPhysicalObject::getById($physicalObjectId)))
-        {
-          $this->informationObject->addPhysicalObject($physicalObject);
-        }
+        $params = $this->context->routing->parse(Qubit::pathInfo($item));
+        $params['_sf_route']->resource->delete();
       }
     }
+  }
 
-  } // end method: updatePhysicalObjects
-
-  /**
-   * Delete related physical objects marked for deletion.
-   *
-   * @param sfRequest request object
-   */
-  public function deleteRelations()
+  public function execute($request)
   {
-    if (is_array($deleteRelations = $this->request->getParameter('delete_relations')) && count($deleteRelations))
+    parent::execute($request);
+
+    $this->relations = QubitRelation::getRelationsByObjectId($this->resource->id, array('typeId' => QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+
+    if ($request->isMethod('post'))
     {
-      foreach ($deleteRelations as $thisId => $doDelete)
+      $this->form->bind($request->getPostParameters());
+      if ($this->form->isValid())
       {
-        if ($doDelete == 'delete' && !is_null($relation = QubitRelation::getById($thisId)))
-        {
-          $relation->delete();
-        }
+        $this->processForm();
+
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'informationobject'));
       }
     }
   }

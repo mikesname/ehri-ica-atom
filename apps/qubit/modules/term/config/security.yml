@@ -1,3 +1,0 @@
-move:
-  credentials: [[ contributor, editor, administrator ]]
-  is_secure: true

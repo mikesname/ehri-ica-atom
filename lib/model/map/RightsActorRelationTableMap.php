@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_rights_actor_relation' table.
+ * This class defines the structure of the 'rights_actor_relation' table.
  *
  *
  *
@@ -30,16 +30,16 @@ class RightsActorRelationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_rights_actor_relation');
+		$this->setName('rights_actor_relation');
 		$this->setPhpName('rightsActorRelation');
 		$this->setClassname('QubitRightsActorRelation');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('RIGHTS_ID', 'rightsId', 'INTEGER', 'q_rights', 'ID', true, null, null);
-		$this->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'q_actor', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('RIGHTS_ID', 'rightsId', 'INTEGER', 'rights', 'ID', true, null, null);
+		$this->addForeignKey('ACTOR_ID', 'actorId', 'INTEGER', 'actor', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		// validators
 	} // initialize()
 

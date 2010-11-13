@@ -33,7 +33,7 @@ class OaiGetRecordComponent extends sfComponents
   {
     $request->setRequestFormat('xml');
 
-    $oai_local_identifier_value = $request->getParameter('identifier'); //TODO: strip the trailing integer value from the full OAI Identifier to get the OaiLocalIdentifier
+    $oai_local_identifier_value = $request->identifier; //TODO: strip the trailing integer value from the full OAI Identifier to get the OaiLocalIdentifier
     $oai_local_identifier_id = QubitOai::getOaiIdNumber($oai_local_identifier_value);
     $this->informationObject = QubitInformationObject::getRecordByOaiID($oai_local_identifier_id);
     $request->setAttribute('informationObject', $this->informationObject);
@@ -42,7 +42,7 @@ class OaiGetRecordComponent extends sfComponents
     $this->date = gmdate('Y-m-d\TH:i:s\Z');
     $this->collectionsTable = QubitOai::getCollectionArray();
     $this->path = $request->getUriPrefix().$request->getPathInfo();
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';
@@ -50,7 +50,5 @@ class OaiGetRecordComponent extends sfComponents
     {
       $this->requestAttributes .= ' '.$key.'="'.$this->attributes[$key].'"';
     }
-
   }
-
 }

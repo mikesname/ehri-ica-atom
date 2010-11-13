@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_function' table.
+ * This class defines the structure of the 'function' table.
  *
  *
  *
@@ -30,18 +30,19 @@ class FunctionTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_function');
+		$this->setName('function');
 		$this->setPhpName('function');
 		$this->setClassname('QubitFunction');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_function', 'ID', false, null, null);
-		$this->addForeignKey('DESCRIPTION_STATUS_ID', 'descriptionStatusId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('DESCRIPTION_DETAIL_ID', 'descriptionDetailId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'function', 'ID', false, null, null);
+		$this->addForeignKey('DESCRIPTION_STATUS_ID', 'descriptionStatusId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('DESCRIPTION_DETAIL_ID', 'descriptionDetailId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('DESCRIPTION_IDENTIFIER', 'descriptionIdentifier', 'VARCHAR', false, 255, null);
+		$this->addColumn('SOURCE_STANDARD', 'sourceStandard', 'VARCHAR', false, 255, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', false, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', false, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

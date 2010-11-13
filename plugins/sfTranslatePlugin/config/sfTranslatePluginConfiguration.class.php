@@ -16,8 +16,8 @@ class sfTranslatePluginConfiguration extends sfPluginConfiguration
 
     $action = $context->controller->getAction('sfTranslatePlugin', 'translate');
     if ($action->isSecure()
-      && (!$context->user->isAuthenticated()
-        || !$context->user->hasCredential($action->getCredential())))
+        && (!$context->user->isAuthenticated()
+          || !$context->user->hasCredential($action->getCredential())))
     {
       return;
     }

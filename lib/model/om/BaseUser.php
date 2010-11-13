@@ -5,13 +5,13 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_user',
+    TABLE_NAME = 'user',
 
-    ID = 'q_user.ID',
-    USERNAME = 'q_user.USERNAME',
-    EMAIL = 'q_user.EMAIL',
-    SHA1_PASSWORD = 'q_user.SHA1_PASSWORD',
-    SALT = 'q_user.SALT';
+    ID = 'user.ID',
+    USERNAME = 'user.USERNAME',
+    EMAIL = 'user.EMAIL',
+    SHA1_PASSWORD = 'user.SHA1_PASSWORD',
+    SALT = 'user.SALT';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -102,7 +102,7 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return true;
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -191,7 +191,7 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return $this->refFkValues['systemEvents'];
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public static function addaclPermissionsCriteriaById(Criteria $criteria, $id)

@@ -38,14 +38,15 @@ class DigitalObjectListAction extends sfAction
     $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MEDIA_TYPE_ID);
     $criteria->addJoin(QubitTerm::ID, QubitDigitalObject::MEDIA_TYPE_ID, Criteria::LEFT_JOIN);
     $criteria->addAsColumn('hits', 'COUNT('.QubitDigitalObject::ID.')');
+
     $criteria->addGroupByColumn(QubitTerm::ID);
 
     // Add I18n fallback
-    $criteria->addAscendingOrderByColumn('name');
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
+    $criteria->addAscendingOrderByColumn('name');
 
     // Filter drafts
-    $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID, Criteria::INNER_JOIN);
+    $criteria->addJoin(QubitDigitalObject::INFORMATION_OBJECT_ID, QubitInformationObject::ID);
     $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     $this->terms = QubitTerm::get($criteria);

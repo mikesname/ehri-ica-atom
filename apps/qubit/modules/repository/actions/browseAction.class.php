@@ -34,6 +34,9 @@ class RepositoryBrowseAction extends sfAction
 
     $criteria = new Criteria;
 
+    // Do source culture fallback
+    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
+
     switch ($request->sort)
     {
       case 'nameDown':
@@ -57,10 +60,6 @@ class RepositoryBrowseAction extends sfAction
 
         break;
     }
-
-    // Do source culture fallback
-    $criteria->addJoin(QubitRepository::ID, QubitActor::ID);
-    $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
 
     // Page results
     $this->pager = new QubitPager('QubitRepository');

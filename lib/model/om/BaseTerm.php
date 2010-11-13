@@ -5,15 +5,15 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_term',
+    TABLE_NAME = 'term',
 
-    ID = 'q_term.ID',
-    TAXONOMY_ID = 'q_term.TAXONOMY_ID',
-    CODE = 'q_term.CODE',
-    PARENT_ID = 'q_term.PARENT_ID',
-    LFT = 'q_term.LFT',
-    RGT = 'q_term.RGT',
-    SOURCE_CULTURE = 'q_term.SOURCE_CULTURE';
+    ID = 'term.ID',
+    TAXONOMY_ID = 'term.TAXONOMY_ID',
+    CODE = 'term.CODE',
+    PARENT_ID = 'term.PARENT_ID',
+    LFT = 'term.LFT',
+    RGT = 'term.RGT',
+    SOURCE_CULTURE = 'term.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -302,7 +302,7 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
       return true;
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -954,7 +954,7 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
       return $this->values['descendants'];
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -1015,6 +1015,38 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
     return $this;
   }
 
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
+  }
+
   protected function insert($connection = null)
   {
     $this->updateNestedSet($connection);
@@ -1026,9 +1058,11 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
 
   protected function update($connection = null)
   {
-        if (isset($this->values['parentId']))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-            $offset = 0; 
+      // Get the "original" parentId before any updates
+      $offset = 0;
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -1042,8 +1076,10 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
           $offset++;
         }
       }
-      
-                  if ($originalParentId != $this->values['parentId'])
+
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }
@@ -1796,6 +1832,9 @@ abstract class BaseTerm extends QubitObject implements ArrayAccess
 
   protected function updateNestedSet($connection = null)
   {
+// HACK Try to prevent modifying left and right values anywhere except in this
+// method.  Perhaps it would be more logical to use protected visibility for
+// these values?
 unset($this->values['lft']);
 unset($this->values['rgt']);
     if (!isset($connection))
@@ -1856,6 +1895,7 @@ unset($this->values['rgt']);
       {
         $this->lft = $parent->rgt;
         $this->rgt = $parent->rgt + 1;
+        $parent->rgt += 2;
 
         return $this;
       }

@@ -19,51 +19,55 @@
 
 class QubitTaxonomy extends BaseTaxonomy
 {
-  const ROOT_ID = 30;
-  const DESCRIPTION_DETAIL_LEVEL_ID = 31;
-  const ACTOR_ENTITY_TYPE_ID = 32;
-  const DESCRIPTION_STATUS_ID = 33;
-  const LEVEL_OF_DESCRIPTION_ID = 34;
-  const SUBJECT_ID = 35;
-  const ACTOR_NAME_TYPE_ID = 36;
-  const NOTE_TYPE_ID = 37;
-  const REPOSITORY_TYPE_ID = 38;
-  const EVENT_TYPE_ID = 40;
-  const QUBIT_SETTING_LABEL_ID = 41;
-  const PLACE_ID = 42;
-  const FUNCTION_ID = 43;
-  const HISTORICAL_EVENT_ID = 44;
-  const COLLECTION_TYPE_ID = 45;
-  const MEDIA_TYPE_ID = 46;
-  const DIGITAL_OBJECT_USAGE_ID = 47;
-  const PHYSICAL_OBJECT_TYPE_ID = 48;
-  const RELATION_TYPE_ID = 49;
-  const MATERIAL_TYPE_ID = 50;
-  const RAD_NOTE_ID = 51; //CCA Rules for Archival Description (RAD) taxonomies
-  const RAD_TITLE_NOTE_ID = 52; //CCA Rules for Archival Description (RAD) taxonomies
-  const MODS_RESOURCE_TYPE_ID = 53;
-  const DC_TYPE_ID = 54;
-  const ACTOR_RELATION_TYPE_ID = 55;
-  const RELATION_NOTE_TYPE_ID = 56;
-  const TERM_RELATION_TYPE_ID = 57;
-  const STATUS_TYPE_ID = 59;
-  const PUBLICATION_STATUS_ID = 60;
-  const ISDF_RELATION_TYPE_ID = 61;
+  const
+    ROOT_ID = 30,
+    DESCRIPTION_DETAIL_LEVEL_ID = 31,
+    ACTOR_ENTITY_TYPE_ID = 32,
+    DESCRIPTION_STATUS_ID = 33,
+    LEVEL_OF_DESCRIPTION_ID = 34,
+    SUBJECT_ID = 35,
+    ACTOR_NAME_TYPE_ID = 36,
+    NOTE_TYPE_ID = 37,
+    REPOSITORY_TYPE_ID = 38,
+    EVENT_TYPE_ID = 40,
+    QUBIT_SETTING_LABEL_ID = 41,
+    PLACE_ID = 42,
+    FUNCTION_ID = 43,
+    HISTORICAL_EVENT_ID = 44,
+    COLLECTION_TYPE_ID = 45,
+    MEDIA_TYPE_ID = 46,
+    DIGITAL_OBJECT_USAGE_ID = 47,
+    PHYSICAL_OBJECT_TYPE_ID = 48,
+    RELATION_TYPE_ID = 49,
+    MATERIAL_TYPE_ID = 50,
 
-  public static $lockedTaxonomies = array(
-    self::QUBIT_SETTING_LABEL_ID,
-    self::COLLECTION_TYPE_ID,
-    self::DIGITAL_OBJECT_USAGE_ID,
-    self::MEDIA_TYPE_ID,
-    self::RELATION_TYPE_ID,
-    self::RELATION_NOTE_TYPE_ID,
-    self::TERM_RELATION_TYPE_ID,
-    self::ROOT_ID,
-    self::STATUS_TYPE_ID,
-    self::PUBLICATION_STATUS_ID,
-    self::ACTOR_ENTITY_TYPE_ID,
-    self::ACTOR_NAME_TYPE_ID
-  );
+    // Rules for Archival Description (RAD) taxonomies
+    RAD_NOTE_ID = 51,
+    RAD_TITLE_NOTE_ID = 52,
+
+    MODS_RESOURCE_TYPE_ID = 53,
+    DC_TYPE_ID = 54,
+    ACTOR_RELATION_TYPE_ID = 55,
+    RELATION_NOTE_TYPE_ID = 56,
+    TERM_RELATION_TYPE_ID = 57,
+    STATUS_TYPE_ID = 59,
+    PUBLICATION_STATUS_ID = 60,
+    ISDF_RELATION_TYPE_ID = 61;
+
+  public static
+    $lockedTaxonomies = array(
+      self::QUBIT_SETTING_LABEL_ID,
+      self::COLLECTION_TYPE_ID,
+      self::DIGITAL_OBJECT_USAGE_ID,
+      self::MEDIA_TYPE_ID,
+      self::RELATION_TYPE_ID,
+      self::RELATION_NOTE_TYPE_ID,
+      self::TERM_RELATION_TYPE_ID,
+      self::ROOT_ID,
+      self::STATUS_TYPE_ID,
+      self::PUBLICATION_STATUS_ID,
+      self::ACTOR_ENTITY_TYPE_ID,
+      self::ACTOR_NAME_TYPE_ID);
 
   public function __toString()
   {
@@ -73,6 +77,16 @@ class QubitTaxonomy extends BaseTaxonomy
     }
 
     return (string) $this->getName();
+  }
+
+  protected function insert($connection = null)
+  {
+    if (!isset($this->slug))
+    {
+      $this->slug = QubitSlug::slugify($this->name);
+    }
+
+    return parent::insert($connection);
   }
 
   public static function getRoot()
@@ -103,20 +117,13 @@ class QubitTaxonomy extends BaseTaxonomy
   public static function getTaxonomyTerms($taxonomyId, $options = array())
   {
     $criteria = new Criteria;
-    $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId, Criteria::EQUAL);
+    $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
 
     // Only include top-level terms if option is set
     if (isset($options['level']) && $options['level'] == 'top')
     {
-      $criteria->add(QubitTerm::PARENT_ID, QubitTerm::ROOT_ID, Criteria::EQUAL);
+      $criteria->add(QubitTerm::PARENT_ID, QubitTerm::ROOT_ID);
     }
-
-    // Exclude non-preferred terms
-    $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
-    $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
-    $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
-    $criterion1->addOr($criterion2);
-    $criteria->add($criterion1);
 
     // Sort alphabetically
     $criteria->addAscendingOrderByColumn('name');

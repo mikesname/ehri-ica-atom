@@ -18,7 +18,7 @@
  */
 
 /**
- * Generate the OAI-PMH response 
+ * Generate the OAI-PMH response
  *
  * @package    qubit
  * @subpackage oai
@@ -36,8 +36,8 @@ class oaiErrorAction extends sfAction
   {
     $request->setRequestFormat('xml');
     $this->date = QubitOai::getDate();
-    $this->path = $this->getRequest()->getUriPrefix().$this->getRequest()->getPathInfo();
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->path = $this->request->getUriPrefix().$this->request->getPathInfo();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';
@@ -49,11 +49,11 @@ class oaiErrorAction extends sfAction
 
     foreach (QubitInformationObject::getCollections() as $el)
     {
-      $this->sets[] = $el->getLabel();
+      $this->sets[] = new sfIsadPlugin($el);
     }
-    if ($this->request->hasParameter('verb'))
+    if (isset($this->request->verb))
     {
-      switch($this->request->getParameter('verb'))
+      switch($this->request->verb)
       {
         case 'Identify':
           $this->verb = 'identify';

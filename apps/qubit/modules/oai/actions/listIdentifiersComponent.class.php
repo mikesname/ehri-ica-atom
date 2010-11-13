@@ -36,22 +36,22 @@ class OaiListIdentifiersComponent extends sfComponent
     /*
      * If limit dates are not supplied, define them as ''
      */
-    if (!$request->hasParameter('from'))
+    if (!isset($request->from))
     {
       $this->from = '';
     }
     else
     {
-      $this->from = $request->getParameter('from');
+      $this->from = $request->from;
     }
 
-    if (!$request->hasParameter('until'))
+    if (!isset($request->until))
     {
       $this->until = '';
     }
     else
     {
-      $this->until = $request->getParameter('until');
+      $this->until = $request->until;
     }
 
     $this->collectionsTable = QubitOai::getCollectionArray();
@@ -59,13 +59,13 @@ class OaiListIdentifiersComponent extends sfComponent
     /*
      * If set is not supplied, define it as ''
      */
-    if (!$request->hasParameter('set'))
+    if (!isset($request->set))
     {
       $collection = '';
     }
     else
     {
-      $collection = QubitOai::getCollectionInfo($request->getParameter('set'), $this->collectionsTable);
+      $collection = QubitOai::getCollectionInfo($request->set, $this->collectionsTable);
     }
 
     //Get the records according to the limit dates and collection
@@ -87,6 +87,5 @@ class OaiListIdentifiersComponent extends sfComponent
     {
       $this->requestAttributes .= ' '.$key.'="'.$this->attributes[$key].'"';
     }
-
   }
 }

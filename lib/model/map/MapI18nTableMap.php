@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_map_i18n' table.
+ * This class defines the structure of the 'map_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class MapI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_map_i18n');
+		$this->setName('map_i18n');
 		$this->setPhpName('mapI18n');
 		$this->setClassname('QubitMapI18n');
 		$this->setPackage('lib.model');
@@ -38,7 +38,7 @@ class MapI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('TITLE', 'title', 'VARCHAR', false, 255, null);
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_map', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'map', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

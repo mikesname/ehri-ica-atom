@@ -1,34 +1,34 @@
-<h1><?php echo __('List functions') ?></h1>
+<?php use_helper('Date') ?>
 
-<table class="list">
-<thead>
-  <tr>
-    <th>
-      <?php echo __('Name') ?>
-      <?php if (QubitAcl::check(new QubitFunction, 'create')): ?>
-        <span class="th-link"><?php echo link_to(__('Add new'), array('module' => 'function', 'action' => 'create')) ?></span>
-      <?php endif; ?>
-    </th>
-    <th><?php echo __('Updated') ?></th>
-  </tr>
-</thead>
+<h1><?php echo __('List %1%', array('%1%' => sfConfig::get('app_ui_label_function'))) ?></h1>
 
-<tbody>
-<?php foreach ($pager->getResults() as $func): ?>
-  <tr>
-    <td>
-    <?php if (QubitAcl::check($func, 'update')): ?>
-      <?php echo link_to(render_title($func->getAuthorizedFormOfName(array('cultureFallback' => true))), array($func, 'module' => 'function')) ?>
-    <?php else: ?>
-      <?php echo link_to(render_title($func->getAuthorizedFormOfName(array('cultureFallback' => true))), array($func, 'module' => 'function')) ?>
-    <?php endif; ?>
-    </td>
-    <td>
-      <?php echo $func->updatedAt ?>
-    </td>
-  </tr>
-<?php endforeach; ?>
-</tbody>
+<table class="sticky-enabled">
+  <thead>
+    <tr>
+      <th>
+        <?php echo __('Name') ?>
+      </th><th>
+        <?php echo __('Updated') ?>
+      </th>
+    </tr>
+  </thead><tbody>
+    <?php foreach ($pager->getResults() as $item): ?>
+      <tr>
+        <td>
+          <?php echo link_to(render_title($item->getAuthorizedFormOfName(array('cultureFallback' => true))), $item) ?>
+        </td><td>
+          <?php echo format_date($item->updatedAt, 'f') ?>
+        </td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>
 
 <?php echo get_partial('default/pager', array('pager' => $pager)) ?>
+
+<div class="search">
+  <form action="<?php echo url_for(array('module' => 'function', 'action' => 'list')) ?>">
+    <input name="subquery" value="<?php echo esc_entities($sf_request->subquery) ?>"/>
+    <input class="form-submit" type="submit" value="<?php echo __('Search function') ?>"/>
+  </form>
+</div>

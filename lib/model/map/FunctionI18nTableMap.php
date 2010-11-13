@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_function_i18n' table.
+ * This class defines the structure of the 'function_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class FunctionI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_function_i18n');
+		$this->setName('function_i18n');
 		$this->setPhpName('functionI18n');
 		$this->setClassname('QubitFunctionI18n');
 		$this->setPackage('lib.model');
@@ -46,7 +46,7 @@ class FunctionI18nTableMap extends TableMap {
 		$this->addColumn('REVISION_HISTORY', 'revisionHistory', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('RULES', 'rules', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('SOURCES', 'sources', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_function', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'function', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

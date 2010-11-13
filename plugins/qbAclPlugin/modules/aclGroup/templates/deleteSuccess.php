@@ -7,7 +7,7 @@
     <div class="content">
       <ul class="clearfix links">
         <li><?php echo link_to(__('Cancel'), array($group, 'module' => 'aclGroup', 'action' => 'edit')) ?></li>
-        <li><?php echo submit_tag(__('Confirm')) ?></li>
+        <li><input class="form-submit" type="submit" value="<?php echo __('Confirm') ?>"/></li>
       </ul>
     </div>
   </div>

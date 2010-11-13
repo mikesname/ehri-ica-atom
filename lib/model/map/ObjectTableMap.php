@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_object' table.
+ * This class defines the structure of the 'object' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class ObjectTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_object');
+		$this->setName('object');
 		$this->setPhpName('object');
 		$this->setClassname('QubitObject');
 		$this->setPackage('lib.model');
@@ -67,6 +67,7 @@ class ObjectTableMap extends TableMap {
     $this->addRelation('relationRelatedByobjectId', 'relation', RelationMap::ONE_TO_MANY, array('id' => 'object_id', ), null, null);
     $this->addRelation('rights', 'rights', RelationMap::ONE_TO_MANY, array('id' => 'object_id', ), 'CASCADE', null);
     $this->addRelation('rightsActorRelation', 'rightsActorRelation', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+    $this->addRelation('slug', 'slug', RelationMap::ONE_TO_MANY, array('id' => 'object_id', ), null, null);
     $this->addRelation('staticPage', 'staticPage', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
     $this->addRelation('status', 'status', RelationMap::ONE_TO_MANY, array('id' => 'object_id', ), 'CASCADE', null);
     $this->addRelation('taxonomy', 'taxonomy', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);

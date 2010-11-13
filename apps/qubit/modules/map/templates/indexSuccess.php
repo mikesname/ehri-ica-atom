@@ -4,19 +4,19 @@
 <tbody>
 
 <?php if ($mapMetadata->getTitle()): ?>
-	<tr><td colspan="2" class="headerCell">
+  <tr><th colspan="2">
 
-	<?php if ($editCredentials)
-    	{
-    	echo link_to($mapMetadata->getTitle(), 'map/edit/?id='.$mapMetadata->getId());
-    	}
-		else
-    	{
-    	echo $mapMetadata->getTitle();
-    	}
+  <?php if ($editCredentials)
+      {
+      echo link_to($mapMetadata->getTitle(), 'map/edit/?id='.$mapMetadata->id);
+      }
+    else
+      {
+      echo $mapMetadata->getTitle();
+      }
     ?>
 
-	</td></tr>
+  </th></tr>
 <?php endif; ?>
 
 <tr><td colspan="2">
@@ -34,6 +34,6 @@
 
 <div class="menu-action">
 <?php if ($editCredentials): ?>
-  <?php echo link_to(__('Edit'), 'map/edit?id='.$mapMetadata->getId()) ?>
+  <?php echo link_to(__('Edit'), 'map/edit?id='.$mapMetadata->id) ?>
 <?php endif; ?>
 </div>

@@ -21,23 +21,22 @@ class ActorDeleteContactInformationAction extends sfAction
 {
   public function execute($request)
   {
-  $this->deleteContactInformation = QubitContactInformation::getById($this->getRequestParameter('contactInformationId'));
+    $this->form = new sfForm;
 
-  $this->forward404Unless($this->deleteContactInformation);
+    $this->resource = QubitContactInformation::getById($request->contactInformationId);
 
-  $this->actorId = $this->deleteContactInformation->getActorId();
-
-  $this->deleteContactInformation->delete();
-
-  //TODO: check to see if this delete call is made from within the Actor module and redirect accordingly
-  //right now contact information is only created and deleted via the repository module
-  if (strlen($template = $this->getRequestParameter('returnTemplate')) > 0)
+    if (!isset($this->resource))
     {
-      $this->redirect(array('module' => 'repository', 'action' => 'edit', 'repository_template' => $template, 'id' => $this->actorId));
+      $this->forward404();
     }
-  else
+
+    $this->actor = $this->resource->actor;
+
+    if ($request->isMethod('delete'))
     {
-      $this->redirect(array('module' => 'repository', 'action' => 'edit', 'id' => $this->actorId));
+      $this->resource->delete();
+
+      $this->redirect(array($this->actor, 'module' => 'repository', 'action' => 'edit'));
     }
   }
 }

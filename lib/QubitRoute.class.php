@@ -21,6 +21,12 @@ class QubitRoute extends sfRoute
 {
   protected function filterParams($params)
   {
+    // Fill in missing parameters with attributes of $params[0]
+    if (!is_array($params))
+    {
+      $params = array($params);
+    }
+
     if (isset($params[0]))
     {
       foreach (array_diff_key($this->params + $this->variables, $params) as $key => $ignore)

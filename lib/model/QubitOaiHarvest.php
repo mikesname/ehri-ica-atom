@@ -23,15 +23,14 @@
  * @package    qubit
  * @subpackage model
  * @version    svn: $Id$
- * @author     Mathieu Fortin Library and Archives Canada <mathieu.fortin@lac-bac.gc.ca> 
+ * @author     Mathieu Fortin Library and Archives Canada <mathieu.fortin@lac-bac.gc.ca>
  */
 class QubitOaiHarvest extends BaseOaiHarvest
 {
-
   /**
    * Get last harvest for a repository
    * @var int id, the id for the repository
-   * @return date the last harvest date for that repository 
+   * @return date the last harvest date for that repository
    */
   public static function getLastHarvestByID($id)
   {
@@ -41,5 +40,4 @@ class QubitOaiHarvest extends BaseOaiHarvest
     $harvests = self::get($criteria);
     return $harvests[0];
   }
-
 }

@@ -21,7 +21,11 @@
 
   <div class="content">
     <ul class="clearfix links">
+    <?php if (!($import->getRootObject() instanceof QubitTaxonomy)): ?>
       <?php echo link_to(__('View %1%', array('%1%' => sfConfig::get('app_ui_label_'.strtolower($objectType)))), array($import->getRootObject(), 'module' => strtolower($objectType))) ?>
+    <?php else: ?>
+      <?php echo link_to(__('View %1%', array('%1%' => sfConfig::get('app_ui_label_'.strtolower($objectType)))), array($import->getRootObject(), 'module' => 'taxonomy')) ?>
+    <?php endif; ?>
     </ul>
   </div>
 

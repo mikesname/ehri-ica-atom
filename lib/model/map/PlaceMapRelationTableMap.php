@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_place_map_relation' table.
+ * This class defines the structure of the 'place_map_relation' table.
  *
  *
  *
@@ -30,18 +30,18 @@ class PlaceMapRelationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_place_map_relation');
+		$this->setName('place_map_relation');
 		$this->setPhpName('placeMapRelation');
 		$this->setClassname('QubitPlaceMapRelation');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('PLACE_ID', 'placeId', 'INTEGER', 'q_place', 'ID', true, null, null);
-		$this->addForeignKey('MAP_ID', 'mapId', 'INTEGER', 'q_map', 'ID', true, null, null);
-		$this->addForeignKey('MAP_ICON_IMAGE_ID', 'mapIconImageId', 'INTEGER', 'q_digital_object', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('PLACE_ID', 'placeId', 'INTEGER', 'place', 'ID', true, null, null);
+		$this->addForeignKey('MAP_ID', 'mapId', 'INTEGER', 'map', 'ID', true, null, null);
+		$this->addForeignKey('MAP_ICON_IMAGE_ID', 'mapIconImageId', 'INTEGER', 'digital_object', 'ID', false, null, null);
 		$this->addColumn('MAP_ICON_DESCRIPTION', 'mapIconDescription', 'LONGVARCHAR', false, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		// validators
 	} // initialize()
 

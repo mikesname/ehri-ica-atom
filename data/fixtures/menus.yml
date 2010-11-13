@@ -33,7 +33,7 @@ QubitMenu:
       nl: toevoegen
       pt: adicionar
       sl: uporabniški
-    path: informationobject/create
+    path: informationobject/add
   QubitMenu_mainmenu_taxonomies:
     id: <?php echo QubitMenu::TAXONOMY_ID."\n" ?>
     parent_id: QubitMenu_mainmenu
@@ -41,7 +41,7 @@ QubitMenu:
     name: taxonomies
     label:
       en: Taxonomies
-    path: term/list
+    path: taxonomy/list
   QubitMenu_mainmenu_import:
     id: <?php echo QubitMenu::IMPORT_ID."\n" ?>
     parent_id: QubitMenu_mainmenu
@@ -83,7 +83,7 @@ QubitMenu:
       nl: 'archivistische beschrijving'
       pt: 'descrição arquivística'
       sl: 'arhivski opisi'
-    path: informationobject/create
+    path: informationobject/add
   QubitMenu_mainmenu_addedit_actor:
     parent_id: QubitMenu_mainmenu_addedit
     source_culture: en
@@ -96,7 +96,7 @@ QubitMenu:
       nl: 'geautoriseerd bestand'
       pt: 'registro de autoridade'
       sl: 'normativni zapisi'
-    path: actor/create
+    path: actor/add
   QubitMenu_mainmenu_addedit_repository:
     parent_id: QubitMenu_mainmenu_addedit
     source_culture: en
@@ -109,7 +109,7 @@ QubitMenu:
       nl: archiefinstelling
       pt: 'instituição arquivística'
       sl: 'arhivske ustanove'
-    path: repository/create
+    path: repository/add
   QubitMenu_mainmenu_addedit_term:
     parent_id: QubitMenu_mainmenu_addedit
     source_culture: en
@@ -121,14 +121,14 @@ QubitMenu:
       nl: term
       pt: termo
       sl: izraz
-    path: term/create
+    path: term/add
   QubitMenu_mainmenu_addedit_functions:
     parent_id: QubitMenu_mainmenu_addedit
     source_culture: en
     name: addFunction
     label:
       en: Functions
-    path: function/create
+    path: function/add
   QubitMenu_mainmenu_import_xml:
     parent_id: QubitMenu_mainmenu_import
     source_culture: en
@@ -136,15 +136,6 @@ QubitMenu:
     label:
       en: XML
     path: object/importSelect
-  QubitMenu_mainmenu_import_oai:
-    parent_id: QubitMenu_mainmenu_import
-    path: oai/harvesterList
-    source_culture: en
-    name: importOai
-    label:
-      en: OAI
-    description:
-      en: 'Import objects using OAI harvesting'
   QubitMenu_mainmenu_admin_users:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
@@ -162,7 +153,7 @@ QubitMenu:
   QubitMenu_mainmenu_admin_users_profile:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userProfile
-    path: 'user/index?id=%currentId%'
+    path: 'user/index?slug=%currentSlug%'
     source_culture: en
     label:
       en: Profile
@@ -170,21 +161,21 @@ QubitMenu:
   QubitMenu_mainmenu_admin_users_infoObjectAcl:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userInformationObjectAcl
-    path: 'user/indexInformationObjectAcl?id=%currentId%'
+    path: 'user/indexInformationObjectAcl?slug=%currentSlug%'
     source_culture: en
     label:
       en: 'Archival description permissions'
   QubitMenu_mainmenu_admin_users_actorAcl:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userActorAcl
-    path: 'user/indexActorAcl?id=%currentId%'
+    path: 'user/indexActorAcl?slug=%currentSlug%'
     source_culture: en
     label:
       en: 'Authority record permissions'
   QubitMenu_mainmenu_admin_users_termAcl:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userTermAcl
-    path: 'user/indexTermAcl?id=%currentId%'
+    path: 'user/indexTermAcl?slug=%currentSlug%'
     source_culture: en
     label:
       en: 'Taxonomy permissions'
@@ -268,6 +259,13 @@ QubitMenu:
       pt: configurações
       sl: nastavitve
     path: settings/list
+  QubitMenu_mainmenu_admin_descriptionUpdates:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: descriptionUpdates
+    label:
+      en: 'Description updates'
+    path: search/descriptionUpdates
   QubitMenu_quicklinks_home:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -282,7 +280,7 @@ QubitMenu:
       nl: home
       pt: inicio
       sl: domov
-    path: 'staticpage/static?permalink=homepage'
+    path: '@homepage'
   QubitMenu_quicklinks_about:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -297,7 +295,7 @@ QubitMenu:
       nl: over
       pt: sobre
       sl: 'o tem'
-    path: 'staticpage/static?permalink=about'
+    path: 'staticpage/index?slug=about'
   QubitMenu_quicklinks_help:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -384,14 +382,14 @@ QubitMenu:
     name: browseSubjects
     label:
       en: Subjects
-    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::SUBJECT_ID ?>'
+    path: 'taxonomy/browse?id=<?php echo QubitTaxonomy::SUBJECT_ID ?>'
   QubitMenu_browse_places:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browsePlaces
     label:
       en: Places
-    path: 'term/browseTaxonomy?id=<?php echo QubitTaxonomy::PLACE_ID ?>'
+    path: 'taxonomy/browse?id=<?php echo QubitTaxonomy::PLACE_ID ?>'
   QubitMenu_browse_digital_objects:
     parent_id: QubitMenu_browse
     source_culture: en

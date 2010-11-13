@@ -17,110 +17,82 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class TermEditAction extends sfAction
+class TermEditAction extends DefaultEditAction
 {
-  /**
-   * Define form field names
-   *
-   * @var string
-   */
+  // Arrays not allowed in class constants
   public static
     $NAMES = array(
-      'taxonomy',
-      'alternateForms',
       'code',
       'displayNote',
       'name',
+
+      // This position is intentional because narrowTerms ->processField()
+      // depends on the taxonomy
+      'taxonomy',
+
       'narrowTerms',
       'parent',
       'relatedTerms',
       'scopeNote',
-      'sourceNote'
-    );
+      'sourceNote',
+      'useFor');
+
+  protected 
+    $updatedLabel = false;
+
+  protected function earlyExecute()
+  {
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+
+    $this->resource = new QubitTerm;
+    $title = $this->context->i18n->__('Add new term');
+
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+      if (!$this->resource instanceof QubitTerm)
+      {
+        $this->forward404();
+      }
+
+      // Check that this isn't the root
+      if (!isset($this->resource->parent))
+      {
+        $this->forward404();
+      }
+
+      // Check authorization
+      if (!QubitAcl::check($this->resource, 'update') && !QubitAcl::check($this->resource, 'translate'))
+      {
+        QubitAcl::forwardUnauthorized();
+      }
+
+      // Add optimistic lock
+      $this->form->setDefault('serialNumber', $this->resource->serialNumber);
+      $this->form->setValidator('serialNumber', new sfValidatorInteger);
+      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
+
+      if (1 > strlen($title = $this->resource))
+      {
+        $title = $this->context->i18n->__('Untitled');
+      }
+
+      $title = $this->context->i18n->__('Edit %1%', array('%1%' => $title));
+
+      QubitTreeView::addAssets($this->response);
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+  }
 
   protected function addField($name)
   {
     switch ($name)
     {
-      case 'alternateForms':
-        $criteria = new Criteria;
-        $criteria->add(QubitRelation::SUBJECT_ID, $this->term->id);
-        $criteria->add(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID);
-
-        $values = $defaults = array();
-        if (0 < count($relations = QubitRelation::get($criteria)))
-        {
-          foreach ($relations as $relation)
-          {
-            $values[] = $relation->id;
-            $defaults[$relation->id] = $relation->object;
-          }
-        }
-
-        $this->form->setDefault($name, $values);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults)));
-
-        break;
-
       case 'code':
-      case 'name':
-        $this->form->setDefault($name, $this->term[$name]);
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormInput);
-
-        break;
-
-      case 'narrowTerms':
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => array())));
-
-        break;
-
-      case 'parent':
-        $choices = array();
-
-        if (isset($this->term->parent))
-        {
-          $this->form->setDefault($name, $this->context->routing->generate(null, array($this->term->parent, 'module' => 'term')));
-          $choices = array($this->context->routing->generate(null, array('module' => 'term', 'id' => $this->term->parentId)) => $this->term->parent);
-        }
-
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-
-      case 'relatedTerms':
-        $this->relations = QubitRelation::getBySubjectOrObjectId($this->term->getId(), array('typeId' => QubitTerm::TERM_RELATION_ASSOCIATIVE_ID));
-
-        $choices = array();
-        $values = array();
-        if (0 < count($this->relations))
-        {
-          foreach ($this->relations as $relation)
-          {
-            $choices[$values[] = $this->context->routing->generate(null, array($relation->object, 'module' => 'term'))] = $relation->object;
-          }
-        }
-
-        $this->form->setDefault('relatedTerms', $values);
-        $this->form->setValidator('relatedTerms', new sfValidatorPass);
-        $this->form->setWidget('relatedTerms', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
-
-        break;
-
-      case 'taxonomy':
-        $choices = array();
-
-        if (isset($this->term->taxonomyId))
-        {
-          $this->form->setDefault($name, $this->context->routing->generate(null, array($this->term->taxonomy, 'module' => 'taxonomy')));
-          $choices = array($this->context->routing->generate(null, array($this->term->taxonomy, 'module' => 'taxonomy')) => $this->term->taxonomy);
-        }
-
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
+        $this->form->setDefault('code', $this->resource->code);
+        $this->form->setValidator('code', new sfValidatorString);
+        $this->form->setWidget('code', new sfWidgetFormInput);
 
         break;
 
@@ -128,8 +100,7 @@ class TermEditAction extends sfAction
       case 'scopeNote':
       case 'sourceNote':
         $criteria = new Criteria;
-        $criteria->add(QubitNote::OBJECT_ID, $this->term->id);
-
+        $criteria->add(QubitNote::OBJECT_ID, $this->resource->id);
         switch ($name)
         {
           case 'scopeNote':
@@ -148,21 +119,108 @@ class TermEditAction extends sfAction
             break;
         }
 
-        $values = $defaults = array();
-        if (0 < count($notes = QubitNote::get($criteria)))
+        $value = $defaults = array();
+        foreach ($this[$name] = QubitNote::get($criteria) as $item)
         {
-          foreach ($notes as $note)
-          {
-            $values[] = $note->id;
-            $defaults[$note->id] = $note;
-          }
+          $defaults[$value[] = $item->id] = $item;
         }
 
-        $this->form->setDefault($name, $values);
+        $this->form->setDefault($name, $value);
         $this->form->setValidator($name, new sfValidatorPass);
         $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults, 'fieldname' => 'content')));
 
         break;
+
+      case 'name':
+        $this->form->setDefault('name', $this->resource->name);
+        $this->form->setValidator('name', new sfValidatorString(array('required' => true), array('required' => $this->context->i18n->__('This is a mandatory element.'))));
+        $this->form->setWidget('name', new sfWidgetFormInput);
+
+        break;
+
+      case 'narrowTerms':
+        $this->form->setValidator('narrowTerms', new sfValidatorPass);
+        $this->form->setWidget('narrowTerms', new QubitWidgetFormInputMany(array('defaults' => array())));
+
+        break;
+
+      case 'parent':
+        $this->form->setDefault('parent', $this->context->routing->generate(null, array($this->resource->parent, 'module' => 'term')));
+        $this->form->setValidator('parent', new sfValidatorString);
+
+        $choices = array();
+        if (isset($this->resource->parent))
+        {
+          $choices[$this->context->routing->generate(null, array($this->resource->parent, 'module' => 'term'))] = $this->resource->parent;
+        }
+
+        if (isset($this->request->parent))
+        {
+          $this->form->setDefault('parent', $this->request->parent);
+
+          $params = $this->context->routing->parse(Qubit::pathInfo($this->request->parent));
+          $choices[$this->request->parent] = $params['_sf_route']->resource;
+        }
+
+        $this->form->setWidget('parent', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'relatedTerms':
+        $value = $choices = array();
+        foreach ($this->relations = QubitRelation::getBySubjectOrObjectId($this->resource->id, array('typeId' => QubitTerm::TERM_RELATION_ASSOCIATIVE_ID)) as $item)
+        {
+          $choices[$value[] = $this->context->routing->generate(null, array($item->object, 'module' => 'term'))] = $item->object;
+        }
+
+        $this->form->setDefault('relatedTerms', $value);
+        $this->form->setValidator('relatedTerms', new sfValidatorPass);
+        $this->form->setWidget('relatedTerms', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
+
+        break;
+
+      case 'taxonomy':
+        $this->form->setDefault('taxonomy', $this->context->routing->generate(null, array($this->resource->taxonomy, 'module' => 'taxonomy')));
+        $this->form->setValidator('taxonomy', new sfValidatorString(array('required' => true), array('required' => $this->context->i18n->__('This is a mandatory element.'))));
+
+        $choices = array();
+        if (isset($this->resource->taxonomy))
+        {
+          $choices[$this->context->routing->generate(null, array($this->resource->taxonomy, 'module' => 'taxonomy'))] = $this->resource->taxonomy;
+        }
+
+        if (isset($this->request->taxonomy))
+        {
+          $this->form->setDefault('taxonomy', $this->request->taxonomy);
+
+          $params = $this->context->routing->parse(Qubit::pathInfo($this->request->taxonomy));
+          $choices[$this->request->taxonomy] = $params['_sf_route']->resource;
+        }
+
+        $this->form->setWidget('taxonomy', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
+
+      case 'useFor':
+        $criteria = new Criteria;
+        $criteria->add(QubitOtherName::OBJECT_ID, $this->resource->id);
+        $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::ALTERNATIVE_LABEL_ID);
+
+        $value = $defaults = array();
+        foreach ($this->useFor = QubitOtherName::get($criteria) as $item)
+        {
+          $defaults[$value[] = $item->id] = $item;
+        }
+
+        $this->form->setDefault('useFor', $value);
+        $this->form->setValidator('useFor', new sfValidatorPass);
+        $this->form->setWidget('useFor', new QubitWidgetFormInputMany(array('defaults' => $defaults)));
+
+        break;
+
+      default:
+
+        return parent::addField($name);
     }
   }
 
@@ -174,210 +232,180 @@ class TermEditAction extends sfAction
    */
   protected function processField($field)
   {
-    switch ($name = $field->getName())
+    switch ($field->getName())
     {
-      case 'alternateForms':
-        $defaults = $this->form->getWidget($name)->getOption('defaults');
-
-        if (null !== $this->form->getValue($name))
-        {
-          foreach ($this->form->getValue($name) as $key => $thisName)
-          {
-            if ('new' == substr($key, 0, 3) && 0 < strlen(trim($thisName)))
-            {
-              $relation = new QubitRelation;
-              $relation->typeId = QubitTerm::TERM_RELATION_EQUIVALENCE_ID;
-
-              $newTerm = new QubitTerm;
-              $newTerm->taxonomyId = $this->term->taxonomyId;
-              $newTerm->parentId = QubitTerm::ROOT_ID;
-              $newTerm->name = $thisName;
-              $newTerm->save();
-
-              $relation->object = $newTerm;
-            }
-            else
-            {
-              $relation = QubitRelation::getById($key);
-              if (!isset($relation))
-              {
-                continue;
-              }
-              $relation->object->name = $thisName;
-              $relation->object->save();
-
-              // Don't delete this name
-              unset($defaults[$key]);
-            }
-
-            $this->term->relationsRelatedBysubjectId[] = $relation;
-          }
-        }
-
-        // Delete any names that are missing from form data
-        foreach ($defaults as $key => $val)
-        {
-          $relation = QubitRelation::getById($key);
-          if (isset($relation))
-          {
-            // Deleting related (object) term will cascade delete QubitRelation
-            $relation->object->delete();
-          }
-        }
-
-        break;
-
-      case 'parent':
-      case 'taxonomy':
-        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue($name)));
-        $fieldId = (isset($params['id']) && 0 < strlen($params['id'])) ? $params['id'] : null;
-        $this->term[$name.'Id'] = $fieldId;
-
-        break;
-
+      case 'displayNote':
       case 'scopeNote':
       case 'sourceNote':
-      case 'displayNote':
-        $defaults = $this->form->getWidget($name)->getOption('defaults');
+        $value = $filtered = $this->form->getValue($field->getName());
 
-        if (null !== $this->form->getValue($name))
+        foreach ($this[$field->getName()] as $item)
         {
-          foreach ($this->form->getValue($name) as $key => $thisContent)
+          if (isset($value[$item->id]))
           {
-            if ('new' == substr($key, 0, 3) && 0 < strlen(trim($thisContent)))
-            {
-              $note = new QubitNote;
-
-              switch ($name)
-              {
-                case 'scopeNote':
-                  $note->typeId = QubitTerm::SCOPE_NOTE_ID;
-
-                  break;
-
-                case 'sourceNote':
-                  $note->typeId = QubitTerm::SOURCE_NOTE_ID;
-
-                  break;
-
-                case 'displayNote':
-                  $note->typeId = QubitTerm::DISPLAY_NOTE_ID;
-
-                  break;
-              }
-            }
-            else
-            {
-              $note = QubitNote::getById($key);
-              if (!isset($note))
-              {
-                continue;
-              }
-
-              // Don't delete this name
-              unset($defaults[$key]);
-            }
-
-            $note->content = $thisContent;
-            $this->term->notes[] = $note;
+            $item->content = $value[$item->id];
+            unset($filtered[$item->id]);
+          }
+          else
+          {
+            $item->delete();
           }
         }
 
-        // Delete any names that are missing from form data
-        foreach ($defaults as $key => $val)
+        foreach ($filtered as $item)
         {
-          if (null !== ($note = QubitNote::getById($key)))
+          $note = new QubitNote;
+          $note->content = $item;
+          switch ($field->getName())
           {
-            $note->delete();
+            case 'scopeNote':
+              $note->typeId = QubitTerm::SCOPE_NOTE_ID;
+
+              break;
+
+            case 'sourceNote':
+              $note->typeId = QubitTerm::SOURCE_NOTE_ID;
+
+              break;
+
+            case 'displayNote':
+              $note->typeId = QubitTerm::DISPLAY_NOTE_ID;
+
+              break;
           }
-        }
 
-        break;
-
-      case 'narrowTerms':
-
-        if (null !== $this->form->getValue($name))
-        {
-          foreach ($this->form->getValue($name) as $key => $thisName)
-          {
-            if (0 < strlen($thisName = trim($thisName)))
-            {
-              // Test to make sure term doesn't already exist
-              $criteria = new Criteria;
-              $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID, Criteria::INNER_JOIN);
-              $criteria->add(QubitTerm::TAXONOMY_ID, $this->term->taxonomyId);
-              $criteria->add(QubitTermI18n::NAME, $thisName);
-              $criteria->add(QubitTermI18n::CULTURE, $this->getContext()->getUser()->getCulture());
-              if (0 < count(QubitTermI18n::get($criteria)))
-              {
-                continue;
-              }
-
-              // Add term as child
-              $nt = new QubitTerm;
-              $nt->taxonomyId = $this->term->taxonomyId;
-              $nt->name = $thisName;
-
-              $this->term->termsRelatedByparentId[] = $nt;
-            }
-          }
+          $this->resource->notes[] = $note;
         }
 
         break;
 
       case 'name':
 
-        if (!$this->term->isProtected())
+        if (!$this->resource->isProtected()
+            && $this->resource->name != $this->form->getValue('name'))
         {
-          $this->term[$field->getName()] = $this->form->getValue($field->getName());
+          $this->resource->name = $this->form->getValue('name');
+          $this->updatedLabel = true;
+        }
+
+        break;
+
+      case 'narrowTerms':
+
+        foreach ($this->form->getValue('narrowTerms') as $item)
+        {
+          if (1 > strlen($item = trim($item)))
+          {
+            continue;
+          }
+
+          // Test to make sure term doesn't already exist
+          $criteria = new Criteria;
+          $criteria->add(QubitTerm::TAXONOMY_ID, $this->resource->taxonomyId);
+          $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+          $criteria->add(QubitTermI18n::CULTURE, $this->context->user->getCulture());
+          $criteria->add(QubitTermI18n::NAME, $item);
+          if (0 < count(QubitTermI18n::get($criteria)))
+          {
+            continue;
+          }
+
+          // Add term as child
+          $term = new QubitTerm;
+          $term->name = $item;
+          $term->taxonomyId = $this->resource->taxonomyId;
+
+          $this->resource->termsRelatedByparentId[] = $term;
+        }
+
+        break;
+
+      case 'parent':
+        $this->resource->parentId = QubitTerm::ROOT_ID;
+
+        $value = $this->form->getValue('parent');
+        if (isset($value))
+        {
+          $params = $this->context->routing->parse(Qubit::pathInfo($value));
+          $this->resource->parent = $params['_sf_route']->resource;
+        }
+
+        break;
+
+      case 'taxonomy':
+        unset($this->resource->taxonomy);
+
+        $value = $this->form->getValue('taxonomy');
+        if (isset($value))
+        {
+          $params = $this->context->routing->parse(Qubit::pathInfo($value));
+          $this->resource->taxonomy = $params['_sf_route']->resource;
         }
 
         break;
 
       case 'relatedTerms':
-
-        $current = $new = array();
-
-        if ('' !== $this->form->getValue($name))
+        $value = $filtered = array();
+        foreach ($this->form->getValue('relatedTerms') as $item)
         {
-          foreach ($this->form->getValue($name) as $value)
+          $params = $this->context->routing->parse(Qubit::pathInfo($item));
+          $resource = $params['_sf_route']->resource;
+          $value[$resource->id] = $filtered[$resource->id] = $resource;
+        }
+
+        foreach ($this->relations as $item)
+        {
+          if (isset($value[$item->objectId]))
           {
-            $params = $this->context->routing->parse(Qubit::pathInfo($value));
-            $current[$params['id']] = $new[$params['id']] = $params['id'];
+            unset($filtered[$item->objectId]);
+          }
+          else
+          {
+            $item->delete();
           }
         }
 
-        if (0 < count($this->relations))
-        {
-          foreach ($this->relations as $relation)
-          {
-            if (isset($current[$relation->objectId]))
-            {
-              // If it's current, then don't add/delete
-              unset($new[$relation->objectId]);
-            }
-            else
-            {
-              // If not in current list, then delete
-              $relation->delete();
-            }
-          }
-        }
-
-        // Create 'new' relations
-        foreach ($new as $id)
+        foreach ($filtered as $item)
         {
           $relation = new QubitRelation;
-          $relation->objectId = $id;
+          $relation->object = $item;
           $relation->typeId = QubitTerm::TERM_RELATION_ASSOCIATIVE_ID;
 
-          $this->term->relationsRelatedBysubjectId[] = $relation;
+          $this->resource->relationsRelatedBysubjectId[] = $relation;
+        }
+
+        break;
+
+      case 'useFor':
+        $value = $filtered = $this->form->getValue('useFor');
+
+        foreach ($this->useFor as $item)
+        {
+          if (isset($value[$item->id]))
+          {
+            $item->name = $value[$item->id];
+            unset($filtered[$item->id]);
+          }
+          else
+          {
+            $item->delete();
+          }
+        }
+
+        foreach ($filtered as $item)
+        {
+          $otherName = new QubitOtherName;
+          $otherName->name = $item;
+          $otherName->typeId = QubitTerm::ALTERNATIVE_LABEL_ID;
+
+          $this->resource->otherNames[] = $otherName;
         }
 
         break;
 
       default:
-        $this->term[$field->getName()] = $this->form->getValue($field->getName());
+
+        return parent::processField($field);
     }
   }
 
@@ -388,137 +416,46 @@ class TermEditAction extends sfAction
    */
   protected function processForm()
   {
-    foreach ($this->form as $field)
+    parent::processForm();
+
+    // Check authorization
+    if (!isset($this->getRoute()->resource) && !QubitAcl::check($this->resource, 'create'))
     {
-      $this->processField($field);
+      QubitAcl::forwardUnauthorized();
     }
 
-    // Assign root node as parent, if another parent (broad-term) is not
-    // selected
-    if (!isset($this->term->parent))
+    // Update related info objects when term labels changes
+    if ($this->updatedLabel)
     {
-      $this->term->parentId = QubitTerm::ROOT_ID;
+      $this->updateLinkedInfoObjects();
     }
-
-    $this->term->save();
-
-    // For equivalence relations make sure existing info objects use the
-    // preferred term
-    $this->updateInfoObjectPreferredTerms();
   }
 
   public function execute($request)
   {
-    $this->form = new sfForm;
-    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+    parent::execute($request);
 
-    $this->term = new QubitTerm;
-
-    if (isset($request->id))
-    {
-      $this->term = QubitTerm::getById($request->id);
-
-      if (!$this->term instanceof QubitTerm)
-      {
-        $this->forward404();
-      }
-
-      // Don't allow editing non-preferred terms
-      if (0 < count($use = $this->term->getEquivalentTerms(array('direction' => 'use'))))
-      {
-        $this->request->use = $use->offsetGet(0);
-        $this->forward('admin', 'termPermission');
-      }
-
-      // Check authorization
-      if (!(QubitAcl::check($this->term, 'update') || QubitAcl::check($this->term, 'translate')))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-
-      QubitTreeView::addAssets($this->response);
-
-      // Add optimistic lock
-      $this->form->setDefault('serialNumber', $this->term->serialNumber);
-      $this->form->setValidator('serialNumber', new sfValidatorInteger);
-      $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
-    }
-    else
-    {
-      $this->term->parentId = QubitTerm::ROOT_ID;
-      $this->term->taxonomyId = $request->taxonomyId;
-
-      // Check authorization to create term
-      if (!QubitAcl::check($this->term, 'create', array('taxonomyId' => $request->taxonomyId)))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-    }
-
-    $request->setAttribute('term', $this->term);
-
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
-    {
-      $this->addField($name);
-    }
-
-    // Post form
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
-
       if ($this->form->isValid())
       {
         $this->processForm();
 
-        $this->redirect(array($this->term, 'module' => 'term'));
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'term'));
       }
     }
   }
 
-  public function updateInfoObjectPreferredTerms()
+  protected function updateLinkedInfoObjects()
   {
-    // Get non-preferred terms
-    $nonPrefIds = array();
-    if (0 < count($objectTerms = $this->term->getEquivalentTerms(array('direction' => 'subjectToObject'))))
+    foreach ($this->resource->objectTermRelations as $item)
     {
-      foreach ($objectTerms as $objectTerm)
+      if ($item->object instanceof QubitInformationObject)
       {
-        $nonPrefIds[] = $objectTerm->id;
-      }
-    }
-
-    // Get preferred term
-    if (null !== ($preferredTerms = $this->term->getEquivalentTerms(array('direction' => 'objectToSubject'))))
-    {
-      $preferredTerm = $preferredTerms->offsetGet(0);
-      $nonPrefIds[] = $this->term->id;
-    }
-    else if (0 < count($nonPrefIds))
-    {
-      $preferredTerm = $this->term;
-    }
-    else
-    {
-      // Don't do anything if there are no equivalent terms
-      return $this;
-    }
-
-    // Replace non-preferred terms with preferred term for related info objects
-    $criteria = new Criteria;
-    $criteria->add(QubitObjectTermRelation::TERM_ID, $nonPrefIds, Criteria::IN);
-    if (0 < count($objectTermRelations = QubitObjectTermRelation::get($criteria)))
-    {
-      foreach ($objectTermRelations as $objectTermRelation)
-      {
-        if ($objectTermRelation->getObject() instanceof QubitInformationObject)
-        {
-          $objectTermRelation->termId = $preferredTerm->id;
-          $objectTermRelation->save();
-        }
+        SearchIndex::updateTranslatedLanguages($item->object);
       }
     }
 

@@ -5,14 +5,14 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_physical_object',
+    TABLE_NAME = 'physical_object',
 
-    ID = 'q_physical_object.ID',
-    TYPE_ID = 'q_physical_object.TYPE_ID',
-    PARENT_ID = 'q_physical_object.PARENT_ID',
-    LFT = 'q_physical_object.LFT',
-    RGT = 'q_physical_object.RGT',
-    SOURCE_CULTURE = 'q_physical_object.SOURCE_CULTURE';
+    ID = 'physical_object.ID',
+    TYPE_ID = 'physical_object.TYPE_ID',
+    PARENT_ID = 'physical_object.PARENT_ID',
+    LFT = 'physical_object.LFT',
+    RGT = 'physical_object.RGT',
+    SOURCE_CULTURE = 'physical_object.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -140,7 +140,7 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       return true;
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -248,7 +248,7 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
       return $this->values['descendants'];
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -309,6 +309,38 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
     return $this;
   }
 
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
+  }
+
   protected function insert($connection = null)
   {
     $this->updateNestedSet($connection);
@@ -320,9 +352,11 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
 
   protected function update($connection = null)
   {
-        if (isset($this->values['parentId']))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-            $offset = 0; 
+      // Get the "original" parentId before any updates
+      $offset = 0;
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -336,8 +370,10 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
           $offset++;
         }
       }
-      
-                  if ($originalParentId != $this->values['parentId'])
+
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }
@@ -450,6 +486,9 @@ abstract class BasePhysicalObject extends QubitObject implements ArrayAccess
 
   protected function updateNestedSet($connection = null)
   {
+// HACK Try to prevent modifying left and right values anywhere except in this
+// method.  Perhaps it would be more logical to use protected visibility for
+// these values?
 unset($this->values['lft']);
 unset($this->values['rgt']);
     if (!isset($connection))
@@ -510,6 +549,7 @@ unset($this->values['rgt']);
       {
         $this->lft = $parent->rgt;
         $this->rgt = $parent->rgt + 1;
+        $parent->rgt += 2;
 
         return $this;
       }

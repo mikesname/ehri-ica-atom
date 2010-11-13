@@ -1,15 +1,11 @@
 <table>
-<caption><?php echo __('Repository list') ?></caption>
-<thead>
-<tr><th><?php echo __('Name') ?></th></tr>
-</thead>
-<tbody>
-<?php foreach($repositories as $repository): ?>
-<tr>
-  <td>
-    <?php echo link_to($repository->getAuthorizedFormOfName(array('cultureFallback' => true)), array($repository, 'module' => 'repository')) ?>
-  </td>
-</tr>
-<?php endforeach; ?>
-</tbody>
+  <tbody>
+    <?php foreach($repositories as $item): ?>
+      <tr>
+        <td>
+          <?php echo link_to($item->getAuthorizedFormOfName(array('cultureFallback' => true)), array($item, 'module' => 'repository')) ?>
+        </td>
+      </tr>
+    <?php endforeach; ?>
+  </tbody>
 </table>

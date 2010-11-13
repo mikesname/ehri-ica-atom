@@ -29,7 +29,7 @@ class QubitPlace extends BasePlace
    $mapRelations = array();
 
    $criteria = new Criteria;
-   $criteria->add(PlaceMapRelation::PLACE_ID, $this->getId());
+   $criteria->add(PlaceMapRelation::PLACE_ID, $this->id);
    $mapRelations = PlaceMapRelation::get($criteria);
 
    return $mapRelations;

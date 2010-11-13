@@ -5,12 +5,12 @@ abstract class BaseStaticPageI18n implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_static_page_i18n',
+    TABLE_NAME = 'static_page_i18n',
 
-    TITLE = 'q_static_page_i18n.TITLE',
-    CONTENT = 'q_static_page_i18n.CONTENT',
-    ID = 'q_static_page_i18n.ID',
-    CULTURE = 'q_static_page_i18n.CULTURE';
+    TITLE = 'static_page_i18n.TITLE',
+    CONTENT = 'static_page_i18n.CONTENT',
+    ID = 'static_page_i18n.ID',
+    CULTURE = 'static_page_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -170,16 +170,16 @@ abstract class BaseStaticPageI18n implements ArrayAccess
           return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
+          return null !== $this->rowOffsetGet("{$name}Id", $offset, $options);
         }
 
         $offset++;
       }
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -209,18 +209,18 @@ abstract class BaseStaticPageI18n implements ArrayAccess
           return $this->rowOffsetGet($name, $offset, $options);
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet("{$name}Id", $offset, $options));
         }
 
         $offset++;
       }
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -250,11 +250,11 @@ abstract class BaseStaticPageI18n implements ArrayAccess
           $this->values[$name] = $value;
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          $this->values[$name.'Id'] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+          $this->values["{$name}Id"] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
         }
 
         $offset++;
@@ -283,9 +283,9 @@ abstract class BaseStaticPageI18n implements ArrayAccess
           $this->values[$name] = null;
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
-          $this->values[$name.'Id'] = null;
+          $this->values["{$name}Id"] = null;
         }
 
         $offset++;
@@ -351,6 +351,38 @@ abstract class BaseStaticPageI18n implements ArrayAccess
     return $this;
   }
 
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
+  }
+
   protected function insert($connection = null)
   {
     if (!isset($connection))
@@ -379,7 +411,7 @@ abstract class BaseStaticPageI18n implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
         }
 
         $offset++;
@@ -387,10 +419,12 @@ abstract class BaseStaticPageI18n implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                        if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
-          $this->values[$columns[0]->getPhpName()] = $id;
+          $this->values[$columns[0]->getPhpName()] = $this->keys[$columns[0]->getPhpName()] = $id;
         }
       }
     }
@@ -427,18 +461,18 @@ abstract class BaseStaticPageI18n implements ArrayAccess
             $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
           }
 
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
         }
 
         if ($column->isPrimaryKey())
         {
-          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$offset]);
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->keys[$column->getPhpName()]);
         }
 
         $offset++;
       }
 
-      if ($criteria->size() > 0)
+      if (0 < $criteria->size())
       {
         BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
@@ -465,7 +499,11 @@ abstract class BaseStaticPageI18n implements ArrayAccess
     return $this;
   }
 
-	
+	/**
+	 * Returns the composite primary key for this object.
+	 * The array elements will be in same order as specified in XML.
+	 * @return     array
+	 */
 	public function getPrimaryKey()
 	{
 		$pks = array();
@@ -477,7 +515,12 @@ abstract class BaseStaticPageI18n implements ArrayAccess
 		return $pks;
 	}
 
-	
+	/**
+	 * Set the [composite] primary key.
+	 *
+	 * @param      array $keys The elements of the composite key (order must match the order in XML file).
+	 * @return     void
+	 */
 	public function setPrimaryKey($keys)
 	{
 
@@ -503,6 +546,6 @@ abstract class BaseStaticPageI18n implements ArrayAccess
       return call_user_func_array(array($this, '__'.substr($name, 0, 3)), $args);
     }
 
-    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+    throw new sfException('Call to undefined method '.get_class($this)."::$name");
   }
 }

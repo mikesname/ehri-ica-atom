@@ -17,33 +17,23 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AclGroupEditActorAclAction extends sfAction
+class AclGroupEditActorAclAction extends AclGroupEditDefaultAclAction
 {
+  public static $NAMES = array(
+    'actor'
+  );
+
   public function execute($request)
   {
-    $this->form = new sfForm;
-    $this->group = new QubitAclGroup;
-
-    if (isset($this->request->id))
-    {
-      $this->group = QubitAclGroup::getById($this->request->id);
-
-      if (!isset($this->group))
-      {
-        $this->forward404();
-      }
-    }
-
-    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+    parent::execute($request);
 
     // Always include root actor permissions
-    $this->permissions = array();
-    $this->permissions[QubitActor::ROOT_ID] = null;
+    $this->actors = array(QubitActor::ROOT_ID => null);
 
-    // Get actor permissions for this group
+    // Get actor permissions for this resource
     $criteria = new Criteria;
     $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitAclPermission::GROUP_ID, $this->group->id);
+    $criteria->add(QubitAclPermission::GROUP_ID, $this->resource->id);
     $c1 = $criteria->getNewCriterion(QubitAclPermission::OBJECT_ID, null, Criteria::ISNULL);
     $c2 = $criteria->getNewCriterion(QubitObject::CLASS_NAME, 'QubitActor');
     $c1->addOr($c2);
@@ -53,7 +43,7 @@ class AclGroupEditActorAclAction extends sfAction
     {
       foreach ($permissions as $p)
       {
-        $this->permissions[$p->objectId][$p->action] = $p;
+        $this->actors[$p->objectId][$p->action] = $p;
       }
     }
 
@@ -68,49 +58,8 @@ class AclGroupEditActorAclAction extends sfAction
       if ($this->form->isValid())
       {
         $this->processForm();
-        $this->redirect(array($this->group, 'module' => 'aclGroup', 'action' => 'indexActorAcl'));
+        $this->redirect(array($this->resource, 'module' => 'aclGroup', 'action' => 'indexActorAcl'));
       }
     }
-  }
-
-  protected function processForm()
-  {
-    foreach ($this->request->getParameter('updatePermission') as $key => $value)
-    {
-      // If key has an underscore, then we are creating a new permission
-      if (false !== strpos($key, '_'))
-      {
-        list ($actorId, $action) = explode('_', $key);
-
-        if (QubitAcl::INHERIT != $value && isset(QubitAcl::$ACTIONS[$action]))
-        {
-          $aclPermission = new QubitAclPermission;
-          $aclPermission->action = $action;
-          $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
-          $aclPermission->objectId = $actorId;
-
-          $this->group->aclPermissions[] = $aclPermission;
-        }
-      }
-
-      // Otherwise, update an existing permission
-      else if (null !== $aclPermission = QubitAclPermission::getById($key))
-      {
-        if ($value == QubitAcl::INHERIT)
-        {
-          $aclPermission->delete();
-        }
-        else
-        {
-          $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
-          $this->group->aclPermissions[] = $aclPermission;
-        }
-      }
-    }
-
-    // Save updates
-    $this->group->save();
-
-    return $this;
   }
 }

@@ -27,7 +27,8 @@ class ReleaseTask extends sfBaseTask
   {
     if (($arguments['stability'] == 'beta' || $arguments['stability'] == 'alpha') && count(explode('.', $arguments['version'])) < 2)
     {
-      if (preg_match('/Status against revision\:\s+(\d+)\s*$/im', $this->getFilesystem()->sh('svn status -u '.sfConfig::get('sf_root_dir')), $matches) < 1)
+      list ($stdout, $stderr) = $this->getFilesystem()->execute('svn status -u '.sfConfig::get('sf_root_dir'));
+      if (0 < strlen($stderr) || preg_match('/Status against revision\:\s+(\d+)\s*$/im', $stdout, $matches) < 1)
       {
         throw new Exception('Unable to find last svn revision');
       }
@@ -47,7 +48,12 @@ class ReleaseTask extends sfBaseTask
 
     // All lines which start with a character other than 'P' ('Performing...'),
     // 'S' ('Status...'), or 'X' (externals definition) are local changes.
-    if (preg_match('/^[^PSX\n]/m', $this->getFilesystem()->sh('svn status --no-ignore -u '.sfConfig::get('sf_root_dir'))) > 0)
+    list($stdout, $stderr) = $this->getFilesystem()->execute('svn status --no-ignore -u '.sfConfig::get('sf_root_dir'));
+    if (0 < strlen($stderr))
+    {
+      throw new Exception("svn error: $stderr");
+    }
+    else if (preg_match('/^[^PSX\n]/m', $stdout) > 0)
     {
       throw new Exception('Local modifications. Release process aborted!');
     }
@@ -155,7 +161,13 @@ class ReleaseTask extends sfBaseTask
 
     $doc->save($packageXmlPath);
 
-    print $this->getFilesystem()->sh('pear package');
+    list($stdout, $stderr) = $this->getFilesystem()->execute('pear package');
+    if (0 < strlen($stderr))
+    {
+      throw new Exception("Pear error: $stderr");
+    }
+
+    print $stdout;
 
     $this->getFilesystem()->remove($packageXmlPath);
   }

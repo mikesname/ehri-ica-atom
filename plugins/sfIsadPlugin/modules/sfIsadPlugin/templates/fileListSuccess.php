@@ -1,6 +1,6 @@
 <h1><?php echo __('File list') ?></h1>
 
-<?php echo get_partial('default/breadcrumb', array('objects' => $informationObject->ancestors->andSelf())) ?>
+<?php echo get_partial('default/breadcrumb', array('objects' => $resource->ancestors->andSelf())) ?>
 
 <table class="sticky-enabled">
   <thead>
@@ -16,17 +16,17 @@
       </th>
     </tr>
   </thead><tbody>
-    <?php foreach ($informationObjects as $informationObject): ?>
+    <?php foreach ($informationObjects as $item): ?>
       <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
         <td>
-          <?php echo render_value(QubitIsad::getReferenceCode($informationObject)) ?>
+          <?php $isad = new sfIsadPlugin($item); echo render_value($isad->referenceCode) ?>
         </td><td>
-          <?php echo link_to(render_title($informationObject), array($informationObject, 'module' => 'informationobject')) ?>
+          <?php echo link_to(render_title($item), array($item, 'module' => 'informationobject')) ?>
         </td><td>
           <ul>
-            <?php foreach ($informationObject->getDates() as $date): ?>
+            <?php foreach ($item->getDates() as $date): ?>
               <li>
-                <?php echo date_display($date) ?> (<?php echo $date->getType(array('cultureFallback' => true)) ?>)
+                <?php echo Qubit::renderDateStartEnd($date->getDate(array('cultureFallback' => true)), $date->startDate, $date->endDate) ?> (<?php echo $date->getType(array('cultureFallback' => true)) ?>)
                 <?php if (isset($date->actor)): ?>
                   <?php echo link_to(render_title($date->actor), array($date->actor, 'module' => 'actor')) ?>
                 <?php endif; ?>
@@ -34,7 +34,7 @@
             <?php endforeach; ?>
           </ul>
         </td><td>
-          <?php echo render_value($informationObject->getAccessConditions(array('cultureFallback' => true))) ?>
+          <?php echo render_value($item->getAccessConditions(array('cultureFallback' => true))) ?>
         </td>
       </tr>
     <?php endforeach; ?>

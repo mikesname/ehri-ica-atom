@@ -2,52 +2,16 @@
 
 <h1><?php echo __('Edit %1% permissions', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></h1>
 
-<h1 class="label"><?php echo __('%1% group', array('%1%' => $group->__toString())) ?></h1>
+<h1 class="label"><?php echo $resource ?></h1>
 
 <?php echo get_partial('addActorDialog', array('basicActions' => $basicActions)) ?>
 
-<form method="post" action="<?php echo url_for(array($group, 'module' => 'aclGroup', 'action' => 'editActorAcl')) ?>" id="editForm">
+<form method="post" action="<?php echo url_for(array($resource, 'module' => 'aclGroup', 'action' => 'editActorAcl')) ?>" id="editForm">
 
-<?php foreach ($permissions as $objectId => $actions): ?>
-<div class="form-item">
-  <table id="actorPermission_<?php echo $objectId ?>" class="inline">
-    <caption>
-    <?php if (QubitActor::ROOT_ID == $objectId): ?>
-      <em><?php echo __('All %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></em>
-    <?php else: ?>
-      <?php echo render_title(QubitActor::getById($objectId)) ?>
-    <?php endif; ?> 
-    </caption>
-
-    <thead>
-      <tr>
-        <th scope="col"><?php echo __('Action') ?></th>
-        <th scope="col"><?php echo __('Permission') ?></th>
-      </tr>
-    </thead>
-
-    <tbody>
-      <?php foreach ($basicActions as $action => $label): ?>
-      <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
-        <td><?php echo __($label) ?></td>
-        <td id="<?php echo 'acl_'.$objectId.'_'.$action ?>">
-          <ul class="radio inline">
-          <?php if (isset($actions[$action])): ?>
-            <li><?php echo radiobutton_tag('updatePermission['.$actions[$action]->id.']', QubitAcl::GRANT, 1 == $actions[$action]->grantDeny) ?><?php echo __('Grant') ?></li>
-            <li><?php echo radiobutton_tag('updatePermission['.$actions[$action]->id.']', QubitAcl::DENY, 0 == $actions[$action]->grantDeny) ?><?php echo __('Deny') ?></li>
-            <li><?php echo radiobutton_tag('updatePermission['.$actions[$action]->id.']', QubitAcl::INHERIT, false) ?><?php echo __('Inherit') ?></li>
-          <?php else: ?>
-            <li><?php echo radiobutton_tag('updatePermission['.$objectId.'_'.$action.']', QubitAcl::GRANT, false) ?><?php echo __('Grant') ?></li>
-            <li><?php echo radiobutton_tag('updatePermission['.$objectId.'_'.$action.']', QubitAcl::DENY, false) ?><?php echo __('Deny') ?></li>
-            <li><?php echo radiobutton_tag('updatePermission['.$objectId.'_'.$action.']', QubitAcl::INHERIT, true) ?><?php echo __('Inherit') ?></li>
-          <?php endif; ?>
-          </ul>
-        </td> 
-      </tr>
-      <?php endforeach; ?>
-    </tbody>
-  </table>
-</div>
+<?php foreach ($actors as $objectId => $permissions): ?>
+  <div class="form-item">
+<?php echo get_component('aclGroup', 'aclTable', array('object' => QubitActor::getById($objectId), 'permissions' => $permissions, 'actions' => $basicActions)) ?>
+  </div>
 <?php endforeach; ?>
 
   <div class="form-item">
@@ -59,8 +23,8 @@
     <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
     <div class="content">
       <ul class="clearfix links">
-        <li><?php echo link_to(__('Cancel'), array($group, 'module' => 'aclGroup', 'action' => 'indexActorAcl')) ?></li>
-        <li><?php echo submit_tag(__('Save')) ?></li>
+        <li><?php echo link_to(__('Cancel'), array($resource, 'module' => 'aclGroup', 'action' => 'indexActorAcl')) ?></li>
+        <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>
       </ul>
     </div>
   </div>

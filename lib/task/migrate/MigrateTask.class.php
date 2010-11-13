@@ -35,7 +35,8 @@ class UpgradeTask extends sfBaseTask
     '1.0.6',
     '1.0.7',
     '1.0.8',
-    '1.0.9'
+    '1.0.9',
+    '1.1'
   );
 
   /**
@@ -92,8 +93,10 @@ EOF;
     $data = $yamlParser->parse(file_get_contents($arguments['datafile']));
 
     // Determine current version of the application (according to settings)
-    $this->initialVersion = $this->getDataVersion($data);
-    $this->logSection('migrate', 'Initial data version '.$this->initialVersion);
+    if (null !== $this->initialVersion = $this->getDataVersion($data))
+    {
+      $this->logSection('migrate', 'Initial data version '.$this->initialVersion);
+    }
 
     $migrator = new QubitMigrator($data);
 
@@ -137,6 +140,10 @@ EOF;
             $migrator->migrate108();
             $this->logSection('migrate', 'Data migrated to version 1.0.9');
             break;
+          case '1.0.9':
+            $migrator->migrate109();
+            $this->logSection('migrate', 'Data migrated to version 1.1');
+            break;
         }
       }
     }
@@ -154,7 +161,6 @@ EOF;
 
   protected function writeMigratedData($originalFileName, $data)
   {
-    $migratedDataVersion = $this->getDataVersion($data);
     $migratedFileName = 'migrated_data_'.date('YmdHis').'.yml';
     $dir = dirname($originalFileName);
     $migratedFileName = $dir.DIRECTORY_SEPARATOR.$migratedFileName;
@@ -176,8 +182,11 @@ EOF;
     {
       if ($setting['name'] == 'version')
       {
-        preg_match('/\d\.\d(\.\d)?/', $setting['value']['en'], $matches);
-        $currentVersion = $matches[0];
+        if (preg_match('/\d\.\d(\.\d)?/', $setting['value']['en'], $matches))
+        {
+          $currentVersion = $matches[0];
+        }
+
         break;
       }
     }

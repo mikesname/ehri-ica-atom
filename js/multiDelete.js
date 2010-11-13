@@ -3,55 +3,48 @@
 (function ($)
   {
     /**
-     * Replace delete checkboxes with delete icon, and dynamically hide
-     * elements marked for deletion.
-     *
-     * @param object thisElement dom <select> element to operate on
-     * @return void
-     */
-    Qubit.multiDelete = function (thisObj, elementName)
-    {
-      var thisForm = $(thisObj).parents('form');
-
-      // Hide element
-      var relatedObjName = elementName.replace(/\w+\[(\d+)\]/, 'related_obj_$1');
-      var parentRows = $(thisObj).parents('table:first').find('.' + relatedObjName);
-
-      // Add an "animateNicely" div to each td to make "hide" animation play nicely
-      parentRows.find('td').each(function (i) {
-        // Only add to rows that don't already have an animateNicely div
-        if (0 == $(this).find('div.animateNicely').length) {
-          if ('' == $.trim($(this).text())) {
-            // Add a &nbsp; if <td> has no contents because hide() doesn't seem to
-            // operate on <div>s that only contain whitespace
-            $(this).html('<div class="animateNicely">&nbsp;</div>');
-          } else {
-            $(this).wrapInner('<div class="animateNicely"></div>');
-          }
-        }
-      });
-
-      parentRows.find('div:visible').hide('normal', function() {
-        parentRows.remove();
-      });
-
-      // Append hidden field to delete element on form submit
-      thisForm.append('<input type="hidden" name="' + elementName + '" value="delete">');
-    }
-
-    /**
      * On page load, replace "multiDelete" checkboxes with delete icons
      */
-    Drupal.behaviors.replaceMultiDelete = {
+    Drupal.behaviors.multiDelete = {
       attach: function (context)
         {
-          $('input[type="checkbox"].multiDelete').each(function ()
-            {
-              var elementName = $(this).attr('name');
-              $(this).replaceWith('<button name="delete" class="delete-small" onclick="Qubit.multiDelete(this, \'' + elementName + '\'); return false;" />');
-            });
+          $('.multiDelete', context)
+            .after(function ()
+              {
+                var $input = $(this);
 
-          // Remove delete icons in table headers
-          $('th img.deleteIcon').remove();
-        } };
+                return $('<button class="delete-small" type="button"/>').click(function (event)
+                  {
+                    event.stopPropagation();
+
+                    $input.attr('checked', 'checked');
+
+                    // Hide element
+                    var $parentRows = $(this).closest('tr');
+
+                    // Add "animateNicely" <div/> to each <td/> to make "hide"
+                    // animation play nicely
+                    $('td:not(:has(.animateNicely))', $parentRows)
+
+                      // Add a &nbsp; because .hide() doesn't seem to operate
+                      // on <div/>s that contain only whitespace
+                      .append('&nbsp;')
+
+                      .wrapInner('<div class="animateNicely"/>');
+
+                    $('div:visible', $parentRows).hide('normal', function ()
+                      {
+                        $parentRows.hide();
+                      });
+                  });
+              })
+
+            // Make sure that .after() returns an input element.
+            // It returns document (which is not compatible
+            // with hide()) if $('.multiDelete').lenght is zero
+            .filter('input').hide();
+
+          // Drop delete icons from table headers
+          $('th img.deleteIcon', context).remove();
+        } }
   })(jQuery);

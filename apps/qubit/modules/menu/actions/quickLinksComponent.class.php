@@ -30,6 +30,11 @@ class menuQuickLinksComponent extends sfComponent
   public function execute($request)
   {
     // Get menu objects
-    $this->menu = QubitMenu::getById(QubitMenu::QUICK_LINKS_ID);
+    $this->quickLinksMenu = QubitMenu::getById(QubitMenu::QUICK_LINKS_ID);
+
+    if (!$this->quickLinksMenu instanceof QubitMenu)
+    {
+      return sfView::NONE;
+    }
   }
 }

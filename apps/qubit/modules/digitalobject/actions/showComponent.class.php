@@ -42,20 +42,21 @@ class DigitalObjectShowComponent extends sfComponent
       $this->usageType = QubitTerm::THUMBNAIL_ID;
     }
 
-    if (QubitTerm::REFERENCE_ID == $this->usageType && !QubitAcl::check($this->digitalObject->informationObject, 'readReference'))
+    if (QubitTerm::REFERENCE_ID == $this->usageType && !QubitAcl::check($this->resource->informationObject, 'readReference'))
     {
       return sfView::NONE;
     }
 
     // Figure out which show component to call
-    switch ($this->digitalObject->mediaTypeId)
+    switch ($this->resource->mediaTypeId)
     {
       case QubitTerm::IMAGE_ID:
-        if ($this->digitalObject->showAsCompoundDigitalObject())
+
+        if ($this->resource->showAsCompoundDigitalObject())
         {
           $this->showComponent = 'showCompound';
         }
-        else if ($this->digitalObject->isWebCompatibleImageFormat())
+        else if ($this->resource->isWebCompatibleImageFormat())
         {
           $this->showComponent = 'showImage';
         }
@@ -77,7 +78,8 @@ class DigitalObjectShowComponent extends sfComponent
         break;
 
       case QubitTerm::TEXT_ID:
-        if ($this->digitalObject->showAsCompoundDigitalObject())
+
+        if ($this->resource->showAsCompoundDigitalObject())
         {
           $this->showComponent = 'showCompound';
         }
@@ -92,7 +94,6 @@ class DigitalObjectShowComponent extends sfComponent
         $this->showComponent = 'showDownload';
 
         break;
-
     }
 
     if (!isset($this->link))

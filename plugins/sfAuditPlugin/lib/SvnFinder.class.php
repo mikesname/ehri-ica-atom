@@ -80,7 +80,7 @@ class SvnFinder extends sfFinder
     // $match[2] is the kind field
     // $match[3] is the schedule field, if present
     // $match[4] is the deleted field, if present
-    preg_match_all('/\f\n([^\f\n]*)\n([^\f\n]*)\n(?:(?:[^\f\n]*\n){3}([^\f\n]*)\n(?:(?:[^\f\n]*\n){16}([^\f\n]*)\n)?)?/', file_get_contents($dir.'/.svn/entries'), $matches, PREG_SET_ORDER);
+    preg_match_all('/\f\n([^\f\n]*)\n([^\f\n]*)\n(?:(?:[^\f\n]*\n){3}([^\f\n]*)\n(?:(?:[^\f\n]*\n){16}([^\f\n]*)\n)?)?/', file_get_contents("$dir/.svn/entries"), $matches, PREG_SET_ORDER);
 
     $files = array();
     foreach ($matches as $match)

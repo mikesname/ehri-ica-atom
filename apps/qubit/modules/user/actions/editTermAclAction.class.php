@@ -17,71 +17,29 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UserEditTermAclAction extends sfAction
+class UserEditTermAclAction extends DefaultEditAction
 {
-  /**
-   * Define form field names
-   *
-   * @var string
-   */
-  public static $NAMES = array(
-    'taxonomy'
-  );
+  public static
+    $NAMES = array(
+      'taxonomy');
 
-  public function addField($name)
+  protected function earlyExecute()
   {
-    switch ($name)
-    {
-      case 'taxonomy':
-        $choices = array();
-        $choices[null] = null;
-
-        foreach (QubitTaxonomy::getEditableTaxonomies() as $taxonomy)
-        {
-          $choices[$this->context->routing->generate(null, array($taxonomy, 'module' => 'taxonomy'))] = $taxonomy;
-        }
-
-        $this->form->setDefault($name, null);
-        $this->form->setValidator($name, new sfValidatorPass);
-        $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
-
-        break;
-    }
-  }
-
-  public function execute($request)
-  {
-    $this->form = new sfForm;
-
-    $this->user = new QubitUser;
-
-    if (isset($this->request->id))
-    {
-      $this->user = QubitUser::getById($this->request->id);
-
-      if (!isset($this->user))
-      {
-        $this->forward404();
-      }
-    }
-
     $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    $this->resource = new QubitUser;
+    if (isset($this->getRoute()->resource))
     {
-      $this->addField($name);
+      $this->resource = $this->getRoute()->resource;
     }
 
     $this->permissions = array();
-    if (null != $this->user->id)
+    if (isset($this->resource->id))
     {
       // Get info object permissions for this group
       $criteria = new Criteria;
       $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID, Criteria::LEFT_JOIN);
-      $criteria->add(QubitAclPermission::USER_ID, $this->user->id);
+      $criteria->add(QubitAclPermission::USER_ID, $this->resource->id);
       $c1 = $criteria->getNewCriterion(QubitAclPermission::OBJECT_ID, null, Criteria::ISNULL);
       $c2 = $criteria->getNewCriterion(QubitObject::CLASS_NAME, 'QubitTerm');
       $c1->addOr($c2);
@@ -95,47 +53,39 @@ class UserEditTermAclAction extends sfAction
         $this->permissions = $permissions;
       }
     }
+  }
 
-    if ($request->isMethod('post'))
+  protected function addField($name)
+  {
+    switch ($name)
     {
-      $this->form->bind($request->getPostParameters());
+      case 'taxonomy':
+        $choices = array();
+        $choices[null] = null;
 
-      if ($this->form->isValid())
-      {
-        $this->processForm();
-        $this->redirect(array($this->user, 'module' => 'user', 'action' => 'indexTermAcl'));
-      }
+        foreach (QubitTaxonomy::getEditableTaxonomies() as $item)
+        {
+          $choices[$this->context->routing->generate(null, array($item, 'module' => 'taxonomy'))] = $item;
+        }
+
+        $this->form->setDefault('taxonomy', null);
+        $this->form->setValidator('taxonomy', new sfValidatorString);
+        $this->form->setWidget('taxonomy', new sfWidgetFormSelect(array('choices' => $choices)));
+
+        break;
     }
   }
 
   protected function processForm()
   {
-    $this->processTermAcl('termAcl');
-
-    if ($this->request->hasParameter('taxonomyAcl'))
-    {
-      $this->processTermAcl('taxonomyAcl');
-    }
-
-    // Save changes
-    $this->user->save();
-
-    return $this;
-  }
-
-  protected function processTermAcl($name)
-  {
-    foreach ($this->request->getParameter($name) as $key => $value)
+    foreach ($this->request->acl as $key => $value)
     {
       // If key has an underscore, then we are creating a new permission
       if (1 == preg_match('/([\w]+)_(.*)/', $key, $matches))
       {
         list ($action, $uri) = array_slice($matches, 1, 2);
         $params = $this->context->routing->parse(Qubit::pathInfo($uri));
-        if (!isset($params['id']))
-        {
-          continue;
-        }
+        $resource = $params['_sf_route']->resource;
 
         if (QubitAcl::INHERIT != $value && isset(QubitAcl::$ACTIONS[$action]))
         {
@@ -143,18 +93,20 @@ class UserEditTermAclAction extends sfAction
           $aclPermission->action = $action;
           $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
 
-          if ('taxonomyAcl' == $name)
+          switch ($resource->className)
           {
-            // Taxonomy specific rules
-            $aclPermission->objectId = QubitTerm::ROOT_ID;
-            $aclPermission->setTaxonomy(QubitTaxonomy::getById($params['id']));
-          }
-          else
-          {
-            $aclPermission->objectId = $params['id'];
+            case 'QubitTaxonomy':
+              // Taxonomy specific rules
+              $aclPermission->objectId = QubitTerm::ROOT_ID;
+              $aclPermission->setTaxonomy($resource);
+
+              break;
+
+            default:
+              $aclPermission->objectId = $resource->id;
           }
 
-          $this->user->aclPermissions[] = $aclPermission;
+          $this->resource->aclPermissions[] = $aclPermission;
         }
       }
 
@@ -169,11 +121,28 @@ class UserEditTermAclAction extends sfAction
         {
           $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
 
-          $this->user->aclPermissions[] = $aclPermission;
+          $this->resource->aclPermissions[] = $aclPermission;
         }
       }
     }
+  }
 
-    return $this;
+  public function execute($request)
+  {
+    parent::execute($request);
+
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getPostParameters());
+
+      if ($this->form->isValid())
+      {
+        $this->processForm();
+
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'user', 'action' => 'indexTermAcl'));
+      }
+    }
   }
 }

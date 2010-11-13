@@ -2,31 +2,30 @@
 
 <div class="translationList">
 
-
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('%1% module', array('%1%' => sfConfig::get('app_ui_label_informationobject')))?></div>
     <ul>
-    <li><?php echo link_to(__('Create (ISAD)'), array('module' => 'informationobject', 'action' => 'create', 'informationobject_template' => 'isad')) ?></li>
+    <li><?php echo link_to(__('Create (ISAD)'), array('module' => 'informationobject', 'action' => 'add', 'informationobject_template' => 'isad')) ?></li>
     <?php if ($sf_user->getCulture() == 'fr'): ?>
-      <li><?php echo link_to(__('Create (RAD)'), array('module' => 'informationobject', 'action' => 'create', 'informationobject_template' => 'rad')) ?></li>
+      <li><?php echo link_to(__('Create (RAD)'), array('module' => 'informationobject', 'action' => 'add', 'informationobject_template' => 'rad')) ?></li>
     <?php endif; ?>
     <?php if ($sampleInformationObject): ?>
-      <li><?php echo link_to(__('Edit (ISAD)'), 'informationobject/editIsad?id='.$sampleInformationObject->getId()) ?></li>
+      <li><?php echo link_to(__('Edit (ISAD)'), 'informationobject/editIsad?id='.$sampleInformationObject->id) ?></li>
       <?php if ($sf_user->getCulture() == 'fr'): ?>
-        <li><?php echo link_to(__('Edit (RAD)'), 'informationobject/editRad?id='.$sampleInformationObject->getId()) ?></li>
+        <li><?php echo link_to(__('Edit (RAD)'), 'informationobject/editRad?id='.$sampleInformationObject->id) ?></li>
       <?php endif; ?>
-      <li><?php echo link_to(__('Edit (Dublin Core)'), 'informationobject/editDc?id='.$sampleInformationObject->getId()) ?></li>
+      <li><?php echo link_to(__('Edit (Dublin Core)'), 'informationobject/editDc?id='.$sampleInformationObject->id) ?></li>
       <li><?php echo link_to(__('List'), 'informationobject/list') ?></li>
-      <li><?php echo link_to(__('View (ISAD)'), 'informationobject/showIsad?id='.$sampleInformationObject->getId()) ?></li>
+      <li><?php echo link_to(__('View (ISAD)'), 'informationobject/showIsad?id='.$sampleInformationObject->id) ?></li>
       <?php if ($sf_user->getCulture() == 'fr'): ?>
-        <li><?php echo link_to(__('View (RAD)'), 'informationobject/showRad?id='.$sampleInformationObject->getId()) ?></li>
+        <li><?php echo link_to(__('View (RAD)'), 'informationobject/showRad?id='.$sampleInformationObject->id) ?></li>
       <?php endif; ?>
     <?php endif; ?>
     <?php if ($sampleDigitalObject): ?>
-      <li><?php echo link_to(__('View digital object'), 'digitalobject/show?id='.$sampleDigitalObject->getId()) ?></li>
-      <li><?php echo link_to(__('View digital object master'), 'digitalobject/showFullScreen?id='.$sampleDigitalObject->getId()) ?></li>
+      <li><?php echo link_to(__('View digital object'), 'digitalobject/show?id='.$sampleDigitalObject->id) ?></li>
+      <li><?php echo link_to(__('View digital object master'), 'digitalobject/showFullScreen?id='.$sampleDigitalObject->id) ?></li>
     <?php endif; ?>
     <?php if ($samplePhysicalObject): ?>
-      <li><?php echo link_to(__('Edit physical storage'), 'physicalobject/edit?id='.$samplePhysicalObject->getId()) ?></li>
+      <li><?php echo link_to(__('Edit physical storage'), 'physicalobject/edit?id='.$samplePhysicalObject->id) ?></li>
     <?php endif; ?>
     </ul>
 
@@ -34,8 +33,8 @@
     <ul>
     <li><?php echo link_to(__('Create (ISAAR)'), 'actor/createIsaar') ?></li>
     <?php if ($sampleActor): ?>
-      <li><?php echo link_to(__('Edit (ISAAR)'), 'actor/editIsaar?id='.$sampleActor->getId()) ?></li>
-      <li><?php echo link_to(__('View (ISAAR)'), 'actor/showIsaar?id='.$sampleActor->getId()) ?></li>
+      <li><?php echo link_to(__('Edit (ISAAR)'), 'actor/editIsaar?id='.$sampleActor->id) ?></li>
+      <li><?php echo link_to(__('View (ISAAR)'), 'actor/showIsaar?id='.$sampleActor->id) ?></li>
     <?php endif; ?>
      <li><?php echo link_to(__('List'), 'actor/list') ?></li>
     </ul>
@@ -44,20 +43,20 @@
     <ul>
     <li><?php echo link_to(__('Create (ISDIAH)'), 'repository/createIsdiah') ?></li>
     <?php if ($sampleRepository): ?>
-      <li><?php echo link_to(__('Edit (ISDIAH)'), 'repository/editIsdiah?id='.$sampleRepository->getId()) ?></li>
+      <li><?php echo link_to(__('Edit (ISDIAH)'), 'repository/editIsdiah?id='.$sampleRepository->id) ?></li>
       <?php if ($sampleContactInformation): ?>
-        <li><?php echo link_to(__('Edit contact information'), array('module' => 'actor', 'action' => 'editContactInformation', 'id' => $sampleContactInformation->getId())) ?></li>
+        <li><?php echo link_to(__('Edit contact information'), array('module' => 'actor', 'action' => 'editContactInformation', 'id' => $sampleContactInformation->id)) ?></li>
       <?php endif; ?>
-      <li><?php echo link_to(__('View (ISDIAH)'), 'repository/show?id='.$sampleRepository->getId()) ?></li>
+      <li><?php echo link_to(__('View (ISDIAH)'), 'repository/show?id='.$sampleRepository->id) ?></li>
     <?php endif; ?>
     <li><?php echo link_to(__('List'), 'repository/list') ?></li>
     </ul>
 
 <div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('Term module')?></div>
     <ul>
-    <li><?php echo link_to(__('List'), 'term/list') ?></li>
+    <li><?php echo link_to(__('List'), 'taxonomy/list') ?></li>
     <?php if ($sampleTerm): ?>
-      <li><?php echo link_to(__('Edit'), 'term/edit?id='.$sampleTerm->getId()) ?></li>
+      <li><?php echo link_to(__('Edit'), 'term/edit?id='.$sampleTerm->id) ?></li>
     <?php endif; ?>
     </ul>
 
@@ -84,7 +83,7 @@
       <ul>
       <li><?php echo link_to(__('List static page'), array('module' => 'staticpage', 'action' => 'list')) ?></li>
       <?php if ($sampleStaticPage): ?>
-        <li><?php echo link_to(__('Edit static page'), array('module' => 'staticpage', 'action' => 'edit', 'id' => $sampleStaticPage->getId())) ?></li>
+        <li><?php echo link_to(__('Edit static page'), array('module' => 'staticpage', 'action' => 'edit', 'id' => $sampleStaticPage->id)) ?></li>
       <?php endif; ?>
       <li><?php echo link_to(__('View static page'), array('module' => 'staticpage', 'action' => 'static', 'permalink' => $sampleStaticPage->getPermalink())) ?></li>
     </ul>
@@ -94,7 +93,7 @@
     </ul>
     <li><?php echo __('Menu')?></li>
     <ul>
-      <li><?php echo link_to(__('Edit menu'), array('module' => 'menu', 'action' => 'edit', 'id' => $sampleMenu->getId())) ?></li>
+      <li><?php echo link_to(__('Edit menu'), array('module' => 'menu', 'action' => 'edit', 'id' => $sampleMenu->id)) ?></li>
       <li><?php echo link_to(__('Site menu list'), 'menu/list') ?></li>
     </ul>
     <li><?php echo __('Error messages')?></li>

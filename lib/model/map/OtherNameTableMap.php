@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_other_name' table.
+ * This class defines the structure of the 'other_name' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class OtherNameTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_other_name');
+		$this->setName('other_name');
 		$this->setPhpName('otherName');
 		$this->setClassname('QubitOtherName');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

@@ -4,8 +4,8 @@
 
   <div class="content">
     <form action="<?php echo url_for(array('module' => 'search')) ?>">
-      <?php echo input_tag('query', $sf_request->query) ?>
-      <?php echo submit_tag(__('Search')) ?>
+      <input name="query" value="<?php echo esc_entities($sf_request->query) ?>"/>
+      <input class="form-submit" type="submit" value="<?php echo __('Search') ?>"/>
     </form>
   </div>
 

@@ -21,13 +21,12 @@ class UserIndexTermAclAction extends sfAction
 {
   public function execute($request)
   {
-    $this->user = QubitUser::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->user);
+    $this->resource = $this->getRoute()->resource;
 
-    //except for administrators, only allow users to see their own profile
-    if (!$this->getUser()->hasCredential('administrator'))
+    // Except for administrators, only allow users to see their own profile
+    if (!$this->context->user->hasCredential('administrator'))
     {
-      if ($this->getRequestParameter('id') != $this->getUser()->getAttribute('user_id'))
+      if ($this->resource->id != $this->context->user->getAttribute('user_id'))
       {
         $this->redirect('admin/secure');
       }
@@ -35,11 +34,11 @@ class UserIndexTermAclAction extends sfAction
 
     // Get user's groups
     $this->roles = array();
-    if (0 < count($aclUserGroups = $this->user->aclUserGroups))
+    if (0 < count($aclUserGroups = $this->resource->aclUserGroups))
     {
-      foreach ($aclUserGroups as $aclUserGroup)
+      foreach ($aclUserGroups as $item)
       {
-        $this->roles[] = $aclUserGroup->groupId;
+        $this->roles[] = $item->groupId;
       }
     }
     else
@@ -54,7 +53,7 @@ class UserIndexTermAclAction extends sfAction
     // Get access control permissions
     $criteria = new Criteria;
     $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID, Criteria::LEFT_JOIN);
-    $c1 = $criteria->getNewCriterion(QubitAclPermission::USER_ID, $this->request->id);
+    $c1 = $criteria->getNewCriterion(QubitAclPermission::USER_ID, $this->resource->id);
 
     // Add group criteria
     $c2 = $criteria->getNewCriterion(QubitAclPermission::GROUP_ID, $this->roles, Criteria::IN);
@@ -76,31 +75,31 @@ class UserIndexTermAclAction extends sfAction
     $criteria->addAscendingOrderByColumn(QubitAclPermission::GROUP_ID);
 
     // Add user as final role
-    $this->roles[] = $this->user->username;
+    $this->roles[] = $this->resource->username;
 
     // Build ACL
     $this->acl = array();
     if (0 < count($permissions = QubitAclPermission::get($criteria)))
     {
-      foreach ($permissions as $permission)
+      foreach ($permissions as $item)
       {
         // Use username as key for permissions specific to user
-        $roleKey = (null !== $permission->groupId) ? $permission->groupId : $this->user->username;
+        $roleKey = (null !== $item->groupId) ? $item->groupId : $this->resource->username;
 
-        if ('createTerm' != $permission->action)
+        if ('createTerm' != $item->action)
         {
-          $taxonomyId = $permission->getConstants(array('name' => 'taxonomyId'));
-          $action = $permission->action;
+          $taxonomyId = $item->getConstants(array('name' => 'taxonomyId'));
+          $action = $item->action;
         }
         else
         {
           // In this context permissions for all objects (null) and root object
           // are equivalent
-          $taxonomyId = (QubitTaxonomy::ROOT_ID != $permission->objectId) ? $permission->objectId : null;
+          $taxonomyId = (QubitTaxonomy::ROOT_ID != $item->objectId) ? $item->objectId : null;
           $action = 'create';
         }
 
-        $this->acl[$taxonomyId][$action][$roleKey] = $permission;
+        $this->acl[$taxonomyId][$action][$roleKey] = $item;
       }
     }
   }

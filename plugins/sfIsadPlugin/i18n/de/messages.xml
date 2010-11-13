@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="de" datatype="plaintext" original="messages" date="2010-04-28T12:10:42Z" product-name="messages">
+  <file source-language="EN" target-language="de" datatype="plaintext" original="messages" date="2010-11-12T09:27:54Z" product-name="messages">
     <body>
       <trans-unit id="8">
         <source>Title</source>
@@ -72,7 +72,7 @@
       </trans-unit>
       <trans-unit id="230">
         <source>Country</source>
-        <target/>
+        <target>Staat</target>
       </trans-unit>
       <trans-unit id="233">
         <source>Latitude</source>
@@ -132,7 +132,7 @@
       </trans-unit>
       <trans-unit id="445">
         <source>Place</source>
-        <target/>
+        <target>Ort</target>
       </trans-unit>
       <trans-unit id="467">
         <source>Name</source>
@@ -144,7 +144,7 @@
       </trans-unit>
       <trans-unit id="580">
         <source>Are you sure?</source>
-        <target/>
+        <target>Sind Sie sicher?</target>
       </trans-unit>
       <trans-unit id="654">
         <source>Date(s)</source>
@@ -156,19 +156,19 @@
       </trans-unit>
       <trans-unit id="711">
         <source>Edit</source>
-        <target/>
+        <target>Bearbeiten</target>
       </trans-unit>
       <trans-unit id="713">
         <source>Delete</source>
-        <target/>
+        <target>Löschen</target>
       </trans-unit>
       <trans-unit id="714">
         <source>Add new</source>
-        <target/>
+        <target>Neu hinzufügen</target>
       </trans-unit>
       <trans-unit id="715">
         <source>List all</source>
-        <target/>
+        <target>Alles auflisten</target>
       </trans-unit>
       <trans-unit id="722">
         <source>Description of relationship</source>
@@ -180,15 +180,15 @@
       </trans-unit>
       <trans-unit id="734">
         <source>Cancel</source>
-        <target/>
+        <target>Abbrechen</target>
       </trans-unit>
       <trans-unit id="735">
         <source>Save</source>
-        <target/>
+        <target>Speichern</target>
       </trans-unit>
       <trans-unit id="736">
         <source>Create</source>
-        <target/>
+        <target>Erstellen</target>
       </trans-unit>
       <trans-unit id="761">
         <source>Type</source>
@@ -256,11 +256,11 @@
       </trans-unit>
       <trans-unit id="840">
         <source>Format</source>
-        <target/>
+        <target>Format</target>
       </trans-unit>
       <trans-unit id="841">
         <source>Description</source>
-        <target/>
+        <target>Beschreibung</target>
       </trans-unit>
       <trans-unit id="895">
         <source>Untitled</source>
@@ -528,6 +528,102 @@
       </trans-unit>
       <trans-unit id="961">
         <source>Archivist's Notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="962">
+        <source>Add new archival description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="963">
+        <source>Edit %1%</source>
+        <target>%1% bearbeiten</target>
+      </trans-unit>
+      <trans-unit id="964">
+        <source>Start</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="965">
+        <source>End</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="966">
+        <source>Identify and record the date(s) of the unit of description. Identify the type of date given. Record as a single date or a range of dates as appropriate. Use YYYY-MM-DD format for the &lt;em&gt;Date&lt;/em&gt; field. The &lt;em&gt;End date&lt;/em&gt; field can be used to indicate a date range. The &lt;em&gt;Date display&lt;/em&gt; field can be used to enter free-text date information.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="967">
+        <source>Edit archival description - ISAD</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="968">
+        <source>Provide a specific local reference code, control number, or other unique identifier. The country and repository code will be automatically added from the linked repository record to form a full reference code.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="969">
+        <source>&lt;strong&gt;Identifier:&lt;/strong&gt; Provide a specific local reference code, control number, or other unique identifier.&lt;br/&gt;&lt;strong&gt;Level of description:&lt;/strong&gt; Record the level of this unit of description.&lt;br/&gt;&lt;strong&gt;Title:&lt;/strong&gt; Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="970">
+        <source>Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description. Seperate multiple extents with a linebreak.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="971">
+        <source>Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. Search for an existing name in the authority records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new authority record.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="972">
+        <source>Record the name of the organization which has custody of the archival material. Search for an existing name in the archival institution records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new archival institution record.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="973">
+        <source>Record the language(s) of the materials comprising the unit of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="974">
+        <source>Record the script(s) of the materials comprising the unit of description</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="975">
+        <source>Record a citation to, and/or information about a publication that is about or based on the use, study, or analysis of the unit of description. Include references to published facsimiles or transcriptions.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="976">
+        <source>Record specialized or other important information not accommodated by any of the defined elements of description.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="977">
+        <source>Record a unique description identifier in accordance with local and/or national conventions. If the description is to be used internationally, record the code of the country in which the description was created in accordance with the latest version of ISO 3166 - Codes for the representation of names of countries. Where the creator of the description is an international organisation, give the organisational identifier in place of the country code.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="978">
+        <source>Record the full authorised form of name(s) of the agency(ies) responsible for creating, modifying or disseminating the description or, alternatively, record a code for the agency in accordance with the national or international agency code standard.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="979">
+        <source>Record the current status of the description, indicating whether it is a draft, finalized and/or revised or deleted.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="980">
+        <source>Record whether the description consists of a minimal, partial or full level of detail in accordance with relevant international and/or national guidelines and/or rules.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="981">
+        <source>Record the date(s) the entry was prepared and/or revised.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="982">
+        <source>Indicate the language(s) used to create the description of the archival material.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="983">
+        <source>Indicate the script(s) used to create the description of the archival material.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="984">
+        <source>Archivist's notes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="985">
+        <source>Record notes on sources consulted in preparing the description and who prepared it.</source>
         <target/>
       </trans-unit>
     </body>

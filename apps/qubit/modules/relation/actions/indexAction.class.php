@@ -29,45 +29,40 @@ class RelationIndexAction extends sfAction
 {
   public function execute($request)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Qubit');
+    $this->resource = $this->getRoute()->resource;
 
-    $relation = QubitRelation::getById($request->id);
+    $value = array();
 
-    if (!isset($relation))
+    $note = $this->resource->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_ID);
+    if (isset($note))
     {
-      $this->forward404();
+      $value['date'] = $note->content;
     }
 
-    $columns = array();
-    $columns['id'] = $relation->id;
-    $columns['object'] = $this->getUri($relation->object);
-    $columns['subject'] = $this->getUri($relation->subject);
-    $columns['type'] = $this->getUri($relation->type);
-    $columns['startDate'] = collapse_date($relation->startDate);
-    $columns['endDate'] = collapse_date($relation->endDate);
+    $value['endDate'] = Qubit::renderDate($this->resource->endDate);
+    $value['startDate'] = Qubit::renderDate($this->resource->startDate);
 
-    $columns['dateDisplay'] = null;
-    if (null !== ($displayNote = $relation->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID)))
+    $note = $this->resource->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID);
+    if (isset($note))
     {
-      $columns['dateDisplay'] = $displayNote->getContent();
+      $value['description'] = $note->content;
     }
 
-    $columns['description'] = null;
-    if (null !== ($descriptionNote = $relation->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID)))
+    if (isset($this->resource->object))
     {
-      $columns['description'] = $descriptionNote->getContent();
+      $value['object'] = $this->context->routing->generate(null, array($this->resource->object));
     }
 
-    return $this->renderText(json_encode($columns));
-  }
-
-  protected function getUri($object)
-  {
-    if (null != $object)
+    if (isset($this->resource->subject))
     {
-      $moduleName = strtolower(str_replace('Qubit', '', get_class($object)));
-
-      return $this->context->routing->generate(null, array($object, 'module' => $moduleName));
+      $value['subject'] = $this->context->routing->generate(null, array($this->resource->subject));
     }
+
+    if (isset($this->resource->type))
+    {
+      $value['type'] = $this->context->routing->generate(null, array($this->resource->type, 'module' => 'term'));
+    }
+
+    return $this->renderText(json_encode($value));
   }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2010-04-28T12:14:21Z" product-name="messages">
+  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2010-11-12T09:27:57Z" product-name="messages">
     <body>
       <trans-unit id="45">
         <source>Identifier</source>
@@ -72,7 +72,7 @@
       </trans-unit>
       <trans-unit id="544">
         <source>Date(s)</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; (&#x647;&#x627;)</target>
       </trans-unit>
       <trans-unit id="571">
         <source>Subject</source>
@@ -80,27 +80,27 @@
       </trans-unit>
       <trans-unit id="600">
         <source>Repository</source>
-        <target/>
+        <target>&#x645;&#x646;&#x628;&#x639;</target>
       </trans-unit>
       <trans-unit id="608">
         <source>Are you sure?</source>
-        <target/>
+        <target>&#x622;&#x64A;&#x627; &#x648;&#x627;&#x642;&#x639;&#x627; &#x645;&#x637;&#x645;&#x626;&#x646; &#x647;&#x633;&#x62A;&#x64A;&#x62F;&#x61F;</target>
       </trans-unit>
       <trans-unit id="637">
         <source>Edit</source>
-        <target/>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
       </trans-unit>
       <trans-unit id="639">
         <source>Delete</source>
-        <target/>
+        <target>&#x62D;&#x630;&#x641;</target>
       </trans-unit>
       <trans-unit id="640">
         <source>Add new</source>
-        <target/>
+        <target> &#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x622;&#x64A;&#x62A;&#x645; &#x62C;&#x62F;&#x64A;&#x62F; </target>
       </trans-unit>
       <trans-unit id="641">
         <source>List all</source>
-        <target/>
+        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644;</target>
       </trans-unit>
       <trans-unit id="648">
         <source>Description of relationship</source>
@@ -108,47 +108,47 @@
       </trans-unit>
       <trans-unit id="660">
         <source>Cancel</source>
-        <target/>
+        <target>&#x644;&#x63A;&#x648;</target>
       </trans-unit>
       <trans-unit id="661">
         <source>Save</source>
-        <target/>
+        <target>&#x630;&#x62E;&#x64A;&#x631;&#x647;</target>
       </trans-unit>
       <trans-unit id="662">
         <source>Create</source>
-        <target/>
+        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
       </trans-unit>
       <trans-unit id="687">
         <source>Type</source>
-        <target/>
+        <target>&#x646;&#x648;&#x639;</target>
       </trans-unit>
       <trans-unit id="724">
         <source>Institution identifier</source>
-        <target/>
+        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x645;&#x648;&#x633;&#x633;&#x647;</target>
       </trans-unit>
       <trans-unit id="726">
         <source>Status</source>
-        <target/>
+        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A;</target>
       </trans-unit>
       <trans-unit id="727">
         <source>Level of detail</source>
-        <target/>
+        <target>&#x633;&#x637;&#x62D; &#x62C;&#x632;&#x64A;&#x64A;&#x627;&#x62A;</target>
       </trans-unit>
       <trans-unit id="728">
         <source>Dates of creation, revision and deletion</source>
-        <target/>
+        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F;/&#x628;&#x627;&#x632;&#x646;&#x6AF;&#x631;&#x64A;/&#x62D;&#x630;&#x641;</target>
       </trans-unit>
       <trans-unit id="745">
         <source>Conditions governing access</source>
-        <target/>
+        <target>&#x634;&#x631;&#x627;&#x64A;&#x637; &#x62F;&#x633;&#x62A;&#x64A;&#x627;&#x628;&#x64A;</target>
       </trans-unit>
       <trans-unit id="766">
         <source>Format</source>
-        <target/>
+        <target>&#x642;&#x627;&#x644;&#x628;</target>
       </trans-unit>
       <trans-unit id="767">
         <source>Description</source>
-        <target/>
+        <target>&#x62A;&#x648;&#x636;&#x64A;&#x62D;</target>
       </trans-unit>
       <trans-unit id="771">
         <source>Type of resource</source>
@@ -192,6 +192,54 @@
       </trans-unit>
       <trans-unit id="830">
         <source>Add new child levels (if describing a collection)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="831">
+        <source>Add new resource</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="832">
+        <source>Untitled</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="833">
+        <source>Edit %1%</source>
+        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634; %1%</target>
+      </trans-unit>
+      <trans-unit id="834">
+        <source>Select the type of activity that established the relation between the authority record and the resource.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="835">
+        <source>Contains a unique standard number or code that distinctively identifies a resource.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="836">
+        <source>A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it. Choice and format of titles should be governed by a content standard such as the Anglo-American Cataloging Rules, 2nd edition (AACR2), Cataloguing Cultural Objects (CCO), or Describing Archives: A Content Standard (DACS). Details such as capitalization, choosing among the forms of titles presented on an item, and use of abbreviations should be determined based on the rules in a content standard. One standard should be chosen and used consistently for all records in a set.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="837">
+        <source>A term that specifies the characteristics and general type of content of the resource. Assign as many types as are applicable. The Type of resource options are limited to the values in the MODS typeOfResource top-level element.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="838">
+        <source>Use these two fields to add lower levels to a collection-level description. Click Add new to add as many child levels as necessary. Identifer: enter a unique standard number or code that distinctively identifies the resource. Title: enter A word, phrase, character, or group of characters, normally appearing in a resource, that names it or the work contained in it.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="839">
+        <source>A designation of the language in which the content of a resource is expressed. Select as many languages as required.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="840">
+        <source>A term or phrase representing the primary topic(s) on which a work is focused. Search for an existing term in the Subjects taxonomy by typing the first few characters of the term name. Alternatively, type a new name to create and link to a new subject term.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="841">
+        <source>Information about restrictions imposed on access to a resource. See MODS accessCondition top-level element for more information on how to use this field.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="842">
+        <source>Identifies the institution or repository holding the resource. Search for an existing repository name by typing the first few letters of the name. ALternatively, type a new name to create and link to a new repository record.</source>
         <target/>
       </trans-unit>
     </body>

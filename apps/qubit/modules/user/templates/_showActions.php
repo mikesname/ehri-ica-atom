@@ -5,16 +5,16 @@
   <div class="content">
     <ul class="clearfix links">
 
-      <?php if (QubitAcl::check($user, 'update')): ?>
-        <li><?php echo link_to (__('Edit'), array($user, 'module' => 'user', 'action' => str_replace('index', 'edit', $sf_context->getActionName()))) ?></li>
+      <?php if (QubitAcl::check($resource, 'update')): ?>
+        <li><?php echo link_to (__('Edit'), array($resource, 'module' => 'user', 'action' => str_replace('index', 'edit', $sf_context->getActionName()))) ?></li>
       <?php endif; ?>
 
-      <?php if (QubitAcl::check($user, 'delete')): ?>
-        <li><?php echo link_to (__('Delete'), array($user, 'module' => 'user', 'action' => 'delete')) ?></li>
+      <?php if (QubitAcl::check($resource, 'delete')): ?>
+        <li><?php echo link_to (__('Delete'), array($resource, 'module' => 'user', 'action' => 'delete')) ?></li>
       <?php endif; ?>
 
-      <?php if (QubitAcl::check($user, 'create')): ?>
-        <li><?php echo link_to (__('Add new'), array('module' => 'user', 'action' => 'create')) ?></li>
+      <?php if (QubitAcl::check($resource, 'create')): ?>
+        <li><?php echo link_to (__('Add new'), array('module' => 'user', 'action' => 'add')) ?></li>
       <?php endif; ?>
 
     </ul>

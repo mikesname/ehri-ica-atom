@@ -5,14 +5,14 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_repository',
+    TABLE_NAME = 'repository',
 
-    ID = 'q_repository.ID',
-    IDENTIFIER = 'q_repository.IDENTIFIER',
-    DESC_STATUS_ID = 'q_repository.DESC_STATUS_ID',
-    DESC_DETAIL_ID = 'q_repository.DESC_DETAIL_ID',
-    DESC_IDENTIFIER = 'q_repository.DESC_IDENTIFIER',
-    SOURCE_CULTURE = 'q_repository.SOURCE_CULTURE';
+    ID = 'repository.ID',
+    IDENTIFIER = 'repository.IDENTIFIER',
+    DESC_STATUS_ID = 'repository.DESC_STATUS_ID',
+    DESC_DETAIL_ID = 'repository.DESC_DETAIL_ID',
+    DESC_IDENTIFIER = 'repository.DESC_IDENTIFIER',
+    SOURCE_CULTURE = 'repository.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -113,7 +113,7 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -181,7 +181,7 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)

@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_term' table.
+ * This class defines the structure of the 'term' table.
  *
  *
  *
@@ -30,16 +30,16 @@ class TermTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_term');
+		$this->setName('term');
 		$this->setPhpName('term');
 		$this->setClassname('QubitTerm');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TAXONOMY_ID', 'taxonomyId', 'INTEGER', 'q_taxonomy', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('TAXONOMY_ID', 'taxonomyId', 'INTEGER', 'taxonomy', 'ID', true, null, null);
 		$this->addColumn('CODE', 'code', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

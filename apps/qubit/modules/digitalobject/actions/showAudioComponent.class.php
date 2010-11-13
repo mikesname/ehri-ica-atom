@@ -21,7 +21,7 @@
  * Digital Object audio display component
  *
  * @package    qubit
- * @subpackage digitalObject
+ * @subpackage resource
  * @author     Jesús García Crespo <correo@sevein.com>
  * @version    SVN: $Id
  */
@@ -36,10 +36,10 @@ class DigitalObjectShowAudioComponent extends sfComponent
   public function execute($request)
   {
     // Get representation by usage type
-    $this->representation = $this->digitalObject->getRepresentationByUsage($this->usageType);
+    $this->representation = $this->resource->getRepresentationByUsage($this->usageType);
 
     // If we can't find a representation for this object, try their parent
-    if (!$this->representation && ($parent = $this->digitalObject->getParent()))
+    if (!$this->representation && ($parent = $this->resource->parent))
     {
       $this->representation = $parent->getRepresentationByUsage($this->usageType);
     }
@@ -49,14 +49,14 @@ class DigitalObjectShowAudioComponent extends sfComponent
     {
       $this->showFlashPlayer = true;
 
-      $this->getResponse()->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
-      $this->getResponse()->addJavaScript('flowplayer');
+      $this->response->addJavaScript('/vendor/flowplayer/example/flowplayer-3.1.4.min.js');
+      $this->response->addJavaScript('flowplayer');
     }
     else
     {
       $this->showFlashPlayer = false;
 
-      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
+      $this->representation = QubitDigitalObject::getGenericRepresentation($this->resource->mimeType, $this->usageType);
     }
   }
 }

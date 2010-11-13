@@ -31,21 +31,22 @@ class DigitalObjectDeleteAction extends sfAction
   {
     $this->form = new sfForm();
 
-    $this->digitalObject = QubitDigitalObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists
-    $this->forward404Unless($this->digitalObject);
-
-    // Get related information object by first grabbing top-level digital object
-    $parent = $this->digitalObject->parent;
-    if (null == $parent)
+    // Get related information object by first grabbing top-level digital
+    // object
+    $parent = $this->resource->parent;
+    if (isset($parent))
     {
-      $this->informationObject = $this->digitalObject->informationObject;
-      $this->forward404Unless($this->informationObject);
+      $this->informationObject = $parent->informationObject;
     }
     else
     {
-      $this->informationObject = $parent->informationObject;
+      $this->informationObject = $this->resource->informationObject;
+      if (!isset($this->informationObject))
+      {
+        $this->forward404();
+      }
     }
 
     // Check user authorization
@@ -54,15 +55,13 @@ class DigitalObjectDeleteAction extends sfAction
       QubitAcl::forwardUnauthorized();
     }
 
-    $request->setAttribute('digitalObject', $this->digitalObject);
-
     if ($request->isMethod('delete'))
     {
       // Delete the digital object record from the database
-      $this->digitalObject->delete();
+      $this->resource->delete();
 
       // Redirect to edit page for parent Info Object
-      if (null !== $parent)
+      if (isset($parent))
       {
         $this->redirect(array($parent, 'module' => 'digitalobject', 'action' => 'edit'));
       }

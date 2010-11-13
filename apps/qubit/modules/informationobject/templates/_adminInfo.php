@@ -4,20 +4,21 @@
       <td>
         <?php echo $form->publicationStatus->label(__('Publication status'))->renderRow() ?>
       </td><td>
-        <div class="form-item">
-          <label for="source language"><?php echo __('Source language') ?></label>
-          <?php if (isset($informationObject->sourceCulture)): ?>
-            <?php if ($sf_user->getCulture() == $informationObject->sourceCulture): ?>
-              <?php echo format_language($informationObject->sourceCulture) ?>
-            <?php else: ?>
-              <div class="default-translation">
-                <?php echo link_to(format_language($informationObject->sourceCulture), array('sf_culture' => $informationObject->sourceCulture) + $sf_request->getParameterHolder()->getAll()) ?>
-              </div>
-            <?php endif; ?>
+
+        <h3><?php echo __('Source language') ?></h3>
+
+        <?php if (isset($resource->sourceCulture)): ?>
+          <?php if ($sf_user->getCulture() == $resource->sourceCulture): ?>
+            <?php echo format_language($resource->sourceCulture) ?>
           <?php else: ?>
-            <?php echo format_language($sf_user->getCulture()) ?>
+            <div class="default-translation">
+              <?php echo link_to(format_language($resource->sourceCulture), array('sf_culture' => $resource->sourceCulture) + $sf_request->getParameterHolder()->getAll()) ?>
+            </div>
           <?php endif; ?>
-        </div>
+        <?php else: ?>
+          <?php echo format_language($sf_user->getCulture()) ?>
+        <?php endif; ?>
+
       </td>
     </tr>
   </table>

@@ -35,13 +35,35 @@ class RepositoryListAction extends sfAction
     $search = new QubitSearch;
 
     $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitRepository', 'className'));
-    if (isset($request->query))
+
+    if (isset($request->subquery))
     {
-      $query = new Zend_Search_Lucene_Search_Query_Boolean(array($query, Zend_Search_Lucene_Search_QueryParser::parse($request->query)));
+      try
+      {
+        // Parse query string
+        $query = new Zend_Search_Lucene_Search_Query_Boolean(array($query, Zend_Search_Lucene_Search_QueryParser::parse($request->subquery)));
+      }
+      catch (Exception $e)
+      {
+        $this->error = $e->getMessage();
+
+        return;
+      }
     }
 
     $this->pager = new QubitArrayPager;
-    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+
+    try
+    {
+      $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    }
+    catch (Exception $e)
+    {
+      $this->error = $e->getMessage();
+
+      return;
+    }
+
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 

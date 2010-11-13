@@ -139,7 +139,6 @@ class QubitAclPermission extends BaseAclPermission
     // If no conditional specified, than always return true
     if (0 == strlen($conditional = $this->conditional))
     {
-
       return true;
     }
 
@@ -171,8 +170,8 @@ class QubitAclPermission extends BaseAclPermission
       {
         if (array_key_exists($key, $parameters))
         {
-          // For null parameters (e.g. creating a new info object so
-          // $repositoryId is null) always grant and never deny privileges.
+          // For null parameters always grant and never deny privileges
+          // e.g. creating a new info object: $repositoryId is null
           if (null === $parameters[$key])
           {
             if (0 == $this->grantDeny)

@@ -71,11 +71,10 @@ class QubitAclGroup extends BaseAclGroup implements Zend_Acl_Role_Interface
 
   public function isProtected()
   {
-    return (
-      $this->id == self::ROOT_ID ||
-      $this->id == self::ANONYMOUS_ID ||
-      $this->id == self::AUTHENTICATED_ID ||
-      $this->id == self::ADMINISTRATOR_ID
-    );
+    return in_array($this->id, array(
+      self::ROOT_ID,
+      self::ANONYMOUS_ID,
+      self::AUTHENTICATED_ID,
+      self::ADMINISTRATOR_ID));
   }
 }

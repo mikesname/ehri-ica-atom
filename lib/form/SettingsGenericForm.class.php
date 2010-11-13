@@ -19,7 +19,7 @@
 
 /**
  * Settings module - generic form definition
- * 
+ *
  * @package    qubit
  * @subpackage settings
  * @version    svn: $Id$
@@ -34,47 +34,46 @@ class SettingsGenericForm extends sfForm
       $widgets[$setting->getName()] = new sfWidgetFormInput;
       $validators[$setting->getName()] = new sfValidatorString(array('required'=>$this->areFieldsRequired()));
     }
-    
+
     // Set them
     $this->setWidgets($widgets);
     $this->setValidators($validators);
-    
+
     // Set decorator
     $decorator = new QubitWidgetFormSchemaFormatterList($this->widgetSchema);
     $this->widgetSchema->addFormFormatter('list', $decorator);
     $this->widgetSchema->setFormFormatterName('list');
-    
+
     // Set wrapper text for global form settings
     $this->widgetSchema->setNameFormat($this->getOption('scope').'[%s]');
   }
-  
+
   public function setScope($scope)
   {
     $this->setOption('scope', $scope);
-    
+
     return $this;
   }
-  
+
   public function getScope()
   {
     return $this->getOption('scope');
   }
-  
+
   public function setSettings(array $settings)
   {
     $this->setOption('settings', $settings);
-    
+
     return $this;
   }
-  
+
   public function getSettings()
   {
     return $this->getOption('settings');
   }
-  
+
   public function areFieldsRequired()
   {
     return !(isset($this->options['fieldsRequired']) && $this->options['fieldsRequired'] === false);
   }
-  
 }

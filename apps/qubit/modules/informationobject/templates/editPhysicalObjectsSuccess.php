@@ -1,12 +1,16 @@
 <h1><?php echo __('Link physical storage') ?></h1>
 
-<h1 class="label"><?php echo render_title($informationObject) ?></h1>
+<h1 class="label"><?php echo render_title($resource) ?></h1>
 
-<?php echo $form->renderFormTag(url_for(array($informationObject, 'module' => 'informationobject', 'action' => 'editPhysicalObjects'))) ?>
+<?php echo $form->renderGlobalErrors() ?>
+
+<?php echo $form->renderFormTag(url_for(array($resource, 'module' => 'informationobject', 'action' => 'editPhysicalObjects'))) ?>
+
+  <?php echo $form->renderHiddenFields() ?>
 
   <?php if (0 < count($relations)): ?>
-    <div class="form-item">
-      <table class="inline" style="width: 98%;">
+    <table style="width: 98%;">
+      <thead>
         <tr>
           <th colspan="2" style="width: 90%;">
             <?php echo __('Containers') ?>
@@ -14,64 +18,45 @@
             <?php echo image_tag('delete', array('align' => 'top', 'class' => 'deleteIcon')) ?>
           </th>
         </tr>
-        <?php foreach($relations as $relation): ?>
-          <?php $physicalObject = QubitPhysicalObject::getById($relation->getSubjectId()) ?>
-          <tr class="<?php echo 'related_obj_'.$relation->id ?>">
+      </thead><tbody>
+        <?php foreach ($relations as $item): ?>
+          <tr class="related_obj_<?php echo $item->id ?>">
             <td style="width: 90%"><div class="animateNicely">
-              <?php if (isset($relation->subject->type)): ?><?php echo $relation->subject->type ?>: <?php endif; ?><?php echo render_title($relation->subject) ?><?php if (isset($relation->subject->location)): ?> - <?php echo $relation->subject->getLocation(array('cultureFallback' => 'true')) ?><?php endif; ?>
+              <?php echo $item->subject->getLabel() ?>
             </div></td><td style="width: 20px;"><div class="animateNicely">
-              <?php echo link_to(image_tag('pencil', array('align' => 'top')), array($relation->subject, 'module' => 'physicalobject', 'action' => 'edit')) ?>
+              <?php echo link_to(image_tag('pencil', array('align' => 'top')), array($item->subject, 'module' => 'physicalobject', 'action' => 'edit')) ?>
             </div></td><td style="width: 20px;"><div class="animateNicely">
-              <input type="checkbox" name="delete_relations[<?php echo $relation->id ?>]" value="delete" class="multiDelete"/>
+              <input class="multiDelete" name="delete_relations[]" type="checkbox" value="<?php echo url_for(array($item, 'module' => 'relation')) ?>"/>
             </div></td>
           </tr>
         <?php endforeach; ?>
-      </table>
-    </div>
+      </tbody>
+    </table>
   <?php endif; ?>
 
-  <table class="inline" style="width: 98%;">
-    <tr>
-      <td colspan="3" class="headerCell" style="width: 98%">
-        <?php echo __('Add container links (duplicate links will be ignored)') ?>
-      </td>
-    </tr>
-  </table>
+  <div class="section">
 
-  <div class="form-item">
-    <?php echo object_select_tag(null, null, array('related_class' => 'QubitPhysicalObject', 'name' => 'physicalObjectId', 'include_blank' => true, 'class' => 'multiInstance')) ?>
+    <h2><?php echo __('Add container links (duplicate links will be ignored)') ?></h2>
+
+    <div class="form-item">
+      <?php echo $form->containers->renderLabel() ?>
+      <?php echo $form->containers->render(array('class' => 'form-autocomplete')) ?>
+      <input class="add" type="hidden" value="<?php echo url_for(array($resource, 'module' => 'informationobject', 'action' => 'editPhysicalObjects')) ?> #name"/>
+      <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'physicalobject', 'action' => 'autocomplete')) ?>"/>
+    </div>
+
   </div>
 
-  <table class="inline" style="width: 98%;">
-    <tr>
-      <td colspan="3" class="headerCell" style="width: 98%">
-        <?php echo __('Or, create a new container') ?>
-      </td>
-    </tr>
-  </table>
+  <div class="section">
 
-  <div class="form-item">
-    <label for="physicalObjectName"><?php echo __('Name') ?></label>
-    <?php echo input_tag('physicalObjectName') ?>
-  </div>
+    <h2><?php echo __('Or, create a new container') ?></h2>
 
-  <div class="form-item">
-    <label for="physicalObjectLocation"><?php echo __('Location') ?></label>
-    <?php echo input_tag('physicalObjectLocation') ?>
-  </div>
+    <?php echo $form->name->renderRow() ?>
 
-  <div class="form-item">
-    <label for="physicalObjectType"><?php echo __('Container type') ?></label>
-    <?php
-      /* Disable fancy multi-level drop-down widget until display code is fixed to
-       * allow multiple instances per form.
-       echo object_select_tree($physicalObject, 'getId', array(
-      'include_blank' => true,
-      'peer_method' => 'getPhysicalObjectContainerTypes',
-      'related_class' => 'QubitTerm',
-      'name' => 'physicalObjectContainerId'
-    )); */ ?>
-    <?php echo select_tag('physicalObjectTypeId', options_for_select(QubitTerm::getIndentedChildTree(QubitTerm::CONTAINER_ID), null, array('include_blank' => true))) ?>
+    <?php echo $form->location->renderRow() ?>
+
+    <?php echo $form->type->renderRow() ?>
+
   </div>
 
   <div class="actions section">
@@ -80,8 +65,8 @@
 
     <div class="content">
       <ul class="clearfix links">
-        <li><?php echo link_to(__('Cancel'), array($informationObject, 'module' => 'informationobject')) ?></li>
-        <li><?php echo submit_tag(__('Save')) ?></li>
+        <li><?php echo link_to(__('Cancel'), array($resource, 'module' => 'informationobject')) ?></li>
+        <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>
       </ul>
     </div>
 

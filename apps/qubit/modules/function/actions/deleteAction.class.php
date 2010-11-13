@@ -23,22 +23,17 @@ class FunctionDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->func = QubitFunction::getById($request->id);
-
-    if (!isset($this->func))
-    {
-      $this->forward404();
-    }
+    $this->resource = $this->getRoute()->resource;
 
     if ($request->isMethod('delete'))
     {
       // Delete relationships
-      foreach (QubitRelation::getBySubjectOrObjectId($this->func->id) as $relation)
+      foreach (QubitRelation::getBySubjectOrObjectId($this->resource->id) as $item)
       {
-        $relation->delete();
+        $item->delete();
       }
 
-      $this->func->delete();
+      $this->resource->delete();
 
       $this->redirect(array('module' => 'function', 'action' => 'browse'));
     }

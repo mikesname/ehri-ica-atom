@@ -18,7 +18,7 @@
  */
 
 /**
- * Harvest OAI-PMH records 
+ * Harvest OAI-PMH records
  *
  * @package    qubit
  * @subpackage oai
@@ -44,12 +44,12 @@ class oaiHarvesterHarvestAction extends sfAction
     $this->recordCount = 0;
 
     //If the request did not go through the proper routing, forward to 404
-    if (!$request->hasParameter('harvestId'))
+    if (!isset($request->harvestId))
     {
       $this->forward404();
     }
 
-    $harvestInfo = QubitOaiHarvest::getById($request->getParameter('harvestId'));
+    $harvestInfo = QubitOaiHarvest::getById($request->harvestId);
     $harvestInfo->setLastHarvestAttempt(QubitOai::getDate());
     $harvestInfo->save();
     $rep = $harvestInfo->getOaiRepository();
@@ -106,7 +106,6 @@ class oaiHarvesterHarvestAction extends sfAction
 
       if (!$this->noRecordsMatch)
       {
-
         //Container for xml import errors
         $this->errorsFound = array();
         $this->errorsXML = array();
@@ -142,7 +141,6 @@ class oaiHarvesterHarvestAction extends sfAction
           $errorReport .= "\n**************************************************\n\n";
           $errorReportHTML .= "Error when importing record:\n\n <br>".$this->errorsXML[$i]."\n\n <br> Error message: <br> \n".$this->errorsFound[$i];
         }
-
       }
 
       //Check for resumption token which will also be the while loop indicator
@@ -161,5 +159,4 @@ class oaiHarvesterHarvestAction extends sfAction
     $harvestInfo->setLastHarvest($until);
     $harvestInfo->save();
   }
-
 }

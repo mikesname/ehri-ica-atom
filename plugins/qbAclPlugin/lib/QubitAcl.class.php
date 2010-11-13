@@ -53,7 +53,7 @@ class QubitAcl
   {
     if (null === $user)
     {
-      $this->_user = sfContext::getInstance()->getUser();
+      $this->_user = sfContext::getInstance()->user;
     }
     else
     {
@@ -75,7 +75,7 @@ class QubitAcl
   }
 
   /**
-   * Test user access to the given access control object (aco).
+   * Test user access to the given resource
    *
    * Note: Current sf_user is assumed, but can be overridden with
    * $options['userId'].
@@ -93,7 +93,7 @@ class QubitAcl
       $actions = array($actions);
     }
 
-    $user = sfContext::getInstance()->getUser();
+    $user = sfContext::getInstance()->user;
     if (isset($options['user']))
     {
       $user = $options['user'];
@@ -102,14 +102,21 @@ class QubitAcl
     // Loop through actions and return on first "true" result (OR condition)
     while ($action = array_shift($actions))
     {
-      // Short-circuit decision tree for 'translate', becuase we want
+      // Short-circuit decision tree for 'translate', because we want
       // translate permissions to apply system-wide
       //
       // TODO: Get rid of this when we are using ACL system-wide
       //
       if ('translate' == $action)
       {
-        $hasAccess = self::isAllowed($user, $resource, 'translate', $options);
+        if (self::isAllowed($user, $resource, 'translate', $options))
+        {
+          return true;
+        }
+        else
+        {
+          continue;
+        }
       }
 
       switch (get_class($resource))
@@ -444,9 +451,9 @@ class QubitAcl
     $userGroupIds = array();
 
     // If user is logged in
-    if (sfContext::getInstance()->getUser()->isAuthenticated())
+    if (sfContext::getInstance()->user->isAuthenticated())
     {
-      $userId = sfContext::getInstance()->getUser()->getUserID();
+      $userId = sfContext::getInstance()->user->getUserID();
 
       // Test user permissions
       $criteria = new Criteria;
@@ -477,7 +484,7 @@ class QubitAcl
     if (0 == count($repositoryAccess) || '*' != $repositoryAccess[count($repositoryAccess) - 1]['id'])
     {
       // Test user group permissions
-      foreach (sfContext::getInstance()->getUser()->listGroups() as $group)
+      foreach (sfContext::getInstance()->user->listGroups() as $group)
       {
         $userGroupIds[] = $group->id;
       }
@@ -524,7 +531,7 @@ class QubitAcl
 
   public static function forwardUnauthorized()
   {
-    if (!sfContext::getInstance()->getUser()->isAuthenticated())
+    if (!sfContext::getInstance()->user->isAuthenticated())
     {
       self::forwardToLoginAction();
     }
@@ -717,7 +724,7 @@ class QubitAcl
    */
   public static function searchFilterByResource($query, $root)
   {
-    $user = sfContext::getInstance()->getUser();
+    $user = sfContext::getInstance()->user;
 
     $permissions = self::getUserPermissionsByAction($user, get_class($root), 'read');
 
@@ -805,7 +812,7 @@ class QubitAcl
   }
 
   /**
-   * Get a new criterion to filter a SQL query by ACL rules 
+   * Get a new criterion to filter a SQL query by ACL rules
    *
    * @param Criteria $criteria
    * @param mixed $root - root object for list
@@ -813,7 +820,7 @@ class QubitAcl
    */
   public static function getFilterCriterion($criteria, $root, $action)
   {
-    $user = sfContext::getInstance()->getUser();
+    $user = sfContext::getInstance()->user;
     $rootClass = get_class($root);
 
     if ('createTerm' != $action)
@@ -826,21 +833,51 @@ class QubitAcl
     }
 
     // Build access control list
-    $allows = $bans = array();
+    $allows = $bans = $ids = array();
+    $forceBan = false;
     if (0 < count($permissions))
     {
       foreach ($permissions as $permission)
       {
-        $id = $permission->objectId;
-
-        if ('createTerm' == $action)
+        switch ($action)
         {
-          if (null === $id = $permission->getConstants(array('name' => 'taxonomyId')))
-          {
-            $id = QubitTaxonomy::ROOT_ID;
-          }
-        }
+          case 'createTerm':
+            if (null === $id = $permission->getConstants(array('name' => 'taxonomyId')))
+            {
+              $ids[] = QubitTaxonomy::ROOT_ID;
+            }
 
+            break;
+
+          case 'viewDraft':
+            if (null !== $repoId = $permission->getConstants(array('name' => 'repositoryId')))
+            {
+              $criteria2 = new Criteria;
+              $criteria2->add(QubitInformationObject::REPOSITORY_ID, $repoId);
+
+              if (0 < count($results = QubitInformationObject::get($criteria2)))
+              {
+                foreach ($results as $item)
+                {
+                  $ids[] = $item->id;
+                }
+
+                // Special case because isAllowed() on ROOT will return true if
+                // user has grant permission on ANY repository. This will force
+                // showing ONLY resources in allowed repositories
+                $forceBan = true;
+              }
+            }
+
+            break;
+
+          default:
+            $ids[] = $permission->objectId;
+        }
+      }
+
+      foreach ($ids as $id)
+      {
         if (!isset($resourceAccess[$id]))
         {
           $resource = call_user_func(array($rootClass, 'getById'), $id);
@@ -854,7 +891,6 @@ class QubitAcl
           {
             $bans[] = $id;
           }
-
         }
       }
     }
@@ -864,7 +900,7 @@ class QubitAcl
     {
       return false; // No allows, always false
     }
-    else if (0 == count($bans) && QubitAcl::isAllowed($user, $root, $action))
+    else if (!$forceBan && 0 == count($bans) && QubitAcl::isAllowed($user, $root, $action))
     {
       return true; // No bans, always true
     }
@@ -880,14 +916,14 @@ class QubitAcl
         // If object has no children include it by id
         if (1 == ($resource->rgt - $resource->lft))
         {
-          $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::ID'), $resourceId, Criteria::EQUAL);
+          $subCriterion = $criteria->getNewCriterion(constant("$rootClass::ID"), $resourceId);
         }
 
         // Else, include object and all children
         else
         {
-          $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::LFT'), $resource->lft, Criteria::GREATER_EQUAL);
-          $subCriterion2 = $criteria->getNewCriterion(constant($rootClass.'::RGT'), $resource->rgt, Criteria::LESS_EQUAL);
+          $subCriterion = $criteria->getNewCriterion(constant("$rootClass::LFT"), $resource->lft, Criteria::GREATER_EQUAL);
+          $subCriterion2 = $criteria->getNewCriterion(constant("$rootClass::RGT"), $resource->rgt, Criteria::LESS_EQUAL);
           $subCriterion->addAnd($subCriterion2);
         }
 
@@ -912,13 +948,13 @@ class QubitAcl
         // If object has no children, remove it by id
         if (1 == ($resource->rgt - $resource->lft))
         {
-          $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::ID'), $resourceId, Criteria::NOT_EQUAL);
+          $subCriterion = $criteria->getNewCriterion(constant("$rootClass::ID"), $resourceId, Criteria::NOT_EQUAL);
         }
 
         else
         {
-          $subCriterion = $criteria->getNewCriterion(constant($rootClass.'::LFT'), $resource->lft, Criteria::LESS_THAN);
-          $subCriterion2 = $criteria->getNewCriterion(constant($rootClass.'::RGT'), $resource->rgt, Criteria::GREATER_THAN);
+          $subCriterion = $criteria->getNewCriterion(constant("$rootClass::LFT"), $resource->lft, Criteria::LESS_THAN);
+          $subCriterion2 = $criteria->getNewCriterion(constant("$rootClass::RGT"), $resource->rgt, Criteria::GREATER_THAN);
           $subCriterion->addOr($subCriterion2);
         }
 
@@ -956,20 +992,20 @@ class ConditionalAssert implements Zend_Acl_Assert_Interface
     if ('translate' == $privilege)
     {
       // If source language is the current language, then we aren't translating
-      if (method_exists($resource, 'getSourceCulture') && $resource->sourceCulture == sfContext::getInstance()->getUser()->getCulture())
+      if (method_exists($resource, 'getSourceCulture') && $resource->sourceCulture == sfContext::getInstance()->user->getCulture())
       {
         return false;
       }
 
       // Test that user can translate into current language
-      if (!$this->permission->evaluateConditional(array('language' => sfContext::getInstance()->getUser()->getCulture())))
+      if (!$this->permission->evaluateConditional(array('language' => sfContext::getInstance()->user->getCulture())))
       {
         return false;
       }
     }
 
     // No update if source language != current language (requires translate)
-    else if ('update' == $privilege && $resource->sourceCulture != sfContext::getInstance()->getUser()->getCulture())
+    else if ('update' == $privilege && $resource->sourceCulture != sfContext::getInstance()->user->getCulture())
     {
       return false;
     }

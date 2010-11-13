@@ -21,7 +21,7 @@ class MapIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->mapMetadata = Map::getById($this->getRequestParameter('id'));
+    $this->mapMetadata = Map::getById($this->request->id);
     $this->forward404Unless($this->mapMetadata);
 
     $placeRelations = $this->mapMetadata->getPlaceRelations();
@@ -32,7 +32,7 @@ class MapIndexAction extends sfAction
     //set Google Map Key assigned to this website
     $this->map->setAPIKey('ABQIAAAAdK0ewFXxGGu_rho7KNhiWRS2Wh_PTvFuRUPwoFaayjCdp26BFxRbGF-EbSNwePqixB0Gu5k4DghJ7w');
 
-    $rootURL = $this->getRequest()->getRelativeUrlRoot();
+    $rootURL = $this->request->getRelativeUrlRoot();
 
     //add locations to map
     foreach ($placeRelations as $relation)
@@ -40,10 +40,10 @@ class MapIndexAction extends sfAction
     $c = new Criteria;
     $place = Place::getById($relation->getPlaceId());
 
-    $mapIcon = '<b><a href="'.$rootURL.'/place/show/id/'.$place->getId().'">'.$place->getName().'</a></b>';
+    $mapIcon = '<strong><a href="'.$rootURL.'/place/show/id/'.$place->id.'">'.$place->getName().'</a></strong>';
     if ($relation->getMapIconImageId())
       {
-      $mapIcon .= '<p><a href="'.$rootURL.'/place/show/id/'.$place->getId().'"><img src="'.$rootURL.'/digitalobject/retrieve/id/'.$relation->getMapIconImageId().' /></a></p>';
+      $mapIcon .= '<p><a href="'.$rootURL.'/place/show/id/'.$place->id.'"><img src="'.$rootURL.'/digitalobject/retrieve/id/'.$relation->getMapIconImageId().'/></a></p>';
       }
     if ($relation->getMapIconDescription())
       {
@@ -58,19 +58,19 @@ class MapIndexAction extends sfAction
     //lookup and cache geoCodes if they don't already exist (
     else
       {
-      $this->map->addMarkerByAddress($place->getId(), $mapIcon);
+      $this->map->addMarkerByAddress($place->id, $mapIcon);
       }
     }
 
    //determine if user has edit priviliges
     $this->editCredentials = false;
-    if ($this->getUser()->hasCredential(array('contributor', 'editor', 'administrator'), false))
+    if ($this->context->user->hasCredential(array('contributor', 'editor', 'administrator'), false))
     {
     $this->editCredentials = true;
     }
 
     //set back navigation
-    $this->getUser()->setAttribute('nav_context_back', $this->getRequest()->getURI());
+    $this->context->user->setAttribute('nav_context_back', $this->request->getURI());
 
     //use layout that has necessary GoogleMapAPI hooks in doctype, head and body attributes/elements
     $this->setLayout('layout_map_two_column');

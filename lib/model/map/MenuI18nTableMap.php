@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_menu_i18n' table.
+ * This class defines the structure of the 'menu_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class MenuI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_menu_i18n');
+		$this->setName('menu_i18n');
 		$this->setPhpName('menuI18n');
 		$this->setClassname('QubitMenuI18n');
 		$this->setPackage('lib.model');
@@ -38,7 +38,7 @@ class MenuI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('LABEL', 'label', 'VARCHAR', false, 255, null);
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_menu', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'menu', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

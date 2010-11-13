@@ -29,16 +29,16 @@ class DefaultMoveAction extends sfAction
 
     $this->form = new sfForm;
 
-    $this->object = QubitObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists and that it is not the root
-    if (!isset($this->object) || !isset($this->object->parent))
+    // Check that the object exists and that it is not the root
+    if (!isset($this->resource) || !isset($this->resource->parent))
     {
       $this->forward404();
     }
 
     // Check authorization
-    if (!QubitAcl::check($this->object, 'update'))
+    if (!QubitAcl::check($this->resource, 'update'))
     {
       QubitAcl::forwardUnauthorized();
     }
@@ -48,11 +48,11 @@ class DefaultMoveAction extends sfAction
     $this->form->setWidget('parent', new sfWidgetFormInputHidden);
 
     // Root is default parent
-    if ($this->object instanceof QubitInformationObject)
+    if ($this->resource instanceof QubitInformationObject)
     {
       $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array(QubitInformationObject::getById(QubitInformationObject::ROOT_ID), 'module' => 'informationobject'))));
     }
-    else if ($this->object instanceof QubitTerm)
+    else if ($this->resource instanceof QubitTerm)
     {
       $this->form->bind($request->getGetParameters() + array('parent' => $this->context->routing->generate(null, array(QubitTerm::getById(QubitTerm::ROOT_ID), 'module' => 'term'))));
     }
@@ -66,16 +66,16 @@ class DefaultMoveAction extends sfAction
         $params = $this->context->routing->parse(Qubit::pathInfo($this->form->parent->getValue()));
 
         // In term treeview, root node links (href) to taxonomy, but it represents the term root object
-        if ($this->object instanceOf QubitTerm && QubitObject::getById($params['id']) instanceof QubitTaxonomy)
+        if ($this->resource instanceOf QubitTerm && QubitObject::getById($params['_sf_route']->resource->id) instanceof QubitTaxonomy)
         {
-          $this->object->parentId = QubitTerm::ROOT_ID;
+          $this->resource->parentId = QubitTerm::ROOT_ID;
         }
         else
         {
-          $this->object->parentId = $params['id'];
+          $this->resource->parentId = $params['_sf_route']->resource->id;
         }
 
-        $this->object->save();
+        $this->resource->save();
 
         if ($request->isXmlHttpRequest())
         {
@@ -83,20 +83,20 @@ class DefaultMoveAction extends sfAction
         }
         else
         {
-          if ($this->object instanceof QubitInformationObject)
+          if ($this->resource instanceof QubitInformationObject)
           {
-            $this->redirect(array($this->object, 'module' => 'informationobject'));
+            $this->redirect(array($this->resource, 'module' => 'informationobject'));
           }
-          else if ($this->object instanceof QubitTerm)
+          else if ($this->resource instanceof QubitTerm)
           {
-            $this->redirect(array($this->object, 'module' => 'term'));
+            $this->redirect(array($this->resource, 'module' => 'term'));
           }
         }
       }
     }
 
     $params = $this->context->routing->parse(Qubit::pathInfo($this->form->parent->getValue()));
-    $this->parent = QubitObject::getById($params['id']);
+    $this->parent = QubitObject::getById($params['_sf_route']->resource->id);
 
     $search = new QubitSearch;
     $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->parent->id, 'parentId'));

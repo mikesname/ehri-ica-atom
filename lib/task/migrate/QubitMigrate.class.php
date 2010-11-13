@@ -89,11 +89,11 @@ class QubitMigrate
   protected function deleteStubObjects()
   {
     // Delete "stub" QubitEvent objects that have no valid "event type"
-    if (isset($this->data['QubitEvent']) && is_array($this->data['QubitEvent']))
+    if (isset($this->data['QubitEvent']))
     {
-      foreach ($this->data['QubitEvent'] as $key => $event)
+      foreach ($this->data['QubitEvent'] as $key => $row)
       {
-        if (!isset($event['type_id']))
+        if (!isset($row['type_id']))
         {
           unset($this->data['QubitEvent'][$key]);
 
@@ -106,14 +106,8 @@ class QubitMigrate
       }
     }
 
-    // If there are no QubitEvent objects left, remove the section
-    if ($this->data['QubitEvent'] == array())
-    {
-      unset($this->data['QubitEvent']);
-    }
-
     // Remove blank "stub" QubitObjectTermRelation objects
-    if (isset($this->data['QubitObjectTermRelation']) && is_array($this->data['QubitObjectTermRelation']))
+    if (isset($this->data['QubitObjectTermRelation']))
     {
       foreach ($this->data['QubitObjectTermRelation'] as $key => $row)
       {
@@ -124,14 +118,8 @@ class QubitMigrate
       }
     }
 
-    // If there are no QubitObjectTermRelation objects left, remove the section
-    if ($this->data['QubitObjectTermRelation'] == array())
-    {
-      unset($this->data['QubitObjectTermRelation']);
-    }
-
     // Remove blank "stub" QubitRelation objects
-    if (isset($this->data['QubitRelation']) && is_array($this->data['QubitRelation']))
+    if (isset($this->data['QubitRelation']))
     {
       foreach ($this->data['QubitRelation'] as $key => $row)
       {
@@ -140,12 +128,6 @@ class QubitMigrate
           unset($this->data['QubitRelation'][$key]);
         }
       }
-    }
-
-    // If there are no QubitRelation objects left, remove the section
-    if ($this->data['QubitRelation'] == array())
-    {
-      unset($this->data['QubitRelation']);
     }
 
     return $this;
@@ -178,13 +160,11 @@ class QubitMigrate
 
         if (isset($columns[$searchColumn]) && $columns[$searchColumn][$searchKey] == $searchValue[$searchKey])
         {
-
           return $key;
         }
       }
       else if (isset($columns[$searchColumn]) && $columns[$searchColumn] == $searchValue)
       {
-
         return $key;
       }
     }
@@ -223,7 +203,6 @@ class QubitMigrate
     // If pivotKey doesn't exist, then just return a simple array merge
     if (!isset($originalData[$pivotKey]))
     {
-
       return array_merge($originalData, $newData);
     }
 

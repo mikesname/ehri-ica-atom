@@ -26,16 +26,12 @@ class SearchIndexAction extends sfAction
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    // At least 3 wildcard characters are required for wildcard search
-    if (-1 < strpos($request->query, '*') && 4 > strlen($request->query))
+    if (isset($this->getRoute()->resource) && $this->getRoute()->resource instanceof QubitRepository)
     {
-      $this->error = $this->context->i18n->__('At least 3 characters are required for wildcard (*) search');
-      return;
+      $request->query .= " and repository:\"{$this->getRoute()->resource->authorizedFormOfName}\"";
     }
 
-    $culture = $this->getUser()->getCulture();
-
-    $this->response->setTitle('Search for "'.$request->query.'" - '.$this->response->getTitle());
+    $this->response->setTitle("{$this->context->i18n->__('Search for [%1%]', array('%1%' => $request->query))} - {$this->response->getTitle()}");
 
     xfLuceneZendManager::load();
     Zend_Search_Lucene_Analysis_Analyzer::setDefault(SearchIndex::getIndexAnalyzer());
@@ -44,15 +40,38 @@ class SearchIndexAction extends sfAction
     $search = new QubitSearch;
 
     $query = new Zend_Search_Lucene_Search_Query_Boolean;
+
+    try
+    {
+      // Parse query string
+      $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->query, 'UTF-8'), true);
+    }
+    catch (Exception $e)
+    {
+      $this->error = $e->getMessage();
+
+      return;
+    }
+
+    $culture = $this->context->user->getCulture();
     $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($culture, 'culture')), true);
 
     $query = QubitAcl::searchFilterByRepository($query, 'read');
     $query = QubitAcl::searchFilterDrafts($query);
 
-    $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->query, 'UTF-8'), true);
-
     $this->pager = new QubitArrayPager;
-    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+
+    try
+    {
+      $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    }
+    catch (Exception $e)
+    {
+      $this->error = $e->getMessage();
+
+      return;
+    }
+
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 

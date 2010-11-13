@@ -31,15 +31,10 @@ class PhysicalObjectDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->physicalObject = QubitPhysicalObject::getById($request->id);
-
-    if (!isset($this->physicalObject))
-    {
-      $this->forward404();
-    }
+    $this->resource = $this->getRoute()->resource;
 
     $criteria = new Criteria;
-    $criteria->add(QubitRelation::SUBJECT_ID, $this->physicalObject->id);
+    $criteria->add(QubitRelation::SUBJECT_ID, $this->resource->id);
     $criteria->addJoin(QubitRelation::OBJECT_ID, QubitInformationObject::ID);
     $this->informationObjects = QubitInformationObject::get($criteria);
 
@@ -52,9 +47,10 @@ class PhysicalObjectDeleteAction extends sfAction
     {
       $this->form->bind($request->getPostParameters());
 
-      $this->physicalObject->delete();
+      $this->resource->delete();
 
-      if (null !== $next = $this->form->getValue('next'))
+      $next = $this->form->getValue('next');
+      if (isset($next))
       {
         $this->redirect($next);
       }

@@ -19,15 +19,15 @@
 
 /**
  * Form decorator for <table class="list"> css definition.
- * 
+ *
  * @package    qubit
  * @subpackage forms
  * @version    svn: $Id$
  * @author     David Juhasz <david@artefactual.com>
  */
-class QubitWidgetFormSchemaFormatterList extends sfWidgetFormSchemaFormatter 
-{ 
-  protected 
+class QubitWidgetFormSchemaFormatterList extends sfWidgetFormSchemaFormatter
+{
+  protected
     $rowFormat = "<tr>\n <td><span title=\"%help%\">%label%</td>\n <td>%error%%field%%hidden_fields%</td>\n</tr>\n",
     $helpFormat = '%help%',
     $errorRowFormat = "<tr><td colspan=\"2\">\n%errors%</td></tr>\n",

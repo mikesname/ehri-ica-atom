@@ -1,6 +1,24 @@
 body
 {
   margin: 1em;
+  word-wrap: break-word;
+}
+
+form h3,
+.form-item label
+{
+  font: inherit;
+  font-weight: bold;
+}
+
+form thead th
+{
+  /* Reset thead th */
+
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid #d3e7f4;
+  color: #494949;
 }
 
 form .field
@@ -77,11 +95,18 @@ textarea,
   background: #fff;
   border: 1px solid #ccc;
   border-top-color: #999;
+
+  /* Use consistent box model if possible */
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+
   padding: 2px;
-  width: 95%;
+  width: 100%;
 }
 
-input[type="radio"]
+input[type=radio]
 {
   width: auto;
 }
@@ -225,10 +250,28 @@ thead th,
   background: transparent;
 }
 
-.field .field > h3:after,
-.search .field > h3:after
+.browse .field > div,
+.browseTerm .field > div,
+.field .field > div,
+.search .field > div
 {
-  content: ':';
+  /* Reset .field */
+
+  margin: 0;
+}
+
+.browse .field > h3,
+.browseTerm .field > h3,
+.field .field > h3,
+.search .field > h3
+{
+  /* Reset .field */
+
+  float: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+  width: auto;
 }
 
 /* Hyperlinked headings, repository contact information is one example of
@@ -403,15 +446,25 @@ thead th,
   content: '(';
 }
 
-.readOnly
+body .readOnly
 {
   background-image: url(../images/lock.png);
   background-position: right;
   background-repeat: no-repeat;
-  padding-right: 16px;
+  padding-right: 20px;
+}
+
+.resizable-textarea
+{
+  width: 100%;
 }
 
 /* hCard */
+
+.vcard > div
+{
+  border-bottom: 1px solid #bbb;
+}
 
 .vcard .adr .field > div
 {
@@ -421,6 +474,65 @@ thead th,
 .vcard .adr .field > h3
 {
   display: none;
+}
+
+.vcard .url
+{
+  word-wrap: break-word;
+}
+
+.yui-dialog
+{
+  opacity: 1;
+
+  transition-duration: .5s;
+  transition-property: opacity visibility;
+  -moz-transition-duration: .5s;
+  -moz-transition-property: opacity visibility;
+  -o-transition-duration: .5s;
+  -o-transition-property: opacity visibility;
+  -webkit-transition-duration: .5s;
+  -webkit-transition-property: opacity visibility;
+
+  width: 480px;
+  z-index: 100;
+}
+
+.yui-dialog .form-item
+{
+  clear: left;
+  margin-top: 0;
+}
+
+.yui-dialog .form-item-date,
+.yui-dialog #resourceRelation .form-item-type,
+.yui-dialog #updateEvent .form-item-type
+{
+  float: left;
+  width: 50%;
+}
+
+.yui-dialog .form-item-endDate,
+.yui-dialog .form-item-startDate
+{
+  clear: none;
+  float: left;
+  margin-left: 1%;
+  width: 24%;
+}
+
+.yui-dialog .form-item-place,
+.yui-dialog .form-item-resourceType
+{
+  clear: none;
+  float: left;
+  margin-left: 1%;
+  width: 49%;
+}
+
+.yui-overlay-hidden
+{
+  opacity: 0;
 }
 
 #breadcrumb li
@@ -742,21 +854,21 @@ body.overlay
 .sidebar .field ul
 {
   margin: 0;
-}  
+}
 
 .imageflow
 {
   padding: 10px 0;
 }
-  
+
 /* Radio button lists */
 
 ul.radio
 {
-  padding-left: 2px; 
+  padding-left: 2px;
 }
 
-ul.radio li 
+ul.radio li
 {
   list-style: none;
 }
@@ -777,6 +889,14 @@ ul.inline li
   display: inline;
 }
 
+ul.inline li label
+{
+  background: none;
+  margin: 0;
+  display: inline;
+  font-weight: normal;
+}
+
 /* table caption */
 
 table caption
@@ -784,7 +904,7 @@ table caption
   text-align: left;
   font-weight: bold;
   margin: 20px 0 0 0;
-  padding: 0 3px; 
+  padding: 0 3px;
 }
 
 .search-results
@@ -796,4 +916,50 @@ table caption
 {
   float: right;
   margin-left: 0.6em;
+}
+
+#page .sidebar .search
+{
+  padding: 0.3em 0.2em;
+  width: auto;
+}
+
+#page .sidebar .search form
+{
+  position: relative;
+  width: auto;
+}
+
+#page .sidebar .search .form-submit
+{
+  background: #bcd url(../images/search-16px.png) no-repeat center;
+  border: 0;
+
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+
+  margin: 2px;
+  padding: 1px;
+  position: absolute;
+  right: 0;
+  text-indent: -32767px;
+  height: 18px;
+  width: 18px;
+}
+
+#page .sidebar .search .form-submit:focus,
+#page .sidebar .search .form-submit:hover
+{
+  background-color: #abc;
+}
+
+#page .sidebar .search input[name=query]
+{
+  border-radius: 2px;
+  -moz-border-radius: 2px;
+  -webkit-border-radius: 2px;
+
+  margin: 0; /* Only needed in WebKit */
+  font:1em/100% Verdana,sans-serif;
 }

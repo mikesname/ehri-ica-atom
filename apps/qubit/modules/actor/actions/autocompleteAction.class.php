@@ -29,6 +29,7 @@ class ActorAutocompleteAction extends sfAction
     $criteria = new Criteria;
     $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
     $criteria->add(QubitActorI18n::CULTURE, $this->context->user->getCulture());
+    $criteria->addJoin(QubitActor::ID, QubitObject::ID);
     $criteria->add(QubitObject::CLASS_NAME, 'QubitUser', Criteria::NOT_EQUAL);
 
     if (isset($request->showOnlyActors) && 'true' == $request->showOnlyActors)
@@ -38,11 +39,11 @@ class ActorAutocompleteAction extends sfAction
 
     if (isset($request->query))
     {
-      $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $request->query.'%', Criteria::LIKE);
+      $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, "$request->query%", Criteria::LIKE);
     }
 
     // Exclude the calling actor from the list
-    $params = $this->context->routing->parse(Qubit::pathInfo($request->getHttpHeader('Referer')));
+    $params = $this->context->routing->parse(Qubit::pathInfo($request->getReferer()));
     if (isset($params['id']))
     {
       $criteria->add(QubitActor::ID, $params['id'], Criteria::NOT_EQUAL);

@@ -5,15 +5,15 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_place',
+    TABLE_NAME = 'place',
 
-    ID = 'q_place.ID',
-    COUNTRY_ID = 'q_place.COUNTRY_ID',
-    TYPE_ID = 'q_place.TYPE_ID',
-    LONGTITUDE = 'q_place.LONGTITUDE',
-    LATITUDE = 'q_place.LATITUDE',
-    ALTITUDE = 'q_place.ALTITUDE',
-    SOURCE_CULTURE = 'q_place.SOURCE_CULTURE';
+    ID = 'place.ID',
+    COUNTRY_ID = 'place.COUNTRY_ID',
+    TYPE_ID = 'place.TYPE_ID',
+    LONGTITUDE = 'place.LONGTITUDE',
+    LATITUDE = 'place.LATITUDE',
+    ALTITUDE = 'place.ALTITUDE',
+    SOURCE_CULTURE = 'place.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -115,7 +115,7 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -183,7 +183,7 @@ abstract class BasePlace extends QubitTerm implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)

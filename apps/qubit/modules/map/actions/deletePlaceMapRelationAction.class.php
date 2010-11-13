@@ -21,7 +21,7 @@ class MapDeletePlaceMapRelationAction extends sfAction
 {
   public function execute($request)
   {
-  $placeMapRelation = PlaceMapRelation::getById($this->getRequestParameter('id'));
+  $placeMapRelation = PlaceMapRelation::getById($this->request->id);
 
   $mapId = $placeMapRelation->getMapId();
 

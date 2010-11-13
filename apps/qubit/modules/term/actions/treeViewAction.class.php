@@ -23,21 +23,8 @@ class TermTreeViewAction extends sfAction
   {
     $this->response->setHttpHeader('Content-Type', 'application/json; charset=utf-8');
 
-    $term = QubitTerm::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    $options = array();
-    if (isset($request->limit))
-    {
-      $options['limit'] = $request->limit;
-    }
-
-    if (isset($request->offset))
-    {
-      $options['offset'] = $request->offset;
-    }
-
-    $treeViewObjects = $term->getChildYuiNodes($options);
-
-    return $this->renderText(json_encode($treeViewObjects));
+    return $this->renderText(json_encode($this->resource->getChildYuiNodes($request)));
   }
 }

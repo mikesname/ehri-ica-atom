@@ -3,7 +3,7 @@ QubitSetting:
     name: version
     editable: 0
     deleteable: 0
-    value: 39
+    value: 62
   QubitSetting_2:
     name: upload_dir
     editable: 0
@@ -29,6 +29,11 @@ QubitSetting:
     editable: 1
     deleteable: 0
     value: none
+  QubitSetting_default_pub_status:
+    name: defaultPubStatus
+    editable: 1
+    deleteable: 0
+    value: <?php echo QubitTerm::PUBLICATION_STATUS_DRAFT_ID."\n" ?>
   QubitSetting_8:
     name: informationobject
     scope: default_template
@@ -87,6 +92,17 @@ QubitSetting:
     value:
       en: 'Archival institution'
   QubitSetting_15:
+    name: function
+    scope: ui_label
+    editable: 1
+    deleteable: 0
+    source_culture: en
+    value:
+      en: Function
+      es: Función
+      fr: Fonction
+      pt: Funçao
+  QubitSetting_16:
     name: term
     scope: ui_label
     editable: 1
@@ -101,7 +117,7 @@ QubitSetting:
       nl: Term
       pt: Termo
       sl: Deskriptorji
-  QubitSetting_16:
+  QubitSetting_17:
     name: subject
     scope: ui_label
     editable: 1
@@ -116,7 +132,7 @@ QubitSetting:
       nl: Onderwerp
       pt: Assunto
       sl: Osebe
-  QubitSetting_17:
+  QubitSetting_18:
     name: collection
     scope: ui_label
     editable: 1
@@ -131,7 +147,7 @@ QubitSetting:
       nl: collectie
       pt: fundo/coleção
       sl: zbirke
-  QubitSetting_18:
+  QubitSetting_19:
     name: holdings
     scope: ui_label
     editable: 1
@@ -146,7 +162,7 @@ QubitSetting:
       nl: Collecties
       pt: Acervo
       sl: Fondi
-  QubitSetting_19:
+  QubitSetting_20:
     name: place
     scope: ui_label
     editable: 1
@@ -161,7 +177,7 @@ QubitSetting:
       nl: Plaats
       pt: Local
       sl: Kraji
-  QubitSetting_20:
+  QubitSetting_21:
     name: name
     scope: ui_label
     editable: 1
@@ -176,7 +192,7 @@ QubitSetting:
       nl: Naam
       pt: Nome
       sl: Imena
-  QubitSetting_21:
+  QubitSetting_22:
     name: digitalobject
     scope: ui_label
     editable: 1
@@ -191,7 +207,7 @@ QubitSetting:
       nl: 'Digitaal object'
       pt: 'Objeto digital'
       sl: 'Digitalni objekti'
-  QubitSetting_22:
+  QubitSetting_23:
     name: physicalobject
     scope: ui_label
     editable: 1
@@ -206,7 +222,7 @@ QubitSetting:
       nl: 'Fysieke opslag'
       pt: 'Objeto físico'
       sl: Skladišča
-  QubitSetting_23:
+  QubitSetting_24:
     name: mediatype
     scope: ui_label
     editable: 1
@@ -221,7 +237,7 @@ QubitSetting:
       nl: Bestandsformaat
       pt: 'Tipo de mídia'
       sl: 'Tip medija'
-  QubitSetting_24:
+  QubitSetting_25:
     name: materialtype
     scope: ui_label
     editable: 1
@@ -234,31 +250,31 @@ QubitSetting:
       it: 'Tipo di materiale'
       pt: 'Gênero documental'
       sl: 'Tip materiala'
-  QubitSetting_25:
+  QubitSetting_26:
     name: en
     scope: i18n_languages
     editable: 1
     deleteable: 0
     value: en
-  QubitSetting_26:
+  QubitSetting_27:
     name: fr
     scope: i18n_languages
     editable: 1
     deleteable: 1
     value: fr
-  QubitSetting_27:
+  QubitSetting_28:
     name: es
     scope: i18n_languages
     editable: 1
     deleteable: 1
     value: es
-  QubitSetting_28:
+  QubitSetting_29:
     name: nl
     scope: i18n_languages
     editable: 1
     deleteable: 1
     value: nl
-  QubitSetting_29:
+  QubitSetting_30:
     name: pt
     scope: i18n_languages
     editable: 1
@@ -287,9 +303,6 @@ QubitSetting:
     editable: 1
     deleteable: 0
     value: 1
-  plugins:
-    name: plugins
-    value: 'a:6:{i:0;s:15:"sfCaribouPlugin";i:1;s:10:"sfDcPlugin";i:2;s:11:"sfEadPlugin";i:3;s:12:"sfIsadPlugin";i:4;s:12:"sfModsPlugin";i:5;s:11:"sfRadPlugin";}'
   toggleDescription:
     name: toggleDescription
     value: 1
@@ -298,4 +311,13 @@ QubitSetting:
     value: 1
   toggleTitle:
     name: toggleTitle
+    value: 1
+  QubitSetting_checkForUpdates:
+    name: check_for_updates
+    value: 1
+  QubitSetting_explodeMultipageFiles:
+    name: explode_multipage_files
+    value: 0
+  QubitSetting_showTooltips:
+    name: show_tooltips
     value: 1

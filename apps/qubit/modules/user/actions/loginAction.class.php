@@ -23,6 +23,8 @@ class UserLoginAction extends sfAction
   {
     $this->form = new sfForm;
 
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
+
     // Redirect to the current URI in case we're forwarded to the login page
     $this->form->setDefault('next', $request->getUri());
     if ('user' == $request->module && 'login' == $request->action)
@@ -49,7 +51,7 @@ class UserLoginAction extends sfAction
 
       if ($this->form->isValid())
       {
-        if ($this->getUser()->authenticate($this->form->getValue('email'), $this->form->getValue('password')))
+        if ($this->context->user->authenticate($this->form->getValue('email'), $this->form->getValue('password')))
         {
           if (null !== $next = $this->form->getValue('next'))
           {

@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_repository_i18n' table.
+ * This class defines the structure of the 'repository_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class RepositoryI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_repository_i18n');
+		$this->setName('repository_i18n');
 		$this->setPhpName('repositoryI18n');
 		$this->setClassname('QubitRepositoryI18n');
 		$this->setPackage('lib.model');
@@ -51,7 +51,7 @@ class RepositoryI18nTableMap extends TableMap {
 		$this->addColumn('DESC_RULES', 'descRules', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('DESC_SOURCES', 'descSources', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('DESC_REVISION_HISTORY', 'descRevisionHistory', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_repository', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'repository', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

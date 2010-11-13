@@ -18,7 +18,7 @@
  */
 
 /**
- * Unlink information object from physical object 
+ * Unlink information object from physical object
  *
  * @package qubit
  * @subpackage informationobject
@@ -29,18 +29,27 @@ class RelationDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $this->relation = QubitRelation::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->relation);
-    
-    // Make the $next parameter into an absolute URL because redirect() expects
-    // an absolute URL or an array containing module and action
-    // (Pre-pend code copied from sfWebController->genUrl() method)  
-    $next = 'http'.($request->isSecure() ? 's' : '').'://'.$request->getHost().$this->getRequestParameter('next');
-    $this->forward404Unless($next);
-    
-    // Do delete
-    $this->relation->delete();
-     
-    $this->redirect($next);
+    $this->form = new sfForm;
+
+    $this->resource = $this->getRoute()->resource;
+
+    $this->form->setDefault('next', $request->getReferer());
+    $this->form->setValidator('next', new sfValidatorString);
+    $this->form->setWidget('next', new sfWidgetFormInputHidden);
+
+    if ($request->isMethod('delete'))
+    {
+      $this->form->bind($request->getParamters());
+      if ($this->form->isValid())
+      {
+        $this->resource->delete();
+
+        $value = $this->form->getValue('next');
+        if (isset($value))
+        {
+          $this->redirect($value);
+        }
+      }
+    }
   }
 }

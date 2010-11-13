@@ -41,7 +41,7 @@ class OaiIdentifyComponent extends sfComponent
     $this->deletedRecord = 'no';
     $this->compression = 'gzip';
     $this->path = url_for('oai/oaiAction');
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';
@@ -51,9 +51,8 @@ class OaiIdentifyComponent extends sfComponent
     }
 
     $criteria = new Criteria;
-    $criteria->addJoin(QubitUser::ID, QubitUserRoleRelation::USER_ID);
-    $criteria->addJoin(QubitUserRoleRelation::ROLE_ID, QubitRole::ID);
-    $criteria->add(QubitRole::NAME, 'administrator');
+    $criteria->add(QubitAclUserGroup::GROUP_ID, QubitAclGroup::ADMINISTRATOR_ID);
+    $criteria->addJoin(QubitAclUserGroup::USER_ID, QubitUser::ID);
     $users = QubitUser::get($criteria);
     $this->adminEmail = array();
 

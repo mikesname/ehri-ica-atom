@@ -30,10 +30,10 @@ class ObjectExportAction extends sfAction
       $this->forward404();
     }
 
-    $this->forward404Unless($this->getRequestParameter('format'));
+    $this->forward404Unless($this->request->format);
 
     // load the export config for this schema if it exists
-    $exportConfig = sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.$this->getRequestParameter('format').'.yml';
+    $exportConfig = sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'export'.DIRECTORY_SEPARATOR.$this->request->format.'.yml';
     if (file_exists($exportConfig))
     {
       $this->schemaConfig = sfYaml::load($exportConfig);
@@ -46,7 +46,7 @@ class ObjectExportAction extends sfAction
     }
     else
     {
-      $this->setTemplate($this->getRequestParameter('format'));
+      $this->setTemplate($this->request->format);
     }
 
     $request->setRequestFormat('xml');

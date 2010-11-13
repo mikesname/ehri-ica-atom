@@ -32,18 +32,6 @@ class QubitXmlImport
     $errors = null,
     $rootObject = null;
 
-  /**
-   * Execute import
-   *
-   * @param string $xmlStr xml document
-   * @param array $options optional parameters
-   * @return QubitXmlImport this object
-   */
-  public function __construct()
-  {
-    //
-  }
-
   public static function execute($xmlStream, $options = array())
   {
     $qubitXmlImport = new QubitXmlImport;
@@ -54,7 +42,7 @@ class QubitXmlImport
     // if we were unable to parse the XML file at all
     if (empty($importDOM->documentElement))
     {
-      $errorMsg = sfContext::getInstance()->getI18N()->__('Unable to parse XML file: malformed or unresolvable entities');
+      $errorMsg = sfContext::getInstance()->i18n->__('Unable to parse XML file: malformed or unresolvable entities');
 
       throw new Exception($errorMsg);
     }
@@ -65,13 +53,26 @@ class QubitXmlImport
       // warning condition, XML file has errors (perhaps not well-formed or invalid?)
       foreach ($importDOM->libxmlerrors as $libxmlerror)
       {
-        $xmlerrors[] = sfContext::getInstance()->getI18N()->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
+        $xmlerrors[] = sfContext::getInstance()->i18n->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
       }
 
       $qubitXmlImport->errors = array_merge((array) $qubitXmlImport->errors, $xmlerrors);
     }
 
-    // FIXME: hardcoded until we decide how these will be developed
+    if ('eac-cpf' == $importDOM->documentElement->tagName)
+    {
+      $qubitXmlImport->rootObject = new QubitActor;
+      $qubitXmlImport->rootObject->parentId = QubitActor::ROOT_ID;
+
+      $eac = new sfEacPlugin($qubitXmlImport->rootObject);
+      $eac->parse($importDOM);
+
+      $qubitXmlImport->rootObject->save();
+
+      return $qubitXmlImport;
+    }
+
+    // FIXME hardcoded until we decide how these will be developed
     $validSchemas = array(
       // document type declarations
       '+//ISBN 1-931666-00-8//DTD ead.dtd Encoded Archival Description (EAD) Version 2002//EN' => 'ead',
@@ -91,7 +92,8 @@ class QubitXmlImport
       //'mets' => 'mets',
       //'mods' => 'mods',
       'ead' => 'ead',
-      'add' => 'alouette'
+      'add' => 'alouette',
+      'http://www.w3.org/2004/02/skos/core#' => 'skos'
     );
 
     // determine what kind of schema we're trying to import
@@ -114,22 +116,45 @@ class QubitXmlImport
       }
     }
 
-    // just validate EAD import for now until we can get StrictXMLParsing working for all schemas in the self::LoadXML function. Having problems right now loading schemas.
-    if ('ead' == $importSchema)
+    switch ($importSchema)
     {
-      $importDOM->validate();
-      // if libxml threw errors, populate them to show in the template
-      foreach (libxml_get_errors() as $libxmlerror)
-      {
-        $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
-      }
+      case 'ead':
+
+        // just validate EAD import for now until we can get StrictXMLParsing working for all schemas in the self::LoadXML function. Having problems right now loading schemas.
+        $importDOM->validate();
+
+        // if libxml threw errors, populate them to show in the template
+        foreach (libxml_get_errors() as $libxmlerror)
+        {
+          $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
+        }
+
+        break;
+
+      case 'skos':
+
+        $criteria = new Criteria;
+        $criteria->add(QubitSetting::NAME, 'plugins');
+        $setting = QubitSetting::getOne($criteria);
+        if (null === $setting || !in_array('sfSkosPlugin', unserialize($setting->getValue(array('sourceCulture' => true)))))
+        {
+          throw new sfException(sfContext::getInstance()->i18n->__('The SKOS plugin is not enabled'));
+        }
+
+        $importTerms = sfSkosPlugin::parse($importDOM);
+        $qubitXmlImport->rootObject = QubitTaxonomy::getById(QubitTaxonomy::SUBJECT_ID);
+        $qubitXmlImport->count = count($importTerms);
+
+        return $qubitXmlImport;
+
+        break;
     }
 
     $importMap = sfConfig::get('sf_app_module_dir').DIRECTORY_SEPARATOR.'object'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'import'.DIRECTORY_SEPARATOR.$importSchema.'.yml';
     if (!file_exists($importMap))
     {
       // error condition, unknown schema or no import filter
-      $errorMsg = sfContext::getInstance()->getI18N()->__('Unknown schema or import format: "%format%"', array('%format%' => $importSchema));
+      $errorMsg = sfContext::getInstance()->i18n->__('Unknown schema or import format: "%format%"', array('%format%' => $importSchema));
 
       throw new Exception($errorMsg);
     }
@@ -161,7 +186,7 @@ class QubitXmlImport
         }
         else
         {
-          $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('Unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
+          $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('Unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
         }
       }
 
@@ -171,11 +196,10 @@ class QubitXmlImport
 
     // switch source culture if langusage is set in an EAD document
     if ($importSchema == 'ead')
-    sfContext::getInstance()->getConfiguration()->loadHelpers('I18N');
     {
       if (is_object($langusage = $importDOM->xpath->query('//eadheader/profiledesc/langusage/language/@langcode')))
       {
-        $sf_user = sfContext::getInstance()->getUser();
+        $sf_user = sfContext::getInstance()->user;
         $currentCulture = $sf_user->getCulture();
         $langCodeConvertor = new fbISO639_Map;
         foreach ($langusage as $language)
@@ -188,19 +212,22 @@ class QubitXmlImport
           }
           // Check to make sure that the selected language is supported with a Symfony i18n data file.
           // If not it will cause a fatal error in the Language List component on every response.
+
+          ProjectConfiguration::getActive()->loadHelpers('I18N');
+
           try
           {
             format_language($twoCharCode, $twoCharCode);
           }
           catch (Exception $e)
           {
-            $qubitXmlImport->errors[] = __('EAD "langmaterial" is set to').': "'.$isocode.'". '.__('This language is currently not supported.');
+            $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('EAD "langmaterial" is set to').': "'.$isocode.'". '.sfContext::getInstance()->i18n->__('This language is currently not supported.');
             continue;
           }
 
           if ($currentCulture !== $twoCharCode)
           {
-            $qubitXmlImport->errors[] = __('EAD "langmaterial" is set to').': "'.$isocode.'" ('.format_language($twoCharCode, 'en').'). '.__('Your XML document has been saved in this language and your user interface has just been switched to this language.');
+            $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('EAD "langmaterial" is set to').': "'.$isocode.'" ('.format_language($twoCharCode, 'en').'). '.sfContext::getInstance()->i18n->__('Your XML document has been saved in this language and your user interface has just been switched to this language.');
           }
           $sf_user->setCulture($twoCharCode);
           // can only set to one language, so have to break once the first valid language is encountered
@@ -214,11 +241,10 @@ class QubitXmlImport
     // go through schema map and populate objects/properties
     foreach ($qubitXmlImport->schemaMap as $name => $mapping)
     {
-
       // if object is not defined or a valid class, we can't process this mapping
       if (empty($mapping['Object']) || !class_exists('Qubit'.$mapping['Object']))
       {
-        $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('Non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
+        $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('Non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
         continue;
       }
 
@@ -255,7 +281,7 @@ class QubitXmlImport
 
           if (!empty($parentId) && is_callable(array($currentObject, 'setParentId')))
           {
-            $currentObject->setParentId($parentId);
+            $currentObject->parentId = $parentId;
           }
         }
         else
@@ -270,11 +296,10 @@ class QubitXmlImport
         // go through methods and populate properties
         foreach ($mapping['Methods'] as $name => $methodMap)
         {
-
           // if method is not defined, we can't process this mapping
           if (empty($methodMap['Method']) || !is_callable(array($currentObject, $methodMap['Method'])))
           {
-            $qubitXmlImport->errors[] = sfContext::getInstance()->getI18N()->__('Non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
+            $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('Non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
             continue;
           }
 
@@ -283,7 +308,6 @@ class QubitXmlImport
 
           if (is_object($nodeList2))
           {
-
             switch($name)
             {
               // hack: some multi-value elements (e.g. 'languages') need to get passed as one array instead of individual nodes values
@@ -302,7 +326,23 @@ class QubitXmlImport
                   }
                 }
                 $currentObject->language = $value;
+
                 break;
+
+              case 'flocat':
+                $resources = array();
+                foreach ($nodeList2 as $nodeee)
+                {
+                  $resources[] = $nodeee->nodeValue;
+                }
+
+                if (0 < count($resources))
+                {
+                  $currentObject->importDigitalObjectFromUri($resources);
+                }
+
+                break;
+
               default:
                 foreach ($nodeList2 as $domNode2)
                 {
@@ -383,7 +423,7 @@ class QubitXmlImport
         $currentObject->save();
 
         // write the ID onto the current XML node for tracking
-        $domNode->setAttribute('xml:id', $currentObject->getId());
+        $domNode->setAttribute('xml:id', $currentObject->id);
       }
     }
 
@@ -428,6 +468,7 @@ class QubitXmlImport
     }
     $doc->formatOutput = false;
     $doc->preserveWhitespace = false;
+    $doc->substituteEntities = true;
 
     $doc->loadXML($xmlStream);
 

@@ -21,23 +21,19 @@ class TermTreeViewComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->term = $request->getAttribute('term');
-    if (!isset($this->term->id))
-    {
-      return sfView::NONE;
-    }
+    $this->resource = $request->getAttribute('sf_route')->resource;
 
-    // Get term tree (limit to max 10 siblings and children)
-    $this->treeViewObjects = $this->term->getFullYuiTree(10);
+    // Get tree (limit 10 siblings and children)
+    $this->treeViewObjects = $this->resource->getFullYuiTree(10);
 
-    // Check if treeview worth it
+    // Check if tree view worth it
     if (1 > count($this->treeViewObjects))
     {
       return sfView::NONE;
     }
 
     $this->treeViewExpands = array();
-    foreach ($this->term->ancestors->andSelf()->orderBy('lft') as $item)
+    foreach ($this->resource->ancestors->andSelf()->orderBy('lft') as $item)
     {
       $this->treeViewExpands[$item->id] = $item->id;
     }

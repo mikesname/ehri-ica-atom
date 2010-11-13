@@ -14,7 +14,6 @@
 # Qubit Toolkit; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 # METS/Dublin Core XML IMPORT FILTER MAPPINGS
 #
 # @package qubit
@@ -23,34 +22,92 @@
 # @version svn: $Id:$
 
 information_object:
-  XPath:  "/mets:mets"
+  XPath:  "/mets:mets/mets:dmdSec/mets:mdWrap/mets:xmlData"
   Object:  InformationObject
 
   Methods:
     collection_type:
-      XPath:   "."    # not really a match, just use self
+      XPath:   "."  # not really a match, just use self
       Method:  setCollectionTypeId
       Parameters: [QubitTerm::PUBLISHED_MATERIAL_ID]
 
+    publicationStatus:
+      XPath:   "."    # not really a match, just use self
+      Method:  setStatus
+      Parameters: ["array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID))"]
+
     # each of the following XPath expressions are relative to the current matched node:
     title:
-      XPath:   "mets:dmdSec/mets:mdWrap/mets:xmlData/dc:title"
+      XPath:   "(dc:title | title)"
       Method:  setTitle
 
-    description:
-      XPath:   "mets:dmdSec/mets:mdWrap/mets:xmlData/dc:description"
-      Method:  setScopeAndContent
-
     creator:
-      XPath:   "mets:dmdSec/mets:mdWrap/mets:xmlData/dc:creator"
+      XPath:  "(dc:creator | creator)"
       Method:  setActorByName
       Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::CREATION_ID)"]
 
-# note: importAsset...() methods take an optional $usageId parameter,
-# but it's up to this mapping to choose that, eg. for thumbnails
+    subject:
+      XPath:   "(dc:subject | subject)"
+      Method:  setTermRelationByName
+      Parameters: [$nodeValue, "$options = array('taxonomyId' => QubitTaxonomy::SUBJECT_ID)"]
+
+    description:
+      XPath:   "(dc:description | description)"
+      Method:  setScopeAndContent
+
+    publisher:
+      XPath:  "(dc:publisher | publisher)"
+      Method:  setActorByName
+      Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::PUBLICATION_ID)"]
+
+    contributor:
+      XPath:  "(dc:contributor | contributor)"
+      Method:  setActorByName
+      Parameters: [$nodeValue, "$options = array('event_type_id' => QubitTerm::CONTRIBUTION_ID)"]
+
+    date:
+      XPath:   "(dc:date | date)"
+      Method:  setDates
+      Parameters: [$nodeValue, "$options = array('normalized_dates' => $nodeValue)"]
+
+    type:
+      XPath:  "(dc:type | type)"
+      Method:  setTermRelationByName
+      Parameters: [$nodeValue, "$options = array('taxonomyId' => QubitTaxonomy::DC_TYPE_ID)"]
+
+    format:
+      XPath:  "(dc:format | format)"
+      Method:  setExtentAndMedium
+
+    identifier:
+      XPath:  "(/mets:mets/@OBJID | dc:identifier | identifier)"
+      Method: setIdentifier
+
+    source:
+      XPath:  "(dc:source | source)"
+      Method:  setLocationOfOriginals
+
+    language:
+      XPath:  "(dc:language | language)"
+      Method:  addProperty
+      Parameters: [$name = 'information_object_language', $nodeValue, "$options = array('scope' => 'languages', 'sourceCulture' => true)"]
+
+    relation:
+      XPath:  "(dc:relation | relation)"
+      Method:  setRepositoryByName
+
+    coverage:
+      XPath:  "(dc:coverage | coverage)"
+      Method:  setTermRelationByName
+      Parameters: [$nodeValue, "$options = array('taxonomyId' => QubitTaxonomy::PLACE_ID)"]
+
+    rights:
+      XPath:  "(dc:rights | rights)"
+      Method:  setAccessConditions
+
     flocat:
-      XPath:   "//mets:file/mets:FLocat/@xlink:href"
-      Method:  importDigitalObjectFromURI
+      XPath:   "//mets:fileGrp[contains(@USE,'Reference')]/mets:file/mets:FLocat/@xlink:href"
+      Method:  importDigitalObjectFromUri
 
     fcontent:
       XPath:   "//mets:file/mets:FContent/mets:binData"

@@ -8,13 +8,10 @@ prod:
       level:   err
       loggers: ~
 
-cli:
-  controller:
-    class: sfConsoleController
-  request:
-    class: sfConsoleRequest
-  response:
-    class: sfConsoleResponse
+  storage:
+    class: QubitSessionStorage
+    param:
+      session_name: symfony
 
 test:
   storage:
@@ -35,6 +32,11 @@ dev:
   mailer:
     param:
       delivery_strategy: none
+
+  storage:
+    class: QubitSessionStorage
+    param:
+      session_name: symfony
 
 all:
   i18n:

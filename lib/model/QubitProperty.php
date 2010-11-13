@@ -95,7 +95,6 @@ class QubitProperty extends BaseProperty
   {
     if (strlen($sourceCultureValue = $this->getValue(array('sourceCulture' => 'true'))) > 0 && $sfUserCulture != $this->getSourceCulture())
     {
-
       return $sourceCultureValue;
     }
 

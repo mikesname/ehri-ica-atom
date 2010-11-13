@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_actor_i18n' table.
+ * This class defines the structure of the 'actor_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class ActorI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_actor_i18n');
+		$this->setName('actor_i18n');
 		$this->setPhpName('actorI18n');
 		$this->setClassname('QubitActorI18n');
 		$this->setPackage('lib.model');
@@ -49,7 +49,7 @@ class ActorI18nTableMap extends TableMap {
 		$this->addColumn('RULES', 'rules', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('SOURCES', 'sources', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('REVISION_HISTORY', 'revisionHistory', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_actor', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'actor', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

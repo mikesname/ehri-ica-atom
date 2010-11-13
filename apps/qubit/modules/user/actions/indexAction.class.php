@@ -21,13 +21,12 @@ class UserIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->user = QubitUser::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($this->user);
+    $this->resource = $this->getRoute()->resource;
 
-    //except for administrators, only allow users to see their own profile
-    if (!$this->getUser()->hasCredential('administrator'))
+    // Except for administrators, only allow users to see their own profile
+    if (!$this->context->user->hasCredential('administrator'))
     {
-      if ($this->getRequestParameter('id') != $this->getUser()->getAttribute('user_id'))
+      if ($this->resource->id != $this->context->user->getAttribute('user_id'))
       {
         $this->redirect('admin/secure');
       }

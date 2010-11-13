@@ -19,10 +19,10 @@
 
 class UserLogoutAction extends sfAction
 {
-public function execute($request)
+  public function execute($request)
   {
-  $this->getUser()->signOut();
+    $this->context->user->signOut();
 
-  $this->redirect('@homepage');
+    $this->redirect('@homepage');
   }
 }

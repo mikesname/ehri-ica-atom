@@ -5,18 +5,18 @@ abstract class BaseMenu implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_menu',
+    TABLE_NAME = 'menu',
 
-    PARENT_ID = 'q_menu.PARENT_ID',
-    NAME = 'q_menu.NAME',
-    PATH = 'q_menu.PATH',
-    LFT = 'q_menu.LFT',
-    RGT = 'q_menu.RGT',
-    CREATED_AT = 'q_menu.CREATED_AT',
-    UPDATED_AT = 'q_menu.UPDATED_AT',
-    SOURCE_CULTURE = 'q_menu.SOURCE_CULTURE',
-    ID = 'q_menu.ID',
-    SERIAL_NUMBER = 'q_menu.SERIAL_NUMBER';
+    PARENT_ID = 'menu.PARENT_ID',
+    NAME = 'menu.NAME',
+    PATH = 'menu.PATH',
+    LFT = 'menu.LFT',
+    RGT = 'menu.RGT',
+    CREATED_AT = 'menu.CREATED_AT',
+    UPDATED_AT = 'menu.UPDATED_AT',
+    SOURCE_CULTURE = 'menu.SOURCE_CULTURE',
+    ID = 'menu.ID',
+    SERIAL_NUMBER = 'menu.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -196,9 +196,9 @@ abstract class BaseMenu implements ArrayAccess
           return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
+          return null !== $this->rowOffsetGet("{$name}Id", $offset, $options);
         }
 
         $offset++;
@@ -238,7 +238,7 @@ abstract class BaseMenu implements ArrayAccess
       return true;
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -268,11 +268,11 @@ abstract class BaseMenu implements ArrayAccess
           return $this->rowOffsetGet($name, $offset, $options);
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet("{$name}Id", $offset, $options));
         }
 
         $offset++;
@@ -366,7 +366,7 @@ abstract class BaseMenu implements ArrayAccess
       return $this->values['descendants'];
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -396,11 +396,11 @@ abstract class BaseMenu implements ArrayAccess
           $this->values[$name] = $value;
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          $this->values[$name.'Id'] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+          $this->values["{$name}Id"] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
         }
 
         $offset++;
@@ -439,9 +439,9 @@ abstract class BaseMenu implements ArrayAccess
           $this->values[$name] = null;
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
-          $this->values[$name.'Id'] = null;
+          $this->values["{$name}Id"] = null;
         }
 
         $offset++;
@@ -521,6 +521,38 @@ abstract class BaseMenu implements ArrayAccess
     return $this;
   }
 
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
+  }
+
   protected function insert($connection = null)
   {
     $this->updateNestedSet($connection);
@@ -551,7 +583,7 @@ abstract class BaseMenu implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
         }
 
         $offset++;
@@ -559,10 +591,12 @@ abstract class BaseMenu implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                        if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
-          $this->values[$columns[0]->getPhpName()] = $id;
+          $this->values[$columns[0]->getPhpName()] = $this->keys[$columns[0]->getPhpName()] = $id;
         }
       }
     }
@@ -572,9 +606,11 @@ abstract class BaseMenu implements ArrayAccess
 
   protected function update($connection = null)
   {
-        if (isset($this->values['parentId']))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-            $offset = 0; 
+      // Get the "original" parentId before any updates
+      $offset = 0;
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -588,8 +624,10 @@ abstract class BaseMenu implements ArrayAccess
           $offset++;
         }
       }
-      
-                  if ($originalParentId != $this->values['parentId'])
+
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }
@@ -622,18 +660,18 @@ abstract class BaseMenu implements ArrayAccess
             $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
           }
 
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
         }
 
         if ($column->isPrimaryKey())
         {
-          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$offset]);
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->keys[$column->getPhpName()]);
         }
 
         $offset++;
       }
 
-      if ($criteria->size() > 0)
+      if (0 < $criteria->size())
       {
         BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
@@ -662,13 +700,21 @@ abstract class BaseMenu implements ArrayAccess
     return $this;
   }
 
-	
+	/**
+	 * Returns the primary key for this object (row).
+	 * @return     int
+	 */
 	public function getPrimaryKey()
 	{
 		return $this->getid();
 	}
 
-	
+	/**
+	 * Generic method to set the primary key (id column).
+	 *
+	 * @param      int $key Primary key.
+	 * @return     void
+	 */
 	public function setPrimaryKey($key)
 	{
 		$this->setid($key);
@@ -754,6 +800,9 @@ abstract class BaseMenu implements ArrayAccess
 
   protected function updateNestedSet($connection = null)
   {
+// HACK Try to prevent modifying left and right values anywhere except in this
+// method.  Perhaps it would be more logical to use protected visibility for
+// these values?
 unset($this->values['lft']);
 unset($this->values['rgt']);
     if (!isset($connection))
@@ -814,6 +863,7 @@ unset($this->values['rgt']);
       {
         $this->lft = $parent->rgt;
         $this->rgt = $parent->rgt + 1;
+        $parent->rgt += 2;
 
         return $this;
       }
@@ -881,6 +931,6 @@ unset($this->values['rgt']);
       return call_user_func_array(array($this, '__'.substr($name, 0, 3)), $args);
     }
 
-    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+    throw new sfException('Call to undefined method '.get_class($this)."::$name");
   }
 }

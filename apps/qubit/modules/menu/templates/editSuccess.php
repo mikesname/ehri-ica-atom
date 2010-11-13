@@ -15,7 +15,7 @@
 <?php if (isset($sf_request->id)): ?>
   <?php echo $form->renderFormTag(url_for(array($menu, 'module' => 'menu', 'action' => 'edit'))) ?>
 <?php else: ?>
-  <?php echo $form->renderFormTag(url_for(array('module' => 'menu', 'action' => 'create'))) ?>
+  <?php echo $form->renderFormTag(url_for(array('module' => 'menu', 'action' => 'add'))) ?>
 <?php endif; ?>
 
   <div class="form-item">
@@ -52,10 +52,10 @@
         <li><?php echo link_to(__('Cancel'), array('module' => 'menu', 'action' => 'list')) ?></li>
 
         <?php if (!$menu->isProtected()): ?>
-          <li><?php echo link_to(__('Delete'), array('module' => 'menu', 'action' => 'delete', 'id' => $menu->getId()), array('confirm' => __('This action will delete this menu and all it\'s descendants. Are you sure?'))) ?></li>
+          <li><?php echo link_to(__('Delete'), array($menu, 'module' => 'menu', 'action' => 'delete')) ?></li>
         <?php endif; ?>
 
-        <li><?php echo submit_tag(__('Save')) ?></li>
+        <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>
 
       </ul>
     </div>

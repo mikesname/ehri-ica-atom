@@ -26,9 +26,15 @@ class RepositoryContextMenuComponent extends sfComponent
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
+    $this->resource = $request->getAttribute('sf_route')->resource;
+    if (!isset($this->resource))
+    {
+      return sfView::NONE;
+    }
+
     $criteria = new Criteria;
-    $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitInformationObject::REPOSITORY_ID, $request->id);
+    $criteria->addJoin(QubitInformationObject::ID, QubitObject::ID);
+    $criteria->add(QubitInformationObject::REPOSITORY_ID, $this->resource->id);
     $criteria->addAscendingOrderByColumn('title');
 
     // Sort holdings alphabetically (w/ fallback)

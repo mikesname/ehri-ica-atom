@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_system_event' table.
+ * This class defines the structure of the 'system_event' table.
  *
  *
  *
@@ -30,19 +30,19 @@ class SystemEventTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_system_event');
+		$this->setName('system_event');
 		$this->setPhpName('systemEvent');
 		$this->setClassname('QubitSystemEvent');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('OBJECT_CLASS', 'objectClass', 'VARCHAR', false, 255, null);
 		$this->addColumn('OBJECT_ID', 'objectId', 'INTEGER', false, null, null);
 		$this->addColumn('PRE_EVENT_SNAPSHOT', 'preEventSnapshot', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('POST_EVENT_SNAPSHOT', 'postEventSnapshot', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('DATE', 'date', 'TIMESTAMP', false, null, null);
-		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'q_user', 'ID', false, null, null);
+		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'user', 'ID', false, null, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);

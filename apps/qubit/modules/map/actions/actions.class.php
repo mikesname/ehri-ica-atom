@@ -38,7 +38,7 @@ class mapActions extends sfActions
 
   public function executeEdit()
   {
-    $this->map = MapPeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->map = MapPeer::retrieveByPk($this->request->id);
 
     $this->placeRelations = $this->map->getPlaceRelations();
 
@@ -47,28 +47,28 @@ class mapActions extends sfActions
 
   public function executeUpdate()
   {
-    if (!$this->getRequestParameter('id'))
+    if (!$this->request->id)
     {
       $map = new Map;
     }
     else
     {
-      $map = MapPeer::retrieveByPk($this->getRequestParameter('id'));
+      $map = MapPeer::retrieveByPk($this->request->id);
       $this->forward404Unless($map);
     }
 
-    $map->setId($this->getRequestParameter('id'));
-    $map->setTitle($this->getRequestParameter('title'));
-    $map->setDescription($this->getRequestParameter('description'));
+    $map->setId($this->request->id);
+    $map->setTitle($this->request->title);
+    $map->setDescription($this->request->description);
 
     $map->save();
 
-    $this->redirect('map/edit?id='.$map->getId());
+    $this->redirect('map/edit?id='.$map->id);
   }
 
   public function executeDelete()
   {
-    $map = MapPeer::retrieveByPk($this->getRequestParameter('id'));
+    $map = MapPeer::retrieveByPk($this->request->id);
 
     $this->forward404Unless($map);
 

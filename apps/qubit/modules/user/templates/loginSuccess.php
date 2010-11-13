@@ -26,7 +26,7 @@
 
       <div class="content">
         <ul class="clearfix links">
-          <li><?php echo submit_tag(__('Log in')) ?></li>
+          <li><input class="form-submit" type="submit" value="<?php echo __('Log in') ?>"/></li>
         </ul>
       </div>
 

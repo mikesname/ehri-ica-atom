@@ -1,10 +1,9 @@
 <h1><?php echo __('Site settings'); ?></h1>
 
 <!-- Global settings table -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('Global') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('Global') ?></legend>
-  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <form action="<?php echo url_for('settings/list') ?>" method="post">
   <table class="list">
   <thead>
     <tr>
@@ -18,7 +17,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo submit_tag(__('Save')) ?>
+          <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
         </div>
       </td>
     </tr>
@@ -28,10 +27,9 @@
 </fieldset>
 
 <!-- Site information form -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('Site information') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('Site information') ?></legend>
-  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <form action="<?php echo url_for('settings/list') ?>" method="post">
   <table class="list">
   <thead>
     <tr>
@@ -68,7 +66,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo submit_tag(__('Save')) ?>
+          <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
         </div>
       </td>
     </tr>
@@ -78,34 +76,54 @@
 </fieldset>
 
 <!-- Default page elements form -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('Default page elements') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('Default page elements') ?></legend>
-
-
-<?php echo $defaultPageElementsForm->renderFormTag(url_for(array('module' => 'sfThemePlugin')), array('style' => 'float: left;')) ?>
-  <?php echo $defaultPageElementsForm->renderGlobalErrors() ?>
+  <?php echo $defaultPageElementsForm->renderFormTag(url_for(array('module' => 'sfThemePlugin')), array('style' => 'float: left;')) ?>
+    <?php echo $defaultPageElementsForm->renderGlobalErrors() ?>
     <div class="description">
       <p>
         <?php echo __('Enable or disable the display of certain page elements. Unless they have been overridden by a specific theme, these settings will be used site wide.') ?>
       </p>
     </div>
-    <?php echo $defaultPageElementsForm->toggleLogo->label('Logo')->renderRow() ?>
-    <?php echo $defaultPageElementsForm->toggleTitle->label('Title')->renderRow() ?>
-    <?php echo $defaultPageElementsForm->toggleDescription->label('Description')->renderRow() ?>
-  <?php echo submit_tag(__('Save')) ?>
-</form>
+    <table class="list">
 
+      <thead>
+        <tr>
+          <th><?php echo __('Name')?></th>
+          <th><?php echo __('Value')?></th>
+        </tr>
+      </thead>
 
-
+      <tbody>
+        <tr>
+          <td><?php echo $defaultPageElementsForm->toggleLogo->label('Logo')->renderLabel() ?></td>
+          <td><?php echo $defaultPageElementsForm->toggleLogo ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $defaultPageElementsForm->toggleTitle->label('Title')->renderLabel() ?></td>
+          <td><?php echo $defaultPageElementsForm->toggleTitle ?></td>
+        </tr>
+        <tr>
+          <td><?php echo $defaultPageElementsForm->toggleDescription->label('Description')->renderLabel() ?></td>
+          <td><?php echo $defaultPageElementsForm->toggleDescription ?></td>
+        </tr>
+        <tr>
+          <td>&nbsp;</td>
+          <td>
+            <div style="float: right; margin: 3px 8px 0 0;">
+              <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </form>
 </fieldset>
 
-
 <!-- Default template form -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('Default template') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('Default template') ?></legend>
-  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <form action="<?php echo url_for('settings/list') ?>" method="post">
   <table class="list">
     <thead>
       <tr>
@@ -120,7 +138,7 @@
         <td>&nbsp;</td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo submit_tag(__('Save')) ?>
+            <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
           </div>
         </td>
       </tr>
@@ -130,10 +148,9 @@
 </fieldset>
 
 <!-- UI Label Form -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('User interface label') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('User interface label') ?></legend>
-  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <form action="<?php echo url_for('settings/list') ?>" method="post">
   <table class="list">
     <thead>
       <tr>
@@ -162,7 +179,7 @@
         <td>&nbsp;</td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo submit_tag(__('Save')) ?>
+            <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
           </div>
         </td>
       </tr>
@@ -171,12 +188,10 @@
   </form>
 </fieldset>
 
-
 <!-- I18n Languages Form -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('I18n languages') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('I18n languages') ?></legend>
-  <form action="<?php echo url_for('settings/update') ?>" method="POST">
+  <form action="<?php echo url_for('settings/list') ?>" method="post">
 
   <table class="list">
     <thead>
@@ -206,11 +221,11 @@
 
       <tr>
         <td colspan="2">
-            <?php echo select_language_tag('language_code', null, array('include_blank' => true)) ?>
+          <?php echo $form->language_code->renderRow() ?>
         </td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">
-            <?php echo submit_tag(__('Add')) ?>
+            <input class="form-submit" type="submit" value="<?php echo __('Add') ?>"/>
           </div>
         </td>
       </tr>
@@ -220,10 +235,9 @@
 </fieldset>
 
 <!-- OAI Repository settings -->
-<div class="tableHeader" style="margin-bottom: 10px;"><?php echo __('OAI Repository') ?></div>
 <fieldset class="collapsible collapsed">
   <legend><?php echo __('OAI Repository') ?></legend>
-  <form action="<?php echo url_for('settings/list') ?>" method="POST">
+  <form action="<?php echo url_for('settings/list') ?>" method="post">
   <table class="list">
   <thead>
     <tr>
@@ -237,7 +251,7 @@
       <td>&nbsp;</td>
       <td>
         <div style="float: right; margin: 3px 8px 0 0;">
-          <?php echo submit_tag(__('Save')) ?>
+          <input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/>
         </div>
       </td>
     </tr>

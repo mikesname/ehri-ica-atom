@@ -5,14 +5,14 @@ abstract class BaseRelation extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_relation',
+    TABLE_NAME = 'relation',
 
-    ID = 'q_relation.ID',
-    SUBJECT_ID = 'q_relation.SUBJECT_ID',
-    OBJECT_ID = 'q_relation.OBJECT_ID',
-    TYPE_ID = 'q_relation.TYPE_ID',
-    START_DATE = 'q_relation.START_DATE',
-    END_DATE = 'q_relation.END_DATE';
+    ID = 'relation.ID',
+    SUBJECT_ID = 'relation.SUBJECT_ID',
+    OBJECT_ID = 'relation.OBJECT_ID',
+    TYPE_ID = 'relation.TYPE_ID',
+    START_DATE = 'relation.START_DATE',
+    END_DATE = 'relation.END_DATE';
 
   public static function addSelectColumns(Criteria $criteria)
   {

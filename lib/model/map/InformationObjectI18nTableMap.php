@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_information_object_i18n' table.
+ * This class defines the structure of the 'information_object_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class InformationObjectI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_information_object_i18n');
+		$this->setName('information_object_i18n');
 		$this->setPhpName('informationObjectI18n');
 		$this->setClassname('QubitInformationObjectI18n');
 		$this->setPackage('lib.model');
@@ -57,7 +57,7 @@ class InformationObjectI18nTableMap extends TableMap {
 		$this->addColumn('RULES', 'rules', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('SOURCES', 'sources', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('REVISION_HISTORY', 'revisionHistory', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_information_object', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'information_object', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

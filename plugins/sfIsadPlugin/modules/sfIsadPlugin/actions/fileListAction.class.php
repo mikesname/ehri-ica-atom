@@ -26,9 +26,10 @@ class sfIsadPluginFileListAction extends sfAction
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $this->informationObject = QubitInformationObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    if (!isset($this->informationObject))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
@@ -36,7 +37,7 @@ class sfIsadPluginFileListAction extends sfAction
     $search = new QubitSearch;
 
     $query = new Zend_Search_Lucene_Search_Query_Boolean;
-    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($request->id, 'parentId')), true);
+    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->resource->id, 'parentId')), true);
 
     if (isset($request->query))
     {

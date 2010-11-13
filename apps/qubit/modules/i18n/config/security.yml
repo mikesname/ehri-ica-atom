@@ -4,12 +4,12 @@ update:
 
 listDefaultContentTranslation:
   credentials: translator
-  is_secure: true  
+  is_secure: true
 
 listNewContentTranslation:
   credentials: translator
-  is_secure: true  
+  is_secure: true
 
 listUserInterfaceTranslation:
   credentials: translator
-  is_secure: true  
+  is_secure: true

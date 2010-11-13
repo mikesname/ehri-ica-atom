@@ -143,12 +143,11 @@ class QubitUser extends BaseUser
     // A user is always part of the authenticated group
     if (in_array(QubitAclGroup::AUTHENTICATED_ID, $checkGroups))
     {
-
       return true;
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitAclUserGroup::USER_ID, $this->id, Criteria::EQUAL);
+    $criteria->add(QubitAclUserGroup::USER_ID, $this->id);
 
     if (0 < count($userGroups = QubitAclUserGroup::get($criteria)))
     {

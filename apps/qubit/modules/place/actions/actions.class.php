@@ -26,19 +26,19 @@ class placeActions extends sfActions
 
   public function executeShow()
   {
-    $this->place = PlacePeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->place = PlacePeer::retrieveByPk($this->request->id);
     $this->forward404Unless($this->place);
 
    $this->mapRelations = $this->place->getMapRelations();
 
     //determine if user has edit priviliges
     $this->editCredentials = false;
-    if ($this->getUser()->hasCredential(array('contributor', 'editor', 'administrator'), false))
+    if ($this->context->user->hasCredential(array('contributor', 'editor', 'administrator'), false))
     {
     $this->editCredentials = true;
     }
 
-  $this->nav_context_back  = $this->getUser()->getAttribute('nav_context_back');
+  $this->nav_context_back  = $this->context->user->getAttribute('nav_context_back');
   }
 
   public function executeCreate()
@@ -50,7 +50,7 @@ class placeActions extends sfActions
 
   public function executeEdit()
   {
-    $this->place = PlacePeer::retrieveByPk($this->getRequestParameter('id'));
+    $this->place = PlacePeer::retrieveByPk($this->request->id);
     $this->forward404Unless($this->place);
 
     $this->mapRelations = $this->place->getMapRelations();
@@ -58,46 +58,46 @@ class placeActions extends sfActions
 
   public function executeUpdate()
   {
-    if (!$this->getRequestParameter('id'))
+    if (!$this->request->id)
     {
       $place = new Place;
     }
     else
     {
-      $place = PlacePeer::retrieveByPk($this->getRequestParameter('id'));
+      $place = PlacePeer::retrieveByPk($this->request->id);
       $this->forward404Unless($place);
     }
 
-    $place->setId($this->getRequestParameter('id'));
-    $place->setName($this->getRequestParameter('name'));
-    $place->setDescription($this->getRequestParameter('description'));
-    $place->setAddress($this->getRequestParameter('address'));
-    $place->setCountryId($this->getRequestParameter('country_id') ? $this->getRequestParameter('country_id') : null);
-    if (($this->getRequestParameter('longtitude') === null) or ($this->getRequestParameter('longtitude') == 0))
+    $place->setId($this->request->id);
+    $place->setName($this->request->name);
+    $place->setDescription($this->request->description);
+    $place->setAddress($this->request->address);
+    $place->setCountryId($this->request->country_id ? $this->request->country_id : null);
+    if (($this->request->longtitude === null) or ($this->request->longtitude == 0))
       {
       $place->setLongtitude(null);
       }
     else
       {
-      $place->setLongtitude($this->getRequestParameter('longtitude'));
+      $place->setLongtitude($this->request->longtitude);
       }
-    if (($this->getRequestParameter('latitude') === null) or ($this->getRequestParameter('latitude') == 0))
+    if (($this->request->latitude === null) or ($this->request->latitude == 0))
       {
       $place->setLatitude(null);
       }
     else
       {
-      $place->setLatitude($this->getRequestParameter('latitude'));
+      $place->setLatitude($this->request->latitude);
       }
 
     $place->save();
 
-    $this->redirect('place/edit?id='.$place->getId());
+    $this->redirect('place/edit?id='.$place->id);
   }
 
   public function executeDelete()
   {
-    $place = PlacePeer::retrieveByPk($this->getRequestParameter('id'));
+    $place = PlacePeer::retrieveByPk($this->request->id);
 
     $this->forward404Unless($place);
 

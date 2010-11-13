@@ -20,7 +20,7 @@
 class sfAlouettePluginConfiguration extends sfPluginConfiguration
 {
   public static
-    $summary = 'Theme plugin. A green version of the Columbia theme, without the header image',
+    $summary = 'Theme plugin.  A green version of the Columbia theme, without the header image.',
     $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)

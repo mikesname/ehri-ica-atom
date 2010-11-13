@@ -21,11 +21,13 @@ class QubitTimer
 {
   public
     $fh = null,
-    $startTime = 0;
+    $start = null,
+    $end = null,
+    $total = 0;
 
   public function __construct($logFile = null)
   {
-    $this->restart();
+    $this->start();
 
     if (null != $logFile)
     {
@@ -33,14 +35,38 @@ class QubitTimer
     }
   }
 
-  public function restart()
+  public function start()
   {
-    $this->startTime = microtime(true);
+    $this->start = microtime(true);
+    $this->end = null;
+
+    return $this;
+  }
+
+  public function stop()
+  {
+    $this->end = microtime(true);
+
+    return $this;
   }
 
   public function elapsed($rnd = 2)
   {
-    return round((microtime(true) - $this->startTime), $rnd);
+    $end = (isset($this->end)) ? $this->end : microtime(true);
+
+    return round($end - $this->start, 2);
+  }
+
+  public function add($continue = false)
+  {
+    $this->total += $this->stop()->elapsed();
+
+    if ($continue)
+    {
+      $this->start();
+    }
+
+    return $this;
   }
 
   public function log($string)

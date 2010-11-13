@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_property' table.
+ * This class defines the structure of the 'property' table.
  *
  *
  *
@@ -30,13 +30,13 @@ class PropertyTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_property');
+		$this->setName('property');
 		$this->setPhpName('property');
 		$this->setClassname('QubitProperty');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
 		$this->addColumn('SCOPE', 'scope', 'VARCHAR', false, 255, null);
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);

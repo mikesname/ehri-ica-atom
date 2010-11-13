@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_physical_object' table.
+ * This class defines the structure of the 'physical_object' table.
  *
  *
  *
@@ -30,15 +30,15 @@ class PhysicalObjectTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_physical_object');
+		$this->setName('physical_object');
 		$this->setPhpName('physicalObject');
 		$this->setClassname('QubitPhysicalObject');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_physical_object', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'physical_object', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

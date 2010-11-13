@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_information_object' table.
+ * This class defines the structure of the 'information_object' table.
  *
  *
  *
@@ -30,22 +30,23 @@ class InformationObjectTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_information_object');
+		$this->setName('information_object');
 		$this->setPhpName('informationObject');
 		$this->setClassname('QubitInformationObject');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
 		$this->addColumn('IDENTIFIER', 'identifier', 'VARCHAR', false, 255, null);
 		$this->addColumn('OAI_LOCAL_IDENTIFIER', 'oaiLocalIdentifier', 'INTEGER', true, null, null);
-		$this->addForeignKey('LEVEL_OF_DESCRIPTION_ID', 'levelOfDescriptionId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('COLLECTION_TYPE_ID', 'collectionTypeId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('REPOSITORY_ID', 'repositoryId', 'INTEGER', 'q_repository', 'ID', false, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_information_object', 'ID', false, null, null);
-		$this->addForeignKey('DESCRIPTION_STATUS_ID', 'descriptionStatusId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('DESCRIPTION_DETAIL_ID', 'descriptionDetailId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('LEVEL_OF_DESCRIPTION_ID', 'levelOfDescriptionId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('COLLECTION_TYPE_ID', 'collectionTypeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('REPOSITORY_ID', 'repositoryId', 'INTEGER', 'repository', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'information_object', 'ID', false, null, null);
+		$this->addForeignKey('DESCRIPTION_STATUS_ID', 'descriptionStatusId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('DESCRIPTION_DETAIL_ID', 'descriptionDetailId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('DESCRIPTION_IDENTIFIER', 'descriptionIdentifier', 'VARCHAR', false, 255, null);
+		$this->addColumn('SOURCE_STANDARD', 'sourceStandard', 'VARCHAR', false, 255, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);

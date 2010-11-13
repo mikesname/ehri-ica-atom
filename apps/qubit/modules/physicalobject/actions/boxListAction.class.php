@@ -26,12 +26,7 @@ class PhysicalObjectBoxListAction extends sfAction
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $this->physicalObject = QubitPhysicalObject::getById($request->id);
-
-    if (!isset($this->physicalObject))
-    {
-      $this->forward404();
-    }
+    $this->resource = $this->getRoute()->resource;
 
     $criteria = new Criteria;
     $criteria->add(QubitRelation::SUBJECT_ID, $request->id);

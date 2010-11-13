@@ -1,6 +1,6 @@
 QubitStaticPage:
   QubitStaticPage_384:
-    permalink: homepage
+    slug: home
     source_culture: en
     title:
       de: Willkommen
@@ -23,7 +23,7 @@ QubitStaticPage:
       pt: "Essa é a página inicial padrão do ICA-AtoM. Essa ainda é uma versão beta e em contínuo desenvolvimento e teste.\n\nICA-AtoM é um aplicativo para web destinado a apoiar as atividades de Descrição Arquivística em conformidade com os padrões do <a href=\"http://www.ica.org/\">Conselho Internacional de Arquivos</a> (CIA). <i>AtoM</i> é um acrônimo para <i>Access to Memory</i>, ou, Acesso à Memória, em inglês.\n\nO CIA e os <a href=\"http://ica-atom.org/about#partners\">colaboradores do projeto</a> ICA-AtoM estão disponibilizando esse aplicativo como um software livre, de forma que as instituições arquivísticas tenham acesso a um sistema gratuito, fácil de usar e que as permitam disponibilizar seus acervos arquivísticos on-line.\n\nAcesse a <a href=\"http://ica-atom.org/docs\">documentação</a> online para aprender mais acerca do uso desse software ou clique no botão <i>navegar</i> no lado direito para visualizar algumas descrições de exemplo."
       sl: "Nahajate se na domači strani programa ICA-AtoM. Ta je v zgodnji beta verziji, zato je v aktivnem razvoju in testiranju.\n\nICA-AtoM je spletna aplikacija za opisovanje arhivskega gradiva, ki temelji na standardih <a href=\"http://www.ica.org/\">Mednarodnega arhivskega sveta</a> (International Council on Archives - ICA). <i>AtoM</i> je akronim za <i>Access to Memory</i>.\n\nICA in njegovi <a href=\"http://ica-atom.org/about#partners\">sodelavci v projektu</a> so pripravili to aplikacijo dostopno kot odprtokodno, da bi zagotovili arhivskim institucijam možnost proste in hitro postavitve njihovih zbirk \"online\". Glej <a href=\"page/about\">about page</a> na kateri izveš več o ICA-AtoM projektu.\n\nGlej \"online\" <a href=\"http://ica-atom.org/docs\">dokumentacijo</a>, kjer najdeš več o uporabi tega programa ali klikni gumb <i>brskaj</i> na desni, kjer boš našel(a) nekaj primerov."
   QubitStaticPage_385:
-    permalink: about
+    slug: about
     source_culture: en
     title:
       de: Über

@@ -18,7 +18,7 @@ class sfPluginAdminPluginIndexAction extends sfAction
       $this->form->setDefault('enabled', unserialize($setting->__get('value', array('sourceCulture' => true))));
     }
 
-    $configuration = sfProjectConfiguration::getActive();
+    $configuration = ProjectConfiguration::getActive();
     $pluginPaths = $configuration->getAllPluginPaths();
     foreach (sfPluginAdminPluginConfiguration::$pluginNames as $name)
     {

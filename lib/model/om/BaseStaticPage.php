@@ -5,11 +5,10 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_static_page',
+    TABLE_NAME = 'static_page',
 
-    ID = 'q_static_page.ID',
-    PERMALINK = 'q_static_page.PERMALINK',
-    SOURCE_CULTURE = 'q_static_page.SOURCE_CULTURE';
+    ID = 'static_page.ID',
+    SOURCE_CULTURE = 'static_page.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -18,7 +17,6 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
     $criteria->addJoin(QubitStaticPage::ID, QubitObject::ID);
 
     $criteria->addSelectColumn(QubitStaticPage::ID);
-    $criteria->addSelectColumn(QubitStaticPage::PERMALINK);
     $criteria->addSelectColumn(QubitStaticPage::SOURCE_CULTURE);
 
     return $criteria;
@@ -102,7 +100,7 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -153,7 +151,7 @@ abstract class BaseStaticPage extends QubitObject implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)

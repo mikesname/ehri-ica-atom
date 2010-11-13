@@ -3,7 +3,7 @@
 (function ($)
   {
     Drupal.behaviors.select = {
-      select: function (option, name, ul)
+      select: function (option, name, $ul)
         {
           // Disable <option>
           $(option).attr('disabled', 'disabled');
@@ -17,11 +17,14 @@
                 $(this).hide('fast', function ()
                   {
                     $(this).remove();
+
+                    // Toggle <ul> based on children length
+                    $ul.toggle(0 < $ul.children().length);
                   });
 
                 $(option).removeAttr('disabled');
               })
-            .appendTo(ul);
+            .appendTo($ul.show());
         },
       attach: function (context)
         {
@@ -31,12 +34,12 @@
               var name = $(this).attr('name');
 
               // Make <ul> of selected <option>s
-              var ul = $('<ul/>').insertBefore(this)[0];
+              var $ul = $('<ul/>').hide().insertBefore(this);
 
               $('option:selected', this).each(function ()
                 {
                   // Disable <option> and make <li>
-                  Drupal.behaviors.select.select(this, name, ul);
+                  Drupal.behaviors.select.select(this, name, $ul);
                 });
 
               // Add blank option for clearing <select>
@@ -64,7 +67,7 @@
                       }
 
                       // Disable <option> and make <li>
-                      Drupal.behaviors.select.select($('option:selected', this)[0], name, ul);
+                      Drupal.behaviors.select.select($('option:selected', this)[0], name, $ul);
 
                       // Clear <select>
                       $(blank).attr('selected', 'selected');

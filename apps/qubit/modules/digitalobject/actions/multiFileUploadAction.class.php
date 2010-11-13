@@ -38,16 +38,17 @@ class DigitalObjectMultiFileUploadAction extends sfAction
     }
 
     // Add javascript libraries
-    $this->getResponse()->addJavaScript('/vendor/yui/uploader/uploader-min.js', 'last');
-    $this->getResponse()->addJavaScript('multiFileUpload.js', 'last');
+    $this->response->addJavaScript('/vendor/yui/logger/logger', 'last');
+    $this->response->addJavaScript('/vendor/yui/uploader/uploader-min', 'last');
+    $this->response->addJavaScript('multiFileUpload', 'last');
 
     // Get max upload size limits
     $this->maxUploadSize = QubitDigitalObject::getMaxUploadSize();
 
     // Paths for uploader javascript
-    $this->uploadSwfPath = $this->getRequest()->getRelativeUrlRoot().'/vendor/yui/uploader/assets/uploader.swf';
-    $this->uploadResponsePath = $this->context->routing->generate(null, array('module' => 'digitalobject', 'action' => 'upload'));
-    $this->uploadTmpDir = $this->getRequest()->getRelativeUrlRoot().'/uploads/tmp';
+    $this->uploadSwfPath = "{$this->request->getRelativeUrlRoot()}/vendor/yui/uploader/assets/uploader.swf";
+    $this->uploadResponsePath = "{$this->context->routing->generate(null, array('module' => 'digitalobject', 'action' => 'upload'))}?".http_build_query(array(session_name() => session_id()));
+    $this->uploadTmpDir = "{$this->request->getRelativeUrlRoot()}/uploads/tmp";
 
     // Build form
     $this->form->setValidator('files', new QubitValidatorCountable(array('required' => true)));
@@ -56,17 +57,17 @@ class DigitalObjectMultiFileUploadAction extends sfAction
     $this->form->setWidget('informationObject', new sfWidgetFormInputHidden);
     $this->form->setDefault('informationObject', $this->informationObject->id);
 
-    $this->form->setValidator('title', new sfValidatorPass);
-    $this->form->setWidget('title', new sfWidgetFormInput(array()));
+    $this->form->setValidator('title', new sfValidatorString);
+    $this->form->setWidget('title', new sfWidgetFormInput);
     $this->form->setDefault('title', 'image %dd%');
 
     $this->form->setValidator('levelOfDescription', new sfValidatorString);
 
     $choices = array();
     $choices[null] = null;
-    foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID) as $term)
+    foreach (QubitTaxonomy::getTermsById(QubitTaxonomy::LEVEL_OF_DESCRIPTION_ID) as $item)
     {
-      $choices[$this->context->routing->generate(null, array($term, 'module' => 'term'))] = $term;
+      $choices[$this->context->routing->generate(null, array($item, 'module' => 'term'))] = $item;
     }
 
     $this->form->setWidget('levelOfDescription', new sfWidgetFormSelect(array('choices' => $choices)));
@@ -74,7 +75,6 @@ class DigitalObjectMultiFileUploadAction extends sfAction
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters(), $request->getFiles());
-
       if ($this->form->isValid())
       {
         $this->processForm();
@@ -100,46 +100,44 @@ class DigitalObjectMultiFileUploadAction extends sfAction
 
       // Create an information object for this digital object
       $informationObject = new QubitInformationObject;
-      $informationObject->setParentId($this->informationObject->id);
+      $informationObject->parentId = $this->informationObject->id;
 
       if (0 < strlen($title = $file['infoObjectTitle']))
       {
-        $informationObject->setTitle($title);
+        $informationObject->title = $title;
       }
 
       if (0 != intval($levelOfDescriptionId = $this->form->getValue('level_of_description_id')))
       {
-        $informationObject->setLevelOfDescriptionId($levelOfDescriptionId);
+        $informationObject->levelOfDescriptionId = $levelOfDescriptionId;
       }
 
-      // Set publication status to 'draft'
-      $status = new QubitStatus;
-      $status->typeId = QubitTerm::STATUS_TYPE_PUBLICATION_ID;
-      $status->statusId = QubitTerm::PUBLICATION_STATUS_DRAFT_ID;
-      $informationObject->statuss[] = $status;
+      $informationObject->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus')));
 
+      // Save description
       $informationObject->save();
 
-      if (file_exists($tmpPath.'/'.$file['tmpName']))
+      if (file_exists("$tmpPath/$file[tmpName]"))
       {
         // Upload asset and create digital object
         $digitalObject = new QubitDigitalObject;
-        $digitalObject->setInformationObject($informationObject);
-        $digitalObject->setUsageId(QubitTerm::MASTER_ID);
-        $digitalObject->assets[] = new QubitAsset($file['name'], file_get_contents($tmpPath.'/'.$file['tmpName']));
+        $digitalObject->informationObject = $informationObject;
+        $digitalObject->usageId = QubitTerm::MASTER_ID;
+        $digitalObject->assets[] = new QubitAsset($file['name'], file_get_contents("$tmpPath/$file[tmpName]"));
+
         $digitalObject->save();
       }
 
       $thumbnailIsGeneric = (bool) strstr($file['thumb'], 'generic-icons');
 
       // Clean up temp files
-      if (file_exists($tmpPath.'/'.$file['tmpName']))
+      if (file_exists("$tmpPath/$file[tmpName]"))
       {
-        unlink($tmpPath.'/'.$file['tmpName']);
+        unlink("$tmpPath/$file[tmpName]");
       }
-      if (!$thumbnailIsGeneric && file_exists($tmpPath.'/'.$file['thumb']))
+      if (!$thumbnailIsGeneric && file_exists("$tmpPath/$file[thumb]"))
       {
-        unlink($tmpPath.'/'.$file['thumb']);
+        unlink("$tmpPath/$file[thumb]");
       }
     }
 

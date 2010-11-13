@@ -27,7 +27,6 @@
  */
 class oaiHarvesterNewRepositoryAction extends sfAction
 {
-
    /*
    * Executes action
    *

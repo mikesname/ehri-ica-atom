@@ -29,23 +29,25 @@ ICA-AtoM is web-based archival description software that is based on Internation
     <file name="COPYRIGHT" role="doc"/>
     <file name="css//*" role="data"/>
     <file name="data//*" role="data"/>
+    <file name="ead.dtd" role="data"/>
     <file name="images//*" role="data"/>
     <file name="index.php" role="php"/>
     <file name="js//*" role="data"/>
     <file name="lib//*" role="php"/>
-    <file name="lib/vendor/symfony/data//*" role="data"/>
     <file name="LICENSE" role="doc"/>
     <file name="plugins//*" role="php"/>
+    <file name="qubit_dev.php" role="php"/>
     <file name="README" role="doc"/>
     <file name="symfony" role="script"/>
     <file name="test//*" role="test"/>
     <file name="uploads//*" role="data"/>
     <file name="vendor//*" role="php"/>
+    <file name="vendor/symfony/data//*" role="data"/>
   </contents>
   <dependencies>
     <required>
       <php>
-        <min>5.2.4</min>
+        <min>5.3</min>
       </php>
       <pearinstaller>
         <min>1.4.1</min>

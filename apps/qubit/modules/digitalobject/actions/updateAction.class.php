@@ -30,23 +30,22 @@ class DigitalObjectUpdateAction extends sfAction
 {
   public function execute($request)
   {
-    $digitalObject = QubitDigitalObject::getById($this->getRequestParameter('id'));
-    $this->forward404Unless($digitalObject);
+    $this->resource = $this->getRoute()->resource;
 
     // Check user authorization
-    if (!QubitAcl::check($digitalObject->informationObject, 'update'))
+    if (!QubitAcl::check($this->resource->informationObject, 'update'))
     {
       QubitAcl::forwardUnauthorized();
     }
 
     // Set the digital object's attributes
-    $digitalObject->setUsageId($request->getParameter('usage_id'));
-    $digitalObject->setMediaTypeId($request->getParameter('media_type_id'));
+    $this->resource->usageId = $request->usage_id;
+    $this->resource->mediaTypeId = $request->media_type_id;
 
     // Save the digital object
-    $digitalObject->save();
+    $this->resource->save();
 
     // Return to edit page
-    $this->redirect('digitalobject/edit?id='.$digitalObject->getId());
+    $this->redirect('digitalobject/edit?id='.$this->resource->id);
   }
 }

@@ -4,10 +4,6 @@ editSuccess:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:
 
-indexSuccess:
-  javascripts:
-    blank:
-
 listSuccess:
   javascripts:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:

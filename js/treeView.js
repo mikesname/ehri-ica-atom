@@ -5,7 +5,6 @@
     Qubit.treeView = Qubit.treeView || {};
 
     Drupal.behaviors.treeView = {
-
       attach: function (context)
         {
           // Build tree function
@@ -16,6 +15,8 @@
               var object = objects.shift();
               var textNode = new YAHOO.widget.TextNode(object, parentNode, expands[object.id] !== undefined);
               textNode.isLeaf = object.isLeaf;
+              textNode.moveUrl = object.moveUrl;
+              textNode.expandUrl = object.expandUrl;
 
               if (object.style == 'ygtvlabel currentTextNode')
               {
@@ -40,10 +41,10 @@
 
             jQuery.ajax({
 
-              data: { id: nodeId, limit: 10 },
+              data: { limit: 10 },
               dataType: 'json',
               timeout: 15000,
-              url: Qubit.treeView.Url,
+              url: node.expandUrl,
 
               error: fnLoadComplete,
 
@@ -53,6 +54,8 @@
                   {
                     var textNode = new YAHOO.widget.TextNode(data[i], node, false);
                     textNode.isLeaf = data[i].isLeaf;
+                    textNode.moveUrl = data[i].moveUrl;
+                    textNode.expandUrl = data[i].expandUrl;
 
                     if (Qubit.treeView.currentNodeId == data[i].id)
                     {
@@ -91,20 +94,18 @@
 
                   if (parentNode.contentElId == newParent.contentElId)
                   {
-
                     return false;
                   }
 
                   if ($(textNode.getEl()).has(newParent.getEl()).length)
                   {
-
                     return false;
                   }
 
                   jQuery.ajax({
                     data: { parent: newParent.href },
                     type: 'POST',
-                    url: textNode.href.replace(/(\d+)([;!\/])(isad|mods|dc|rad)$/, '$1$2default/move')
+                    url: textNode.moveUrl
                   });
 
                   parentNode.tree.popNode(textNode);
@@ -161,13 +162,11 @@
 
               if (el.parent.getElId() == destEl.getElId() || dest.hasClass('currentTextNode'))
               {
-
                 return false;
               }
 
               if ($(el.getEl()).has(destEl.getEl()).length)
               {
-
                 return false;
               }
 
@@ -220,9 +219,9 @@
               $(node.getToggleEl()).addClass('ygtvloading').removeClass('ygtvln');
 
               jQuery.ajax({
-                data: { 'id': parentNode.data.id, 'offset': offset },
+                data: { 'offset': offset },
                 dataType: 'json',
-                url: Qubit.treeView.Url,
+                url: parentNode.expandUrl,
 
                 success: function (data)
                   {
@@ -235,15 +234,17 @@
                     {
                       var textNode = new YAHOO.widget.TextNode(data[i], parentNode, false);
                       textNode.isLeaf = data[i].isLeaf;
+                      textNode.moveUrl = data[i].moveUrl;
+                      textNode.expandUrl = data[i].expandUrl;
 
-                      if (Qubit.treeView.currentNodeId == data[i].id) 
+                      if (Qubit.treeView.currentNodeId == data[i].id)
                       {
                         textNode.labelStyle = 'ygtvlabel currentTextNode';
                         textNode.highlight();
                       }
                     }
 
-                    // Turn off loading state 
+                    // Turn off loading state
                     node.isLoading = false;
                     node.tree.locked = false;
 
@@ -263,8 +264,15 @@
             }
           }
 
-          // Create a new tree
-          Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
+          try
+          {
+            // Create a new tree
+            Qubit.treeView.treeView = new YAHOO.widget.TreeView('treeView');
+          }
+          catch (err)
+          {
+            return false;
+          }
 
           // Turn dynamic loading on for entire tree
           Qubit.treeView.treeView.setDynamicLoad(loadNodeData);

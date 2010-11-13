@@ -23,28 +23,23 @@ class RepositoryDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->repository = QubitRepository::getById($request->id);
-
-    if (!isset($this->repository))
-    {
-      $this->forward404();
-    }
+    $this->resource = $this->getRoute()->resource;
 
     if ($request->isMethod('delete'))
     {
-      foreach ($this->repository->informationObjects as $informationObject)
+      foreach ($this->resource->informationObjects as $item)
       {
-        unset($informationObject->repository);
+        unset($item->repository);
 
-        $informationObject->save();
+        $item->save();
       }
 
-      foreach (QubitRelation::getBySubjectOrObjectId($this->repository->id) as $relation)
+      foreach (QubitRelation::getBySubjectOrObjectId($this->resource->id) as $item)
       {
-        $relation->delete();
+        $item->delete();
       }
 
-      $this->repository->delete();
+      $this->resource->delete();
 
       $this->redirect(array('module' => 'repository', 'action' => 'browse'));
     }

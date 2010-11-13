@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_taxonomy_i18n' table.
+ * This class defines the structure of the 'taxonomy_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class TaxonomyI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_taxonomy_i18n');
+		$this->setName('taxonomy_i18n');
 		$this->setPhpName('taxonomyI18n');
 		$this->setClassname('QubitTaxonomyI18n');
 		$this->setPackage('lib.model');
@@ -38,7 +38,7 @@ class TaxonomyI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('NOTE', 'note', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_taxonomy', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'taxonomy', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

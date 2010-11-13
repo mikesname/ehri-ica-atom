@@ -28,7 +28,7 @@
  */
 class sfIsadPluginEditAction extends InformationObjectEditAction
 {
-  // Arrays are not allowed in class constants
+  // Arrays not allowed in class constants
   public static
     $NAMES = array(
       'accessConditions',
@@ -66,99 +66,97 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
       'publicationStatus',
       'title');
 
+  protected function earlyExecute()
+  {
+    parent::earlyExecute();
+
+    $this->isad = new sfIsadPlugin($this->resource);
+
+    $title = $this->context->i18n->__('Add new archival description');
+    if (isset($this->getRoute()->resource))
+    {
+      if (1 > strlen($title = $this->resource))
+      {
+        $title = $this->context->i18n->__('Untitled');
+      }
+
+      $title = $this->context->i18n->__('Edit %1%', array('%1%' => $title));
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+
+    $this->eventComponent = new sfIsadPluginEventComponent($this->context, 'sfIsadPlugin', 'event');
+    $this->eventComponent->resource = $this->resource;
+    $this->eventComponent->execute($this->request);
+  }
+
   protected function addField($name)
   {
-    parent::addField($name);
-
     switch ($name)
     {
       case 'creators':
         $criteria = new Criteria;
-        $this->object->addEventsCriteria($criteria);
+        $this->resource->addEventsCriteria($criteria);
         $criteria->add(QubitEvent::ACTOR_ID, null, Criteria::ISNOTNULL);
         $criteria->add(QubitEvent::TYPE_ID, QubitTerm::CREATION_ID);
 
-        $values = array();
-        $choices = array();
-        foreach ($this->events = QubitEvent::get($criteria) as $event)
+        $value = $choices = array();
+        foreach ($this->events = QubitEvent::get($criteria) as $item)
         {
-          $values[] = $this->context->routing->generate(null, array($event->actor, 'module' => 'actor'));
-          $choices[$this->context->routing->generate(null, array($event->actor, 'module' => 'actor'))] = $event->actor;
+          $choices[$value[] = $this->context->routing->generate(null, array($item->actor, 'module' => 'actor'))] = $item->actor;
         }
 
-        $this->form->setDefault('creators', $values);
+        $this->form->setDefault('creators', $value);
         $this->form->setValidator('creators', new sfValidatorPass);
         $this->form->setWidget('creators', new sfWidgetFormSelect(array('choices' => $choices, 'multiple' => true)));
 
         break;
 
       case 'appraisal':
-        $this->form->setDefault($name, $this->object[$name]);
-        $this->form->setValidator($name, new sfValidatorString);
-        $this->form->setWidget($name, new sfWidgetFormTextarea);
+        $this->form->setDefault('appraisal', $this->resource['appraisal']);
+        $this->form->setValidator('appraisal', new sfValidatorString);
+        $this->form->setWidget('appraisal', new sfWidgetFormTextarea);
 
         break;
+
+      default:
+
+        return parent::addField($name);
     }
-  }
-
-  public function execute($request)
-  {
-    parent::execute($request);
-
-    $title = $this->context->i18n->__('Add archival description');
-    if (isset($request->id))
-    {
-      if (1 > strlen($title = QubitIsad::getLabel($this->object)))
-      {
-        $title = $this->context->i18n->__('Untitled');
-      }
-      $title = 'Edit '.$title;
-    }
-    $this->response->setTitle($title.' - '.$this->response->getTitle());
-
-    // Get ISAD specific event types
-    $this->isadEventTypes = QubitTerm::getIsadEventTypeList();
-
-    // Get event dates and creator actorEvents
-    $this->eventDates = $this->object->getDates();
-
-    // Split notes into "Notes" (general notes), Title notes and Publication notes
-    $this->notes = $this->object->getNotesByType(array('noteTypeId' => QubitTerm::GENERAL_NOTE_ID));
-    $this->archivistsNotes = $this->object->getNotesByType(array('noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID));
-    $this->publicationNotes = $this->object->getNotesByType(array('noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID));
   }
 
   protected function processField($field)
   {
-    switch ($name = $field->getName())
+    switch ($field->getName())
     {
       case 'creators':
-        $filtered = $flipped = array();
-        foreach ($this->form->getValue('creators') as $value)
+        $value = $filtered = array();
+        foreach ($this->form->getValue('creators') as $item)
         {
-          $params = $this->context->routing->parse(Qubit::pathInfo($value));
-          $filtered[$params['id']] = $flipped[$params['id']] = $params['id'];
+          $params = $this->context->routing->parse(Qubit::pathInfo($item));
+          $resource = $params['_sf_route']->resource;
+          $value[$resource->id] = $filtered[$resource->id] = $resource;
         }
 
-        foreach ($this->events as $event)
+        foreach ($this->events as $item)
         {
-          if (isset($flipped[$event->actor->id]))
+          if (isset($value[$item->actor->id]))
           {
-            unset($filtered[$event->actor->id]);
+            unset($filtered[$item->actor->id]);
           }
-          else if (false == isset($this->request->sourceId))
+          else if (!isset($this->request->sourceId))
           {
-            $event->delete();
+            $item->delete();
           }
         }
 
-        foreach ($filtered as $id)
+        foreach ($filtered as $item)
         {
           $event = new QubitEvent;
-          $event->actorId = $id;
+          $event->actor = $item;
           $event->typeId = QubitTerm::CREATION_ID;
 
-          $this->object->events[] = $event;
+          $this->resource->events[] = $event;
         }
 
         break;
@@ -171,6 +169,10 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
 
   protected function processForm()
   {
+    $this->resource->sourceStandard = 'ISAD(G) 2nd edition';
+
+    $this->eventComponent->processForm();
+
     $this->updateNotes();
 
     return parent::processForm();
@@ -193,7 +195,7 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
         $note->typeId = QubitTerm::ARCHIVIST_NOTE_ID;
         $note->userId = $this->context->user->getAttribute('user_id');
 
-        $this->object->notes[] = $note;
+        $this->resource->notes[] = $note;
       }
     }
 
@@ -207,7 +209,7 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
         $note->typeId = QubitTerm::PUBLICATION_NOTE_ID;
         $note->userId = $this->context->user->getAttribute('user_id');
 
-        $this->object->notes[] = $note;
+        $this->resource->notes[] = $note;
       }
     }
 
@@ -221,46 +223,7 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
         $note->typeId = QubitTerm::GENERAL_NOTE_ID;
         $note->userId = $this->context->user->getAttribute('user_id');
 
-        $this->object->notes[] = $note;
-      }
-    }
-  }
-
-  /**
-   * ISAD form only allows entering data for creation dates and creator names,
-   * as two separate events.
-   *
-   * @param QubitInformationObject $informationObject
-   */
-  public function updateEvents()
-  {
-    if (isset($this->request->updateEvents))
-    {
-      foreach ($this->request->updateEvents as $updateDate)
-      {
-        if (isset($updateDate['id']))
-        {
-          $event = QubitEvent::getById($updateDate['id']);
-          if (!isset($event))
-          {
-            continue; // If event id isn't valid, skip this row
-          }
-        }
-        else if (0 < strlen($updateDate['startDate']) || 0 < strlen($updateDate['dateDisplay']))
-        {
-          $event = new QubitEvent;
-        }
-        else
-        {
-          continue;
-        }
-
-        $event->setTypeId($updateDate['typeId']);
-        $event->setStartDate(QubitDate::standardize($updateDate['startDate']));
-        $event->setEndDate(QubitDate::standardize($updateDate['endDate']));
-        $event->setDateDisplay($updateDate['dateDisplay']);
-
-        $this->object->events[] = $event;
+        $this->resource->notes[] = $note;
       }
     }
   }

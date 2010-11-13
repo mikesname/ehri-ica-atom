@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_object_term_relation' table.
+ * This class defines the structure of the 'object_term_relation' table.
  *
  *
  *
@@ -30,15 +30,15 @@ class ObjectTermRelationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_object_term_relation');
+		$this->setName('object_term_relation');
 		$this->setPhpName('objectTermRelation');
 		$this->setClassname('QubitObjectTermRelation');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TERM_ID', 'termId', 'INTEGER', 'q_term', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
+		$this->addForeignKey('TERM_ID', 'termId', 'INTEGER', 'term', 'ID', true, null, null);
 		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
 		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);
 		// validators

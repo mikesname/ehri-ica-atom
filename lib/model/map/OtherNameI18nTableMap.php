@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_other_name_i18n' table.
+ * This class defines the structure of the 'other_name_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class OtherNameI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_other_name_i18n');
+		$this->setName('other_name_i18n');
 		$this->setPhpName('otherNameI18n');
 		$this->setClassname('QubitOtherNameI18n');
 		$this->setPackage('lib.model');
@@ -38,7 +38,7 @@ class OtherNameI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('NOTE', 'note', 'VARCHAR', false, 255, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_other_name', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'other_name', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

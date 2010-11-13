@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_relation' table.
+ * This class defines the structure of the 'relation' table.
  *
  *
  *
@@ -30,16 +30,16 @@ class RelationTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_relation');
+		$this->setName('relation');
 		$this->setPhpName('relation');
 		$this->setClassname('QubitRelation');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('SUBJECT_ID', 'subjectId', 'INTEGER', 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'q_object', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addForeignKey('SUBJECT_ID', 'subjectId', 'INTEGER', 'object', 'ID', true, null, null);
+		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
 		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);
 		// validators

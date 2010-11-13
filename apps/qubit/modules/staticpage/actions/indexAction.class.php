@@ -21,13 +21,39 @@ class StaticPageIndexAction extends sfAction
 {
   public function execute($request)
   {
-    $this->staticPage = QubitStaticPage::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    if (!isset($this->staticPage))
+    if (1 > strlen($title = $this->resource))
     {
-      $this->forward404();
+      $title = $this->context->i18n->__('Untitled');
     }
 
-    $request->setAttribute('staticPage', $this->staticPage);
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+
+    // HACK factor this into routing one day?
+    switch (true)
+    {
+      case $this->resource instanceof QubitActor:
+        $this->forward('sfIsaarPlugin', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitFunction:
+        $this->forward('sfIsdfPlugin', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitInformationObject:
+        $this->forward('sfIsadPlugin', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitStaticPage:
+
+        break;
+
+      default:
+        $this->forward404();
+    }
   }
 }

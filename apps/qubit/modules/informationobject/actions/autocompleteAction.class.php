@@ -26,7 +26,7 @@
 class InformationObjectAutocompleteAction extends sfAction
 {
   /**
-   * Return all information objects (not just top-level) for Ajax request
+   * Return all information objects (not just top-level) for ajax request
    */
   public function execute($request)
   {
@@ -36,21 +36,20 @@ class InformationObjectAutocompleteAction extends sfAction
     }
 
     $criteria = new Criteria;
-    $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID, Criteria::INNER_JOIN);
+
+    // Exclude root
+    $criteria->add(QubitInformationObject::ID, QubitInformationObject::ROOT_ID, Criteria::NOT_EQUAL);
+
+    $criteria->addJoin(QubitInformationObject::ID, QubitInformationObjectI18n::ID);
+    $criteria->add(QubitInformationObjectI18n::CULTURE, $this->context->user->getCulture());
 
     // Search for matching title or identifier
     if (isset($request->query))
     {
-      $c1 = $criteria->getNewCriterion(QubitInformationObjectI18n::TITLE, $request->query.'%', Criteria::LIKE);
-      $c2 = $criteria->getNewCriterion(QubitInformationObject::IDENTIFIER, $request->query.'%', Criteria::LIKE);
-      $c1->addOr($c2);
-      $criteria->add($c1);
+      $criteria->add($criteria->getNewCriterion(QubitInformationObject::IDENTIFIER, "$request->query%", Criteria::LIKE)
+        ->addOr($criteria->getNewCriterion(QubitInformationObjectI18n::TITLE, "$request->query%", Criteria::LIKE)));
     }
 
-    // Exclude root node
-    $criteria->add(QubitInformationObject::ID, QubitInformationObject::ROOT_ID, Criteria::NOT_EQUAL);
-
-    $criteria->add(QubitInformationObjectI18n::CULTURE, $this->getUser()->getCulture(), Criteria::EQUAL);
     $criteria->addAscendingOrderByColumn(QubitInformationObject::LEVEL_OF_DESCRIPTION_ID);
     $criteria->addAscendingOrderByColumn(QubitInformationObject::IDENTIFIER);
     $criteria->addAscendingOrderByColumn(QubitInformationObjectI18n::TITLE);
@@ -60,7 +59,6 @@ class InformationObjectAutocompleteAction extends sfAction
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage(1);
 
-    $this->informationObject = null;
     $this->informationObjects = $this->pager->getResults();
   }
 }

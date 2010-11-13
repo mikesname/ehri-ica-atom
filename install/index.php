@@ -161,13 +161,13 @@ function printMainForm()
   print <<<END
     <form action="$_SERVER[PHP_SELF]" method="post">
     <label for="web_root">Where do you want to install the $distro web files?</label>
-    <input type="text" name="qubit_web_root" id="web_root" size="50" value="$qubitWebRoot" />
+    <input type="text" name="qubit_web_root" id="web_root" size="50" value="$qubitWebRoot"/>
     <span class="example_values">$qubit_web_root_example</span>
     <label for="data_root">Where do you want to install the $distro data files?</label>
-    <input type="text" name="qubit_data_root" id="data_root" size="50" value="$qubitDataRoot" />
+    <input type="text" name="qubit_data_root" id="data_root" size="50" value="$qubitDataRoot"/>
     <span class="example_values">$qubit_data_root_example</span>
     <label for="db_type">What type of database are you using?</label>
-    <select name="qubit_db_type" id="db_type" /><option
+    <select name="qubit_db_type" id="db_type"/><option
 END;
 
    if ($qubitDbType == 'mysqli')
@@ -191,13 +191,13 @@ END;
 
    print <<<END
     <label for="db_name">What is the name of your database?</label>
-    <input type="text" name="qubit_db_name" id="db_name" size="50" value="$qubitDbName" />
+    <input type="text" name="qubit_db_name" id="db_name" size="50" value="$qubitDbName"/>
     <span class="example_values">$qubit_db_name_example</span>
     <label for="db_user">What is the database username?</label>
-    <input type="text" name="qubit_db_user" id="db_user" size="50" value="$qubitDbUser" />
+    <input type="text" name="qubit_db_user" id="db_user" size="50" value="$qubitDbUser"/>
     <span class="example_values">$qubit_db_user_example</span>
     <label for="db_password">What is the database password?</label>
-    <input type="text" name="qubit_db_password" id="db_password" size="50" value="$qubitDbPassword" />
+    <input type="text" name="qubit_db_password" id="db_password" size="50" value="$qubitDbPassword"/>
     <span class="example_values">$qubit_db_password_example</span>
 
     <p><a href="javascript:;" onmousedown="toggleDiv('advanced_settings');">Advanced settings</a></p>
@@ -214,21 +214,21 @@ END;
   }
    print <<<END
     <label for="db_host">What host is the database running on?</label>
-    <input type="text" name="qubit_db_host" id="db_host" size="50" value="$qubitDbHost" />
+    <input type="text" name="qubit_db_host" id="db_host" size="50" value="$qubitDbHost"/>
     <span class="example_values_advanced">$qubit_db_host_example</span>
     <label for="db_port">What port is the database listening on?</label>
-    <input type="text" name="qubit_db_port" id="db_port" size="50" value="$qubitDbPort" />
+    <input type="text" name="qubit_db_port" id="db_port" size="50" value="$qubitDbPort"/>
     <span class="example_values_advanced">$qubit_db_port_example</span>
     </div>
 END;
 
   if (isset($_REQUEST['run_installer']))
   {
-    print '<input class="submit_button" type="submit" name="run_installer" value="Rerun installer" />';
+    print '<input class="submit_button" type="submit" name="run_installer" value="Rerun installer"/>';
   }
   else
   {
-    print '<input class="submit_button" type="submit" name="run_installer" value="Perform pre-installation checks" />';
+    print '<input class="submit_button" type="submit" name="run_installer" value="Perform pre-installation checks"/>';
   }
    print '</form>';
   }
@@ -860,8 +860,8 @@ function printHTMLTop()
     <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
     <head>
     <title>$distro Installer<title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="$cssPath" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <link rel="stylesheet" type="text/css" href="$cssPath"/>
     <script language="javascript">
     function toggleDiv(divid){
       if(document.getElementById(divid).style.display == 'none'){
@@ -910,7 +910,7 @@ function QubitInstallErrorHandler($errorNum, $errorStr, $errorFile, $errorLine)
 
    function customError($errno, $errstr)
  {
- print "<b>Error:</b> [$errno] $errstr<br />";
+ print "<strong>Error:</strong> [$errno] $errstr<br/>";
  print "Ending Script";
  die();
  }

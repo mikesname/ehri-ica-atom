@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_static_page' table.
+ * This class defines the structure of the 'static_page' table.
  *
  *
  *
@@ -30,14 +30,13 @@ class StaticPageTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_static_page');
+		$this->setName('static_page');
 		$this->setPhpName('staticPage');
 		$this->setClassname('QubitStaticPage');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_object', 'ID', true, null, null);
-		$this->addColumn('PERMALINK', 'permalink', 'VARCHAR', false, 255, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

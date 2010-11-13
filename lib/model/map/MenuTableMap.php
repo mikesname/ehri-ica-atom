@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_menu' table.
+ * This class defines the structure of the 'menu' table.
  *
  *
  *
@@ -30,13 +30,13 @@ class MenuTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_menu');
+		$this->setName('menu');
 		$this->setPhpName('menu');
 		$this->setClassname('QubitMenu');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_menu', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'menu', 'ID', false, null, null);
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('PATH', 'path', 'VARCHAR', false, 255, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);

@@ -248,8 +248,8 @@ class QubitMigrate108 extends QubitMigrate
     $parser = new sfYamlParser;
     $data = $parser->parse(file_get_contents(sfConfig::get('sf_data_dir').'/fixtures/settings.yml'));
 
-    // Update version
-    $this->data['QubitSetting'][$key] = $data['QubitSetting']['version'];
+    // Update version to 39 (last version for 1.0.8)
+    $this->data['QubitSetting'][$key]['value'][$this->data['QubitSetting'][$key]['source_culture']] = 39;
 
     $this->sortData();
 
@@ -340,7 +340,7 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 5: Drop the "Import digital object" menu 
+   * Ver 5: Drop the "Import digital object" menu
    *
    * @return QubitMigrate108 this object
    */
@@ -1426,8 +1426,8 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 39: Update menu labels to match data fixtures as of r6802 (English 
-   * only)  
+   * Ver 39: Update menu labels to match data fixtures as of r6802 (English
+   * only)
    *
    * @return QubitMigrate108 this object
    */
@@ -1467,7 +1467,7 @@ class QubitMigrate108 extends QubitMigrate
           break;
 
         default:
-          $label = preg_replace('/^(\w)/e', 'strtoupper($1)', $label);
+          $label = preg_replace('/^(\w)/e', 'strtoupper(\'$1\')', $label);
       }
 
       $this->data['QubitMenu'][$key]['label']['en'] = $label;
@@ -1477,7 +1477,7 @@ class QubitMigrate108 extends QubitMigrate
   }
 
   /**
-   * Ver 1: Update version number in static pages 
+   * Ver 1: Update version number in static pages
    *
    * @return QubitMigrate108 this object
    */

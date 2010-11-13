@@ -141,7 +141,7 @@
 
     function addDeleteIconTd(thisElement)
     {
-      $('<button name="delete" class="delete-small" />')
+      $('<button name="delete" class="delete-small"/>')
         .appendTo(thisElement.parents('tr').find('td:last'))
         .click(function ()
           {

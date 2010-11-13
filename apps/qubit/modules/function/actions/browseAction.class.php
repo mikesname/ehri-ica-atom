@@ -33,7 +33,6 @@ class FunctionBrowseAction extends sfAction
     }
 
     $criteria = new Criteria;
-
     switch ($request->sort)
     {
       case 'nameDown':

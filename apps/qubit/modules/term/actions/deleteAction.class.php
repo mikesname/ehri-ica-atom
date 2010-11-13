@@ -23,49 +23,42 @@ class TermDeleteAction extends sfAction
   {
     $this->form = new sfForm;
 
-    $this->term = QubitTerm::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    if (!isset($this->term))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
 
+    // Don't delete protected terms
+    if ($this->resource->isProtected())
+    {
+      $this->forward('admin', 'termPermission');
+    }
+
     // Check user authorization
-    if (!QubitAcl::check($this->term, 'delete'))
+    if (!QubitAcl::check($this->resource, 'delete'))
     {
       QubitAcl::forwardUnauthorized();
     }
 
-    $request->setAttribute('term', $this->term);
-
     if ($request->isMethod('delete'))
     {
-      // Don't delete protected terms
-      if ($this->term->isProtected())
+      foreach ($this->resource->descendants->andSelf()->orderBy('rgt') as $item)
       {
-        $this->forward('admin', 'termPermission');
-      }
-
-      // Remove non-preferred terms
-      foreach (QubitRelation::getRelationsBySubjectId($this->term->id, array('typeId' => QubitTerm::TERM_RELATION_EQUIVALENCE_ID)) as $item)
-      {
-        $item->object->delete();
-      }
-
-      foreach ($this->term->descendants->andSelf()->orderBy('rgt') as $descendant)
-      {
-        if (QubitAcl::check($descendant, 'delete'))
+        if (QubitAcl::check($item, 'delete'))
         {
-          $descendant->delete();
+          $item->delete();
         }
       }
 
-      if (isset($this->term->taxonomy))
+      if (isset($this->resource->taxonomy))
       {
-        $this->redirect(array('module' => 'term', 'action' => 'listTaxonomy', 'id' => $this->term->taxonomyId));
+        $this->redirect(array($this->resource->taxonomy, 'module' => 'taxonomy'));
       }
 
-      $this->redirect(array('module' => 'term', 'action' => 'list'));
+      $this->redirect(array('module' => 'taxonomy', 'action' => 'list'));
     }
   }
 }

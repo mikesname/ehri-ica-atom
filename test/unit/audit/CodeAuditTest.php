@@ -118,7 +118,7 @@ function _readDir($dirPath, &$filePaths)
   // $match[1] is the name field
   // $match[2] is the kind field
   // $match[3] is the deleted field, if present
-  preg_match_all('/\f\n([^\f\n]*)\n([^\f\n]*)\n(?:(?:[^\f\n]*){20}([^\f\n]*)\n)?/', file_get_contents($dirPath.'/.svn/entries'), $matches, PREG_SET_ORDER);
+  preg_match_all('/\f\n([^\f\n]*)\n([^\f\n]*)\n(?:(?:[^\f\n]*){20}([^\f\n]*)\n)?/', file_get_contents("$dirPath/.svn/entries"), $matches, PREG_SET_ORDER);
   foreach ($matches as $match)
   {
     switch ($match[2])
@@ -145,7 +145,7 @@ function checkPreamble($filePath)
   global $preambleExceptions;
   if (preg_match($preambleExceptions, $filePath))
   {
-    $t->skip($filePath.' preamble skipped');
+    $t->skip("$filePath preamble skipped");
     return;
   }
 
@@ -172,7 +172,7 @@ function checkSubversion($filePath)
   // Check that we didn't fall of the end of the above loop
   if (!preg_match($pattern, $filePath))
   {
-    $t->skip($filePath.' Subversion properties skipped');
+    $t->skip("$filePath Subversion properties skipped");
     return;
   }
 

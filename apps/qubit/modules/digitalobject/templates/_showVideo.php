@@ -1,3 +1,5 @@
+<?php use_helper('Text') ?>
+
 <?php if ($usageType == QubitTerm::MASTER_ID): ?>
 
   <?php if ($link == null): ?>
@@ -21,28 +23,28 @@
     <?php echo link_to(__('Download movie'), $link) ?>
   <?php endif; ?>
 
-<?php elseif ($usageType == QubitTerm::THUMBNAIL_ID): ?>
+<?php elseif (QubitTerm::THUMBNAIL_ID == $usageType): ?>
 
   <?php if ($iconOnly): ?>
 
-    <?php if ($link == null): ?>
-      <?php echo image_tag($representation->getFullPath()); ?>
-    <?php else: ?>
+    <?php if (isset($link)): ?>
       <?php echo link_to(image_tag($representation->getFullPath()), $link) ?>
+    <?php else: ?>
+      <?php echo image_tag($representation->getFullPath()); ?>
     <?php endif; ?>
 
   <?php else: ?>
 
     <div class="digitalObject">
       <div class="digitalObjectRep">
-        <?php if ($link == null): ?>
-        <?php echo image_tag($representation->getFullPath()) ?>
+        <?php if (isset($link)): ?>
+          <?php echo link_to(image_tag($representation->getFullPath()), $link) ?>
         <?php else: ?>
-        <?php echo link_to(image_tag($representation->getFullPath()), $link) ?>
+          <?php echo image_tag($representation->getFullPath()) ?>
         <?php endif; ?>
       </div>
       <div class="digitalObjectDesc">
-        <?php echo string_wrap($digitalObject->getName(), 18) ?>
+        <?php echo wrap_text($resource->name, 18) ?>
       </div>
     </div>
 

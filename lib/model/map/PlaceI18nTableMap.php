@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_place_i18n' table.
+ * This class defines the structure of the 'place_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class PlaceI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_place_i18n');
+		$this->setName('place_i18n');
 		$this->setPhpName('placeI18n');
 		$this->setClassname('QubitPlaceI18n');
 		$this->setPackage('lib.model');
@@ -40,7 +40,7 @@ class PlaceI18nTableMap extends TableMap {
 		$this->addColumn('CITY', 'city', 'VARCHAR', false, 255, null);
 		$this->addColumn('REGION', 'region', 'VARCHAR', false, 255, null);
 		$this->addColumn('POSTAL_CODE', 'postalCode', 'VARCHAR', false, 255, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_place', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'place', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

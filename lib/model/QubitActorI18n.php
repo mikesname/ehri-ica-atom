@@ -19,7 +19,7 @@
 
 /**
  * Qubit specific functionality extending the BaseActorI18n class.
- * 
+ *
  * @see lib/model/om/BaseActorI18n.php
  */
 class QubitActorI18n extends BaseActorI18n

@@ -26,15 +26,16 @@ class InformationObjectPhysicalObjectsAction extends sfAction
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $this->informationObject = QubitInformationObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    if (!isset($this->informationObject))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
 
     $criteria = new Criteria;
-    $criteria->add(QubitRelation::OBJECT_ID, $request->id);
+    $criteria->add(QubitRelation::OBJECT_ID, $this->resource->id);
     $criteria->add(QubitRelation::TYPE_ID, QubitTerm::HAS_PHYSICAL_OBJECT_ID);
     $criteria->addJoin(QubitRelation::SUBJECT_ID, QubitPhysicalObject::ID);
 

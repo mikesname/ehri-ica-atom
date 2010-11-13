@@ -27,8 +27,7 @@
  */
 class oaiOaiAction extends sfAction
 {
-
-  public $oaiErrorArr = array (
+  public $oaiErrorArr = array(
     'badArgument'=>'The request includes illegal arguments, is missing required arguments, includes a repeated argument, or values for arguments have an illegal syntax.',
     'badResumptionToken'=>'The value of the resumptionToken argument is invalid or expired.',
     'badVerb'=>'Value of the verb argument is not a legal OAI-PMH verb, the verb argument is missing, or the verb argument is repeated.',
@@ -39,7 +38,7 @@ class oaiOaiAction extends sfAction
     'noSetHierarchy'=>'The repository does not support sets.'
   );
 
-  public $oaiVerbArr = array ('Identify', 'ListMetadataFormats', 'ListSets', 'ListRecords', 'ListIdentifiers', 'GetRecord');
+  public $oaiVerbArr = array('Identify', 'ListMetadataFormats', 'ListSets', 'ListRecords', 'ListIdentifiers', 'GetRecord');
 
   /**
    * Executes action
@@ -67,8 +66,8 @@ class oaiOaiAction extends sfAction
       $this->forward('oai', 'error');
     }*/
     $this->date = QubitOai::getDate();
-    $this->path = $this->getRequest()->getUriPrefix().$this->getRequest()->getPathInfo();
-    $this->attributes = $this->getRequest()->getGetParameters();
+    $this->path = $this->request->getUriPrefix().$this->request->getPathInfo();
+    $this->attributes = $this->request->getGetParameters();
 
     $this->attributesKeys = array_keys($this->attributes);
     $this->requestAttributes = '';
@@ -80,15 +79,15 @@ class oaiOaiAction extends sfAction
 
     foreach (QubitInformationObject::getCollections() as $el)
     {
-      $this->sets[] = $el->getLabel();
+      $this->sets[] = new sfIsadPlugin($el);
     }
 
     /**
      * Validate that verb is valid
     */
-    if ($this->request->hasParameter('verb'))
+    if (isset($this->request->verb))
     {
-      if (!in_array($this->request->getParameter('verb'), $this->oaiVerbArr))
+      if (!in_array($this->request->verb, $this->oaiVerbArr))
       {
         $request->setParameter('errorCode', 'badVerb');
         $request->setParameter('errorMsg', 'Value of the verb argument is not a legal OAI-PMH verb, the verb argument is missing, or the verb argument is repeated.');
@@ -98,8 +97,8 @@ class oaiOaiAction extends sfAction
       /**
        * Validate that attributes are valid
       */
-      $allowedKeys = sfConfig::get('mod_oai_'.$this->request->getParameter('verb').'Allowed');
-      $mandatoryKeys = sfConfig::get('mod_oai_'.$this->request->getParameter('verb').'Mandatory');
+      $allowedKeys = sfConfig::get('mod_oai_'.$this->request->verb.'Allowed');
+      $mandatoryKeys = sfConfig::get('mod_oai_'.$this->request->verb.'Mandatory');
       if (!QubitOai::checkBadArgument($this->attributesKeys, $allowedKeys, $mandatoryKeys))
       {
         $request->setParameter('errorCode', 'badArgument');
@@ -108,7 +107,7 @@ class oaiOaiAction extends sfAction
       }
 
       // For now, if there is a metadataPrefix requested other than oai_dc, fail the request
-      $metadataPrefix = $this->request->getParameter('metadataPrefix');
+      $metadataPrefix = $this->request->metadataPrefix;
       if ($metadataPrefix != '' AND $metadataPrefix != 'oai_dc')
       {
         $request->setParameter('errorCode', 'badVerb');
@@ -116,7 +115,7 @@ class oaiOaiAction extends sfAction
         $this->forward('oai', 'error');
       }
 
-      switch($this->request->getParameter('verb'))
+      switch($this->request->verb)
       {
         case 'Identify':
           $this->verb = 'identify';

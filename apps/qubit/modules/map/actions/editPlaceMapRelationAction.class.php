@@ -21,7 +21,7 @@ class MapEditPlaceMapRelationAction extends sfAction
 {
   public function execute($request)
   {
-  $this->placeMapRelation = PlaceMapRelation::getById($this->getRequestParameter('id'));
+  $this->placeMapRelation = PlaceMapRelation::getById($this->request->id);
   $this->forward404Unless($this->placeMapRelation);
   }
 }

@@ -51,7 +51,7 @@ class QubitSocket
 
   /**
   * Public function QubitSocket, socket creator
-  * 
+  *
   * @param string $url, url to the resource requested
   * @param string $agent, agent
   * @param string $from, email of the connection originator
@@ -103,8 +103,8 @@ class QubitSocket
 
   /**
   * Public function get_data, data getter
-  * 
-  * @param string $attribs attributes of the link 
+  *
+  * @param string $attribs attributes of the link
   * @return bool true for success, false for failure
   */
   public function get_data()
@@ -140,9 +140,9 @@ class QubitSocket
   /**
   * Public function set_query_str, function used
   * to return an attribute string for the URL, based on
-  * array of paired attributes/value  
-  * 
-  * @param string $key_value key values array for the string  
+  * array of paired attributes/value
+  *
+  * @param string $key_value key values array for the string
   * @return string query string properly formated for HTTP
   */
   public function set_query_str($key_value='')
@@ -161,7 +161,7 @@ class QubitSocket
 
   /**
   * Public function get_file, file getter
-  * 
+  *
   * @param string $file filename for the target
   * @return bool true for success, false for failure
   */
@@ -194,10 +194,10 @@ class QubitSocket
   }
 
   /**
-  * Public function ftp_move, uploads a file through ftp 
+  * Public function ftp_move, uploads a file through ftp
   *
   * @param string $filePath file path of file to move
-  * @param string $ftpPath ftp path of upload directory 
+  * @param string $ftpPath ftp path of upload directory
   * @return bool true for success, false for failure
   */
   public function ftp_move($filePath, $ftpPath, $ftpUsername, $ftpPassword)
@@ -226,5 +226,4 @@ class QubitSocket
     unlink($filePath);
     return ($error_no == 0); //TRUE if communication okay
   }
-
 }

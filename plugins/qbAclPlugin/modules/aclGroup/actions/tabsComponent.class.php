@@ -21,7 +21,7 @@
  * Display ACL permission tabs
  *
  * @package    qubit
- * @subpackage aclGroup 
+ * @subpackage aclGroup
  * @version    svn: $Id$
  * @author     David Juhasz <david@artefactual.com>
  */

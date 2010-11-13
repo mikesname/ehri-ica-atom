@@ -1,9 +1,11 @@
+form .section,
 .form-item
 {
   position: relative;
 }
 
-.form-item .description
+.description-left,
+.description-right
 {
   background: #def;
 
@@ -13,11 +15,21 @@
 
   color: #000;
   display: none;
-  left: 100%;
-  margin-left: 3em;
-  opacity: 0.8;
   padding: 1em;
   position: absolute;
   top: 0;
-  width: 30%;
+  width: 156px;
+  z-index: 1;
+}
+
+.description-left
+{
+  margin-right: 3em;
+  right: 100%;
+}
+
+.description-right
+{
+  left: 100%;
+  margin-left: 3em;
 }

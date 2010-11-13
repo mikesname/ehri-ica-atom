@@ -2,38 +2,56 @@
 
 <h1><?php echo __('Reset password'); ?></h1>
 
-<form method="post" action="<?php echo url_for(array('module' => 'user', 'action' => 'passwordEdit')) ?>">
+<h1 class="label"><?php echo render_title($resource) ?></h1>
 
-<?php echo object_input_hidden_tag($user, 'getId') ?>
+<?php echo $form->renderFormTag(url_for(array($resource, 'module' => 'user', 'action' => 'passwordEdit')), array('id' => 'editForm')) ?>
 
-<div class="formHeader">
-  <?php echo __('Reset password: %1%', array('%1%' => $user)) ?>
-</div>
-
-<fieldset>
-<div>
-  <?php $settings = json_encode(array('password' => array('strengthTitle' => 'Password strength:', 'hasWeaknesses' => 'To make your password stronger:', 'tooShort' => 'Make it at least six characters', 'addLowerCase' => 'Add lowercase letters', 'addUpperCase' => 'Add uppercase letters', 'addNumbers' => 'Add numbers', 'addPunctuation' => 'Add punctuation', 'sameAsUsername' => 'Make it different from your username', 'confirmSuccess' => 'yes', 'confirmFailure' => 'no', 'confirmTitle' => 'Passwords match:', 'username' => ''))) ?>
+  <?php $settings = json_encode(array(
+    'password' => array(
+      'strengthTitle' => __('Password strength:'),
+      'hasWeaknesses' => __('To make your password stronger:'),
+      'tooShort' => __('Make it at least six characters'),
+      'addLowerCase' => __('Add lowercase letters'),
+      'addUpperCase' => __('Add uppercase letters'),
+      'addNumbers' => __('Add numbers'),
+      'addPunctuation' => __('Add punctuation'),
+      'sameAsUsername' => __('Make it different from your username'),
+      'confirmSuccess' => __('yes'),
+      'confirmFailure' => __('no'),
+      'confirmTitle' => __('Passwords match:'),
+      'username' => ''))) ?>
   <?php echo javascript_tag(<<<EOF
 jQuery.extend(Drupal.settings, $settings);
 EOF
 ) ?>
 
-  <?php echo $form->renderGlobalErrors() ?>
-  
-  <?php echo $form->password->label(__('Change password'))->renderRow(array('class' => 'password-field')) ?>
-  <br style="clear: both" />  
-  <?php echo $form->confirmPassword->label(__('Confirm password'))->renderRow(array('class' => 'password-confirm')) ?>
-</div>
-</fieldset>
+  <?php echo $form->password->renderError() ?>
+
+  <div class="form-item password-parent">
+    <?php echo $form->password
+      ->label(__('New password'))
+      ->renderLabel() ?>
+    <?php echo $form->password->render(array('class' => 'password-field')) ?>
+  </div>
+
+  <div class="form-item confirm-parent">
+    <?php echo $form->confirmPassword
+      ->label(__('Confirm password'))
+      ->renderLabel() ?>
+    <?php echo $form->confirmPassword->render(array('class' => 'password-confirm')) ?>
+  </div>
 
   <div class="actions section">
+
     <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+
     <div class="content">
       <ul class="clearfix links">
-        <li><?php echo link_to(__('Cancel'), array('module' => 'user', 'id' => $user->getId())) ?></li>
-        <li><?php echo submit_tag(__('Save')) ?></li>
+        <li><?php echo link_to(__('Cancel'), array($resource, 'module' => 'user')) ?></li>
+        <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>
       </ul>
     </div>
+
   </div>
 
 </form>

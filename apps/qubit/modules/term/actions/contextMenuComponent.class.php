@@ -30,6 +30,13 @@ class TermContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
-    $this->term = $request->getAttribute('term');
+    if (isset($request->getAttribute('sf_route')->resource))
+    {
+      $this->resource = $request->getAttribute('sf_route')->resource;
+    }
+    else
+    {
+      return sfView::NONE;
+    }
   }
 }

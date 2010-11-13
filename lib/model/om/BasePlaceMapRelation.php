@@ -5,14 +5,14 @@ abstract class BasePlaceMapRelation extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_place_map_relation',
+    TABLE_NAME = 'place_map_relation',
 
-    ID = 'q_place_map_relation.ID',
-    PLACE_ID = 'q_place_map_relation.PLACE_ID',
-    MAP_ID = 'q_place_map_relation.MAP_ID',
-    MAP_ICON_IMAGE_ID = 'q_place_map_relation.MAP_ICON_IMAGE_ID',
-    MAP_ICON_DESCRIPTION = 'q_place_map_relation.MAP_ICON_DESCRIPTION',
-    TYPE_ID = 'q_place_map_relation.TYPE_ID';
+    ID = 'place_map_relation.ID',
+    PLACE_ID = 'place_map_relation.PLACE_ID',
+    MAP_ID = 'place_map_relation.MAP_ID',
+    MAP_ICON_IMAGE_ID = 'place_map_relation.MAP_ICON_IMAGE_ID',
+    MAP_ICON_DESCRIPTION = 'place_map_relation.MAP_ICON_DESCRIPTION',
+    TYPE_ID = 'place_map_relation.TYPE_ID';
 
   public static function addSelectColumns(Criteria $criteria)
   {

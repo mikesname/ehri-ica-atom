@@ -38,27 +38,31 @@ class DigitalObjectShowDownloadComponent extends sfComponent
     switch($this->usageType)
     {
       case QubitTerm::REFERENCE_ID:
-        $this->representation = $this->digitalObject->getRepresentationByUsage(QubitTerm::REFERENCE_ID);
+        $this->representation = $this->resource->getRepresentationByUsage(QubitTerm::REFERENCE_ID);
+
         break;
+
       case QubitTerm::THUMBNAIL_ID:
-        $this->representation = $this->digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+        $this->representation = $this->resource->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+
         break;
+
       case QubitTerm::MASTER_ID:
       default:
-        $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
+        $this->representation = QubitDigitalObject::getGenericRepresentation($this->resource->mimeType, $this->usageType);
     }
 
     // If no representation found, then default to generic rep
     if (!$this->representation)
     {
-      $this->representation = QubitDigitalObject::getGenericRepresentation($this->digitalObject->getMimeType(), $this->usageType);
+      $this->representation = QubitDigitalObject::getGenericRepresentation($this->resource->mimeType, $this->usageType);
     }
 
     // Build a fully qualified URL to this digital object asset
-    if (($this->digitalObject->getMediaTypeId() != QubitTerm::IMAGE_ID || $this->usageType == QubitTerm::REFERENCE_ID)
-      && QubitAcl::check($this->digitalObject->informationObject, 'readMaster'))
+    if ((QubitTerm::IMAGE_ID != $this->resource->mediaTypeId || QubitTerm::REFERENCE_ID == $this->usageType)
+        && QubitAcl::check($this->resource->informationObject, 'readMaster'))
     {
-      $this->link = public_path($this->digitalObject->getFullPath(), true);
+      $this->link = public_path($this->resource->getFullPath(), true);
     }
   }
 }

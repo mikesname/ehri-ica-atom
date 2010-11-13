@@ -3,215 +3,280 @@
 
 homepage:
   url:   /
-  class: QubitRoute
+  class: QubitResourceRoute
   param:
     module: staticpage
-    action: static
-    permalink: homepage
+    action: index
+    slug: home
 
-indexDc:
-  url: /:id;dc
-  class: QubitRoute
+slug:
+  url: /:slug
+  class: QubitResourceRoute
+  param:
+    module: staticpage
+    action: index
+    slug: { pattern: '[^;]+' }
+
+dc:
+  url: /:slug;dc
+  class: QubitResourceRoute
   param:
     module: sfDcPlugin
     action: index
     informationobject_template: dc
 
-createDc:
-  url: /;create/dc
+add/dc:
+  url: /;add/dc
   param:
     module: sfDcPlugin
     action: edit
     informationobject_template: dc
 
-duplicateDc:
-  url: /;duplicate/dc
+copy/dc:
+  url: /;copy/dc
   param:
     module: sfDcPlugin
     action: edit
     informationobject_template: dc
 
-editDc:
-  url: /:id;edit/dc
-  class: QubitRoute
+edit/dc:
+  url: /:slug;edit/dc
+  class: QubitResourceRoute
   param:
     module: sfDcPlugin
     action: edit
     informationobject_template: dc
 
-indexEad:
-  url: /:id;ead
-  class: QubitRoute
+eac:
+  url: /:slug;eac
+  class: QubitResourceRoute
+  param:
+    module: sfEacPlugin
+    action: index
+    actor_template: eac
+
+ead:
+  url: /:slug;ead
+  class: QubitResourceRoute
   param:
     module: sfEadPlugin
     action: index
     informationobject_template: ead
 
-indexIsaar:
-  url: /:id;isaar
-  class: QubitRoute
+isaar:
+  url: /:slug;isaar
+  class: QubitResourceRoute
   param:
-    module: actor
-    action: indexIsaar
+    module: sfIsaarPlugin
+    action: index
     actor_template: isaar
 
-createIsaar:
-  url: /;create/isaar
+add/isaar:
+  url: /;add/isaar
   param:
-    module: actor
-    action: editIsaar
+    module: sfIsaarPlugin
+    action: edit
     actor_template: isaar
 
-editIsaar:
-  url: /:id;edit/isaar
-  class: QubitRoute
+edit/isaar:
+  url: /:slug;edit/isaar
+  class: QubitResourceRoute
   param:
-    module: actor
-    action: editIsaar
+    module: sfIsaarPlugin
+    action: edit
     actor_template: isaar
 
-indexIsad:
-  url: /:id;isad
-  class: QubitRoute
+isad:
+  url: /:slug;isad
+  class: QubitResourceRoute
   param:
     module: sfIsadPlugin
     action: index
     informationobject_template: isad
 
-createIsad:
-  url: /;create/isad
+add/isad:
+  url: /;add/isad
   param:
     module: sfIsadPlugin
     action: edit
     informationobject_template: isad
 
-duplicateIsad:
-  url: /;duplicate/isad
+copy/isad:
+  url: /;copy/isad
   param:
     module: sfIsadPlugin
     action: edit
     informationobject_template: isad
 
-editIsad:
-  url: /:id;edit/isad
-  class: QubitRoute
+edit/isad:
+  url: /:slug;edit/isad
+  class: QubitResourceRoute
   param:
     module: sfIsadPlugin
     action: edit
     informationobject_template: isad
 
-indexIsdf:
-  url: /:id;isdf
-  class: QubitRoute
+isdf:
+  url: /:slug;isdf
+  class: QubitResourceRoute
+  param:
+    module: sfIsdfPlugin
+    action: index
+
+add/isdf:
+  url: /;add/isdf
+  param:
+    module: sfIsdfPlugin
+    action: edit
+
+edit/isdf:
+  url: /:slug;edit/isdf
+  class: QubitResourceRoute
+  param:
+    module: sfIsdfPlugin
+    action: edit
+
+isdiah:
+  url: /:slug;isdiah
+  class: QubitResourceRoute
+  param:
+    module: sfIsdiahPlugin
+    action: index
+    repository_template: isdiah
+
+add/isdiah:
+  url: /;add/isdiah
+  param:
+    module: sfIsdiahPlugin
+    action: edit
+    repository_template: isdiah
+
+edit/isdiah:
+  url: /:slug;edit/isdiah
+  class: QubitResourceRoute
+  param:
+    module: sfIsdiahPlugin
+    action: edit
+    repository_template: isdiah
+
+mods:
+  url: /:slug;mods
+  class: QubitResourceRoute
+  param:
+    module: sfModsPlugin
+    action: index
+    informationobject_template: mods
+
+add/mods:
+  url: /;add/mods
+  param:
+    module: sfModsPlugin
+    action: edit
+    informationobject_template: mods
+
+copy/mods:
+  url: /;copy/mods
+  param:
+    module: sfModsPlugin
+    action: edit
+    informationobject_template: mods
+
+edit/mods:
+  url: /:slug;edit/mods
+  class: QubitResourceRoute
+  param:
+    module: sfModsPlugin
+    action: edit
+    informationobject_template: mods
+
+rad:
+  url: /:slug;rad
+  class: QubitResourceRoute
+  param:
+    module: sfRadPlugin
+    action: index
+    informationobject_template: rad
+
+add/rad:
+  url: /;add/rad
+  param:
+    module: sfRadPlugin
+    action: edit
+    informationobject_template: rad
+
+copy/rad:
+  url: /;copy/rad
+  param:
+    module: sfRadPlugin
+    action: edit
+    informationobject_template: rad
+
+edit/rad:
+  url: /:slug;edit/rad
+  class: QubitResourceRoute
+  param:
+    module: sfRadPlugin
+    action: edit
+    informationobject_template: rad
+
+# These routes used only to *generate* not *parse* URLs
+actor:
+  url: /:slug;:actor_template
+  class: QubitResourceRoute
+  param:
+    module: actor
+    action: index
+    actor_template: { pattern: 'eac|isaar' }
+
+actor/add:
+  url: /;add/:actor_template
+  param:
+    module: actor
+    action: add
+
+actor/edit:
+  url: /:slug;edit/:actor_template
+  class: QubitResourceRoute
+  param:
+    module: actor
+    action: edit
+
+function:
+  url: /:slug;isdf
+  class: QubitResourceRoute
   param:
     module: function
     action: index
 
-indexIsdiah:
-  url: /:id;isdiah
-  class: QubitRoute
+function/add:
+  url: /;add/isdf
+  param:
+    module: function
+    action: add
+
+function/edit:
+  url: /:slug;edit/isdf
+  class: QubitResourceRoute
+  param:
+    module: function
+    action: edit
+
+repository:
+  url: /:slug;isdiah
+  class: QubitResourceRoute
   param:
     module: repository
-    action: indexIsdiah
-    repository_template: isdiah
-
-createIsdiah:
-  url: /;create/isdiah
-  param:
-    module: repository
-    action: editIsdiah
-    repository_template: isdiah
-
-editIsdiah:
-  url: /:id;edit/isdiah
-  class: QubitRoute
-  param:
-    module: repository
-    action: editIsdiah
-    repository_template: isdiah
-
-indexMods:
-  url: /:id;mods
-  class: QubitRoute
-  param:
-    module: sfModsPlugin
     action: index
-    informationobject_template: mods
 
-createMods:
-  url: /;create/mods
-  param:
-    module: sfModsPlugin
-    action: edit
-    informationobject_template: mods
-
-duplicateMods:
-  url: /;duplicate/mods
-  param:
-    module: sfModsPlugin
-    action: edit
-    informationobject_template: mods
-
-editMods:
-  url: /:id;edit/mods
-  class: QubitRoute
-  param:
-    module: sfModsPlugin
-    action: edit
-    informationobject_template: mods
-
-indexRad:
-  url: /:id;rad
-  class: QubitRoute
-  param:
-    module: sfRadPlugin
-    action: index
-    informationobject_template: rad
-
-createRad:
-  url: /;create/rad
-  param:
-    module: sfRadPlugin
-    action: edit
-    informationobject_template: rad
-
-duplicateRad:
-  url: /;duplicate/rad
-  param:
-    module: sfRadPlugin
-    action: edit
-    informationobject_template: rad
-
-editRad:
-  url: /:id;edit/rad
-  class: QubitRoute
-  param:
-    module: sfRadPlugin
-    action: edit
-    informationobject_template: rad
-
-actorCreate:
-  url: /;create/:actor_template
-  param:
-    module: actor
-    action: create
-
-actorEdit:
-  url: /:id;edit/:actor_template
-  class: QubitRoute
-  param:
-    module: actor
-    action: edit
-
-repositoryCreate:
-  url: /;create/:repository_template
+repository/add:
+  url: /;add/isdiah
   param:
     module: repository
-    action: create
+    action: add
 
-repositoryEdit:
-  url: /:id;edit/:repository_template
-  class: QubitRoute
+repository/edit:
+  url: /:slug;edit/isdiah
+  class: QubitResourceRoute
   param:
     module: repository
     action: edit
@@ -236,80 +301,63 @@ oai_requests:
     module: oai
     action: oai
 
-informationObjectIndex:
-  url: /:id;:informationobject_template
-  class: QubitRoute
+informationObject:
+  url: /:slug;:informationobject_template
+  class: QubitResourceRoute
   param:
     module: informationobject
     action: index
     informationobject_template: { pattern: 'dc|ead|isad|mods|rad' }
 
-informationObject/create:
-  url: /;create/:informationobject_template
+informationObject/add:
+  url: /;add/:informationobject_template
   param:
     module: informationobject
-    action: create
+    action: add
 
-informationObject/duplicate:
-  url: /;duplicate/:informationobject_template
+informationObject/copy:
+  url: /;copy/:informationobject_template
   param:
     module: informationobject
-    action: duplicate
+    action: copy
 
-informationObjectEdit:
-  url: /:id;edit/:informationobject_template
-  class: QubitRoute
+informationObject/edit:
+  url: /:slug;edit/:informationobject_template
+  class: QubitResourceRoute
   param:
     module: informationobject
     action: edit
 
-informationObjectList:
-  url: /;informationobject/list
-  class: QubitRoute
-  param:
-    module: informationobject
-    action: list
-    id: <?php echo QubitInformationObject::ROOT_ID."\n" ?>
-
-id;default_index:
-  url:   /:id;:module
-  class: QubitRoute
+slug;default_index:
+  url:   /:slug;:module
+  class: QubitResourceRoute
   param:
     action: index
 
-# QubitRoute only unsets $params[0]
-default_index:
-  url:   /;:module
-  class: QubitRoute
-  param:
-    action: index
-
-# After default_index to avoid matching /;foo
-permalink:
-  url: /:permalink
-  param:
-    module: staticpage
-    action: static
+slug;default:
+  url: /:slug;:module/:action
+  class: QubitResourceRoute
 
 id;default:
-  url: /:id;:module/:action
+  url: /;:module/:action/:id
   class: QubitRoute
-  param:
-    id: { pattern: '[^;]+' }
 
-# After id;default to avoid matching array($object, 'module' => 'foo', 'action', => 'edit')
+default_index:
+  url:   /;:module
+  param:
+    action: index
+
+# After slug;default to avoid matching array($object, 'module' => 'foo', 'action', => 'edit')
 edit:
-  url: /;:module/create
+  url: /;:module/add
   param:
     action: edit
 
-# After edit to avoid matching /;foo/create
-create:
-  url: /;:module/create
+# After edit to avoid matching /;foo/add
+add:
+  url: /;:module/add
   param:
-    action: create
+    action: add
 
-# QubitRoute only unsets $params[0]
 default:
-  url:   /;:module/:action/*
-  class: QubitRoute
+  url:   /;:module/:action

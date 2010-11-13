@@ -27,7 +27,6 @@
  */
 class oaiHarvesterListAction extends sfAction
 {
-
    /*
    * Executes action
    *
@@ -35,47 +34,62 @@ class oaiHarvesterListAction extends sfAction
    */
   public function execute($request)
   {
-    $this->form = new OaiAddRepositoryForm();
-    $this->repositories = QubitOaiRepository::getRepositories();
+    $this->form = new sfForm;
+
+    // Get repositories
+    $criteria = new Criteria;
+    $criteria->add(QubitOaiRepository::ID, null, Criteria::ISNOTNULL);
+    $criteria->addAscendingOrderByColumn(QubitOaiRepository::NAME);
+    $this->repositories = QubitOaiRepository::get($criteria);
+
+    // Add URI field
+    $this->form->setValidator('uri', new sfValidatorUrl(array('required' => true)));
+    $this->form->setWidget('uri', new sfWidgetFormInputText);
+
     $this->harvestJob = array();
+
     if ($request->isMethod('post'))
     {
-      $this->form->bind($request->getParameter('oai_harvester'));
+      $this->form->bind($request->getPostParameters());
       if ($this->form->isValid())
       {
-        $harvesterArr = $request->getParameter('oai_harvester');
-
-        if (count(QubitOaiRepository::getByURI($harvesterArr['uri'])) != 0)
-        {
-           $this->request->setAttribute('preExistingRepository', true);
-           $this->forward('oai', 'harvesterNewRepository');
-        }
-        $URI = $harvesterArr['uri'];
-        $URI .= '?verb=Identify';
-        $oaiSimple = simplexml_load_file($URI);
-        libxml_use_internal_errors(true);
-        if ($oaiSimple)
-        {
-          $repository = new QubitOaiRepository();
-          $Identify = $oaiSimple->Identify;
-
-          $repository->setName($Identify->repositoryName);
-          $repository->setUri($harvesterArr['uri']);
-          $repository->setAdminEmail($Identify->adminEmail);
-          $repository->setEarliestTimestamp($Identify->earliestDatestamp);
-          $repository->save();
-
-          $harvest = new QubitOaiHarvest();
-          $harvest->setOaiRepository($repository);
-          $harvest->setMetadataPrefix('oai_dc');
-          $harvest->save();
-          $this->redirect('oai/harvesterNewRepository');
-        } else
-        {
-          $this->request->setAttribute('parsingErrors', true);
-          $this->forward('oai', 'harvesterNewRepository');
-        }
+        $this->processForm();
       }
+    }
+  }
+
+  protected function processForm()
+  {
+    if (0 < count(QubitOaiRepository::getByURI($this->form->getValue('uri'))))
+    {
+       $this->request->setAttribute('preExistingRepository', true);
+       $this->forward('oai', 'harvesterNewRepository');
+    }
+
+    $oaiSimple = simplexml_load_file("{$this->form->getValue('uri')}?verb=Identify");
+    libxml_use_internal_errors(true);
+
+    if ($oaiSimple)
+    {
+      $repository = new QubitOaiRepository();
+      $Identify = $oaiSimple->Identify;
+
+      $repository->setName($Identify->repositoryName);
+      $repository->setUri($this->form->getValue('uri'));
+      $repository->setAdminEmail($Identify->adminEmail);
+      $repository->setEarliestTimestamp($Identify->earliestDatestamp);
+      $repository->save();
+
+      $harvest = new QubitOaiHarvest();
+      $harvest->setOaiRepository($repository);
+      $harvest->setMetadataPrefix('oai_dc');
+      $harvest->save();
+      $this->redirect('oai/harvesterNewRepository');
+    }
+    else
+    {
+      $this->request->setAttribute('parsingErrors', true);
+      $this->forward('oai', 'harvesterNewRepository');
     }
   }
 }

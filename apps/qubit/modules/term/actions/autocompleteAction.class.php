@@ -21,56 +21,104 @@ class TermAutocompleteAction extends sfAction
 {
   public function execute($request)
   {
-    $this->taxonomy = QubitTaxonomy::getById($request->taxonomyId);
-
-    if (!isset($this->taxonomy))
+    if (!isset($request->limit))
     {
-      $this->forward404();
+      $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $criteria = new Criteria;
-    $criteria->add(QubitTerm::TAXONOMY_ID, $request->taxonomyId);
-    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitTermI18n::CULTURE, $this->context->user->getCulture());
-
-    // Exclude the calling object and it's descendants from the list (prevent
-    // circular inheritance)
-    $params = $this->context->routing->parse(Qubit::pathInfo($request->getHttpHeader('Referer')));
-    if (isset($params['id']))
-    {
-      $thisTerm = QubitTerm::getById($params['id']);
-
-      if (isset($thisTerm))
-      {
-        $c1 = $criteria->getNewCriterion(QubitTerm::LFT, $thisTerm->lft, Criteria::LESS_THAN);
-        $c2 = $criteria->getNewCriterion(QubitTerm::RGT, $thisTerm->rgt, Criteria::GREATER_THAN);
-        $c1->addOr($c2);
-        $criteria->add($c1);
-      }
-    }
-
-    // If calling from term page, exclude non-preferred terms from list
+    // For term module show only preferred term
+    $params = $this->context->routing->parse(Qubit::pathInfo($request->getReferer()));
     if ('term' == $params['module'])
     {
-      $criteria->addJoin(QubitTerm::ID, QubitRelation::OBJECT_ID, Criteria::LEFT_JOIN);
-      $criterion1 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, QubitTerm::TERM_RELATION_EQUIVALENCE_ID, Criteria::NOT_EQUAL);
-      $criterion2 = $criteria->getNewCriterion(QubitRelation::TYPE_ID, null, Criteria::ISNULL);
-      $criterion1->addOr($criterion2);
-      $criteria->add($criterion1);
+      $criteria = new Criteria;
+
+      // Exclude the calling object and it's descendants from the list (prevent
+      // circular inheritance)
+      if (isset($params['id']))
+      {
+        // TODO Self join would be ideal
+        $term = QubitTerm::getById($params['id']);
+        if (isset($term))
+        {
+          $criteria->add($criteria->getNewCriterion(QubitTerm::LFT, $term->lft, Criteria::LESS_THAN)
+            ->addOr($criteria->getNewCriterion(QubitTerm::RGT, $term->rgt, Criteria::GREATER_THAN)));
+        }
+      }
+
+      $params = $this->context->routing->parse(Qubit::pathInfo($request->taxonomy));
+      $criteria->add(QubitTerm::TAXONOMY_ID, $params['_sf_route']->resource->id);
+
+      $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+      $criteria->add(QubitTermI18n::CULTURE, $this->context->user->getCulture());
+
+      // Narrow results by query
+      if (isset($request->query))
+      {
+        $criteria->add(QubitTermI18n::NAME, "$request->query%", Criteria::LIKE);
+      }
+
+      // Sort by name
+      $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME);
+
+      $criteria->setLimit(10);
+
+      $this->terms = QubitTerm::get($criteria);
     }
 
-    // Narrow results by query
-    if (isset($request->query))
+    // If NOT calling from term page show preferred and alternative terms
+    else
     {
-      $criteria->add(QubitTermI18n::NAME, $request->query.'%', Criteria::LIKE);
+      $s1 = 'SELECT qt.id, null, qti.name
+        FROM '.QubitTerm::TABLE_NAME.' qt
+          LEFT JOIN '.QubitTermI18n::TABLE_NAME.' qti
+            ON qt.id = qti.id
+        WHERE taxonomy_id = :p1
+          AND qti.culture = :p2';
+
+      $s2 = 'SELECT qt.id, qon.id as altId, qoni.name
+        FROM '.QubitOtherName::TABLE_NAME.' qon
+          INNER JOIN '.QubitOtherNameI18n::TABLE_NAME.' qoni
+            ON qon.id = qoni.id
+          INNER JOIN '.QubitTerm::TABLE_NAME.' qt
+            ON qon.object_id = qt.id
+        WHERE qt.taxonomy_id = :p1
+          AND qoni.culture = :p2';
+
+      // Narrow results by query
+      if (isset($request->query))
+      {
+       $s1 .= ' AND qti.name LIKE :p3';
+       $s2 .= ' AND qoni.name LIKE :p3';
+      }
+
+      $connection = Propel::getConnection();
+      $statement = $connection->prepare("($s1) UNION ALL ($s2) ORDER BY name LIMIT 10");
+      $params = $this->context->routing->parse(Qubit::pathInfo($request->taxonomy));
+      $statement->bindValue(':p1', $params['_sf_route']->resource->id);
+
+      $statement->bindValue(':p2', $this->context->user->getCulture());
+
+      if (isset($request->query))
+      {
+        $statement->bindValue(':p3', "$request->query%");
+      }
+
+      $statement->execute();
+
+      $this->terms = array();
+      while ($row = $statement->fetch())
+      {
+        if (isset($row[1]))
+        {
+          // Alternative term
+          $this->terms[] = array(QubitTerm::getById($row[0]), $row[2]);
+        }
+        else
+        {
+          // Preferred term
+          $this->terms[] = QubitTerm::getById($row[0]);
+        }
+      }
     }
-
-    // Sort by name
-    $criteria->addAscendingOrderByColumn(QubitTermI18n::NAME);
-
-    // Show first 10 results
-    $criteria->setLimit(10);
-
-    $this->terms = QubitTerm::get($criteria);
   }
 }

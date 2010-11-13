@@ -1,9 +1,11 @@
-<?php if ($usageType == QubitTerm::REFERENCE_ID): ?>
+<?php use_helper('Text') ?>
 
-  <?php if ($link == null): ?>
-    <?php echo image_tag($representation->getFullPath()) ?>
-  <?php else: ?>
+<?php if (QubitTerm::REFERENCE_ID == $usageType): ?>
+
+  <?php if (isset($link)): ?>
     <?php echo link_to(image_tag($representation->getFullPath()), $link) ?>
+  <?php else: ?>
+    <?php echo image_tag($representation->getFullPath()) ?>
   <?php endif; ?>
 
 <?php else: ?>
@@ -14,14 +16,16 @@
 
   <?php else: ?>
 
-    <div style="width: 100px; text-align: center" />
-      <?php if ($link !== null): ?>
+    <div style="width: 100px; text-align: center"/>
+
+      <?php if (isset($link)): ?>
         <?php echo link_to(image_tag($representation->getFullPath()), $link) ?>
       <?php else: ?>
         <?php echo image_tag($representation->getFullPath()) ?>
       <?php endif; ?>
-      <br />
-      <?php echo string_wrap($digitalObject->getName(), 15) ?>
+
+      <?php echo wrap_text($digitalObject->name, 15) ?>
+
     </div>
 
   <?php endif; ?>

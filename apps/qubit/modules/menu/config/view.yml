@@ -1,8 +1,3 @@
-listSuccess:
-  javascripts:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:
-
 editSuccess:
   stylesheets:
     /vendor/yui/autocomplete/assets/skins/sam/autocomplete: { position: first }
@@ -17,3 +12,8 @@ editSuccess:
     /vendor/yui/autocomplete/autocomplete-min:
     autocomplete:
     select:
+
+listSuccess:
+  javascripts:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/tableheader:

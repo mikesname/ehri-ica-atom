@@ -1,6 +1,8 @@
-<div class="form-item">
-  <label for=""><?php echo __('Add new child levels') ?></label>
-  <table class="inline multiRow">
+<div class="section">
+
+  <h3><?php echo __('Add new child levels') ?></h3>
+
+  <table class="multiRow">
     <thead>
       <tr>
         <th style="width: 20%">
@@ -14,17 +16,28 @@
     </thead><tbody>
       <tr>
         <td>
-          <?php echo input_tag('updateChildLevels[0][identifier]') ?>
+          <input name="updateChildLevels[0][identifier]"/>
         </td><td>
-          <?php echo object_select_tag(new QubitInformationObject, 'getLevelOfDescriptionId', array(
-            'include_blank' => true,
-            'name' => 'updateChildLevels[0][levelOfDescription]',
-            'related_class' => 'QubitTerm',
-            'peer_method' => 'getLevelsOfDescription')) ?>
+          <select name="updateChildLevels[0][levelOfDescription]" id="updateChildLevels_0_levelOfDescription">
+
+            <option value="">&nbsp;</option>
+
+            <?php foreach (QubitTerm::getLevelsOfDescription() as $item): ?>
+              <option value="<?php echo $item->id ?>"><?php echo $item->__toString() ?></option>
+            <?php endforeach; ?>
+
+          </select>
         </td><td>
-          <?php echo input_tag('updateChildLevels[0][title]') ?>
+          <input name="updateChildLevels[0][title]"/>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <?php if (isset($help)): ?>
+    <div class="description">
+      <?php echo $help ?>
+    </div>
+  <?php endif ?>
+
 </div>

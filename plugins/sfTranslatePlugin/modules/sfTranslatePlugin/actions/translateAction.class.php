@@ -29,12 +29,12 @@ class sfTranslatePluginTranslateAction extends sfAction
       QubitAcl::forwardUnauthorized();
     }
 
-    $user = $this->getUser();
+    $user = $this->context->user;
 
     $error = array();
     $status = array();
 
-    $messageSource = $this->getContext()->getI18N()->getMessageSource();
+    $messageSource = $this->context->i18n->getMessageSource();
 
     $sourceMessages = $request->getParameter('source', array());
     $targetMessages = $request->getParameter('target', array());

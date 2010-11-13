@@ -5,25 +5,25 @@ abstract class BaseContactInformation implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_contact_information',
+    TABLE_NAME = 'contact_information',
 
-    ACTOR_ID = 'q_contact_information.ACTOR_ID',
-    PRIMARY_CONTACT = 'q_contact_information.PRIMARY_CONTACT',
-    CONTACT_PERSON = 'q_contact_information.CONTACT_PERSON',
-    STREET_ADDRESS = 'q_contact_information.STREET_ADDRESS',
-    WEBSITE = 'q_contact_information.WEBSITE',
-    EMAIL = 'q_contact_information.EMAIL',
-    TELEPHONE = 'q_contact_information.TELEPHONE',
-    FAX = 'q_contact_information.FAX',
-    POSTAL_CODE = 'q_contact_information.POSTAL_CODE',
-    COUNTRY_CODE = 'q_contact_information.COUNTRY_CODE',
-    LONGITUDE = 'q_contact_information.LONGITUDE',
-    LATITUDE = 'q_contact_information.LATITUDE',
-    CREATED_AT = 'q_contact_information.CREATED_AT',
-    UPDATED_AT = 'q_contact_information.UPDATED_AT',
-    SOURCE_CULTURE = 'q_contact_information.SOURCE_CULTURE',
-    ID = 'q_contact_information.ID',
-    SERIAL_NUMBER = 'q_contact_information.SERIAL_NUMBER';
+    ACTOR_ID = 'contact_information.ACTOR_ID',
+    PRIMARY_CONTACT = 'contact_information.PRIMARY_CONTACT',
+    CONTACT_PERSON = 'contact_information.CONTACT_PERSON',
+    STREET_ADDRESS = 'contact_information.STREET_ADDRESS',
+    WEBSITE = 'contact_information.WEBSITE',
+    EMAIL = 'contact_information.EMAIL',
+    TELEPHONE = 'contact_information.TELEPHONE',
+    FAX = 'contact_information.FAX',
+    POSTAL_CODE = 'contact_information.POSTAL_CODE',
+    COUNTRY_CODE = 'contact_information.COUNTRY_CODE',
+    LONGITUDE = 'contact_information.LONGITUDE',
+    LATITUDE = 'contact_information.LATITUDE',
+    CREATED_AT = 'contact_information.CREATED_AT',
+    UPDATED_AT = 'contact_information.UPDATED_AT',
+    SOURCE_CULTURE = 'contact_information.SOURCE_CULTURE',
+    ID = 'contact_information.ID',
+    SERIAL_NUMBER = 'contact_information.SERIAL_NUMBER';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -193,9 +193,9 @@ abstract class BaseContactInformation implements ArrayAccess
           return null !== $this->rowOffsetGet($name, $offset, $options);
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
-          return null !== $this->rowOffsetGet($name.'Id', $offset, $options);
+          return null !== $this->rowOffsetGet("{$name}Id", $offset, $options);
         }
 
         $offset++;
@@ -220,7 +220,7 @@ abstract class BaseContactInformation implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function offsetExists($offset)
@@ -250,11 +250,11 @@ abstract class BaseContactInformation implements ArrayAccess
           return $this->rowOffsetGet($name, $offset, $options);
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet($name.'Id', $offset, $options));
+          return call_user_func(array($relatedTable->getClassName(), 'getBy'.ucfirst($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName())), $this->rowOffsetGet("{$name}Id", $offset, $options));
         }
 
         $offset++;
@@ -291,7 +291,7 @@ abstract class BaseContactInformation implements ArrayAccess
     {
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function offsetGet($offset)
@@ -321,11 +321,11 @@ abstract class BaseContactInformation implements ArrayAccess
           $this->values[$name] = $value;
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
           $relatedTable = $column->getTable()->getDatabaseMap()->getTable($column->getRelatedTableName());
 
-          $this->values[$name.'Id'] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
+          $this->values["{$name}Id"] = $value->__get($relatedTable->getColumn($column->getRelatedColumnName())->getPhpName(), $options);
         }
 
         $offset++;
@@ -364,9 +364,9 @@ abstract class BaseContactInformation implements ArrayAccess
           $this->values[$name] = null;
         }
 
-        if ($name.'Id' == $column->getPhpName())
+        if ("{$name}Id" == $column->getPhpName())
         {
-          $this->values[$name.'Id'] = null;
+          $this->values["{$name}Id"] = null;
         }
 
         $offset++;
@@ -446,6 +446,38 @@ abstract class BaseContactInformation implements ArrayAccess
     return $this;
   }
 
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
+  }
+
   protected function insert($connection = null)
   {
     if (!isset($connection))
@@ -474,7 +506,7 @@ abstract class BaseContactInformation implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
         }
 
         $offset++;
@@ -482,10 +514,12 @@ abstract class BaseContactInformation implements ArrayAccess
 
       if (null !== $id = BasePeer::doInsert($criteria, $connection))
       {
-                        if ($this->tables[0] == $table)
+        // Guess that the first primary key of the first table is auto
+        // incremented
+        if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
-          $this->values[$columns[0]->getPhpName()] = $id;
+          $this->values[$columns[0]->getPhpName()] = $this->keys[$columns[0]->getPhpName()] = $id;
         }
       }
     }
@@ -522,18 +556,18 @@ abstract class BaseContactInformation implements ArrayAccess
             $selectCriteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]++);
           }
 
-          $criteria->add($column->getFullyQualifiedName(), $this->values[$column->getPhpName()]);
+          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
         }
 
         if ($column->isPrimaryKey())
         {
-          $selectCriteria->add($column->getFullyQualifiedName(), $this->row[$offset]);
+          $selectCriteria->add($column->getFullyQualifiedName(), $this->keys[$column->getPhpName()]);
         }
 
         $offset++;
       }
 
-      if ($criteria->size() > 0)
+      if (0 < $criteria->size())
       {
         BasePeer::doUpdate($selectCriteria, $criteria, $connection);
       }
@@ -559,13 +593,21 @@ abstract class BaseContactInformation implements ArrayAccess
     return $this;
   }
 
-	
+	/**
+	 * Returns the primary key for this object (row).
+	 * @return     int
+	 */
 	public function getPrimaryKey()
 	{
 		return $this->getid();
 	}
 
-	
+	/**
+	 * Generic method to set the primary key (id column).
+	 *
+	 * @param      int $key Primary key.
+	 * @return     void
+	 */
 	public function setPrimaryKey($key)
 	{
 		$this->setid($key);
@@ -628,6 +670,6 @@ abstract class BaseContactInformation implements ArrayAccess
       return call_user_func_array(array($this, '__'.substr($name, 0, 3)), $args);
     }
 
-    throw new sfException('Call to undefined method '.get_class($this).'::'.$name);
+    throw new sfException('Call to undefined method '.get_class($this)."::$name");
   }
 }

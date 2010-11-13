@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_rights_i18n' table.
+ * This class defines the structure of the 'rights_i18n' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class RightsI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_rights_i18n');
+		$this->setName('rights_i18n');
 		$this->setPhpName('rightsI18n');
 		$this->setClassname('QubitRightsI18n');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_rights', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'rights', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

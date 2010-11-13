@@ -19,7 +19,7 @@
 
 /**
  * Form definition using the "detail" css class for tables
- * 
+ *
  * @package    qubit
  * @subpackage form
  * @version    svn:$Id$

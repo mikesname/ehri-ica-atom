@@ -14,7 +14,6 @@
 # Qubit Toolkit; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 # Dublin Core (dc) IMPORT FILTER MAPPINGS
 #
 # @package qubit
@@ -34,6 +33,16 @@ information_object:
       XPath:   "."    # not really a match, just use self
       Method:  setCollectionTypeId
       Parameters: [QubitTerm::PUBLISHED_MATERIAL_ID]
+
+    sourceStandard:
+      XPath:   "."    # not really a match, just use self
+      Method:  setSourceStandard
+      Parameters: ["'http://purl.org/dc/elements/1.1/'"]
+
+    publicationStatus:
+      XPath:   "."    # not really a match, just use self
+      Method:  setStatus
+      Parameters: ["array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID))"]
 
     # each of the following XPath expressions are relative to the current matched node:
 

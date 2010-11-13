@@ -25,7 +25,6 @@
  */
 class QubitCultureFallback
 {
-
   /**
    * Assign fallback values for each column in the $fallbackClassName table
    *
@@ -46,7 +45,6 @@ class QubitCultureFallback
     return $criteria;
   }
 
-
   /**
    * Build SQL 'case' statement to get the most relevant value for $column
    *
@@ -60,7 +58,6 @@ class QubitCultureFallback
 
     return $fallbackCaseStmt;
   }
-
 
   /**
    * Add fallback query criteria to $criteria
@@ -77,12 +74,12 @@ class QubitCultureFallback
     }
     else
     {
-      $culture = sfContext::getInstance()->getUser()->getCulture();
+      $culture = sfContext::getInstance()->user->getCulture();
     }
 
     // Expose class constants so we can call them using a dynamic class name
     $fallbackClass = new ReflectionClass($fallbackClassName);
-    $fallbackClassI18n = new ReflectionClass($fallbackClassName.'I18n');
+    $fallbackClassI18n = new ReflectionClass("{$fallbackClassName}I18n");
 
     // Add fallback columns (calculated)
     $criteria = self::addFallbackColumns($criteria, $fallbackClassI18n->getName());
@@ -108,5 +105,4 @@ class QubitCultureFallback
 
     return $criteria;
   }
-
 }

@@ -1,4 +1,4 @@
-<h1><?php echo __('List static pages') ?></h1>
+<h1><?php echo __('List pages') ?></h1>
 
 <table class="sticky-enabled">
   <thead>
@@ -6,16 +6,16 @@
       <th>
         <?php echo __('Title') ?>
       </th><th>
-        <?php echo __('Permalink') ?>
+        <?php echo __('Slug') ?>
       </th>
     </tr>
   </thead><tbody>
-    <?php foreach ($staticPages as $staticPage): ?>
+    <?php foreach ($pager->getResults() as $item): ?>
       <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
         <td>
-          <?php echo link_to($staticPage->title, array($staticPage, 'module' => 'staticpage')) ?>
+          <?php echo link_to(render_title($item->title), array($item, 'module' => 'staticpage')) ?>
         </td><td>
-          <?php echo $staticPage->permalink ?>
+          <?php echo $item->slug ?>
         </td>
       </tr>
     <?php endforeach; ?>
@@ -30,7 +30,7 @@
 
   <div class="content">
     <ul class="clearfix links">
-      <li><?php echo link_to(__('Add new'), array('module' => 'staticpage', 'action' => 'create')) ?></li>
+      <li><?php echo link_to(__('Add new'), array('module' => 'staticpage', 'action' => 'add')) ?></li>
     </ul>
   </div>
 

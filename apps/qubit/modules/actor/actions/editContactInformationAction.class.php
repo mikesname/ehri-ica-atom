@@ -19,85 +19,124 @@
 
 class ActorEditContactInformationAction extends sfAction
 {
+  public static
+    $NAMES = array(
+      'city',
+      'contactPerson',
+      'contactType',
+      'countryCode',
+      'email',
+      'fax',
+      'latitude',
+      'longitude',
+      'note',
+      'postalCode',
+      'primaryContact',
+      'region',
+      'streetAddress',
+      'telephone',
+      'website');
+
+  protected function addField($name)
+  {
+    switch ($name)
+    {
+      case 'countryCode':
+        $this->form->setDefault('countryCode', $this->resource->countryCode);
+        $this->form->setValidator('countryCode', new sfValidatorI18nChoiceCountry);
+        $this->form->setWidget('countryCode', new sfWidgetFormI18nChoiceCountry(array('add_empty' => true, 'culture' => $this->context->user->getCulture())));
+
+        break;
+
+      case 'latitude':
+      case 'longitude':
+        $this->form->setDefault($name, $this->resource[$name]);
+        $this->form->setValidator($name, new sfValidatorNumber);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'note':
+        $this->form->setDefault('note', $this->resource->note);
+        $this->form->setValidator('note', new sfValidatorString);
+        $this->form->setWidget('note', new sfWidgetFormTextarea);
+
+        break;
+
+      case 'primaryContact':
+        $this->form->setDefault('primaryContact', (bool)$this->resource->primaryContact);
+        $this->form->setValidator('primaryContact', new sfValidatorBoolean);
+        $this->form->setWidget('primaryContact', new sfWidgetFormInputCheckbox);
+
+        break;
+
+      default:
+        $this->form->setDefault($name, $this->resource[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+    }
+  }
+
+  protected function processField($field)
+  {
+    switch ($field->getName())
+    {
+      case 'primaryContact':
+        $this->resource->primaryContact = true;
+
+        break;
+
+      default:
+        $this->resource[$field->getName()] = $this->form->getValue($field->getName());
+    }
+  }
+
+  protected function processForm()
+  {
+    $this->resource->primaryContact = false;
+
+    foreach ($this->form as $field)
+    {
+      if (isset($this->request[$field->getName()]))
+      {
+        $this->processField($field);
+      }
+    }
+
+    $this->resource->save();
+
+    if ($this->resource->primaryContact)
+    {
+      $this->resource->makePrimaryContact();
+    }
+  }
+
   public function execute($request)
   {
     $this->form = new sfForm;
 
-    $this->contactInformation = new QubitContactInformation;
-
+    $this->resource = new QubitContactInformation;
     if (isset($request->id))
     {
-      $this->contactInformation = QubitContactInformation::getById($request->id);
+      $this->resource = QubitContactInformation::getById($request->id);
 
-      if (!isset($this->contactInformation))
+      if (!isset($this->resource))
       {
         $this->forward404();
       }
     }
 
+    // HACK Use static::$NAMES in PHP 5.3,
+    // http://php.net/oop5.late-static-bindings
+    $class = new ReflectionClass($this);
+    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    {
+      $this->addField($name);
+    }
+
     $this->form->setDefault('next', $request->getReferer());
     $this->form->setValidator('next', new sfValidatorString);
     $this->form->setWidget('next', new sfWidgetFormInputHidden);
-
-    $this->form->setDefault('city', $this->contactInformation->city);
-    $this->form->setValidator('city', new sfValidatorString);
-    $this->form->setWidget('city', new sfWidgetFormInput);
-
-    $this->form->setDefault('contactPerson', $this->contactInformation->contactPerson);
-    $this->form->setValidator('contactPerson', new sfValidatorString);
-    $this->form->setWidget('contactPerson', new sfWidgetFormInput);
-
-    $this->form->setDefault('contactType', $this->contactInformation->contactType);
-    $this->form->setValidator('contactType', new sfValidatorString);
-    $this->form->setWidget('contactType', new sfWidgetFormInput);
-
-    $this->form->setDefault('countryCode', $this->contactInformation->countryCode);
-    $this->form->setValidator('countryCode', new sfValidatorI18nChoiceCountry);
-    $this->form->setWidget('countryCode', new sfWidgetFormI18nSelectCountry(array('culture' => $this->context->user->getCulture())));
-
-    $this->form->setDefault('email', $this->contactInformation->email);
-    $this->form->setValidator('email', new sfValidatorString);
-    $this->form->setWidget('email', new sfWidgetFormInput);
-
-    $this->form->setDefault('fax', $this->contactInformation->fax);
-    $this->form->setValidator('fax', new sfValidatorString);
-    $this->form->setWidget('fax', new sfWidgetFormInput);
-
-    $this->form->setDefault('latitude', $this->contactInformation->latitude);
-    $this->form->setValidator('latitude', new sfValidatorNumber);
-    $this->form->setWidget('latitude', new sfWidgetFormInput);
-
-    $this->form->setDefault('longitude', $this->contactInformation->longitude);
-    $this->form->setValidator('longitude', new sfValidatorNumber);
-    $this->form->setWidget('longitude', new sfWidgetFormInput);
-
-    $this->form->setDefault('note', $this->contactInformation->note);
-    $this->form->setValidator('note', new sfValidatorString);
-    $this->form->setWidget('note', new sfWidgetFormTextarea);
-
-    $this->form->setDefault('postalCode', $this->contactInformation->postalCode);
-    $this->form->setValidator('postalCode', new sfValidatorString);
-    $this->form->setWidget('postalCode', new sfWidgetFormInput);
-
-    $this->form->setDefault('primaryContact', $this->contactInformation->primaryContact);
-    $this->form->setValidator('primaryContact', new sfValidatorBoolean);
-    $this->form->setWidget('primaryContact', new sfWidgetFormInputCheckbox);
-
-    $this->form->setDefault('region', $this->contactInformation->region);
-    $this->form->setValidator('region', new sfValidatorString);
-    $this->form->setWidget('region', new sfWidgetFormInput);
-
-    $this->form->setDefault('streetAddress', $this->contactInformation->streetAddress);
-    $this->form->setValidator('streetAddress', new sfValidatorString);
-    $this->form->setWidget('streetAddress', new sfWidgetFormInput);
-
-    $this->form->setDefault('telephone', $this->contactInformation->telephone);
-    $this->form->setValidator('telephone', new sfValidatorString);
-    $this->form->setWidget('telephone', new sfWidgetFormInput);
-
-    $this->form->setDefault('website', $this->contactInformation->website);
-    $this->form->setValidator('website', new sfValidatorString);
-    $this->form->setWidget('website', new sfWidgetFormInput);
 
     if ($request->isMethod('post'))
     {
@@ -105,89 +144,14 @@ class ActorEditContactInformationAction extends sfAction
 
       if ($this->form->isValid())
       {
-        if (isset($request['city']))
-        {
-          $this->contactInformation->city = $this->form->getValue('city');
-        }
-
-        if (isset($request['contactPerson']))
-        {
-          $this->contactInformation->contactPerson = $this->form->getValue('contactPerson');
-        }
-
-        if (isset($request['contactType']))
-        {
-          $this->contactInformation->contactType = $this->form->getValue('contactType');
-        }
-
-        if (isset($request['countryCode']))
-        {
-          $this->contactInformation->countryCode = $this->form->getValue('countryCode');
-        }
-
-        if (isset($request['email']))
-        {
-          $this->contactInformation->email = $this->form->getValue('email');
-        }
-
-        if (isset($request['fax']))
-        {
-          $this->contactInformation->fax = $this->form->getValue('fax');
-        }
-
-        if (isset($request['latitude']))
-        {
-          $this->contactInformation->latitude = $this->form->getValue('latitude');
-        }
-
-        if (isset($request['longitude']))
-        {
-          $this->contactInformation->longitude = $this->form->getValue('longitude');
-        }
-
-        if (isset($request['note']))
-        {
-          $this->contactInformation->note = $this->form->getValue('note');
-        }
-
-        if (isset($request['postalCode']))
-        {
-          $this->contactInformation->postalCode = $this->form->getValue('postalCode');
-        }
-
-        if (isset($request['primaryContact']))
-        {
-          $this->contactInformation->primaryContact = $this->form->getValue('primaryContact');
-        }
-
-        if (isset($request['region']))
-        {
-          $this->contactInformation->region = $this->form->getValue('region');
-        }
-
-        if (isset($request['streetAddress']))
-        {
-          $this->contactInformation->streetAddress = $this->form->getValue('streetAddress');
-        }
-
-        if (isset($request['telephone']))
-        {
-          $this->contactInformation->telephone = $this->form->getValue('telephone');
-        }
-
-        if (isset($request['website']))
-        {
-          $this->contactInformation->website = $this->form->getValue('website');
-        }
-
-        $this->contactInformation->save();
+        $this->processForm();
 
         if (null !== $next = $this->form->getValue('next'))
         {
           $this->redirect($next);
         }
 
-        $this->redirect(array($this->contactInformation->actor, 'module' => 'actor', 'action' => 'edit'));
+        $this->redirect(array($this->resource->actor, 'module' => 'repository', 'action' => 'edit'));
       }
     }
   }

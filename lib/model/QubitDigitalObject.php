@@ -27,12 +27,15 @@
  */
 class QubitDigitalObject extends BaseDigitalObject
 {
-  // Directory for generic icons
-  const GENERIC_ICON_DIR = 'generic-icons';
+  const
 
-  // Mime-type for thumbnails (including reference image)
-  const THUMB_MIME_TYPE = 'image/jpeg';
-  const THUMB_EXTENSION = 'jpg';
+    // Directory for generic icons
+    GENERIC_ICON_DIR = 'generic-icons',
+
+    // Mime-type for thumbnails (including reference image)
+    THUMB_MIME_TYPE = 'image/jpeg',
+
+    THUMB_EXTENSION = 'jpg';
 
   // Variables for save actions
   public
@@ -40,202 +43,203 @@ class QubitDigitalObject extends BaseDigitalObject
     $indexOnSave = true,
     $createDerivatives = true;
 
-  // Temporary path for local copy of an external object (see importFromUri method)
-  protected $localPath;
-
-  // List of web compatible image formats (supported in most major browsers)
-  protected static $webCompatibleImageFormats = array(
-    'image/jpeg',
-    'image/jpg',
-    'image/jpe',
-    'image/gif',
-    'image/png'
-  );
-
-  // Qubit Generic Icon list
-  protected static $qubitGenericThumbs = array(
-    'application/x-msaccess'        => 'icon-ms-access.gif',
-    'application/vnd.ms-excel'      => 'icon-ms-excel.gif',
-    'application/msword'            => 'icon-ms-word.gif',
-    'application/vnd.ms-powerpoint' => 'icon-ms-powerpoint.gif'
-  );
-
-  protected static $qubitGenericReference = array(
-    '*/*' => 'no_reference_rep.png'
-  );
-
   /*
    * The following mime-type array is taken from the Gallery 2 project
    * http://gallery.menalto.com
    */
-  public static $qubitMimeTypes = array(
-    /* This data was lifted from Apache's mime.types listing. */
-    'z' => 'application/x-compress',
-    'ai' => 'application/postscript',
-    'aif' => 'audio/x-aiff',
-    'aifc' => 'audio/x-aiff',
-    'aiff' => 'audio/x-aiff',
-    'asc' => 'text/plain',
-    'au' => 'audio/basic',
-    'avi' => 'video/x-msvideo',
-    'bcpio' => 'application/x-bcpio',
-    'bin' => 'application/octet-stream',
-    'bmp' => 'image/bmp',
-    'cdf' => 'application/x-netcdf',
-    'class' => 'application/octet-stream',
-    'cpio' => 'application/x-cpio',
-    'cpt' => 'application/mac-compactpro',
-    'csh' => 'application/x-csh',
-    'css' => 'text/css',
-    'dcr' => 'application/x-director',
-    'dir' => 'application/x-director',
-    'djv' => 'image/vnd.djvu',
-    'djvu' => 'image/vnd.djvu',
-    'dll' => 'application/octet-stream',
-    'dms' => 'application/octet-stream',
-    'doc' => 'application/msword',
-    'dvi' => 'application/x-dvi',
-    'dxr' => 'application/x-director',
-    'eps' => 'application/postscript',
-    'etx' => 'text/x-setext',
-    'exe' => 'application/octet-stream',
-    'ez' => 'application/andrew-inset',
-    'gif' => 'image/gif',
-    'gtar' => 'application/x-gtar',
-    'gz' => 'application/x-gzip',
-    'hdf' => 'application/x-hdf',
-    'hqx' => 'application/mac-binhex40',
-    'ice' => 'x-conference/x-cooltalk',
-    'ief' => 'image/ief',
-    'iges' => 'model/iges',
-    'igs' => 'model/iges',
-    'jpg' => 'image/jpeg',
-    'jpeg' => 'image/jpeg',
-    'jpe' => 'image/jpeg',
-    'js' => 'application/x-javascript',
-    'kar' => 'audio/midi',
-    'latex' => 'application/x-latex',
-    'lha' => 'application/octet-stream',
-    'lzh' => 'application/octet-stream',
-    'm3u' => 'audio/x-mpegurl',
-    'man' => 'application/x-troff-man',
-    'me' => 'application/x-troff-me',
-    'mesh' => 'model/mesh',
-    'mid' => 'audio/midi',
-    'midi' => 'audio/midi',
-    'mif' => 'application/vnd.mif',
-    'mov' => 'video/quicktime',
-    'movie' => 'video/x-sgi-movie',
-    'mp2' => 'audio/mpeg',
-    'mp3' => 'audio/mpeg',
-    'mpe' => 'video/mpeg',
-    'mpeg' => 'video/mpeg',
-    'mpg' => 'video/mpeg',
-    'mpga' => 'audio/mpeg',
-    'ms' => 'application/x-troff-ms',
-    'msh' => 'model/mesh',
-    'mxu' => 'video/vnd.mpegurl',
-    'nc' => 'application/x-netcdf',
-    'oda' => 'application/oda',
-    'pbm' => 'image/x-portable-bitmap',
-    'pdb' => 'chemical/x-pdb',
-    'pdf' => 'application/pdf',
-    'pgm' => 'image/x-portable-graymap',
-    'pgn' => 'application/x-chess-pgn',
-    'png' => 'image/png',
-    'pnm' => 'image/x-portable-anymap',
-    'ppm' => 'image/x-portable-pixmap',
-    'ppt' => 'application/vnd.ms-powerpoint',
-    'ps' => 'application/postscript',
-    'qt' => 'video/quicktime',
-    'ra' => 'audio/x-realaudio',
-    'ram' => 'audio/x-pn-realaudio',
-    'ras' => 'image/x-cmu-raster',
-    'rgb' => 'image/x-rgb',
-    'rm' => 'audio/x-pn-realaudio',
-    'roff' => 'application/x-troff',
-    'rpm' => 'audio/x-pn-realaudio-plugin',
-    'rtf' => 'text/rtf',
-    'rtx' => 'text/richtext',
-    'sgm' => 'text/sgml',
-    'sgml' => 'text/sgml',
-    'sh' => 'application/x-sh',
-    'shar' => 'application/x-shar',
-    'silo' => 'model/mesh',
-    'sit' => 'application/x-stuffit',
-    'skd' => 'application/x-koan',
-    'skm' => 'application/x-koan',
-    'skp' => 'application/x-koan',
-    'skt' => 'application/x-koan',
-    'smi' => 'application/smil',
-    'smil' => 'application/smil',
-    'snd' => 'audio/basic',
-    'so' => 'application/octet-stream',
-    'spl' => 'application/x-futuresplash',
-    'src' => 'application/x-wais-source',
-    'sv4cpio' => 'application/x-sv4cpio',
-    'sv4crc' => 'application/x-sv4crc',
-    'svg' => 'image/svg+xml',
-    'swf' => 'application/x-shockwave-flash',
-    't' => 'application/x-troff',
-    'tar' => 'application/x-tar',
-    'tcl' => 'application/x-tcl',
-    'tex' => 'application/x-tex',
-    'texi' => 'application/x-texinfo',
-    'texinfo' => 'application/x-texinfo',
-    'tif' => 'image/tiff',
-    'tiff' => 'image/tiff',
-    'tr' => 'application/x-troff',
-    'tsv' => 'text/tab-separated-values',
-    'txt' => 'text/plain',
-    'ustar' => 'application/x-ustar',
-    'vcd' => 'application/x-cdlink',
-    'vrml' => 'model/vrml',
-    'vsd' => 'application/vnd.visio',
-    'wav' => 'audio/x-wav',
-    'wbmp' => 'image/vnd.wap.wbmp',
-    'wbxml' => 'application/vnd.wap.wbxml',
-    'wml' => 'text/vnd.wap.wml',
-    'wmlc' => 'application/vnd.wap.wmlc',
-    'wmls' => 'text/vnd.wap.wmlscript',
-    'wmlsc' => 'application/vnd.wap.wmlscriptc',
-    'wrl' => 'model/vrml',
-    'xbm' => 'image/x-xbitmap',
-    'xls' => 'application/vnd.ms-excel',
-    'xpm' => 'image/x-xpixmap',
-    'xsl' => 'text/xml',
-    'xwd' => 'image/x-xwindowdump',
-    'xyz' => 'chemical/x-xyz',
-    'zip' => 'application/zip',
+  public static
+    $qubitMimeTypes = array(
 
-    /* And additions from Gallery2 - http://codex.gallery2.org  */
-    /* From support.microsoft.com/support/kb/articles/Q284/0/94.ASP */
-    'asf' => 'video/x-ms-asf',
-    'asx' => 'video/x-ms-asx',
-    'wmv' => 'video/x-ms-wmv',
-    'wma' => 'audio/x-ms-wma',
+      /* This data was lifted from Apache's mime.types listing. */
+      'z' => 'application/x-compress',
+      'ai' => 'application/postscript',
+      'aif' => 'audio/x-aiff',
+      'aifc' => 'audio/x-aiff',
+      'aiff' => 'audio/x-aiff',
+      'asc' => 'text/plain',
+      'au' => 'audio/basic',
+      'avi' => 'video/x-msvideo',
+      'bcpio' => 'application/x-bcpio',
+      'bin' => 'application/octet-stream',
+      'bmp' => 'image/bmp',
+      'cdf' => 'application/x-netcdf',
+      'class' => 'application/octet-stream',
+      'cpio' => 'application/x-cpio',
+      'cpt' => 'application/mac-compactpro',
+      'csh' => 'application/x-csh',
+      'css' => 'text/css',
+      'dcr' => 'application/x-director',
+      'dir' => 'application/x-director',
+      'djv' => 'image/vnd.djvu',
+      'djvu' => 'image/vnd.djvu',
+      'dll' => 'application/octet-stream',
+      'dms' => 'application/octet-stream',
+      'doc' => 'application/msword',
+      'dvi' => 'application/x-dvi',
+      'dxr' => 'application/x-director',
+      'eps' => 'application/postscript',
+      'etx' => 'text/x-setext',
+      'exe' => 'application/octet-stream',
+      'ez' => 'application/andrew-inset',
+      'gif' => 'image/gif',
+      'gtar' => 'application/x-gtar',
+      'gz' => 'application/x-gzip',
+      'hdf' => 'application/x-hdf',
+      'hqx' => 'application/mac-binhex40',
+      'ice' => 'x-conference/x-cooltalk',
+      'ief' => 'image/ief',
+      'iges' => 'model/iges',
+      'igs' => 'model/iges',
+      'jpg' => 'image/jpeg',
+      'jpeg' => 'image/jpeg',
+      'jpe' => 'image/jpeg',
+      'js' => 'application/x-javascript',
+      'kar' => 'audio/midi',
+      'latex' => 'application/x-latex',
+      'lha' => 'application/octet-stream',
+      'lzh' => 'application/octet-stream',
+      'm3u' => 'audio/x-mpegurl',
+      'man' => 'application/x-troff-man',
+      'me' => 'application/x-troff-me',
+      'mesh' => 'model/mesh',
+      'mid' => 'audio/midi',
+      'midi' => 'audio/midi',
+      'mif' => 'application/vnd.mif',
+      'mov' => 'video/quicktime',
+      'movie' => 'video/x-sgi-movie',
+      'mp2' => 'audio/mpeg',
+      'mp3' => 'audio/mpeg',
+      'mpe' => 'video/mpeg',
+      'mpeg' => 'video/mpeg',
+      'mpg' => 'video/mpeg',
+      'mpga' => 'audio/mpeg',
+      'ms' => 'application/x-troff-ms',
+      'msh' => 'model/mesh',
+      'mxu' => 'video/vnd.mpegurl',
+      'nc' => 'application/x-netcdf',
+      'oda' => 'application/oda',
+      'pbm' => 'image/x-portable-bitmap',
+      'pdb' => 'chemical/x-pdb',
+      'pdf' => 'application/pdf',
+      'pgm' => 'image/x-portable-graymap',
+      'pgn' => 'application/x-chess-pgn',
+      'png' => 'image/png',
+      'pnm' => 'image/x-portable-anymap',
+      'ppm' => 'image/x-portable-pixmap',
+      'ppt' => 'application/vnd.ms-powerpoint',
+      'ps' => 'application/postscript',
+      'qt' => 'video/quicktime',
+      'ra' => 'audio/x-realaudio',
+      'ram' => 'audio/x-pn-realaudio',
+      'ras' => 'image/x-cmu-raster',
+      'rgb' => 'image/x-rgb',
+      'rm' => 'audio/x-pn-realaudio',
+      'roff' => 'application/x-troff',
+      'rpm' => 'audio/x-pn-realaudio-plugin',
+      'rtf' => 'text/rtf',
+      'rtx' => 'text/richtext',
+      'sgm' => 'text/sgml',
+      'sgml' => 'text/sgml',
+      'sh' => 'application/x-sh',
+      'shar' => 'application/x-shar',
+      'silo' => 'model/mesh',
+      'sit' => 'application/x-stuffit',
+      'skd' => 'application/x-koan',
+      'skm' => 'application/x-koan',
+      'skp' => 'application/x-koan',
+      'skt' => 'application/x-koan',
+      'smi' => 'application/smil',
+      'smil' => 'application/smil',
+      'snd' => 'audio/basic',
+      'so' => 'application/octet-stream',
+      'spl' => 'application/x-futuresplash',
+      'src' => 'application/x-wais-source',
+      'sv4cpio' => 'application/x-sv4cpio',
+      'sv4crc' => 'application/x-sv4crc',
+      'svg' => 'image/svg+xml',
+      'swf' => 'application/x-shockwave-flash',
+      't' => 'application/x-troff',
+      'tar' => 'application/x-tar',
+      'tcl' => 'application/x-tcl',
+      'tex' => 'application/x-tex',
+      'texi' => 'application/x-texinfo',
+      'texinfo' => 'application/x-texinfo',
+      'tif' => 'image/tiff',
+      'tiff' => 'image/tiff',
+      'tr' => 'application/x-troff',
+      'tsv' => 'text/tab-separated-values',
+      'txt' => 'text/plain',
+      'ustar' => 'application/x-ustar',
+      'vcd' => 'application/x-cdlink',
+      'vrml' => 'model/vrml',
+      'vsd' => 'application/vnd.visio',
+      'wav' => 'audio/x-wav',
+      'wbmp' => 'image/vnd.wap.wbmp',
+      'wbxml' => 'application/vnd.wap.wbxml',
+      'wml' => 'text/vnd.wap.wml',
+      'wmlc' => 'application/vnd.wap.wmlc',
+      'wmls' => 'text/vnd.wap.wmlscript',
+      'wmlsc' => 'application/vnd.wap.wmlscriptc',
+      'wrl' => 'model/vrml',
+      'xbm' => 'image/x-xbitmap',
+      'xls' => 'application/vnd.ms-excel',
+      'xpm' => 'image/x-xpixmap',
+      'xsl' => 'text/xml',
+      'xwd' => 'image/x-xwindowdump',
+      'xyz' => 'chemical/x-xyz',
+      'zip' => 'application/zip',
 
-    /* JPEG 2000: From RFC 3745: http://www.faqs.org/rfcs/rfc3745.html */
-    'jp2' => 'image/jp2',
-    'jpg2' => 'image/jp2',
-    'jpf' => 'image/jpx',
-    'jpx' => 'image/jpx',
-    'mj2' => 'video/mj2',
-    'mjp2' => 'video/mj2',
-    'jpm' => 'image/jpm',
-    'jpgm' => 'image/jpgm',
+      /* And additions from Gallery2 - http://codex.gallery2.org  */
+      /* From support.microsoft.com/support/kb/articles/Q284/0/94.ASP */
+      'asf' => 'video/x-ms-asf',
+      'asx' => 'video/x-ms-asx',
+      'wmv' => 'video/x-ms-wmv',
+      'wma' => 'audio/x-ms-wma',
 
-    /* Other */
-    'psd' => 'application/photoshop',
-    'pcd' => 'image/x-photo-cd',
-    'jpgcmyk' => 'image/jpeg-cmyk',
-    'tifcmyk' => 'image/tiff-cmyk',
-    'wmf' => 'image/wmf',
-    'tga' => 'image/tga',
-    'flv' => 'video/x-flv',
-    'mp4' => 'video/mp4',
-    'tgz' => 'application/x-compressed'
-  );
+      /* JPEG 2000: From RFC 3745: http://www.faqs.org/rfcs/rfc3745.html */
+      'jp2' => 'image/jp2',
+      'jpg2' => 'image/jp2',
+      'jpf' => 'image/jpx',
+      'jpx' => 'image/jpx',
+      'mj2' => 'video/mj2',
+      'mjp2' => 'video/mj2',
+      'jpm' => 'image/jpm',
+      'jpgm' => 'image/jpgm',
+
+      /* Other */
+      'psd' => 'application/photoshop',
+      'pcd' => 'image/x-photo-cd',
+      'jpgcmyk' => 'image/jpeg-cmyk',
+      'tifcmyk' => 'image/tiff-cmyk',
+      'wmf' => 'image/wmf',
+      'tga' => 'image/tga',
+      'flv' => 'video/x-flv',
+      'mp4' => 'video/mp4',
+      'tgz' => 'application/x-compressed');
+
+  // Temporary path for local copy of an external object (see importFromUri
+  // method)
+  protected
+    $localPath;
+
+  // List of web compatible image formats (supported in most major browsers)
+  protected static
+    $webCompatibleImageFormats = array(
+      'image/jpeg',
+      'image/jpg',
+      'image/jpe',
+      'image/gif',
+      'image/png'),
+
+    // Qubit generic icon list
+    $qubitGenericThumbs = array(
+      'application/x-msaccess'        => 'icon-ms-access.gif',
+      'application/vnd.ms-excel'      => 'icon-ms-excel.gif',
+      'application/msword'            => 'icon-ms-word.gif',
+      'application/vnd.ms-powerpoint' => 'icon-ms-powerpoint.gif'),
+
+    $qubitGenericReference = array(
+      '*/*' => 'no_reference_rep.png');
 
   public function __toString()
   {
@@ -271,6 +275,16 @@ class QubitDigitalObject extends BaseDigitalObject
     return call_user_func_array(array($this, 'BaseDigitalObject::__get'), $args);
   }
 
+  protected function insert($connection = null)
+  {
+    if (!isset($this->slug))
+    {
+      $this->slug = QubitSlug::slugify($this->name);
+    }
+
+    return parent::insert($connection);
+  }
+
   public function save($connection = null)
   {
     // TODO: $cleanInformationObject = $this->informationObject->clean;
@@ -297,7 +311,7 @@ class QubitDigitalObject extends BaseDigitalObject
     // Create child objects (derivatives)
     if (0 < count($this->assets) && $this->createDerivatives)
     {
-      if ($this->getPageCount() > 1)
+      if (sfConfig::get('app_explode_multipage_files') && $this->getPageCount() > 1)
       {
         // If DO is a compound object, then create child objects and set to
         // display as compound object (with pager)
@@ -355,7 +369,7 @@ class QubitDigitalObject extends BaseDigitalObject
   public function delete($connection = null)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitDigitalObject::PARENT_ID, $this->getId());
+    $criteria->add(QubitDigitalObject::PARENT_ID, $this->id);
 
     $children = QubitDigitalObject::get($criteria);
 
@@ -401,7 +415,7 @@ class QubitDigitalObject extends BaseDigitalObject
 
     if (null == ($parentInformationObject = $this->getInformationObject()))
     {
-      $parentInformationObject = $this->getParent()->getInformationObject();
+      $parentInformationObject = $this->parent->getInformationObject();
     }
 
     // Fail if no valid parent information object found
@@ -422,7 +436,7 @@ class QubitDigitalObject extends BaseDigitalObject
     $cleanFileName = self::sanitizeFilename($asset->getName());
 
     // If file has not extension, try to get it from asset mime type
-    if (0 == strlen(pathinfo($cleanFileName, PATHINFO_EXTENSION)) && null !== ($assetMimeType = $asset->getMimeType()) && 0 < strlen(($newFileExtension = array_search($assetMimeType, self::$qubitMimeTypes))))
+    if (0 == strlen(pathinfo($cleanFileName, PATHINFO_EXTENSION)) && null !== ($assetMimeType = $asset->mimeType) && 0 < strlen(($newFileExtension = array_search($assetMimeType, self::$qubitMimeTypes))))
     {
       $cleanFileName .= '.'.$newFileExtension;
     }
@@ -478,7 +492,6 @@ class QubitDigitalObject extends BaseDigitalObject
 
     return $this;
   }
-
 
   /**
    * Populate a digital object from a resource pointed to by a URI
@@ -586,7 +599,7 @@ class QubitDigitalObject extends BaseDigitalObject
    */
   public function isWebCompatibleImageFormat()
   {
-    return in_array($this->getMimeType(), self::$webCompatibleImageFormats);
+    return in_array($this->mimeType, self::$webCompatibleImageFormats);
   }
 
   /**
@@ -616,12 +629,12 @@ class QubitDigitalObject extends BaseDigitalObject
   public function setDefaultMediaType()
   {
     // Make sure we have a valid mime-type (with a forward-slash).
-    if (!strlen($this->getMimeType()) || !strpos($this->getMimeType(), '/'))
+    if (!strlen($this->mimeType) || !strpos($this->mimeType, '/'))
     {
       return null;
     }
 
-    $mimePieces = explode('/', $this->getMimeType());
+    $mimePieces = explode('/', $this->mimeType);
 
     switch($mimePieces[0])
     {
@@ -651,7 +664,7 @@ class QubitDigitalObject extends BaseDigitalObject
         $mediaTypeId = QubitTerm::OTHER_ID;
     }
 
-    $this->setMediaTypeId($mediaTypeId);
+    $this->mediaTypeId = $mediaTypeId;
   }
 
   /**
@@ -673,7 +686,7 @@ class QubitDigitalObject extends BaseDigitalObject
   public function getChildByUsageId($usageId)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitDigitalObject::PARENT_ID, $this->getId());
+    $criteria->add(QubitDigitalObject::PARENT_ID, $this->id);
     $criteria->add(QubitDigitalObject::USAGE_ID, $usageId);
 
     $result = QubitDigitalObject::getOne($criteria);
@@ -736,7 +749,7 @@ class QubitDigitalObject extends BaseDigitalObject
    */
   public function isCompoundObject()
   {
-    $isCompoundObjectProp = QubitProperty::getOneByObjectIdAndName($this->getId(), 'is_compound_object');
+    $isCompoundObjectProp = QubitProperty::getOneByObjectIdAndName($this->id, 'is_compound_object');
 
     return (null !== $isCompoundObjectProp && '1' == $isCompoundObjectProp->getValue(array('sourceCulture' => true)));
   }
@@ -758,11 +771,11 @@ class QubitDigitalObject extends BaseDigitalObject
     if (get_class($parentObject) == 'QubitDigitalObject')
     {
       $infoObject = $parentObject->getAncestorInformationObject();
-      $infoObjectId = (string) $infoObject->getId();
+      $infoObjectId = (string) $infoObject->id;
     }
     else if (get_class($parentObject) == 'QubitInformationObject')
     {
-      $infoObjectId = (string) $parentObject->getId();
+      $infoObjectId = (string) $parentObject->id;
     }
     else
     {
@@ -797,6 +810,12 @@ class QubitDigitalObject extends BaseDigitalObject
         break;
       default:
         $genericIconList = QubitDigitalObject::$qubitGenericThumbs;
+    }
+
+    if ('unknown' == $mimeType)
+    {
+      // Use "blank" icon for unknown file types
+      return $genericIconPath = $genericIconDir.'/blank.png';
     }
 
     // Check the list for a generic icon matching this mime-type
@@ -947,7 +966,7 @@ class QubitDigitalObject extends BaseDigitalObject
       {
         // Add "number of pages" property
         $pageCount = new QubitProperty;
-        $pageCount->setObjectId($this->getId());
+        $pageCount->setObjectId($this->id);
         $pageCount->setName('page_count');
         $pageCount->setScope('digital_object');
         $pageCount->setValue(count($output), array('sourceCulture' => true));
@@ -980,7 +999,7 @@ class QubitDigitalObject extends BaseDigitalObject
   public function getPage($index)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitInformationObject::PARENT_ID, $this->informationObject->id, Criteria::EQUAL);
+    $criteria->add(QubitInformationObject::PARENT_ID, $this->informationObject->id);
     $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID);
     $criteria->setLimit(1);
     $criteria->setOffset($index);
@@ -1056,14 +1075,14 @@ class QubitDigitalObject extends BaseDigitalObject
     {
       // Create a new information object
       $newInfoObject = new QubitInformationObject;
-      $newInfoObject->setParentId($this->getInformationObject()->getId());
+      $newInfoObject->parentId = $this->getInformationObject()->id;
       $newInfoObject->setTitle($this->getInformationObject()->getTitle().' ('.($i + 1).')');
       $newInfoObject->save();
 
       // Create and link a new digital object
       $newDigiObject = new QubitDigitalObject;
-      $newDigiObject->setParentId($this->getId());
-      $newDigiObject->setInformationObjectId($newInfoObject->getId());
+      $newDigiObject->parentId = $this->id;
+      $newDigiObject->setInformationObjectId($newInfoObject->id);
       $newDigiObject->save();
 
       // Derive new file path based on newInfoObject
@@ -1089,12 +1108,12 @@ class QubitDigitalObject extends BaseDigitalObject
       chmod($newFilepath, 0644);
 
       // Save new file information
-      $newDigiObject->setPath($assetPath.'/');
+      $newDigiObject->setPath("$assetPath/");
       $newDigiObject->setName($filename);
       $newDigiObject->setByteSize(filesize($newFilepath));
-      $newDigiObject->setUsageId(QubitTerm::MASTER_ID);
+      $newDigiObject->usageId = QubitTerm::MASTER_ID;
       $newDigiObject->setMimeType(QubitDigitalObject::deriveMimeType($filename));
-      $newDigiObject->setMediaTypeId($this->getMediaTypeId());
+      $newDigiObject->mediaTypeId = $this->mediaTypeId;
       $newDigiObject->setPageCount();
       $newDigiObject->setSequence($i + 1);
       $newDigiObject->save();
@@ -1163,7 +1182,6 @@ class QubitDigitalObject extends BaseDigitalObject
     return $val;
   }
 
-
   /*
    * -----------------------------------------------------------------------
    * IMAGE MANIPULATION METHODS
@@ -1227,8 +1245,8 @@ class QubitDigitalObject extends BaseDigitalObject
     if (0 < strlen($resizedImage))
     {
       $derivative = new QubitDigitalObject;
-      $derivative->setParentId($this->getId());
-      $derivative->setUsageId($usageId);
+      $derivative->parentId = $this->id;
+      $derivative->usageId = $usageId;
       $derivative->createDerivatives = false;
       $derivative->indexOnSave = false;
       $derivative->assets[] = new QubitAsset($derivativeName, $resizedImage);
@@ -1413,7 +1431,7 @@ class QubitDigitalObject extends BaseDigitalObject
    */
   public function canThumbnail()
   {
-    return self::canThumbnailMimeType($this->getMimeType());
+    return self::canThumbnailMimeType($this->mimeType);
   }
 
   /**
@@ -1487,7 +1505,6 @@ class QubitDigitalObject extends BaseDigitalObject
   {
     if (QubitTerm::REFERENCE_ID != $usageId)
     {
-
       return false;
     }
 
@@ -1507,8 +1524,8 @@ class QubitDigitalObject extends BaseDigitalObject
       if (file_exists($derivativeFullPath) && 0 < ($byteSize = filesize($derivativeFullPath)))
       {
         $derivative = new QubitDigitalObject;
-        $derivative->setParentId($this->getId());
-        $derivative->setUsageId($usageId);
+        $derivative->parentId = $this->id;
+        $derivative->usageId = $usageId;
         $derivative->assets[] = new QubitAsset($derivativeName, file_get_contents($derivativeFullPath));
         $derivative->createDerivatives = false;
         $derivative->indexOnSave = false;
@@ -1531,9 +1548,9 @@ class QubitDigitalObject extends BaseDigitalObject
         $derivative = new QubitDigitalObject;
         $derivative->setPath($this->getPath());
         $derivative->setName($derivativeName);
-        $derivative->setParentId($this->getId());
+        $derivative->parentId = $this->id;
         $derivative->setByteSize($byteSize);
-        $derivative->setUsageId($usageId);
+        $derivative->usageId = $usageId;
         $derivative->setMimeAndMediaType();
         $derivative->createDerivatives = false;
         $derivative->indexOnSave = false;
@@ -1547,7 +1564,6 @@ class QubitDigitalObject extends BaseDigitalObject
     // Test for FFmpeg library
     if (!self::hasFfmpeg())
     {
-
       return false;
     }
 
@@ -1613,9 +1629,9 @@ class QubitDigitalObject extends BaseDigitalObject
       $derivative = new QubitDigitalObject;
       $derivative->setPath($this->getPath());
       $derivative->setName($derivativeName);
-      $derivative->setParentId($this->getId());
+      $derivative->parentId = $this->id;
       $derivative->setByteSize($byteSize);
-      $derivative->setUsageId($usageId);
+      $derivative->usageId = $usageId;
       $derivative->setMimeAndMediaType();
       $derivative->createDerivatives = false;
       $derivative->indexOnSave = false;
@@ -1728,7 +1744,6 @@ class QubitDigitalObject extends BaseDigitalObject
     // Test for FFmpeg library
     if (!self::hasFfmpeg())
     {
-
       return false;
     }
 
@@ -1818,14 +1833,14 @@ class QubitDigitalObject extends BaseDigitalObject
   public function setDisplayAsCompoundObject($value)
   {
     $criteria = new Criteria;
-    $criteria->add(QubitProperty::OBJECT_ID, $this->id, Criteria::EQUAL);
+    $criteria->add(QubitProperty::OBJECT_ID, $this->id);
     $criteria->add(QubitProperty::NAME, 'displayAsCompound');
 
     $displayAsCompoundProp = QubitProperty::getOne($criteria);
     if (is_null($displayAsCompoundProp))
     {
       $displayAsCompoundProp = new QubitProperty;
-      $displayAsCompoundProp->setObjectId($this->getId());
+      $displayAsCompoundProp->setObjectId($this->id);
       $displayAsCompoundProp->setName('displayAsCompound');
     }
 
@@ -1842,10 +1857,9 @@ class QubitDigitalObject extends BaseDigitalObject
    */
   public function getDisplayAsCompoundObject()
   {
-    $displayAsCompoundProp = QubitProperty::getOneByObjectIdAndName($this->getId(), 'displayAsCompound');
+    $displayAsCompoundProp = QubitProperty::getOneByObjectIdAndName($this->id, 'displayAsCompound');
     if (null !== $displayAsCompoundProp)
     {
-
       return $displayAsCompoundProp->getValue(array('sourceCulture' => true));
     }
   }
@@ -1862,26 +1876,23 @@ class QubitDigitalObject extends BaseDigitalObject
     // information object
     if (null === $this->informationObjectId)
     {
-
       return false;
     }
 
     // Return false if "show compound" toggle is not set to '1' (yes)
-    $showCompoundProp = QubitProperty::getOneByObjectIdAndName($this->getId(), 'displayAsCompound');
+    $showCompoundProp = QubitProperty::getOneByObjectIdAndName($this->id, 'displayAsCompound');
     if (null === $showCompoundProp || '1' != $showCompoundProp->getValue(array('sourceCulture' => true)) )
     {
-
       return false;
     }
 
     // Return false if this object has no children with digital objects
     $criteria = new Criteria;
-    $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID, Criteria::INNER_JOIN);
-    $criteria->add(QubitInformationObject::PARENT_ID, $this->informationObjectId, Criteria::EQUAL);
+    $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID);
+    $criteria->add(QubitInformationObject::PARENT_ID, $this->informationObjectId);
 
     if (0 === count(QubitDigitalObject::get($criteria)))
     {
-
       return false;
     }
 

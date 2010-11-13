@@ -14,7 +14,6 @@
 # Qubit Toolkit; if not, write to the Free Software Foundation, Inc., 51
 # Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 # EAD XML (2002) IMPORT FILTER MAPPINGS
 #
 # @package qubit
@@ -33,6 +32,16 @@ information_object:
       XPath:   "."    # not really a match, just use self
       Method:  setCollectionTypeId
       Parameters: [QubitTerm::ARCHIVAL_MATERIAL_ID]
+
+    sourceStandard:
+      XPath:   "."    # not really a match, just use self
+      Method:  setSourceStandard
+      Parameters: ["'http://www.loc.gov/ead/ead.xsd'"]
+
+    publicationStatus:
+      XPath:   "."    # not really a match, just use self
+      Method:  setStatus
+      Parameters: ["array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID))"]
 
     # each of the following XPath expressions are relative to the current matched node:
 
@@ -119,7 +128,7 @@ information_object:
     #TODO: check for @type attribute and pass it as note type
     note:
       XPath:  "(note | descgrp/note | did/note)"
-      Method: setNote
+      Method: importEadNote
       Parameters: ["$options = array('note' => $nodeValue, 'noteTypeId' => QubitTerm::GENERAL_NOTE_ID)"]
 
     bioghist:
@@ -193,7 +202,7 @@ information_object:
 
     processinfo:
       XPath:  "(processinfo | descgrp/processinfo)"
-      Method: setNote
+      Method: importEadNote
       Parameters: ["$options = array('note' => $nodeValue, 'noteTypeId' => QubitTerm::ARCHIVIST_NOTE_ID)"]
 
     userestrict:
@@ -215,10 +224,10 @@ information_object:
 
     bibliography:
       XPath:   "(bibliography | descgrp/bibliography)"
-      Method: setNote
+      Method: importEadNote
       Parameters: ["$options = array('note' => $nodeValue, 'noteTypeId' => QubitTerm::PUBLICATION_NOTE_ID)"]
 
     odd:
       XPath:  "odd"
-      Method: setNote
+      Method: importEadNote
       Parameters: ["$options = array('note' => $nodeValue, 'noteTypeId' => QubitTerm::OTHER_DESCRIPTIVE_DATA_ID)"]

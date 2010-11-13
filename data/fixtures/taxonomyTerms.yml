@@ -324,7 +324,7 @@ QubitTaxonomy:
     id: <?php echo QubitTaxonomy::ISDF_RELATION_TYPE_ID."\n" ?>
     parent_id: QubitTaxonomy_root
     name:
-      en: 'ISDF Relation Type'
+      en: 'Function Relation Type'
     note:
       en: 'Function-to-function relationship categories defined by the ICA ISDF specification, 1st Edition, Section 5.3.3, ''Category of relationship''.'
 QubitTerm:
@@ -843,22 +843,21 @@ QubitTerm:
     name:
       en: description
       it: descrizione
-  QubitTerm_actor_relation_date_display:
+  QubitTerm_actor_relation_date:
     taxonomy_id: QubitTaxonomy_actor_relation_note_type
     parent_id: QubitTerm_110
-    id: <?php echo QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID."\n" ?>
+    id: <?php echo QubitTerm::RELATION_NOTE_DATE_ID."\n" ?>
     source_culture: en
     name:
       en: 'date display'
       it: 'data visualizzata'
-  QubitTerm_term_relation_equivalence:
+  QubitTerm_term_alternate_label:
     taxonomy_id: QubitTaxonomy_term_relation_type
     parent_id: QubitTerm_110
-    id: <?php echo QubitTerm::TERM_RELATION_EQUIVALENCE_ID."\n" ?>
+    id: <?php echo QubitTerm::ALTERNATIVE_LABEL_ID."\n" ?>
     source_culture: en
     name:
-      en: equivalence
-      it: equivalenza
+      en: 'alternative label'
   QubitTerm_term_relation_associative:
     taxonomy_id: QubitTaxonomy_term_relation_type
     parent_id: QubitTerm_110

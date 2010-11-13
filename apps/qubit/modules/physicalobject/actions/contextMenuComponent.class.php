@@ -19,7 +19,7 @@
 
 /**
  * Context Menu component for physical objects.
- * 
+ *
  * @package qubit
  * @subpackage physicalobject
  * @version svn: $Id$
@@ -29,14 +29,12 @@ class PhysicalObjectContextMenuComponent extends sfComponent
 {
   public function execute($request)
   {
+    $this->resource = $request->getAttribute('sf_route')->resource;
+
     $this->physicalObjects = array();
-    foreach (QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->informationObject->id, array('typeId' => QubitTerm::HAS_PHYSICAL_OBJECT_ID)) as $physicalObject)
+    foreach (QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->resource->id, array('typeId' => QubitTerm::HAS_PHYSICAL_OBJECT_ID)) as $item)
     {
-      // Check physical object is unique
-      if (!in_array($physicalObject, $this->physicalObjects))
-      {
-        $this->physicalObjects[] = $physicalObject;
-      }
+      $this->physicalObjects[$item->id] = $item;
     }
 
     if (1 > count($this->physicalObjects))

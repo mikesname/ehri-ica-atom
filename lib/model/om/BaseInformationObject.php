@@ -5,21 +5,22 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_information_object',
+    TABLE_NAME = 'information_object',
 
-    ID = 'q_information_object.ID',
-    IDENTIFIER = 'q_information_object.IDENTIFIER',
-    OAI_LOCAL_IDENTIFIER = 'q_information_object.OAI_LOCAL_IDENTIFIER',
-    LEVEL_OF_DESCRIPTION_ID = 'q_information_object.LEVEL_OF_DESCRIPTION_ID',
-    COLLECTION_TYPE_ID = 'q_information_object.COLLECTION_TYPE_ID',
-    REPOSITORY_ID = 'q_information_object.REPOSITORY_ID',
-    PARENT_ID = 'q_information_object.PARENT_ID',
-    DESCRIPTION_STATUS_ID = 'q_information_object.DESCRIPTION_STATUS_ID',
-    DESCRIPTION_DETAIL_ID = 'q_information_object.DESCRIPTION_DETAIL_ID',
-    DESCRIPTION_IDENTIFIER = 'q_information_object.DESCRIPTION_IDENTIFIER',
-    LFT = 'q_information_object.LFT',
-    RGT = 'q_information_object.RGT',
-    SOURCE_CULTURE = 'q_information_object.SOURCE_CULTURE';
+    ID = 'information_object.ID',
+    IDENTIFIER = 'information_object.IDENTIFIER',
+    OAI_LOCAL_IDENTIFIER = 'information_object.OAI_LOCAL_IDENTIFIER',
+    LEVEL_OF_DESCRIPTION_ID = 'information_object.LEVEL_OF_DESCRIPTION_ID',
+    COLLECTION_TYPE_ID = 'information_object.COLLECTION_TYPE_ID',
+    REPOSITORY_ID = 'information_object.REPOSITORY_ID',
+    PARENT_ID = 'information_object.PARENT_ID',
+    DESCRIPTION_STATUS_ID = 'information_object.DESCRIPTION_STATUS_ID',
+    DESCRIPTION_DETAIL_ID = 'information_object.DESCRIPTION_DETAIL_ID',
+    DESCRIPTION_IDENTIFIER = 'information_object.DESCRIPTION_IDENTIFIER',
+    SOURCE_STANDARD = 'information_object.SOURCE_STANDARD',
+    LFT = 'information_object.LFT',
+    RGT = 'information_object.RGT',
+    SOURCE_CULTURE = 'information_object.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -37,6 +38,7 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitInformationObject::DESCRIPTION_STATUS_ID);
     $criteria->addSelectColumn(QubitInformationObject::DESCRIPTION_DETAIL_ID);
     $criteria->addSelectColumn(QubitInformationObject::DESCRIPTION_IDENTIFIER);
+    $criteria->addSelectColumn(QubitInformationObject::SOURCE_STANDARD);
     $criteria->addSelectColumn(QubitInformationObject::LFT);
     $criteria->addSelectColumn(QubitInformationObject::RGT);
     $criteria->addSelectColumn(QubitInformationObject::SOURCE_CULTURE);
@@ -164,7 +166,7 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
       return true;
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -306,7 +308,7 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
       return $this->values['descendants'];
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __set($name, $value)
@@ -367,6 +369,38 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
     return $this;
   }
 
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
+  }
+
   protected function insert($connection = null)
   {
     $this->updateNestedSet($connection);
@@ -378,9 +412,11 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
 
   protected function update($connection = null)
   {
-        if (isset($this->values['parentId']))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-            $offset = 0; 
+      // Get the "original" parentId before any updates
+      $offset = 0;
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -394,8 +430,10 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
           $offset++;
         }
       }
-      
-                  if ($originalParentId != $this->values['parentId'])
+
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }
@@ -576,6 +614,9 @@ abstract class BaseInformationObject extends QubitObject implements ArrayAccess
 
   protected function updateNestedSet($connection = null)
   {
+// HACK Try to prevent modifying left and right values anywhere except in this
+// method.  Perhaps it would be more logical to use protected visibility for
+// these values?
 unset($this->values['lft']);
 unset($this->values['rgt']);
     if (!isset($connection))
@@ -636,6 +677,7 @@ unset($this->values['rgt']);
       {
         $this->lft = $parent->rgt;
         $this->rgt = $parent->rgt + 1;
+        $parent->rgt += 2;
 
         return $this;
       }

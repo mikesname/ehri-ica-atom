@@ -89,6 +89,7 @@ class InformationObjectBrowseAction extends sfAction
     // Do source culture fallback
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, $fallbackTable);
 
+    // Filter drafts
     $criteria = QubitAcl::addFilterDraftsCriteria($criteria);
 
     // Page results

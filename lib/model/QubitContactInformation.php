@@ -26,35 +26,37 @@ class QubitContactInformation extends BaseContactInformation
 
   public function makePrimaryContact()
   {
-  $criteria = new Criteria;
-  $criteria->add(QubitContactInformation::ACTOR_ID, $this->getActorId());
-  $otherContacts = self::get($criteria);
-  foreach ($otherContacts as $contact)
+    $criteria = new Criteria;
+    $criteria->add(QubitContactInformation::ACTOR_ID, $this->actorId);
+    $contacts = self::get($criteria);
+
+    foreach ($contacts as $item)
     {
-    if ($contact->getId() == $this->getId())
+      if ($item->id == $this->id)
       {
-      $contact->setPrimaryContact(true);
+        $item->primaryContact = true;
       }
-    else
+      else
       {
-      $contact->setPrimaryContact(false);
+        $item->primaryContact = false;
       }
-    $contact->save();
+
+      $item->save();
     }
   }
 
   public function getContactInformationString()
   {
-  $string = ($this->getStreetAddress()) ? $this->getStreetAddress().'<br />' : '' ;
-  $string.= ($this->getCity()) ? $this->getCity() : '' ;
-  $string.= ($this->getRegion()) ? ', '.$this->getRegion() : '' ;
-  $string.= ($this->getCountryCode()) ? '<br />'.$this->getCountryCode().'' : '' ;
-  $string.= ($this->getPostalCode()) ? '   '.$this->getPostalCode(): '' ;
-  $string.= ($this->getTelephone()) ? '<p> telephone number: '.$this->getTelephone().'<br />' : '' ;
-  $string.= ($this->getFax()) ? 'fax number: '.$this->getFax().'<br />' : '' ;
-  $string.= ($this->getEmail()) ? 'email: '.$this->getEmail().'<br />' : '' ;
-  $string.= ($this->getWebsite()) ? 'website: <a href="'.$this->getWebsite().'">'.$this->getWebsite().'</a>' : '' ;
+    $string = ($this->getStreetAddress()) ? $this->getStreetAddress().'<br/>' : '';
+    $string .= ($this->getCity()) ? $this->getCity() : '';
+    $string .= ($this->getRegion()) ? ', '.$this->getRegion() : '';
+    $string .= ($this->getCountryCode()) ? '<br/>'.$this->getCountryCode().'' : '';
+    $string .= ($this->getPostalCode()) ? '   '.$this->getPostalCode(): '';
+    $string .= ($this->getTelephone()) ? '<p> telephone number: '.$this->getTelephone().'<br/>' : '';
+    $string .= ($this->getFax()) ? 'fax number: '.$this->getFax().'<br/>' : '';
+    $string .= ($this->getEmail()) ? 'email: '.$this->getEmail().'<br/>' : '';
+    $string .= ($this->getWebsite()) ? 'website: <a href="'.$this->getWebsite().'">'.$this->getWebsite().'</a>' : '';
 
-  return $string;
+    return $string;
   }
 }

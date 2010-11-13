@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_repository' table.
+ * This class defines the structure of the 'repository' table.
  *
  *
  *
@@ -30,16 +30,16 @@ class RepositoryTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_repository');
+		$this->setName('repository');
 		$this->setPhpName('repository');
 		$this->setClassname('QubitRepository');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_actor', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'actor', 'ID', true, null, null);
 		$this->addColumn('IDENTIFIER', 'identifier', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('DESC_STATUS_ID', 'descStatusId', 'INTEGER', 'q_term', 'ID', false, null, null);
-		$this->addForeignKey('DESC_DETAIL_ID', 'descDetailId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignKey('DESC_STATUS_ID', 'descStatusId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('DESC_DETAIL_ID', 'descDetailId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('DESC_IDENTIFIER', 'descIdentifier', 'VARCHAR', false, 255, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		// validators

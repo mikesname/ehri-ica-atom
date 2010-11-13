@@ -32,26 +32,26 @@ class AclGroupTermAclFormComponent extends sfComponent
 
     if (0 < count($this->permissions))
     {
-      foreach ($this->permissions as $p)
+      foreach ($this->permissions as $item)
       {
-        if ('createTerm' == $p->action)
+        if ('createTerm' == $item->action)
         {
-          if (QubitTaxonomy::ROOT_ID == $p->objectId || null === $p->objectId)
+          if (QubitTaxonomy::ROOT_ID == $item->objectId || null === $item->objectId)
           {
-            $this->rootPermissions['create'] = $p;
+            $this->rootPermissions['create'] = $item;
           }
           else
           {
-            $this->taxonomyPermissions[$p->objectId]['create'] = $p;
+            $this->taxonomyPermissions[$item->objectId]['create'] = $item;
           }
         }
-        else if (null === ($taxonomyId = $p->getConstants(array('name' => 'taxonomyId'))))
+        else if (null === ($taxonomyId = $item->getConstants(array('name' => 'taxonomyId'))))
         {
-          $this->rootPermissions[$p->action] = $p;
+          $this->rootPermissions[$item->action] = $item;
         }
         else
         {
-          $this->taxonomyPermissions[$taxonomyId][$p->action] = $p;
+          $this->taxonomyPermissions[$taxonomyId][$item->action] = $item;
         }
       }
     }

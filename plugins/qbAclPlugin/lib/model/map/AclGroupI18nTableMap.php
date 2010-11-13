@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_acl_group_i18n' table.
+ * This class defines the structure of the 'acl_group_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class AclGroupI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_acl_group_i18n');
+		$this->setName('acl_group_i18n');
 		$this->setPhpName('aclGroupI18n');
 		$this->setClassname('QubitAclGroupI18n');
 		$this->setPackage('plugins.qbAclPlugin.lib.model');
@@ -38,7 +38,7 @@ class AclGroupI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_acl_group', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'acl_group', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

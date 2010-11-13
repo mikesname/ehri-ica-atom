@@ -5,13 +5,13 @@ abstract class BaseObjectTermRelation extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_object_term_relation',
+    TABLE_NAME = 'object_term_relation',
 
-    ID = 'q_object_term_relation.ID',
-    OBJECT_ID = 'q_object_term_relation.OBJECT_ID',
-    TERM_ID = 'q_object_term_relation.TERM_ID',
-    START_DATE = 'q_object_term_relation.START_DATE',
-    END_DATE = 'q_object_term_relation.END_DATE';
+    ID = 'object_term_relation.ID',
+    OBJECT_ID = 'object_term_relation.OBJECT_ID',
+    TERM_ID = 'object_term_relation.TERM_ID',
+    START_DATE = 'object_term_relation.START_DATE',
+    END_DATE = 'object_term_relation.END_DATE';
 
   public static function addSelectColumns(Criteria $criteria)
   {

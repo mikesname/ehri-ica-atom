@@ -21,7 +21,7 @@ body
   margin: 1em 0;
 }
 
-tr:hover
+tbody tr:hover
 {
   background: #ffe;
 }
@@ -101,7 +101,7 @@ tr:hover
   margin: 4px;
   position: absolute;
   top: 0;
-  right: 0;
+  right: 0; /* LTR */
   text-indent: -32767px;
   width: 27px;
 }
@@ -112,7 +112,7 @@ tr:hover
   background-color: #abc;
 }
 
-#page #query
+#page [name=query]
 {
   border-radius: 3px;
   -moz-border-radius: 3px;
@@ -183,6 +183,7 @@ tr:hover
   float: left;
   margin: 0;
   padding: 0;
+  list-style-image: none; /* IE7 */
 }
 
 #navigation ul:first-child
@@ -234,7 +235,7 @@ tr:hover
   background-image: none;
 }
 
-#navigation .links .links li
+#navigation .links li .links li
 {
   border: none;
   display: block;
@@ -261,7 +262,7 @@ tr:hover
   position: relative;
 }
 
-#content #query
+#content [name=query]
 {
   font-size: 1em;
   width: 50%;

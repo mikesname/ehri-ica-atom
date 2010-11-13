@@ -22,15 +22,15 @@ class I18nUpdateAction extends sfAction
   public function execute($request)
   {
   //make sure user doesn't overwrite default 'en' values
-  if ($this->getUser()->getCulture() != 'en')
+  if ($this->context->user->getCulture() != 'en')
     {
-    switch ($this->getRequestParameter('fieldset'))
+    switch ($this->request->fieldset)
       {
       case 'taxonomy':
         $taxonomies = QubitTaxonomy::getAll();
         foreach ($taxonomies as $taxonomy)
           {
-            $taxonomy->setName($this->getRequestParameter('taxonomy_'.$taxonomy->getId()));
+            $taxonomy->setName($request["taxonomy_$taxonomy->id"]);
             $taxonomy->save();
           }
         break;
@@ -38,7 +38,7 @@ class I18nUpdateAction extends sfAction
         $terms = QubitTerm::getAll();
         foreach ($terms as $term)
           {
-            $term->setName($this->getRequestParameter('term_'.$term->getId()));
+            $term->setName($request["term_$term->id"]);
             $term->save();
           }
         break;
@@ -46,8 +46,8 @@ class I18nUpdateAction extends sfAction
         $staticPages = QubitStaticPage::getAll();
         foreach ($staticPages as $staticPage)
           {
-            $staticPage->setTitle($this->getRequestParameter('static_page_title'.$staticPage->getId()));
-            $staticPage->setContent($this->getRequestParameter('static_page_content'.$staticPage->getId()));
+            $staticPage->setTitle($request["static_page_title$staticPage->id"]);
+            $staticPage->setContent($request["static_page_content$staticPage->id"]);
             $staticPage->save();
           }
         break;

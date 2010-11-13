@@ -20,7 +20,7 @@
 class sfColumbiaPluginConfiguration extends sfPluginConfiguration
 {
   public static
-    $summary = 'Theme plugin. Adaptation of fixed width Classic theme using shades of blue and drop-down menus. Includes a header image from Columbia Street, New Westminster (1907).',
+    $summary = 'Theme plugin.  Adaptation of fixed width Classic theme using shades of blue and drop-down menus.  Includes a header image from Columbia Street, New Westminster (1907).',
     $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)

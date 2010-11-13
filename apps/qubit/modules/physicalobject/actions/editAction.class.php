@@ -25,71 +25,98 @@
  * @author     David Juhasz <david@artefactual.com>
  * @version    SVN: $Id
  */
-class PhysicalObjectEditAction extends sfAction
+class PhysicalObjectEditAction extends DefaultEditAction
 {
+  public static
+    $NAMES = array(
+      'location',
+      'name',
+      'type');
+
+  protected function earlyExecute()
+  {
+    $this->resource = new QubitPhysicalObject;
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+    }
+
+    $title = $this->context->i18n->__('Add new physical storage');
+    if (isset($this->getRoute()->resource))
+    {
+      if (1 > strlen($title = $this->resource))
+      {
+        $title = $this->context->i18n->__('Untitled');
+      }
+
+      $title = $this->context->i18n->__('Edit %1%', array('%1%' => $title));
+    }
+
+    $this->response->setTitle("$title - {$this->response->getTitle()}");
+  }
+
+  protected function addField($name)
+  {
+    switch ($name)
+    {
+      case 'location':
+      case 'name':
+        $this->form->setDefault($name, $this->resource[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInput);
+
+        break;
+
+      case 'type':
+        $this->form->setDefault('type', $this->context->routing->generate(null, array($this->resource->type, 'module' => 'term')));
+        $this->form->setValidator('type', new sfValidatorString);
+        $this->form->setWidget('type', new sfWidgetFormSelect(array('choices' => QubitTerm::getIndentedChildTree(QubitTerm::CONTAINER_ID, '&nbsp;', array('returnObjectInstances' => true)))));
+
+        break;
+
+      default:
+
+        return parent::addField($name);
+    }
+  }
+
+  protected function processField($field)
+  {
+    switch ($field->getName())
+    {
+      case 'type':
+        unset($this->resource->type);
+
+        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue('type')));
+        $this->resource->type = $params['_sf_route']->resource;
+
+        break;
+
+      default:
+
+        return parent::processField($field);
+    }
+  }
+
   public function execute($request)
   {
-    $this->form = new sfForm;
-
-    $this->physicalObject = new QubitPhysicalObject;
-
-    if (isset($request->id))
-    {
-      $this->physicalObject = QubitPhysicalObject::getById($request->id);
-
-      if (!isset($this->physicalObject))
-      {
-        $this->forward404();
-      }
-    }
-
-    $this->form->setDefault('next', $request->getReferer());
-    $this->form->setValidator('next', new sfValidatorString);
-    $this->form->setWidget('next', new sfWidgetFormInputHidden);
-
-    $this->form->setDefault('location', $this->physicalObject->location);
-    $this->form->setValidator('location', new sfValidatorString);
-    $this->form->setWidget('location', new sfWidgetFormInput);
-
-    $this->form->setDefault('name', $this->physicalObject->name);
-    $this->form->setValidator('name', new sfValidatorString);
-    $this->form->setWidget('name', new sfWidgetFormInput);
-
-    $this->form->setDefault('type', $this->context->routing->generate(null, array($this->physicalObject->type, 'module' => 'term')));
-    $this->form->setValidator('type', new sfValidatorString);
-
-    $choices = array();
-    $choices[null] = null;
-
-    $criteria = new Criteria;
-    $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::PHYSICAL_OBJECT_TYPE_ID);
-    foreach (QubitTerm::get($criteria) as $item)
-    {
-      $choices[$this->context->routing->generate(null, array($item, 'module' => 'term'))] = $item;
-    }
-
-    $this->form->setWidget('type', new sfWidgetFormSelect(array('choices' => $choices)));
+    parent::execute($request);
 
     if ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
-
       if ($this->form->isValid())
       {
-        $this->physicalObject->name = $this->form->getValue('name');
-        $this->physicalObject->location = $this->form->getValue('location');
+        $this->processForm();
 
-        $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue('type')));
-        $this->physicalObject->typeId = $params['id'];
-
-        $this->physicalObject->save();
+        $this->resource->save();
 
         if (null !== $next = $this->form->getValue('next'))
         {
           $this->redirect($next);
         }
 
-        $this->redirect(array($this->physicalObject, 'module' => 'physicalobject'));
+        $this->redirect(array($this->resource, 'module' => 'physicalobject'));
       }
     }
   }

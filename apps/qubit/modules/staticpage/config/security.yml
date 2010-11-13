@@ -1,19 +1,11 @@
-list:
-  credentials: [[ administrator, translator ]]
+delete:
+  credentials: administrator
   is_secure: true
 
 edit:
   credentials: [[ administrator, translator ]]
   is_secure: true
 
-create:
-  credentials: administrator
-  is_secure: true
-
-delete:
-  credentials: administrator
-  is_secure: true
-
-update:
+list:
   credentials: [[ administrator, translator ]]
   is_secure: true

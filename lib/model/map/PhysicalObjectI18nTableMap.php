@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_physical_object_i18n' table.
+ * This class defines the structure of the 'physical_object_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class PhysicalObjectI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_physical_object_i18n');
+		$this->setName('physical_object_i18n');
 		$this->setPhpName('physicalObjectI18n');
 		$this->setClassname('QubitPhysicalObjectI18n');
 		$this->setPackage('lib.model');
@@ -39,7 +39,7 @@ class PhysicalObjectI18nTableMap extends TableMap {
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
 		$this->addColumn('LOCATION', 'location', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_physical_object', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'physical_object', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

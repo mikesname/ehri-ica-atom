@@ -24,8 +24,6 @@ test:
 
 all:
   .settings:
-    check_lock:             true
-
     # Form security secret (CSRF protection)
     csrf_secret:            false
 
@@ -36,7 +34,7 @@ all:
     escaping_method:        ESC_SPECIALCHARS
 
     i18n:                   true
-    standard_helpers:       [Partial, Cache, Form, I18N, Object, Qubit]
+    standard_helpers:       [Partial, Cache, I18N, Qubit]
 
     # Enable the database manager
     use_database:           true

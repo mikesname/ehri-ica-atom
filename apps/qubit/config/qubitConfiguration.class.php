@@ -19,7 +19,8 @@
 
 class qubitConfiguration extends sfApplicationConfiguration
 {
-  const VERSION = '1.0.9';
+  const
+    VERSION = '1.1';
 
   public function contextLoadFactories(sfEvent $event)
   {
@@ -96,7 +97,7 @@ class qubitConfiguration extends sfApplicationConfiguration
 
   public function responseFilterContent(sfEvent $event, $content)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers('Javascript');
+    ProjectConfiguration::getActive()->loadHelpers('Javascript');
 
     return str_ireplace('</head>', javascript_tag('jQuery.extend(Qubit, '.json_encode(array('relativeUrlRoot' => sfContext::getInstance()->request->getRelativeUrlRoot())).');').'</head>', $content);
   }

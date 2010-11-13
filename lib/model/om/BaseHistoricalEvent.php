@@ -5,14 +5,14 @@ abstract class BaseHistoricalEvent extends QubitTerm implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_historical_event',
+    TABLE_NAME = 'historical_event',
 
-    ID = 'q_historical_event.ID',
-    TYPE_ID = 'q_historical_event.TYPE_ID',
-    START_DATE = 'q_historical_event.START_DATE',
-    START_TIME = 'q_historical_event.START_TIME',
-    END_DATE = 'q_historical_event.END_DATE',
-    END_TIME = 'q_historical_event.END_TIME';
+    ID = 'historical_event.ID',
+    TYPE_ID = 'historical_event.TYPE_ID',
+    START_DATE = 'historical_event.START_DATE',
+    START_TIME = 'historical_event.START_TIME',
+    END_DATE = 'historical_event.END_DATE',
+    END_TIME = 'historical_event.END_TIME';
 
   public static function addSelectColumns(Criteria $criteria)
   {

@@ -21,17 +21,23 @@ class MenuDeleteAction extends sfAction
 {
   public function execute($request)
   {
-    $menu = QubitMenu::getById($this->getRequestParameter('id'));
+    $this->form = new sfForm;
 
-    $this->forward404Unless($menu);
+    $this->menu = QubitMenu::getById($request->id);
 
-    // check that the setting is deleteable
-    if (!$menu->isProtected())
+    if (!isset($this->menu))
     {
-      $menu->delete();
+      $this->forward404();
     }
-    // TODO: else populate an error?
 
-    $this->redirect('menu/list');
+    if ($request->isMethod('delete'))
+    {
+      if (!$this->menu->isProtected())
+      {
+        $this->menu->delete();
+      }
+
+      $this->redirect(array('module' => 'menu', 'action' => 'list'));
+    }
   }
 }

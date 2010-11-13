@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_contact_information_i18n' table.
+ * This class defines the structure of the 'contact_information_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class ContactInformationI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_contact_information_i18n');
+		$this->setName('contact_information_i18n');
 		$this->setPhpName('contactInformationI18n');
 		$this->setClassname('QubitContactInformationI18n');
 		$this->setPackage('lib.model');
@@ -40,7 +40,7 @@ class ContactInformationI18nTableMap extends TableMap {
 		$this->addColumn('CITY', 'city', 'VARCHAR', false, 255, null);
 		$this->addColumn('REGION', 'region', 'VARCHAR', false, 255, null);
 		$this->addColumn('NOTE', 'note', 'LONGVARCHAR', false, null, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_contact_information', 'ID', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'contact_information', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

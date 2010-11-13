@@ -23,15 +23,15 @@ class MapCreatePlaceMapRelationAction extends sfAction
   {
   $this->placeMapRelation = new PlaceMapRelation;
 
-  if ($this->getRequestParameter('mapId'))
+  if ($this->request->mapId)
     {
-    $this->placeMapRelation->setMapId($this->getRequestParameter('mapId'));
+    $this->placeMapRelation->setMapId($this->request->mapId);
     $this->placeMapRelation->save();
     }
 
-  if ($this->getRequestParameter('placeId'))
+  if ($this->request->placeId)
     {
-    $this->placeMapRelation->setPlaceId($this->getRequestParameter('placeId'));
+    $this->placeMapRelation->setPlaceId($this->request->placeId);
     $this->placeMapRelation->save();
     }
 

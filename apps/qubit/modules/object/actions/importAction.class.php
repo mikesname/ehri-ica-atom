@@ -19,7 +19,7 @@
 
 /**
  * Ingest an uploaded file and import it as an object w/relations
- * 
+ *
  * @package    qubit
  * @subpackage import/export
  * @version    svn: $Id$
@@ -30,42 +30,18 @@ class ObjectImportAction extends sfAction
   public function execute($request)
   {
     $this->timer = new QubitTimer;
-    $options = array();
 
-    // should we do strict validation? (recommended)
-    // TODO: this should be an application-level setting
-    $options['strictXmlParsing'] = true;
-
-    require_once sfConfig::get('sf_symfony_lib_dir').'/plugins/sfCompat10Plugin/lib/request/sfRequestCompat10.class.php';
-    $this->dispatcher->connect('request.method_not_found', array('sfRequestCompat10', 'call'));
-
-    // Check for import file
-    if (strlen($this->getRequest()->getFilePath('file')) > 0)
-    {
-      $xmlStream = file_get_contents($this->getRequest()->getFilePath('file'));
-    }
-    else
-    {
-      $this->errors = sfContext::getInstance()->getI18N()->__('No import file selected, or the selected file exceeds the maximum upload size.');
-
-      return sfView::ERROR;
-    }
-
-    // Try import
     try
     {
-      $this->import = QubitXmlImport::execute($xmlStream, $options);
+      $this->import = QubitXmlImport::execute(file_get_contents($_FILES['file']['tmp_name']), array('strictXmlParsing' => true));
     }
-    catch (Exception $e)
+    catch (sfException $e)
     {
-      $this->errors = $e->getMessage();
+      $this->context->user->setFlash('error', $e->getMessage());
 
-      return sfView::ERROR;
+      $this->redirect(array('module' => 'object', 'action' => 'importSelect'));
     }
 
-    // FIXME: Redirect depends on single or multiple object import!
     $this->objectType = strtr(get_class($this->import->getRootObject()), array('Qubit' => ''));
-
-    return sfView::SUCCESS;
   }
 }

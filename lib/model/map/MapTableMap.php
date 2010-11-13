@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_map' table.
+ * This class defines the structure of the 'map' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class MapTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_map');
+		$this->setName('map');
 		$this->setPhpName('map');
 		$this->setClassname('QubitMap');
 		$this->setPackage('lib.model');

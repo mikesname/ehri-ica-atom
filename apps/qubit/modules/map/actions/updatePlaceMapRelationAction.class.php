@@ -21,22 +21,22 @@ class MapUpdatePlaceMapRelationAction extends sfAction
 {
   public function execute($request)
   {
-    if (!$this->getRequestParameter('id'))
+    if (!$this->request->id)
     {
       $placeMapRelation = new PlaceMapRelation;
     }
     else
     {
-      $placeMapRelation = PlaceMapRelation::getById($this->getRequestParameter('id'));
+      $placeMapRelation = PlaceMapRelation::getById($this->request->id);
       $this->forward404Unless($placeMapRelation);
     }
 
-    $placeMapRelation->setId($this->getRequestParameter('id'));
-    $placeMapRelation->setPlaceId($this->getRequestParameter('place_id') ? $this->getRequestParameter('place_id') : null);
-    $placeMapRelation->setMapId($this->getRequestParameter('map_id') ? $this->getRequestParameter('map_id') : null);
-    $placeMapRelation->setMapIconImageId($this->getRequestParameter('map_icon_image_id') ? $this->getRequestParameter('map_icon_image_id') : null);
-    $placeMapRelation->setMapIconDescription($this->getRequestParameter('map_icon_description'));
-    $placeMapRelation->setRelationNote($this->getRequestParameter('relation_note'));
+    $placeMapRelation->setId($this->request->id);
+    $placeMapRelation->setPlaceId($this->request->place_id ? $this->request->place_id : null);
+    $placeMapRelation->setMapId($this->request->map_id ? $this->request->map_id : null);
+    $placeMapRelation->setMapIconImageId($this->request->map_icon_image_id ? $this->request->map_icon_image_id : null);
+    $placeMapRelation->setMapIconDescription($this->request->map_icon_description);
+    $placeMapRelation->setRelationNote($this->request->relation_note);
 
     $placeMapRelation->save();
 

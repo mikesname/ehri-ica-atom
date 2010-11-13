@@ -17,9 +17,9 @@ class sfHistoryPluginFilter extends sfFilter
   {
     $filterChain->execute();
 
-    $user = $this->getContext()->getUser();
-    $user->setAttribute('moduleName', $this->getContext()->getModuleName(), 'sfHistoryPlugin');
-    $user->setAttribute('actionName', $this->getContext()->getActionName(), 'sfHistoryPlugin');
-    $user->setAttribute('currentInternalUri', $this->getContext()->getRouting()->getCurrentInternalUri(), 'sfHistoryPlugin');
+    $user = $this->context->user;
+    $user->setAttribute('moduleName', $this->context->getModuleName(), 'sfHistoryPlugin');
+    $user->setAttribute('actionName', $this->context->getActionName(), 'sfHistoryPlugin');
+    $user->setAttribute('currentInternalUri', $this->context->getRouting()->getCurrentInternalUri(), 'sfHistoryPlugin');
   }
 }

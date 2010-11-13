@@ -11,8 +11,8 @@
 <tbody>
 <?php foreach ($maps as $map): ?>
 <tr>
-      <td><?php echo $map->getId() ?></td>
-    <td><?php echo link_to($map->getTitle(), 'map/edit?id='.$map->getId()) ?></td>
+      <td><?php echo $map->id ?></td>
+    <td><?php echo link_to($map->getTitle(), 'map/edit?id='.$map->id) ?></td>
   </tr>
 <?php endforeach; ?>
 </tbody>

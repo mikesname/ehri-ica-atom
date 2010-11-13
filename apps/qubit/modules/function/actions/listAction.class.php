@@ -35,8 +35,14 @@ class FunctionListAction extends sfAction
     }
 
     $criteria = new Criteria;
-    $criteria->addJoin(QubitObject::ID, QubitFunction::ID);
     $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
+
+    if (isset($request->subquery))
+    {
+      $criteria->addJoin(QubitFunction::ID, QubitFunctionI18n::ID);
+      $criteria->add(QubitFunctionI18n::CULTURE, $this->context->user->getCulture());
+      $criteria->add(QubitFunctionI18n::AUTHORIZED_FORM_OF_NAME, "%$request->subquery%", Criteria::LIKE);
+    }
 
     // Page results
     $this->pager = new QubitPager('QubitFunction');

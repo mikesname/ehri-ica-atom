@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_historical_event' table.
+ * This class defines the structure of the 'historical_event' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class HistoricalEventTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_historical_event');
+		$this->setName('historical_event');
 		$this->setPhpName('historicalEvent');
 		$this->setClassname('QubitHistoricalEvent');
 		$this->setPackage('lib.model');
 		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_term', 'ID', true, null, null);
-		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'q_term', 'ID', false, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'term', 'ID', true, null, null);
+		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
 		$this->addColumn('START_TIME', 'startTime', 'TIME', false, null, null);
 		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);

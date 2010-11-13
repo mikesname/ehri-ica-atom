@@ -1,5 +1,5 @@
 identifySuccess:
-  has_layout: false 
+  has_layout: false
 listSetsSuccess:
   has_layout: false
 listMetadataFormatsSuccess:
@@ -10,3 +10,10 @@ listRecordsSuccess:
   has_layout: false
 oaiHarvester:
   has_layout: true
+
+harvesterListSuccess:
+  javascripts:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /plugins/sfDrupalPlugin/vendor/drupal/misc/textarea:

@@ -2,11 +2,11 @@
 
 <h1><?php echo __('View permissions') ?></h1>
 
-<h1 class="label"><?php echo __('%1% group', array('%1%' => render_title($group))) ?></h1>
+<?php echo link_to_if(QubitAcl::check($group, 'edit'), '<h1 class="label">'.render_title($group).'</h1>', array($group, 'module' => 'aclGroup', 'action' => 'edit'), array('title' => __('Edit group'))) ?>
 
 <div class="section">
   <?php if (0 < count($acl)): ?>
-  <table id="groupPermissions" class="inline sticky-enabled">
+  <table id="groupPermissions" class="sticky-enabled">
     <thead>
       <tr>
       <th colspan="2">&nbsp;</th>
@@ -22,7 +22,7 @@
         <td colspan="<?php echo $tableCols ?>"><strong>
         <?php if ('' == $taxonomyId): ?>
           <em><?php echo __('All %1%', array('%1%' => sfConfig::get('app_ui_label_term'))) ?></em>
-        <?php else: ?> 
+        <?php else: ?>
           <?php echo __('Taxonomy: %1%', array('%1%' => render_title(QubitTaxonomy::getById($taxonomyId)))) ?>
         <?php endif; ?>
         </strong></td>
@@ -38,8 +38,8 @@
         <?php else: ?>
           <em><?php echo __('All privileges') ?></em>
         <?php endif; ?>
-        </td> 
-        
+        </td>
+
         <?php foreach ($groups as $groupId): ?>
         <td>
         <?php if (isset($groupPermission[$groupId]) && $permission = $groupPermission[$groupId]): ?>

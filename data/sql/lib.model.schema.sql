@@ -4,13 +4,13 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 #-----------------------------------------------------------------------------
-#-- q_actor
+#-- actor
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_actor`;
+DROP TABLE IF EXISTS `actor`;
 
 
-CREATE TABLE `q_actor`
+CREATE TABLE `actor`
 (
 	`id` INTEGER  NOT NULL,
 	`corporate_body_identifiers` VARCHAR(255),
@@ -18,44 +18,45 @@ CREATE TABLE `q_actor`
 	`description_status_id` INTEGER,
 	`description_detail_id` INTEGER,
 	`description_identifier` VARCHAR(255),
+	`source_standard` VARCHAR(255),
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_actor_FK_1`
+	CONSTRAINT `actor_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_actor_FI_2` (`entity_type_id`),
-	CONSTRAINT `q_actor_FK_2`
+	INDEX `actor_FI_2` (`entity_type_id`),
+	CONSTRAINT `actor_FK_2`
 		FOREIGN KEY (`entity_type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_actor_FI_3` (`description_status_id`),
-	CONSTRAINT `q_actor_FK_3`
+	INDEX `actor_FI_3` (`description_status_id`),
+	CONSTRAINT `actor_FK_3`
 		FOREIGN KEY (`description_status_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_actor_FI_4` (`description_detail_id`),
-	CONSTRAINT `q_actor_FK_4`
+	INDEX `actor_FI_4` (`description_detail_id`),
+	CONSTRAINT `actor_FK_4`
 		FOREIGN KEY (`description_detail_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_actor_FI_5` (`parent_id`),
-	CONSTRAINT `q_actor_FK_5`
+	INDEX `actor_FI_5` (`parent_id`),
+	CONSTRAINT `actor_FK_5`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_actor_i18n
+#-- actor_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_actor_i18n`;
+DROP TABLE IF EXISTS `actor_i18n`;
 
 
-CREATE TABLE `q_actor_i18n`
+CREATE TABLE `actor_i18n`
 (
 	`authorized_form_of_name` VARCHAR(255),
 	`dates_of_existence` VARCHAR(255),
@@ -73,20 +74,20 @@ CREATE TABLE `q_actor_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_actor_i18n_FK_1`
+	CONSTRAINT `actor_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_contact_information
+#-- contact_information
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_contact_information`;
+DROP TABLE IF EXISTS `contact_information`;
 
 
-CREATE TABLE `q_contact_information`
+CREATE TABLE `contact_information`
 (
 	`actor_id` INTEGER  NOT NULL,
 	`primary_contact` TINYINT,
@@ -106,21 +107,21 @@ CREATE TABLE `q_contact_information`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_contact_information_FI_1` (`actor_id`),
-	CONSTRAINT `q_contact_information_FK_1`
+	INDEX `contact_information_FI_1` (`actor_id`),
+	CONSTRAINT `contact_information_FK_1`
 		FOREIGN KEY (`actor_id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_contact_information_i18n
+#-- contact_information_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_contact_information_i18n`;
+DROP TABLE IF EXISTS `contact_information_i18n`;
 
 
-CREATE TABLE `q_contact_information_i18n`
+CREATE TABLE `contact_information_i18n`
 (
 	`contact_type` VARCHAR(255),
 	`city` VARCHAR(255),
@@ -129,20 +130,20 @@ CREATE TABLE `q_contact_information_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_contact_information_i18n_FK_1`
+	CONSTRAINT `contact_information_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_contact_information` (`id`)
+		REFERENCES `contact_information` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_digital_object
+#-- digital_object
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_digital_object`;
+DROP TABLE IF EXISTS `digital_object`;
 
 
-CREATE TABLE `q_digital_object`
+CREATE TABLE `digital_object`
 (
 	`id` INTEGER  NOT NULL,
 	`information_object_id` INTEGER,
@@ -159,43 +160,43 @@ CREATE TABLE `q_digital_object`
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_digital_object_FK_1`
+	CONSTRAINT `digital_object_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_digital_object_FI_2` (`information_object_id`),
-	CONSTRAINT `q_digital_object_FK_2`
+	INDEX `digital_object_FI_2` (`information_object_id`),
+	CONSTRAINT `digital_object_FK_2`
 		FOREIGN KEY (`information_object_id`)
-		REFERENCES `q_information_object` (`id`),
-	INDEX `q_digital_object_FI_3` (`usage_id`),
-	CONSTRAINT `q_digital_object_FK_3`
+		REFERENCES `information_object` (`id`),
+	INDEX `digital_object_FI_3` (`usage_id`),
+	CONSTRAINT `digital_object_FK_3`
 		FOREIGN KEY (`usage_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_digital_object_FI_4` (`media_type_id`),
-	CONSTRAINT `q_digital_object_FK_4`
+	INDEX `digital_object_FI_4` (`media_type_id`),
+	CONSTRAINT `digital_object_FK_4`
 		FOREIGN KEY (`media_type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_digital_object_FI_5` (`checksum_type_id`),
-	CONSTRAINT `q_digital_object_FK_5`
+	INDEX `digital_object_FI_5` (`checksum_type_id`),
+	CONSTRAINT `digital_object_FK_5`
 		FOREIGN KEY (`checksum_type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_digital_object_FI_6` (`parent_id`),
-	CONSTRAINT `q_digital_object_FK_6`
+	INDEX `digital_object_FI_6` (`parent_id`),
+	CONSTRAINT `digital_object_FK_6`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_digital_object` (`id`)
+		REFERENCES `digital_object` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_event
+#-- event
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_event`;
+DROP TABLE IF EXISTS `event`;
 
 
-CREATE TABLE `q_event`
+CREATE TABLE `event`
 (
 	`id` INTEGER  NOT NULL,
 	`start_date` DATE,
@@ -207,55 +208,55 @@ CREATE TABLE `q_event`
 	`actor_id` INTEGER,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_event_FK_1`
+	CONSTRAINT `event_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_event_FI_2` (`type_id`),
-	CONSTRAINT `q_event_FK_2`
+	INDEX `event_FI_2` (`type_id`),
+	CONSTRAINT `event_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_event_FI_3` (`information_object_id`),
-	CONSTRAINT `q_event_FK_3`
+	INDEX `event_FI_3` (`information_object_id`),
+	CONSTRAINT `event_FK_3`
 		FOREIGN KEY (`information_object_id`)
-		REFERENCES `q_information_object` (`id`)
+		REFERENCES `information_object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_event_FI_4` (`actor_id`),
-	CONSTRAINT `q_event_FK_4`
+	INDEX `event_FI_4` (`actor_id`),
+	CONSTRAINT `event_FK_4`
 		FOREIGN KEY (`actor_id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_event_i18n
+#-- event_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_event_i18n`;
+DROP TABLE IF EXISTS `event_i18n`;
 
 
-CREATE TABLE `q_event_i18n`
+CREATE TABLE `event_i18n`
 (
 	`name` VARCHAR(255),
 	`description` TEXT,
-	`date_display` VARCHAR(255),
+	`date` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_event_i18n_FK_1`
+	CONSTRAINT `event_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_event` (`id`)
+		REFERENCES `event` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_function
+#-- function
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_function`;
+DROP TABLE IF EXISTS `function`;
 
 
-CREATE TABLE `q_function`
+CREATE TABLE `function`
 (
 	`id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
@@ -263,40 +264,41 @@ CREATE TABLE `q_function`
 	`description_status_id` INTEGER,
 	`description_detail_id` INTEGER,
 	`description_identifier` VARCHAR(255),
+	`source_standard` VARCHAR(255),
 	`lft` INTEGER,
 	`rgt` INTEGER,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_function_FK_1`
+	CONSTRAINT `function_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_function_FI_2` (`type_id`),
-	CONSTRAINT `q_function_FK_2`
+	INDEX `function_FI_2` (`type_id`),
+	CONSTRAINT `function_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`),
-	INDEX `q_function_FI_3` (`parent_id`),
-	CONSTRAINT `q_function_FK_3`
+		REFERENCES `term` (`id`),
+	INDEX `function_FI_3` (`parent_id`),
+	CONSTRAINT `function_FK_3`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_function` (`id`),
-	INDEX `q_function_FI_4` (`description_status_id`),
-	CONSTRAINT `q_function_FK_4`
+		REFERENCES `function` (`id`),
+	INDEX `function_FI_4` (`description_status_id`),
+	CONSTRAINT `function_FK_4`
 		FOREIGN KEY (`description_status_id`)
-		REFERENCES `q_term` (`id`),
-	INDEX `q_function_FI_5` (`description_detail_id`),
-	CONSTRAINT `q_function_FK_5`
+		REFERENCES `term` (`id`),
+	INDEX `function_FI_5` (`description_detail_id`),
+	CONSTRAINT `function_FK_5`
 		FOREIGN KEY (`description_detail_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_function_i18n
+#-- function_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_function_i18n`;
+DROP TABLE IF EXISTS `function_i18n`;
 
 
-CREATE TABLE `q_function_i18n`
+CREATE TABLE `function_i18n`
 (
 	`authorized_form_of_name` VARCHAR(255),
 	`classification` VARCHAR(255),
@@ -311,20 +313,20 @@ CREATE TABLE `q_function_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_function_i18n_FK_1`
+	CONSTRAINT `function_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_function` (`id`)
+		REFERENCES `function` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_historical_event
+#-- historical_event
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_historical_event`;
+DROP TABLE IF EXISTS `historical_event`;
 
 
-CREATE TABLE `q_historical_event`
+CREATE TABLE `historical_event`
 (
 	`id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
@@ -333,24 +335,24 @@ CREATE TABLE `q_historical_event`
 	`end_date` DATE,
 	`end_time` TIME,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_historical_event_FK_1`
+	CONSTRAINT `historical_event_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_historical_event_FI_2` (`type_id`),
-	CONSTRAINT `q_historical_event_FK_2`
+	INDEX `historical_event_FI_2` (`type_id`),
+	CONSTRAINT `historical_event_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_information_object
+#-- information_object
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_information_object`;
+DROP TABLE IF EXISTS `information_object`;
 
 
-CREATE TABLE `q_information_object`
+CREATE TABLE `information_object`
 (
 	`id` INTEGER  NOT NULL,
 	`identifier` VARCHAR(255),
@@ -362,52 +364,53 @@ CREATE TABLE `q_information_object`
 	`description_status_id` INTEGER,
 	`description_detail_id` INTEGER,
 	`description_identifier` VARCHAR(255),
+	`source_standard` VARCHAR(255),
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	UNIQUE KEY `q_information_object_U_1` (`oai_local_identifier`),
-	CONSTRAINT `q_information_object_FK_1`
+	UNIQUE KEY `information_object_U_1` (`oai_local_identifier`),
+	CONSTRAINT `information_object_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_information_object_FI_2` (`level_of_description_id`),
-	CONSTRAINT `q_information_object_FK_2`
+	INDEX `information_object_FI_2` (`level_of_description_id`),
+	CONSTRAINT `information_object_FK_2`
 		FOREIGN KEY (`level_of_description_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_information_object_FI_3` (`collection_type_id`),
-	CONSTRAINT `q_information_object_FK_3`
+	INDEX `information_object_FI_3` (`collection_type_id`),
+	CONSTRAINT `information_object_FK_3`
 		FOREIGN KEY (`collection_type_id`)
-		REFERENCES `q_term` (`id`),
-	INDEX `q_information_object_FI_4` (`repository_id`),
-	CONSTRAINT `q_information_object_FK_4`
+		REFERENCES `term` (`id`),
+	INDEX `information_object_FI_4` (`repository_id`),
+	CONSTRAINT `information_object_FK_4`
 		FOREIGN KEY (`repository_id`)
-		REFERENCES `q_repository` (`id`),
-	INDEX `q_information_object_FI_5` (`parent_id`),
-	CONSTRAINT `q_information_object_FK_5`
+		REFERENCES `repository` (`id`),
+	INDEX `information_object_FI_5` (`parent_id`),
+	CONSTRAINT `information_object_FK_5`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_information_object` (`id`),
-	INDEX `q_information_object_FI_6` (`description_status_id`),
-	CONSTRAINT `q_information_object_FK_6`
+		REFERENCES `information_object` (`id`),
+	INDEX `information_object_FI_6` (`description_status_id`),
+	CONSTRAINT `information_object_FK_6`
 		FOREIGN KEY (`description_status_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_information_object_FI_7` (`description_detail_id`),
-	CONSTRAINT `q_information_object_FK_7`
+	INDEX `information_object_FI_7` (`description_detail_id`),
+	CONSTRAINT `information_object_FK_7`
 		FOREIGN KEY (`description_detail_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_information_object_i18n
+#-- information_object_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_information_object_i18n`;
+DROP TABLE IF EXISTS `information_object_i18n`;
 
 
-CREATE TABLE `q_information_object_i18n`
+CREATE TABLE `information_object_i18n`
 (
 	`title` VARCHAR(255),
 	`alternate_title` VARCHAR(255),
@@ -433,20 +436,20 @@ CREATE TABLE `q_information_object_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_information_object_i18n_FK_1`
+	CONSTRAINT `information_object_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_information_object` (`id`)
+		REFERENCES `information_object` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_map
+#-- map
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_map`;
+DROP TABLE IF EXISTS `map`;
 
 
-CREATE TABLE `q_map`
+CREATE TABLE `map`
 (
 	`created_at` DATETIME  NOT NULL,
 	`updated_at` DATETIME  NOT NULL,
@@ -457,33 +460,33 @@ CREATE TABLE `q_map`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_map_i18n
+#-- map_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_map_i18n`;
+DROP TABLE IF EXISTS `map_i18n`;
 
 
-CREATE TABLE `q_map_i18n`
+CREATE TABLE `map_i18n`
 (
 	`title` VARCHAR(255),
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_map_i18n_FK_1`
+	CONSTRAINT `map_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_map` (`id`)
+		REFERENCES `map` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_menu
+#-- menu
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_menu`;
+DROP TABLE IF EXISTS `menu`;
 
 
-CREATE TABLE `q_menu`
+CREATE TABLE `menu`
 (
 	`parent_id` INTEGER,
 	`name` VARCHAR(255),
@@ -496,41 +499,41 @@ CREATE TABLE `q_menu`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_menu_FI_1` (`parent_id`),
-	CONSTRAINT `q_menu_FK_1`
+	INDEX `menu_FI_1` (`parent_id`),
+	CONSTRAINT `menu_FK_1`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_menu` (`id`)
+		REFERENCES `menu` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_menu_i18n
+#-- menu_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_menu_i18n`;
+DROP TABLE IF EXISTS `menu_i18n`;
 
 
-CREATE TABLE `q_menu_i18n`
+CREATE TABLE `menu_i18n`
 (
 	`label` VARCHAR(255),
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_menu_i18n_FK_1`
+	CONSTRAINT `menu_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_menu` (`id`)
+		REFERENCES `menu` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_note
+#-- note
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_note`;
+DROP TABLE IF EXISTS `note`;
 
 
-CREATE TABLE `q_note`
+CREATE TABLE `note`
 (
 	`object_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
@@ -545,53 +548,53 @@ CREATE TABLE `q_note`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_note_FI_1` (`object_id`),
-	CONSTRAINT `q_note_FK_1`
+	INDEX `note_FI_1` (`object_id`),
+	CONSTRAINT `note_FK_1`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_note_FI_2` (`type_id`),
-	CONSTRAINT `q_note_FK_2`
+	INDEX `note_FI_2` (`type_id`),
+	CONSTRAINT `note_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_note_FI_3` (`user_id`),
-	CONSTRAINT `q_note_FK_3`
+	INDEX `note_FI_3` (`user_id`),
+	CONSTRAINT `note_FK_3`
 		FOREIGN KEY (`user_id`)
-		REFERENCES `q_user` (`id`),
-	INDEX `q_note_FI_4` (`parent_id`),
-	CONSTRAINT `q_note_FK_4`
+		REFERENCES `user` (`id`),
+	INDEX `note_FI_4` (`parent_id`),
+	CONSTRAINT `note_FK_4`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_note` (`id`)
+		REFERENCES `note` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_note_i18n
+#-- note_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_note_i18n`;
+DROP TABLE IF EXISTS `note_i18n`;
 
 
-CREATE TABLE `q_note_i18n`
+CREATE TABLE `note_i18n`
 (
 	`content` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_note_i18n_FK_1`
+	CONSTRAINT `note_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_note` (`id`)
+		REFERENCES `note` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_oai_harvest
+#-- oai_harvest
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_oai_harvest`;
+DROP TABLE IF EXISTS `oai_harvest`;
 
 
-CREATE TABLE `q_oai_harvest`
+CREATE TABLE `oai_harvest`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`oai_repository_id` INTEGER  NOT NULL,
@@ -604,21 +607,21 @@ CREATE TABLE `q_oai_harvest`
 	`created_at` DATETIME  NOT NULL,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_oai_harvest_FI_1` (`oai_repository_id`),
-	CONSTRAINT `q_oai_harvest_FK_1`
+	INDEX `oai_harvest_FI_1` (`oai_repository_id`),
+	CONSTRAINT `oai_harvest_FK_1`
 		FOREIGN KEY (`oai_repository_id`)
-		REFERENCES `q_oai_repository` (`id`)
+		REFERENCES `oai_repository` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_oai_repository
+#-- oai_repository
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_oai_repository`;
+DROP TABLE IF EXISTS `oai_repository`;
 
 
-CREATE TABLE `q_oai_repository`
+CREATE TABLE `oai_repository`
 (
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(512),
@@ -632,13 +635,13 @@ CREATE TABLE `q_oai_repository`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_object
+#-- object
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_object`;
+DROP TABLE IF EXISTS `object`;
 
 
-CREATE TABLE `q_object`
+CREATE TABLE `object`
 (
 	`class_name` VARCHAR(255),
 	`created_at` DATETIME  NOT NULL,
@@ -649,13 +652,13 @@ CREATE TABLE `q_object`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_object_term_relation
+#-- object_term_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_object_term_relation`;
+DROP TABLE IF EXISTS `object_term_relation`;
 
 
-CREATE TABLE `q_object_term_relation`
+CREATE TABLE `object_term_relation`
 (
 	`id` INTEGER  NOT NULL,
 	`object_id` INTEGER  NOT NULL,
@@ -663,30 +666,30 @@ CREATE TABLE `q_object_term_relation`
 	`start_date` DATE,
 	`end_date` DATE,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_object_term_relation_FK_1`
+	CONSTRAINT `object_term_relation_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_object_term_relation_FI_2` (`object_id`),
-	CONSTRAINT `q_object_term_relation_FK_2`
+	INDEX `object_term_relation_FI_2` (`object_id`),
+	CONSTRAINT `object_term_relation_FK_2`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_object_term_relation_FI_3` (`term_id`),
-	CONSTRAINT `q_object_term_relation_FK_3`
+	INDEX `object_term_relation_FI_3` (`term_id`),
+	CONSTRAINT `object_term_relation_FK_3`
 		FOREIGN KEY (`term_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_other_name
+#-- other_name
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_other_name`;
+DROP TABLE IF EXISTS `other_name`;
 
 
-CREATE TABLE `q_other_name`
+CREATE TABLE `other_name`
 (
 	`object_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
@@ -696,46 +699,46 @@ CREATE TABLE `q_other_name`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_other_name_FI_1` (`object_id`),
-	CONSTRAINT `q_other_name_FK_1`
+	INDEX `other_name_FI_1` (`object_id`),
+	CONSTRAINT `other_name_FK_1`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_other_name_FI_2` (`type_id`),
-	CONSTRAINT `q_other_name_FK_2`
+	INDEX `other_name_FI_2` (`type_id`),
+	CONSTRAINT `other_name_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_other_name_i18n
+#-- other_name_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_other_name_i18n`;
+DROP TABLE IF EXISTS `other_name_i18n`;
 
 
-CREATE TABLE `q_other_name_i18n`
+CREATE TABLE `other_name_i18n`
 (
 	`name` VARCHAR(255),
 	`note` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_other_name_i18n_FK_1`
+	CONSTRAINT `other_name_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_other_name` (`id`)
+		REFERENCES `other_name` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_physical_object
+#-- physical_object
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_physical_object`;
+DROP TABLE IF EXISTS `physical_object`;
 
 
-CREATE TABLE `q_physical_object`
+CREATE TABLE `physical_object`
 (
 	`id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
@@ -744,29 +747,29 @@ CREATE TABLE `q_physical_object`
 	`rgt` INTEGER  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_physical_object_FK_1`
+	CONSTRAINT `physical_object_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_physical_object_FI_2` (`type_id`),
-	CONSTRAINT `q_physical_object_FK_2`
+	INDEX `physical_object_FI_2` (`type_id`),
+	CONSTRAINT `physical_object_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_physical_object_FI_3` (`parent_id`),
-	CONSTRAINT `q_physical_object_FK_3`
+	INDEX `physical_object_FI_3` (`parent_id`),
+	CONSTRAINT `physical_object_FK_3`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_physical_object` (`id`)
+		REFERENCES `physical_object` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_physical_object_i18n
+#-- physical_object_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_physical_object_i18n`;
+DROP TABLE IF EXISTS `physical_object_i18n`;
 
 
-CREATE TABLE `q_physical_object_i18n`
+CREATE TABLE `physical_object_i18n`
 (
 	`name` VARCHAR(255),
 	`description` TEXT,
@@ -774,20 +777,20 @@ CREATE TABLE `q_physical_object_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_physical_object_i18n_FK_1`
+	CONSTRAINT `physical_object_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_physical_object` (`id`)
+		REFERENCES `physical_object` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_place
+#-- place
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_place`;
+DROP TABLE IF EXISTS `place`;
 
 
-CREATE TABLE `q_place`
+CREATE TABLE `place`
 (
 	`id` INTEGER  NOT NULL,
 	`country_id` INTEGER,
@@ -797,28 +800,28 @@ CREATE TABLE `q_place`
 	`altitude` FLOAT,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_place_FK_1`
+	CONSTRAINT `place_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_place_FI_2` (`country_id`),
-	CONSTRAINT `q_place_FK_2`
+	INDEX `place_FI_2` (`country_id`),
+	CONSTRAINT `place_FK_2`
 		FOREIGN KEY (`country_id`)
-		REFERENCES `q_term` (`id`),
-	INDEX `q_place_FI_3` (`type_id`),
-	CONSTRAINT `q_place_FK_3`
+		REFERENCES `term` (`id`),
+	INDEX `place_FI_3` (`type_id`),
+	CONSTRAINT `place_FK_3`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_place_i18n
+#-- place_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_place_i18n`;
+DROP TABLE IF EXISTS `place_i18n`;
 
 
-CREATE TABLE `q_place_i18n`
+CREATE TABLE `place_i18n`
 (
 	`street_address` TEXT,
 	`city` VARCHAR(255),
@@ -827,20 +830,20 @@ CREATE TABLE `q_place_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_place_i18n_FK_1`
+	CONSTRAINT `place_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_place` (`id`)
+		REFERENCES `place` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_place_map_relation
+#-- place_map_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_place_map_relation`;
+DROP TABLE IF EXISTS `place_map_relation`;
 
 
-CREATE TABLE `q_place_map_relation`
+CREATE TABLE `place_map_relation`
 (
 	`id` INTEGER  NOT NULL,
 	`place_id` INTEGER  NOT NULL,
@@ -849,38 +852,38 @@ CREATE TABLE `q_place_map_relation`
 	`map_icon_description` TEXT,
 	`type_id` INTEGER,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_place_map_relation_FK_1`
+	CONSTRAINT `place_map_relation_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_place_map_relation_FI_2` (`place_id`),
-	CONSTRAINT `q_place_map_relation_FK_2`
+	INDEX `place_map_relation_FI_2` (`place_id`),
+	CONSTRAINT `place_map_relation_FK_2`
 		FOREIGN KEY (`place_id`)
-		REFERENCES `q_place` (`id`)
+		REFERENCES `place` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_place_map_relation_FI_3` (`map_id`),
-	CONSTRAINT `q_place_map_relation_FK_3`
+	INDEX `place_map_relation_FI_3` (`map_id`),
+	CONSTRAINT `place_map_relation_FK_3`
 		FOREIGN KEY (`map_id`)
-		REFERENCES `q_map` (`id`)
+		REFERENCES `map` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_place_map_relation_FI_4` (`map_icon_image_id`),
-	CONSTRAINT `q_place_map_relation_FK_4`
+	INDEX `place_map_relation_FI_4` (`map_icon_image_id`),
+	CONSTRAINT `place_map_relation_FK_4`
 		FOREIGN KEY (`map_icon_image_id`)
-		REFERENCES `q_digital_object` (`id`),
-	INDEX `q_place_map_relation_FI_5` (`type_id`),
-	CONSTRAINT `q_place_map_relation_FK_5`
+		REFERENCES `digital_object` (`id`),
+	INDEX `place_map_relation_FI_5` (`type_id`),
+	CONSTRAINT `place_map_relation_FK_5`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_property
+#-- property
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_property`;
+DROP TABLE IF EXISTS `property`;
 
 
-CREATE TABLE `q_property`
+CREATE TABLE `property`
 (
 	`object_id` INTEGER  NOT NULL,
 	`scope` VARCHAR(255),
@@ -891,40 +894,40 @@ CREATE TABLE `q_property`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_property_FI_1` (`object_id`),
-	CONSTRAINT `q_property_FK_1`
+	INDEX `property_FI_1` (`object_id`),
+	CONSTRAINT `property_FK_1`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_property_i18n
+#-- property_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_property_i18n`;
+DROP TABLE IF EXISTS `property_i18n`;
 
 
-CREATE TABLE `q_property_i18n`
+CREATE TABLE `property_i18n`
 (
 	`value` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_property_i18n_FK_1`
+	CONSTRAINT `property_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_property` (`id`)
+		REFERENCES `property` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_relation
+#-- relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_relation`;
+DROP TABLE IF EXISTS `relation`;
 
 
-CREATE TABLE `q_relation`
+CREATE TABLE `relation`
 (
 	`id` INTEGER  NOT NULL,
 	`subject_id` INTEGER  NOT NULL,
@@ -933,32 +936,32 @@ CREATE TABLE `q_relation`
 	`start_date` DATE,
 	`end_date` DATE,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_relation_FK_1`
+	CONSTRAINT `relation_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_relation_FI_2` (`subject_id`),
-	CONSTRAINT `q_relation_FK_2`
+	INDEX `relation_FI_2` (`subject_id`),
+	CONSTRAINT `relation_FK_2`
 		FOREIGN KEY (`subject_id`)
-		REFERENCES `q_object` (`id`),
-	INDEX `q_relation_FI_3` (`object_id`),
-	CONSTRAINT `q_relation_FK_3`
+		REFERENCES `object` (`id`),
+	INDEX `relation_FI_3` (`object_id`),
+	CONSTRAINT `relation_FK_3`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`),
-	INDEX `q_relation_FI_4` (`type_id`),
-	CONSTRAINT `q_relation_FK_4`
+		REFERENCES `object` (`id`),
+	INDEX `relation_FI_4` (`type_id`),
+	CONSTRAINT `relation_FK_4`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_repository
+#-- repository
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_repository`;
+DROP TABLE IF EXISTS `repository`;
 
 
-CREATE TABLE `q_repository`
+CREATE TABLE `repository`
 (
 	`id` INTEGER  NOT NULL,
 	`identifier` VARCHAR(255),
@@ -967,30 +970,30 @@ CREATE TABLE `q_repository`
 	`desc_identifier` VARCHAR(255),
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_repository_FK_1`
+	CONSTRAINT `repository_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_repository_FI_2` (`desc_status_id`),
-	CONSTRAINT `q_repository_FK_2`
+	INDEX `repository_FI_2` (`desc_status_id`),
+	CONSTRAINT `repository_FK_2`
 		FOREIGN KEY (`desc_status_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `q_repository_FI_3` (`desc_detail_id`),
-	CONSTRAINT `q_repository_FK_3`
+	INDEX `repository_FI_3` (`desc_detail_id`),
+	CONSTRAINT `repository_FK_3`
 		FOREIGN KEY (`desc_detail_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE SET NULL
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_repository_i18n
+#-- repository_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_repository_i18n`;
+DROP TABLE IF EXISTS `repository_i18n`;
 
 
-CREATE TABLE `q_repository_i18n`
+CREATE TABLE `repository_i18n`
 (
 	`geocultural_context` TEXT,
 	`collecting_policies` TEXT,
@@ -1010,20 +1013,20 @@ CREATE TABLE `q_repository_i18n`
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_repository_i18n_FK_1`
+	CONSTRAINT `repository_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_repository` (`id`)
+		REFERENCES `repository` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_rights
+#-- rights
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_rights`;
+DROP TABLE IF EXISTS `rights`;
 
 
-CREATE TABLE `q_rights`
+CREATE TABLE `rights`
 (
 	`object_id` INTEGER  NOT NULL,
 	`permission_id` INTEGER,
@@ -1033,78 +1036,78 @@ CREATE TABLE `q_rights`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_rights_FI_1` (`object_id`),
-	CONSTRAINT `q_rights_FK_1`
+	INDEX `rights_FI_1` (`object_id`),
+	CONSTRAINT `rights_FK_1`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_rights_FI_2` (`permission_id`),
-	CONSTRAINT `q_rights_FK_2`
+	INDEX `rights_FI_2` (`permission_id`),
+	CONSTRAINT `rights_FK_2`
 		FOREIGN KEY (`permission_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_rights_i18n
+#-- rights_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_rights_i18n`;
+DROP TABLE IF EXISTS `rights_i18n`;
 
 
-CREATE TABLE `q_rights_i18n`
+CREATE TABLE `rights_i18n`
 (
 	`description` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_rights_i18n_FK_1`
+	CONSTRAINT `rights_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_rights` (`id`)
+		REFERENCES `rights` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_rights_actor_relation
+#-- rights_actor_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_rights_actor_relation`;
+DROP TABLE IF EXISTS `rights_actor_relation`;
 
 
-CREATE TABLE `q_rights_actor_relation`
+CREATE TABLE `rights_actor_relation`
 (
 	`id` INTEGER  NOT NULL,
 	`rights_id` INTEGER  NOT NULL,
 	`actor_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_rights_actor_relation_FK_1`
+	CONSTRAINT `rights_actor_relation_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_rights_actor_relation_FI_2` (`rights_id`),
-	CONSTRAINT `q_rights_actor_relation_FK_2`
+	INDEX `rights_actor_relation_FI_2` (`rights_id`),
+	CONSTRAINT `rights_actor_relation_FK_2`
 		FOREIGN KEY (`rights_id`)
-		REFERENCES `q_rights` (`id`)
+		REFERENCES `rights` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_rights_actor_relation_FI_3` (`actor_id`),
-	CONSTRAINT `q_rights_actor_relation_FK_3`
+	INDEX `rights_actor_relation_FI_3` (`actor_id`),
+	CONSTRAINT `rights_actor_relation_FK_3`
 		FOREIGN KEY (`actor_id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_rights_actor_relation_FI_4` (`type_id`),
-	CONSTRAINT `q_rights_actor_relation_FK_4`
+	INDEX `rights_actor_relation_FI_4` (`type_id`),
+	CONSTRAINT `rights_actor_relation_FK_4`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_rights_term_relation
+#-- rights_term_relation
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_rights_term_relation`;
+DROP TABLE IF EXISTS `rights_term_relation`;
 
 
-CREATE TABLE `q_rights_term_relation`
+CREATE TABLE `rights_term_relation`
 (
 	`rights_id` INTEGER  NOT NULL,
 	`term_id` INTEGER  NOT NULL,
@@ -1115,30 +1118,30 @@ CREATE TABLE `q_rights_term_relation`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_rights_term_relation_FI_1` (`rights_id`),
-	CONSTRAINT `q_rights_term_relation_FK_1`
+	INDEX `rights_term_relation_FI_1` (`rights_id`),
+	CONSTRAINT `rights_term_relation_FK_1`
 		FOREIGN KEY (`rights_id`)
-		REFERENCES `q_rights` (`id`)
+		REFERENCES `rights` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_rights_term_relation_FI_2` (`term_id`),
-	CONSTRAINT `q_rights_term_relation_FK_2`
+	INDEX `rights_term_relation_FI_2` (`term_id`),
+	CONSTRAINT `rights_term_relation_FK_2`
 		FOREIGN KEY (`term_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_rights_term_relation_FI_3` (`type_id`),
-	CONSTRAINT `q_rights_term_relation_FK_3`
+	INDEX `rights_term_relation_FI_3` (`type_id`),
+	CONSTRAINT `rights_term_relation_FK_3`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_setting
+#-- setting
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_setting`;
+DROP TABLE IF EXISTS `setting`;
 
 
-CREATE TABLE `q_setting`
+CREATE TABLE `setting`
 (
 	`name` VARCHAR(255),
 	`scope` VARCHAR(255),
@@ -1151,71 +1154,91 @@ CREATE TABLE `q_setting`
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_setting_i18n
+#-- setting_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_setting_i18n`;
+DROP TABLE IF EXISTS `setting_i18n`;
 
 
-CREATE TABLE `q_setting_i18n`
+CREATE TABLE `setting_i18n`
 (
 	`value` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_setting_i18n_FK_1`
+	CONSTRAINT `setting_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_setting` (`id`)
+		REFERENCES `setting` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_static_page
+#-- slug
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_static_page`;
+DROP TABLE IF EXISTS `slug`;
 
 
-CREATE TABLE `q_static_page`
+CREATE TABLE `slug`
+(
+	`object_id` INTEGER  NOT NULL,
+	`slug` VARCHAR(255)  NOT NULL,
+	`id` INTEGER  NOT NULL AUTO_INCREMENT,
+	`serial_number` INTEGER default 0 NOT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE KEY `slug_U_1` (`object_id`),
+	UNIQUE KEY `slug_U_2` (`slug`),
+	CONSTRAINT `slug_FK_1`
+		FOREIGN KEY (`object_id`)
+		REFERENCES `object` (`id`)
+)Type=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- static_page
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `static_page`;
+
+
+CREATE TABLE `static_page`
 (
 	`id` INTEGER  NOT NULL,
-	`permalink` VARCHAR(255),
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_static_page_FK_1`
+	CONSTRAINT `static_page_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_static_page_i18n
+#-- static_page_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_static_page_i18n`;
+DROP TABLE IF EXISTS `static_page_i18n`;
 
 
-CREATE TABLE `q_static_page_i18n`
+CREATE TABLE `static_page_i18n`
 (
 	`title` VARCHAR(255),
 	`content` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_static_page_i18n_FK_1`
+	CONSTRAINT `static_page_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_static_page` (`id`)
+		REFERENCES `static_page` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_status
+#-- status
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_status`;
+DROP TABLE IF EXISTS `status`;
 
 
-CREATE TABLE `q_status`
+CREATE TABLE `status`
 (
 	`object_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
@@ -1225,31 +1248,31 @@ CREATE TABLE `q_status`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_status_FI_1` (`object_id`),
-	CONSTRAINT `q_status_FK_1`
+	INDEX `status_FI_1` (`object_id`),
+	CONSTRAINT `status_FK_1`
 		FOREIGN KEY (`object_id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_status_FI_2` (`type_id`),
-	CONSTRAINT `q_status_FK_2`
+	INDEX `status_FI_2` (`type_id`),
+	CONSTRAINT `status_FK_2`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_status_FI_3` (`status_id`),
-	CONSTRAINT `q_status_FK_3`
+	INDEX `status_FI_3` (`status_id`),
+	CONSTRAINT `status_FK_3`
 		FOREIGN KEY (`status_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_system_event
+#-- system_event
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_system_event`;
+DROP TABLE IF EXISTS `system_event`;
 
 
-CREATE TABLE `q_system_event`
+CREATE TABLE `system_event`
 (
 	`type_id` INTEGER,
 	`object_class` VARCHAR(255),
@@ -1263,24 +1286,24 @@ CREATE TABLE `q_system_event`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `q_system_event_FI_1` (`type_id`),
-	CONSTRAINT `q_system_event_FK_1`
+	INDEX `system_event_FI_1` (`type_id`),
+	CONSTRAINT `system_event_FK_1`
 		FOREIGN KEY (`type_id`)
-		REFERENCES `q_term` (`id`),
-	INDEX `q_system_event_FI_2` (`user_id`),
-	CONSTRAINT `q_system_event_FK_2`
+		REFERENCES `term` (`id`),
+	INDEX `system_event_FI_2` (`user_id`),
+	CONSTRAINT `system_event_FK_2`
 		FOREIGN KEY (`user_id`)
-		REFERENCES `q_user` (`id`)
+		REFERENCES `user` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_taxonomy
+#-- taxonomy
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_taxonomy`;
+DROP TABLE IF EXISTS `taxonomy`;
 
 
-CREATE TABLE `q_taxonomy`
+CREATE TABLE `taxonomy`
 (
 	`id` INTEGER  NOT NULL,
 	`usage` VARCHAR(255),
@@ -1291,44 +1314,44 @@ CREATE TABLE `q_taxonomy`
 	`rgt` INTEGER  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_taxonomy_FK_1`
+	CONSTRAINT `taxonomy_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_taxonomy_FI_2` (`parent_id`),
-	CONSTRAINT `q_taxonomy_FK_2`
+	INDEX `taxonomy_FI_2` (`parent_id`),
+	CONSTRAINT `taxonomy_FK_2`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_taxonomy` (`id`)
+		REFERENCES `taxonomy` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_taxonomy_i18n
+#-- taxonomy_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_taxonomy_i18n`;
+DROP TABLE IF EXISTS `taxonomy_i18n`;
 
 
-CREATE TABLE `q_taxonomy_i18n`
+CREATE TABLE `taxonomy_i18n`
 (
 	`name` VARCHAR(255),
 	`note` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_taxonomy_i18n_FK_1`
+	CONSTRAINT `taxonomy_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_taxonomy` (`id`)
+		REFERENCES `taxonomy` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_term
+#-- term
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_term`;
+DROP TABLE IF EXISTS `term`;
 
 
-CREATE TABLE `q_term`
+CREATE TABLE `term`
 (
 	`id` INTEGER  NOT NULL,
 	`taxonomy_id` INTEGER  NOT NULL,
@@ -1338,48 +1361,48 @@ CREATE TABLE `q_term`
 	`rgt` INTEGER  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_term_FK_1`
+	CONSTRAINT `term_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_object` (`id`)
+		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_term_FI_2` (`taxonomy_id`),
-	CONSTRAINT `q_term_FK_2`
+	INDEX `term_FI_2` (`taxonomy_id`),
+	CONSTRAINT `term_FK_2`
 		FOREIGN KEY (`taxonomy_id`)
-		REFERENCES `q_taxonomy` (`id`)
+		REFERENCES `taxonomy` (`id`)
 		ON DELETE CASCADE,
-	INDEX `q_term_FI_3` (`parent_id`),
-	CONSTRAINT `q_term_FK_3`
+	INDEX `term_FI_3` (`parent_id`),
+	CONSTRAINT `term_FK_3`
 		FOREIGN KEY (`parent_id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_term_i18n
+#-- term_i18n
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_term_i18n`;
+DROP TABLE IF EXISTS `term_i18n`;
 
 
-CREATE TABLE `q_term_i18n`
+CREATE TABLE `term_i18n`
 (
 	`name` VARCHAR(255),
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `q_term_i18n_FK_1`
+	CONSTRAINT `term_i18n_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_term` (`id`)
+		REFERENCES `term` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- q_user
+#-- user
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `q_user`;
+DROP TABLE IF EXISTS `user`;
 
 
-CREATE TABLE `q_user`
+CREATE TABLE `user`
 (
 	`id` INTEGER  NOT NULL,
 	`username` VARCHAR(255),
@@ -1387,9 +1410,9 @@ CREATE TABLE `q_user`
 	`sha1_password` VARCHAR(255),
 	`salt` VARCHAR(255),
 	PRIMARY KEY (`id`),
-	CONSTRAINT `q_user_FK_1`
+	CONSTRAINT `user_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `q_actor` (`id`)
+		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE
 )Type=InnoDB;
 

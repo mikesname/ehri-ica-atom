@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_event_i18n' table.
+ * This class defines the structure of the 'event_i18n' table.
  *
  *
  *
@@ -30,7 +30,7 @@ class EventI18nTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_event_i18n');
+		$this->setName('event_i18n');
 		$this->setPhpName('eventI18n');
 		$this->setClassname('QubitEventI18n');
 		$this->setPackage('lib.model');
@@ -38,8 +38,8 @@ class EventI18nTableMap extends TableMap {
 		// columns
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
 		$this->addColumn('DESCRIPTION', 'description', 'LONGVARCHAR', false, null, null);
-		$this->addColumn('DATE_DISPLAY', 'dateDisplay', 'VARCHAR', false, 255, null);
-		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'q_event', 'ID', true, null, null);
+		$this->addColumn('DATE', 'date', 'VARCHAR', false, 255, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'event', 'ID', true, null, null);
 		$this->addPrimaryKey('CULTURE', 'culture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

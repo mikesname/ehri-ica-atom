@@ -17,7 +17,7 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class AclGroupEditTermAclAction extends sfAction
+class AclGroupEditTermAclAction extends AclGroupEditDefaultAclAction
 {
   /**
    * Define form field names
@@ -28,7 +28,7 @@ class AclGroupEditTermAclAction extends sfAction
     'taxonomy'
   );
 
-  public function addField($name)
+  protected function addField($name)
   {
     switch ($name)
     {
@@ -42,7 +42,7 @@ class AclGroupEditTermAclAction extends sfAction
         }
 
         $this->form->setDefault($name, null);
-        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setValidator($name, new sfValidatorString);
         $this->form->setWidget($name, new sfWidgetFormSelect(array('choices' => $choices)));
 
         break;
@@ -51,36 +51,15 @@ class AclGroupEditTermAclAction extends sfAction
 
   public function execute($request)
   {
-    $this->form = new sfForm;
-    $this->group = new QubitAclGroup;
-
-    if (isset($this->request->id))
-    {
-      $this->group = QubitAclGroup::getById($this->request->id);
-
-      if (!isset($this->group))
-      {
-        $this->forward404();
-      }
-    }
-
-    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
-
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
-    {
-      $this->addField($name);
-    }
+    parent::execute($request);
 
     $this->permissions = array();
-    if (null != $this->group->id)
+    if (null != $this->resource->id)
     {
       // Get term permissions for this group
       $criteria = new Criteria;
       $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID, Criteria::LEFT_JOIN);
-      $criteria->add(QubitAclPermission::GROUP_ID, $this->group->id);
+      $criteria->add(QubitAclPermission::GROUP_ID, $this->resource->id);
       $c1 = $criteria->getNewCriterion(QubitAclPermission::OBJECT_ID, null, Criteria::ISNULL);
       $c2 = $criteria->getNewCriterion(QubitObject::CLASS_NAME, 'QubitTerm');
       $c1->addOr($c2);
@@ -96,9 +75,9 @@ class AclGroupEditTermAclAction extends sfAction
     }
 
     // List of actions without create or translate
-    $this->termActions = QubitAcl::$ACTIONS;
-    unset($this->termActions['read']);
-    unset($this->termActions['translate']);
+    $this->basicActions = QubitAcl::$ACTIONS;
+    unset($this->basicActions['read']);
+    unset($this->basicActions['translate']);
 
     if ($request->isMethod('post'))
     {
@@ -107,76 +86,8 @@ class AclGroupEditTermAclAction extends sfAction
       if ($this->form->isValid())
       {
         $this->processForm();
-        $this->redirect(array($this->group, 'module' => 'aclGroup', 'action' => 'indexTermAcl'));
+        $this->redirect(array($this->resource, 'module' => 'aclGroup', 'action' => 'indexTermAcl'));
       }
     }
-  }
-
-  protected function processForm()
-  {
-    $this->processTermAcl('termAcl');
-    if ($this->request->hasParameter('taxonomyAcl'))
-    {
-      $this->processTermAcl('taxonomyAcl');
-    }
-
-    // Save changes
-    $this->group->save();
-
-    return $this;
-  }
-
-  protected function processTermAcl($name)
-  {
-    foreach ($this->request->getParameter($name) as $key => $value)
-    {
-      // If key has an underscore, then we are creating a new permission
-      if (1 == preg_match('/([\w]+)_(.*)/', $key, $matches))
-      {
-        list ($action, $uri) = array_slice($matches, 1, 2);
-        $params = $this->context->routing->parse(Qubit::pathInfo($uri));
-        if (!isset($params['id']))
-        {
-          continue;
-        }
-
-        if (QubitAcl::INHERIT != $value && isset(QubitAcl::$ACTIONS[$action]))
-        {
-          $aclPermission = new QubitAclPermission;
-          $aclPermission->action = $action;
-          $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
-
-          if ('taxonomyAcl' == $name)
-          {
-            // Taxonomy specific rules
-            $aclPermission->objectId = QubitTerm::ROOT_ID;
-            $aclPermission->setTaxonomy(QubitTaxonomy::getById($params['id']));
-          }
-          else
-          {
-            $aclPermission->objectId = $params['id'];
-          }
-
-          $this->group->aclPermissions[] = $aclPermission;
-        }
-      }
-
-      // Otherwise, update an existing permission
-      else if (null !== $aclPermission = QubitAclPermission::getById($key))
-      {
-        if ($value == QubitAcl::INHERIT)
-        {
-          $aclPermission->delete();
-        }
-        else
-        {
-          $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
-
-          $this->group->aclPermissions[] = $aclPermission;
-        }
-      }
-    }
-
-    return $this;
   }
 }

@@ -1,24 +1,15 @@
-<?php if (isset($repository)): ?>
-  <?php echo render_show(sfConfig::get('app_ui_label_repository'), link_to(render_title($repository), array($repository, 'module' => 'repository'), $sf_data->getRaw('repositoryOptions'))) ?>
+<?php if (sfConfig::get('app_multi_repository')): ?>
+  <?php echo render_show_repository(sfConfig::get('app_ui_label_repository'), $resource) ?>
 <?php endif; ?>
 
-<div class="field">
-  <h3><?php echo sfConfig::get('app_ui_label_creator') ?></h3>
-  <div>
-    <ul>
-      <?php foreach ($creators as $creator): ?>
-        <li><?php echo link_to(render_title($creator), array($creator, 'module' => 'actor'), $sf_data->getRaw('creatorOptions')) ?></li>
-      <?php endforeach; ?>
-    </ul>
-  </div>
-</div>
+<?php echo get_component('informationobject', 'creator', array('resource' => $resource)) ?>
 
-<?php echo get_component('digitalobject', 'imageflow', array('informationObject' => $informationObject)) ?>
+<?php echo get_component('digitalobject', 'imageflow', array('resource' => $resource)) ?>
 
 <div>
   <h3>
-    <?php if (isset($informationObject->getCollectionRoot()->levelOfDescription)): ?>
-      <?php echo $informationObject->getCollectionRoot()->levelOfDescription ?>
+    <?php if (isset($resource->getCollectionRoot()->levelOfDescription)): ?>
+      <?php echo $resource->getCollectionRoot()->levelOfDescription ?>
     <?php else: ?>
       <?php echo sfConfig::get('app_ui_label_collection') ?>
     <?php endif; ?>
@@ -28,6 +19,6 @@
   </div>
 </div>
 
-<?php echo get_partial('informationobject/format', array('informationObject' => $informationObject)) ?>
+<?php echo get_partial('informationobject/format', array('resource' => $resource)) ?>
 
-<?php echo get_component('physicalobject', 'contextMenu', array('informationObject' => $informationObject)) ?>
+<?php echo get_component('physicalobject', 'contextMenu', array('resource' => $resource)) ?>

@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_acl_user_group' table.
+ * This class defines the structure of the 'acl_user_group' table.
  *
  *
  *
@@ -30,15 +30,15 @@ class AclUserGroupTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_acl_user_group');
+		$this->setName('acl_user_group');
 		$this->setPhpName('aclUserGroup');
 		$this->setClassname('QubitAclUserGroup');
 		$this->setPackage('plugins.qbAclPlugin.lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
-		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'q_user', 'ID', true, null, null);
-		$this->addForeignKey('GROUP_ID', 'groupId', 'INTEGER', 'q_acl_group', 'ID', true, null, null);
+		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'user', 'ID', true, null, null);
+		$this->addForeignKey('GROUP_ID', 'groupId', 'INTEGER', 'acl_group', 'ID', true, null, null);
 		$this->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null, 0);
 		// validators
 	} // initialize()

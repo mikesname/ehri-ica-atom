@@ -1,8 +1,12 @@
+<?php $sf_response->addStylesheet('/vendor/yui/container/assets/skins/sam/container', 'first') ?>
+
+<?php $sf_response->addJavaScript('/vendor/yui/container/container-min') ?>
+
 <!-- form for yui dialog -->
 <div id="myDialog">
   <div class="hd"><?php echo __('Add %1%', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></div>
   <div class="bd">
-    <form name="actorAcl" method="POST">
+    <form name="actorAcl" method="post">
       <div class="form-item">
         <label for="addActor"><?php echo __('%1% name', array('%1%' => sfConfig::get('app_ui_label_actor'))) ?></label>
         <select name="addActor" id="addActor" class="form-autocomplete"></select>
@@ -17,8 +21,8 @@ $permissionsLabel = __('Permissions');
 
 $tableTemplate = <<<EOL
 <div class="form-item">
-<table id="actorPermission_{objectId}" class="inline">
-<caption />
+<table id="acl_{objectId}">
+<caption/>
 <thead>
 <tr>
 <th scope="col">$actionLabel</th>
@@ -29,25 +33,25 @@ $tableTemplate = <<<EOL
 EOL;
 
 $row = 0;
-foreach ($basicActions as $action => $label)
+foreach ($basicActions as $key => $item)
 {
   $tableTemplate .= '<tr class="'.((0 == $row++ % 2) ? 'even' : 'odd').'">';
-  $tableTemplate .= '<td>'.__($label).'</th>';
+  $tableTemplate .= '<td>'.__($item).'</th>';
   $tableTemplate .= '<td><ul class="radio inline">';
-  $tableTemplate .= '<li><input type="radio" name="updatePermission[{objectId}_'.$action.']" value="'.QubitAcl::GRANT.'" />'.__('Grant').'</li>';
-  $tableTemplate .= '<li><input type="radio" name="updatePermission[{objectId}_'.$action.']" value="'.QubitAcl::DENY.'" />'.__('Deny').'</li>';
-  $tableTemplate .= '<li><input type="radio" name="updatePermission[{objectId}_'.$action.']" value="'.QubitAcl::INHERIT.'" checked />'.__('Inherit').'</li>';
+  $tableTemplate .= '<li><input type="radio" name="acl['.$key.'_{objectId}]" value="'.QubitAcl::GRANT.'"/>'.__('Grant').'</li>';
+  $tableTemplate .= '<li><input type="radio" name="acl['.$key.'_{objectId}]" value="'.QubitAcl::DENY.'"/>'.__('Deny').'</li>';
+  $tableTemplate .= '<li><input type="radio" name="acl['.$key.'_{objectId}]" value="'.QubitAcl::INHERIT.'" checked/>'.__('Inherit').'</li>';
   $tableTemplate .= '</ul></td>';
   $tableTemplate .= "</tr>\n";
 }
-  
+
 $tableTemplate .= <<<EOL
 </tbody>
 </table>
 </div>
 EOL;
 
-$tableTemplate = str_replace("\n", '', $tableTemplate); 
+$tableTemplate = str_replace("\n", '', $tableTemplate);
 ?>
 
 <?php echo javascript_tag(<<<EOL
@@ -60,12 +64,12 @@ var handleSubmit = function() {
   var objectId = objectUri.pop();
 
   // Don't duplicate an existing table
-  if (0 < jQuery('table#actorPermission_'+objectId).length)
+  if (0 < jQuery('table#acl_'+objectUri).length)
   {
     // Highlight caption of duplicate table
-    var caption = jQuery('table#actorPermission_'+objectId+' caption');
+    var caption = jQuery('table#acl_'+objectUri+' caption');
     caption.css('background', 'yellow');
-    
+
     this.hide(); // Hide dialog
 
     setTimeout(function () {
@@ -75,13 +79,13 @@ var handleSubmit = function() {
   else if ('null' != actorInput.val())
   {
     var newTable = '$tableTemplate';
-    
+
     // Search and replace '{objectId}'
     while (0 <= newTable.indexOf('{objectId}'))
     {
       newTable = newTable.replace('{objectId}', objectId);
     }
-      
+
     newTable = jQuery(newTable);
     newTable.find('caption').text(actorInput.next('input').val());
     newTable.hide();
@@ -109,9 +113,7 @@ var config = {
   visible: false,
   modal: true,
   constraintoviewport: true,
-  postmethod: "none",
-  effect: { effect: YAHOO.widget.ContainerEffect.FADE, duration: 0.25 }
-}
+  postmethod: "none" }
 
 var myDialog = new YAHOO.widget.Dialog('myDialog', config);
 myDialog.cfg.queueProperty("buttons", myButtons);
@@ -121,10 +123,10 @@ myDialog.render();
 myDialog.showEvent.unsubscribeAll();
 
 // Focus on 'addActor' (visible) field
-myDialog.showEvent.subscribe(function () { 
+myDialog.showEvent.subscribe(function () {
   document.getElementById('addActor').focus();
 }, this, true);
- 
+
 EOL
 ) ?>
 

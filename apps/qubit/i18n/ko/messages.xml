@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-04-28T11:51:56Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-11-12T15:01:32Z" product-name="messages">
     <body>
-      <trans-unit id="2">
-        <source>%1% profile</source>
-        <target>%1% 프로필</target>
-      </trans-unit>
       <trans-unit id="3">
         <source>Log in</source>
         <target>로그인</target>
@@ -24,10 +20,6 @@
       </trans-unit>
       <trans-unit id="14">
         <source>Browse all %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="16">
-        <source>Term name</source>
         <target/>
       </trans-unit>
       <trans-unit id="17">
@@ -70,14 +62,6 @@
         <source>Edit</source>
         <target>편집</target>
       </trans-unit>
-      <trans-unit id="31">
-        <source>List all</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="36">
-        <source>Add/edit</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="37">
         <source>Results</source>
         <target/>
@@ -90,17 +74,9 @@
         <source>Add new</source>
         <target>새항목 추가</target>
       </trans-unit>
-      <trans-unit id="40">
-        <source>Add/edit term</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="42">
         <source>Edit %1%</source>
         <target>%1% 편집</target>
-      </trans-unit>
-      <trans-unit id="43">
-        <source>Identity area</source>
-        <target>식별 영역</target>
       </trans-unit>
       <trans-unit id="44">
         <source>Reference code</source>
@@ -117,14 +93,6 @@
       <trans-unit id="48">
         <source>Level of description</source>
         <target>기술 계층</target>
-      </trans-unit>
-      <trans-unit id="51">
-        <source>Context area</source>
-        <target>맥락 영역</target>
-      </trans-unit>
-      <trans-unit id="58">
-        <source>Date display (defaults to date range)</source>
-        <target>일자 표시(일자 범위에 디폴트) </target>
       </trans-unit>
       <trans-unit id="62">
         <source>Repository</source>
@@ -150,37 +118,9 @@
         <source>Name access points</source>
         <target>이름 접근점</target>
       </trans-unit>
-      <trans-unit id="90">
-        <source>Control area</source>
-        <target>제어 영역</target>
-      </trans-unit>
-      <trans-unit id="92">
-        <source>Institution identifier</source>
-        <target>전거레코드 책임기관 식별자</target>
-      </trans-unit>
-      <trans-unit id="94">
-        <source>Status</source>
-        <target>전거레코드 현지위</target>
-      </trans-unit>
-      <trans-unit id="95">
-        <source>Level of detail</source>
-        <target>전거레코드 상세정도</target>
-      </trans-unit>
-      <trans-unit id="96">
-        <source>Dates of creation, revision and deletion</source>
-        <target>생산 수정 삭제 일자</target>
-      </trans-unit>
-      <trans-unit id="99">
-        <source>Sources</source>
-        <target>자료</target>
-      </trans-unit>
       <trans-unit id="106">
         <source>Date</source>
         <target>일자</target>
-      </trans-unit>
-      <trans-unit id="110">
-        <source>Format</source>
-        <target>포맷</target>
       </trans-unit>
       <trans-unit id="111">
         <source>Type</source>
@@ -194,21 +134,9 @@
         <source>Language</source>
         <target/>
       </trans-unit>
-      <trans-unit id="123">
-        <source>Inherited from %ancestor%</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="130">
         <source>View %1%</source>
         <target>%1% 보기</target>
-      </trans-unit>
-      <trans-unit id="132">
-        <source>Dates</source>
-        <target>시기</target>
-      </trans-unit>
-      <trans-unit id="133">
-        <source>Description identifier</source>
-        <target>기술 식별자</target>
       </trans-unit>
       <trans-unit id="143">
         <source>Import an XML file</source>
@@ -217,14 +145,6 @@
       <trans-unit id="144">
         <source>Select a file to import</source>
         <target>가져올 파일 선택</target>
-      </trans-unit>
-      <trans-unit id="146">
-        <source>Upload</source>
-        <target>업로드</target>
-      </trans-unit>
-      <trans-unit id="147">
-        <source>Export an XML file</source>
-        <target>XML 파일 내보내기</target>
       </trans-unit>
       <trans-unit id="148">
         <source>Export</source>
@@ -506,33 +426,9 @@
         <source>Browse</source>
         <target>찾아보기</target>
       </trans-unit>
-      <trans-unit id="239">
-        <source>Type of entity</source>
-        <target>존재의 형태(조직/기관, 개인, 가족)</target>
-      </trans-unit>
-      <trans-unit id="242">
-        <source>Dates of existence</source>
-        <target>존재 시기</target>
-      </trans-unit>
-      <trans-unit id="243">
-        <source>History</source>
-        <target>조직사, 개인/가족이력</target>
-      </trans-unit>
       <trans-unit id="244">
         <source>Places</source>
         <target>장소</target>
-      </trans-unit>
-      <trans-unit id="245">
-        <source>Legal status</source>
-        <target>조직/기관의 법적 지위</target>
-      </trans-unit>
-      <trans-unit id="249">
-        <source>General context</source>
-        <target>일반 맥락</target>
-      </trans-unit>
-      <trans-unit id="254">
-        <source>Contact type</source>
-        <target>연락 형태</target>
       </trans-unit>
       <trans-unit id="255">
         <source>Primary contact?</source>
@@ -541,10 +437,6 @@
       <trans-unit id="257">
         <source>Street address</source>
         <target>거리 주소</target>
-      </trans-unit>
-      <trans-unit id="258">
-        <source>City</source>
-        <target>도시명</target>
       </trans-unit>
       <trans-unit id="260">
         <source>Country</source>
@@ -566,41 +458,9 @@
         <source>Email</source>
         <target>E메일</target>
       </trans-unit>
-      <trans-unit id="267">
-        <source>Website</source>
-        <target>웹사이트</target>
-      </trans-unit>
       <trans-unit id="268">
         <source>Note</source>
         <target>노트</target>
-      </trans-unit>
-      <trans-unit id="269">
-        <source>Authorized form of name</source>
-        <target>승인된 이름 형식</target>
-      </trans-unit>
-      <trans-unit id="270">
-        <source>Identifiers for corporate bodies</source>
-        <target>조직/기관 식별자</target>
-      </trans-unit>
-      <trans-unit id="271">
-        <source>Description area</source>
-        <target>기술 영역</target>
-      </trans-unit>
-      <trans-unit id="275">
-        <source>Functions, occupations and activities</source>
-        <target>기능, 직업, 활동</target>
-      </trans-unit>
-      <trans-unit id="276">
-        <source>Relationships area</source>
-        <target>관계 영역</target>
-      </trans-unit>
-      <trans-unit id="280">
-        <source>Permalink</source>
-        <target>영구 링크</target>
-      </trans-unit>
-      <trans-unit id="281">
-        <source>Content</source>
-        <target>내용</target>
       </trans-unit>
       <trans-unit id="283">
         <source>Updated</source>
@@ -609,10 +469,6 @@
       <trans-unit id="285">
         <source>Edit this page</source>
         <target>이 페이지 편집</target>
-      </trans-unit>
-      <trans-unit id="286">
-        <source>Add/edit static page</source>
-        <target>추가/편집 정적 페이지</target>
       </trans-unit>
       <trans-unit id="287">
         <source>Containers</source>
@@ -629,10 +485,6 @@
       <trans-unit id="290">
         <source>Location</source>
         <target>보관 위치</target>
-      </trans-unit>
-      <trans-unit id="291">
-        <source>Container type</source>
-        <target/>
       </trans-unit>
       <trans-unit id="296">
         <source>Value</source>
@@ -654,17 +506,9 @@
         <source>Password</source>
         <target>비밀번호</target>
       </trans-unit>
-      <trans-unit id="302">
-        <source>User roles</source>
-        <target>사용자 역할</target>
-      </trans-unit>
       <trans-unit id="304">
         <source>List users</source>
         <target>사용자 목록</target>
-      </trans-unit>
-      <trans-unit id="308">
-        <source>Reset password: %1%</source>
-        <target>비밀번호 재설정: %1%</target>
       </trans-unit>
       <trans-unit id="315">
         <source>Map</source>
@@ -706,81 +550,9 @@
         <source>View map</source>
         <target/>
       </trans-unit>
-      <trans-unit id="325">
-        <source>Contact information</source>
-        <target>연락처 정보</target>
-      </trans-unit>
-      <trans-unit id="326">
-        <source>Primary contact</source>
-        <target>주 연락처</target>
-      </trans-unit>
-      <trans-unit id="327">
-        <source>Geographical and cultural context</source>
-        <target>지리적 문화적 맥락</target>
-      </trans-unit>
-      <trans-unit id="329">
-        <source>Records management and collecting policies</source>
-        <target>현용기록관리와 수집정책</target>
-      </trans-unit>
-      <trans-unit id="330">
-        <source>Buildings</source>
-        <target>건물</target>
-      </trans-unit>
-      <trans-unit id="331">
-        <source>Holdings</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="333">
-        <source>Opening times</source>
-        <target>개관 시간</target>
-      </trans-unit>
-      <trans-unit id="334">
-        <source>Access conditions and requirements</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="335">
-        <source>Accessibility</source>
-        <target>접근성</target>
-      </trans-unit>
-      <trans-unit id="336">
-        <source>Research services</source>
-        <target>조사 서비스</target>
-      </trans-unit>
-      <trans-unit id="337">
-        <source>Reproduction services</source>
-        <target>복사 서비스</target>
-      </trans-unit>
-      <trans-unit id="338">
-        <source>Public areas</source>
-        <target>공공영역</target>
-      </trans-unit>
-      <trans-unit id="339">
-        <source>Contact area</source>
-        <target>연락 영역</target>
-      </trans-unit>
-      <trans-unit id="340">
-        <source>Contact information</source>
-        <target>연락 정보</target>
-      </trans-unit>
-      <trans-unit id="341">
-        <source>New contact information</source>
-        <target>새 연락 정보</target>
-      </trans-unit>
-      <trans-unit id="342">
-        <source>Contact type</source>
-        <target>연락 형태</target>
-      </trans-unit>
-      <trans-unit id="343">
-        <source>Contact person</source>
-        <target>연락처</target>
-      </trans-unit>
       <trans-unit id="344">
         <source>Street address</source>
         <target>주소</target>
-      </trans-unit>
-      <trans-unit id="345">
-        <source>City</source>
-        <target>도시</target>
       </trans-unit>
       <trans-unit id="346">
         <source>Region/province</source>
@@ -797,30 +569,6 @@
       <trans-unit id="349">
         <source>Fax</source>
         <target>팩스</target>
-      </trans-unit>
-      <trans-unit id="350">
-        <source>Website</source>
-        <target>웹사이트</target>
-      </trans-unit>
-      <trans-unit id="351">
-        <source>Administrative structure</source>
-        <target>조직/기관 구조</target>
-      </trans-unit>
-      <trans-unit id="352">
-        <source>Archival and other holdings</source>
-        <target>보존기록 및 기타 소장물</target>
-      </trans-unit>
-      <trans-unit id="353">
-        <source>Access area</source>
-        <target>접근 영역</target>
-      </trans-unit>
-      <trans-unit id="354">
-        <source>Conditions and requirements</source>
-        <target>조건 및 요구사항</target>
-      </trans-unit>
-      <trans-unit id="355">
-        <source>Services area</source>
-        <target>서비스 영역</target>
       </trans-unit>
       <trans-unit id="359">
         <source>Sorry, you do not have permission to make %1% language translations</source>
@@ -914,28 +662,8 @@
         <source>Administrative history</source>
         <target/>
       </trans-unit>
-      <trans-unit id="431">
-        <source>Enter term and scope</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="432">
         <source>Creator(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="435">
-        <source>Title proper of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="437">
-        <source>Other title information of publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="438">
-        <source>Statement of responsibility relating to publisher's series</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="439">
-        <source>Numbering within publisher's series</source>
         <target/>
       </trans-unit>
       <trans-unit id="441">
@@ -1158,18 +886,6 @@
         <source>No</source>
         <target/>
       </trans-unit>
-      <trans-unit id="505">
-        <source>&lt;i&gt;or&lt;/i&gt; Auto-generate a new representation from master image</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="509">
-        <source>View authority record</source>
-        <target>전거레코드 보기</target>
-      </trans-unit>
-      <trans-unit id="510">
-        <source>Edit %1% - ISAAR</source>
-        <target>편집 ISAAR</target>
-      </trans-unit>
       <trans-unit id="513">
         <source>Are you sure?</source>
         <target>확실합니까?</target>
@@ -1177,10 +893,6 @@
       <trans-unit id="515">
         <source>Digital object metadata</source>
         <target/>
-      </trans-unit>
-      <trans-unit id="537">
-        <source>Subject</source>
-        <target>주제</target>
       </trans-unit>
       <trans-unit id="544">
         <source>Import/export module</source>
@@ -1197,10 +909,6 @@
       <trans-unit id="547">
         <source>Site menu list</source>
         <target>사이트 메뉴 목록</target>
-      </trans-unit>
-      <trans-unit id="560">
-        <source>This action will delete this menu and all it's descendants. Are you sure?</source>
-        <target>이 조치는 이 메뉴와 그 하위 메뉴를 삭제합니다. 삭제하겠습니까?</target>
       </trans-unit>
       <trans-unit id="561">
         <source>Hierarchical list of menus for the site, first column</source>
@@ -1226,25 +934,9 @@
         <source>Sorry, OAI harvesting is disabled for this system.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="569">
-        <source>Edit %1% - ISDIAH</source>
-        <target>편집 %1% - ISDIAH</target>
-      </trans-unit>
       <trans-unit id="570">
         <source>MODS, Version 3.3. U.S. Library of Congress</source>
         <target>MODS, 3.3판. 미국 의회도서관 메타데이터 객체 기술스키마</target>
-      </trans-unit>
-      <trans-unit id="571">
-        <source>URI</source>
-        <target>주소</target>
-      </trans-unit>
-      <trans-unit id="573">
-        <source>Mandates/Sources of authority</source>
-        <target>법규/근거권한</target>
-      </trans-unit>
-      <trans-unit id="576">
-        <source>No import file selected, or the selected file exceeds the maximum upload size.</source>
-        <target/>
       </trans-unit>
       <trans-unit id="584">
         <source>URL</source>
@@ -1254,29 +946,9 @@
         <source>Date(s)</source>
         <target>일자(기간)</target>
       </trans-unit>
-      <trans-unit id="608">
-        <source>Parallel form(s) of name</source>
-        <target>이름 병기 형식</target>
-      </trans-unit>
-      <trans-unit id="609">
-        <source>Other form(s) of name</source>
-        <target>다른 이름 형식</target>
-      </trans-unit>
-      <trans-unit id="610">
-        <source>Finding aids, guides and publications</source>
-        <target>검색보조도구, 가이드, 책자</target>
-      </trans-unit>
       <trans-unit id="615">
         <source>Repository</source>
         <target>기록보존소</target>
-      </trans-unit>
-      <trans-unit id="616">
-        <source>Recent updates</source>
-        <target>최근 업데이트</target>
-      </trans-unit>
-      <trans-unit id="617">
-        <source>Show updates to %1% in the last %2% days</source>
-        <target>지난 %2%일간 업데이트 보기 </target>
       </trans-unit>
       <trans-unit id="618">
         <source>Repository Harvest</source>
@@ -1334,10 +1006,6 @@
         <source>Deleted</source>
         <target/>
       </trans-unit>
-      <trans-unit id="632">
-        <source>Add New Repository</source>
-        <target>새 보존소 추가</target>
-      </trans-unit>
       <trans-unit id="634">
         <source>When set to &amp;quot;yes&amp;quot;, this system will act as an OAI repository and respond to OAI harvesting requests</source>
         <target>"yes"로 설정하면 이 시스템은 OAI 보존소처럼 행동하고 OAI 수확 요청에 대응할 것이다.  </target>
@@ -1350,37 +1018,9 @@
         <source>Determines whether to sort siblings in the information object treeview control and, if so, what sort criteria to use</source>
         <target>정보 객체 트리보기(treeview) 제어에서 자식형제를 분류할 수 있는지를 결정하고 만약 그렇다면 사용할 분류 기준을 결정하라.</target>
       </trans-unit>
-      <trans-unit id="638">
-        <source>Edit authority record</source>
-        <target>전거레코드 편집</target>
-      </trans-unit>
-      <trans-unit id="639">
-        <source>Identifier of the related entity</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="640">
-        <source>Category of the relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="641">
-        <source>Dates of the relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="642">
-        <source>%1% - %2%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="643">
-        <source>Description of relationship</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="644">
         <source>Edit</source>
         <target>편집</target>
-      </trans-unit>
-      <trans-unit id="645">
-        <source/>
-        <target/>
       </trans-unit>
       <trans-unit id="646">
         <source>Delete</source>
@@ -1390,57 +1030,9 @@
         <source>Add new</source>
         <target>새항목 추가</target>
       </trans-unit>
-      <trans-unit id="648">
-        <source>List all</source>
-        <target>전체 목록 열거</target>
-      </trans-unit>
-      <trans-unit id="650">
-        <source>New relationship</source>
-        <target>새 관계</target>
-      </trans-unit>
-      <trans-unit id="652">
-        <source>Related corporate bodies, persons or families</source>
-        <target>관련 조직/기관, 개인, 가족 </target>
-      </trans-unit>
-      <trans-unit id="654">
-        <source>Category of relationship</source>
-        <target>관계 범주</target>
-      </trans-unit>
-      <trans-unit id="655">
-        <source>Description of relationship</source>
-        <target>관계 기술</target>
-      </trans-unit>
-      <trans-unit id="657">
-        <source>End date&amp;dagger;</source>
-        <target>종료일자*</target>
-      </trans-unit>
-      <trans-unit id="659">
-        <source>%1% - dates must be specified in ISO-8601 format (YYYY-MM-DD)</source>
-        <target>일자는 ISO-8601 형식(YYYY-MM-DD)으로 구체적으로 기입 요망</target>
-      </trans-unit>
       <trans-unit id="660">
         <source>Related resources</source>
         <target>관련 소스</target>
-      </trans-unit>
-      <trans-unit id="661">
-        <source>Relationship</source>
-        <target>관계</target>
-      </trans-unit>
-      <trans-unit id="662">
-        <source>Title of related resource</source>
-        <target>관련자료 제목</target>
-      </trans-unit>
-      <trans-unit id="663">
-        <source>Nature of relationship</source>
-        <target>관계 성격</target>
-      </trans-unit>
-      <trans-unit id="664">
-        <source>Type of related resource</source>
-        <target>관련자료 형태</target>
-      </trans-unit>
-      <trans-unit id="665">
-        <source>End date</source>
-        <target>종료일자</target>
       </trans-unit>
       <trans-unit id="667">
         <source>Cancel</source>
@@ -1469,10 +1061,6 @@
       <trans-unit id="673">
         <source>Edit user</source>
         <target>사용자 편집</target>
-      </trans-unit>
-      <trans-unit id="674">
-        <source>Create new user</source>
-        <target/>
       </trans-unit>
       <trans-unit id="676">
         <source>Basic info</source>
@@ -1526,30 +1114,6 @@
         <source>Link physical storage</source>
         <target>물리적 보관장소 링크</target>
       </trans-unit>
-      <trans-unit id="697">
-        <source>Edit identity area</source>
-        <target>식별 영역 편집</target>
-      </trans-unit>
-      <trans-unit id="698">
-        <source>Edit context area</source>
-        <target>맥락 영역 편집</target>
-      </trans-unit>
-      <trans-unit id="709">
-        <source>Title proper</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="710">
-        <source>General material designation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="711">
-        <source>Parallel title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="712">
-        <source>Other title information</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="714">
         <source>Add new child levels</source>
         <target>새 하위계층 추가</target>
@@ -1558,125 +1122,13 @@
         <source>Level</source>
         <target>계층</target>
       </trans-unit>
-      <trans-unit id="716">
-        <source>Edition statement</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="717">
-        <source>Statement of scale (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="718">
-        <source>Statement of projection (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="719">
-        <source>Statement of coordinates (cartographic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="720">
-        <source>Statement of scale (architectural)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="721">
-        <source>Issuing jurisdiction and denomination (philatelic)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="722">
-        <source>Physical description</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="724">
-        <source>Custodial history</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="725">
-        <source>Physical condition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="726">
-        <source>Immediate source of acquisition</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="727">
-        <source>Availability of other formats</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="728">
-        <source>Restrictions on access</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="729">
-        <source>Terms governing use, reproduction, and publication</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="730">
-        <source>Associated / related material</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="731">
-        <source>Institution identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="732">
-        <source>Rules or conventions</source>
-        <target>규칙 혹은 표준규정 </target>
-      </trans-unit>
-      <trans-unit id="733">
-        <source>Status</source>
-        <target>지위(상태)</target>
-      </trans-unit>
-      <trans-unit id="734">
-        <source>Level of detail</source>
-        <target>상세 정도</target>
-      </trans-unit>
-      <trans-unit id="735">
-        <source>Dates of creation, revision and deletion</source>
-        <target>생산 수정 삭제 일자</target>
-      </trans-unit>
       <trans-unit id="737">
         <source>Source language</source>
         <target>소스 언어</target>
       </trans-unit>
-      <trans-unit id="747">
-        <source>Appraisal, destruction and scheduling</source>
-        <target>평가 폐기 보존기간 책정</target>
-      </trans-unit>
-      <trans-unit id="750">
-        <source>System of arrangement</source>
-        <target>정리 시스템</target>
-      </trans-unit>
       <trans-unit id="752">
         <source>Conditions governing access</source>
         <target>접근 조건</target>
-      </trans-unit>
-      <trans-unit id="754">
-        <source>Conditions governing reproduction</source>
-        <target>복사조건</target>
-      </trans-unit>
-      <trans-unit id="756">
-        <source>Physical characteristics and technical requirements</source>
-        <target>물리적 특성과 기술적 요구사항</target>
-      </trans-unit>
-      <trans-unit id="759">
-        <source>Existence and location of originals</source>
-        <target>원본 존재와 소장위치</target>
-      </trans-unit>
-      <trans-unit id="761">
-        <source>Existence and location of copies</source>
-        <target>복사본의 존재와 소장위치</target>
-      </trans-unit>
-      <trans-unit id="763">
-        <source>Related units of description</source>
-        <target>관련 기술 단위</target>
-      </trans-unit>
-      <trans-unit id="764">
-        <source>Description record identifier</source>
-        <target>기록식별자 기술</target>
-      </trans-unit>
-      <trans-unit id="765">
-        <source>Institution identifiers</source>
-        <target>조직/기관 식별자</target>
       </trans-unit>
       <trans-unit id="768">
         <source>Dublin Core 1.1 XML</source>
@@ -1694,33 +1146,9 @@
         <source>Edit digital object</source>
         <target/>
       </trans-unit>
-      <trans-unit id="773">
-        <source>Format</source>
-        <target>포맷</target>
-      </trans-unit>
       <trans-unit id="774">
         <source>Description</source>
         <target>기술</target>
-      </trans-unit>
-      <trans-unit id="776">
-        <source>Source</source>
-        <target>소스</target>
-      </trans-unit>
-      <trans-unit id="777">
-        <source>Rights</source>
-        <target>권한</target>
-      </trans-unit>
-      <trans-unit id="778">
-        <source>Type of resource</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="779">
-        <source>Edit repository</source>
-        <target>보존소 편집</target>
-      </trans-unit>
-      <trans-unit id="780">
-        <source>Repository list</source>
-        <target/>
       </trans-unit>
       <trans-unit id="781">
         <source>File %1% could not be moved to %2%</source>
@@ -1733,10 +1161,6 @@
       <trans-unit id="783">
         <source>Import multiple digital objects</source>
         <target>복수 디지털객체 가져오기</target>
-      </trans-unit>
-      <trans-unit id="785">
-        <source>The "&lt;b&gt;%dd%&lt;/b&gt;" placeholder will be replaced with a incremental number (e.g. 'image &lt;b&gt;01&lt;/b&gt;', 'image &lt;b&gt;02&lt;/b&gt;')</source>
-        <target>"&lt;b&gt;%dd%&lt;/b&gt;" 위치 홀더는 증가하는 숫자로 대체될 것이다(예. '이미지&lt;b&gt;01&lt;/b&gt;', '이미지&lt;b&gt;02&lt;/b&gt;')</target>
       </trans-unit>
       <trans-unit id="786">
         <source>Digital objects</source>
@@ -1768,14 +1192,6 @@
       </trans-unit>
       <trans-unit id="799">
         <source>%1% (use: %2%)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="800">
-        <source>Use for</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="802">
-        <source>List all taxonomies</source>
         <target/>
       </trans-unit>
       <trans-unit id="803">
@@ -1810,10 +1226,6 @@
         <source>UF %1%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="811">
-        <source>USE %1%</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="812">
         <source>Associated terms</source>
         <target/>
@@ -1829,10 +1241,6 @@
       <trans-unit id="820">
         <source>Taxonomy hierarchy</source>
         <target>분류 위계질서</target>
-      </trans-unit>
-      <trans-unit id="822">
-        <source>Definition</source>
-        <target/>
       </trans-unit>
       <trans-unit id="823">
         <source>Relationships</source>
@@ -1982,10 +1390,6 @@
         <source>Start</source>
         <target/>
       </trans-unit>
-      <trans-unit id="862">
-        <source>This file couldn't be uploaded because of file size upload limits</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="863">
         <source>Loading...</source>
         <target/>
@@ -2012,10 +1416,6 @@
       </trans-unit>
       <trans-unit id="869">
         <source>Related term(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="870">
-        <source>Create narrow terms</source>
         <target/>
       </trans-unit>
       <trans-unit id="871">
@@ -2078,144 +1478,8 @@
         <source>Publication status</source>
         <target/>
       </trans-unit>
-      <trans-unit id="886">
-        <source>%1%Type%2% - This is a %3%mandatory%4% element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="887">
-        <source>%1%Authorized form of name%2% - This is a %3%mandatory%4% element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="888">
-        <source>%1%Description identifier%2% - This is a %3%mandatory%4% element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="889">
-        <source>Edit ISDF function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="890">
-        <source>Create ISDF function</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="891">
         <source>This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="892">
-        <source>Related functions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="893">
-        <source>Category</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="894">
-        <source>Related authority records</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="895">
-        <source>Identifier/name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="896">
-        <source>Related authority record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="897">
-        <source>Date&amp;dagger;</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="898">
-        <source>Date display&amp;dagger;</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="899">
-        <source>Identifier/title</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="900">
-        <source>Related resource</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="901">
-        <source>Rules and/or conventions used</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="902">
-        <source>Dates of creation, revision or deletion</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="903">
-        <source>Language(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="904">
-        <source>Script(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="905">
-        <source>View ISDF function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="906">
-        <source>Edit function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="907">
-        <source>Classification</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="908">
-        <source>Legislation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="909">
-        <source>Edit relationships area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="910">
-        <source>Related function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="911">
-        <source>Dates of relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="912">
-        <source>Edit control area</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="913">
-        <source>Maintenance notes</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="914">
-        <source>Edit this function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="915">
-        <source>Delete this function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="916">
-        <source>Add new function</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="917">
-        <source>List functions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="918">
-        <source>Are you sure you want to delete &lt;i&gt;"%1%"&lt;/i&gt;?</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="919">
-        <source>At least 3 characters are required for wildcard (*) search</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="920">
-        <source>Search for "%1%"</source>
         <target/>
       </trans-unit>
       <trans-unit id="921">
@@ -2258,10 +1522,6 @@
         <source>Are you sure you want to delete user %1%?</source>
         <target/>
       </trans-unit>
-      <trans-unit id="931">
-        <source>&lt;h1 class="label"&gt;%1% profile&lt;/h1&gt;</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="932">
         <source>View permissions</source>
         <target/>
@@ -2282,10 +1542,6 @@
         <source>%1%: %2%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="937">
-        <source>All authority records</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="938">
         <source>Access control</source>
         <target/>
@@ -2296,10 +1552,6 @@
       </trans-unit>
       <trans-unit id="940">
         <source>Permissions for all %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="941">
-        <source>Permission</source>
         <target/>
       </trans-unit>
       <trans-unit id="942">
@@ -2326,36 +1578,12 @@
         <source>Add %1%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="948">
-        <source>Edit authority record permissions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="949">
-        <source>Add a person or organization</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="950">
-        <source>Add permissions</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="951">
         <source>functions</source>
         <target/>
       </trans-unit>
       <trans-unit id="952">
         <source>digital objects</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="953">
-        <source>%1%Identifier%2% - This is a %3%mandatory%4% element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="954">
-        <source>%1%Contact information%2% - You %3%must%4% at least include one of the following location or address fields: city, country, postal code, region or street address.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="955">
-        <source>%1%Contact information%2% - This is a %3%mandatory%4% element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="956">
@@ -2370,18 +1598,6 @@
         <source>Country name</source>
         <target/>
       </trans-unit>
-      <trans-unit id="959">
-        <source>This is a mandatory element</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="960">
-        <source>Repository Browse Options</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="961">
-        <source>List static pages</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="962">
         <source>Default page elements</source>
         <target/>
@@ -2390,32 +1606,288 @@
         <source>Enable or disable the display of certain page elements. Unless they have been overridden by a specific theme, these settings will be used site wide.</source>
         <target/>
       </trans-unit>
-      <trans-unit id="964">
-        <source>%1%Dates of existence%2% - This is a %3%mandatory%4% element.</source>
+      <trans-unit id="971">
+        <source>Draft</source>
         <target/>
       </trans-unit>
-      <trans-unit id="965">
-        <source>%1%Type of entity%2% - This is a %3%mandatory%4% element.</source>
+      <trans-unit id="972">
+        <source>Published</source>
         <target/>
       </trans-unit>
-      <trans-unit id="966">
-        <source>Standardized form(s) of name according to other rules</source>
+      <trans-unit id="973">
+        <source>Check for updates</source>
         <target/>
       </trans-unit>
-      <trans-unit id="967">
-        <source>Mandates/sources of authority</source>
+      <trans-unit id="974">
+        <source>Upload multi-page files as multiple descriptions</source>
         <target/>
       </trans-unit>
-      <trans-unit id="968">
-        <source>Internal structures/genealogy</source>
+      <trans-unit id="975">
+        <source>Show tooltips</source>
         <target/>
       </trans-unit>
-      <trans-unit id="969">
-        <source>Related entity</source>
+      <trans-unit id="976">
+        <source>Default publication status</source>
         <target/>
       </trans-unit>
-      <trans-unit id="970">
-        <source>Actor Browse Options</source>
+      <trans-unit id="977">
+        <source>Enable automatic update notification</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="978">
+        <source>Default publication status for newly created or imported %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="979">
+        <source>EAC</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="980">
+        <source>Actor browse options</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="981">
+        <source>Recent changes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="982">
+        <source>Sort</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="983">
+        <source>Are you sure you want to delete this contact information from %1%?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="984">
+        <source>A release %1% upgrade is available.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="985">
+        <source>&lt;em&gt;or&lt;/em&gt; Auto-generate a new representation from master image</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="986">
+        <source>The "&lt;strong&gt;%dd%&lt;/strong&gt;" placeholder will be replaced with a incremental number (e.g. 'image &lt;strong&gt;01&lt;/strong&gt;', 'image &lt;strong&gt;02&lt;/strong&gt;')</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="987">
+        <source>Warning: duplicate of %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="988">
+        <source>This file couldn\\'t be uploaded because of file size upload limits</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="989">
+        <source>Enter free-text information, including qualifiers or typographical symbols to express uncertainty, to change the way the date displays. If this field is not used, the default will be the start and end years only.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="990">
+        <source>Enter the end year. Do not use any qualifiers or typographical symbols to express uncertainty. If the start and end years are the same, enter data only in the "Date" field and leave the "End date" blank.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="991">
+        <source>End</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="992">
+        <source>Enter the start year. Do not use any qualifiers or typographical symbols to express uncertainty.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="993">
+        <source>Function Browse Options</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="994">
+        <source>Search function</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="995">
+        <source>Use the actor name field to link an authority record to this description. Search for an existing name in the authority records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new authority record.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="996">
+        <source>Search for an existing term in the places taxonomy by typing the first few characters of the term name. Alternatively, type a new term to create and link to a new place term.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="997">
+        <source>[0,1]Creator|(1,+Inf]Creators</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="998">
+        <source>Inherited from %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="999">
+        <source>Are you sure you want to delete %1% and all its descendants?</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1000">
+        <source>OAI-PMH - harvested sites</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1001">
+        <source>Harvest</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1002">
+        <source>Add new repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1003">
+        <source>Enter a valid URI (e.g. http://www.example.com/oai) for an OAI-PMH repository</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1004">
+        <source>Error encountered</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1005">
+        <source>Add new physical storage</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1006">
+        <source>"Record, when relevant, the start and the end date of the relationship." (ISDF 6.3) Enter the date as you would like it to appear in the show page for the function, using qualifiers and/or typographical symbols to express uncertainty if desired.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1007">
+        <source>Describe the nature of the relationship between the function and the related resource. (ISDF 6.2)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1008">
+        <source>Repository browse options</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1009">
+        <source>Invalid start date</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1010">
+        <source>Invalid end date</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1011">
+        <source>Search for [%1%]</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1012">
+        <source>Description updates</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1013">
+        <source>Date range</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1014">
+        <source>%1% to %2%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1015">
+        <source>Publication status &lt;span class="note2"&gt;(%1% only)&lt;/span&gt;</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1016">
+        <source>Created</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1017">
+        <source>Add new page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1018">
+        <source>Mustn't contain ";"</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1019">
+        <source>Edit page</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1020">
+        <source>List pages</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1021">
+        <source>Slug</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1022">
+        <source>Add new term</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1023">
+        <source>Name - A term with this name already exists.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1024">
+        <source>SKOS</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1025">
+        <source>Add new narrow terms</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1026">
+        <source>Your password confirmation did not match you password.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1027">
+        <source>Add new user</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1028">
+        <source>Password strength:</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1029">
+        <source>To make your password stronger:</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1030">
+        <source>Make it at least six characters</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1031">
+        <source>Add lowercase letters</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1032">
+        <source>Add uppercase letters</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1033">
+        <source>Add numbers</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1034">
+        <source>Add punctuation</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1035">
+        <source>Make it different from your username</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1036">
+        <source>yes</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1037">
+        <source>no</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1038">
+        <source>Passwords match:</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1039">
+        <source>New password</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1040">
+        <source>The system is currently in read-only mode. Please try again later.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="1041">
+        <source>Untitled</source>
         <target/>
       </trans-unit>
     </body>

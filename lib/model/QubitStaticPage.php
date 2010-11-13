@@ -24,8 +24,51 @@ class QubitStaticPage extends BaseStaticPage
     return (string) $this->title;
   }
 
+  protected function insert($connection = null)
+  {
+    if (!isset($this->slug))
+    {
+      $this->slug = QubitSlug::slugify($this->title);
+    }
+
+    return parent::insert($connection);
+  }
+
+  protected function update($connection = null)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitStaticPage::DATABASE_NAME);
+    }
+
+    $statement = $connection->prepare('
+      UPDATE '.QubitSlug::TABLE_NAME.'
+      SET '.QubitSlug::SLUG.' = ?
+      WHERE '.QubitSlug::OBJECT_ID.' = ?');
+
+    if (1 > strlen($this->slug))
+    {
+      $statement->execute(array(QubitSlug::random(), $this->id));
+
+      return;
+    }
+
+    try
+    {
+      $statement->execute(array($this->slug, $this->id));
+    }
+
+    // Collision? Try random, digit and letter slug
+    catch (PDOException $e)
+    {
+      $statement->execute(array(QubitSlug::random(), $this->id));
+    }
+
+    return parent::update($connection);
+  }
+
   public function isProtected()
   {
-    return $this->permalink == 'homepage' || $this->permalink == 'about';
+    return $this->slug == 'about' || $this->slug == 'home';
   }
 }

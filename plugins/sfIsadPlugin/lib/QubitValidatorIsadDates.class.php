@@ -19,87 +19,50 @@
 
 class QubitValidatorIsadDates extends sfValidatorBase
 {
-  protected function configure($options = array(), $messages = array())
-  {
-    $this->addOption('invalid');
-  }
-
   protected function doClean($value)
   {
-    sfContext::getInstance()->getConfiguration()->loadHelpers(array('Url', 'Qubit'));
-
-    foreach ($value->events as $event)
+    foreach ($value->events as $item)
     {
-      $startDate = null;
-      if (null != $event->startDate)
-      {
-        $startDate = new DateTime($event->startDate);
-      }
+      $valid = true;
 
-      $endDate = null;
-      if (null != $event->endDate)
+      // Only validate this event if it has start or end date
+      if (isset($item->startDate) || isset($item->endDate))
       {
-        $endDate = new DateTime($event->endDate);
-      }
-
-      // Check ancestors
-      foreach ($value->ancestors as $ancestor)
-      {
-        if (0 < count($ancestorEvents = $ancestor->getDates(array('type_id' => $event->type->id))))
+        // Find first ancestor with an event, with a start or end date, of same
+        // type as event we're validating
+        foreach ($value->ancestors->orderBy('rgt') as $ancestor)
         {
-          $validStartDate = $validEndDate = false;
-
-          foreach ($ancestorEvents as $ancestorEvent)
+          foreach ($ancestor->getDates(array('type_id' => $item->type->id)) as $event)
           {
-            $ancestorStartDate = null;
-            if (null != $ancestorEvent->startDate)
-            {
-              $ancestorStartDate = new DateTime($ancestorEvent->startDate);
-            }
+            // Found at least one such event, if event we're validating isn't
+            // valid according to at least one of this ancestor's events, then
+            // it's invalid
+            $valid = false;
 
-            $ancestorEndDate = null;
-            if (null != $ancestorEvent->endDate)
+            // Valid according to this event?  Start date is greater than or
+            // equal and end date is less than or equal, or start or end dates
+            // are missing
+            if ((!isset($item->startDate)
+                  || ((!isset($event->startDate)
+                      || new DateTime($item->startDate) >= new DateTime($event->startDate))
+                    && (!isset($event->endDate)
+                      || new DateTime($item->startDate) <= new DateTime($event->endDate))))
+                && (!isset($item->endDate)
+                  || ((!isset($event->startDate)
+                      || new DateTime($item->endDate) >= new DateTime($event->startDate))
+                    && (!isset($event->endDate)
+                      || new DateTime($item->endDate) <= new DateTime($event->endDate)))))
             {
-              $ancestorEndDate = new DateTime($ancestorEvent->endDate);
-            }
-
-            // Compare startDate with ancestor dates
-            if (null != $startDate)
-            {
-              if ((null == $ancestorStartDate || $startDate >= $ancestorStartDate) && (null == $ancestorEndDate || $startDate < $ancestorEndDate))
-              {
-                $validStartDate = true;
-              }
-            }
-            else
-            {
-              $validStartDate = true;
-            }
-
-            // Compare endDate with ancestor dates
-            if (null != $endDate)
-            {
-              if ((null == $ancestorStartDate || $endDate > $ancestorStartDate) && (null == $ancestorEndDate || $endDate <= $ancestorEndDate))
-              {
-                $validEndDate = true;
-              }
-            }
-            else
-            {
-              $validEndDate = true;
-            }
-
-            if ($validStartDate && $validEndDate)
-            {
-              break;
+              // Valid!  Check next event
+              continue 3;
             }
           }
 
-          // If the current dates aren't within at least one of the ranges
-          // for this ancestor, then throw validation error
-          if (!($validStartDate && $validEndDate))
+          // If event isn't in at least one of the ranges for this ancestor,
+          // then throw validation error
+          if (!$valid)
           {
-            throw new sfValidatorError($this, 'invalid', array('ancestor' => url_for(array($ancestor, 'module' => 'informationobject'))));
+            throw new sfValidatorError($this, 'invalid', array('ancestor' => sfContext::getInstance()->routing->generate(null, array($ancestor, 'module' => 'informationobject'))));
           }
         }
       }

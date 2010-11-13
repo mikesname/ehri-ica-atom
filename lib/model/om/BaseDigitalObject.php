@@ -5,22 +5,22 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
   const
     DATABASE_NAME = 'propel',
 
-    TABLE_NAME = 'q_digital_object',
+    TABLE_NAME = 'digital_object',
 
-    ID = 'q_digital_object.ID',
-    INFORMATION_OBJECT_ID = 'q_digital_object.INFORMATION_OBJECT_ID',
-    USAGE_ID = 'q_digital_object.USAGE_ID',
-    MIME_TYPE = 'q_digital_object.MIME_TYPE',
-    MEDIA_TYPE_ID = 'q_digital_object.MEDIA_TYPE_ID',
-    NAME = 'q_digital_object.NAME',
-    PATH = 'q_digital_object.PATH',
-    SEQUENCE = 'q_digital_object.SEQUENCE',
-    BYTE_SIZE = 'q_digital_object.BYTE_SIZE',
-    CHECKSUM = 'q_digital_object.CHECKSUM',
-    CHECKSUM_TYPE_ID = 'q_digital_object.CHECKSUM_TYPE_ID',
-    PARENT_ID = 'q_digital_object.PARENT_ID',
-    LFT = 'q_digital_object.LFT',
-    RGT = 'q_digital_object.RGT';
+    ID = 'digital_object.ID',
+    INFORMATION_OBJECT_ID = 'digital_object.INFORMATION_OBJECT_ID',
+    USAGE_ID = 'digital_object.USAGE_ID',
+    MIME_TYPE = 'digital_object.MIME_TYPE',
+    MEDIA_TYPE_ID = 'digital_object.MEDIA_TYPE_ID',
+    NAME = 'digital_object.NAME',
+    PATH = 'digital_object.PATH',
+    SEQUENCE = 'digital_object.SEQUENCE',
+    BYTE_SIZE = 'digital_object.BYTE_SIZE',
+    CHECKSUM = 'digital_object.CHECKSUM',
+    CHECKSUM_TYPE_ID = 'digital_object.CHECKSUM_TYPE_ID',
+    PARENT_ID = 'digital_object.PARENT_ID',
+    LFT = 'digital_object.LFT',
+    RGT = 'digital_object.RGT';
 
   public static function addSelectColumns(Criteria $criteria)
   {
@@ -137,7 +137,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       return true;
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
   public function __get($name)
@@ -232,7 +232,39 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       return $this->values['descendants'];
     }
 
-    throw new sfException('Unknown record property "'.$name.'" on "'.get_class($this).'"');
+    throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
+  }
+
+  protected function param($column)
+  {
+    $value = $this->values[$column->getPhpName()];
+
+    // Convert to DateTime or SQL zero special case
+    if (isset($value) && $column->isTemporal() && !$value instanceof DateTime)
+    {
+      // Year only: one or more digits.  Convert to SQL zero special case
+      if (preg_match('/^\d+$/', $value))
+      {
+        $value .= '-0-0';
+      }
+
+      // Year and month only: one or more digits, plus separator, plus
+      // one or more digits.  Convert to SQL zero special case
+      else if (preg_match('/^\d+[-\/]\d+$/', $value))
+      {
+        $value .= '-0';
+      }
+
+      // Convert to DateTime if not SQL zero special case: year plus
+      // separator plus zero to twelve (possibly zero padded) plus
+      // separator plus one or more zeros
+      if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
+      {
+        $value = new DateTime($value);
+      }
+    }
+
+    return $value;
   }
 
   protected function insert($connection = null)
@@ -246,9 +278,11 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
 
   protected function update($connection = null)
   {
-        if (isset($this->values['parentId']))
+    // Update nested set keys only if parent id has changed
+    if (isset($this->values['parentId']))
     {
-            $offset = 0; 
+      // Get the "original" parentId before any updates
+      $offset = 0;
       $originalParentId = null;
       foreach ($this->tables as $table)
       {
@@ -262,8 +296,10 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
           $offset++;
         }
       }
-      
-                  if ($originalParentId != $this->values['parentId'])
+
+      // If updated value of parentId is different then original value,
+      // update the nested set
+      if ($originalParentId != $this->values['parentId'])
       {
         $this->updateNestedSet($connection);
       }
@@ -376,6 +412,9 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
 
   protected function updateNestedSet($connection = null)
   {
+// HACK Try to prevent modifying left and right values anywhere except in this
+// method.  Perhaps it would be more logical to use protected visibility for
+// these values?
 unset($this->values['lft']);
 unset($this->values['rgt']);
     if (!isset($connection))
@@ -436,6 +475,7 @@ unset($this->values['rgt']);
       {
         $this->lft = $parent->rgt;
         $this->rgt = $parent->rgt + 1;
+        $parent->rgt += 2;
 
         return $this;
       }

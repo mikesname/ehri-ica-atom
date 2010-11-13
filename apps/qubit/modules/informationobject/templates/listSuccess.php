@@ -1,7 +1,7 @@
 <h1><?php echo __('List %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></h1>
 
 <?php if (isset($sf_request->id)): ?>
-  <?php echo get_partial('default/breadcrumb', array('objects' => $informationObject->ancestors->andSelf())) ?>
+  <?php echo get_partial('default/breadcrumb', array('objects' => $resource->ancestors->andSelf())) ?>
 <?php endif; ?>
 
 <table class="sticky-enabled">
@@ -48,8 +48,8 @@
 
   <div class="content">
     <ul class="clearfix links">
-      <?php if (QubitAcl::check($informationObject, 'create')): ?>
-        <li><?php echo link_to(__('Add new'), array('module' => 'informationobject', 'action' => 'create', 'parent' => url_for(array($informationObject, 'module' => 'informationobject')))) ?></li>
+      <?php if (QubitAcl::check($resource, 'create')): ?>
+        <li><?php echo link_to(__('Add new'), array('module' => 'informationobject', 'action' => 'add', 'parent' => url_for(array($resource, 'module' => 'informationobject')))) ?></li>
       <?php endif; ?>
     </ul>
   </div>

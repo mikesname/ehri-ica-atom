@@ -17,34 +17,28 @@
  * along with Qubit Toolkit.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-class UserEditActorAclAction extends sfAction
+class UserEditActorAclAction extends DefaultEditAction
 {
-  public function execute($request)
+  public static
+    $NAMES = array();
+
+  protected function earlyExecute()
   {
-    $this->form = new sfForm;
-
-    $this->user = new QubitUser;
-
-    if (isset($this->request->id))
-    {
-      $this->user = QubitUser::getById($this->request->id);
-
-      if (!isset($this->user))
-      {
-        $this->forward404();
-      }
-    }
-
     $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
+    $this->resource = new QubitUser;
+    if (isset($this->getRoute()->resource))
+    {
+      $this->resource = $this->getRoute()->resource;
+    }
+
     // Always include root actor permissions
-    $this->permissions = array();
-    $this->permissions[QubitActor::ROOT_ID] = null;
+    $this->actors = array(QubitActor::ROOT_ID => null);
 
     // Get actor permissions for this group
     $criteria = new Criteria;
     $criteria->addJoin(QubitAclPermission::OBJECT_ID, QubitObject::ID, Criteria::LEFT_JOIN);
-    $criteria->add(QubitAclPermission::USER_ID, $this->user->id);
+    $criteria->add(QubitAclPermission::USER_ID, $this->resource->id);
     $c1 = $criteria->getNewCriterion(QubitAclPermission::OBJECT_ID, null, Criteria::ISNULL);
     $c2 = $criteria->getNewCriterion(QubitObject::CLASS_NAME, 'QubitActor');
     $c1->addOr($c2);
@@ -52,45 +46,36 @@ class UserEditActorAclAction extends sfAction
 
     if (null !== $permissions = QubitAclPermission::get($criteria))
     {
-      foreach ($permissions as $p)
+      foreach ($permissions as $item)
       {
-        $this->permissions[$p->objectId][$p->action] = $p;
+        $this->actors[$item->objectId][$item->action] = $item;
       }
     }
 
     // List of actions without translate
     $this->basicActions = QubitAcl::$ACTIONS;
     unset($this->basicActions['translate']);
-
-    if ($request->isMethod('post'))
-    {
-      $this->form->bind($request->getPostParameters());
-
-      if ($this->form->isValid())
-      {
-        $this->processForm();
-        $this->redirect(array($this->user, 'module' => 'user', 'action' => 'indexActorAcl'));
-      }
-    }
   }
 
   protected function processForm()
   {
-    foreach ($this->request->getParameter('updatePermission') as $key => $value)
+    foreach ($this->request->acl as $key => $value)
     {
       // If key has an underscore, then we are creating a new permission
-      if (false !== strpos($key, '_'))
+      if (1 == preg_match('/([\w]+)_(.*)/', $key, $matches))
       {
-        list ($actorId, $action) = explode('_', $key);
+        list ($action, $uri) = array_slice($matches, 1, 2);
+        $params = $this->context->routing->parse(Qubit::pathInfo($uri));
+        $resource = $params['_sf_route']->resource;
 
         if (QubitAcl::INHERIT != $value && isset(QubitAcl::$ACTIONS[$action]))
         {
           $aclPermission = new QubitAclPermission;
           $aclPermission->action = $action;
           $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
-          $aclPermission->objectId = $actorId;
+          $aclPermission->object = $resource;
 
-          $this->user->aclPermissions[] = $aclPermission;
+          $this->resource->aclPermissions[] = $aclPermission;
         }
       }
 
@@ -104,14 +89,28 @@ class UserEditActorAclAction extends sfAction
         else
         {
           $aclPermission->grantDeny = (QubitAcl::GRANT == $value) ? 1 : 0;
-          $this->user->aclPermissions[] = $aclPermission;
+          $this->resource->aclPermissions[] = $aclPermission;
         }
       }
     }
+  }
 
-    // Save updates
-    $this->user->save();
+  public function execute($request)
+  {
+    parent::execute($request);
 
-    return $this;
+    if ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getPostParameters());
+
+      if ($this->form->isValid())
+      {
+        $this->processForm();
+
+        $this->resource->save();
+
+        $this->redirect(array($this->resource, 'module' => 'user', 'action' => 'indexActorAcl'));
+      }
+    }
   }
 }

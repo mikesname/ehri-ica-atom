@@ -29,44 +29,104 @@
  */
 class InformationObjectIndexAction extends sfAction
 {
+  protected function addField($validatorSchema, $name)
+  {
+    switch ($name)
+    {
+      case 'levelOfDescription':
+        $forbiddenValues = array();
+        foreach ($this->resource->ancestors->orderBy('rgt') as $item)
+        {
+          if (isset($item->levelOfDescription))
+          {
+            switch ($item->levelOfDescription->getName(array('sourceCulture' => true)))
+            {
+              case 'Item':
+                $forbiddenValues[] = 'Item';
+
+              case 'File':
+                $forbiddenValues[] = 'File';
+
+              case 'Sub-subseries':
+                $forbiddenValues[] = 'Sub-subseries';
+
+              case 'Subseries':
+                $forbiddenValues[] = 'Subseries';
+
+              case 'Series':
+                $forbiddenValues[] = 'Series';
+
+              case 'Sub-subfonds':
+                $forbiddenValues[] = 'Sub-subfonds';
+
+              case 'Subfonds':
+                $forbiddenValues[] = 'Subfonds';
+
+              case 'Fonds':
+
+                // Collection may not be a descendant of fonds
+                $forbiddenValues[] = 'Fonds';
+                $forbiddenValues[] = 'Collection';
+
+                break;
+
+              case 'Collection':
+
+                // Neither fonds nor subfonds may be descendants of collection
+                $forbiddenValues[] = 'Subfonds';
+                $forbiddenValues[] = 'Fonds';
+                $forbiddenValues[] = 'Collection';
+
+                break;
+            }
+
+            break;
+          }
+        }
+
+        $validatorSchema->levelOfDescription = new sfValidatorBlacklist(array(
+          'forbidden_values' => $forbiddenValues,
+          'required' => true));
+
+        break;
+    }
+  }
+
   public function execute($request)
   {
-    $this->object = QubitInformationObject::getById($request->id);
+    $this->resource = $this->getRoute()->resource;
 
-    // Check that object exists and that it's not the root
-    if (!isset($this->object) || !isset($this->object->parent))
+    // Check that this isn't the root
+    if (!isset($this->resource->parent))
     {
       $this->forward404();
     }
 
     // Check user authorization
-    if (!QubitAcl::check($this->object, 'read'))
+    if (!QubitAcl::check($this->resource, 'read'))
     {
       QubitAcl::forwardToSecureAction();
+    }
+
+    // Only show link to view/download master copy of digital object if the
+    // user has readMaster permissions OR it's a text object (to allow reading)
+    $this->digitalObjectLink = null;
+    if (0 < count($this->resource->digitalObjects)
+      && (QubitAcl::check($this->resource, 'readMaster')
+        || in_array($this->resource->digitalObjects[0]->mediaTypeId, array(QubitTerm::TEXT_ID, QubitTerm::AUDIO_ID))))
+    {
+      if (QubitTerm::EXTERNAL_URI_ID == $this->resource->digitalObjects[0]->usageId)
+      {
+        $this->digitalObjectLink = $this->resource->digitalObjects[0]->path;
+      }
+      else
+      {
+        $this->digitalObjectLink = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->resource->digitalObjects[0]->getFullPath();
+      }
     }
 
     QubitImageFlow::addAssets($this->response);
 
     QubitTreeView::addAssets($this->response);
-
-    // HACK: populate information object from ORM
-    $request->setAttribute('informationObject', $this->object);
-
-    // Only show link to view/download master copy of digital object if the
-    // user has readMaster permissions OR it's a text object (to allow reading)
-    $this->digitalObjectLink = null;
-    if (0 < count($this->object->digitalObjects)
-      && (QubitAcl::check($this->object, 'readMaster')
-        || in_array($this->object->digitalObjects[0]->mediaTypeId, array(QubitTerm::TEXT_ID, QubitTerm::AUDIO_ID))))
-    {
-      if (QubitTerm::EXTERNAL_URI_ID == $this->object->digitalObjects[0]->usageId)
-      {
-        $this->digitalObjectLink = $this->object->digitalObjects[0]->path;
-      }
-      else
-      {
-        $this->digitalObjectLink = $request->getUriPrefix().$request->getRelativeUrlRoot().$this->object->digitalObjects[0]->getFullPath();
-      }
-    }
   }
 }

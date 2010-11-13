@@ -1,16 +1,16 @@
 <h1><?php echo __('Edit digital object') ?></h1>
 
-<h1 class="label"><?php echo render_title($informationObject->getLabel()) ?></h1>
+<h1 class="label"><?php echo render_title(new sfIsadPlugin($informationObject)) ?></h1>
 
 <?php echo $form->renderGlobalErrors() ?>
 
-<?php if (isset($digitalObject)): ?>
+<?php if (isset($resource)): ?>
   <div class="form-item">
-    <?php echo get_component('digitalobject', 'show', array('digitalObject' => $digitalObject, 'usageType' => QubitTerm::REFERENCE_ID)) ?>
+    <?php echo get_component('digitalobject', 'show', array('resource' => $resource, 'usageType' => QubitTerm::REFERENCE_ID)) ?>
   </div>
 <?php endif; ?>
 
-<?php echo $form->renderFormTag(url_for(array($digitalObject, 'module' => 'digitalobject', 'action' => 'edit'))) ?>
+<?php echo $form->renderFormTag(url_for(array($resource, 'module' => 'digitalobject', 'action' => 'edit'))) ?>
 
   <?php echo $form->renderHiddenFields() ?>
 
@@ -18,15 +18,9 @@
 
     <legend><?php echo __('Master') ?></legend>
 
-    <div class="form-item">
-      <label for="filename"><?php echo __('Filename'); ?></label>
-      <?php echo $digitalObject->getName() ?>
-    </div>
+    <?php echo render_show(__('Filename'), $resource->name) ?>
 
-    <div class="form-item">
-      <label for="filesize"><?php echo __('Filesize'); ?></label>
-      <?php echo hr_filesize($digitalObject->getByteSize()) ?>
-    </div>
+    <?php echo render_show(__('Filesize'), hr_filesize($resource->byteSize)) ?>
 
     <?php echo $form->mediaType->renderRow() ?>
 
@@ -42,33 +36,36 @@
 
     <?php foreach ($representations as $usageId => $representation): ?>
       <?php if (isset($representation)): ?>
-        <?php echo get_component('digitalobject', 'editRepresentation', array('digitalObject' => $digitalObject, 'representation' => $representation)) ?>
+        <?php echo get_component('digitalobject', 'editRepresentation', array('resource' => $resource, 'representation' => $representation)) ?>
       <?php else: ?>
-        <div class="form-item">
-          <table class="inline">
+        <table>
+          <thead>
             <tr>
               <th>
                 <?php echo __('Add a new %1% representation', array('%1%' => QubitTerm::getById($usageId))) ?>
               </th>
-            </tr><tr>
+            </tr>
+          </thead><tbody>
+            <tr>
               <td>
 
                 <?php echo __('Select a digital object to upload') ?>
+
                 <?php if (-1 < $maxUploadSize): ?>
                   <span class="note"><?php echo __('Max. size ~%1%', array('%1%' => hr_filesize($maxUploadSize))) ?></span>
                 <?php endif; ?>
 
-                <?php echo $form['repFile_'.$usageId] ?>
+                <?php echo $form["repFile_$usageId"] ?>
 
-                <?php if ($digitalObject->canThumbnail()): ?>
-                  <?php echo __('<i>or</i> Auto-generate a new representation from master image') ?>
-                  <?php echo $form['generateDerivative_'.$usageId] ?>
+                <?php if ($resource->canThumbnail()): ?>
+                  <?php echo __('<em>or</em> Auto-generate a new representation from master image') ?>
+                  <?php echo $form["generateDerivative_$usageId"] ?>
                 <?php endif; ?>
 
               </td>
             </tr>
-          </table>
-        </div>
+          </tbody>
+        </table>
       <?php endif; ?>
     <?php endforeach; ?>
 
@@ -81,12 +78,12 @@
     <div class="content">
       <ul class="clearfix links">
 
-        <?php if (isset($sf_request->id)): ?>
-          <li><?php echo link_to(__('Delete'), array($digitalObject, 'module' => 'digitalobject', 'action' => 'delete')) ?></li>
+        <?php if (isset($sf_request->getAttribute('sf_route')->resource)): ?>
+          <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'digitalobject', 'action' => 'delete')) ?></li>
         <?php endif; ?>
 
         <li><?php echo link_to(__('Cancel'), array($informationObject, 'module' => 'informationobject')) ?></li>
-        <li><?php echo submit_tag(__('Save')) ?></li>
+        <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>
 
       </ul>
     </div>

@@ -4,7 +4,7 @@
 
   <div class="content">
     <ul class="clearfix links">
-      <?php foreach ($menu->getChildren() as $child): ?>
+      <?php foreach ($quickLinksMenu->getChildren() as $child): ?>
         <?php if (($sf_user->isAuthenticated()
             && 'login' != $child->getName())
           || (!$sf_user->isAuthenticated()

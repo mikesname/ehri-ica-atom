@@ -1,8 +1,8 @@
 <mets xmlns="http://www.loc.gov/METS/"
-	  xmlns:xlink="http://www.w3.org/1999/xlink"
-	  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	  xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd" 
-	  ID="ID001" OBJID="OBJID1" LABEL="LABEL1" TYPE="TYPE1" PROFILE="PROFILE1">
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.loc.gov/METS/ http://www.loc.gov/standards/mets/mets.xsd"
+    ID="ID001" OBJID="OBJID1" LABEL="LABEL1" TYPE="TYPE1" PROFILE="PROFILE1">
     <metsHdr ID="ID003" ADMID="ID001 ID001 ID000 ID001" CREATEDATE="2006-05-04T18:13:51.0Z" LASTMODDATE="2006-05-04T18:13:51.0Z"
          RECORDSTATUS="RECORDSTATUS1">
         <agent ID="ID005" ROLE="CREATOR" OTHERROLE="OTHERROLE1" TYPE="INDIVIDUAL" OTHERTYPE="OTHERTYPE1">

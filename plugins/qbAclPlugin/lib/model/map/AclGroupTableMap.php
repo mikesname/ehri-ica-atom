@@ -2,7 +2,7 @@
 
 
 /**
- * This class defines the structure of the 'q_acl_group' table.
+ * This class defines the structure of the 'acl_group' table.
  *
  *
  *
@@ -30,14 +30,14 @@ class AclGroupTableMap extends TableMap {
 	public function initialize()
 	{
 	  // attributes
-		$this->setName('q_acl_group');
+		$this->setName('acl_group');
 		$this->setPhpName('aclGroup');
 		$this->setClassname('QubitAclGroup');
 		$this->setPackage('plugins.qbAclPlugin.lib.model');
 		$this->setUseIdGenerator(true);
 		// columns
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'q_acl_group', 'ID', false, null, null);
+		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'acl_group', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
 		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);

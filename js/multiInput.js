@@ -5,81 +5,72 @@
     Drupal.behaviors.multiInput = {
       attach: function (context)
         {
-          $('ul.multiInput', context).children('li').click(function (event)
+          $('ul.multiInput > li', context).click(function (event)
             {
-              if (event.target == this)
+              if (this === event.target)
               {
-                // On click, remove <li>
+                // On click, remove <li/>
                 $(this).hide('fast', function ()
                   {
                     $(this).remove();
                   });
               }
-            }
-          )
+            });
 
-          $('input.multiInput', context).each(function()
+          $('input.multiInput', context).each(function ()
             {
-              var thisName = this.name;
+              var index = 0;
+              var name = this.name.replace('[new]', '');
 
               $(this)
-                // Remove @name to avoid submitting value in the "new" input field
+
+                // Remove @name to avoid submitting value in the "new" <input/>
                 .removeAttr('name')
 
-                // Catch blur, click or keypress events
+                // Bind blur, click, or keydown events
                 .bind('blur click keydown', function (event)
-                {
-                  if ($(this).data('counter') == undefined)
                   {
-                    $(this).data('counter', 0);
-                  }
-                  var counter = $(this).data('counter');
-
-                  // Don't fire on keypress other than Tab (9) or Enter (13) key
-                  if ($(this).val() && ('keydown' != event.type || 9 == event.keyCode || 13 == event.keyCode))
-                  {
-                    // Cancel default action so as not to loose focus
-                    if ('keydown' == event.type)
+                    // Don't fire on keydown other than tab (9) or enter (13)
+                    if ($(this).val()
+                        && ('keydown' !== event.type
+                          || 9 === event.keyCode
+                          || 13 === event.keyCode))
                     {
-                      event.preventDefault();
-                    }
-
-                    // Add input value to multInput
-                    var stem = thisName.replace('[new]', '');
-                    var input = '<input id="' + stem + '_new_' + counter + '" name="' + stem + '[new' + counter + ']" value="' + this.value + '">';
-                    var li = $('<li>' + input + '</li>');
-
-                    // Bind click event to new list item
-                    li.click(function (event)
+                      // Cancel default action so as not to loose focus
+                      if ('keydown' === event.type)
                       {
-                        if (event.target == this)
-                        {
-                          // On click, remove <li>
-                          $(this).hide('fast', function ()
+                        event.preventDefault();
+                      }
+
+                      var $ul = $(this).prev('ul.multInput');
+                      if (!$ul.length)
+                      {
+                        // Add <ul/> element, if it doesn't exist already (new
+                        // object)
+                        $ul = $('<ul class="multInput"/>').insertBefore(this);
+                      }
+
+                      // Add input value to multInput
+                      var $li = $('<li><input name="' + name + '[new' + index++ + ']" value="' + this.value + '"/></li>')
+
+                        // Bind click event to new list item
+                        .click(function (event)
+                          {
+                            if (event.target === this)
                             {
-                              $(this).remove();
-                            });
-                        }
-                      });
+                              // On click, remove <li/>
+                              $(this).hide('fast', function ()
+                                {
+                                  $(this).remove();
+                                });
+                            }
+                          })
+                        .appendTo($ul);
 
-                    // Create ul if it doesn't exist
-                    if (0 == $(this).prev('ul.multInput').length)
-                    {
-                      // Add ul element, if it doesn't exist already (new object)
-                      var ul = '<ul class="multInput" name="' + stem + '"></ul>';
-                      $(this).before(ul);
+                      // Clear <input/>
+                      this.value = '';
                     }
-
-                    // Add li to ul
-                    $(this).prev('ul.multInput').append(li);
-
-                    // Clear <input>
-                    this.value = '';
-
-                    $(this).data('counter', ++counter);
-                  }
-                })
-            })
-
+                  });
+            });
         } };
   })(jQuery);

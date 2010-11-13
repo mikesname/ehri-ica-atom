@@ -364,7 +364,7 @@ class QubitMigrate107 extends QubitMigrate
       'source_culture' => 'en',
       'name' => array('en' => 'description')
     );
-    $this->data['QubitTerm']['QubitTerm_actor_relation_date_display'] = array(
+    $this->data['QubitTerm']['QubitTerm_actor_relation_date'] = array(
       'taxonomy_id' => 'QubitTaxonomy_actor_relation_note_type',
       'id' => '<?php echo QubitTerm::RELATION_NOTE_DATE_DISPLAY_ID."\n" ?>',
       'source_culture' => 'en',
@@ -395,7 +395,7 @@ class QubitMigrate107 extends QubitMigrate
       'source_culture' => 'en',
       'name' => array('en' => 'equivalence')
     );
-    $this->data['QubitTerm']['QubitTerm_term_relation_date_display'] = array(
+    $this->data['QubitTerm']['QubitTerm_term_relation_date'] = array(
       'taxonomy_id' => 'QubitTaxonomy_term_relation',
       'id' => '<?php echo QubitTerm::TERM_RELATION_ASSOCIATIVE_ID."\n" ?>',
       'source_culture' => 'en',
@@ -753,7 +753,6 @@ class QubitMigrate107 extends QubitMigrate
             $this->data['QubitProperty'][$key]['name'] = 'scriptOfDescription';
 
             break;
-
         }
 
         $this->data['QubitProperty'][$key]['value'] = serialize($value);
