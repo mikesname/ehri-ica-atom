@@ -1,7 +1,8 @@
+<?php $notificationMessage = __('A release %1% upgrade is available.') ?>
+
 <?php if ($sf_request->getCookie('has_js')): ?>
 
   <?php $data = json_encode($sf_data->getRaw('updateCheckData')) ?>
-  <?php $notificationMessage = __('A release %1% upgrade is available.') ?>
 
   <?php use_helper('Javascript') ?>
 
