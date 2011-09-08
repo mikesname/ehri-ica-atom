@@ -129,6 +129,8 @@
 
 <?php echo render_show(__('Maintenance notes'), render_value($isdiah->maintenanceNotes)) ?>
 
+<?php echo render_show(__('Priority'), render_value($isdiah->ehriPriority)) ?>
+
 <?php if (SecurityPriviliges::editCredentials($sf_user, 'repository')): ?>
   <div class="actions section">
 
