@@ -1,0 +1,6 @@
+
+*.old
+*.swp
+*.swo
+log/*
+cache/*
