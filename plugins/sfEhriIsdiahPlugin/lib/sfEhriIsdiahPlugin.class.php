@@ -6,15 +6,15 @@
 class sfEhriIsdiahPlugin extends sfIsdiahPlugin
 {
   protected
-    $ehriPriority;
+    $ehriMeta;
 
   public function __get($name)
   {
     switch ($name)
     {
-      case '_ehriPriority':
+      case '_ehriMeta':
 
-        if (!isset($this->ehriPriority))
+        if (!isset($this->ehriMeta))
         {
           $termcrit = new Criteria;
           $termcrit->add(QubitTerm::CODE, "EHRIPRIORITY");
@@ -32,21 +32,35 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
 
           if (1 == count($query = QubitNote::get($criteria)))
           {
-            $this->ehriPriority = $query[0];
+            $this->ehriMeta = $query[0];
           }
           else
           {
-            $this->ehriPriority = new QubitNote;
-            $this->ehriPriority->typeId = $termquery[0]->id;
+            $this->ehriMeta = new QubitNote;
+            $this->ehriMeta->typeId = $termquery[0]->id;
 
-            $this->resource->notes[] = $this->ehriPriority;
+            $this->resource->notes[] = $this->ehriMeta;
           }
         }
 
-        return $this->ehriPriority;
+        return $this->ehriMeta;
 
+      case 'ehriScope':
       case 'ehriPriority':
-        return $this->_ehriPriority->content;
+        $content = $this->_ehriMeta->content;
+        if (!$content)
+        {
+          return;
+        }
+        try {
+            $meta = unserialize($this->_ehriMeta->content);
+        } catch (Exception $e) {
+        }
+        if (is_array($meta) && array_key_exists($name, $meta))
+        {
+          return $meta[$name];
+        }
+        break;
 
       default:
           return parent::__get($name);
@@ -57,8 +71,18 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
   {
     switch ($name)
     {
-      case 'ehriPriority':
-        $this->_ehriPriority->content = $value;
+    case 'ehriScope':
+    case 'ehriPriority':
+        try {
+            $meta = unserialize($this->_ehriMeta->content);
+        } catch (Exception $e) {
+        }
+        if (!is_array($meta))
+        {
+          $meta = array();
+        }
+        $meta[$name] = $value;
+        $this->_ehriMeta->content = serialize($meta);
 
         return $this;
 
