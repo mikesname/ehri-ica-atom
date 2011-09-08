@@ -566,6 +566,7 @@ modRewriteContents;
       'sfIsadPlugin',
       'sfIsdfPlugin',
       'sfIsdiahPlugin',
+      'sfEhriIsdiahPlugin',
       'sfModsPlugin',
       'sfRadPlugin',
       'sfSkosPlugin'));

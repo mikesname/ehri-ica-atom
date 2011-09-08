@@ -140,14 +140,14 @@ isdiah:
   url: /:slug;isdiah
   class: QubitResourceRoute
   param:
-    module: sfIsdiahPlugin
+    module: sfEhriIsdiahPlugin
     action: index
     repository_template: isdiah
 
 add/isdiah:
   url: /;add/isdiah
   param:
-    module: sfIsdiahPlugin
+    module: sfEhriIsdiahPlugin
     action: edit
     repository_template: isdiah
 
@@ -155,7 +155,7 @@ edit/isdiah:
   url: /:slug;edit/isdiah
   class: QubitResourceRoute
   param:
-    module: sfIsdiahPlugin
+    module: sfEhriIsdiahPlugin
     action: edit
     repository_template: isdiah
 
