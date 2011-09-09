@@ -47,6 +47,7 @@
 
     </tr>
   </thead><tbody>
+    <?php $row = 0; ?>
     <?php foreach ($pager->getResults() as $item): ?>
       <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
 
