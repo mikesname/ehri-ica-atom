@@ -5,8 +5,16 @@
 
 class sfEhriIsdiahPlugin extends sfIsdiahPlugin
 {
-  protected
-    $ehriMeta;
+  private
+      $_meta;
+
+  public $commonSources = array(
+      'Yad Yashem',
+      'Mémorial de la Shoah',
+      'USHMM',
+      'Archival Guide',
+      'Bibliography',      
+  );
 
   public function __get($name)
   {
@@ -14,56 +22,33 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
     {
       case '_ehriMeta':
 
-        if (!isset($this->ehriMeta))
+        if (!isset($this->_meta))
         {
-          $termcrit = new Criteria;
-          $termcrit->add(QubitTerm::CODE, "EHRIPRIORITY");
-          $termquery = QubitTerm::get($termcrit);
-          //$this->logMessage("Term Query: " . $termquery);
-          // throw new sfPluginException("Term Query: " . count($termquery) . " id: " . $termquery[0]->id);
-          if (0 == count($termquery))
-          {
-            throw new sfPluginException("Unable to find Term with code 'EHRIPRIORIY' in database.");
-          }  
-          
           $criteria = new Criteria;
           $criteria->add(QubitNote::OBJECT_ID, $this->resource->id);
-          $criteria->add(QubitNote::TYPE_ID, $termquery[0]->id);
+          $criteria->add(QubitNote::TYPE_ID, QubitTerm::OTHER_DESCRIPTIVE_DATA_ID);
 
           if (1 == count($query = QubitNote::get($criteria)))
           {
-            $this->ehriMeta = $query[0];
+            $this->_meta = $query[0];
           }
           else
           {
-            $this->ehriMeta = new QubitNote;
-            $this->ehriMeta->typeId = $termquery[0]->id;
-
-            $this->resource->notes[] = $this->ehriMeta;
+            $this->_meta = new QubitNote;
+            $this->_meta->typeId = QubitTerm::OTHER_DESCRIPTIVE_DATA_ID;
+            $this->_meta->content = serialize(array());
+            $this->resource->notes[] = $this->_meta;
           }
         }
+        return $this->_meta;
 
-        return $this->ehriMeta;
-
-      case 'ehriScope':
+      case 'ehriScope':          
+      case 'ehriCopyrightIssue':
       case 'ehriPriority':
-        $content = $this->_ehriMeta->content;
-        if (!$content)
-        {
-          return;
-        }
-        try {
-            $meta = unserialize($this->_ehriMeta->content);
-        } catch (Exception $e) {
-        }
-        if (is_array($meta) && array_key_exists($name, $meta))
-        {
-          return $meta[$name];
-        }
-        break;
-
+        $meta = unserialize($this->_ehriMeta->content);
+        return array_key_exists($name, $meta) ? $meta[$name] : NULL;
       default:
-          return parent::__get($name);
+        return parent::__get($name);
     }
   }
 
@@ -72,22 +57,15 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
     switch ($name)
     {
     case 'ehriScope':
+    case 'ehriCopyrightIssue':
+        error_log("Fetching value for " . $name);
     case 'ehriPriority':
-        try {
-            $meta = unserialize($this->_ehriMeta->content);
-        } catch (Exception $e) {
-        }
-        if (!is_array($meta))
-        {
-          $meta = array();
-        }
+        $meta = unserialize($this->_ehriMeta->content);
         $meta[$name] = $value;
         $this->_ehriMeta->content = serialize($meta);
-
         return $this;
-
-      default:
-          return parent::__set($name, $value);
+    default:
+      return parent::__set($name, $value);
     }
   }
 

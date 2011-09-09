@@ -268,6 +268,12 @@
       ->help(__('Select the script(s) of this record from the drop-down menu; enter the first few letters to narrow the choices. (ISDIAH 5.6.7)'))
       ->renderRow(array('class' => 'form-autocomplete')) ?>
 
+    <?php $sourcerow = 0; ?>
+    <?php foreach ($isdiah->commonSources as $source): ?>
+        <label for="descSource_<?php echo $sourcerow++ ?>"><?php echo $source ?></label>
+        <input type="checkbox" id="descSource_<?php echo $sourcerow ?>" name="descSource_<?php echo $sourcerow ?>" />
+    <?php endforeach ?> 
+
     <?php echo render_field($form->descSources
       ->help(__('"Record the sources consulted in establishing the description of the institution." (ISDIAH 5.6.8)'))
       ->label(__('Sources')), $resource, array('class' => 'resizable')) ?>
@@ -278,6 +284,11 @@
     <?php echo $form->ehriPriority
     ->help(__('"Priority field for EHRI use'))
     ->label('Priority')
+    ->renderRow() ?>
+
+    <?php echo $form->ehriCopyrightIssue
+    ->help(__('"Repository has issues with copyright'))
+    ->label('Copyright')
     ->renderRow() ?>
 
   </fieldset>

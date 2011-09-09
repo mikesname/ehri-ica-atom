@@ -60,7 +60,8 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
       'script',
       'descSources',
       'maintenanceNotes',
-      'ehriPriority');
+      'ehriPriority',
+      'ehriCopyrightIssue');
 
   protected function earlyExecute()
   {
@@ -86,12 +87,16 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
   {
     switch ($name)
     {
+      case 'ehriCopyrightIssue':
+        $this->form->setDefault('ehriCopyrightIssue', $this->isdiah->ehriCopyrightIssue);
+        $this->form->setValidator('ehriCopyrightIssue', new sfValidatorBoolean);
+        $this->form->setWidget('ehriCopyrightIssue', new sfWidgetFormInputCheckbox());
+        break;
       case 'ehriPriority':
-        $this->logMessage("Adding PRIORITY field: ". $this->isdiah->ehriPriority);
         $this->form->setDefault('ehriPriority', $this->isdiah->ehriPriority);
         $this->form->setValidator('ehriPriority', new sfValidatorString);
         $this->form->setWidget('ehriPriority', new sfWidgetFormSelect(
-            array("choices" => array("low", "medium", "high"))));
+            array("choices" => array("high", "medium", "low", "reject"))));
         break;
 
       default:
@@ -104,8 +109,13 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
   {
     switch ($field->getName())
     {
+      case 'ehriCopyrightIssue':
+        $this->isdiah->ehriCopyrightIssue = $this->form->getValue($field->getName());
+        break;
+       //   error_log("Got ehriCopyrightIssue, value " . $this->form->getValue($field->getName()));
+       //   break;
       case 'ehriPriority':
-        $this->isdiah->ehriPriority = $this->form->getValue('ehriPriority');
+        $this->isdiah->ehriPriority = $this->form->getValue($field->getName());
         break;
 
       default:

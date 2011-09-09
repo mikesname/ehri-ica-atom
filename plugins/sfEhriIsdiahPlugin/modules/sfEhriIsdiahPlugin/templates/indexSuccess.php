@@ -131,6 +131,14 @@
 
 <?php echo render_show(__('Priority'), render_value($isdiah->ehriPriority)) ?>
 
+<div class="field">
+  <h3><?php echo __('Copyright Issue') ?></h3>
+  <div>
+    <?php echo render_value($isdiah->ehriCopyrightIssue ? "Yes" : "No") ?>
+  </div>
+</div>
+
+
 <?php if (SecurityPriviliges::editCredentials($sf_user, 'repository')): ?>
   <div class="actions section">
 
