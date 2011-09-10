@@ -3,7 +3,7 @@
 /*
  */
 
-class sfEhriIsdiahPlugin extends sfIsdiahPlugin
+class sfEhriIsdiahPlugin extends sfIsaarPlugin
 {
   private
       $_meta;
@@ -23,21 +23,21 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
       case '_ehriMeta':
 
         if (!isset($this->_meta))
-        {
+        {            
           $criteria = new Criteria;
-          $criteria->add(QubitNote::OBJECT_ID, $this->resource->id);
-          $criteria->add(QubitNote::TYPE_ID, QubitTerm::OTHER_DESCRIPTIVE_DATA_ID);
+          $this->resource->addPropertysCriteria($criteria);
+          $criteria->add(QubitProperty::NAME, "ehrimeta");
 
-          if (1 == count($query = QubitNote::get($criteria)))
+          if (1 == count($query = QubitProperty::get($criteria)))
           {
             $this->_meta = $query[0];
           }
           else
           {
-            $this->_meta = new QubitNote;
-            $this->_meta->typeId = QubitTerm::OTHER_DESCRIPTIVE_DATA_ID;
-            $this->_meta->content = serialize(array());
-            $this->resource->notes[] = $this->_meta;
+            $this->_meta = new QubitProperty;
+            $this->_meta->name = "ehrimeta";
+            $this->_meta->value = serialize(array());
+            $this->resource->propertys[] = $this->_meta;
           }
         }
         return $this->_meta;
@@ -45,7 +45,7 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
       case 'ehriScope':          
       case 'ehriCopyrightIssue':
       case 'ehriPriority':
-        $meta = unserialize($this->_ehriMeta->content);
+        $meta = unserialize($this->_ehriMeta->value);
         return array_key_exists($name, $meta) ? $meta[$name] : NULL;
       default:
         return parent::__get($name);
@@ -60,9 +60,9 @@ class sfEhriIsdiahPlugin extends sfIsdiahPlugin
     case 'ehriCopyrightIssue':
         error_log("Fetching value for " . $name);
     case 'ehriPriority':
-        $meta = unserialize($this->_ehriMeta->content);
+        $meta = unserialize($this->_ehriMeta->value);
         $meta[$name] = $value;
-        $this->_ehriMeta->content = serialize($meta);
+        $this->_ehriMeta->value = serialize($meta);
         return $this;
     default:
       return parent::__set($name, $value);
