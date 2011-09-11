@@ -268,15 +268,60 @@
       ->help(__('Select the script(s) of this record from the drop-down menu; enter the first few letters to narrow the choices. (ISDIAH 5.6.7)'))
       ->renderRow(array('class' => 'form-autocomplete')) ?>
 
+  <script type="application/javascript">
+    jQuery(function() {
+        var others = [],
+            elemap = {};
+        jQuery(".ehri-common-source").each(function(i, elem) {
+            elemap[jQuery(elem).attr("data-source")] = elem;
+        });
+        jQuery.each(jQuery("#descSources").val().split("\n"), function(i, s) {
+            var src = jQuery.trim(s);
+            if (src != "") {
+              if (!elemap[src])
+                  others.push(src);
+              else
+                  jQuery(elemap[src]).prop("checked", true);
+            }
+        });
+        console.log("Others", others, "Map", elemap);
+        jQuery("#otherSources").val(others.join("\n"));
+
+        function consolidateSources() {
+          var checked = jQuery.makeArray(jQuery(".ehri-common-source:checked").map(function(i, elem) {
+              return jQuery(elem).attr("data-source");
+          }));
+          console.log("Checked", checked, [1,2,3].join());
+          jQuery.each(jQuery("#otherSources").val().split("\n"), function(i, s) {
+              console.log(i, s);
+            if (jQuery.trim(s) != "")
+                checked.push(jQuery.trim(s));
+          });
+          jQuery("#descSources").val(checked.join("\n"));
+        }
+
+      jQuery(".ehri-common-source").change(consolidateSources);
+      jQuery("#descSources").bind("keyup", consolidateSources);
+
+    });
+
+  </script>
+
+    <div class="form-item">
+      <?php echo $form->descSources
+        ->help(__('"Record the sources consulted in establishing the description of the institution." (ISDIAH 5.6.8)'))
+        ->label(__('Sources'))
+        ->renderRow() ?>
     <?php $sourcerow = 0; ?>
     <?php foreach ($isdiah->commonSources as $source): ?>
-        <label for="descSource_<?php echo $sourcerow++ ?>"><?php echo $source ?></label>
-        <input type="checkbox" id="descSource_<?php echo $sourcerow ?>" name="descSource_<?php echo $sourcerow ?>" />
+        <label for="descSource_<?php echo $sourcerow ?>"><?php echo $source ?></label>
+        <input type="checkbox" class="ehri-common-source" data-source="<?php echo $source ?>" id="descSource_<?php echo $sourcerow ?>" name="descSource_<?php echo $sourcerow ?>" />
+        <?php $sourcerow++ ?>
     <?php endforeach ?> 
-
-    <?php echo render_field($form->descSources
-      ->help(__('"Record the sources consulted in establishing the description of the institution." (ISDIAH 5.6.8)'))
-      ->label(__('Sources')), $resource, array('class' => 'resizable')) ?>
+    <label for="otherSources">Other Sources</label>
+    <textarea rows="4" cols="30" name="otherSources" class="resizable textarea-processed" id="otherSources" style=""></textarea>
+  </div>
+        
 
     <?php echo render_field($form->maintenanceNotes
       ->help(__('"Record notes pertinent to the creation and maintenance of the description." (ISDIAH 5.6.9)')), $isdiah, array('class' => 'resizable')) ?>

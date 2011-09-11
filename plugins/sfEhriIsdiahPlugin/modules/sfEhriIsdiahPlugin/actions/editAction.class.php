@@ -87,6 +87,12 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
   {
     switch ($name)
     {
+      case 'descSources':
+        $this->form->setDefault($name, $this->resource[$name]);
+        $this->form->setValidator($name, new sfValidatorString);
+        $this->form->setWidget($name, new sfWidgetFormInputHidden);
+        break;
+
       case 'ehriCopyrightIssue':
         $this->form->setDefault('ehriCopyrightIssue', $this->isdiah->ehriCopyrightIssue);
         $this->form->setValidator('ehriCopyrightIssue', new sfValidatorBoolean);
