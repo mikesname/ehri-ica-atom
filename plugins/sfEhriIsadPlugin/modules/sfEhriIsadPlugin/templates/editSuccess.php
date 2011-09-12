@@ -1,5 +1,3 @@
-<?php include_partial('defaultOptions'); ?>
-
 <h1><?php echo __('Edit archival description - ISAD') ?></h1>
 
 <h1 class="label"><?php echo render_title($isad) ?></h1>
