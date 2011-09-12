@@ -370,13 +370,18 @@
 
     </div>
 
+    <?php echo $form->ehriScope
+    ->help(__('Extent of collection covering the Holocaust'))
+    ->label('Scope')
+    ->renderRow() ?>
+
     <?php echo $form->ehriPriority
-    ->help(__('"Priority field for EHRI use'))
+    ->help(__('Priority field for EHRI use'))
     ->label('Priority')
     ->renderRow() ?>
 
     <?php echo $form->ehriCopyrightIssue
-    ->help(__('"Repository has issues with copyright'))
+    ->help(__('Repository has issues with copyright'))
     ->label('Copyright')
     ->renderRow() ?>
 

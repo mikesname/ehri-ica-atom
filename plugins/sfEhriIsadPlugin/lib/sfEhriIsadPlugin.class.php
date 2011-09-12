@@ -59,6 +59,7 @@ class sfEhriIsadPlugin extends sfIsadPlugin
         return $this->_meta;
 
       case 'ehriCopyrightIssue':
+      case 'ehriScope':
       case 'ehriPriority':
         $meta = unserialize($this->_ehriMeta->value);
         return array_key_exists($name, $meta) ? $meta[$name] : NULL;
@@ -72,6 +73,7 @@ class sfEhriIsadPlugin extends sfIsadPlugin
     switch ($name)
     {
     case 'ehriCopyrightIssue':
+    case 'ehriScope':
     case 'ehriPriority':
         $meta = unserialize($this->_ehriMeta->value);
         $meta[$name] = $value;

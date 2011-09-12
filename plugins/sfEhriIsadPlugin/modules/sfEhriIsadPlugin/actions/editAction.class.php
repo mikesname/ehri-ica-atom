@@ -65,6 +65,7 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
       'descriptionStatus',
       'publicationStatus',
       'title',
+      'ehriScope',
       'ehriPriority',
       'ehriCopyrightIssue');
 
@@ -97,6 +98,12 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
         $this->form->setValidator('ehriCopyrightIssue', new sfValidatorBoolean);
         $this->form->setWidget('ehriCopyrightIssue', new sfWidgetFormInputCheckbox());
         break;
+      case 'ehriScope':
+        $this->form->setDefault('ehriScope', $this->isad->ehriScope);
+        $this->form->setValidator('ehriScope', new sfValidatorString);
+        $this->form->setWidget('ehriScope', new sfWidgetFormSelect(
+            array("choices" => array("high", "medium", "low"))));
+        break;
       case 'ehriPriority':
         $this->form->setDefault('ehriPriority', $this->isad->ehriPriority);
         $this->form->setValidator('ehriPriority', new sfValidatorString);
@@ -115,10 +122,10 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
     switch ($field->getName())
     {
       case 'ehriCopyrightIssue':
-        $this->isad->ehriCopyrightIssue = $this->form->getValue($field->getName());
-        break;
+      case 'ehriScope':
       case 'ehriPriority':
-        $this->isad->ehriPriority = $this->form->getValue($field->getName());
+        $name = $field->getName();
+        $this->isad->$name = $this->form->getValue($name);
         break;
 
       default:
