@@ -34,8 +34,6 @@
           other.bind("keyup", consolidateSources);
       }
 
-      setupCheckFields($("#descSources"), $("#otherSources"), $(".ehri-common-source"));
-      setupCheckFields($("#researchServices"), $("#otherServices"), $(".ehri-res-service"));
 });
 </script>
 

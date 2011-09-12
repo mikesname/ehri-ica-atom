@@ -52,6 +52,7 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
       'nameAccessPoints',
       'physicalCharacteristics',
       'placeAccessPoints',
+      'otherName',
       'relatedUnitsOfDescription',
       'repository',
       'reproductionConditions',
@@ -111,6 +112,23 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
             array("choices" => array("high", "medium", "low", "reject"))));
         break;
 
+      case 'otherName':
+        $criteria = new Criteria;
+        $criteria = $this->resource->addOtherNamesCriteria($criteria);
+        $criteria->add(QubitOtherName::TYPE_ID, QubitTerm::OTHER_FORM_OF_NAME_ID);
+
+        $value = $defaults = array();
+        foreach ($this[$name] = QubitOtherName::get($criteria) as $item)
+        {
+          $defaults[$value[] = $item->id] = $item;
+        }
+
+        $this->form->setDefault($name, $value);
+        $this->form->setValidator($name, new sfValidatorPass);
+        $this->form->setWidget($name, new QubitWidgetFormInputMany(array('defaults' => $defaults)));
+
+        break;
+
       default:
 
         return parent::addField($name);
@@ -128,6 +146,32 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
         $this->isad->$name = $this->form->getValue($name);
         break;
 
+      case 'otherName':
+        $value = $filtered = $this->form->getValue($field->getName());
+
+        foreach ($this[$field->getName()] as $item)
+        {
+          if (isset($value[$item->id]))
+          {
+            $item->name = $value[$item->id];
+            unset($filtered[$item->id]);
+          }
+          else
+          {
+            $item->delete();
+          }
+        }
+
+        foreach ($filtered as $item)
+        {
+          $otherName = new QubitOtherName;
+          $otherName->name = $item;
+          $otherName->typeId = QubitTerm::OTHER_FORM_OF_NAME_ID;
+
+          $this->resource->otherNames[] = $otherName;
+        }
+
+        break;
       default:
 
         return parent::processField($field);

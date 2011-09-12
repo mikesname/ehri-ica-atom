@@ -35,6 +35,11 @@
       ->help(__('Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.'))
       ->label(__('Title').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource) ?>
 
+    <?php echo $form->otherName
+      ->help(__('Alternate forms of name'))
+      ->label('Other form(s) of name')
+      ->renderRow() ?>
+
     <?php echo get_partial('event', $eventComponent->getVarHolder()->getAll()) ?>
 
     <?php echo $form->levelOfDescription
