@@ -112,11 +112,10 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
       case 'ehriCopyrightIssue':
         $this->isdiah->ehriCopyrightIssue = $this->form->getValue($field->getName());
         break;
-       //   error_log("Got ehriCopyrightIssue, value " . $this->form->getValue($field->getName()));
-       //   break;
       case 'ehriPriority':
         $this->isdiah->ehriPriority = $this->form->getValue($field->getName());
         break;
+
       default:
 
         return parent::processField($field);
