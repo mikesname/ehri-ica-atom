@@ -564,6 +564,7 @@ modRewriteContents;
       'sfEadPlugin',
       'sfIsaarPlugin',
       'sfIsadPlugin',
+      'sfEhriIsadPlugin',
       'sfIsdfPlugin',
       'sfIsdiahPlugin',
       'sfEhriIsdiahPlugin',

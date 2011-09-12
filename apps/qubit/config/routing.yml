@@ -90,21 +90,21 @@ isad:
   url: /:slug;isad
   class: QubitResourceRoute
   param:
-    module: sfIsadPlugin
+    module: sfEhriIsadPlugin
     action: index
     informationobject_template: isad
 
 add/isad:
   url: /;add/isad
   param:
-    module: sfIsadPlugin
+    module: sfEhriIsadPlugin
     action: edit
     informationobject_template: isad
 
 copy/isad:
   url: /;copy/isad
   param:
-    module: sfIsadPlugin
+    module: sfEhriIsadPlugin
     action: edit
     informationobject_template: isad
 
@@ -112,7 +112,7 @@ edit/isad:
   url: /:slug;edit/isad
   class: QubitResourceRoute
   param:
-    module: sfIsadPlugin
+    module: sfEhriIsadPlugin
     action: edit
     informationobject_template: isad
 
