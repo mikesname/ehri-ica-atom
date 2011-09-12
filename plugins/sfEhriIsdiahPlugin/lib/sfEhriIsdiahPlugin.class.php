@@ -9,12 +9,22 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
       $_meta;
 
   public $commonSources = array(
-      'Yad Yashem',
+      'Yad Vashem',
       'Mémorial de la Shoah',
       'USHMM',
       'Archival Guide',
-      'Bibliography',      
+      'Bibliography',        
   );
+
+  public $researchServices = array(
+      'Basic description',
+      'Search services',
+  );
+
+  public $defaultValues = array(
+      'descRules' => 'ISDIAH',
+      'descIdentifier' => 'EHRI',
+  );      
 
   public function __get($name)
   {
@@ -42,7 +52,6 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
         }
         return $this->_meta;
 
-      case 'ehriScope':          
       case 'ehriCopyrightIssue':
       case 'ehriPriority':
         $meta = unserialize($this->_ehriMeta->value);
@@ -56,9 +65,7 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
   {
     switch ($name)
     {
-    case 'ehriScope':
     case 'ehriCopyrightIssue':
-        error_log("Fetching value for " . $name);
     case 'ehriPriority':
         $meta = unserialize($this->_ehriMeta->value);
         $meta[$name] = $value;
