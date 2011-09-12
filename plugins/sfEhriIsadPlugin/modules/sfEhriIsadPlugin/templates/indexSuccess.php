@@ -24,6 +24,17 @@
 
   <?php echo render_show(__('Title'), render_value($resource->getTitle(array('cultureFallback' => true)))) ?>
 
+<div class="field">
+  <h3><?php echo __('Other form(s) of title') ?></h3>
+  <div>
+    <ul>
+      <?php foreach ($resource->getOtherNames(array('typeId' => QubitTerm::OTHER_FORM_OF_NAME_ID)) as $item): ?>
+        <li><?php echo render_value($item->__toString()) ?></li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+</div>
+
   <div class="field">
     <h3><?php echo __('Date(s)') ?></h3>
     <div>
