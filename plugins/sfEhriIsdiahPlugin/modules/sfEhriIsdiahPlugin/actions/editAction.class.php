@@ -81,6 +81,16 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
     }
 
     $this->response->setTitle("$title - {$this->response->getTitle()}");
+
+    // FIXME: Hack way of setting default values
+    if (!$this->resource->descIdentifier)
+    {
+      $this->resource->descIdentifier = "EHRI";
+    }
+    if (!$this->resource->descRules)
+    {
+      $this->resource->descRules = "ISDIAH";
+    }
   }
 
   protected function addField($name)

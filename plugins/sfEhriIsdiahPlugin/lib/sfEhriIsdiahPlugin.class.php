@@ -6,8 +6,12 @@
 class sfEhriIsdiahPlugin extends sfIsaarPlugin
 {
   private
-      $_meta;
+    $_meta;
 
+  // FIXME: These should really be static
+  // class properties, but that seems to
+  // require jumping through some unpleasant
+  // hoops elsewhere in the code.
   public $commonSources = array(
       'Yad Vashem',
       'Mémorial de la Shoah',
@@ -15,16 +19,11 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
       'Archival Guide',
       'Bibliography',        
   );
-
+  // FIXME: Ditto, should be static
   public $researchServices = array(
       'Basic description',
       'Search services',
   );
-
-  public $defaultValues = array(
-      'descRules' => 'ISDIAH',
-      'descIdentifier' => 'EHRI',
-  );      
 
   public function __get($name)
   {

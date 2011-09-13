@@ -88,6 +88,22 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
     }
 
     $this->response->setTitle("$title - {$this->response->getTitle()}");
+
+    // FIXME: Hack way of setting default values
+    if (!$this->resource->levelOfDescription)
+    {
+      $this->resource->setLevelOfDescriptionByName("Collection");
+    }
+    if (!$this->resource->descriptionIdentifier)
+    {
+      $this->resource->descriptionIdentifier = "EHRI";
+    }
+    if (!$this->resource->rules)
+    {
+      $this->resource->rules = "ISAD(G)";
+    }
+
+
   }
 
   protected function addField($name)
