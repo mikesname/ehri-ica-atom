@@ -119,13 +119,16 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
         $this->form->setDefault('ehriScope', $this->isad->ehriScope);
         $this->form->setValidator('ehriScope', new sfValidatorString);
         $this->form->setWidget('ehriScope', new sfWidgetFormSelect(
-            array("choices" => array("high", "medium", "low"))));
+            array("choices" => array(
+                "High" =>"High", "Medium" => "Medium", "Low" => "Low"))));
         break;
       case 'ehriPriority':
         $this->form->setDefault('ehriPriority', $this->isad->ehriPriority);
         $this->form->setValidator('ehriPriority', new sfValidatorString);
         $this->form->setWidget('ehriPriority', new sfWidgetFormSelect(
-            array("choices" => array("high", "medium", "low", "reject"))));
+            array("choices" => array(
+                "High" =>"High", "Medium" => "Medium",
+                "Low" => "Low", "Reject" => "Reject"))));
         break;
 
       case 'otherName':

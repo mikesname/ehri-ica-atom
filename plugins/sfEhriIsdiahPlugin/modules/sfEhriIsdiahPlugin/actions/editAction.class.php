@@ -106,7 +106,9 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
         $this->form->setDefault('ehriPriority', $this->isdiah->ehriPriority);
         $this->form->setValidator('ehriPriority', new sfValidatorString);
         $this->form->setWidget('ehriPriority', new sfWidgetFormSelect(
-            array("choices" => array("high", "medium", "low", "reject"))));
+            array("choices" => array(
+                "High" =>"High", "Medium" => "Medium",
+                "Low" => "Low", "Reject" => "Reject"))));
         break;
 
       default:
