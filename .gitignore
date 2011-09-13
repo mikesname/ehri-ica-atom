@@ -4,3 +4,4 @@
 *.swo
 log/*
 cache/*
+plugins/.*
