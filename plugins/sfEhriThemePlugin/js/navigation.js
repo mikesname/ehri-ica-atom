@@ -2,6 +2,15 @@
 
 (function ($)
   {
+    // Hack to avoid changing the default logo but
+    // still keeping a clickable header...
+    $(document).ready(function() {
+        $("#header").click(function(event) {
+          window.location = "/index.php/";
+        });  
+    });
+
+
     Drupal.behaviors.navigation = {
       attach: function (context)
         {
