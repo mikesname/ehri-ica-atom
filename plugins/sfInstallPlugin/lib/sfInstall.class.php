@@ -559,6 +559,7 @@ modRewriteContents;
     $object->name = 'plugins';
     $object->value = serialize(array(
       'sfCaribouPlugin',
+      'sfEhriThemePlugin',
       'sfDcPlugin',
       'sfEacPlugin',
       'sfEadPlugin',
