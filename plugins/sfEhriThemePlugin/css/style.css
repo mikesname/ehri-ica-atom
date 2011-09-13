@@ -90,7 +90,7 @@ tbody tr:hover
 
 #page .search .form-submit
 {
-  background: #bcd url(../images/search.png) no-repeat center;
+  background: #bcd url(../images/search.png) no-repeat left;
   border: 0;
 
   border-radius: 3px;
@@ -278,16 +278,37 @@ tbody tr:hover
 .actions, .label, #content .search, .admin-info {
     background: #F3F3F3;
     color: #6c003b;
-    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
-    -moz-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
-    -webkit-box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.25);
-    border: 1px solid #F6F6F6;
+    box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.25);
+    border: 1px solid #D3D3D3;
     width: 100%;
 }
 
 .actions, #content .search {
 }
 
+#page .section .form-submit,
+.actions :link,
+.actions :visited,
+.form-submit,
+.form-submit:focus {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #D0D0D0;
+    padding: 0.4em 1em 0.4em 1em;
+    color: #666;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#efefef));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#efefef 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#efefef 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#efefef 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#efefef',GradientType=0 );
+    background: linear-gradient(top, #ffffff 0%,#efefef 100%);
+
+}
 
 .actions :link:focus,
 .actions :link:hover,
@@ -295,7 +316,100 @@ tbody tr:hover
 .actions :visited:hover,
 .form-submit:focus,
 .form-submit:hover {
-    background: #6c003b;
-    color: #FFF;
     text-decoration: none;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f3f3f3));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#f3f3f3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#f3f3f3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#f3f3f3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f3f3f3',GradientType=0 );
+    background: linear-gradient(top, #ffffff 0%,#f3f3f3 100%);    
 }
+
+a:link, a:visited, h2 {
+    color: #6c003b;
+}
+
+#site-name {
+    color: #6c003b;
+    font-size: 1em;
+    float: left;
+    font-style: italic;
+}
+
+#logo, #name-and-slogan {
+    float: none;
+}
+
+#logo, #name-and-slogan {
+    display: none;
+}
+
+#site-slogan {
+    clear: left;
+}
+
+.section fieldset {
+    border: 1px solid #D0D0D0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #fefefe 47%, #fcfcfc 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#fefefe), color-stop(100%,#fcfcfc));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fcfcfc',GradientType=0 );
+    background: linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+}
+
+.section fieldset.collapsed {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.admin-info {
+    margin-top: 10px;
+}
+
+thead th {
+    color: #FFF;
+    background-color: #6c003b;
+}
+
+:link:hover h2, :visited:hover h2,
+:link:hover h3, :visited:hover h3 {
+    background-color: #FFF;
+    color: #6c003b;
+}
+
+.page h1, .sidebar > .section > div > h2, .sidebar > .section > div > h3 {
+    background: #36114f;
+    color: white;
+    font-size: 160%;
+}
+
+a.currentTextNode {
+    background-color: #FFE;
+}
+
+a.currentTextNode:hover {
+    color: #FFE;
+    background-color: #6c003b;
+}
+
+#page .search .form-submit {
+    background: #BCD url(../images/search.png) no-repeat left;
+}
+
+#header {
+    height: 100px;
+    cursor: pointer;
+    background-image: url("../images/logo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
