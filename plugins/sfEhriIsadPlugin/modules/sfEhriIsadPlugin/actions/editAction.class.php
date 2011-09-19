@@ -127,7 +127,7 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
         $this->form->setValidator('ehriPriority', new sfValidatorString);
         $this->form->setWidget('ehriPriority', new sfWidgetFormSelect(
             array("choices" => array(
-                "High" =>"High", "Medium" => "Medium",
+                null => "", "High" =>"High", "Medium" => "Medium",
                 "Low" => "Low", "Reject" => "Reject"))));
         break;
 
