@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_C2_Create_authority_record.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_C2_Create_authority_record.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=authority record</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorized_form_of_name</td>
+	<td>AASelenium test office</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>entity_type_id</td>
+	<td>label=Corporate body</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>name</td>
+	<td>CTO</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>type_id</td>
+	<td>label=Acronym</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>note</td>
+	<td>Not used</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>corporate_body_identifiers</td>
+	<td>CTO</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=description area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>start_date</td>
+	<td>1996</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>end_date</td>
+	<td>2008</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description</td>
+	<td>1996-</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>history</td>
+	<td>Established 1996. However, it was active for a while before that.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>places</td>
+	<td>Located in the Fraser Valley</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>legal_status</td>
+	<td>Incorporated</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>functions</td>
+	<td>Tests software, makes things easy.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>mandates</td>
+	<td>Local government act.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>internal_structures</td>
+	<td>Divided into three departments.</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>general_context</td>
+	<td>A department of the Selenium group.</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=relationships area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=relationships area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=control area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description_identifier</td>
+	<td>435</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>institution_responsible_identifier</td>
+	<td>CTO2</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rules</td>
+	<td>No rules apply</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_status_id</td>
+	<td>label=Revised</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_detail_id</td>
+	<td>label=Partial</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>revision_history</td>
+	<td>Revised 2008</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>language_code</td>
+	<td>label=English</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>script_code</td>
+	<td>label=Latin</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>sources</td>
+	<td>ISAAR</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>note_type_id</td>
+	<td>label=Archivist's note</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content</td>
+	<td>This is an unusual authority record.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@name='commit' and @value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=AASelenium test office</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Corporate body</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>CTO (Acronym)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>--Not used</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>CTO</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1996-</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Established 1996. However, it was active for a while before that.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Located in the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Incorporated</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Tests software, makes things easy.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Local government act.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Divided into three departments.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>A department of the Selenium group.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>435</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>CTO2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No rules apply</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Revised</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Partial</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Revised 2008</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>English</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Latin</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>ISAAR</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archivist's note: This is an unusual authority record.</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

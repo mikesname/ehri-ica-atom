@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>dc_create.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">dc_create.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>create/dc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>001</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>DC collection</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>Qubit.eventDialog.show()</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForVisible</td>
+	<td>newEventActor</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEventActor</td>
+	<td>Mr. Bean</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//table[@id='newEvent']/tbody/tr[2]/td/div/div/div[2]/ul/li[1]</td>
+	<td>Mr. Bean</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='newEvent']/tbody/tr[2]/td/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEvent_startDate</td>
+	<td>1966</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEvent_endDate</td>
+	<td>1977</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newEvent_description</td>
+	<td>Here is an event note</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>yui-gen0-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>//select[@id='types']</td>
+	<td>label=service</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[5]/select/option[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>extentAndMedium</td>
+	<td>Format field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>scopeAndContent</td>
+	<td>Description field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//form[@id='editForm']/div[10]/input[2]</td>
+	<td>Afar</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//form[@id='editForm']/div[10]/div/div/div[2]/ul/li[1]</td>
+	<td>Afar</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='editForm']/div[10]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>repository</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//form[@id='editForm']/div[15]/div/div/div[2]/ul/li[1]</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//form[@id='editForm']/div[15]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>locationOfOriginals</td>
+	<td>Source field</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>accessConditions</td>
+	<td>Rights field</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>publicationStatus</td>
+	<td>label=draft</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=001 - DC collection (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>title</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>creator</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>date</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>format</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>language</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>source</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>rights</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>DC collection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1966 - 1977</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Type: Creation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Creator: Mr. Bean Note: Here is an event note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>service</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Format field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Description field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Afar</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Source field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Rights field</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Dublin Core 1.1 XML</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>EAD 2002 XML</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

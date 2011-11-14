@@ -1,0 +1,697 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://127.0.0.1/~evelyn/qubit/web/index.php" />
+<title>create_repository.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">create_repository.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>repository/create/isdiah</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>AFV</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>authorizedFormOfName</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>parallelName_new</td>
+	<td>Archives of the Lower Mainland</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>otherName_new</td>
+	<td>Lower Mainland Archives</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='identityArea']/div/div[5]/input[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='identityArea']/div/div[5]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>View repositories</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Authorized form of name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Parallel form(s) of name</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>AFV</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of the Lower Mainland</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Lower Mainland Archives</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Aboriginal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>street_address</td>
+	<td>1234 Sunshine Road</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>city</td>
+	<td>Sunshine</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>region</td>
+	<td>BC</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>country_code</td>
+	<td>label=Canada</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>postal_code</td>
+	<td>X0X 0X0</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>telephone</td>
+	<td>604-123-4567</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>fax</td>
+	<td>604-234-5678</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>sunshine@archives.ca</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>website</td>
+	<td>www.sunshine.ca</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contact_person</td>
+	<td>Miss Sunshine</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>primary_contact</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contact_type</td>
+	<td>Primary address</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>contact_information_note</td>
+	<td>Contact note</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Contact information</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Primary address (Primary contact)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1234 Sunshine Road</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sunshine</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>BC</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Canada</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>X0X 0X0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Telephone</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Fax</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Email</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>URL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=sunshine@archives.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>604-123-4567</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>604-234-5678</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>sunshine@archives.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>www.sunshine.ca</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Miss Sunshine</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Contact note</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>history</td>
+	<td>Hier ist Geschichte</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>geoculturalContext</td>
+	<td>Canadian</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>mandates</td>
+	<td>Legislation</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>internalStructures</td>
+	<td>Organization chart needed</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>collectingPolicies</td>
+	<td>See records schedule policy</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>buildings</td>
+	<td>Two main buildings</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>holdings</td>
+	<td>Records relating to architectural history</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>findingAids</td>
+	<td>File lists available</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>openingTimes</td>
+	<td>Weekdays only</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>accessConditions</td>
+	<td>No conditions on access</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>disabledAccess</td>
+	<td>Automatic door</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>researchServices</td>
+	<td>Researchers available for hire</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>reproductionServices</td>
+	<td>Photocopies available</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>publicFacilities</td>
+	<td>Reading room, cafeteria</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>descIdentifier</td>
+	<td>AFV123</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>descInstitutionIdentifier</td>
+	<td>Archives of FV</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>descRules</td>
+	<td>No rules or anything</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>descStatus</td>
+	<td>label=Final</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>descDetail</td>
+	<td>label=Partial</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>descRevisionHistory</td>
+	<td>Never revised</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='controlArea']/div/div[7]/div/div/div[2]/ul/li[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='controlArea']/div/div[8]/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='controlArea']/div/div[8]/div/div/div[2]/ul/li[5]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>descSources</td>
+	<td>International standards</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>maintenanceNotes</td>
+	<td>Description is maintained</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>History</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Geographical and cultural context</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Mandates/Sources of authority</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Administrative structure</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Records management and collecting policies</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Buildings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>holdings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Finding aids, guides and publications</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Opening times</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Access conditions and requirements</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Accessibility</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Research services</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Reproduction services</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Public areas</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Description identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Institution identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Rules and/or conventions used</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Level of detail</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Dates of creation, revision and deletion</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Language(s)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Script(s)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Sources</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Maintenance notes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Description is maintained</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Hier ist Geschichte</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Canadian</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Legislation</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Organization chart needed</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>See records schedule policy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Two main buildings</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Records relating to architectural history</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>File lists available</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Weekdays only</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No conditions on access</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Automatic door</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Researchers available for hire</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Photocopies available</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Reading room, cafeteria</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>AFV123</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Archives of FV</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>No rules or anything</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Final</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Partial</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Never revised</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Achinese</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Balinese</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Arabic</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>International standards</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Description is maintained</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>repository/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>List repositories</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Archives of the Fraser Valley</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Aboriginal</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Canada</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Type</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Country</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>rad_child_levels.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">rad_child_levels.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>informationobject/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=fonds for import</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateChildLevels_0_identifier</td>
+	<td>001</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateChildLevels_0_title</td>
+	<td>Import series</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>ygtvlabelel2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add new</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>identifier</td>
+	<td>01</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>File 1</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateChildLevels_0_identifier</td>
+	<td>1A</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateChildLevels_0_title</td>
+	<td>Little item 1</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[@onclick='addNewRow(this); return false;']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateChildLevels[1][identifier]</td>
+	<td>1B</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>updateChildLevels[1][title]</td>
+	<td>Little item 2</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Fonds - fonds for import (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>001 - Import series (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1A - Little item 1 (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>1B - Little item 2 (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>ygtvlabelel2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>publicationStatus</td>
+	<td>label=published</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>001 - Import series (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>001 - Import series</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextNotPresent</td>
+	<td>01 - File 1 (draft)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>01 - File 1</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

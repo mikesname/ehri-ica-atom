@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>ISAAR_edit_delete.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">ISAAR_edit_delete.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>actor/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//tr[@id='actorRelation_new0']/td[5]/div/a[1]/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>3000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>editActorRelation_description</td>
+	<td>Little Bean is Mr. Bean's doggy</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>editActorRelation_categoryId</td>
+	<td>label=hierarchical</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>yui-gen0-button</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowIdentity area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>entity_type_id</td>
+	<td>label=Corporate body</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowDescription area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dates_of_existence</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>history</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>places</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>legal_status</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>functions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>mandates</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>internal_structures</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>general_context</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Corporate body</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>hierarchical</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Little Bean is Mr. Bean's doggy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowControl area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>description_identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>institution_responsible_identifier</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>rules</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_status_id</td>
+	<td>label=</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>description_detail_id</td>
+	<td>label=</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>revision_history</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowDescription area</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>dates_of_existence</td>
+	<td>1966-2008</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Little Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>(1966-2008)</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Are you sure you want to delete Little Bean?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Confirm']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Mr. Bean</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Are you sure you want to delete Mr. Bean?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Confirm']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

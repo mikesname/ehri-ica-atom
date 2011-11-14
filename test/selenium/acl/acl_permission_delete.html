@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>acl_permission_delete.html</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">acl_permission_delete.html</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>user/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Hilary Jenkinson</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowGroups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>permission_new_actionId</td>
+	<td>label=delete</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>permission_new_grantDeny_0</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowGroups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>permission_new_actionId</td>
+	<td>label=delete</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>newRepository</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/table[2]/tbody/tr/td[3]/div/div/div/div[2]/ul/li[1]</td>
+	<td>Archives of the Fraser Valley</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//fieldset[@id='groupsAndPermissions']/div/table[2]/tbody/tr/td[3]/div/div/div/div[2]/ul/li[1]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>user/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>user/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>hilary@artefactual.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>hilary</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Log in']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>informationobject/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=fonds for import</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>informationobject/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Simpson fonds</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementNotPresent</td>
+	<td>link=Delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>user/logout</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>user/login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>email</td>
+	<td>admin@artefactual.com</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>password</td>
+	<td>admin</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Log in']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>user/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Hilary Jenkinson</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=ShowGroups and permissions</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='userPermissions']/tbody/tr[1]//button[@name='delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//table[@id='userPermissions']/tbody/tr[1]//button[@name='delete']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>pause</td>
+	<td>1000</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='Save']</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

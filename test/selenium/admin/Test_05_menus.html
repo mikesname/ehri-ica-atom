@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="" />
+<title>Test_5_menus</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Test_5_menus</td></tr>
+</thead><tbody>
+<tr>
+	<td>open</td>
+	<td>staticpage/create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>title</td>
+	<td>Information for donors</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content</td>
+	<td>Here is some information for prospective donors.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='create']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>menu/create</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>menu_name</td>
+	<td>informationfordonors</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>menu_label</td>
+	<td>information for donors</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>menu_path</td>
+	<td>staticpage/static?permalink=information-for-donors</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>menu_description</td>
+	<td>Page with information for prospective donors.</td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>menu_parentId</td>
+	<td>label=- Quick links</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=information for donors</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Here is some information for prospective donors.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=edit this page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>content</td>
+	<td>Here is some really important information for prospective donors.</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>menu/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=informationfordonors</td>
+	<td></td>
+</tr>
+<tr>
+	<td>select</td>
+	<td>menu_parentId</td>
+	<td>label=-- add/edit</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>//input[@value='save']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Add/edit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>information for donors</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=information for donors</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Here is some really important information for prospective donors.</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>menu/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=informationfordonors</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>this action will delete this menu and all it's descendants. Are you sure?</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>staticpage/list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Information for donors</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=delete</td>
+	<td></td>
+</tr>
+<tr>
+	<td>assertConfirmation</td>
+	<td>are you sure?</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>
