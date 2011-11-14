@@ -86,6 +86,50 @@ class QubitInformationObject extends BaseInformationObject
 
         return array();
 
+      case 'referenceCode':
+
+        if (sfConfig::get('app_inherit_code_informationobject'))
+        {
+          if (!isset($this->identifier))
+          {
+            return;
+          }
+
+          $identifier = array();
+          $repository = null;
+          foreach ($this->ancestors->andSelf()->orderBy('lft') as $item)
+          {
+            if (isset($item->identifier))
+            {
+              $identifier[] = $item->identifier;
+            }
+
+            if (isset($item->repository))
+            {
+              $repository = $item->repository;
+            }
+          }
+          $identifier = implode(sfConfig::get('app_separator_character', '-'), $identifier);
+
+          if (isset($repository->identifier))
+          {
+            $identifier = "$repository->identifier $identifier";
+          }
+
+          if (isset($repository))
+          {
+            $countryCode = $repository->getCountryCode();
+            if (isset($countryCode))
+            {
+              $identifier = "$countryCode $identifier";
+            }
+          }
+
+          return $identifier;
+        }
+
+        return $this->identifier;
+
       default:
 
         return call_user_func_array(array($this, 'BaseInformationObject::__get'), $args);

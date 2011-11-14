@@ -26,6 +26,7 @@ final class xfPopulateTask extends xfBaseTask
 
     $this->addOptions(array(
       new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', 'qubit'),
+      new sfCommandOption('env', null, sfCommandOption::PARAMETER_REQUIRED, 'The environment', 'cli'),
 //      new sfCommandOption('optimize', 'o', sfCommandOption::PARAMETER_NONE, 'If passed, the index is optimized after population'),
       new sfCommandOption('actorOffset', null, sfCommandOption::PARAMETER_REQUIRED, 'Segmentation fault workaround (actors)'),
       new sfCommandOption('ioOffset', null, sfCommandOption::PARAMETER_REQUIRED, 'Segmentation fault workaround (information objects)')));

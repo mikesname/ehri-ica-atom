@@ -90,9 +90,8 @@ class sfModsPlugin implements ArrayAccess
     switch ($name)
     {
       case 'identifier':
-        $isad = new sfIsadPlugin($this->resource);
 
-        return $isad->referenceCode;
+        return $this->resource->referenceCode;
 
       case 'name':
         $name = array();

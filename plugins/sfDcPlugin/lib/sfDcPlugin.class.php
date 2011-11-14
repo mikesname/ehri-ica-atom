@@ -155,9 +155,8 @@ class sfDcPlugin implements ArrayAccess
         return $format;
 
       case 'identifier':
-        $isad = new sfIsadPlugin($this->resource);
 
-        return $isad->referenceCode;
+        return $this->resource->referenceCode;
 
       case 'sourceCulture':
 

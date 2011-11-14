@@ -461,8 +461,7 @@ class QubitSearch extends xfIndexSingle
 
     $doc->addField(Zend_Search_Lucene_Field::Text('scopeAndContent', $informationObject->getScopeAndContent(array('culture' => $language))));
 
-    $isad = new sfIsadPlugin($informationObject);
-    $doc->addField(Zend_Search_Lucene_Field::Text('referenceCode', $isad->referenceCode));
+    $doc->addField(Zend_Search_Lucene_Field::Text('referenceCode', $informationObject->referenceCode));
 
     // Store dates as serialized array
     $dates = array();

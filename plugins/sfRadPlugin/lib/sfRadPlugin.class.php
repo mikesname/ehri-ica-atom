@@ -134,35 +134,7 @@ class sfRadPlugin implements ArrayAccess
 
       case 'referenceCode':
 
-        if (sfConfig::get('app_inherit_code_informationobject'))
-        {
-          $countryCode = null;
-          $repositoryCode = null;
-          $identifier = array();
-          foreach ($this->resource->ancestors->andSelf()->orderBy('lft') as $item)
-          {
-            if (isset($item->repository))
-            {
-              $countryCode = $item->repository->getCountryCode();
-              if (isset($countryCode))
-              {
-                $countryCode .= ' ';
-              }
-
-              $repositoryCode = "{$item->repository->identifier} ";
-            }
-
-            if (isset($item->identifier))
-            {
-              $identifier[] = $item->identifier;
-            }
-          }
-          $identifier = implode(sfConfig::get('app_separator_character', '-'), $identifier);
-
-          return "$countryCode$repositoryCode$identifier";
-        }
-
-        return $this->resource->identifier;
+        return $this->resource->referenceCode;
 
       case 'sourceCulture':
 
