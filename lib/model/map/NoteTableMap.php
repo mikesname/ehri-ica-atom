@@ -40,11 +40,6 @@ class NoteTableMap extends TableMap {
 		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('SCOPE', 'scope', 'VARCHAR', false, 255, null);
 		$this->addForeignKey('USER_ID', 'userId', 'INTEGER', 'user', 'ID', false, null, null);
-		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'note', 'ID', false, null, null);
-		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
-		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
-		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
 		$this->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null, 0);
@@ -59,8 +54,6 @@ class NoteTableMap extends TableMap {
     $this->addRelation('object', 'object', RelationMap::MANY_TO_ONE, array('object_id' => 'id', ), 'CASCADE', null);
     $this->addRelation('term', 'term', RelationMap::MANY_TO_ONE, array('type_id' => 'id', ), 'SET NULL', null);
     $this->addRelation('user', 'user', RelationMap::MANY_TO_ONE, array('user_id' => 'id', ), null, null);
-    $this->addRelation('noteRelatedByparentId', 'note', RelationMap::MANY_TO_ONE, array('parent_id' => 'id', ), null, null);
-    $this->addRelation('noteRelatedByparentId', 'note', RelationMap::ONE_TO_MANY, array('id' => 'parent_id', ), null, null);
     $this->addRelation('noteI18n', 'noteI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 

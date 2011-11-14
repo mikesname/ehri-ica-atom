@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -31,10 +31,13 @@ class QubitMenu extends BaseMenu
 
     // 3rd generation constant ids
     ADD_EDIT_ID = 5,
-    TAXONOMY_ID = 6,
     IMPORT_ID = 7,
     TRANSLATE_ID = 8,
-    ADMIN_ID = 9;
+    ADMIN_ID = 9,
+    MANAGE_ID = 10,
+
+    // 4rd generation constant ids
+    TAXONOMY_ID = 6;
 
   /**
    * Wrapper for BaseMenu::getPath() call to allow additional functionality
@@ -194,7 +197,7 @@ class QubitMenu extends BaseMenu
     // current module
     if (preg_match('|^([a-zA-Z]+)/(.+)|', $this->getPath(), $matches))
     {
-      if ($matches[1] == $currentModule)
+      if ($matches[1] == $currentModule && $matches[2] == $currentAction)
       {
         $isSelected = true;
       }
@@ -498,7 +501,7 @@ class QubitMenu extends BaseMenu
         $class[] = 'active';
       }
 
-      $a = link_to($child->getLabel(array('cultureFallback'=>true)), $child->getPath(array('getUrl' => true, 'resolveAlias' => true)));
+      $a = link_to($child->getLabel(array('cultureFallback' => true)), $child->getPath(array('getUrl' => true, 'resolveAlias' => true)));
 
       if ($child->hasChildren())
       {
@@ -515,7 +518,9 @@ class QubitMenu extends BaseMenu
         $class = ' class="'.$class.'"';
       }
 
-      $li[] = '<li'.$class.'>'.$a.'</li>';
+      $id = isset($child->name) ? ' id="node_'.$child->name.'"' : '';
+
+      $li[] = '<li'.$class.$id.'>'.$a.'</li>';
     }
 
     return '<ul class="clearfix links">'.implode($li).'</ul>';

@@ -12,7 +12,7 @@
               // Show notification only when server version is greater
               if (-1 == version_compare(Qubit.updateCheck.currentVersion, version))
               {
-                $('<div id="update-check"><span>' + Qubit.updateCheck.notificationMessage.replace('%1%', version) + '</span></div>').prependTo('#page');
+                $('<span>' + Qubit.updateCheck.notificationMessage.replace(/\%\d+\%/g, version) + '</span>').prependTo('#update-check').parent().show();
               }
             };
 

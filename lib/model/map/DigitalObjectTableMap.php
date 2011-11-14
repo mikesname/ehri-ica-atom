@@ -46,7 +46,7 @@ class DigitalObjectTableMap extends TableMap {
 		$this->addColumn('SEQUENCE', 'sequence', 'INTEGER', false, null, null);
 		$this->addColumn('BYTE_SIZE', 'byteSize', 'INTEGER', false, null, null);
 		$this->addColumn('CHECKSUM', 'checksum', 'VARCHAR', false, 255, null);
-		$this->addForeignKey('CHECKSUM_TYPE_ID', 'checksumTypeId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addColumn('CHECKSUM_TYPE', 'checksumType', 'VARCHAR', false, 50, null);
 		$this->addForeignKey('PARENT_ID', 'parentId', 'INTEGER', 'digital_object', 'ID', false, null, null);
 		$this->addColumn('LFT', 'lft', 'INTEGER', true, null, null);
 		$this->addColumn('RGT', 'rgt', 'INTEGER', true, null, null);
@@ -62,10 +62,8 @@ class DigitalObjectTableMap extends TableMap {
     $this->addRelation('informationObject', 'informationObject', RelationMap::MANY_TO_ONE, array('information_object_id' => 'id', ), null, null);
     $this->addRelation('termRelatedByusageId', 'term', RelationMap::MANY_TO_ONE, array('usage_id' => 'id', ), 'SET NULL', null);
     $this->addRelation('termRelatedBymediaTypeId', 'term', RelationMap::MANY_TO_ONE, array('media_type_id' => 'id', ), 'SET NULL', null);
-    $this->addRelation('termRelatedBychecksumTypeId', 'term', RelationMap::MANY_TO_ONE, array('checksum_type_id' => 'id', ), 'SET NULL', null);
     $this->addRelation('digitalObjectRelatedByparentId', 'digitalObject', RelationMap::MANY_TO_ONE, array('parent_id' => 'id', ), null, null);
     $this->addRelation('digitalObjectRelatedByparentId', 'digitalObject', RelationMap::ONE_TO_MANY, array('id' => 'parent_id', ), null, null);
-    $this->addRelation('placeMapRelation', 'placeMapRelation', RelationMap::ONE_TO_MANY, array('id' => 'map_icon_image_id', ), null, null);
 	} // buildRelations()
 
 } // DigitalObjectTableMap

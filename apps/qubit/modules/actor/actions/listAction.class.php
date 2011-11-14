@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -35,17 +35,12 @@ class ActorListAction extends sfAction
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    $search = new QubitSearch;
-
-    $query = new Zend_Search_Lucene_Search_Query_Boolean;
-    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term('QubitActor', 'className')), true /* required */);
-
     if (isset($request->subquery))
     {
       try
       {
         // Parse query string
-        $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->subquery), true /* required */);
+        $query = QubitSearch::getInstance()->parse($request->subquery);
       }
       catch (Exception $e)
       {
@@ -54,14 +49,19 @@ class ActorListAction extends sfAction
         return;
       }
     }
+    else
+    {
+      $this->redirect(array('module' => 'actor', 'action' => 'browse'));
+    }
 
+    $query->addSubquery(QubitSearch::getInstance()->addTerm('QubitActor', 'className'), true);
     $query = QubitAcl::searchFilterByResource($query, QubitActor::getById(QubitActor::ROOT_ID));
 
     $this->pager = new QubitArrayPager;
 
     try
     {
-      $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+      $this->pager->hits = QubitSearch::getInstance()->getEngine()->getIndex()->find($query);
     }
     catch (Exception $e)
     {

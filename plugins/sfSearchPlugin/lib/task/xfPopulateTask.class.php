@@ -25,8 +25,10 @@ final class xfPopulateTask extends xfBaseTask
       new sfCommandArgument('index', sfCommandArgument::REQUIRED, 'The index name to populate')));
 
     $this->addOptions(array(
-      new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', true),
-      new sfCommandOption('optimize', 'o', sfCommandOption::PARAMETER_NONE, 'If passed, the index is optimized after population')));
+      new sfCommandOption('application', null, sfCommandOption::PARAMETER_OPTIONAL, 'The application name', 'qubit'),
+//      new sfCommandOption('optimize', 'o', sfCommandOption::PARAMETER_NONE, 'If passed, the index is optimized after population'),
+      new sfCommandOption('actorOffset', null, sfCommandOption::PARAMETER_REQUIRED, 'Segmentation fault workaround (actors)'),
+      new sfCommandOption('ioOffset', null, sfCommandOption::PARAMETER_REQUIRED, 'Segmentation fault workaround (information objects)')));
 
     $this->namespace = 'search';
     $this->name = 'populate';
@@ -60,11 +62,7 @@ EOF;
 
     $index = new $index;
     $index->setLogger(new xfLoggerTask($this->dispatcher, $this->formatter));
-    $index->populate();
-
-    if ($options['optimize'])
-    {
-      $index->optimize();
-    }
+    $index->qubitPopulate($options);
+    $index->optimize();
   }
 }

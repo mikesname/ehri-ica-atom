@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2010-11-12T09:28:02Z" product-name="messages">
+  <file source-language="EN" target-language="pt" datatype="plaintext" original="messages" date="2011-11-07T09:59:24Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
@@ -79,66 +79,6 @@
       <trans-unit id="19">
         <source>Contact area</source>
         <target>área de contato</target>
-      </trans-unit>
-      <trans-unit id="20">
-        <source>Contact information</source>
-        <target>informação de contato</target>
-      </trans-unit>
-      <trans-unit id="21">
-        <source>Primary contact</source>
-        <target>Contato primário</target>
-      </trans-unit>
-      <trans-unit id="22">
-        <source>Add new contact information</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="23">
-        <source>Street address</source>
-        <target>Endereço</target>
-      </trans-unit>
-      <trans-unit id="24">
-        <source>City</source>
-        <target>Cidade</target>
-      </trans-unit>
-      <trans-unit id="25">
-        <source>Region/province</source>
-        <target>estado</target>
-      </trans-unit>
-      <trans-unit id="26">
-        <source>Country</source>
-        <target>país</target>
-      </trans-unit>
-      <trans-unit id="27">
-        <source>Postal code</source>
-        <target>CEP</target>
-      </trans-unit>
-      <trans-unit id="28">
-        <source>Telephone</source>
-        <target>Telefone</target>
-      </trans-unit>
-      <trans-unit id="29">
-        <source>Fax</source>
-        <target>Fax</target>
-      </trans-unit>
-      <trans-unit id="30">
-        <source>Email</source>
-        <target>Email</target>
-      </trans-unit>
-      <trans-unit id="31">
-        <source>Website</source>
-        <target>Website</target>
-      </trans-unit>
-      <trans-unit id="32">
-        <source>Contact person</source>
-        <target>Contato pessoal</target>
-      </trans-unit>
-      <trans-unit id="33">
-        <source>Contact type</source>
-        <target>Tipo de contato</target>
-      </trans-unit>
-      <trans-unit id="34">
-        <source>Note</source>
-        <target>nota</target>
       </trans-unit>
       <trans-unit id="35">
         <source>See ISDIAH 5.2 for contact area information and examples.</source>
@@ -348,10 +288,6 @@
         <source>Type</source>
         <target>tipo</target>
       </trans-unit>
-      <trans-unit id="87">
-        <source>Edit contact information</source>
-        <target>editar informações de contato</target>
-      </trans-unit>
       <trans-unit id="88">
         <source>History</source>
         <target>história</target>
@@ -411,6 +347,30 @@
       <trans-unit id="102">
         <source>Add new</source>
         <target>Adicionar</target>
+      </trans-unit>
+      <trans-unit id="104">
+        <source>Edit identity area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="105">
+        <source>Edit contact area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="106">
+        <source>Edit description area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="107">
+        <source>Edit access area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="108">
+        <source>Edit services area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="109">
+        <source>Edit control area</source>
+        <target/>
       </trans-unit>
     </body>
   </file>

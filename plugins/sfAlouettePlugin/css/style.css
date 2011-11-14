@@ -95,6 +95,11 @@ tr.odd
   background-color: #bdc;
 }
 
+#header .search .advanced-search a
+{
+  color: #ab6;
+}
+
 #languageMenu,
 #userMenu
 {

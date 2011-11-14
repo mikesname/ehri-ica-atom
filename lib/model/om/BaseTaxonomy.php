@@ -9,8 +9,6 @@ abstract class BaseTaxonomy extends QubitObject implements ArrayAccess
 
     ID = 'taxonomy.ID',
     USAGE = 'taxonomy.USAGE',
-    CREATED_AT = 'taxonomy.CREATED_AT',
-    UPDATED_AT = 'taxonomy.UPDATED_AT',
     PARENT_ID = 'taxonomy.PARENT_ID',
     LFT = 'taxonomy.LFT',
     RGT = 'taxonomy.RGT',
@@ -24,8 +22,6 @@ abstract class BaseTaxonomy extends QubitObject implements ArrayAccess
 
     $criteria->addSelectColumn(QubitTaxonomy::ID);
     $criteria->addSelectColumn(QubitTaxonomy::USAGE);
-    $criteria->addSelectColumn(QubitTaxonomy::CREATED_AT);
-    $criteria->addSelectColumn(QubitTaxonomy::UPDATED_AT);
     $criteria->addSelectColumn(QubitTaxonomy::PARENT_ID);
     $criteria->addSelectColumn(QubitTaxonomy::LFT);
     $criteria->addSelectColumn(QubitTaxonomy::RGT);
@@ -360,7 +356,14 @@ abstract class BaseTaxonomy extends QubitObject implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 

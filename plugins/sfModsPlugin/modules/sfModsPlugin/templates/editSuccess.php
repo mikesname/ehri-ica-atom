@@ -107,6 +107,14 @@
     <input class="list" type="hidden" value="<?php echo url_for($repoAcParams) ?>"/>
   </div>
 
+  <fieldset class="collapsible collapsed" id="rightsArea">
+
+    <legend><?php echo __('Rights area') ?></legend>
+
+    <?php echo get_partial('right/edit', $rightEditComponent->getVarHolder()->getAll()) ?>
+
+  </fieldset>
+
   <?php echo get_partial('informationobject/adminInfo', array('form' => $form, 'resource' => $resource)) ?>
 
   <?php echo get_partial('informationobject/editActions', array('resource' => $resource)) ?>

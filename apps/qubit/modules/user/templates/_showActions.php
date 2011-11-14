@@ -10,7 +10,7 @@
       <?php endif; ?>
 
       <?php if (QubitAcl::check($resource, 'delete')): ?>
-        <li><?php echo link_to (__('Delete'), array($resource, 'module' => 'user', 'action' => 'delete')) ?></li>
+        <li><?php echo link_to (__('Delete'), array($resource, 'module' => 'user', 'action' => 'delete'), array('class' => 'delete')) ?></li>
       <?php endif; ?>
 
       <?php if (QubitAcl::check($resource, 'create')): ?>

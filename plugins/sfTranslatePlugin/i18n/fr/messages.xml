@@ -1,32 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2010-11-11T15:18:24Z" product-name="messages">
+  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2011-11-08T09:43:00Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
-        <source>X</source>
-        <target/>
+        <source>Translate user interface</source>
+        <target>Traduire l'interface utilisateur</target>
       </trans-unit>
       <trans-unit id="2">
-        <source>Translate User Interface</source>
-        <target/>
+        <source>Page text</source>
+        <target>Texte de la page</target>
       </trans-unit>
       <trans-unit id="3">
-        <source>Page Text</source>
-        <target/>
+        <source>Source</source>
+        <target>Source</target>
       </trans-unit>
       <trans-unit id="4">
-        <source>Source</source>
-        <target/>
+        <source>%language% translation</source>
+        <target>%Langue% de traduction</target>
       </trans-unit>
       <trans-unit id="5">
-        <source>%language% Translation</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="6">
         <source>Save translation</source>
-        <target/>
+        <target>Sauvegarder la traduction</target>
       </trans-unit>
     </body>
   </file>

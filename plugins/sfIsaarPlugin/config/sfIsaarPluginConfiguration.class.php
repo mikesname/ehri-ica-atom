@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -20,7 +20,7 @@
 class sfIsaarPluginConfiguration extends sfPluginConfiguration
 {
   public static
-    $summary = 'Metadata standard plugin.  Enables data-entry and display using International Standard Archival Description (ISAD).',
+    $summary = 'Metadata standard plugin.  Enables data-entry and display using International Standard Archival Authority Record for Corporate Bodies, Persons and Families (ISAAR (CPF)).',
     $version = '1.0.0';
 
   /**

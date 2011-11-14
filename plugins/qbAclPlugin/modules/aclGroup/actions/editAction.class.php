@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -85,10 +85,7 @@ class AclGroupEditAction extends sfAction
     $this->form = new sfForm;
     $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-    // HACK: Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    foreach ($this::$NAMES as $name)
     {
       $this->addField($name);
     }

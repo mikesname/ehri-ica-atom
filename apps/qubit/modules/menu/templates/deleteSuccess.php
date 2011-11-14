@@ -7,7 +7,7 @@
     <div class="content">
       <ul class="clearfix links">
         <li><?php echo link_to(__('Cancel'), array($menu, 'module' => 'menu', 'action' => 'edit')) ?></li>
-        <li><input class="form-submit" type="submit" value="<?php echo __('Confirm') ?>"/></li>
+        <li><input class="form-submit danger" type="submit" value="<?php echo __('Delete') ?>"/></li>
       </ul>
     </div>
   </div>

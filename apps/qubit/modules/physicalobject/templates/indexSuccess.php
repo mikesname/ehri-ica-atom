@@ -1,6 +1,9 @@
 <h1><?php echo __('View %1%', array('%1%' => sfConfig::get('app_ui_label_physicalobject'))) ?></h1>
 
-<h1 class="label"><?php echo render_title($resource) ?></h1>
+<h1 class="label printable">
+  <?php echo render_title($resource) ?>
+  <?php echo link_to(image_tag('printer-icon.png', array('alt' => __('Print'))), array($resource, 'module' => 'physicalobject', 'action' => 'boxList'), array('id' => 'print-button', 'title' => __('Print'))) ?>
+</h1>
 
 <div class="section">
 
@@ -28,7 +31,7 @@
   <div class="content">
     <ul class="clearfix links">
       <li><?php echo link_to(__('Edit'), array($resource, 'module' => 'physicalobject', 'action' => 'edit')) ?></li>
-      <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'physicalobject', 'action' => 'delete', 'next' => $sf_request->getReferer())) ?></li>
+      <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'physicalobject', 'action' => 'delete', 'next' => $sf_request->getReferer()), array('class' => 'delete')) ?></li>
     </ul>
   </div>
 

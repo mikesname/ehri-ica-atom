@@ -10,8 +10,6 @@ abstract class BaseProperty implements ArrayAccess
     OBJECT_ID = 'property.OBJECT_ID',
     SCOPE = 'property.SCOPE',
     NAME = 'property.NAME',
-    CREATED_AT = 'property.CREATED_AT',
-    UPDATED_AT = 'property.UPDATED_AT',
     SOURCE_CULTURE = 'property.SOURCE_CULTURE',
     ID = 'property.ID',
     SERIAL_NUMBER = 'property.SERIAL_NUMBER';
@@ -21,8 +19,6 @@ abstract class BaseProperty implements ArrayAccess
     $criteria->addSelectColumn(QubitProperty::OBJECT_ID);
     $criteria->addSelectColumn(QubitProperty::SCOPE);
     $criteria->addSelectColumn(QubitProperty::NAME);
-    $criteria->addSelectColumn(QubitProperty::CREATED_AT);
-    $criteria->addSelectColumn(QubitProperty::UPDATED_AT);
     $criteria->addSelectColumn(QubitProperty::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitProperty::ID);
     $criteria->addSelectColumn(QubitProperty::SERIAL_NUMBER);
@@ -40,7 +36,7 @@ abstract class BaseProperty implements ArrayAccess
   public static function getFromRow(array $row)
   {
     $keys = array();
-    $keys['id'] = $row[6];
+    $keys['id'] = $row[4];
 
     $key = serialize($keys);
     if (!isset(self::$propertys[$key]))
@@ -453,7 +449,14 @@ abstract class BaseProperty implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -488,7 +491,10 @@ abstract class BaseProperty implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;

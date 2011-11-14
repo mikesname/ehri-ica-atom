@@ -1,25 +1,24 @@
-<div class="admin-info">
-  <table>
-    <tr>
-      <td>
-        <?php echo $form->publicationStatus->label(__('Publication status'))->renderRow() ?>
-      </td><td>
+<fieldset class="collapsible collapsed" id="adminInfoArea">
 
-        <h3><?php echo __('Source language') ?></h3>
+  <legend><?php echo __('Administration area') ?></legend>
 
-        <?php if (isset($resource->sourceCulture)): ?>
-          <?php if ($sf_user->getCulture() == $resource->sourceCulture): ?>
-            <?php echo format_language($resource->sourceCulture) ?>
-          <?php else: ?>
-            <div class="default-translation">
-              <?php echo link_to(format_language($resource->sourceCulture), array('sf_culture' => $resource->sourceCulture) + $sf_request->getParameterHolder()->getAll()) ?>
-            </div>
-          <?php endif; ?>
+  <?php echo $form->publicationStatus->label(__('Publication status'))->renderRow() ?>
+
+  <div class="field">
+    <h3><?php echo __('Source language') ?></h3>
+    <div>
+      <?php if (isset($resource->sourceCulture)): ?>
+        <?php if ($sf_user->getCulture() == $resource->sourceCulture): ?>
+          <?php echo format_language($resource->sourceCulture) ?>
         <?php else: ?>
-          <?php echo format_language($sf_user->getCulture()) ?>
+          <div class="default-translation">
+            <?php echo link_to(format_language($resource->sourceCulture), array('sf_culture' => $resource->sourceCulture) + $sf_request->getParameterHolder()->getAll()) ?>
+          </div>
         <?php endif; ?>
+      <?php else: ?>
+        <?php echo format_language($sf_user->getCulture()) ?>
+      <?php endif; ?>    
+    </div>
+  </div>
 
-      </td>
-    </tr>
-  </table>
-</div>
+</fieldset>

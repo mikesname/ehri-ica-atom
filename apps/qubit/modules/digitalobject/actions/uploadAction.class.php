@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -21,17 +21,38 @@ class DigitalObjectUploadAction extends sfAction
 {
   public function execute($request)
   {
-    // Check user authorization
+    ProjectConfiguration::getActive()->loadHelpers('Qubit');
+
+    $uploadLimt = -1;
+    $diskUsage = 0;
+    $uploadFiles = array();
+    $warning = null;
+
     $this->informationObject = QubitInformationObject::getById($request->informationObjectId);
+
+    if (!isset($this->informationObject))
+    {
+      $this->forward404();
+    }
+
+    // Check user authorization
     if (!QubitAcl::check($this->informationObject, 'update'))
     {
       throw new sfException;
     }
 
-    ProjectConfiguration::getActive()->loadHelpers('Qubit');
+    $repo = $this->informationObject->getRepository(array('inherit' => true));
 
-    $uploadFiles = array();
-    $warning = null;
+    if (isset($repo))
+    {
+      $uploadLimit = $repo->uploadLimit;
+      if (0 < $uploadLimit)
+      {
+        $uploadLimit *= pow(10,9); // Convert to bytes
+      }
+
+      $diskUsage = $repo->getDiskUsage();
+    }
 
     // Create tmp dir, if it doesn't exist already
     $tmpDir = sfConfig::get('sf_upload_dir').'/tmp';
@@ -43,6 +64,19 @@ class DigitalObjectUploadAction extends sfAction
 
     foreach ($_FILES as $file)
     {
+      if (null != $repo && 0 <= $uploadLimit && $uploadLimit < $diskUsage + $file['size'])
+      {
+        $uploadFiles = array('error' => $this->context->i18n->__(
+          '%1% upload limit of %2% GB exceeded for %3%', array(
+            '%1%' => sfConfig::get('app_ui_label_digitalobject'),
+            '%2%' => round($uploadLimit / pow(10, 9), 2), // convert to GB
+            '%4%' => $this->context->routing->generate(null, array($repo, 'module' => 'repository')),
+            '%3%' => $repo->__toString())
+        ));
+
+        continue;
+      }
+
       // Get file extension
       $extension = substr($file['name'], strrpos($file['name'], '.'));
 
@@ -63,7 +97,7 @@ class DigitalObjectUploadAction extends sfAction
       if (!move_uploaded_file($file['tmp_name'], $tmpFilePath))
       {
         $errorMessage = $this->context->i18n->__('File %1% could not be moved to %2%', array('%1%' => $file['name'], '%2%' => $tmpDir));
-        $uploadFiles[] = array('error' => $errorMessage);
+        $uploadFiles = array('error' => $errorMessage);
 
         continue;
       }
@@ -108,6 +142,9 @@ class DigitalObjectUploadAction extends sfAction
         'thumb' => $thumbName,
         'tmpName' => $tmpFileName,
         'warning' => $warning);
+
+      // Keep running total of disk usage
+      $diskUsage += $file['size'];
     }
 
     // Pass file data back to caller for processing on form submit

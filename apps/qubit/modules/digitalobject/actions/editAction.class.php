@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -76,17 +76,46 @@ class DigitalObjectEditAction extends sfAction
       }
     }
 
-    // If reference represenation doesn't exist, include upload widget
+    // Add rights component
+    $this->rightEditComponent = new RightEditComponent($this->context, 'right', 'edit');
+    $this->rightEditComponent->resource = $this->resource;
+    $this->rightEditComponent->execute($this->request);
+
+    $maxUploadSize = QubitDigitalObject::getMaxUploadSize();
+
+    ProjectConfiguration::getActive()->loadHelpers('Qubit');
+
+    // If reference representation doesn't exist, include upload widget
     foreach ($this->representations as $usageId => $representation)
     {
       if (null === $representation)
       {
-        $this->form->setValidator("repFile_$usageId", new sfValidatorFile);
-        $this->form->setWidget("repFile_$usageId", new sfWidgetFormInputFile);
+        $repName = "repFile_$usageId";
+        $derName = "generateDerivative_$usageId";
+
+        $this->form->setValidator($repName, new sfValidatorFile);
+        $this->form->setWidget($repName, new sfWidgetFormInputFile);
+
+        if (-1 < $maxUploadSize)
+        {
+          $this->form->getWidgetSchema()->$repName->setHelp($this->context->i18n->__('Max. size ~%1%', array('%1%' => hr_filesize($maxUploadSize))));
+        }
+        else
+        {
+          $this->form->getWidgetSchema()->$repName->setHelp('');
+        }
 
         // Add "auto-generate" checkbox
-        $this->form->setValidator("generateDerivative_$usageId", new sfValidatorBoolean);
-        $this->form->setWidget("generateDerivative_$usageId", new sfWidgetFormInputCheckbox(array(), array('value' => 1)));
+        $this->form->setValidator($derName, new sfValidatorBoolean);
+        $this->form->setWidget($derName, new sfWidgetFormInputCheckbox(array(), array('value' => 1)));
+      }
+      // Otherwise, load right component
+      else
+      {
+        $this["rightEditComponent_$usageId"] = new RightEditComponent($this->context, 'right', 'edit');
+        $this["rightEditComponent_$usageId"]->resource = $representation;
+        $this["rightEditComponent_$usageId"]->nameFormat = 'editRight'.$usageId.'[%s]';
+        $this["rightEditComponent_$usageId"]->execute($this->request);
       }
     }
   }
@@ -94,83 +123,30 @@ class DigitalObjectEditAction extends sfAction
   public function execute($request)
   {
     $this->form = new sfForm;
+    $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-    $this->resource = new QubitDigitalObject;
+    $this->resource = $this->getRoute()->resource;
 
-    $this->informationObject = new QubitInformationObject;
-
-    // Get max upload size limits
-    $this->maxUploadSize = QubitDigitalObject::getMaxUploadSize();
-
-    // If digital object already exists (template: edit)
-    if (isset($this->getRoute()->resource))
+    // Check that resource exists
+    if (!isset($this->resource))
     {
-      $this->resource = $this->getRoute()->resource;
-
-      $this->informationObject = $this->resource->informationObject;
-
-      // Check user authorization
-      if (!QubitAcl::check($this->informationObject, 'update'))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-
-      // Get representations
-      $this->representations = array(
-        QubitTerm::REFERENCE_ID => $this->resource->getChildByUsageId(QubitTerm::REFERENCE_ID),
-        QubitTerm::THUMBNAIL_ID => $this->resource->getChildByUsageId(QubitTerm::THUMBNAIL_ID));
-
-      $this->addFormFields();
+      $this->forward404();
     }
 
-    // Upload a new digital object (template: uploadForm)
-    else
+    $this->informationObject = $this->resource->informationObject;
+
+    // Check user authorization
+    if (!QubitAcl::check($this->informationObject, 'update'))
     {
-      $this->informationObject = QubitInformationObject::getById($request->informationObject);
-
-      // Check that object exists and that it is not the root
-      if (!isset($this->informationObject) || !isset($this->informationObject->parent))
-      {
-        $this->forward404();
-      }
-
-      // Check if already exists a digital object
-      if (null !== $digitalObject = $this->informationObject->getDigitalObject())
-      {
-        $this->redirect(array($digitalObject, 'module' => 'digitalobject', 'action' => 'edit'));
-      }
-
-      // Check user authorization
-      if (!QubitAcl::check($this->informationObject, 'update'))
-      {
-        QubitAcl::forwardUnauthorized();
-      }
-
-      // Single upload
-      if (0 < count($request->getFiles()))
-      {
-        $this->form->setValidator('file', new sfValidatorFile);
-      }
-
-      $this->form->setWidget('file', new sfWidgetFormInputFile);
-
-      // URL
-      if (isset($request->url) && 'http://' != $request->url)
-      {
-        $this->form->setValidator('url', new sfValidatorUrl);
-      }
-
-      $this->form->setDefault('url', 'http://');
-      $this->form->setWidget('url', new sfWidgetFormInput);
-
-      $this->form->setValidator('informationObject', new sfValidatorInteger);
-      $this->form->setWidget('informationObject', new sfWidgetFormInputHidden);
-      $this->form->setDefault('informationObject', $this->informationObject->id);
-
-      $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
-
-      $this->setTemplate('uploadForm');
+      QubitAcl::forwardUnauthorized();
     }
+
+    // Get representations
+    $this->representations = array(
+      QubitTerm::REFERENCE_ID => $this->resource->getChildByUsageId(QubitTerm::REFERENCE_ID),
+      QubitTerm::THUMBNAIL_ID => $this->resource->getChildByUsageId(QubitTerm::THUMBNAIL_ID));
+
+    $this->addFormFields();
 
     // Process forms
     if ($request->isMethod('post'))
@@ -178,46 +154,13 @@ class DigitalObjectEditAction extends sfAction
       $this->form->bind($request->getPostParameters(), $request->getFiles());
       if ($this->form->isValid())
       {
-        if (null !== $this->form->getValue('file') || null !== $this->form->getValue('url'))
-        {
-          // Process single-upload form
-          $this->processUploadForm();
-        }
-        else
-        {
-          // Process update form
-          $this->processUpdateForm();
-        }
+        $this->processForm();
+
+        $this->resource->save();
+
+        $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
       }
     }
-  }
-
-  /**
-   * Upload the asset selected by user and create a digital object with appropriate
-   * representations.
-   *
-   * @return DigitalObjectEditAction this action
-   */
-  public function processUploadForm()
-  {
-    if (null !== $this->form->getValue('file'))
-    {
-      $name = $this->form->getValue('file')->getOriginalName();
-      $content = file_get_contents($this->form->getValue('file')->getTempName());
-
-      $this->resource->assets[] = new QubitAsset($name, $content);
-      $this->resource->usageId = QubitTerm::MASTER_ID;
-    }
-    else if (null !== $this->form->getValue('url'))
-    {
-      $this->resource->importFromURI($this->form->getValue('url'));
-    }
-
-    $this->informationObject->digitalObjects[] = $this->resource;
-
-    $this->informationObject->save();
-
-    $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
   }
 
   /**
@@ -225,13 +168,23 @@ class DigitalObjectEditAction extends sfAction
    *
    * @return DigitalObjectEditAction this action
    */
-  public function processUpdateForm()
+  public function processForm()
   {
     // Set property 'displayAsCompound'
     $this->resource->setDisplayAsCompoundObject($this->form->getValue('displayAsCompound'));
 
     // Update media type
     $this->resource->mediaTypeId = $this->form->getValue('mediaType');
+
+    // Process master rights component
+    $this->rightEditComponent->processForm();
+
+    // Process reference/thumbnail rights components
+    foreach ($this->representations as $usageId => $representation)
+    {
+      $this["rightEditComponent_$usageId"]->processForm();
+      $representation->save();
+    }
 
     // Upload new representations
     $uploadedFiles = array();
@@ -287,9 +240,5 @@ class DigitalObjectEditAction extends sfAction
     {
       $this->resource->createThumbnail();
     }
-
-    $this->resource->save();
-
-    $this->redirect(array($this->informationObject, 'module' => 'informationobject'));
   }
 }

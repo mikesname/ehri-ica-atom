@@ -10,8 +10,6 @@ abstract class BaseStatus implements ArrayAccess
     OBJECT_ID = 'status.OBJECT_ID',
     TYPE_ID = 'status.TYPE_ID',
     STATUS_ID = 'status.STATUS_ID',
-    CREATED_AT = 'status.CREATED_AT',
-    UPDATED_AT = 'status.UPDATED_AT',
     ID = 'status.ID',
     SERIAL_NUMBER = 'status.SERIAL_NUMBER';
 
@@ -20,8 +18,6 @@ abstract class BaseStatus implements ArrayAccess
     $criteria->addSelectColumn(QubitStatus::OBJECT_ID);
     $criteria->addSelectColumn(QubitStatus::TYPE_ID);
     $criteria->addSelectColumn(QubitStatus::STATUS_ID);
-    $criteria->addSelectColumn(QubitStatus::CREATED_AT);
-    $criteria->addSelectColumn(QubitStatus::UPDATED_AT);
     $criteria->addSelectColumn(QubitStatus::ID);
     $criteria->addSelectColumn(QubitStatus::SERIAL_NUMBER);
 
@@ -38,7 +34,7 @@ abstract class BaseStatus implements ArrayAccess
   public static function getFromRow(array $row)
   {
     $keys = array();
-    $keys['id'] = $row[5];
+    $keys['id'] = $row[3];
 
     $key = serialize($keys);
     if (!isset(self::$statuss[$key]))
@@ -379,7 +375,14 @@ abstract class BaseStatus implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -414,7 +417,10 @@ abstract class BaseStatus implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;

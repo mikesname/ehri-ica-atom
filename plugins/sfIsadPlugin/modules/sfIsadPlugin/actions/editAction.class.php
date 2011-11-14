@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -88,6 +88,10 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
     $this->eventComponent = new sfIsadPluginEventComponent($this->context, 'sfIsadPlugin', 'event');
     $this->eventComponent->resource = $this->resource;
     $this->eventComponent->execute($this->request);
+
+    $this->rightEditComponent = new RightEditComponent($this->context, 'right', 'edit');
+    $this->rightEditComponent->resource = $this->resource;
+    $this->rightEditComponent->execute($this->request);
   }
 
   protected function addField($name)
@@ -173,6 +177,8 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
 
     $this->eventComponent->processForm();
 
+    $this->rightEditComponent->processForm();
+
     $this->updateNotes();
 
     return parent::processForm();
@@ -185,6 +191,25 @@ class sfIsadPluginEditAction extends InformationObjectEditAction
    */
   protected function updateNotes()
   {
+    if ($this->request->hasParameter('csvimport'))
+    {
+      // remap notes from parameters to request object
+      if ($this->request->getParameterHolder()->has('newArchivistNote'))
+      {
+        $this->request->new_archivist_note = $this->request->getParameterHolder()->get('newArchivistNote');
+      }
+
+      if ($this->request->getParameterHolder()->has('newPublicationNote'))
+      {
+        $this->request->new_publication_note = $this->request->getParameterHolder()->get('newPublicationNote');
+      }
+
+      if ($this->request->getParameterHolder()->has('newNote'))
+      {
+        $this->request->new_note = $this->request->getParameterHolder()->get('newNote');
+      }
+    }
+
     // Update archivist's notes (multiple)
     foreach ((array) $this->request->new_archivist_note as $content)
     {

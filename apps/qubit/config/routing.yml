@@ -9,6 +9,19 @@ homepage:
     action: index
     slug: home
 
+sword/action/slug:
+  url: /sword/:action/:slug
+  class: QubitResourceRoute
+  param:
+    module: qtSwordPlugin
+    slug: { pattern: '[^;]+' }
+    throw404: false
+
+sword:
+  url: /sword/:action
+  param:
+    module: qtSwordPlugin
+
 slug:
   url: /:slug
   class: QubitResourceRoute
@@ -282,23 +295,23 @@ repository/edit:
     action: edit
 
 oai_harvester_harvest_all_sets:
-  url: /;oai/harvest/:type/:harvestId/*
+  url: /oai/harvest/:type/:id/*
   param:
-    module: oai
+    module: qtOaiPlugin 
     action: harvesterHarvest
-    harvestId: { pattern: \d+ }
+    id: { pattern: \d+ }
 
 oai_harvester_delete:
-  url: /;oai/deleteRepository/:repositoryId/*
+  url: /oai/deleteRepository/:repositoryId/*
   param:
-    module: oai
+    module: qtOaiPlugin
     action: harvesterDelete
     repositoryId: { pattern: \d+ }
 
 oai_requests:
   url: /;oai/request
   param:
-    module: oai
+    module: qtOaiPlugin 
     action: oai
 
 informationObject:
@@ -327,6 +340,36 @@ informationObject/edit:
   param:
     module: informationobject
     action: edit
+
+# After *all* information object routes to avoid hijacking
+informationobject/addDigitalObject:
+  url: /:slug;addDigitalObject
+  class: QubitResourceRoute
+  param:
+    module: informationobject
+    action: addDigitalObject
+
+informationobject/fileList:
+  url: /:slug;fileList
+  class: QubitResourceRoute
+  param:
+    module: informationobject
+    action: fileList
+    slug: { pattern: '[^;]+' }
+
+informationobject/multiFileUpload:
+  url: /:slug;multiFileUpload
+  class: QubitResourceRoute
+  param:
+    module: informationobject
+    action: multiFileUpload
+
+informationobject/reports:
+  url: /:slug;reports
+  class: QubitResourceRoute
+  param:
+    module: informationobject
+    action: reports
 
 slug;default_index:
   url:   /:slug;:module

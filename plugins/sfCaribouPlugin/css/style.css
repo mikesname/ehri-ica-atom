@@ -69,7 +69,7 @@ tbody tr:hover
   width: 100%;
   float: none;
   margin-top: 0.5em;
-  padding: 1em 0 0.3em 0;
+  padding: 0.5em 0 0.3em 0;
   margin-top: 0;
   background: #EDF5FA;
   border-top: 1px solid #D3E7F4;
@@ -128,6 +128,41 @@ tbody tr:hover
   margin: 0; /* Only needed in WebKit */
   width: 100%;
 }
+
+#page .search .advanced-search
+{
+  text-align: right;
+  width: 540px;
+  font-size: 90%;
+}
+
+#page .search .advanced-search a
+{
+  color: #069;
+}
+
+/* START: align browser/search layers to left */
+
+#page > .search .content,
+#page > .browse .content
+{
+  width: 770px;
+  margin: 0 auto;
+}
+
+#page > .search form
+{
+  width: 550px;
+  margin: 0;
+}
+
+#page > .browse ul
+{
+  text-align: left;
+  margin-left: 1em;
+}
+
+/* END: align browser/search layers to left */
 
 #page .browse
 {
@@ -273,4 +308,39 @@ tbody tr:hover
 {
   background-color: #FFF;
   color: #000;
+}
+
+/* Format date with extended properties */
+.date dl
+{
+  margin: 0 0 0 1em;
+}
+
+.date dl dt:after
+{
+  content: ':';
+}
+
+.date dl dt
+{
+  clear: both;
+}
+
+.date dl dt,
+.date dl dd
+{
+  float: left;
+  margin: 0 1px;
+}
+
+.field ul,
+.field ol
+{
+  margin: 0;
+}
+
+.field ul li,
+.field ol li
+{
+  margin: 0;
 }

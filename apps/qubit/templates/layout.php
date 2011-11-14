@@ -13,14 +13,16 @@
     <div id="page-wrapper">
       <div id="page">
 
-        <?php echo get_component('default', 'updateCheck') ?>
+        <div id="update-check">
+          <?php echo get_component('default', 'updateCheck') ?>
+        </div>
 
         <?php echo get_partial('header') ?>
 
         <?php if ($sf_user->isAuthenticated()): ?>
           <div id="navigation">
             <div class="section">
-              <?php echo get_component('menu', 'mainMenu') ?>
+              <?php echo get_component('menu', 'mainMenu', array('sf_cache_key' => 'settings')) ?>
             </div> <!-- /.section -->
           </div> <!-- /#navigation -->
         <?php endif; ?>
@@ -29,6 +31,12 @@
           <div class="clearfix" id="main">
 
             <div class="column" id="content">
+              <?php if ($sf_context->getModuleName() != 'sfInstallPlugin'): ?>
+                <div id="print-date">
+                  <?php echo __('Printed: %d%', array('%d%' => date('Y-m-d'))) ?>
+                </div>
+              <?php endif; ?>
+
               <div class="section">
                 <?php echo $sf_content ?>
               </div> <!-- /.section -->

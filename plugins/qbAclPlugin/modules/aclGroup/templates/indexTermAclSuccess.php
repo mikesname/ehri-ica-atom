@@ -30,7 +30,7 @@
 
     <?php $row = 0; ?>
     <?php foreach ($actions as $action => $groupPermission): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>&nbsp;</td>
         <td>
         <?php if ('' != $action): ?>

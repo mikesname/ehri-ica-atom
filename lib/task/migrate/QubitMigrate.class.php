@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -27,11 +27,14 @@
  */
 class QubitMigrate
 {
-  protected $data;
+  public
+    $data,
+    $version;
 
-  public function __construct($data)
+  public function __construct($data, $version)
   {
     $this->data = $data;
+    $this->version = $version;
   }
 
   /**
@@ -67,7 +70,10 @@ class QubitMigrate
    */
   protected function getRowKey($className, $searchColumn, $searchKey)
   {
-    return self::findRowKeyForColumnValue($this->data[$className], $searchColumn, $searchKey);
+    if (isset($this->data[$className]))
+    {
+      return self::findRowKeyForColumnValue($this->data[$className], $searchColumn, $searchKey);
+    }
   }
 
   /**
@@ -133,6 +139,32 @@ class QubitMigrate
     return $this;
   }
 
+  /**
+   * Try to match a row when the search key may be the row key or the object id
+   * - as is often the case with foreign key relations in $this->data
+   *
+   * @param string classname name of Qubit class (e.g. QubitInformationObject)
+   * @param string keyOrId row key or 'id' column value
+   * @return array the found row, or NULL for no match
+   */
+  public function getRowByKeyOrId($classname, $keyOrId)
+  {
+    $row = null;
+
+    if (isset($this->data[$classname][$keyOrId]))
+    {
+      $row = $this->data[$classname][$keyOrId];
+      $row['_key'] = $keyOrId;
+    }
+    else if ($key = $this->getRowKey($this->data[$classname], 'id', $keyOrId))
+    {
+      $row = $this->data[$classname][$key];
+      $row['_key'] = $key;
+    }
+
+    return $row;
+  }
+
   /*
    * ------------------
    * STATIC METHODS
@@ -158,7 +190,7 @@ class QubitMigrate
         // value for an i18n column)
         $searchKey = key($searchValue);
 
-        if (isset($columns[$searchColumn]) && $columns[$searchColumn][$searchKey] == $searchValue[$searchKey])
+        if (isset($columns[$searchColumn][$searchKey]) && $columns[$searchColumn][$searchKey] == $searchValue[$searchKey])
         {
           return $key;
         }
@@ -241,12 +273,12 @@ class QubitMigrate
       // Bump existing lft & rgt values
       foreach ($originalData as &$row)
       {
-        if ($pivotLft <= $row['lft'])
+        if (isset($row['lft']) && $pivotLft <= $row['lft'])
         {
           $row['lft'] += $width;
         }
 
-        if ($pivotLft < $row['rgt'])
+        if (isset($row['rgt']) && $pivotLft < $row['rgt'])
         {
           $row['rgt'] += $width;
         }
@@ -335,9 +367,12 @@ class QubitMigrate
 
     foreach ($objectList as $key => $row)
     {
-      if ($deleteObjectKey == $row['parent_id'] || (null !== $deleteObjectId && $deleteObjectId == $row['parent_id']))
+      if (isset($row['parent_id']))
       {
-        $objectList = self::cascadeDelete($objectList, $key);
+        if ($deleteObjectKey == $row['parent_id'] || (null !== $deleteObjectId && $deleteObjectId == $row['parent_id']))
+        {
+          $objectList = self::cascadeDelete($objectList, $key);
+        }
       }
     }
 

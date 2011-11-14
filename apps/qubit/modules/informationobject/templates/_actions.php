@@ -10,7 +10,7 @@
       <?php endif; ?>
 
       <?php if (QubitAcl::check($resource, 'delete')): ?>
-        <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'informationobject', 'action' => 'delete')) ?></li>
+        <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'informationobject', 'action' => 'delete'), array('class' => 'delete')) ?></li>
       <?php endif; ?>
 
       <?php if (QubitAcl::check($resource, 'create')): ?>
@@ -20,18 +20,23 @@
 
       <?php if (QubitAcl::check($resource, 'update')): ?>
 
-        <li><?php echo link_to(__('Move'), array($resource, 'action' => 'move')) ?></li>
+        <li><?php echo link_to(__('Move'), array($resource, 'module' => 'default', 'action' => 'move')) ?></li>
 
-        <?php if (0 < count($resource->digitalObjects)): ?>
-          <li><?php echo link_to(__('Edit digital object'), array($resource->digitalObjects[0], 'module' => 'digitalobject', 'action' => 'edit')) ?></li>
-        <?php else: ?>
-          <li><?php echo link_to(__('Link digital object'), array('module' => 'digitalobject', 'action' => 'add', 'informationObject' => $resource->id)) ?></li>
-        <?php endif; ?>
+        <?php if (null === $resource->repository || 0 != $resource->repository->uploadLimit): ?>
 
-        <li><?php echo link_to(__('Import digital objects'), array('module' => 'digitalobject', 'action' => 'multiFileUpload', 'informationObject' => $resource->id)) ?></li>
+          <?php if (0 < count($resource->digitalObjects)): ?>
+            <li><?php echo link_to(__('Edit digital object'), array($resource->digitalObjects[0], 'module' => 'digitalobject', 'action' => 'edit')) ?></li>
+          <?php else: ?>
+            <li><?php echo link_to(__('Link digital object'), array($resource, 'module' => 'informationobject', 'action' => 'addDigitalObject')) ?></li>
+          <?php endif; // has digital object ?>
+
+          <li><?php echo link_to(__('Import digital objects'), array($resource, 'module' => 'informationobject', 'action' => 'multiFileUpload')) ?></li>
+
+        <?php endif; // upload quota is non-zero ?>
+
         <li><?php echo link_to(__('Link physical storage'), array($resource, 'module' => 'informationobject', 'action' => 'editPhysicalObjects')) ?></li>
 
-      <?php endif; ?>
+      <?php endif; // user has update permission ?>
 
     </ul>
   </div>

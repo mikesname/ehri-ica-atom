@@ -25,51 +25,45 @@
     <?php echo $form->mediaType->renderRow() ?>
 
     <?php if ($showCompoundObjectToggle): ?>
-      <?php echo $form->displayAsCompound->label(__('View children as a compound digital object?'))->renderRow() ?>
+      <?php echo $form->displayAsCompound
+        ->label(__('View children as a compound digital object?'))
+        ->renderRow() ?>
     <?php endif; ?>
 
+    <?php echo get_partial('right/edit', $rightEditComponent->getVarHolder()->getAll()) ?>
+
   </fieldset>
 
-  <fieldset class="collapsible collapsed">
+  <?php foreach ($representations as $usageId => $representation): ?>
 
-    <legend><?php echo __('Representations') ?></legend>
+    <fieldset class="collapsible">
 
-    <?php foreach ($representations as $usageId => $representation): ?>
+      <legend><?php echo __('%1% representation', array('%1%' => QubitTerm::getById($usageId))) ?></legend>
+
       <?php if (isset($representation)): ?>
+
         <?php echo get_component('digitalobject', 'editRepresentation', array('resource' => $resource, 'representation' => $representation)) ?>
+
+        <?php $rightComponent = "rightEditComponent_$usageId" ?>
+        <?php echo get_partial('right/edit', $$rightComponent->getVarHolder()->getAll() + array('tableId' => $usageId)) ?>
+
       <?php else: ?>
-        <table>
-          <thead>
-            <tr>
-              <th>
-                <?php echo __('Add a new %1% representation', array('%1%' => QubitTerm::getById($usageId))) ?>
-              </th>
-            </tr>
-          </thead><tbody>
-            <tr>
-              <td>
 
-                <?php echo __('Select a digital object to upload') ?>
+        <?php echo $form["repFile_$usageId"]
+          ->label(__('Select a digital object to upload'))
+          ->renderRow() ?>
 
-                <?php if (-1 < $maxUploadSize): ?>
-                  <span class="note"><?php echo __('Max. size ~%1%', array('%1%' => hr_filesize($maxUploadSize))) ?></span>
-                <?php endif; ?>
+        <?php if ($resource->canThumbnail()): ?>
+          <?php echo $form["generateDerivative_$usageId"]
+            ->label('Or auto-generate a new representation from master image')
+            ->renderRow() ?>
+        <?php endif; ?>
 
-                <?php echo $form["repFile_$usageId"] ?>
-
-                <?php if ($resource->canThumbnail()): ?>
-                  <?php echo __('<em>or</em> Auto-generate a new representation from master image') ?>
-                  <?php echo $form["generateDerivative_$usageId"] ?>
-                <?php endif; ?>
-
-              </td>
-            </tr>
-          </tbody>
-        </table>
       <?php endif; ?>
-    <?php endforeach; ?>
 
-  </fieldset>
+    </fieldset>
+
+  <?php endforeach; ?>
 
   <div class="actions section">
 
@@ -79,7 +73,7 @@
       <ul class="clearfix links">
 
         <?php if (isset($sf_request->getAttribute('sf_route')->resource)): ?>
-          <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'digitalobject', 'action' => 'delete')) ?></li>
+          <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'digitalobject', 'action' => 'delete'), array('class' => 'delete')) ?></li>
         <?php endif; ?>
 
         <li><?php echo link_to(__('Cancel'), array($informationObject, 'module' => 'informationobject')) ?></li>

@@ -7,13 +7,27 @@ abstract class BaseRightsI18n implements ArrayAccess
 
     TABLE_NAME = 'rights_i18n',
 
-    DESCRIPTION = 'rights_i18n.DESCRIPTION',
+    RIGHTS_NOTE = 'rights_i18n.RIGHTS_NOTE',
+    COPYRIGHT_NOTE = 'rights_i18n.COPYRIGHT_NOTE',
+    LICENSE_IDENTIFIER = 'rights_i18n.LICENSE_IDENTIFIER',
+    LICENSE_TERMS = 'rights_i18n.LICENSE_TERMS',
+    LICENSE_NOTE = 'rights_i18n.LICENSE_NOTE',
+    STATUTE_JURISDICTION = 'rights_i18n.STATUTE_JURISDICTION',
+    STATUTE_CITATION = 'rights_i18n.STATUTE_CITATION',
+    STATUTE_NOTE = 'rights_i18n.STATUTE_NOTE',
     ID = 'rights_i18n.ID',
     CULTURE = 'rights_i18n.CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
   {
-    $criteria->addSelectColumn(QubitRightsI18n::DESCRIPTION);
+    $criteria->addSelectColumn(QubitRightsI18n::RIGHTS_NOTE);
+    $criteria->addSelectColumn(QubitRightsI18n::COPYRIGHT_NOTE);
+    $criteria->addSelectColumn(QubitRightsI18n::LICENSE_IDENTIFIER);
+    $criteria->addSelectColumn(QubitRightsI18n::LICENSE_TERMS);
+    $criteria->addSelectColumn(QubitRightsI18n::LICENSE_NOTE);
+    $criteria->addSelectColumn(QubitRightsI18n::STATUTE_JURISDICTION);
+    $criteria->addSelectColumn(QubitRightsI18n::STATUTE_CITATION);
+    $criteria->addSelectColumn(QubitRightsI18n::STATUTE_NOTE);
     $criteria->addSelectColumn(QubitRightsI18n::ID);
     $criteria->addSelectColumn(QubitRightsI18n::CULTURE);
 
@@ -30,8 +44,8 @@ abstract class BaseRightsI18n implements ArrayAccess
   public static function getFromRow(array $row)
   {
     $keys = array();
-    $keys['id'] = $row[1];
-    $keys['culture'] = $row[2];
+    $keys['id'] = $row[8];
+    $keys['culture'] = $row[9];
 
     $key = serialize($keys);
     if (!isset(self::$rightsI18ns[$key]))
@@ -374,7 +388,14 @@ abstract class BaseRightsI18n implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -409,7 +430,10 @@ abstract class BaseRightsI18n implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;

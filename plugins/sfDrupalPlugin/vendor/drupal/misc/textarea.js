@@ -11,8 +11,8 @@ Drupal.behaviors.textarea = {
       var grippie = $('<div class="grippie"></div>').mousedown(startDrag);
 
       grippie
-        .insertAfter(textarea)
-        .css('margin-right', grippie.width() - textarea.width());
+        .insertAfter(textarea);
+        // .css('margin-right', grippie.width() - textarea.width());
 
       function startDrag(e) {
         staticOffset = textarea.height() - e.pageY;

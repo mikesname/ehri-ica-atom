@@ -1,180 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="sl" datatype="plaintext" original="messages" date="2010-11-12T09:28:04Z" product-name="messages">
+  <file source-language="EN" target-language="sl" datatype="plaintext" original="messages" date="2011-11-04T15:08:33Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
-        <source>All %1%</source>
-        <target/>
+        <source>View permissions</source>
+        <target>Ogled dovoljenj</target>
       </trans-unit>
       <trans-unit id="2">
-        <source>Action</source>
-        <target/>
+        <source>Edit group</source>
+        <target>Uredi skupino</target>
       </trans-unit>
       <trans-unit id="3">
-        <source>Permission</source>
-        <target/>
+        <source>All %1%</source>
+        <target>Vsi %1%</target>
       </trans-unit>
       <trans-unit id="4">
-        <source>Grant</source>
-        <target/>
+        <source>All privileges</source>
+        <target>Vsi privilegiji</target>
       </trans-unit>
       <trans-unit id="5">
-        <source>Deny</source>
-        <target/>
+        <source>Actions</source>
+        <target>Dejanja</target>
       </trans-unit>
       <trans-unit id="6">
-        <source>Inherit</source>
-        <target/>
+        <source>Edit</source>
+        <target>Uredi</target>
       </trans-unit>
       <trans-unit id="7">
-        <source>Add %1%</source>
-        <target/>
+        <source>Delete</source>
+        <target>Izbriši</target>
       </trans-unit>
       <trans-unit id="8">
-        <source>%1% name</source>
-        <target/>
+        <source>Add new</source>
+        <target>Dodaj novo</target>
       </trans-unit>
       <trans-unit id="9">
-        <source>Permissions</source>
-        <target/>
+        <source>Permissions for all %1%</source>
+        <target>Dovoljenja za vse %1%</target>
       </trans-unit>
       <trans-unit id="10">
-        <source>Actions</source>
-        <target/>
+        <source>Action</source>
+        <target>Dejanje</target>
       </trans-unit>
       <trans-unit id="11">
-        <source>Edit</source>
-        <target>uredi</target>
+        <source>Permission</source>
+        <target>Dovoljenje</target>
       </trans-unit>
       <trans-unit id="12">
-        <source>Delete</source>
-        <target>briši</target>
+        <source>Grant</source>
+        <target>Dotacija</target>
       </trans-unit>
       <trans-unit id="13">
-        <source>Add new</source>
-        <target>dodaj novo</target>
+        <source>Deny</source>
+        <target>Zavrni</target>
       </trans-unit>
       <trans-unit id="14">
-        <source>Groups ACL</source>
-        <target/>
+        <source>Inherit</source>
+        <target>Podeduj</target>
       </trans-unit>
       <trans-unit id="15">
-        <source>Permissions for all %1%</source>
-        <target/>
+        <source>Permissions by taxonomy</source>
+        <target>Dovoljenja, ki jih dopušča taksonomija</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Permissions by taxonomy</source>
-        <target/>
+        <source>Permissions</source>
+        <target>Dovoljenja</target>
       </trans-unit>
       <trans-unit id="17">
         <source>Taxonomy name</source>
-        <target/>
+        <target>Taksonomsko ime</target>
       </trans-unit>
       <trans-unit id="18">
         <source>Add permissions by taxonomy</source>
-        <target/>
+        <target>Dodaj dovoljenja taksonomije</target>
       </trans-unit>
       <trans-unit id="19">
         <source>Add taxonomy</source>
-        <target/>
+        <target>Dodaj taksonomijo</target>
       </trans-unit>
       <trans-unit id="20">
         <source>Cancel</source>
-        <target>prekliči</target>
+        <target>Prekliči</target>
       </trans-unit>
       <trans-unit id="21">
         <source>Save</source>
-        <target>zapiši</target>
+        <target>Shrani</target>
       </trans-unit>
       <trans-unit id="22">
-        <source>Are you sure you want to delete %1%?</source>
-        <target/>
+        <source>%1%: %2%</source>
+        <target>%1%: %2%</target>
       </trans-unit>
       <trans-unit id="23">
-        <source>Confirm</source>
-        <target/>
+        <source>Are you sure you want to delete %1%?</source>
+        <target>Ste prepričani, da želite izbrisati %1%?</target>
       </trans-unit>
       <trans-unit id="24">
-        <source>Edit %1% permissions</source>
-        <target/>
+        <source>Confirm</source>
+        <target>Potrdi</target>
       </trans-unit>
       <trans-unit id="25">
-        <source>Add permissions by %1%</source>
-        <target/>
+        <source>Add new group</source>
+        <target>Dodaj novo skupino</target>
       </trans-unit>
       <trans-unit id="26">
-        <source>Permissions by %1%</source>
-        <target/>
+        <source>Create</source>
+        <target>Ustvari</target>
       </trans-unit>
       <trans-unit id="27">
-        <source>Edit group</source>
-        <target/>
+        <source>Edit %1% permissions</source>
+        <target>Uredi %1% dovoljenj</target>
       </trans-unit>
       <trans-unit id="28">
-        <source>Add new group</source>
-        <target/>
+        <source>Permissions by %1%</source>
+        <target>Dovoljenja %1%</target>
       </trans-unit>
       <trans-unit id="29">
-        <source>Create</source>
-        <target>ustvari</target>
+        <source>%1% name</source>
+        <target>%1% ime</target>
       </trans-unit>
       <trans-unit id="30">
-        <source>View permissions</source>
-        <target/>
+        <source>Add permissions by %1%</source>
+        <target>Dodaj dovoljenja za %1%</target>
       </trans-unit>
       <trans-unit id="31">
-        <source>All privileges</source>
-        <target/>
+        <source>Add %1%</source>
+        <target>Dodaj %1%</target>
       </trans-unit>
       <trans-unit id="32">
-        <source>%1%: %2%</source>
-        <target/>
+        <source>View group</source>
+        <target>Ogled skupine</target>
       </trans-unit>
       <trans-unit id="33">
-        <source>View group</source>
-        <target/>
+        <source>Name</source>
+        <target>Ime</target>
       </trans-unit>
       <trans-unit id="34">
-        <source>Name</source>
-        <target>ime</target>
+        <source>Description</source>
+        <target>Opis</target>
       </trans-unit>
       <trans-unit id="35">
-        <source>Description</source>
-        <target>opis</target>
+        <source>Translate</source>
+        <target>Prevedi</target>
       </trans-unit>
       <trans-unit id="36">
-        <source>Translate</source>
-        <target/>
+        <source>Sorry, this group is locked and cannot be deleted</source>
+        <target>Ta skupina je žal zaklenjena in se je ne da izbrisati</target>
       </trans-unit>
       <trans-unit id="37">
-        <source>Taxonomy: %1%</source>
-        <target/>
+        <source>This group is required by the application to operate correctly</source>
+        <target>Program zahteva to skupino za pravilno delovanje</target>
       </trans-unit>
       <trans-unit id="38">
-        <source>List groups</source>
-        <target/>
+        <source>Back to previous page</source>
+        <target>Nazaj na prejšnjo stran</target>
       </trans-unit>
       <trans-unit id="39">
-        <source>Group</source>
-        <target/>
+        <source>List groups</source>
+        <target>Navedi skupine</target>
       </trans-unit>
       <trans-unit id="40">
-        <source>Members</source>
-        <target/>
+        <source>Groups ACL</source>
+        <target>Skupine ACL</target>
       </trans-unit>
       <trans-unit id="41">
-        <source>Sorry, this group is locked and cannot be deleted</source>
-        <target/>
+        <source>Group</source>
+        <target>Skupina</target>
       </trans-unit>
       <trans-unit id="42">
-        <source>This group is required by the application to operate correctly</source>
-        <target/>
+        <source>Members</source>
+        <target>Člani</target>
       </trans-unit>
       <trans-unit id="43">
-        <source>Back to previous page</source>
-        <target>nazaj na predhodno stran</target>
+        <source>Taxonomy: %1%</source>
+        <target>Taksonomija: %1%</target>
       </trans-unit>
     </body>
   </file>

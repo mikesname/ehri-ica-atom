@@ -215,11 +215,6 @@ abstract class BaseObject implements ArrayAccess
       return true;
     }
 
-    if ('rightss' == $name)
-    {
-      return true;
-    }
-
     if ('slugs' == $name)
     {
       return true;
@@ -388,23 +383,6 @@ abstract class BaseObject implements ArrayAccess
       }
 
       return $this->refFkValues['relationsRelatedByobjectId'];
-    }
-
-    if ('rightss' == $name)
-    {
-      if (!isset($this->refFkValues['rightss']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['rightss'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['rightss'] = self::getrightssById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['rightss'];
     }
 
     if ('slugs' == $name)
@@ -597,7 +575,14 @@ abstract class BaseObject implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -632,7 +617,10 @@ abstract class BaseObject implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;
@@ -877,26 +865,6 @@ abstract class BaseObject implements ArrayAccess
   public function addrelationsRelatedByobjectIdCriteria(Criteria $criteria)
   {
     return self::addrelationsRelatedByobjectIdCriteriaById($criteria, $this->id);
-  }
-
-  public static function addrightssCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitRights::OBJECT_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getrightssById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addrightssCriteriaById($criteria, $id);
-
-    return QubitRights::get($criteria, $options);
-  }
-
-  public function addrightssCriteria(Criteria $criteria)
-  {
-    return self::addrightssCriteriaById($criteria, $this->id);
   }
 
   public static function addslugsCriteriaById(Criteria $criteria, $id)

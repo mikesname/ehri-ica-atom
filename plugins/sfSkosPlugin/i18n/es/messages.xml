@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2010-11-12T09:27:57Z" product-name="messages">
+  <file source-language="EN" target-language="es" datatype="plaintext" original="messages" date="2011-11-04T15:08:25Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
         <source>Import %1% (SKOS)</source>
-        <target/>
+        <target>Importar %1% (SKOS)</target>
       </trans-unit>
       <trans-unit id="2">
         <source>Select a file to import</source>
@@ -14,31 +14,27 @@
       </trans-unit>
       <trans-unit id="3">
         <source>Actions</source>
-        <target/>
+        <target>Acciones</target>
       </trans-unit>
       <trans-unit id="4">
         <source>Import</source>
-        <target/>
+        <target>Importar</target>
       </trans-unit>
       <trans-unit id="5">
-        <source>Import complete</source>
+        <source>Import successful</source>
         <target/>
       </trans-unit>
       <trans-unit id="6">
-        <source>The following top-level terms were imported</source>
+        <source>%1% terms imported in %2%s</source>
         <target/>
       </trans-unit>
       <trans-unit id="7">
-        <source>A total of %1% terms were imported in %2%s</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="8">
         <source>View %1%</source>
         <target>Visualizar %1% </target>
       </trans-unit>
-      <trans-unit id="9">
+      <trans-unit id="8">
         <source>Import more %1%</source>
-        <target/>
+        <target>Importar más %1%</target>
       </trans-unit>
     </body>
   </file>

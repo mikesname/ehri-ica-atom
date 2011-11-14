@@ -1,6 +1,12 @@
+<?php echo get_partial('informationobject/printPreviewBar', array('resource' => $resource)) ?>
+
 <h1><?php echo __('View resource metadata') ?></h1>
 
-<?php echo link_to_if(QubitAcl::check($resource, 'update'), '<h1 class="label">'.render_title($mods).'</h1>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('title' => __('Edit resource metadata'))) ?>
+<h1 class="label printable">
+  <?php echo link_to_if(QubitAcl::check($resource, 'update'), render_title($mods), array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('title' => __('Edit resource metadata'))) ?>
+
+  <?php echo get_partial('informationobject/actionIcons') ?>
+</h1>
 
 <?php if (0 < count($resource->digitalObjects)): ?>
   <?php echo get_component('digitalobject', 'show', array('link' => $digitalObjectLink, 'resource' => $resource->digitalObjects[0], 'usageType' => QubitTerm::REFERENCE_ID)) ?>
@@ -71,8 +77,28 @@
   </div>
 </div>
 
+<div class="section" id="rightsArea">
+
+  <?php echo link_to_if(QubitAcl::check($resource, 'update'), '<h2>'.__('Rights area').'</h2>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'rightsArea', 'title' => __('Edit rights area'))) ?>
+
+  <?php echo get_component('right', 'relatedRights', array('resource' => $resource)) ?>
+
+</div> <!-- /.section#rightsArea -->
+
 <?php if (0 < count($resource->digitalObjects)): ?>
+
   <?php echo get_partial('digitalobject/metadata', array('resource' => $resource->digitalObjects[0])) ?>
+
+  <?php echo get_partial('digitalobject/rights', array('resource' => $resource->digitalObjects[0])) ?>
+
 <?php endif; ?>
+
+<div class="section" id="accessionArea">
+
+  <h2><?php echo __('Accession area') ?></h2>
+
+  <?php echo get_component('informationobject', 'accessions', array('resource' => $resource)) ?>
+
+</div> <!-- /.section#accessionArea -->
 
 <?php echo get_partial('informationobject/actions', array('resource' => $resource)) ?>

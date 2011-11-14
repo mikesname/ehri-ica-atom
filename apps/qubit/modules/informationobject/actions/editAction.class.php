@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -91,7 +91,7 @@ class InformationObjectEditAction extends DefaultEditAction
       $this->form->setWidget('sourceId', new sfWidgetFormInputHidden);
 
       // Set publication status to "draft"
-      $this->resource->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID)));
+      $this->resource->setPublicationStatus(sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID));
     }
 
     // Create
@@ -406,6 +406,70 @@ class InformationObjectEditAction extends DefaultEditAction
         }
       }
 
+      foreach (QubitRelation::getRelationsBySubjectId($sourceInformationObject->id, array('typeId' => QubitTerm::RIGHT_ID)) as $item)
+      {
+        $sourceRight = $item->object;
+
+        if (false === array_search($this->context->routing->generate(null, array($sourceRight, 'module' => 'right')), (array)$this->request->deleteRights))
+        {
+          $right = new QubitRights;
+          $right->act = $sourceRight->act;
+          $right->startDate = $sourceRight->startDate;
+          $right->endDate = $sourceRight->endDate;
+          $right->basis = $sourceRight->basis;
+          $right->restriction = $sourceRight->restriction;
+          $right->copyrightStatus = $sourceRight->copyrightStatus;
+          $right->copyrightStatusDate = $sourceRight->copyrightStatusDate;
+          $right->copyrightJurisdiction = $sourceRight->copyrightJurisdiction;
+          $right->statuteNote = $sourceRight->statuteNote;
+
+          // Right holder
+          if (isset($sourceRight->rightsHolder))
+          {
+            $right->rightsHolder = $sourceRight->rightsHolder;
+          }
+
+          // I18n
+          $right->rightsNote = $sourceRight->rightsNote;
+          $right->copyrightNote = $sourceRight->copyrightNote;
+          $right->licenseIdentifier = $sourceRight->licenseIdentifier;
+          $right->licenseTerms = $sourceRight->licenseTerms;
+          $right->licenseNote = $sourceRight->licenseNote;
+          $right->statuteJurisdiction = $sourceRight->statuteJurisdiction;
+          $right->statuteCitation = $sourceRight->statuteCitation;
+          $right->statuteDeterminationDate = $sourceRight->statuteDeterminationDate;
+
+          foreach ($sourceRight->rightsI18ns as $sourceRightI18n)
+          {
+            if ($this->context->user->getCulture() == $sourceRightI18n->culture)
+            {
+              continue;
+            }
+
+            $rightI18n = new QubitRightsI18n;
+            $rightI18n->rightNote = $sourceRightI18n->rightNote;
+            $rightI18n->copyrightNote = $sourceRightI18n->copyrightNote;
+            $rightI18n->licenseIdentifier = $sourceRightI18n->licenseIdentifier;
+            $rightI18n->licenseTerms = $sourceRightI18n->licenseTerms;
+            $rightI18n->licenseNote = $sourceRightI18n->licenseNote;
+            $rightI18n->statuteJurisdiction = $sourceRightI18n->statuteJurisdiction;
+            $rightI18n->statuteCitation = $sourceRightI18n->statuteCitation;
+            $rightI18n->statuteNote = $sourceRightI18n->statuteNote;
+            $rightI18n->culture = $sourceRightI18n->culture;
+
+            $right->rightsI18ns[] = $rightI18n;
+          }
+
+          $right->save();
+
+          $relation = new QubitRelation;
+          $relation->object = $right;
+          $relation->typeId = QubitTerm::RIGHT_ID;
+
+          $this->resource->relationsRelatedBysubjectId[] = $relation;
+        }
+      }
+
       if ('sfIsadPlugin' != $this->request->module)
       {
         foreach ($sourceInformationObject->events as $sourceEvent)
@@ -466,7 +530,38 @@ class InformationObjectEditAction extends DefaultEditAction
   {
     parent::execute($request);
 
-    if ($request->isMethod('post'))
+    if ($request->hasParameter('csvimport'))
+    {
+      // if a parent ID is set, use that for parenting
+      $parentId = $request->getParameter('parent', null);
+
+      if (!empty($parentId))
+      {
+        $request->getParameterHolder()->remove('parent');
+      }
+
+      // make sure we don't pass the import ID
+      $request->getParameterHolder()->remove('id');
+
+      $this->form->bind($request->getParameterHolder()->getAll());
+      if ($this->form->isValid())
+      {
+        $this->processForm();
+
+        if (!empty($parentId))
+        {
+          $this->resource->parent = QubitInformationObject::getById($parentId);
+        }
+        else{
+          $this->resource->parent = QubitInformationObject::getById(QubitInformationObject::ROOT_ID);
+        }
+
+        $this->resource->save();
+
+        return; // don't bother adding assets etc. for output
+      }
+    }
+    elseif ($request->isMethod('post'))
     {
       $this->form->bind($request->getPostParameters());
       if ($this->form->isValid())
@@ -509,31 +604,25 @@ class InformationObjectEditAction extends DefaultEditAction
   {
     if (is_array($updateChildLevels = $this->request->updateChildLevels) && count($updateChildLevels))
     {
-      foreach ($updateChildLevels as $childLevelFormData)
+      foreach ($updateChildLevels as $item)
       {
-        if (isset($childLevelFormData['id']))
+        $childLevel = new QubitInformationObject;
+        $childLevel->identifier = $item['identifier'];
+        $childLevel->title = $item['title'];
+
+        if (null != ($pubStatus = $this->resource->getPublicationStatus()))
         {
-          if (null === $childLevel = QubitInformationObject::getById($childLevelFormData['id']))
-          {
-            continue;
-          }
-        }
-        else
-        {
-          $childLevel = new QubitInformationObject;
+          $childLevel->setPublicationStatus($pubStatus->statusId);
         }
 
-        $childLevel->setIdentifier($childLevelFormData['identifier']);
-        $childLevel->setTitle($childLevelFormData['title']);
-
-        if (0 < $childLevelFormData['levelOfDescription'] && (null !== QubitTerm::getById($childLevelFormData['levelOfDescription'])))
+        if (0 < strlen($item['levelOfDescription']) && (null !== QubitTerm::getById($item['levelOfDescription'])))
         {
-          $childLevel->levelOfDescriptionId = $childLevelFormData['levelOfDescription'];
+          $childLevel->levelOfDescriptionId = $item['levelOfDescription'];
         }
 
-        if (0 < $childLevelFormData['levelOfDescription']
-            || 0 < strlen($childLevelFormData['identifier'])
-            || 0 < strlen($childLevelFormData['title']))
+        if (0 < strlen($item['levelOfDescription'])
+            || 0 < strlen($item['identifier'])
+            || 0 < strlen($item['title']))
         {
           $this->resource->informationObjectsRelatedByparentId[] = $childLevel;
         }
@@ -559,12 +648,12 @@ class InformationObjectEditAction extends DefaultEditAction
     $oldStatus = $this->resource->getStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
     if (!isset($oldStatus) && isset($pubStatusId) || $pubStatusId !== $oldStatus->statusId)
     {
-      $this->resource->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+      $this->resource->setPublicationStatus($pubStatusId);
 
       // Set pub status for child levels
       foreach ($this->resource->informationObjectsRelatedByparentId as $child)
       {
-        $child->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => $pubStatusId));
+        $child->setPublicationStatus($pubStatusId);
       }
 
       // Update pub status of descendants

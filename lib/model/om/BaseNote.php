@@ -11,11 +11,6 @@ abstract class BaseNote implements ArrayAccess
     TYPE_ID = 'note.TYPE_ID',
     SCOPE = 'note.SCOPE',
     USER_ID = 'note.USER_ID',
-    PARENT_ID = 'note.PARENT_ID',
-    LFT = 'note.LFT',
-    RGT = 'note.RGT',
-    CREATED_AT = 'note.CREATED_AT',
-    UPDATED_AT = 'note.UPDATED_AT',
     SOURCE_CULTURE = 'note.SOURCE_CULTURE',
     ID = 'note.ID',
     SERIAL_NUMBER = 'note.SERIAL_NUMBER';
@@ -26,11 +21,6 @@ abstract class BaseNote implements ArrayAccess
     $criteria->addSelectColumn(QubitNote::TYPE_ID);
     $criteria->addSelectColumn(QubitNote::SCOPE);
     $criteria->addSelectColumn(QubitNote::USER_ID);
-    $criteria->addSelectColumn(QubitNote::PARENT_ID);
-    $criteria->addSelectColumn(QubitNote::LFT);
-    $criteria->addSelectColumn(QubitNote::RGT);
-    $criteria->addSelectColumn(QubitNote::CREATED_AT);
-    $criteria->addSelectColumn(QubitNote::UPDATED_AT);
     $criteria->addSelectColumn(QubitNote::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitNote::ID);
     $criteria->addSelectColumn(QubitNote::SERIAL_NUMBER);
@@ -48,7 +38,7 @@ abstract class BaseNote implements ArrayAccess
   public static function getFromRow(array $row)
   {
     $keys = array();
-    $keys['id'] = $row[10];
+    $keys['id'] = $row[5];
 
     $key = serialize($keys);
     if (!isset(self::$notes[$key]))
@@ -113,23 +103,6 @@ abstract class BaseNote implements ArrayAccess
     $affectedRows += BasePeer::doDelete($criteria, $connection);
 
     return $affectedRows;
-  }
-
-  public static function addOrderByPreorder(Criteria $criteria, $order = Criteria::ASC)
-  {
-    if ($order == Criteria::DESC)
-    {
-      return $criteria->addDescendingOrderByColumn(QubitNote::LFT);
-    }
-
-    return $criteria->addAscendingOrderByColumn(QubitNote::LFT);
-  }
-
-  public static function addRootsCriteria(Criteria $criteria)
-  {
-    $criteria->add(QubitNote::PARENT_ID);
-
-    return $criteria;
   }
 
   protected
@@ -209,11 +182,6 @@ abstract class BaseNote implements ArrayAccess
       }
     }
 
-    if ('notesRelatedByparentId' == $name)
-    {
-      return true;
-    }
-
     if ('noteI18ns' == $name)
     {
       return true;
@@ -230,16 +198,6 @@ abstract class BaseNote implements ArrayAccess
     }
     catch (sfException $e)
     {
-    }
-
-    if ('ancestors' == $name)
-    {
-      return true;
-    }
-
-    if ('descendants' == $name)
-    {
-      return true;
     }
 
     throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
@@ -283,23 +241,6 @@ abstract class BaseNote implements ArrayAccess
       }
     }
 
-    if ('notesRelatedByparentId' == $name)
-    {
-      if (!isset($this->refFkValues['notesRelatedByparentId']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['notesRelatedByparentId'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['notesRelatedByparentId'] = self::getnotesRelatedByparentIdById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['notesRelatedByparentId'];
-    }
-
     if ('noteI18ns' == $name)
     {
       if (!isset($this->refFkValues['noteI18ns']))
@@ -328,46 +269,6 @@ abstract class BaseNote implements ArrayAccess
     }
     catch (sfException $e)
     {
-    }
-
-    if ('ancestors' == $name)
-    {
-      if (!isset($this->values['ancestors']))
-      {
-        if ($this->new)
-        {
-          $this->values['ancestors'] = QubitQuery::create(array('self' => $this) + $options);
-        }
-        else
-        {
-          $criteria = new Criteria;
-          $this->addAncestorsCriteria($criteria);
-          $this->addOrderByPreorder($criteria);
-          $this->values['ancestors'] = self::get($criteria, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->values['ancestors'];
-    }
-
-    if ('descendants' == $name)
-    {
-      if (!isset($this->values['descendants']))
-      {
-        if ($this->new)
-        {
-          $this->values['descendants'] = QubitQuery::create(array('self' => $this) + $options);
-        }
-        else
-        {
-          $criteria = new Criteria;
-          $this->addDescendantsCriteria($criteria);
-          $this->addOrderByPreorder($criteria);
-          $this->values['descendants'] = self::get($criteria, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->values['descendants'];
     }
 
     throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
@@ -550,7 +451,14 @@ abstract class BaseNote implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -559,8 +467,6 @@ abstract class BaseNote implements ArrayAccess
 
   protected function insert($connection = null)
   {
-    $this->updateNestedSet($connection);
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
@@ -587,7 +493,10 @@ abstract class BaseNote implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;
@@ -610,33 +519,6 @@ abstract class BaseNote implements ArrayAccess
 
   protected function update($connection = null)
   {
-    // Update nested set keys only if parent id has changed
-    if (isset($this->values['parentId']))
-    {
-      // Get the "original" parentId before any updates
-      $offset = 0;
-      $originalParentId = null;
-      foreach ($this->tables as $table)
-      {
-        foreach ($table->getColumns() as $column)
-        {
-          if ('parentId' == $column->getPhpName())
-          {
-            $originalParentId = $this->row[$offset];
-            break;
-          }
-          $offset++;
-        }
-      }
-
-      // If updated value of parentId is different then original value,
-      // update the nested set
-      if ($originalParentId != $this->values['parentId'])
-      {
-        $this->updateNestedSet($connection);
-      }
-    }
-
     if (!isset($connection))
     {
       $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
@@ -691,9 +573,6 @@ abstract class BaseNote implements ArrayAccess
       throw new PropelException('This object has already been deleted.');
     }
 
-    $this->clear();
-    $this->deleteFromNestedSet($connection);
-
     $criteria = new Criteria;
     $criteria->add(QubitNote::ID, $this->id);
 
@@ -745,33 +624,6 @@ abstract class BaseNote implements ArrayAccess
     return $criteria;
   }
 
-  public static function addJoinparentCriteria(Criteria $criteria)
-  {
-    $criteria->addJoin(QubitNote::PARENT_ID, QubitNote::ID);
-
-    return $criteria;
-  }
-
-  public static function addnotesRelatedByparentIdCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitNote::PARENT_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getnotesRelatedByparentIdById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addnotesRelatedByparentIdCriteriaById($criteria, $id);
-
-    return QubitNote::get($criteria, $options);
-  }
-
-  public function addnotesRelatedByparentIdCriteria(Criteria $criteria)
-  {
-    return self::addnotesRelatedByparentIdCriteriaById($criteria, $this->id);
-  }
-
   public static function addnoteI18nsCriteriaById(Criteria $criteria, $id)
   {
     $criteria->add(QubitNoteI18n::ID, $id);
@@ -811,140 +663,6 @@ abstract class BaseNote implements ArrayAccess
     }
 
     return $noteI18ns[$options['culture']];
-  }
-
-  public function addAncestorsCriteria(Criteria $criteria)
-  {
-    return $criteria->add(QubitNote::LFT, $this->lft, Criteria::LESS_THAN)->add(QubitNote::RGT, $this->rgt, Criteria::GREATER_THAN);
-  }
-
-  public function addDescendantsCriteria(Criteria $criteria)
-  {
-    return $criteria->add(QubitNote::LFT, $this->lft, Criteria::GREATER_THAN)->add(QubitNote::RGT, $this->rgt, Criteria::LESS_THAN);
-  }
-
-  protected function updateNestedSet($connection = null)
-  {
-// HACK Try to prevent modifying left and right values anywhere except in this
-// method.  Perhaps it would be more logical to use protected visibility for
-// these values?
-unset($this->values['lft']);
-unset($this->values['rgt']);
-    if (!isset($connection))
-    {
-      $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
-    }
-
-    if (!isset($this->lft) || !isset($this->rgt))
-    {
-      $delta = 2;
-    }
-    else
-    {
-      $delta = $this->rgt - $this->lft + 1;
-    }
-
-    if (null === $parent = $this->__get('parent', array('connection' => $connection)))
-    {
-      $statement = $connection->prepare('
-        SELECT MAX('.QubitNote::RGT.')
-        FROM '.QubitNote::TABLE_NAME);
-      $statement->execute();
-      $row = $statement->fetch();
-      $max = $row[0];
-
-      if (!isset($this->lft) || !isset($this->rgt))
-      {
-        $this->lft = $max + 1;
-        $this->rgt = $max + 2;
-
-        return $this;
-      }
-
-      $shift = $max + 1 - $this->lft;
-    }
-    else
-    {
-      $parent->clear();
-
-      if (isset($this->lft) && isset($this->rgt) && $this->lft <= $parent->lft && $this->rgt >= $parent->rgt)
-      {
-        throw new PropelException('An object cannot be a descendant of itself.');
-      }
-
-      $statement = $connection->prepare('
-        UPDATE '.QubitNote::TABLE_NAME.'
-        SET '.QubitNote::LFT.' = '.QubitNote::LFT.' + ?
-        WHERE '.QubitNote::LFT.' >= ?');
-      $statement->execute(array($delta, $parent->rgt));
-
-      $statement = $connection->prepare('
-        UPDATE '.QubitNote::TABLE_NAME.'
-        SET '.QubitNote::RGT.' = '.QubitNote::RGT.' + ?
-        WHERE '.QubitNote::RGT.' >= ?');
-      $statement->execute(array($delta, $parent->rgt));
-
-      if (!isset($this->lft) || !isset($this->rgt))
-      {
-        $this->lft = $parent->rgt;
-        $this->rgt = $parent->rgt + 1;
-        $parent->rgt += 2;
-
-        return $this;
-      }
-
-      if ($this->lft > $parent->rgt)
-      {
-        $this->lft += $delta;
-        $this->rgt += $delta;
-      }
-
-      $shift = $parent->rgt - $this->lft;
-    }
-
-    $statement = $connection->prepare('
-      UPDATE '.QubitNote::TABLE_NAME.'
-      SET '.QubitNote::LFT.' = '.QubitNote::LFT.' + ?, '.QubitNote::RGT.' = '.QubitNote::RGT.' + ?
-      WHERE '.QubitNote::LFT.' >= ?
-      AND '.QubitNote::RGT.' <= ?');
-    $statement->execute(array($shift, $shift, $this->lft, $this->rgt));
-
-    $this->deleteFromNestedSet($connection);
-
-    if ($shift > 0)
-    {
-      $this->lft -= $delta;
-      $this->rgt -= $delta;
-    }
-
-    $this->lft += $shift;
-    $this->rgt += $shift;
-
-    return $this;
-  }
-
-  protected function deleteFromNestedSet($connection = null)
-  {
-    if (!isset($connection))
-    {
-      $connection = QubitTransactionFilter::getConnection(QubitNote::DATABASE_NAME);
-    }
-
-    $delta = $this->rgt - $this->lft + 1;
-
-    $statement = $connection->prepare('
-      UPDATE '.QubitNote::TABLE_NAME.'
-      SET '.QubitNote::LFT.' = '.QubitNote::LFT.' - ?
-      WHERE '.QubitNote::LFT.' >= ?');
-    $statement->execute(array($delta, $this->rgt));
-
-    $statement = $connection->prepare('
-      UPDATE '.QubitNote::TABLE_NAME.'
-      SET '.QubitNote::RGT.' = '.QubitNote::RGT.' - ?
-      WHERE '.QubitNote::RGT.' >= ?');
-    $statement->execute(array($delta, $this->rgt));
-
-    return $this;
   }
 
   public function __call($name, $args)

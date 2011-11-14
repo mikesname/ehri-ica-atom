@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -201,29 +201,57 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
 
     parent::insert($connection);
 
+    self::insertSlug($connection);
+
+    return $this;
+  }
+
+  public function insertSlug($connection)
+  {
+    if (!isset($connection))
+    {
+      $connection = QubitTransactionFilter::getConnection(QubitObject::DATABASE_NAME);
+    }
+
     if (isset($this->slug))
     {
       $statement = $connection->prepare('
         INSERT INTO '.QubitSlug::TABLE_NAME.' ('.QubitSlug::OBJECT_ID.', '.QubitSlug::SLUG.')
         VALUES (?, ?)');
 
+      // Unless it is set, get random, digit and letter slug
       if (1 > strlen($this->slug))
       {
-        $statement->execute(array($this->id, QubitSlug::random()));
+        $statement->execute(array($this->id, QubitSlug::getUnique($connection)));
 
         return $this;
       }
 
-      try
+      // Compute unique slug adding contiguous numeric suffix
+      $suffix = 2;
+      do
       {
-        $statement->execute(array($this->id, $this->slug));
-      }
+        try
+        {
+          $statement->execute(array($this->id, $this->slug));
+          unset($suffix);
+        }
+        // Collision? Try next suffix
+        catch (PDOException $e)
+        {
+          if (2 == $suffix)
+          {
+            $this->slug .= "-$suffix";
+          }
+          else
+          {
+            $this->slug = preg_replace('/-\d+$/', '', $this->slug, 1)."-$suffix";
+          }
 
-      // Collision?  Try random, digit and letter slug
-      catch (PDOException $e)
-      {
-        $statement->execute(array($this->id, QubitSlug::random()));
+          $suffix++;
+        }
       }
+      while (isset($suffix));
     }
 
     return $this;
@@ -340,5 +368,14 @@ class QubitObject extends BaseObject implements Zend_Acl_Resource_Interface
     }
 
     return QubitOtherName::get($criteria);
+  }
+
+  /********************
+       Rights
+  *********************/
+
+  public function getRights($options = array())
+  {
+    return QubitRelation::getRelationsBySubjectId($this->id, array('typeId' => QubitTerm::RIGHT_ID));
   }
 }

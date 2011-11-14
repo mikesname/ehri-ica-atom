@@ -1,3 +1,14 @@
+<div class="section">
+  <h3><?php echo __('Subject of') ?></h3>
+  <div>
+    <ul>
+      <?php foreach ($subjectInfoObjects as $item): ?>
+        <li><?php echo link_to(render_title($item), array($item, 'module' => 'informationobject')) ?></li>
+      <?php endforeach; ?>
+    </ul>
+  </div>
+</div>
+
 <?php foreach ($relatedInfoObjects as $role => $informationObjects): ?>
   <div>
     <h3><?php echo __('%1% of', array('%1%' => $role)) ?></h3>

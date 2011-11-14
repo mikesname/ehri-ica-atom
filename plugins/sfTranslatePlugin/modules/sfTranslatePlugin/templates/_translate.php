@@ -3,16 +3,16 @@
 
 <div id="l10n-client">
   <div class="labels">
-    <span id="l10n-client-hide"><?php echo __('X') ?></span>
-    <span id="l10n-client-show"><?php echo __('Translate User Interface') ?></span>
+    <span id="l10n-client-hide">X</span>
+    <span id="l10n-client-show"><?php echo __('Translate user interface') ?></span>
     <div class="label strings">
-      <h2><?php echo __('Page Text') ?></h2>
+      <h2><?php echo __('Page text') ?></h2>
     </div>
     <div class="label source">
       <h2><?php echo __('Source') ?></h2>
     </div>
     <div class="label translation">
-      <h2><?php echo __('%language% Translation', array('%language%' => format_language($sf_user->getCulture()))) ?></h2>
+      <h2><?php echo __('%language% translation', array('%language%' => format_language($sf_user->getCulture()))) ?></h2>
     </div>
   </div>
   <div id="l10n-client-string-select">

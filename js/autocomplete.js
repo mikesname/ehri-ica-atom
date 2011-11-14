@@ -88,7 +88,7 @@
                   // A following sibling with class .list and a value specifies
                   // that autocomplete items can be requested dynamically from
                   // the specified URI
-                  var value = $('~ .list', this).val();
+                  var value = $(this).siblings('.list').val(); // $('~ .list', this) stopped working in jQuery 1.4.4
                   if (value)
                   {
                     // Split into URI and selector like jQuery load()
@@ -216,7 +216,14 @@
 
                         // If this item is already selected, highlight it,
                         // otherwise add it to list of selected items
-                        if (!$('li:has(input[value=' + args[2][1] + '])', $ul)
+                        if (!
+                            // For unknown reasons, this selector isn't working, see issue 2004
+                            // $('li:has(input[value=' + args[2][1] + '])', $ul)
+                            $('li', $ul)
+                            .filter(function()
+                              {
+                                return args[2][1] == $(this).find('input').val();
+                              })
                             .each(function ()
                               {
                                 // Make background yellow for one second
@@ -325,7 +332,7 @@
                   // responses, and can't figure out how to get access to the
                   // URI of the final response,
                   // http://www.w3.org/TR/XMLHttpRequest/#notcovered
-                  var value = $('~ .add', this).val();
+                  var value = $(this).siblings('.add').val(); // $('~ .add', this) stopped working in jQuery 1.4.4
                   if (value)
                   {
                     // Split into URI and selector like jQuery load()

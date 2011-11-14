@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -22,7 +22,7 @@
  *
  * @package    Qubit
  * @subpackage library
- * @author     MJ Suhonos
+ * @author     MJ Suhonos <mj@artefactual.com>
  * @author     Peter Van Garderen <peter@artefactual.com>
  * @version    svn:$Id$
  */
@@ -32,12 +32,10 @@ class QubitXmlImport
     $errors = null,
     $rootObject = null;
 
-  public static function execute($xmlStream, $options = array())
+  public function import($xmlFile, $options = array())
   {
-    $qubitXmlImport = new QubitXmlImport;
-
     // load the XML document into a DOMXML object
-    $importDOM = self::loadXML($xmlStream, $options = array('strictXmlParsing' => false));
+    $importDOM = $this->loadXML($xmlFile, $options);
 
     // if we were unable to parse the XML file at all
     if (empty($importDOM->documentElement))
@@ -56,20 +54,20 @@ class QubitXmlImport
         $xmlerrors[] = sfContext::getInstance()->i18n->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
       }
 
-      $qubitXmlImport->errors = array_merge((array) $qubitXmlImport->errors, $xmlerrors);
+      $this->errors = array_merge((array) $this->errors, $xmlerrors);
     }
 
     if ('eac-cpf' == $importDOM->documentElement->tagName)
     {
-      $qubitXmlImport->rootObject = new QubitActor;
-      $qubitXmlImport->rootObject->parentId = QubitActor::ROOT_ID;
+      $this->rootObject = new QubitActor;
+      $this->rootObject->parentId = QubitActor::ROOT_ID;
 
-      $eac = new sfEacPlugin($qubitXmlImport->rootObject);
+      $eac = new sfEacPlugin($this->rootObject);
       $eac->parse($importDOM);
 
-      $qubitXmlImport->rootObject->save();
+      $this->rootObject->save();
 
-      return $qubitXmlImport;
+      return $this;
     }
 
     // FIXME hardcoded until we decide how these will be developed
@@ -126,7 +124,7 @@ class QubitXmlImport
         // if libxml threw errors, populate them to show in the template
         foreach (libxml_get_errors() as $libxmlerror)
         {
-          $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
+          $this->errors[] = sfContext::getInstance()->i18n->__('libxml error %code% on line %line% in input file: %message%', array('%code%' => $libxmlerror->code, '%message%' => $libxmlerror->message, '%line%' => $libxmlerror->line));
         }
 
         break;
@@ -142,10 +140,10 @@ class QubitXmlImport
         }
 
         $importTerms = sfSkosPlugin::parse($importDOM);
-        $qubitXmlImport->rootObject = QubitTaxonomy::getById(QubitTaxonomy::SUBJECT_ID);
-        $qubitXmlImport->count = count($importTerms);
+        $this->rootObject = QubitTaxonomy::getById(QubitTaxonomy::SUBJECT_ID);
+        $this->count = count($importTerms);
 
-        return $qubitXmlImport;
+        return $this;
 
         break;
     }
@@ -159,13 +157,13 @@ class QubitXmlImport
       throw new Exception($errorMsg);
     }
 
-    $qubitXmlImport->schemaMap = sfYaml::load($importMap);
+    $this->schemaMap = sfYaml::load($importMap);
 
     // if XSLs are specified in the mapping, process them
-    if (!empty($qubitXmlImport->schemaMap['processXSLT']))
+    if (!empty($this->schemaMap['processXSLT']))
     {
       // pre-filter through XSLs in order
-      foreach ((array) $qubitXmlImport->schemaMap['processXSLT'] as $importXSL)
+      foreach ((array) $this->schemaMap['processXSLT'] as $importXSL)
       {
         $importXSL = sfConfig::get('sf_data_dir').DIRECTORY_SEPARATOR.'xslt'.DIRECTORY_SEPARATOR.$importXSL;
 
@@ -186,7 +184,7 @@ class QubitXmlImport
         }
         else
         {
-          $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('Unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
+          $this->errors[] = sfContext::getInstance()->i18n->__('Unable to load import XSL filter: "%importXSL%"', array('%importXSL%' => $importXSL));
         }
       }
 
@@ -221,13 +219,13 @@ class QubitXmlImport
           }
           catch (Exception $e)
           {
-            $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('EAD "langmaterial" is set to').': "'.$isocode.'". '.sfContext::getInstance()->i18n->__('This language is currently not supported.');
+            $this->errors[] = sfContext::getInstance()->i18n->__('EAD "langmaterial" is set to').': "'.$isocode.'". '.sfContext::getInstance()->i18n->__('This language is currently not supported.');
             continue;
           }
 
           if ($currentCulture !== $twoCharCode)
           {
-            $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('EAD "langmaterial" is set to').': "'.$isocode.'" ('.format_language($twoCharCode, 'en').'). '.sfContext::getInstance()->i18n->__('Your XML document has been saved in this language and your user interface has just been switched to this language.');
+            $this->errors[] = sfContext::getInstance()->i18n->__('EAD "langmaterial" is set to').': "'.$isocode.'" ('.format_language($twoCharCode, 'en').'). '.sfContext::getInstance()->i18n->__('Your XML document has been saved in this language and your user interface has just been switched to this language.');
           }
           $sf_user->setCulture($twoCharCode);
           // can only set to one language, so have to break once the first valid language is encountered
@@ -236,15 +234,15 @@ class QubitXmlImport
       }
     }
 
-    unset($qubitXmlImport->schemaMap['processXSLT']);
+    unset($this->schemaMap['processXSLT']);
 
     // go through schema map and populate objects/properties
-    foreach ($qubitXmlImport->schemaMap as $name => $mapping)
+    foreach ($this->schemaMap as $name => $mapping)
     {
       // if object is not defined or a valid class, we can't process this mapping
       if (empty($mapping['Object']) || !class_exists('Qubit'.$mapping['Object']))
       {
-        $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('Non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
+        $this->errors[] = sfContext::getInstance()->i18n->__('Non-existent class defined in import mapping: "%class%"', array('%class%' => 'Qubit'.$mapping['Object']));
         continue;
       }
 
@@ -258,9 +256,9 @@ class QubitXmlImport
         $currentObject = new $class;
 
         // set the rootObject to use for initial display in successful import
-        if (!$qubitXmlImport->rootObject)
+        if (!$this->rootObject)
         {
-          $qubitXmlImport->rootObject = $currentObject;
+          $this->rootObject = $currentObject;
         }
 
         // if a parent path is specified, try to parent the node
@@ -299,7 +297,7 @@ class QubitXmlImport
           // if method is not defined, we can't process this mapping
           if (empty($methodMap['Method']) || !is_callable(array($currentObject, $methodMap['Method'])))
           {
-            $qubitXmlImport->errors[] = sfContext::getInstance()->i18n->__('Non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
+            $this->errors[] = sfContext::getInstance()->i18n->__('Non-existent method defined in import mapping: "%method%"', array('%method%' => $methodMap['Method']));
             continue;
           }
 
@@ -419,6 +417,12 @@ class QubitXmlImport
           }
         }
 
+        // make sure we have a publication status set before indexing
+        if ($currentObject instanceof QubitInformationObject && count($currentObject->statuss) == 0)
+        {
+          $currentObject->setPublicationStatus(sfConfig::get('app_defaultPubStatus', QubitTerm::PUBLICATION_STATUS_DRAFT_ID));
+        }
+
         // save the object after it's fully-populated
         $currentObject->save();
 
@@ -427,7 +431,7 @@ class QubitXmlImport
       }
     }
 
-    return $qubitXmlImport;
+    return $this;
   }
 
   /**
@@ -439,11 +443,11 @@ class QubitXmlImport
    *  - load the schema locations
    *  - validate the file on the main schema (the one without prefix)
    *
-   * @param string $xmlStream XML document bitstream
+   * @param string $xmlFile XML document file
    * @param array $options optional parameters
    * @return DOMDocument an object representation of the XML document
    */
-  protected static function loadXML($xmlStream, $options = array())
+  protected function loadXML($xmlFile, $options = array())
   {
     libxml_use_internal_errors(true);
 
@@ -451,8 +455,8 @@ class QubitXmlImport
     $err_level = error_reporting(0);
     $doc = new DOMDocument('1.0', 'UTF-8');
 
-    // Default $strictXmlParsing to TRUE
-    $strictXmlParsing = (isset($options['strictXmlParsing'])) ? $options['strictXmlParsing'] : true;
+    // Default $strictXmlParsing to FALSE
+    $strictXmlParsing = (isset($options['strictXmlParsing'])) ? $options['strictXmlParsing'] : false;
 
     if ($strictXmlParsing)
     {
@@ -470,7 +474,7 @@ class QubitXmlImport
     $doc->preserveWhitespace = false;
     $doc->substituteEntities = true;
 
-    $doc->loadXML($xmlStream);
+    $doc->load($xmlFile);
 
     $xsi = false;
     $doc->namespaces = array();
@@ -488,8 +492,14 @@ class QubitXmlImport
     error_reporting($err_level);
 
     // look through the entire document for namespaces
+    // FIXME: Issue 837
+    // http://code.google.com/p/qubit-toolkit/issues/detail?id=837
+    //
+    // THIS SHOULD ONLY INSPECT THE ROOT NODE NAMESPACES
+    // Consider: http://www.php.net/manual/en/book.dom.php#73793
+
     $re = '/xmlns:([^=]+)="([^"]+)"/';
-    preg_match_all($re, $xmlStream, $mat, PREG_SET_ORDER);
+    preg_match_all($re, $doc->saveXML(), $mat, PREG_SET_ORDER);
 
     foreach ($mat as $xmlns)
     {
@@ -505,6 +515,7 @@ class QubitXmlImport
       $doc->xpath->registerNamespace($pre, $uri);
     }
 
+/*
     if (!isset($doc->namespaces['']))
     {
       $doc->namespaces[''] = $doc->documentElement->lookupnamespaceURI(null);
@@ -528,7 +539,7 @@ class QubitXmlImport
       // validate document against default namespace schema
       $doc->schemaValidate($doc->schemaLocations[$doc->namespaces['']]);
     }
-
+*/
     return $doc;
   }
 

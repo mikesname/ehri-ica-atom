@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -74,7 +74,14 @@ EOF;
     $currentMessages = array();
     foreach ($this->i18n->getMessageSource()->read() as $catalogue => $translations)
     {
-      $currentMessages += $translations;
+      foreach ($translations as $key => $value)
+      {
+        // Use first message that has a valid translation
+        if (0 < strlen(trim($value[0])) && !isset($currentMessages[$key][0]))
+        {
+          $currentMessages[$key] = $value;
+        }
+      }
     }
 
     // Loop through plugins
@@ -93,7 +100,7 @@ EOF;
       {
         foreach ($translations as $key => &$value)
         {
-          if (0 == strlen($value[0]) && 0 < strlen($currentMessages[$key][0]))
+          if (0 == strlen(trim($value[0])) && isset($currentMessages[$key]))
           {
             $messageSource->update($key, $currentMessages[$key][0], $value[2]);
           }

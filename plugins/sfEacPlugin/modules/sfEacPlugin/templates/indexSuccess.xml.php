@@ -5,15 +5,11 @@
 
     <recordId><?php echo esc_specialchars($resource->descriptionIdentifier) ?></recordId>
 
-    <!-- TODO <otherRecordId/> -->
-
     <maintenanceStatus><?php echo $eac->maintenanceStatus ?></maintenanceStatus>
 
     <publicationStatus><?php echo $eac->publicationStatus ?></publicationStatus>
 
     <maintenanceAgency>
-
-      <!-- TODO <descriptiveNote/>, <otherAgencyCode/> -->
 
       <agencyName><?php echo esc_specialchars($resource->institutionResponsibleIdentifier) ?></agencyName>
 
@@ -29,8 +25,6 @@
         <script scriptCode="<?php echo $code ?>"><?php echo format_script($code) ?></script>
       <?php endforeach; ?>
 
-      <!-- TODO <descriptiveNote/> -->
-
     </languageDeclaration>
 
     <conventionDeclaration>
@@ -38,8 +32,6 @@
       <abbreviation>conventionDeclaration</abbreviation>
 
       <citation><?php echo esc_specialchars($resource->rules) ?></citation>
-
-      <!-- TODO <descriptiveNote/> -->
 
     </conventionDeclaration>
 
@@ -49,15 +41,11 @@
 
       <citation>http://ica-atom.org/doc/RS-2#5.4</citation>
 
-      <!-- TODO <descriptiveNote/> -->
-
     </localTypeDeclaration>
 
     <localControl localType="detailLevel">
 
       <term><?php echo esc_specialchars($resource->descriptionDetail) ?></term>
-
-      <!-- TODO <date/>, <dateRange/> -->
 
     </localControl>
 
@@ -65,10 +53,7 @@
 
     <sources>
 
-      <!-- TODO @lastDateTimeVerified -->
       <source>
-
-        <!-- TODO <descriptiveNote/> -->
 
         <sourceEntry><?php echo esc_specialchars($resource->sources) ?></sourceEntry>
 
@@ -80,14 +65,11 @@
 
   <cpfDescription>
 
-    <!-- TODO @identityType -->
     <identity>
 
       <entityId><?php echo esc_specialchars($resource->corporateBodyIdentifiers) ?></entityId>
 
       <entityType><?php echo $eac->entityType ?></entityType>
-
-      <!-- TODO <useDates/> -->
 
       <nameEntry>
 
@@ -107,8 +89,6 @@
         </nameEntry>
       <?php endforeach; ?>
 
-      <!-- TODO <descriptiveNote/> -->
-
     </identity>
 
     <description>
@@ -117,18 +97,11 @@
 
       <place>
 
-        <!-- TODO <address/>, <addressLine/>, <date/>, <dateRange/>, <dateSet/>, <descriptiveNote/>, <placeRole/>, <term/> -->
-
-        <!-- TODO @accuracy, @altitude, @countryCode, @latitude, @longitude, @vocabularySource -->
         <placeEntry><?php echo esc_specialchars($resource->places) ?></placeEntry>
 
       </place>
 
-      <!-- TODO <localDescription/> -->
-
       <legalStatus>
-
-        <!-- TODO <date/>, <dateRange/>, <dateSet/>, <descriptiveNote/>, <placeEntry/> -->
 
         <term><?php echo esc_specialchars($resource->legalStatus) ?></term>
 
@@ -136,25 +109,17 @@
 
       <function>
 
-        <!-- TODO <date/>, <dateRange/>, <dateSet/>, <descriptiveNote/>, <placeEntry/> -->
-
-        <term><?php echo esc_specialchars($resource->functions) ?></term>
+        <descriptiveNote><?php echo esc_specialchars($resource->functions) ?></descriptiveNote>
 
       </function>
 
-      <!-- TODO <languageUsed/> -->
-
       <occupation>
 
-        <!-- TODO <date/>, <dateRange/>, <dateSet/>, <descriptiveNote/>, <placeEntry/> -->
-
-        <term><?php echo esc_specialchars($resource->functions) ?></term>
+        <descriptiveNote><?php echo esc_specialchars($resource->functions) ?></descriptiveNote>
 
       </occupation>
 
       <mandate>
-
-        <!-- TODO <date/>, <dateRange/>, <dateSet/>, <descriptiveNote/>, <placeEntry/> -->
 
         <term><?php echo esc_specialchars($resource->mandates) ?></term>
 
@@ -164,14 +129,12 @@
 
       <generalContext><?php echo $eac->generalContext ?></generalContext>
 
-      <!-- TODO <abstract/>, <chronList/> -->
       <biogHist><?php echo $eac->biogHist ?></biogHist>
 
     </description>
 
     <relations>
 
-      <!-- TODO @lastDateTimeVerified, <dateSet/>,  <placeEntry/> -->
       <?php foreach ($resource->getActorRelations() as $item): ?>
         <cpfRelation cpfRelationType="<?php echo sfEacPlugin::toCpfRelationType($item->type->id) ?>" xlink:href="<?php echo url_for(array($item->object, 'module' => 'actor'), true) ?>" xlink:type="simple">
           <relationEntry><?php echo render_title($item->getOpposedObject($resource)) ?></relationEntry>
@@ -184,7 +147,6 @@
         </cpfRelation>
       <?php endforeach; ?>
 
-      <!-- TODO @lastDateTimeVerified, <dateSet/>, <placeEntry/> -->
       <?php foreach ($eac->resourceRelation as $item): ?>
         <resourceRelation resourceRelationType="<?php echo sfEacPlugin::toResourceRelationType($item->type->id) ?>" xlink:href="<?php echo url_for(array($item->informationObject, 'module' => 'informationobject'), true) ?>" xlink:type="simple">
           <relationEntry><?php echo render_title($item->informationObject) ?></relationEntry>
@@ -197,7 +159,6 @@
         </resourceRelation>
       <?php endforeach; ?>
 
-      <!-- TODO @functionRelationType, @lastDateTimeVerified, <dateSet/>, <placeEntry/> -->
       <?php foreach ($eac->functionRelation as $item): ?>
         <functionRelation xlink:href="<?php echo url_for(array($item, 'module' => 'function'), true) ?>" xlink:type="simple">
           <relationEntry><?php echo render_title($item->subject) ?></relationEntry>
@@ -211,8 +172,6 @@
       <?php endforeach; ?>
 
     </relations>
-
-    <!-- TODO <alternativeSet/> -->
 
   </cpfDescription>
 

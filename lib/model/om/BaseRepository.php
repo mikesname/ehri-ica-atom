@@ -12,6 +12,7 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     DESC_STATUS_ID = 'repository.DESC_STATUS_ID',
     DESC_DETAIL_ID = 'repository.DESC_DETAIL_ID',
     DESC_IDENTIFIER = 'repository.DESC_IDENTIFIER',
+    UPLOAD_LIMIT = 'repository.UPLOAD_LIMIT',
     SOURCE_CULTURE = 'repository.SOURCE_CULTURE';
 
   public static function addSelectColumns(Criteria $criteria)
@@ -25,6 +26,7 @@ abstract class BaseRepository extends QubitActor implements ArrayAccess
     $criteria->addSelectColumn(QubitRepository::DESC_STATUS_ID);
     $criteria->addSelectColumn(QubitRepository::DESC_DETAIL_ID);
     $criteria->addSelectColumn(QubitRepository::DESC_IDENTIFIER);
+    $criteria->addSelectColumn(QubitRepository::UPLOAD_LIMIT);
     $criteria->addSelectColumn(QubitRepository::SOURCE_CULTURE);
 
     return $criteria;

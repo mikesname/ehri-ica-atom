@@ -11,7 +11,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($pager->getResults() as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>
           <?php echo link_to(render_title($item->title), array($item, 'module' => 'staticpage')) ?>
         </td><td>

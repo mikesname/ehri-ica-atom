@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -21,6 +21,7 @@ class ActorAutocompleteAction extends sfAction
 {
   public function execute($request)
   {
+
     if (!isset($request->limit))
     {
       $request->limit = sfConfig::get('app_hits_per_page');
@@ -30,7 +31,13 @@ class ActorAutocompleteAction extends sfAction
     $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
     $criteria->add(QubitActorI18n::CULTURE, $this->context->user->getCulture());
     $criteria->addJoin(QubitActor::ID, QubitObject::ID);
+
+    // Filter out non-authority Actors
     $criteria->add(QubitObject::CLASS_NAME, 'QubitUser', Criteria::NOT_EQUAL);
+    $criteria->add(QubitObject::CLASS_NAME, 'QubitDonor', Criteria::NOT_EQUAL);
+
+    // Sort alphabetically by name
+    $criteria->addAscendingOrderByColumn('authorized_form_of_name');
 
     if (isset($request->showOnlyActors) && 'true' == $request->showOnlyActors)
     {
@@ -44,9 +51,10 @@ class ActorAutocompleteAction extends sfAction
 
     // Exclude the calling actor from the list
     $params = $this->context->routing->parse(Qubit::pathInfo($request->getReferer()));
-    if (isset($params['id']))
+    $resource = $params['_sf_route']->resource;
+    if (isset($resource->id))
     {
-      $criteria->add(QubitActor::ID, $params['id'], Criteria::NOT_EQUAL);
+      $criteria->add(QubitActor::ID, $resource->id, Criteria::NOT_EQUAL);
     }
 
     $this->pager = new QubitPager('QubitActor');

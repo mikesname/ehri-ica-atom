@@ -35,4 +35,4 @@
 
 <?php echo get_component('search', 'box') ?>
 
-<?php echo get_component('menu', 'browseMenu') ?>
+<?php echo get_component('menu', 'browseMenu', array('sf_cache_key' => 'settings')) ?>

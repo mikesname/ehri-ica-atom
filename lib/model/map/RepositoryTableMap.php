@@ -41,6 +41,7 @@ class RepositoryTableMap extends TableMap {
 		$this->addForeignKey('DESC_STATUS_ID', 'descStatusId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addForeignKey('DESC_DETAIL_ID', 'descDetailId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('DESC_IDENTIFIER', 'descIdentifier', 'VARCHAR', false, 255, null);
+		$this->addColumn('UPLOAD_LIMIT', 'uploadLimit', 'FLOAT', false, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()

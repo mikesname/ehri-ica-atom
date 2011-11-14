@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -68,6 +68,10 @@ class sfDcPluginEditAction extends InformationObjectEditAction
     $this->eventComponent->execute($this->request);
 
     $this->eventComponent->form->getWidgetSchema()->type->setHelp($this->context->i18n->__('Select the type of activity (creation, publication or contribution) that established the relation between the authority record and the archival description.'));
+
+    $this->rightEditComponent = new RightEditComponent($this->context, 'right', 'edit');
+    $this->rightEditComponent->resource = $this->resource;
+    $this->rightEditComponent->execute($this->request);
   }
 
   protected function addField($name)
@@ -151,6 +155,8 @@ class sfDcPluginEditAction extends InformationObjectEditAction
     $this->resource->sourceStandard = 'Dublin Core Simple version 1.1';
 
     $this->eventComponent->processForm();
+
+    $this->rightEditComponent->processForm();
 
     return parent::processForm();
   }

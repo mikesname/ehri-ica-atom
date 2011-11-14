@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -34,7 +34,7 @@ class sfRadPluginIndexAction extends InformationObjectIndexAction
 
     $this->rad = new sfRadPlugin($this->resource);
 
-    if (1 > strlen($title = $this->resource))
+    if (1 > strlen($title = $this->resource->__toString()))
     {
       $title = $this->context->i18n->__('Untitled');
     }
@@ -126,6 +126,7 @@ class sfRadPluginIndexAction extends InformationObjectIndexAction
         switch ($this->resource->levelOfDescription->getName(array('sourceCulture' => true)))
         {
           // Only if top level of description
+          /* Disable custodial history validation temporary (see issue 1984)
           case 'Series':
           case 'Fonds':
           case 'Collection':
@@ -137,6 +138,7 @@ class sfRadPluginIndexAction extends InformationObjectIndexAction
             }
 
             break;
+          */
 
           case 'Item':
 
@@ -152,7 +154,7 @@ class sfRadPluginIndexAction extends InformationObjectIndexAction
               }
             }
 
-            if (!$isPublication)
+            if ($isPublication)
             {
               $validatorSchema->edition = new sfValidatorString(array(
                 'required' => true), array(

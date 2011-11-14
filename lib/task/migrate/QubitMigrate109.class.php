@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -27,14 +27,28 @@
  */
 class QubitMigrate109 extends QubitMigrate
 {
+  const
+    MILESTONE = '1.0.9',
+    INIT_VERSION = 39,
+    FINAL_VERSION = 62;
+
+  public function execute()
+  {
+    $this->slugData();
+    $this->alterData();
+    $this->sortData();
+
+    return $this->getData();
+  }
+
   /**
    * Controller for calling methods to alter data
    *
    * @return QubitMigrate109 this object
    */
-  protected function alterData($version)
+  protected function alterData()
   {
-    switch ($version)
+    switch ($this->version)
     {
       case 39:
         $this->updateStaticPageVersionNumber();
@@ -280,33 +294,6 @@ class QubitMigrate109 extends QubitMigrate
     return $this;
   }
 
-  public function execute()
-  {
-    $this->slugData();
-
-    // Find version
-    foreach ($this->data['QubitSetting'] as $key => $value)
-    {
-      if ('version' == $value['name'])
-      {
-        $version = $value['value'][$value['source_culture']];
-        break;
-      }
-    }
-
-    $this->alterData($version);
-
-    $parser = new sfYamlParser;
-    $data = $parser->parse(file_get_contents(sfConfig::get('sf_data_dir').'/fixtures/settings.yml'));
-
-    // Update version
-    $this->data['QubitSetting'][$key]['value'][$this->data['QubitSetting'][$key]['source_culture']] = $data['QubitSetting']['version']['value'];
-
-    $this->sortData();
-
-    return $this->getData();
-  }
-
   /**
    * Ver 40: Update static page release number to 1.1
    *
@@ -342,7 +329,7 @@ class QubitMigrate109 extends QubitMigrate
 
     foreach ($this->data['QubitRelation'] as $key => $row)
     {
-      if ($eqKey != $row['type_id'] || null === $eqTerm = $this->data['QubitTerm'][$row['object_id']])
+      if (!isset($row['type_id']) || $eqKey != $row['type_id'] || null === $eqTerm = $this->data['QubitTerm'][$row['object_id']])
       {
         continue;
       }
@@ -515,7 +502,7 @@ class QubitMigrate109 extends QubitMigrate
           continue;
       }
 
-      if (isset($standards[$row['value']['en']]))
+      if (isset($row['value']['en']) && isset($standards[$row['value']['en']]))
       {
         $standard = $standards[$row['value']['en']];
       }
@@ -636,6 +623,12 @@ class QubitMigrate109 extends QubitMigrate
   {
     foreach ($this->data['QubitInformationObject'] as $key => $item)
     {
+      // Don't touch root info object
+      if (isset($item['id']) && '<?php echo QubitInformationObject::ROOT_ID."\n" ?>' == $item['id'])
+      {
+        continue;
+      }
+
       if (false === $this->getRowKey('QubitStatus', 'object_id', $key))
       {
         $keys = array($key);

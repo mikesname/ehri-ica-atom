@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -98,8 +98,7 @@ class DefaultMoveAction extends sfAction
     $params = $this->context->routing->parse(Qubit::pathInfo($this->form->parent->getValue()));
     $this->parent = QubitObject::getById($params['_sf_route']->resource->id);
 
-    $search = new QubitSearch;
-    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->parent->id, 'parentId'));
+    $query = QubitSearch::getInstance()->addTerm($this->parent->slug, 'parent');
 
     if (isset($request->query))
     {
@@ -107,7 +106,7 @@ class DefaultMoveAction extends sfAction
     }
 
     $this->pager = new QubitArrayPager;
-    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->hits = QubitSearch::getInstance()->getEngine()->getIndex()->find($query);
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 

@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -46,6 +46,8 @@ class EventEditComponent extends sfComponent
 
         $this->form->getWidgetSchema()->startDate->setHelp($this->context->i18n->__('Enter the start year. Do not use any qualifiers or typographical symbols to express uncertainty.'));
         $this->form->getWidgetSchema()->startDate->setLabel($this->context->i18n->__('Start'));
+
+        break;
 
       case 'type':
 
@@ -99,12 +101,6 @@ class EventEditComponent extends sfComponent
 
   public function processForm()
   {
-    // Ignore this method if duplicating
-    if (isset($this->request->sourceId))
-    {
-      return;
-    }
-
     $params = array($this->request->editEvent);
     if (isset($this->request->editEvents))
     {
@@ -151,6 +147,12 @@ class EventEditComponent extends sfComponent
       }
     }
 
+    // Stop here if duplicating
+    if (isset($this->request->sourceId))
+    {
+      return;
+    }
+
     if (isset($this->request->deleteEvents))
     {
       foreach ($this->request->deleteEvents as $item)
@@ -167,10 +169,7 @@ class EventEditComponent extends sfComponent
     $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
     $this->form->getWidgetSchema()->setNameFormat('editEvent[%s]');
 
-    // HACK Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    foreach ($this::$NAMES as $name)
     {
       $this->addField($name);
     }

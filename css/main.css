@@ -212,14 +212,137 @@ body,
 }
 
 /* Override Drupal's default list style for Symfony .radio-list */
-ul.radio_list, ul.radio_list li, ul.radio_list li:hover {
+ul.radio_list,
+ul.radio_list li,
+ul.radio_list li:hover,
+ul.checkbox_list,
+ul.checkbox_list li,
+ul.checkbox_list li:hover
+{
   list-style: none;
 }
 
-ul.radio_list {
+ul.radio_list,
+ul.checkbox_list
+{
   padding-left: 0;
 }
 
-ul.radio_list label {
+ul.radio_list label,
+ul.checkbox_list label
+{
   display: inline;
+  float: none;
+}
+
+/* Digital object browser */
+
+.digital-object-browser {
+
+  zoom: 1;
+}
+
+.digital-object-browser:before,
+.digital-object-browser:after {
+  display: table;
+  content: '';
+}
+
+.digital-object-browser:after {
+  clear: both;
+}
+
+.digital-object-browser ul {
+
+  margin-left: -10px;
+
+}
+
+.digital-object-browser li {
+  display: inline;
+  float: left;
+  margin-left: 10px;
+  margin-bottom: 10px;
+  position: relative;
+  text-align: center;
+  background-color: #eee;
+  padding: 4px;
+  box-shadow: 2px 2px 2px #bbb;
+  -moz-box-shadow: 2px 2px 2px #bbb;
+  -webkit-box-shadow: 2px 2px 2px #bbb;
+  border: 1px solid #999;
+}
+
+.digital-object-browser a {
+
+  display: block;
+
+}
+
+.digital-object-detail {
+
+  position: absolute;
+  background-color: White;
+  width: 180px;
+  height: auto;
+  z-index: 15000;
+  text-align: center;
+  padding: 0 10px;
+
+  border: 1px solid #666;
+  box-shadow: 0px 0px 2px #999;
+  -moz-box-shadow: 0px 0px 2px #999;
+  -webkit-box-shadow: 0px 0px 2px #999;
+
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+.digital-object-detail > .img {
+
+  margin: 0 -10px 10px -10px;
+  background-color: #eee;
+  padding: 10px 0;
+  border: 1px solid #d6d6d6;
+
+}
+
+.digital-object-detail > h2 {
+
+  margin-bottom: 10px;
+
+}
+
+.digital-object-detail > h2 > a {
+
+  display: inline;
+
+}
+
+.digital-object-detail > .field {
+
+  margin-bottom: 10px;
+
+}
+
+.digital-object-detail * {
+
+  position: static;
+  font-size: 12px;
+  line-height: 1em;
+  margin: 0;
+  padding: 0;
+
+}
+
+/* Hide printables */
+#print-date
+{
+  display: none;
+}
+
+h1.part-of
+{
+  display: none;
 }

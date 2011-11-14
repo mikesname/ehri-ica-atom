@@ -728,7 +728,7 @@ return;
 
         return 'hierarchical';
 
-      case QubitTerm::TEMPORAL_REALTION_ID:
+      case QubitTerm::TEMPORAL_RELATION_ID:
 
         return 'temporal';
     }

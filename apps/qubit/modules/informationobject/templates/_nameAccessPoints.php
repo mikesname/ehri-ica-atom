@@ -10,8 +10,8 @@
       <?php endforeach; ?>
 
       <?php foreach ($resource->relationsRelatedBysubjectId as $item): ?>
-        <?php if (QubitTerm::NAME_ACCESS_POINT_ID == $item->type->id): ?>
-          <li><?php echo link_to(render_title($item->object), array($item->object, 'module' => 'actor')) ?></li>
+        <?php if (isset($item->type) && QubitTerm::NAME_ACCESS_POINT_ID == $item->type->id): ?>
+          <li><?php echo link_to(render_title($item->object), array($item->object, 'module' => 'actor')) ?><span class="note2"> (<?php echo __('Subject') ?>)</span></li>     
         <?php endif; ?>
       <?php endforeach; ?>
 

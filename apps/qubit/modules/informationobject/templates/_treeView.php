@@ -1,6 +1,8 @@
 <?php use_helper('Javascript') ?>
 
-<div id="treeView"></div>
+<div class="section">
+  <div id="treeView"></div>
+</div>
 
 <?php
 

@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -123,62 +123,10 @@ class QubitActor extends BaseActor
   {
     if (!isset($this->slug))
     {
-      $this->slug = QubitSlug::slugify($this->authorizedFormOfName);
+      $this->slug = QubitSlug::slugify($this->__get('authorizedFormOfName', array('sourceCulture' => true)));
     }
 
     return parent::insert($connection);
-  }
-
-  public function updateLuceneIndex()
-  {
-    // Don't index root object
-    if (self::ROOT_ID == $this->id)
-    {
-      return;
-    }
-
-    $search = new QubitSearch;
-    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->id, 'id'));
-
-    foreach ($search->getEngine()->getIndex()->find($query) as $hit)
-    {
-      $search->getEngine()->getIndex()->delete($hit->id);
-    }
-
-    foreach ($this->actorI18ns as $actorI18n)
-    {
-      $doc = new Zend_Search_Lucene_Document;
-
-      $doc->addField(Zend_Search_Lucene_Field::Keyword('id', $this->id));
-      $doc->addField(Zend_Search_Lucene_Field::Keyword('className', $this->className));
-
-      $doc->addField(Zend_Search_Lucene_Field::Keyword('culture', $actorI18n->culture));
-
-      if (isset($actorI18n->authorizedFormOfName))
-      {
-        $doc->addField(Zend_Search_Lucene_Field::UnStored('authorizedFormOfName', $actorI18n->authorizedFormOfName));
-      }
-
-      // Add other forms of name for this culture
-      $criteria = new Criteria;
-      $criteria->addJoin(QubitOtherNameI18n::ID, QubitOtherName::ID);
-      $criteria->add(QubitOtherNameI18n::CULTURE, $actorI18n->culture);
-      $criteria->add(QubitOtherName::OBJECT_ID, $this->id);
-
-      if (0 < count($otherNameI18ns = QubitOtherNameI18n::get($criteria)))
-      {
-        foreach ($otherNameI18ns as $otherNameI18n)
-        {
-          $otherNames[] = $otherNameI18n->name;
-        }
-
-        $doc->addField(Zend_Search_Lucene_Field::UnStored('otherFormsOfName', implode(' ', $otherNames)));
-      }
-
-      $search->getEngine()->getIndex()->addDocument($doc);
-    }
-
-    $search->getEngine()->getIndex()->commit();
   }
 
   public function save($connection = null)
@@ -206,20 +154,28 @@ class QubitActor extends BaseActor
       }
     }
 
-    $this->updateLuceneIndex();
+    // Save related contact information objects
+    foreach ($this->contactInformations as $item)
+    {
+      $item->actor = $this;
+
+      try
+      {
+        $item->save();
+      }
+      catch (PropelException $e)
+      {
+      }
+    }
+
+    QubitSearch::updateActorIndex($this);
 
     return $this;
   }
 
   public function delete($connection = null)
   {
-    $search = new QubitSearch;
-    $query = new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->id, 'id'));
-
-    foreach ($search->getEngine()->getIndex()->find($query) as $hit)
-    {
-      $search->getEngine()->getIndex()->delete($hit->id);
-    }
+    QubitSearch::deleteById($this->id);
 
     return parent::delete($connection);
   }
@@ -404,7 +360,12 @@ class QubitActor extends BaseActor
     return $this->SubjectHitCount;
   }
 
-  //many-to-many Term Relations
+  /**
+   * Save new link to a term.
+   *
+   * @param integer $termId QubitTerm primary key
+   * @param string $relationNote DEPRECATED
+   */
   public function setTermRelation($termId, $relationNote = null)
   {
     $newTermRelation = new QubitObjectTermRelation;
@@ -416,6 +377,12 @@ class QubitActor extends BaseActor
     $newTermRelation->save();
   }
 
+  /**
+   * Get many-to-many links to QubitTerm objects
+   *
+   * @param mixed $taxonomyId  Limit results by taxonomy type
+   * @return QubitQuery collection of QubitObjectTermRelation objects
+   */
   public function getTermRelations($taxonomyId = 'all')
   {
     $criteria = new Criteria;

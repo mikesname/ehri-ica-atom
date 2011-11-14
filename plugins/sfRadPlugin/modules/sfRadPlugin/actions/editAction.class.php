@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -109,6 +109,10 @@ class sfRadPluginEditAction extends InformationObjectEditAction
     $this->eventComponent->form->getWidgetSchema()->description->setHelp($this->context->i18n->__('"Make notes on dates and any details pertaining to the dates of creation, publication, or distribution, of the unit being described that are not included in the Date(s) of creation, including publication, distribution, etc., area and that are considered to be important." (RAD 1.8B8) "Make notes on the date(s) of accumulation or collection of the unit being described." (RAD 1.8B8a)'));
     $this->eventComponent->form->getWidgetSchema()->place->setHelp($this->context->i18n->__("\"For an item, transcribe a place of publication, distribution, etc., in the form and the grammatical case in which it appears.\" (RAD 1.4C1) {$this->eventComponent->form->getWidgetSchema()->place->getHelp()}"));
     $this->eventComponent->form->getWidgetSchema()->type->setHelp($this->context->i18n->__('Select the type of activity that established the relation between the authority record and the archival description (e.g. creation, accumulation, collection, publication, etc.)'));
+
+    $this->rightEditComponent = new RightEditComponent($this->context, 'right', 'edit');
+    $this->rightEditComponent->resource = $this->resource;
+    $this->rightEditComponent->execute($this->request);
   }
 
   protected function addField($name)
@@ -241,6 +245,8 @@ class sfRadPluginEditAction extends InformationObjectEditAction
 
     $this->eventComponent->processForm();
 
+    $this->rightEditComponent->processForm();
+
     $this->updateNotes();
 
     return parent::processForm();
@@ -248,6 +254,30 @@ class sfRadPluginEditAction extends InformationObjectEditAction
 
   protected function updateNotes()
   {
+    if ($this->request->hasParameter('csvimport'))
+    {
+      // remap notes from parameters to request object
+      if ($this->request->getParameterHolder()->has('radTitleNote'))
+      {
+        $this->request->rad_title_note = $this->request->getParameterHolder()->get('radTitleNote');
+      }
+
+      if ($this->request->getParameterHolder()->has('radTitleNoteType'))
+      {
+        $this->request->rad_title_note_type = $this->request->getParameterHolder()->get('radTitleNoteType');
+      }
+
+      if ($this->request->getParameterHolder()->has('radNote'))
+      {
+        $this->request->rad_note = $this->request->getParameterHolder()->get('radNote');
+      }
+
+      if ($this->request->getParameterHolder()->has('radNoteType'))
+      {
+        $this->request->rad_note_type = $this->request->getParameterHolder()->get('radNoteType');
+      }
+    }
+
     if (isset($this->request->rad_title_note) && 0 < strlen($this->request->rad_title_note))
     {
       $note = new QubitNote;

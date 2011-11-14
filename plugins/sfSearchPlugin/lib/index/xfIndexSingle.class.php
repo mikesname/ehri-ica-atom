@@ -69,7 +69,7 @@ abstract class xfIndexSingle extends xfIndexCommon
     {
       $doc = $this->getServiceRegistry()->locate($input)->buildDocument($input);
       $this->engine->add($doc);
-      $this->getLogger()->log('Inserted document "' . $doc->getGuid() . '" from the index', $this->getName());
+      $this->getLogger()->log('Inserted document "' . $doc->getGuid() . '" into the index', $this->getName());
     }
     catch (xfServiceIgnoredException $e)
     {
@@ -137,7 +137,7 @@ abstract class xfIndexSingle extends xfIndexCommon
   /**
    * @see xfIndex
    */
-  final public function optimize()
+  public function optimize()
   {
     $this->setup();
 

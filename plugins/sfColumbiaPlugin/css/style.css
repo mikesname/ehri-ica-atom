@@ -134,7 +134,7 @@ a.currentTextNode,
 {
   float: none;
   margin-top: 200px;
-  padding: 4px 0;
+  padding: 4px 0 12px 0;
   width: 540px;
   margin-left: 0;
   background: #069;
@@ -184,6 +184,11 @@ a.currentTextNode,
   font-size: 24px;
   margin: 0; /* Only needed in WebKit */
   width: 100%;
+}
+
+#page .search .advanced-search a
+{
+  color: #def;
 }
 
 #languageMenu,

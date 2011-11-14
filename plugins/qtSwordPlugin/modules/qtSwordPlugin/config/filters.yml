@@ -1,0 +1,22 @@
+httpAuthFilter:
+  class: qtSwordPluginHttpAuthFilter
+
+# Disable other filters
+# http://trac.symfony-project.org/ticket/1748
+
+transaction:
+  class: QubitTransactionFilter
+  enabled: off
+
+history:
+  class: sfHistoryPluginFilter
+  enabled: off
+
+siteSettingsFilter:
+  class: siteSettingsFilter
+  enabled: off
+
+rendering: ~
+security: ~
+cache:     ~
+execution: ~

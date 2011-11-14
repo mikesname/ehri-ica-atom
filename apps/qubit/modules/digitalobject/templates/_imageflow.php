@@ -1,6 +1,6 @@
 <?php use_helper('Text') ?>
 
-<div>
+<div class="section">
   <h3><?php echo sfConfig::get('app_ui_label_digitalobject') ?></h3>
   <div class="imageflow" id="imageflow">
     <?php foreach ($thumbnails as $item): ?>

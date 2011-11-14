@@ -4,7 +4,7 @@ COPYRIGHTS
 Qubit Toolkit
 -------------
 Url:       http://qubit-toolkit.org/
-Copyright: 2006-2010, Peter Van Garderen <peter@artefactual.com> and other
+Copyright: 2006-2011, Peter Van Garderen <peter@artefactual.com> and other
            original authors as attributed in each file
 License:   GPL version 2 or any later version - see LICENSE file
 
@@ -105,13 +105,6 @@ Url:       http://sourceforge.net/projects/freebeer/
 Copyright: 2002-2004, Ross Smith
 License:   BSD or LGPL
 
-GoogleMapAPI
-------------
-Url:       http://phpinsider.com/php/code/GoogleMapAPI/
-Author:    Monte Ohrt <monte@ohrt.com>
-Copyright: New Digital Group, Inc.
-License:   LGPL - see LICENSE file
-
 ImageFlow
 ---------
 Url:       http://imageflow.finnrudolph.de/
@@ -124,6 +117,12 @@ Url:       http://jquery.com/
 Copyright: John Resig <jeresig@gmail.com>
 License:   Dual licensed under the MIT and GPL version 2 - see MIT-LICENSE.txt
            and GPL-LICENSE.txt
+
+hoverIntent jQuery Plug-in
+--------------------------
+Url:       http://cherne.net/brian/resources/jquery.hoverIntent.html
+Copyright: Brian Cherne <brian@cherne.net>
+License:   MIT or GPL
 
 Silk Icons
 ----------
@@ -144,3 +143,9 @@ Qubit Toolkit uses the Zend Search component
 Url:       http://framework.zend.com/
 Copyright: Zend Technologies USA Inc.
 License:   New BSD
+
+printer-icon.png
+----------------
+Url: http://www.fatcow.com/free-icons
+Copyright: Fatcow Web Hosting
+License: CC Attribution 3.0

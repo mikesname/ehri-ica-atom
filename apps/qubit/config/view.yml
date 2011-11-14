@@ -22,7 +22,8 @@ default:
     /vendor/yui/menu/assets/skins/sam/menu: { position: first }
     form:
     graphic:
-    main: { position: last }
+    main:
+    print: { media: print, position: last }
 
   javascripts:
     /vendor/jquery:

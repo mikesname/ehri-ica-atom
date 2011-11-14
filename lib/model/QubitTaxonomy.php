@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -52,7 +52,19 @@ class QubitTaxonomy extends BaseTaxonomy
     TERM_RELATION_TYPE_ID = 57,
     STATUS_TYPE_ID = 59,
     PUBLICATION_STATUS_ID = 60,
-    ISDF_RELATION_TYPE_ID = 61;
+    ISDF_RELATION_TYPE_ID = 61,
+
+    // Accession taxonomies
+    ACCESSION_RESOURCE_TYPE_ID = 62,
+    ACCESSION_ACQUISITION_TYPE_ID = 63,
+    ACCESSION_PROCESSING_PRIORITY_ID = 64,
+    ACCESSION_PROCESSING_STATUS_ID = 65,
+    DEACCESSION_SCOPE_ID = 66,
+
+    // Right taxonomies
+    RIGHT_ACT_ID = 67,
+    RIGHT_BASIS_ID = 68,
+    COPYRIGHT_STATUS_ID = 69;
 
   public static
     $lockedTaxonomies = array(
@@ -83,7 +95,7 @@ class QubitTaxonomy extends BaseTaxonomy
   {
     if (!isset($this->slug))
     {
-      $this->slug = QubitSlug::slugify($this->name);
+      $this->slug = QubitSlug::slugify($this->__get('name', array('sourceCulture' => true)));
     }
 
     return parent::insert($connection);

@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -23,7 +23,7 @@ class StaticPageIndexAction extends sfAction
   {
     $this->resource = $this->getRoute()->resource;
 
-    if (1 > strlen($title = $this->resource))
+    if (1 > strlen($title = $this->resource->__toString()))
     {
       $title = $this->context->i18n->__('Untitled');
     }
@@ -33,6 +33,26 @@ class StaticPageIndexAction extends sfAction
     // HACK factor this into routing one day?
     switch (true)
     {
+      case $this->resource instanceof QubitRepository:
+        $this->forward('sfIsdiahPlugin', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitDonor:
+        $this->forward('donor', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitRightsHolder:
+        $this->forward('rightsholder', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitUser:
+        $this->forward('user', 'index');
+
+        break;
+
       case $this->resource instanceof QubitActor:
         $this->forward('sfIsaarPlugin', 'index');
 
@@ -45,6 +65,16 @@ class StaticPageIndexAction extends sfAction
 
       case $this->resource instanceof QubitInformationObject:
         $this->forward('sfIsadPlugin', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitAccession:
+        $this->forward('accession', 'index');
+
+        break;
+
+      case $this->resource instanceof QubitDeaccession:
+        $this->forward('deaccession', 'index');
 
         break;
 

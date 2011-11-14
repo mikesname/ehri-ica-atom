@@ -15,7 +15,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($resource->events as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>" id="<?php echo url_for(array($item, 'module' => 'event')) ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>" id="<?php echo url_for(array($item, 'module' => 'event')) ?>">
         <td>
           <div>
             <?php if (isset($item->actor)): ?>

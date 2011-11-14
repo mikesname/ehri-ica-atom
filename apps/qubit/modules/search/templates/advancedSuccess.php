@@ -1,35 +1,41 @@
-<div class="pageTitle"><?php echo __('Advanced search'); ?></div>
+<?php use_helper('Text') ?>
 
-<div id="search-form">
-<?php echo form_tag('search/advanced', 'id=searchform') ?>
-<table><tr>
-<td><?php echo input_tag('search_query', $query, 'class="textbox"'); ?></td>
-<td><input class="form-submit" type="submit" value="<?php echo 'search' ?>"/></td>
-</tr></table>
-</form>
+<?php if ('print' == $sf_request->getParameter('media')): ?>
+<div id="preview-message">
+  <?php echo __('Print preview') ?>
+  <?php echo link_to('Close', array_diff($sf_request->getParameterHolder()->getAll(), array('media' => 'print'))) ?>
 </div>
+<?php endif; ?>
 
-<!-- use a Javascript hack to set the focus on the search box -->
-<script type="text/javascript">
-document.forms[0][0].focus();
-</script>
+<h1 class="label">
+  <?php echo ('Advanced search') ?>
 
-<div style="border-bottom: 1px solid #000000; margin: 40px 0 10px 0;"></div>
+  <div id="action-icons">
+    <?php echo link_to(
+      image_tag('printer-icon.png', array('alt' => __('Print'))),
+        array_merge($sf_request->getParameterHolder()->getAll(), array('media' => 'print')),
+        array('title' => __('Print'))) ?>
+  </div>
+</h1>
 
-<div id="search-info">
-<?php if ($query) echo __("search for '%1%' resulted in %2% results", array('%1%' => $query, '%2%' => count($hits))); ?>
-</div>
+<?php if ('print' != $sf_request->getParameter('media')): ?>
+  <?php echo get_partial('search/advancedSearch', array('form' => $form, 'action' => 'advanced')) ?>
+<?php else: ?>
+  <?php echo get_partial('printAdvancedSearchTerms', array('queryTerms' => $queryTerms)) ?>
+<?php endif; ?>
 
-<?php foreach ($hits as $hit): ?>
+<?php if (isset($error)): ?>
 
-  <div class="search-results">
-
-    <h2><?php echo link_to($hit->display_title, 'informationobject/show?id='.$hit->informationObjectId) ?></h2>
-
-    <div class="CRUD_summary">
-      <?php echo truncate_text($hit->display_scopeandcontent, 250) ?>
-    </div>
-
+  <div class="error">
+    <ul>
+      <li><?php echo $error ?></li>
+    </ul>
   </div>
 
-<?php endforeach; ?>
+<?php endif; ?>
+
+<?php if (isset($pager)): ?>
+
+  <?php echo get_partial('search/searchResults', array('pager' => $pager, 'timer' => $timer)) ?>
+
+<?php endif; ?>

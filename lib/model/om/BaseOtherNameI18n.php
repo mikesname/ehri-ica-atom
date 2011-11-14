@@ -9,6 +9,7 @@ abstract class BaseOtherNameI18n implements ArrayAccess
 
     NAME = 'other_name_i18n.NAME',
     NOTE = 'other_name_i18n.NOTE',
+    DATES = 'other_name_i18n.DATES',
     ID = 'other_name_i18n.ID',
     CULTURE = 'other_name_i18n.CULTURE';
 
@@ -16,6 +17,7 @@ abstract class BaseOtherNameI18n implements ArrayAccess
   {
     $criteria->addSelectColumn(QubitOtherNameI18n::NAME);
     $criteria->addSelectColumn(QubitOtherNameI18n::NOTE);
+    $criteria->addSelectColumn(QubitOtherNameI18n::DATES);
     $criteria->addSelectColumn(QubitOtherNameI18n::ID);
     $criteria->addSelectColumn(QubitOtherNameI18n::CULTURE);
 
@@ -32,8 +34,8 @@ abstract class BaseOtherNameI18n implements ArrayAccess
   public static function getFromRow(array $row)
   {
     $keys = array();
-    $keys['id'] = $row[2];
-    $keys['culture'] = $row[3];
+    $keys['id'] = $row[3];
+    $keys['culture'] = $row[4];
 
     $key = serialize($keys);
     if (!isset(self::$otherNameI18ns[$key]))
@@ -376,7 +378,14 @@ abstract class BaseOtherNameI18n implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -411,7 +420,10 @@ abstract class BaseOtherNameI18n implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;

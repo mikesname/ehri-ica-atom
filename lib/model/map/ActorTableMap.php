@@ -65,8 +65,10 @@ class ActorTableMap extends TableMap {
     $this->addRelation('contactInformation', 'contactInformation', RelationMap::ONE_TO_MANY, array('id' => 'actor_id', ), 'CASCADE', null);
     $this->addRelation('event', 'event', RelationMap::ONE_TO_MANY, array('id' => 'actor_id', ), null, null);
     $this->addRelation('repository', 'repository', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
-    $this->addRelation('rightsActorRelation', 'rightsActorRelation', RelationMap::ONE_TO_MANY, array('id' => 'actor_id', ), 'CASCADE', null);
+    $this->addRelation('rights', 'rights', RelationMap::ONE_TO_MANY, array('id' => 'rights_holder_id', ), 'SET NULL', null);
+    $this->addRelation('rightsHolder', 'rightsHolder', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
     $this->addRelation('user', 'user', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+    $this->addRelation('donor', 'donor', RelationMap::ONE_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // ActorTableMap

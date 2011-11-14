@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ar" datatype="plaintext" original="messages" date="2010-11-11T15:18:01Z" product-name="messages">
+  <file source-language="EN" target-language="ar" datatype="plaintext" original="messages" date="2011-11-07T09:58:30Z" product-name="messages">
     <body>
       <trans-unit id="44">
         <source>Reference code</source>
@@ -14,20 +14,12 @@
         <source>Repository</source>
         <target/>
       </trans-unit>
-      <trans-unit id="84">
-        <source>Note</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="87">
         <source>Subject access points</source>
         <target/>
       </trans-unit>
       <trans-unit id="88">
         <source>Place access points</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="89">
-        <source>Name access points</source>
         <target/>
       </trans-unit>
       <trans-unit id="90">
@@ -54,58 +46,6 @@
         <source>Sources</source>
         <target/>
       </trans-unit>
-      <trans-unit id="260">
-        <source>Country</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="262">
-        <source>Latitude</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="268">
-        <source>Note</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="300">
-        <source>Email</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="340">
-        <source>Contact information</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="342">
-        <source>Contact type</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="344">
-        <source>Street address</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="345">
-        <source>City</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="348">
-        <source>Telephone</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="349">
-        <source>Fax</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="350">
-        <source>Website</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="378">
-        <source>Place</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="400">
-        <source>Name</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="408">
         <source>Administrative history</source>
         <target/>
@@ -126,56 +66,8 @@
         <source>Numbering within publisher's series</source>
         <target/>
       </trans-unit>
-      <trans-unit id="513">
-        <source>Are you sure?</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="587">
-        <source>Date(s)</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="615">
-        <source>Repository</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="638">
         <source>Edit authority record</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="644">
-        <source>Edit</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="646">
-        <source>Delete</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="647">
-        <source>Add new</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="648">
-        <source>List all</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="655">
-        <source>Description of relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="667">
-        <source>Cancel</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="668">
-        <source>Save</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="669">
-        <source>Create</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="694">
-        <source>Type</source>
         <target/>
       </trans-unit>
       <trans-unit id="709">
@@ -250,44 +142,12 @@
         <source>Associated / related material</source>
         <target/>
       </trans-unit>
-      <trans-unit id="731">
-        <source>Institution identifier</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="732">
         <source>Rules or conventions</source>
         <target/>
       </trans-unit>
-      <trans-unit id="733">
-        <source>Status</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="734">
-        <source>Level of detail</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="735">
-        <source>Dates of creation, revision and deletion</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="747">
-        <source>Appraisal, destruction and scheduling</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="752">
-        <source>Conditions governing access</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="764">
         <source>Description record identifier</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="773">
-        <source>Format</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="774">
-        <source>Description</source>
         <target/>
       </trans-unit>
       <trans-unit id="828">
@@ -296,26 +156,6 @@
       </trans-unit>
       <trans-unit id="829">
         <source>Title - This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="830">
-        <source>Statement of scale (architectural) - This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="831">
-        <source>Statement of scale (cartographic) - This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="832">
-        <source>Statement of projection (cartographic) - This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="833">
-        <source>Statement of coordinates (cartographic) - This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="834">
-        <source>Issuing jurisdiction and denomination (philatelic) - This is a mandatory element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="835">
@@ -328,10 +168,6 @@
       </trans-unit>
       <trans-unit id="837">
         <source>Scope and content - This is a mandatory element.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="838">
-        <source>Custodial history - This is a mandatory element.</source>
         <target/>
       </trans-unit>
       <trans-unit id="839">
@@ -482,10 +318,6 @@
         <source>Edit control area</source>
         <target/>
       </trans-unit>
-      <trans-unit id="876">
-        <source>Detail</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="877">
         <source>Language of description</source>
         <target/>
@@ -504,10 +336,6 @@
       </trans-unit>
       <trans-unit id="881">
         <source>Statement of responsibility</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="882">
-        <source>Title note type</source>
         <target/>
       </trans-unit>
       <trans-unit id="883">
@@ -576,10 +404,6 @@
       </trans-unit>
       <trans-unit id="899">
         <source>Issuing jurisdiction and denomination (philatelic) - This is a mandatory element for philatelic record.</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="900">
-        <source>Custodial history - This is a mandatory element for top level of description.</source>
         <target/>
       </trans-unit>
       <trans-unit id="901">
@@ -820,6 +644,26 @@
       </trans-unit>
       <trans-unit id="960">
         <source>Script</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="961">
+        <source>Name access points (subjects)</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="962">
+        <source>Rights area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="963">
+        <source>Edit rights area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="964">
+        <source>Accession area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="965">
+        <source>Part of %1%</source>
         <target/>
       </trans-unit>
     </body>

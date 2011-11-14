@@ -38,8 +38,8 @@ class OtherNameTableMap extends TableMap {
 		// columns
 		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
 		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
-		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
+		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
+		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
 		$this->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null, 0);

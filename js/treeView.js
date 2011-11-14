@@ -199,7 +199,7 @@
             var node = oArgs.node;
             var parentNode = node.parent;
 
-            if (jQuery(node.getContentEl()).children('a').hasClass('seeAllNode'))
+            if (jQuery(node.getContentEl()).children('a').is('.seeAllNode.XmlHttpRequest'))
             {
               // If current object is the last in the treeview, it may be out
               // proper order, so reload data from position 9 (offset 8)

@@ -1,3 +1,5 @@
+<?php use_helper('Date') ?>
+
 <h1><?php echo __('Edit archival description - RAD') ?></h1>
 
 <h1 class="label"><?php echo render_title($rad) ?></h1>
@@ -61,7 +63,7 @@
           <?php foreach ($resource->getNotesByTaxonomy(array('taxonomyId' => QubitTaxonomy::RAD_TITLE_NOTE_ID)) as $item): ?>
             <tr class="related_obj_<?php echo $item->id ?>">
               <td>
-                <?php echo $item->getContent(array('cultureFallback' => 'true')) ?><span class="note"><?php echo $item->user ?>, <?php echo $item->updatedAt ?></span>
+                <?php echo $item->getContent(array('cultureFallback' => 'true')) ?><span class="note"><?php echo $item->user ?>, <?php echo format_date($item->object->updatedAt, 'f') ?></span>
               </td><td>
                 <?php echo $item->type ?>
               </td><td style="text-align: center">
@@ -72,13 +74,15 @@
 
           <tr valign="top">
             <td>
-              <input name="rad_title_note"/>
+              <input type="text" name="rad_title_note"/>
             </td><td>
               <select name="rad_title_note_type" id="rad_title_note_type">
                 <?php foreach (QubitTerm::getOptionsForSelectList(QubitTaxonomy::RAD_TITLE_NOTE_ID) as $value => $label): ?>
                   <option value="<?php echo esc_entities($value) ?>"><?php echo esc_entities($label) ?></option>
                 <?php endforeach; ?>
               </select>
+            </td><td>
+              &nbsp;
             </td>
           </tr>
 
@@ -311,7 +315,7 @@
           <?php foreach ($resource->getNotesByTaxonomy(array('taxonomyId' => QubitTaxonomy::RAD_NOTE_ID)) as $item): ?>
             <tr class="related_obj_<?php echo $item->id ?>">
               <td>
-                <?php echo $item->getContent(array('cultureFallback' => 'true')) ?><span class="note"><?php echo $item->user ?>, <?php echo $item->updatedAt ?></span>
+                <?php echo $item->getContent(array('cultureFallback' => 'true')) ?><span class="note"><?php echo $item->user ?>, <?php echo $item->object->updatedAt ?></span>
               </td><td>
                 <?php echo $item->type ?>
               </td><td style="text-align: center">
@@ -386,7 +390,7 @@
 
     <div class="form-item">
       <?php echo $form->nameAccessPoints
-        ->label(__('Name access points'))
+        ->label(__('Name access points (subjects)'))
         ->renderLabel() ?>
       <?php echo $form->nameAccessPoints->render(array('class' => 'form-autocomplete')) ?>
       <?php if (QubitAcl::check(QubitActor::getRoot(), 'create')): ?>
@@ -442,6 +446,14 @@
       ->renderRow(array('class' => 'form-autocomplete')) ?>
 
     <?php echo render_field($form->sources, $resource, array('class' => 'resizable')) ?>
+
+  </fieldset>
+
+  <fieldset class="collapsible collapsed" id="rightsArea">
+
+    <legend><?php echo __('Rights area') ?></legend>
+
+    <?php echo get_partial('right/edit', $rightEditComponent->getVarHolder()->getAll()) ?>
 
   </fieldset>
 

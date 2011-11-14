@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -52,7 +52,7 @@ class QubitContactInformation extends BaseContactInformation
     $string .= ($this->getRegion()) ? ', '.$this->getRegion() : '';
     $string .= ($this->getCountryCode()) ? '<br/>'.$this->getCountryCode().'' : '';
     $string .= ($this->getPostalCode()) ? '   '.$this->getPostalCode(): '';
-    $string .= ($this->getTelephone()) ? '<p> telephone number: '.$this->getTelephone().'<br/>' : '';
+    $string .= ($this->getTelephone()) ? '<p>telephone number: '.$this->getTelephone().'<br/>' : '';
     $string .= ($this->getFax()) ? 'fax number: '.$this->getFax().'<br/>' : '';
     $string .= ($this->getEmail()) ? 'email: '.$this->getEmail().'<br/>' : '';
     $string .= ($this->getWebsite()) ? 'website: <a href="'.$this->getWebsite().'">'.$this->getWebsite().'</a>' : '';

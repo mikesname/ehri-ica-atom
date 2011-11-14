@@ -45,7 +45,7 @@
               case 'radio':
               case 'checkbox':
                 thisDialog.fields[this.name] = [];
-                thisDialog.initialValues[this.name] = $('input[name=' + this.name + ']', thisDialog.table).each(function ()
+                thisDialog.initialValues[this.name] = $('input[name="' + this.name + '"]', thisDialog.table).each(function ()
                     {
                       thisDialog.fields[this.name].push(this);
                     })
@@ -79,6 +79,14 @@
           + '  </div>'
           + '</div>').appendTo('body');
 
+        // Set overflow and height if options.height provided
+        if (undefined !== thisDialog.options.height)
+        {
+          $yuiDialogWrapper.find('.bd')
+            .css('overflow', 'auto')
+            .height(thisDialog.options.height);
+        }
+
         // Replace dialog table with "Add" link and move into dialog wrapper
         $(this.table).appendTo($yuiDialogWrapper.find('form'));
 
@@ -101,7 +109,16 @@
           fixedcenter: true,
           modal: true,
           postmethod: 'none',
-          visible: false });
+          visible: false,
+          zIndex: 20000 });
+
+
+        // Render TabView from markup if exists (for example: relatedContactInformation)
+        var $tabview = $yuiDialogWrapper.find('.yui-navset');
+        if ($tabview.length)
+        {
+          this.yuiDialog.tabview = new YAHOO.widget.TabView($tabview[0]);
+        }
 
         this.yuiDialog.render();
 
@@ -116,6 +133,11 @@
         this.yuiDialog.showEvent.subscribe(function ()
           {
             Drupal.behaviors.date.attach(thisDialog.table.parentNode);
+
+            if (undefined !== thisDialog.options.showEvent)
+            {
+              thisDialog.options.showEvent.call(this);
+            }
           });
 
         // Append hidden fields to form on submit
@@ -185,6 +207,10 @@
             else if ('radio' === this.fields[fname].type)
             {
               return $('input[name=' + fname + ']:checked', thisDialog.table).val();
+            }
+            else if (0 < this.fields[fname].length)
+            {
+              return '<input type="checkbox" disabled="disabled"' + (this.fields[fname][0].checked ? ' checked="checked"' : '') + ' />';
             }
             else if (undefined !== this.fields[fname].value)
             {
@@ -280,7 +306,19 @@
                 continue;
               }
 
-              this.fields[fieldname].value = thisData[fieldname];
+              if (jQuery.isArray(thisData[fieldname]))
+              {
+                thisData[fieldname] = thisData[fieldname][0];
+              }
+
+              if ('boolean' === typeof thisData[fieldname])
+              {
+                jQuery(this.fields[fieldname]).prop('checked', thisData[fieldname]);
+              }
+              else if ('string' === typeof thisData[fieldname])
+              {
+                this.fields[fieldname].value = thisData[fieldname];
+              }
 
               // Get display value for autocompletes
               if ($(this.fields[fieldname])
@@ -379,6 +417,15 @@
                   else if (undefined !== index && this.value !== thisDialog.iframes[index].iframe.value)
                   {
                     delete thisDialog.iframes[index];
+                  }
+
+                  // Store autocomplete display values
+                  if (0 < this.value.length)
+                  {
+                    var dname = $(this).prev('input:hidden').attr('name');
+                    dname = dname.substr(0, dname.length - 1) + 'Display]';
+
+                    yuiDialogData[dname] = this.value;
                   }
                 }
               });
@@ -483,13 +530,19 @@
             }
 
             // http://bugs.jquery.com/ticket/7246
-            if (!$('tr[id=' + this.id + ']', displayTable).length)
+            // For unknown reasons, [id=?] selector is not working properly when tr.length > 1
+            var rowId = this.id;
+            var $row = $(displayTable).find('tbody > tr').filter(function()
+              {
+                return rowId == this.id; 
+              });
+            if (!$row.length)
             {
               var $tr = $(tr).appendTo(displayTable);
             }
             else
             {
-              var $tr = $(tr).replaceAll($('tr[id=' + this.id + ']', displayTable));
+              var $tr = $(tr).replaceAll($row);
             }
 
             // Bind events

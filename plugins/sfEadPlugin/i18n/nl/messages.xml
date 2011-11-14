@@ -1,152 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2010-11-12T09:28:01Z" product-name="messages">
+  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2011-11-04T15:08:30Z" product-name="messages">
+    <header/>
     <body>
-      <trans-unit id="230">
-        <source>Country</source>
-        <target>Land</target>
-      </trans-unit>
-      <trans-unit id="233">
-        <source>Latitude</source>
-        <target>Breedtegraad</target>
-      </trans-unit>
-      <trans-unit id="238">
-        <source>Note</source>
-        <target>Notitie</target>
-      </trans-unit>
-      <trans-unit id="258">
-        <source>Email</source>
-        <target>e-mail</target>
-      </trans-unit>
-      <trans-unit id="306">
-        <source>Contact type</source>
-        <target>type contact</target>
-      </trans-unit>
-      <trans-unit id="308">
-        <source>Street address</source>
-        <target>straat</target>
-      </trans-unit>
-      <trans-unit id="309">
-        <source>City</source>
-        <target>plaats</target>
-      </trans-unit>
-      <trans-unit id="312">
-        <source>Telephone</source>
-        <target>telefoon</target>
-      </trans-unit>
-      <trans-unit id="313">
-        <source>Fax</source>
-        <target>Fax</target>
-      </trans-unit>
-      <trans-unit id="314">
-        <source>Website</source>
-        <target>website</target>
-      </trans-unit>
-      <trans-unit id="426">
-        <source>Contact information</source>
-        <target>contact informatie</target>
-      </trans-unit>
-      <trans-unit id="445">
-        <source>Place</source>
-        <target>plaats</target>
-      </trans-unit>
-      <trans-unit id="467">
-        <source>Name</source>
-        <target>Naam</target>
-      </trans-unit>
-      <trans-unit id="580">
-        <source>Are you sure?</source>
-        <target>weet u het zeker?</target>
-      </trans-unit>
-      <trans-unit id="654">
-        <source>Date(s)</source>
-        <target>datum(s)</target>
-      </trans-unit>
-      <trans-unit id="682">
-        <source>Repository</source>
-        <target>archiefbewaarplaats</target>
-      </trans-unit>
-      <trans-unit id="711">
-        <source>Edit</source>
-        <target>bewerken</target>
-      </trans-unit>
-      <trans-unit id="713">
-        <source>Delete</source>
-        <target>verwijderen</target>
-      </trans-unit>
-      <trans-unit id="714">
-        <source>Add new</source>
-        <target>nieuw toevoegen</target>
-      </trans-unit>
-      <trans-unit id="715">
-        <source>List all</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="722">
-        <source>Description of relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="734">
-        <source>Cancel</source>
-        <target>annuleren</target>
-      </trans-unit>
-      <trans-unit id="735">
-        <source>Save</source>
-        <target>bewaren</target>
-      </trans-unit>
-      <trans-unit id="736">
-        <source>Create</source>
-        <target>aanmaken</target>
-      </trans-unit>
-      <trans-unit id="761">
-        <source>Type</source>
-        <target>soort</target>
-      </trans-unit>
-      <trans-unit id="798">
-        <source>Institution identifier</source>
-        <target>Identificatiecode van de instelling</target>
-      </trans-unit>
-      <trans-unit id="800">
-        <source>Status</source>
-        <target>status</target>
-      </trans-unit>
-      <trans-unit id="801">
-        <source>Level of detail</source>
-        <target>niveau van detaillering</target>
-      </trans-unit>
-      <trans-unit id="802">
-        <source>Dates of creation, revision and deletion</source>
-        <target>datering van aanmaak, herziening of verwijdering</target>
-      </trans-unit>
-      <trans-unit id="819">
-        <source>Conditions governing access</source>
-        <target>voorwaarden voor raadpleging</target>
-      </trans-unit>
-      <trans-unit id="840">
-        <source>Format</source>
-        <target>formaat</target>
-      </trans-unit>
-      <trans-unit id="841">
-        <source>Description</source>
-        <target>beschrijving</target>
-      </trans-unit>
-      <trans-unit id="895">
+      <trans-unit id="1">
         <source>Telephone: </source>
         <target/>
       </trans-unit>
-      <trans-unit id="896">
+      <trans-unit id="2">
         <source>Fax: </source>
-        <target/>
+        <target>Fax: </target>
       </trans-unit>
-      <trans-unit id="897">
+      <trans-unit id="3">
         <source>Email: </source>
         <target/>
       </trans-unit>
-      <trans-unit id="898">
-        <source>Generated by %1% %2%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="899">
+      <trans-unit id="4">
         <source>Generated by %1% %2%\n</source>
         <target/>
       </trans-unit>

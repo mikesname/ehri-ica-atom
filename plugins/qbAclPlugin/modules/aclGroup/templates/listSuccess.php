@@ -11,7 +11,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($pager->getResults() as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>
           <?php if ($item->isProtected()): ?>
             <?php echo link_to($item->getName(array('cultureFallback' => true)), array($item, 'module' => 'aclGroup'), array('class' => 'readOnly')) ?>

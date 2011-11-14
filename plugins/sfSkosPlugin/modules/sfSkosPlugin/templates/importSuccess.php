@@ -1,18 +1,9 @@
-<h1><?php echo __('Import complete') ?></h1>
-
-<h1 class="label"><?php echo __('The following top-level terms were imported') ?></h2>
+<h1><?php echo __('Import successful') ?></h1>
 
 <?php echo $form->renderFormTag(url_for(array('module' => 'sfSkosPlugin', 'action' => 'import'))) ?>
 
-  <ul>
-    <?php for ($i = 0; $i < ($termsPerPage <= count($topLevelTerms) ? $termsPerPage : count($topLevelTerms)); $i++): ?>
-      <?php $term = $topLevelTerms[$i] ?>
-      <li><?php echo link_to($term->__toString(), url_for(array($term, 'module' => 'term'))) ?></li>
-    <?php endfor; ?>
-  </ul>
-
   <div>
-    <?php echo __('A total of %1% terms were imported in %2%s', array('%1%' => count($terms), '%2%' => $timer->elapsed())) ?>
+    <?php echo __('%1% terms imported in %2%s', array('%1%' => count($skos->terms), '%2%' => $timer->elapsed())) ?>
   </div>
 
   <div class="actions section">

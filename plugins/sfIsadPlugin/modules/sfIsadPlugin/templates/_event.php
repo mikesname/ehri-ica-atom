@@ -26,7 +26,7 @@
 
         <?php $form->getWidgetSchema()->setNameFormat("editEvents[$i][%s]"); $i++ ?>
 
-        <tr class="date <?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>">
+        <tr class="date <?php echo 0 == ++$i % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>">
           <td>
             <div class="animateNicely">
               <input name="<?php echo $form->getWidgetSchema()->generateName('id') ?>" type="hidden" value="<?php echo url_for(array($item, 'module' => 'event')) ?>"/>
@@ -55,7 +55,7 @@
 
       <?php $form->getWidgetSchema()->setNameFormat("editEvents[$i][%s]"); $i++ ?>
 
-      <tr class="date <?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="date <?php echo 0 == ++$i % 2 ? 'even' : 'odd' ?>">
         <td>
           <div class="animateNicely">
             <?php echo $form->type ?>
@@ -75,7 +75,7 @@
   </table>
 
   <div class="description">
-    <?php echo __('Identify and record the date(s) of the unit of description. Identify the type of date given. Record as a single date or a range of dates as appropriate. Use YYYY-MM-DD format for the <em>Date</em> field. The <em>End date</em> field can be used to indicate a date range. The <em>Date display</em> field can be used to enter free-text date information.') ?>
+    <?php echo __('Identify and record the date(s) of the unit of description. Identify the type of date given. Record as a single date or a range of dates as appropriate. Use YYYY-MM-DD format for the <em>Date</em> field. The <em>End date</em> field can be used to indicate a date range. The <em>Date display</em> field can be used to enter free-text date information. (ISAD 3.1.3)') ?>
   </div>
 
 </div>

@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -1411,7 +1411,14 @@ script;
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', \$value))
       {
-        \$value = new DateTime(\$value);
+        try
+        {
+          \$value = new DateTime(\$value);
+        }
+        catch (Exception \$e)
+        {
+          return null;
+        }
       }
     }
 
@@ -1470,7 +1477,10 @@ script;
 
         if (array_key_exists(\$column->getPhpName(), \$this->values))
         {
-          \$criteria->add(\$column->getFullyQualifiedName(), \$this->param(\$column));
+          if (null !== \$param = \$this->param(\$column))
+          {
+            \$criteria->add(\$column->getFullyQualifiedName(), \$param);
+          }
         }
 
         \$offset++;

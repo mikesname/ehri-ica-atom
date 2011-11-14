@@ -16,8 +16,8 @@
       'addNumbers' => __('Add numbers'),
       'addPunctuation' => __('Add punctuation'),
       'sameAsUsername' => __('Make it different from your username'),
-      'confirmSuccess' => __('yes'),
-      'confirmFailure' => __('no'),
+      'confirmSuccess' => __('Yes'),
+      'confirmFailure' => __('No'),
       'confirmTitle' => __('Passwords match:'),
       'username' => ''))) ?>
   <?php echo javascript_tag(<<<EOF

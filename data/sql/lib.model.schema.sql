@@ -47,7 +47,7 @@ CREATE TABLE `actor`
 	CONSTRAINT `actor_FK_5`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `actor` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- actor_i18n
@@ -78,7 +78,7 @@ CREATE TABLE `actor_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- contact_information
@@ -112,7 +112,7 @@ CREATE TABLE `contact_information`
 		FOREIGN KEY (`actor_id`)
 		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- contact_information_i18n
@@ -134,7 +134,7 @@ CREATE TABLE `contact_information_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `contact_information` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- digital_object
@@ -155,7 +155,7 @@ CREATE TABLE `digital_object`
 	`sequence` INTEGER,
 	`byte_size` INTEGER,
 	`checksum` VARCHAR(255),
-	`checksum_type_id` INTEGER,
+	`checksum_type` VARCHAR(50),
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
@@ -178,16 +178,11 @@ CREATE TABLE `digital_object`
 		FOREIGN KEY (`media_type_id`)
 		REFERENCES `term` (`id`)
 		ON DELETE SET NULL,
-	INDEX `digital_object_FI_5` (`checksum_type_id`),
+	INDEX `digital_object_FI_5` (`parent_id`),
 	CONSTRAINT `digital_object_FK_5`
-		FOREIGN KEY (`checksum_type_id`)
-		REFERENCES `term` (`id`)
-		ON DELETE SET NULL,
-	INDEX `digital_object_FI_6` (`parent_id`),
-	CONSTRAINT `digital_object_FK_6`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `digital_object` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- event
@@ -226,7 +221,7 @@ CREATE TABLE `event`
 	CONSTRAINT `event_FK_4`
 		FOREIGN KEY (`actor_id`)
 		REFERENCES `actor` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- event_i18n
@@ -247,7 +242,7 @@ CREATE TABLE `event_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `event` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- function
@@ -289,7 +284,7 @@ CREATE TABLE `function`
 	CONSTRAINT `function_FK_5`
 		FOREIGN KEY (`description_detail_id`)
 		REFERENCES `term` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- function_i18n
@@ -317,33 +312,7 @@ CREATE TABLE `function_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `function` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- historical_event
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `historical_event`;
-
-
-CREATE TABLE `historical_event`
-(
-	`id` INTEGER  NOT NULL,
-	`type_id` INTEGER,
-	`start_date` DATE,
-	`start_time` TIME,
-	`end_date` DATE,
-	`end_time` TIME,
-	PRIMARY KEY (`id`),
-	CONSTRAINT `historical_event_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `term` (`id`)
-		ON DELETE CASCADE,
-	INDEX `historical_event_FI_2` (`type_id`),
-	CONSTRAINT `historical_event_FK_2`
-		FOREIGN KEY (`type_id`)
-		REFERENCES `term` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- information_object
@@ -401,7 +370,7 @@ CREATE TABLE `information_object`
 		FOREIGN KEY (`description_detail_id`)
 		REFERENCES `term` (`id`)
 		ON DELETE SET NULL
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- information_object_i18n
@@ -440,44 +409,25 @@ CREATE TABLE `information_object_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `information_object` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- map
+#-- keymap
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `map`;
+DROP TABLE IF EXISTS `keymap`;
 
 
-CREATE TABLE `map`
+CREATE TABLE `keymap`
 (
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
-	`source_culture` VARCHAR(7)  NOT NULL,
+	`source_id` INTEGER,
+	`target_id` INTEGER,
+	`source_name` TEXT,
+	`target_name` TEXT,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- map_i18n
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `map_i18n`;
-
-
-CREATE TABLE `map_i18n`
-(
-	`title` VARCHAR(255),
-	`description` TEXT,
-	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
-	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `map_i18n_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `map` (`id`)
-		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- menu
@@ -504,7 +454,7 @@ CREATE TABLE `menu`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `menu` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- menu_i18n
@@ -524,7 +474,7 @@ CREATE TABLE `menu_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `menu` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- note
@@ -539,11 +489,6 @@ CREATE TABLE `note`
 	`type_id` INTEGER,
 	`scope` VARCHAR(255),
 	`user_id` INTEGER,
-	`parent_id` INTEGER,
-	`lft` INTEGER  NOT NULL,
-	`rgt` INTEGER  NOT NULL,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
@@ -561,12 +506,8 @@ CREATE TABLE `note`
 	INDEX `note_FI_3` (`user_id`),
 	CONSTRAINT `note_FK_3`
 		FOREIGN KEY (`user_id`)
-		REFERENCES `user` (`id`),
-	INDEX `note_FI_4` (`parent_id`),
-	CONSTRAINT `note_FK_4`
-		FOREIGN KEY (`parent_id`)
-		REFERENCES `note` (`id`)
-)Type=InnoDB;
+		REFERENCES `user` (`id`)
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- note_i18n
@@ -585,7 +526,7 @@ CREATE TABLE `note_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `note` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- oai_harvest
@@ -612,7 +553,7 @@ CREATE TABLE `oai_harvest`
 		FOREIGN KEY (`oai_repository_id`)
 		REFERENCES `oai_repository` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- oai_repository
@@ -632,7 +573,7 @@ CREATE TABLE `oai_repository`
 	`updated_at` DATETIME  NOT NULL,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- object
@@ -649,7 +590,7 @@ CREATE TABLE `object`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- object_term_relation
@@ -680,7 +621,7 @@ CREATE TABLE `object_term_relation`
 		FOREIGN KEY (`term_id`)
 		REFERENCES `term` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- other_name
@@ -693,8 +634,8 @@ CREATE TABLE `other_name`
 (
 	`object_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
+	`start_date` DATE,
+	`end_date` DATE,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
@@ -709,7 +650,7 @@ CREATE TABLE `other_name`
 		FOREIGN KEY (`type_id`)
 		REFERENCES `term` (`id`)
 		ON DELETE SET NULL
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- other_name_i18n
@@ -722,6 +663,7 @@ CREATE TABLE `other_name_i18n`
 (
 	`name` VARCHAR(255),
 	`note` VARCHAR(255),
+	`dates` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
@@ -729,7 +671,7 @@ CREATE TABLE `other_name_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `other_name` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- physical_object
@@ -760,7 +702,7 @@ CREATE TABLE `physical_object`
 	CONSTRAINT `physical_object_FK_3`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `physical_object` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- physical_object_i18n
@@ -781,100 +723,7 @@ CREATE TABLE `physical_object_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `physical_object` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- place
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `place`;
-
-
-CREATE TABLE `place`
-(
-	`id` INTEGER  NOT NULL,
-	`country_id` INTEGER,
-	`type_id` INTEGER,
-	`longtitude` FLOAT,
-	`latitude` FLOAT,
-	`altitude` FLOAT,
-	`source_culture` VARCHAR(7)  NOT NULL,
-	PRIMARY KEY (`id`),
-	CONSTRAINT `place_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `term` (`id`)
-		ON DELETE CASCADE,
-	INDEX `place_FI_2` (`country_id`),
-	CONSTRAINT `place_FK_2`
-		FOREIGN KEY (`country_id`)
-		REFERENCES `term` (`id`),
-	INDEX `place_FI_3` (`type_id`),
-	CONSTRAINT `place_FK_3`
-		FOREIGN KEY (`type_id`)
-		REFERENCES `term` (`id`)
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- place_i18n
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `place_i18n`;
-
-
-CREATE TABLE `place_i18n`
-(
-	`street_address` TEXT,
-	`city` VARCHAR(255),
-	`region` VARCHAR(255),
-	`postal_code` VARCHAR(255),
-	`id` INTEGER  NOT NULL,
-	`culture` VARCHAR(7)  NOT NULL,
-	PRIMARY KEY (`id`,`culture`),
-	CONSTRAINT `place_i18n_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `place` (`id`)
-		ON DELETE CASCADE
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- place_map_relation
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `place_map_relation`;
-
-
-CREATE TABLE `place_map_relation`
-(
-	`id` INTEGER  NOT NULL,
-	`place_id` INTEGER  NOT NULL,
-	`map_id` INTEGER  NOT NULL,
-	`map_icon_image_id` INTEGER,
-	`map_icon_description` TEXT,
-	`type_id` INTEGER,
-	PRIMARY KEY (`id`),
-	CONSTRAINT `place_map_relation_FK_1`
-		FOREIGN KEY (`id`)
-		REFERENCES `object` (`id`)
-		ON DELETE CASCADE,
-	INDEX `place_map_relation_FI_2` (`place_id`),
-	CONSTRAINT `place_map_relation_FK_2`
-		FOREIGN KEY (`place_id`)
-		REFERENCES `place` (`id`)
-		ON DELETE CASCADE,
-	INDEX `place_map_relation_FI_3` (`map_id`),
-	CONSTRAINT `place_map_relation_FK_3`
-		FOREIGN KEY (`map_id`)
-		REFERENCES `map` (`id`)
-		ON DELETE CASCADE,
-	INDEX `place_map_relation_FI_4` (`map_icon_image_id`),
-	CONSTRAINT `place_map_relation_FK_4`
-		FOREIGN KEY (`map_icon_image_id`)
-		REFERENCES `digital_object` (`id`),
-	INDEX `place_map_relation_FI_5` (`type_id`),
-	CONSTRAINT `place_map_relation_FK_5`
-		FOREIGN KEY (`type_id`)
-		REFERENCES `term` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- property
@@ -888,8 +737,6 @@ CREATE TABLE `property`
 	`object_id` INTEGER  NOT NULL,
 	`scope` VARCHAR(255),
 	`name` VARCHAR(255),
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
@@ -899,7 +746,7 @@ CREATE TABLE `property`
 		FOREIGN KEY (`object_id`)
 		REFERENCES `object` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- property_i18n
@@ -918,7 +765,7 @@ CREATE TABLE `property_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `property` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- relation
@@ -935,6 +782,7 @@ CREATE TABLE `relation`
 	`type_id` INTEGER,
 	`start_date` DATE,
 	`end_date` DATE,
+	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `relation_FK_1`
 		FOREIGN KEY (`id`)
@@ -952,7 +800,27 @@ CREATE TABLE `relation`
 	CONSTRAINT `relation_FK_4`
 		FOREIGN KEY (`type_id`)
 		REFERENCES `term` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
+
+#-----------------------------------------------------------------------------
+#-- relation_i18n
+#-----------------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `relation_i18n`;
+
+
+CREATE TABLE `relation_i18n`
+(
+	`description` TEXT,
+	`date` VARCHAR(255),
+	`id` INTEGER  NOT NULL,
+	`culture` VARCHAR(7)  NOT NULL,
+	PRIMARY KEY (`id`,`culture`),
+	CONSTRAINT `relation_i18n_FK_1`
+		FOREIGN KEY (`id`)
+		REFERENCES `relation` (`id`)
+		ON DELETE CASCADE
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- repository
@@ -968,6 +836,7 @@ CREATE TABLE `repository`
 	`desc_status_id` INTEGER,
 	`desc_detail_id` INTEGER,
 	`desc_identifier` VARCHAR(255),
+	`upload_limit` FLOAT,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
 	CONSTRAINT `repository_FK_1`
@@ -984,7 +853,7 @@ CREATE TABLE `repository`
 		FOREIGN KEY (`desc_detail_id`)
 		REFERENCES `term` (`id`)
 		ON DELETE SET NULL
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- repository_i18n
@@ -1017,7 +886,7 @@ CREATE TABLE `repository_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `repository` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- rights
@@ -1028,24 +897,44 @@ DROP TABLE IF EXISTS `rights`;
 
 CREATE TABLE `rights`
 (
-	`object_id` INTEGER  NOT NULL,
-	`permission_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
+	`id` INTEGER  NOT NULL,
+	`start_date` DATE,
+	`end_date` DATE,
+	`restriction` TINYINT default 1,
+	`basis_id` INTEGER,
+	`act_id` INTEGER,
+	`rights_holder_id` INTEGER,
+	`copyright_status_id` INTEGER,
+	`copyright_status_date` DATE,
+	`copyright_jurisdiction` VARCHAR(255),
+	`statute_determination_date` DATE,
 	`source_culture` VARCHAR(7)  NOT NULL,
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
-	INDEX `rights_FI_1` (`object_id`),
 	CONSTRAINT `rights_FK_1`
-		FOREIGN KEY (`object_id`)
+		FOREIGN KEY (`id`)
 		REFERENCES `object` (`id`)
 		ON DELETE CASCADE,
-	INDEX `rights_FI_2` (`permission_id`),
+	INDEX `rights_FI_2` (`basis_id`),
 	CONSTRAINT `rights_FK_2`
-		FOREIGN KEY (`permission_id`)
+		FOREIGN KEY (`basis_id`)
 		REFERENCES `term` (`id`)
-)Type=InnoDB;
+		ON DELETE SET NULL,
+	INDEX `rights_FI_3` (`act_id`),
+	CONSTRAINT `rights_FK_3`
+		FOREIGN KEY (`act_id`)
+		REFERENCES `term` (`id`)
+		ON DELETE SET NULL,
+	INDEX `rights_FI_4` (`rights_holder_id`),
+	CONSTRAINT `rights_FK_4`
+		FOREIGN KEY (`rights_holder_id`)
+		REFERENCES `actor` (`id`)
+		ON DELETE SET NULL,
+	INDEX `rights_FI_5` (`copyright_status_id`),
+	CONSTRAINT `rights_FK_5`
+		FOREIGN KEY (`copyright_status_id`)
+		REFERENCES `term` (`id`)
+		ON DELETE SET NULL
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- rights_i18n
@@ -1056,7 +945,14 @@ DROP TABLE IF EXISTS `rights_i18n`;
 
 CREATE TABLE `rights_i18n`
 (
-	`description` TEXT,
+	`rights_note` TEXT,
+	`copyright_note` TEXT,
+	`license_identifier` TEXT,
+	`license_terms` TEXT,
+	`license_note` TEXT,
+	`statute_jurisdiction` TEXT,
+	`statute_citation` TEXT,
+	`statute_note` TEXT,
 	`id` INTEGER  NOT NULL,
 	`culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`,`culture`),
@@ -1064,75 +960,24 @@ CREATE TABLE `rights_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `rights` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
-#-- rights_actor_relation
+#-- rights_holder
 #-----------------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `rights_actor_relation`;
+DROP TABLE IF EXISTS `rights_holder`;
 
 
-CREATE TABLE `rights_actor_relation`
+CREATE TABLE `rights_holder`
 (
 	`id` INTEGER  NOT NULL,
-	`rights_id` INTEGER  NOT NULL,
-	`actor_id` INTEGER  NOT NULL,
-	`type_id` INTEGER,
 	PRIMARY KEY (`id`),
-	CONSTRAINT `rights_actor_relation_FK_1`
+	CONSTRAINT `rights_holder_FK_1`
 		FOREIGN KEY (`id`)
-		REFERENCES `object` (`id`)
-		ON DELETE CASCADE,
-	INDEX `rights_actor_relation_FI_2` (`rights_id`),
-	CONSTRAINT `rights_actor_relation_FK_2`
-		FOREIGN KEY (`rights_id`)
-		REFERENCES `rights` (`id`)
-		ON DELETE CASCADE,
-	INDEX `rights_actor_relation_FI_3` (`actor_id`),
-	CONSTRAINT `rights_actor_relation_FK_3`
-		FOREIGN KEY (`actor_id`)
 		REFERENCES `actor` (`id`)
-		ON DELETE CASCADE,
-	INDEX `rights_actor_relation_FI_4` (`type_id`),
-	CONSTRAINT `rights_actor_relation_FK_4`
-		FOREIGN KEY (`type_id`)
-		REFERENCES `term` (`id`)
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- rights_term_relation
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `rights_term_relation`;
-
-
-CREATE TABLE `rights_term_relation`
-(
-	`rights_id` INTEGER  NOT NULL,
-	`term_id` INTEGER  NOT NULL,
-	`type_id` INTEGER,
-	`description` TEXT,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`serial_number` INTEGER default 0 NOT NULL,
-	PRIMARY KEY (`id`),
-	INDEX `rights_term_relation_FI_1` (`rights_id`),
-	CONSTRAINT `rights_term_relation_FK_1`
-		FOREIGN KEY (`rights_id`)
-		REFERENCES `rights` (`id`)
-		ON DELETE CASCADE,
-	INDEX `rights_term_relation_FI_2` (`term_id`),
-	CONSTRAINT `rights_term_relation_FK_2`
-		FOREIGN KEY (`term_id`)
-		REFERENCES `term` (`id`)
-		ON DELETE CASCADE,
-	INDEX `rights_term_relation_FI_3` (`type_id`),
-	CONSTRAINT `rights_term_relation_FK_3`
-		FOREIGN KEY (`type_id`)
-		REFERENCES `term` (`id`)
-)Type=InnoDB;
+		ON DELETE CASCADE
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- setting
@@ -1151,7 +996,7 @@ CREATE TABLE `setting`
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- setting_i18n
@@ -1170,7 +1015,7 @@ CREATE TABLE `setting_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `setting` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- slug
@@ -1191,7 +1036,8 @@ CREATE TABLE `slug`
 	CONSTRAINT `slug_FK_1`
 		FOREIGN KEY (`object_id`)
 		REFERENCES `object` (`id`)
-)Type=InnoDB;
+		ON DELETE CASCADE
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- static_page
@@ -1209,7 +1055,7 @@ CREATE TABLE `static_page`
 		FOREIGN KEY (`id`)
 		REFERENCES `object` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- static_page_i18n
@@ -1229,7 +1075,7 @@ CREATE TABLE `static_page_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `static_page` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- status
@@ -1243,8 +1089,6 @@ CREATE TABLE `status`
 	`object_id` INTEGER  NOT NULL,
 	`type_id` INTEGER,
 	`status_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`id` INTEGER  NOT NULL AUTO_INCREMENT,
 	`serial_number` INTEGER default 0 NOT NULL,
 	PRIMARY KEY (`id`),
@@ -1263,38 +1107,7 @@ CREATE TABLE `status`
 		FOREIGN KEY (`status_id`)
 		REFERENCES `term` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
-
-#-----------------------------------------------------------------------------
-#-- system_event
-#-----------------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `system_event`;
-
-
-CREATE TABLE `system_event`
-(
-	`type_id` INTEGER,
-	`object_class` VARCHAR(255),
-	`object_id` INTEGER,
-	`pre_event_snapshot` TEXT,
-	`post_event_snapshot` TEXT,
-	`date` DATETIME,
-	`user_id` INTEGER,
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
-	`id` INTEGER  NOT NULL AUTO_INCREMENT,
-	`serial_number` INTEGER default 0 NOT NULL,
-	PRIMARY KEY (`id`),
-	INDEX `system_event_FI_1` (`type_id`),
-	CONSTRAINT `system_event_FK_1`
-		FOREIGN KEY (`type_id`)
-		REFERENCES `term` (`id`),
-	INDEX `system_event_FI_2` (`user_id`),
-	CONSTRAINT `system_event_FK_2`
-		FOREIGN KEY (`user_id`)
-		REFERENCES `user` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- taxonomy
@@ -1307,8 +1120,6 @@ CREATE TABLE `taxonomy`
 (
 	`id` INTEGER  NOT NULL,
 	`usage` VARCHAR(255),
-	`created_at` DATETIME  NOT NULL,
-	`updated_at` DATETIME  NOT NULL,
 	`parent_id` INTEGER,
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
@@ -1322,7 +1133,7 @@ CREATE TABLE `taxonomy`
 	CONSTRAINT `taxonomy_FK_2`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `taxonomy` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- taxonomy_i18n
@@ -1342,7 +1153,7 @@ CREATE TABLE `taxonomy_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `taxonomy` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- term
@@ -1374,7 +1185,7 @@ CREATE TABLE `term`
 	CONSTRAINT `term_FK_3`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `term` (`id`)
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- term_i18n
@@ -1393,7 +1204,7 @@ CREATE TABLE `term_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `term` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- user
@@ -1414,7 +1225,7 @@ CREATE TABLE `user`
 		FOREIGN KEY (`id`)
 		REFERENCES `actor` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

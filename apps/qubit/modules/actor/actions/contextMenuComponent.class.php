@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -48,6 +48,17 @@ class ActorContextMenuComponent extends sfComponent
     foreach (QubitEvent::get($criteria) as $item)
     {
       $this->relatedInfoObjects[$item->type->getRole()][] = $item->informationObject;
+    }
+
+    // Get "subject of" information objects (name access point)
+    $criteria = new Criteria;
+    $criteria->add(QubitRelation::OBJECT_ID, $this->resource->id);
+    $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
+
+    $this->subjectInfoObjects = array();
+    foreach (QubitRelation::get($criteria) as $item)
+    {
+      $this->subjectInfoObjects[] = $item->subject;
     }
   }
 }

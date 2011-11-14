@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -29,7 +29,7 @@ class sfSkosPluginImportAction extends sfAction
 
     $this->taxonomy = null;
     $this->parent = QubitTerm::getById(QubitTerm::ROOT_ID);
-    
+
     if (isset($this->getRoute()->resource))
     {
       $resource = $this->getRoute()->resource;
@@ -71,16 +71,8 @@ class sfSkosPluginImportAction extends sfAction
           $doc->substituteEntities = true;
           $doc->load($file->getTempName());
 
-          $this->terms = sfSkosPlugin::parse($doc, array('taxonomy' => $this->taxonomy, 'parent' => $this->parent));
+          $this->skos = sfSkosPlugin::parse($doc, array('taxonomy' => $this->taxonomy, 'parent' => $this->parent));
 
-          $this->topLevelTerms = array();
-          foreach ($this->terms as $term)
-          {
-            if ($term->parent == $this->parent)
-            {
-              $this->topLevelTerms[] = $term;
-            }
-          }
         }
       }
     }

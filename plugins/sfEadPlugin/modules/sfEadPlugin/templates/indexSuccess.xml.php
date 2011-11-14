@@ -173,7 +173,7 @@
     <genreform><?php echo esc_specialchars($materialtype->getTerm()) ?></genreform>
 <?php endforeach; ?>
 <?php foreach ($subjects as $subject): ?>
-    <subject><?php echo esc_specialchars($subject->getTerm()) ?></subject>
+    <subject<?php if ($subject->getTerm()->code):?> authfilenumber="<?php echo $subject->getTerm()->code ?>"<?php endif; ?><?php if ($subject->getTerm()->getSourceNotes()):?> source="<?php foreach ($subject->getTerm()->getSourceNotes() as $note): ?><?php echo $note ?><?php endforeach; ?>"<?php endif; ?>><?php echo esc_specialchars($subject->getTerm()) ?></subject>
 <?php endforeach; ?>
 <?php foreach ($places as $place): ?>
     <geogname><?php echo esc_specialchars($place->getTerm()) ?></geogname>
@@ -216,7 +216,7 @@
         <physloc><?php echo esc_specialchars($physicalObject->getLocation(array('cultureFallback' => true))) ?></physloc>
 <?php endif; ?>
 <?php if ($physicalObject->getName(array('cultureFallback' => true))): ?>
-        <container type="<?php echo str_replace(' ', '', $physicalObject->getType()) ?>"><?php echo esc_specialchars($physicalObject->getName(array('cultureFallback' => true))) ?></container>
+        <container <?php if ($type = $physicalObject->getType()): ?><?php echo 'type="'.str_replace(' ', '', $physicalObject->getType()).'" ' ?><?php endif; ?>><?php echo esc_specialchars($physicalObject->getName(array('cultureFallback' => true))) ?></container>
 <?php endif; ?>
 <?php endforeach; ?>
 <?php if (0 < strlen($value = $descendant->getTitle(array('cultureFallback' => true)))): ?>

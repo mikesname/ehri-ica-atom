@@ -1,11 +1,8 @@
 import:
   credentials: administrator
 
-export:
+importSelect:
   credentials: administrator
-
-importexport:
-  credentials: [[ administrator, translator ]]
 
 all:
   is_secure: true

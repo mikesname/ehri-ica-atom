@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -19,8 +19,8 @@
 
 class sfSkosPlugin
 {
-  protected
-    $terms = array();
+  public
+    $concepts = array();
 
   public static function parse($doc, $options = array())
   {
@@ -59,36 +59,60 @@ class sfSkosPlugin
       $skos->parent = $options['parent'];
     }
 
-    // Select all top-level concepts (no 'broader' child-nodes)
-    foreach ($skos->xpath->query('skos:Concept[not(skos:broader)]') as $concept)
+    // XPath selector for expanded RDF syntax
+    $rdfsel = "rdf:Description[rdf:type[@rdf:resource='http://www.w3.org/2004/02/skos/core#Concept']]";
+
+    // Get all concepts
+    $concepts = $skos->xpath->query("skos:Concept | $rdfsel");
+
+    // Create terms from concepts
+    foreach ($concepts as $concept)
     {
       if (!($concept instanceof domElement))
       {
         continue;
       }
 
-      $skos->addTerm($concept, null);
+      $skos->addTerm($concept);
     }
 
-    $skos->addTermAssociations();
+    // Built term associations (including hierarchy)
+    foreach ($concepts as $concept)
+    {
+      if (!($concept instanceof domElement))
+      {
+        continue;
+      }
 
-    return $skos->terms;
+      // Add parent
+      if (0 < $skos->xpath->query('./skos:broader', $concept)->length)
+      {
+        $skos->setParent($concept);
+      }
+
+      // Add children
+      if (0 < $skos->xpath->query('./skos:narrower', $concept)->length)
+      {
+        $skos->setChildren($concept);
+      }
+
+      // Add relations
+      if (0 < $skos->xpath->query('./skos:related', $concept)->length)
+      {
+        $skos->addTermRelations($concept);
+      }
+    }
+
+    return $skos;
   }
 
-  protected function addTerm($concept, $parent)
+  protected function addTerm($concept)
   {
     $term = new QubitTerm;
     $term->taxonomy = $this->taxonomy;
 
-    // Set parent
-    if (isset($parent))
-    {
-      $term->parentId = $parent->id;
-    }
-    else
-    {
-      $term->parent = $this->parent;
-    }
+    // Parent to current root (we'll update later)
+    $term->parent = $this->parent;
 
     // Preferred label
     $prefLabels = $this->xpath->query('./skos:prefLabel', $concept);
@@ -121,6 +145,8 @@ class sfSkosPlugin
       {
         $term->otherNames[] = $otherName;
       }
+
+      unset($otherName);
     }
 
     // URI - save as source note
@@ -132,6 +158,8 @@ class sfSkosPlugin
       $note->content = $uri->nodeValue;
 
       $term->notes[] = $note;
+
+      unset($note);
     }
 
     // Scope notes
@@ -146,74 +174,138 @@ class sfSkosPlugin
       {
         $term->notes[] = $note;
       }
+
+      unset($note);
+    }
+
+    // Map dc.coverage to term.code for place terms
+    // Hacky Hackerton was here
+    if (QubitTaxonomy::PLACE_ID == $this->taxonomy->getId()) {
+      foreach ($this->xpath->query('./dc:coverage', $concept) as $coverage)
+      {
+          $term->code = $coverage->nodeValue;
+      }
     }
 
     // Save the term
     $term->save();
-    $this->terms[] = $term;
 
-    // Find and add narrow terms
-    // TODO: Merge broader/narrower relations for this term, as defining
-    // inverse of relationship is not required by SKOS
-    // http://www.w3.org/TR/2009/NOTE-skos-primer-20090818/#sechierarchy
-    if ($uri instanceof DOMAttr)
+    // Hash to store concept to term mapping
+    $this->terms[$uri->nodeValue] = $term;
+
+    return $this;
+  }
+
+  protected function addTermRelations($concept)
+  {
+    $subjectUri = $concept->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'about');
+    if (!($subjectUri instanceof DOMAttr) || !isset($this->terms[$subjectUri->nodeValue]))
     {
-      foreach ($this->xpath->query('./skos:Concept[skos:broader[@rdf:resource="'.$uri->nodeValue.'"]]') as $narrower)
-      {
-        if (!($narrower instanceof DOMElement))
-        {
-          continue;
-        }
+      continue;
+    }
 
-        $this->addTerm($narrower, $term);
+    foreach ($this->xpath->query('./skos:related', $concept) as $related)
+    {
+      $objectUri = $related->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'resource');
+      if (!($objectUri instanceof DomAttr) || !isset($this->terms[$objectUri->nodeValue]))
+      {
+        continue;
       }
+
+      // Don't duplicate relationship
+      foreach ($this->relations as $r)
+      {
+        if (
+          $r['subject'] == $objectUri->nodeValue && $r['object'] == $subjectUri->nodeValue ||
+          $r['subject'] == $subjectUri->nodeValue && $r['object'] == $objectUri->nodeValue)
+        {
+          continue 2;
+        }
+      }
+
+      $relation = new QubitRelation;
+      $relation->typeId = QubitTerm::TERM_RELATION_ASSOCIATIVE_ID;
+      $relation->subject = $this->terms[$subjectUri->nodeValue];
+      $relation->object = $this->terms[$objectUri->nodeValue];
+
+      $relation->save();
+
+      $this->relations[] = array('subject' => $subjectUri->nodeValue, 'object' => $objectUri->nodeValue);
     }
 
     return $this;
   }
 
-  protected function addTermAssociations()
+  protected function setParent($concept)
   {
-    $count = 0;
-    $relations = array();
+    $uri = $concept->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'about');
 
-    foreach ($this->xpath->query('skos:Concept[skos:related]') as $concept)
+    if (!isset($this->terms[$uri->nodeValue]))
     {
-      $subjectUri = $concept->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'about');
-      if (!($subjectUri instanceof DOMAttr) || null === $subject = self::getTermBySourceNote($subjectUri->nodeValue))
+      return;
+    }
+
+    // If term doesn't have default parentId, then assume it's already be set
+    if ($this->parent->id != $this->terms[$uri->nodeValue]->parentId)
+    {
+      return;
+    }
+
+    foreach($this->xpath->query('./skos:broader', $concept) as $broader)
+    {
+      if (!($broader instanceof DOMElement))
       {
         continue;
       }
 
-      foreach ($this->xpath->query('./skos:related', $concept) as $related)
+      $parentUri = $broader->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'resource');
+
+      if (!isset($this->terms[$parentUri->nodeValue]))
       {
-        $objectUri = $related->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'resource');
-        if (!($objectUri instanceof DomAttr) || null === $obj = self::getTermBySourceNote($objectUri->nodeValue))
+        continue;
+      }
+
+      if ($parentUri instanceof DOMAttr)
+      {
+        $this->terms[$uri->nodeValue]->parent = $this->terms[$parentUri->nodeValue];
+        $this->terms[$uri->nodeValue]->save();
+      }
+
+      return; // Only allowed one parent
+    }
+  }
+
+  protected function setChildren($concept)
+  {
+    $uri = $concept->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'about');
+
+    if (!isset($this->terms[$uri->nodeValue]))
+    {
+      return;
+    }
+
+    foreach($this->xpath->query('./skos:narrower', $concept) as $narrower)
+    {
+      if (!($narrower instanceof DOMElement))
+      {
+        continue;
+      }
+
+      $childUri = $narrower->getAttributeNodeNS('http://www.w3.org/1999/02/22-rdf-syntax-ns#', 'resource');
+
+      if ($childUri instanceof DOMAttr)
+      {
+        // Skip if child doesn't exists, or it has already been parented
+        if (!isset($this->terms[$childUri->nodeValue]) ||
+          $this->terms[$uri->nodeValue]->id == $this->terms[$childUri->nodeValue]->parentId)
         {
           continue;
         }
 
-        // Don't duplicate reciprocal relationship
-        foreach ($relations as $r)
-        {
-          if ($r['subject'] == $objectUri->nodeValue && $r['object'] == $subjectUri->nodeValue)
-          {
-            continue 2;
-          }
-        }
-
-        $relation = new QubitRelation;
-        $relation->typeId = QubitTerm::TERM_RELATION_ASSOCIATIVE_ID;
-        $relation->subject = $subject;
-        $relation->object = $obj;
-
-        $relation->save();
-
-        $relations[] = array('subject' => $subjectUri->nodeValue, 'object' => $objectUri->nodeValue);
+        $this->terms[$childUri->nodeValue]->parent = $this->terms[$uri->nodeValue];
+        $this->terms[$childUri->nodeValue]->save();
       }
     }
-
-    return $this;
   }
 
   protected static function getTermBySourceNote($sourceNote)

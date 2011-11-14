@@ -29,7 +29,7 @@
       </tr>
     </thead><tbody>
       <?php foreach ($isdf->relatedFunction as $item): ?>
-        <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>" id="<?php echo url_for(array($item, 'module' => 'relation')) ?>">
+        <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>" id="<?php echo url_for(array($item, 'module' => 'relation')) ?>">
           <td>
             <?php if ($resource->id == $item->objectId): ?>
               <?php echo render_title($item->subject) ?>
@@ -39,9 +39,9 @@
           </td><td>
             <?php echo $item->type ?>
           </td><td>
-            <?php echo $item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID) ?>
+            <?php echo $item->description ?>
           </td><td>
-            <?php echo Qubit::renderDateStartEnd($item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_ID), $item->startDate, $item->endDate) ?>
+            <?php echo Qubit::renderDateStartEnd($item->date, $item->startDate, $item->endDate) ?>
           </td><td style="text-align: center">
             <input class="multiDelete" name="deleteRelations[]" type="checkbox" value="<?php echo url_for(array($item, 'module' => 'relation')) ?>"/>
           </td>

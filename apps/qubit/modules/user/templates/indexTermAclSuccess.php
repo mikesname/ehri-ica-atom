@@ -33,7 +33,7 @@
           </tr>
           <?php $row = 0; ?>
           <?php foreach ($actions as $action => $groupPermission): ?>
-            <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+            <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
               <td>&nbsp;</td>
               <td>
                 <?php if ('' != $action): ?>
@@ -46,9 +46,9 @@
                 <td>
                   <?php if (isset($groupPermission[$roleId]) && $permission = $groupPermission[$roleId]): ?>
                     <?php if ('translate' == $permission->action && null !== $permission->getConstants(array('name' => 'languages'))): ?>
-                      <?php echo __('%1%: %2%', array('%1%' => $permission->renderAccess(), '%2%' => implode(', ', $permission->getConstants(array('name' => 'languages'))))) ?>
+                      <?php echo $permission->renderAccess().': '.implode(',', $permission->getConstants(array('name' => 'languages'))) ?>
                     <?php else: ?>
-                      <?php echo __($permission->renderAccess()) ?>
+                      <?php echo $permission->renderAccess() ?>
                     <?php endif; ?>
                   <?php else: ?>
                     <?php echo '-' ?>

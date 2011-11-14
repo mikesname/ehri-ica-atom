@@ -35,7 +35,7 @@ EOL;
 $row = 0;
 foreach ($basicActions as $key => $item)
 {
-  $tableTemplate .= '<tr class="'.((0 == $row++ % 2) ? 'even' : 'odd').'">';
+  $tableTemplate .= '<tr class="'.((0 == ++$row % 2) ? 'even' : 'odd').'">';
   $tableTemplate .= '<td>'.__($item).'</th>';
   $tableTemplate .= '<td><ul class="radio inline">';
   $tableTemplate .= '<li><input type="radio" name="acl['.$key.'_{objectId}]" value="'.QubitAcl::GRANT.'"/>'.__('Grant').'</li>';

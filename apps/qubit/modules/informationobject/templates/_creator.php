@@ -1,5 +1,5 @@
 <div class="field">
-  <h3><?php echo format_number_choice('[0,1]Creator|(1,+Inf]Creators', array(), count($ancestor->getCreators())) ?></h3>
+  <h3><?php echo __('Creator(s)') ?></h3>
   <div>
     <ul>
       <?php foreach ($ancestor->getCreators() as $item): ?>

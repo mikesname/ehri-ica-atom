@@ -1,6 +1,8 @@
 <h1><?php echo __('View ISDF function') ?></h1>
 
-<?php echo link_to_if(QubitAcl::check($resource, 'update'), '<h1 class="label">'.render_title($resource).'</h1>', array($resource, 'module' => 'function', 'action' => 'edit'), array('title' => __('Edit function'))) ?>
+<h1 class="label">
+<?php echo link_to_if(QubitAcl::check($resource, 'update'), render_title($resource), array($resource, 'module' => 'function', 'action' => 'edit'), array('title' => __('Edit function'))) ?>
+</h1>
 
 <?php if (isset($errorSchema)): ?>
   <div class="messages error">
@@ -79,9 +81,9 @@
 
         <?php echo render_show(__('Category of relationship'), render_value($item->type)) ?>
 
-        <?php echo render_show(__('Description of relationship'), render_value($item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID))) ?>
+        <?php echo render_show(__('Description of relationship'), render_value($item->description)) ?>
 
-        <?php echo render_show(__('Dates of relationship'), Qubit::renderDateStartEnd($item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_ID), $item->startDate, $item->endDate)) ?>
+        <?php echo render_show(__('Dates of relationship'), Qubit::renderDateStartEnd($item->date, $item->startDate, $item->endDate)) ?>
 
       </div>
     </div>
@@ -96,11 +98,11 @@
 
         <?php echo render_show(__('Identifier'), render_value($item->object->descriptionIdentifier)) ?>
 
-        <?php if (null !== $note = $item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID)): ?>
-          <?php echo render_show(__('Nature of relationship'), render_value($note->getContent(array('cultureFallback' => true)))) ?>
+        <?php if (null !== $item->description): ?>
+          <?php echo render_show(__('Nature of relationship'), render_value($item->description)) ?>
         <?php endif; ?>
 
-        <?php echo render_show(__('Dates of the relationship'), Qubit::renderDateStartEnd($item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_ID), $item->startDate, $item->endDate)) ?>
+        <?php echo render_show(__('Dates of the relationship'), Qubit::renderDateStartEnd($item->date, $item->startDate, $item->endDate)) ?>
 
       </div>
     </div>
@@ -116,11 +118,11 @@
 
         <?php $isad = new sfIsadPlugin($item->object); echo render_show(__('Identifier'), $isad->referenceCode) ?>
 
-        <?php if (null !== $note = $item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID)): ?>
-          <?php echo render_show(__('Nature of relationship'), render_value($note->getContent(array('cultureFallback' => true)))) ?>
+        <?php if (null !== $item->description): ?>
+          <?php echo render_show(__('Nature of relationship'), render_value($item->description)) ?>
         <?php endif; ?>
 
-        <?php echo render_show(__('Dates of the relationship'), Qubit::renderDateStartEnd($item->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_ID), $item->startDate, $item->endDate)) ?>
+        <?php echo render_show(__('Dates of the relationship'), Qubit::renderDateStartEnd($item->date, $item->startDate, $item->endDate)) ?>
 
       </div>
     </div>
@@ -186,7 +188,7 @@
         <?php endif; ?>
 
         <?php if (QubitAcl::check($resource, 'delete')): ?>
-          <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'function', 'action' => 'delete'), array('title' => __('Delete'))) ?></li>
+          <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'function', 'action' => 'delete'), array('class' => 'delete', 'title' => __('Delete'))) ?></li>
         <?php endif; ?>
 
         <?php if (QubitAcl::check($resource, 'create')): ?>

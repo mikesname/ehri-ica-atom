@@ -26,7 +26,7 @@
                 <?php if ('' == $repoId && '' == $objectId): ?>
                   <em><?php echo __('All %1%', array('%1%' => sfConfig::get('app_ui_label_informationobject'))) ?></em>
                 <?php elseif ('' != $repoId): ?>
-                  <?php echo __('%1%: %2%', array('%1%' => sfConfig::get('app_ui_label_repository'), '%2%' => render_title(QubitRepository::getById($repoId)))) ?>
+                  <?php echo sfConfig::get('app_ui_label_repository').': '.render_title(QubitRepository::getById($repoId)) ?>
                 <?php else: ?>
                   <?php echo render_title(QubitInformationObject::getById($objectId)) ?>
                 <?php endif; ?>
@@ -34,7 +34,7 @@
             </tr>
             <?php $row = 0; ?>
             <?php foreach ($actions as $action => $groupPermission): ?>
-              <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+              <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
                 <td>&nbsp;</td>
                 <td>
                   <?php if ('' != $action): ?>
@@ -47,9 +47,9 @@
                   <td>
                     <?php if (isset($groupPermission[$groupId]) && $permission = $groupPermission[$groupId]): ?>
                       <?php if ('translate' == $permission->action && null !== $permission->getConstants(array('name' => 'languages'))): ?>
-                        <?php echo __('%1%: %2%', array('%1%' => $permission->renderAccess(), '%2%' => implode(', ', $permission->getConstants(array('name' => 'languages'))))) ?>
+                        <?php echo $permission->renderAccess().': '.implode(',', $permission->getConstants(array('name' => 'languages'))) ?>
                       <?php else: ?>
-                        <?php echo __($permission->renderAccess()) ?>
+                        <?php echo $permission->renderAccess() ?>
                       <?php endif; ?>
                     <?php else: ?>
                       <?php echo '-' ?>

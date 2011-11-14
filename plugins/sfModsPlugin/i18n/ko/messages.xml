@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2010-11-12T09:28:00Z" product-name="messages">
+  <file source-language="EN" target-language="ko" datatype="plaintext" original="messages" date="2011-09-13T13:14:35Z" product-name="messages">
     <body>
       <trans-unit id="45">
         <source>Identifier</source>
@@ -14,62 +14,6 @@
         <source>Language</source>
         <target/>
       </trans-unit>
-      <trans-unit id="260">
-        <source>Country</source>
-        <target>국가</target>
-      </trans-unit>
-      <trans-unit id="262">
-        <source>Latitude</source>
-        <target>위도</target>
-      </trans-unit>
-      <trans-unit id="268">
-        <source>Note</source>
-        <target>노트</target>
-      </trans-unit>
-      <trans-unit id="300">
-        <source>Email</source>
-        <target>e메일</target>
-      </trans-unit>
-      <trans-unit id="340">
-        <source>Contact information</source>
-        <target>연락 정보</target>
-      </trans-unit>
-      <trans-unit id="342">
-        <source>Contact type</source>
-        <target>연락 형태</target>
-      </trans-unit>
-      <trans-unit id="344">
-        <source>Street address</source>
-        <target>주소</target>
-      </trans-unit>
-      <trans-unit id="345">
-        <source>City</source>
-        <target>도시</target>
-      </trans-unit>
-      <trans-unit id="348">
-        <source>Telephone</source>
-        <target>전화</target>
-      </trans-unit>
-      <trans-unit id="349">
-        <source>Fax</source>
-        <target>팩스</target>
-      </trans-unit>
-      <trans-unit id="350">
-        <source>Website</source>
-        <target>웹사이트</target>
-      </trans-unit>
-      <trans-unit id="378">
-        <source>Place</source>
-        <target>장소</target>
-      </trans-unit>
-      <trans-unit id="400">
-        <source>Name</source>
-        <target>이름</target>
-      </trans-unit>
-      <trans-unit id="513">
-        <source>Are you sure?</source>
-        <target>확실합니까?</target>
-      </trans-unit>
       <trans-unit id="537">
         <source>Subject</source>
         <target>주제</target>
@@ -77,78 +21,6 @@
       <trans-unit id="584">
         <source>URL</source>
         <target/>
-      </trans-unit>
-      <trans-unit id="587">
-        <source>Date(s)</source>
-        <target>일자(기간)</target>
-      </trans-unit>
-      <trans-unit id="615">
-        <source>Repository</source>
-        <target>기록보존소</target>
-      </trans-unit>
-      <trans-unit id="644">
-        <source>Edit</source>
-        <target>편집</target>
-      </trans-unit>
-      <trans-unit id="646">
-        <source>Delete</source>
-        <target>삭제</target>
-      </trans-unit>
-      <trans-unit id="647">
-        <source>Add new</source>
-        <target>새항목 추가</target>
-      </trans-unit>
-      <trans-unit id="648">
-        <source>List all</source>
-        <target>전체 목록 열거</target>
-      </trans-unit>
-      <trans-unit id="655">
-        <source>Description of relationship</source>
-        <target>관계 기술</target>
-      </trans-unit>
-      <trans-unit id="667">
-        <source>Cancel</source>
-        <target>취소</target>
-      </trans-unit>
-      <trans-unit id="668">
-        <source>Save</source>
-        <target>저장</target>
-      </trans-unit>
-      <trans-unit id="669">
-        <source>Create</source>
-        <target>생산</target>
-      </trans-unit>
-      <trans-unit id="694">
-        <source>Type</source>
-        <target>형태</target>
-      </trans-unit>
-      <trans-unit id="731">
-        <source>Institution identifier</source>
-        <target>전거레코드 책임기관 식별자</target>
-      </trans-unit>
-      <trans-unit id="733">
-        <source>Status</source>
-        <target>지위(상태)</target>
-      </trans-unit>
-      <trans-unit id="734">
-        <source>Level of detail</source>
-        <target>상세 정도</target>
-      </trans-unit>
-      <trans-unit id="735">
-        <source>Dates of creation, revision and deletion</source>
-        <target>생산 수정 삭제 일자</target>
-      </trans-unit>
-      <trans-unit id="752">
-        <source>Conditions governing access</source>
-        <target>접근 조건</target>
-      </trans-unit>
-      <trans-unit id="773">
-        <source>Format</source>
-        <target>포맷</target>
-      </trans-unit>
-      <trans-unit id="774">
-        <source>Description</source>
-        <target>기술</target>
       </trans-unit>
       <trans-unit id="778">
         <source>Type of resource</source>
@@ -240,6 +112,18 @@
       </trans-unit>
       <trans-unit id="849">
         <source>Identifies the institution or repository holding the resource. Search for an existing repository name by typing the first few letters of the name. ALternatively, type a new name to create and link to a new repository record.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="850">
+        <source>Rights area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="851">
+        <source>Edit rights area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="852">
+        <source>Accession area</source>
         <target/>
       </trans-unit>
     </body>

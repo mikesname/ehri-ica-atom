@@ -40,6 +40,7 @@ button.delete-small {
   height: 16px;
   border: none;
   vertical-align: top;
+  cursor: pointer;
 }
 
 /*********************************************************
@@ -103,47 +104,6 @@ div.digitalObjectRep {
 
 div.digitalObjectDesc img {
   float: right;
-}
-
-div.multiFileUploadItem {
-  border: 1px solid #bbb;
-  padding: 2px;
-  margin: 2px 2px 12px 2px;
-  overflow: auto;
-}
-
-div.multiFileUploadWarning {
-  color: #222200;
-  background-color: #FFFFDD;
-}
-
-div.multiFileUploadWarning p {
-  margin: 5px 8px;
-}
-
-div.multiFileUploadThumbItem {
-  float: left;
-  margin: 5px;
-  padding: 5px;
-  height: auto;
-  text-align: center;
-  display: table-cell;
-  background-color: #eee;
-}
-
-div.multiFileUploadInfo {
-  float: left;
-  margin: 0 0 0 5px;
-  height: auto;
-}
-
-div.multiFileUploadInfo .title {
-  font-weight: bold;
-  margin: 0 4px 0 0;
-}
-
-div.multiFileUploadInfoActions a {
-  margin-right: 6px;
 }
 
 /*********************************************************
@@ -210,11 +170,60 @@ table.compound_digiobj td.download_link {
 }
 
 /*********************************************************
+             MULTIUPLOADER
+  TODO: Apply default markup, .section, h3, etc...
+**********************************************************/
+
+div.multiFileUploadItem {
+  border: 1px solid #bbb;
+  padding: 2px;
+  margin: 2px 2px 12px 2px;
+  overflow: auto;
+}
+
+div.multiFileUploadWarning {
+  color: #222200;
+  background-color: #FFFFDD;
+}
+
+div.multiFileUploadWarning p {
+  margin: 5px 8px;
+}
+
+div.multiFileUploadThumbItem {
+  float: left;
+  margin: 5px;
+  padding: 5px;
+  height: auto;
+  text-align: center;
+  display: table-cell;
+  background-color: #eee;
+}
+
+div.multiFileUploadInfo {
+  float: left;
+  margin: 0 0 0 5px;
+  height: auto;
+}
+
+div.multiFileUploadInfo .title {
+  font-weight: bold;
+  margin: 0 4px 0 0;
+}
+
+div.multiFileUploadInfoActions a {
+  margin-right: 6px;
+}
+
+
+/*********************************************************
              CHECK FOR UPDATES
 **********************************************************/
 
 #update-check
 {
+  display: none;
+
   background-color: #def;
 
   padding: 4px 8px;

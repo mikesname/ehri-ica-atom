@@ -11,7 +11,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($menuTree as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td<?php if (QUbitMenu::ROOT_ID == $item['parentId']): ?> style="font-weight: bold"<?php endif; ?>>
 
           <?php echo str_repeat('&nbsp;&nbsp;', ($item['depth'] - 1)) ?>

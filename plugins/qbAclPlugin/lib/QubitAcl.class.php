@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -88,6 +88,11 @@ class QubitAcl
   {
     $hasAccess = false;
 
+    // skip ACL checks for command-line tasks
+    if ('cli' == sfContext::getInstance()->getConfiguration()->getEnvironment()) {
+      return true;
+    }
+
     if (!is_array($actions))
     {
       $actions = array($actions);
@@ -125,8 +130,12 @@ class QubitAcl
         // "read"
         //
         // TODO: Add root object to allow hierarchical ACL checks
+        case 'QubitAccession':
+        case 'QubitDeaccession':
         case 'QubitRepository':
+        case 'QubitDonor':
         case 'QubitFunction':
+        case 'QubitRightsHolder':
           $hasAccess = ($user->isAuthenticated() || self::$ACTIONS['read'] == $action);
           break;
 
@@ -162,12 +171,20 @@ class QubitAcl
       self::getInstance()->addRole($role);
     }
 
-    // If attempting to read a draft information object, test viewDraft & read
-    if ('read' == $action && $resource instanceOf QubitInformationObject && QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $resource->getPublicationStatus()->statusId)
+    // If attempting to read a draft information object, check viewDraft permission
+    if ('read' == $action && $resource instanceOf QubitInformationObject)
     {
-      $instance = self::getInstance()->buildAcl($resource, $options);
+      if (null === $resource->getPublicationStatus())
+      {
+        throw new sfException('No publication status set for information object id: '.$resource->id);
+      }
 
-      return ($instance->acl->isAllowed($role, $resource, 'read') && $instance->acl->isAllowed($role, $resource, 'viewDraft'));
+      if (QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $resource->getPublicationStatus()->statusId)
+      {
+        $instance = self::getInstance()->buildAcl($resource, $options);
+
+        return ($instance->acl->isAllowed($role, $resource, 'read') && $instance->acl->isAllowed($role, $resource, 'viewDraft'));
+      }
     }
 
     // If resource is a new object (no id yet) figure out if we should test
@@ -584,24 +601,19 @@ class QubitAcl
     }
     else
     {
-      $subquery = new Zend_Search_Lucene_Search_Query_MultiTerm();
       while ($repo = array_shift($repositoryAccess))
       {
-        if ('*' != $repo['id'])
-        {
-          $subquery->addTerm(new Zend_Search_Lucene_Index_Term($repo['id'], 'repositoryid'));
-        }
-        else
+        if ('*' == $repo['id'])
         {
           if (QubitAcl::DENY == $repo['access'])
           {
             // Require repos to be specifically allowed (all others prohibited)
-            $query->addSubquery($subquery, true /* required */);
+            $query->addSubquery(QubitSearch::getInstance()->addTerm($repo['id'], 'repositoryId'), true);
           }
           else
           {
             // Prohibit specified repos (all others allowed)
-            $query->addSubquery($subquery, false /* prohibited */);
+            $query->addSubquery(QubitSearch::getInstance()->addTerm($repo['id'], 'repositoryId'), false);
           }
         }
       }
@@ -619,7 +631,7 @@ class QubitAcl
       if (QubitAcl::DENY == $repositoryViewDrafts[0]['access'])
       {
         // Don't show *any* draft info objects
-        $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId')), true);
+        $query->addSubquery(QubitSearch::getInstance()->addTerm(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId'), true);
       }
     }
     else
@@ -635,28 +647,22 @@ class QubitAcl
       {
         while ($repo = array_shift($repositoryViewDrafts))
         {
-          $subquery = new Zend_Search_Lucene_Search_Query_MultiTerm();
-          $subquery->addTerm(new Zend_Search_Lucene_Index_Term($repo['id'], 'repositoryid'), true);
-          $subquery->addTerm(new Zend_Search_Lucene_Index_Term(QubitTerm::PUBLICATION_STATUS_DRAFT_ID, 'publicationStatusId'), true);
-
-          // Filter rule should look like: "-(+id:356 +status:draft) -(+id:357 +status:draft)"
-          $query->addSubquery($subquery, false /* prohibited */);
+          $query->addSubquery(QubitSearch::getInstance()->addTerm($repo['id'], 'repositoryId'), true);
+          $query->addSubquery(QubitSearch::getInstance()->addTerm(QubitTerm::PUBLICATION_STATUS_DRAFT_ID, 'publicationStatusId'), true);
         }
       }
 
       // If global rule is DENY, then only show the listed repo drafts
       else
       {
-        $subquery = new Zend_Search_Lucene_Search_Query_MultiTerm();
 
         while ($repo = array_shift($repositoryViewDrafts))
         {
-          $subquery->addTerm(new Zend_Search_Lucene_Index_Term($repo['id'], 'repositoryid'), null);
+          $query->addSubquery(QubitSearch::getInstance()->addTerm($repo['id'], 'repositoryId'), true);
         }
-        $subquery->addTerm(new Zend_Search_Lucene_Index_Term(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId'), null);
 
         // Filter rule should look like "+(id:(356 357 358) status:published)"
-        $query->addSubquery($subquery, true /* required */);
+        $query->addSubquery(QubitSearch::getInstance()->addTerm(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId'), true);
       }
     }
 
@@ -716,11 +722,11 @@ class QubitAcl
   }
 
   /**
-   * Filter lucene search query by resource specific ACL
+   * Filter search query by resource specific ACL
    *
-   * @param Zend_Search_Lucene_Search_Query_Boolean $query
+   * @param $query
    * @param mixed $root - root object for list
-   * @return Zend_Search_Lucene_Search_Query_Boolean
+   * @return query
    */
   public static function searchFilterByResource($query, $root)
   {
@@ -757,24 +763,22 @@ class QubitAcl
     {
       $allows = array_keys($resourceAccess, true, true);
 
-      $subquery = new Zend_Search_Lucene_Search_Query_MultiTerm();
       while ($resourceId = array_shift($allows))
       {
-        $subquery->addTerm(new Zend_Search_Lucene_Index_Term($resourceId, 'id'), null);
+        $query->addSubquery(QubitSearch::getInstance()->addTerm($resourceId, 'id'), true);
       }
-      $query->addSubquery($subquery, true /* required */);
     }
 
     // Otherwise, build a list of banned resources
     else
     {
       $bans = array_keys($resourceAccess, false, true);
-      $subquery = new Zend_Search_Lucene_Search_Query_MultiTerm();
+
       while ($resourceId = array_shift($bans))
       {
-        $subquery->addTerm(new Zend_Search_Lucene_Index_Term($resourceId, 'id'), null);
+        $query->addSubquery(QubitSearch::getInstance()->addTerm($resourceId, 'id'), false);
+
       }
-      $query->addSubquery($subquery, false /* prohibited */);
     }
 
     return $query;

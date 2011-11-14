@@ -39,8 +39,6 @@ class StatusTableMap extends TableMap {
 		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
 		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addForeignKey('STATUS_ID', 'statusId', 'INTEGER', 'term', 'ID', false, null, null);
-		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
 		$this->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null, 0);
 		// validators

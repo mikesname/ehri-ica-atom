@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <xliff version="1.0">
-  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2010-11-12T09:27:57Z" product-name="messages">
+  <file source-language="EN" target-language="fa" datatype="plaintext" original="messages" date="2011-09-13T13:14:20Z" product-name="messages">
     <body>
       <trans-unit id="45">
         <source>Identifier</source>
@@ -14,141 +14,13 @@
         <source>Language</source>
         <target>&#x632;&#x628;&#x627;&#x646;</target>
       </trans-unit>
-      <trans-unit id="260">
-        <source>Country</source>
-        <target>&#x643;&#x634;&#x648;&#x631;</target>
-      </trans-unit>
-      <trans-unit id="262">
-        <source>Latitude</source>
-        <target>&#x639;&#x631;&#x636; &#x62C;&#x63A;&#x631;&#x627;&#x641;&#x64A;&#x627;&#x64A;&#x64A;</target>
-      </trans-unit>
-      <trans-unit id="268">
-        <source>Note</source>
-        <target>&#x646;&#x643;&#x62A;&#x647;</target>
-      </trans-unit>
-      <trans-unit id="300">
-        <source>Email</source>
-        <target>&#x67E;&#x633;&#x62A; &#x627;&#x644;&#x643;&#x62A;&#x631;&#x648;&#x646;&#x64A;&#x643;</target>
-      </trans-unit>
-      <trans-unit id="340">
-        <source>Contact information</source>
-        <target>&#x627;&#x637;&#x644;&#x627;&#x639;&#x627;&#x62A; &#x62A;&#x645;&#x627;&#x633;</target>
-      </trans-unit>
-      <trans-unit id="342">
-        <source>Contact type</source>
-        <target>&#x646;&#x648;&#x639; &#x645;&#x637;&#x644;&#x628;</target>
-      </trans-unit>
-      <trans-unit id="344">
-        <source>Street address</source>
-        <target>&#x622;&#x62F;&#x631;&#x633; &#x62E;&#x64A;&#x627;&#x628;&#x627;&#x646;</target>
-      </trans-unit>
-      <trans-unit id="345">
-        <source>City</source>
-        <target>&#x634;&#x647;&#x631;</target>
-      </trans-unit>
-      <trans-unit id="348">
-        <source>Telephone</source>
-        <target>&#x62A;&#x644;&#x641;&#x646;</target>
-      </trans-unit>
-      <trans-unit id="349">
-        <source>Fax</source>
-        <target>&#x646;&#x645;&#x627;&#x628;&#x631;</target>
-      </trans-unit>
-      <trans-unit id="350">
-        <source>Website</source>
-        <target>&#x648;&#x628; &#x633;&#x627;&#x64A;&#x62A;</target>
-      </trans-unit>
-      <trans-unit id="378">
-        <source>Place</source>
-        <target>&#x645;&#x643;&#x627;&#x646;</target>
-      </trans-unit>
-      <trans-unit id="400">
-        <source>Name</source>
-        <target>&#x646;&#x627;&#x645;</target>
-      </trans-unit>
       <trans-unit id="535">
         <source>URL</source>
         <target/>
       </trans-unit>
-      <trans-unit id="544">
-        <source>Date(s)</source>
-        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; (&#x647;&#x627;)</target>
-      </trans-unit>
       <trans-unit id="571">
         <source>Subject</source>
         <target/>
-      </trans-unit>
-      <trans-unit id="600">
-        <source>Repository</source>
-        <target>&#x645;&#x646;&#x628;&#x639;</target>
-      </trans-unit>
-      <trans-unit id="608">
-        <source>Are you sure?</source>
-        <target>&#x622;&#x64A;&#x627; &#x648;&#x627;&#x642;&#x639;&#x627; &#x645;&#x637;&#x645;&#x626;&#x646; &#x647;&#x633;&#x62A;&#x64A;&#x62F;&#x61F;</target>
-      </trans-unit>
-      <trans-unit id="637">
-        <source>Edit</source>
-        <target>&#x648;&#x64A;&#x631;&#x627;&#x64A;&#x634;</target>
-      </trans-unit>
-      <trans-unit id="639">
-        <source>Delete</source>
-        <target>&#x62D;&#x630;&#x641;</target>
-      </trans-unit>
-      <trans-unit id="640">
-        <source>Add new</source>
-        <target> &#x627;&#x641;&#x632;&#x648;&#x62F;&#x646; &#x622;&#x64A;&#x62A;&#x645; &#x62C;&#x62F;&#x64A;&#x62F; </target>
-      </trans-unit>
-      <trans-unit id="641">
-        <source>List all</source>
-        <target>&#x644;&#x64A;&#x633;&#x62A; &#x643;&#x627;&#x645;&#x644;</target>
-      </trans-unit>
-      <trans-unit id="648">
-        <source>Description of relationship</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="660">
-        <source>Cancel</source>
-        <target>&#x644;&#x63A;&#x648;</target>
-      </trans-unit>
-      <trans-unit id="661">
-        <source>Save</source>
-        <target>&#x630;&#x62E;&#x64A;&#x631;&#x647;</target>
-      </trans-unit>
-      <trans-unit id="662">
-        <source>Create</source>
-        <target>&#x627;&#x64A;&#x62C;&#x627;&#x62F;</target>
-      </trans-unit>
-      <trans-unit id="687">
-        <source>Type</source>
-        <target>&#x646;&#x648;&#x639;</target>
-      </trans-unit>
-      <trans-unit id="724">
-        <source>Institution identifier</source>
-        <target>&#x634;&#x646;&#x627;&#x633;&#x647; &#x645;&#x648;&#x633;&#x633;&#x647;</target>
-      </trans-unit>
-      <trans-unit id="726">
-        <source>Status</source>
-        <target>&#x648;&#x636;&#x639;&#x64A;&#x62A;</target>
-      </trans-unit>
-      <trans-unit id="727">
-        <source>Level of detail</source>
-        <target>&#x633;&#x637;&#x62D; &#x62C;&#x632;&#x64A;&#x64A;&#x627;&#x62A;</target>
-      </trans-unit>
-      <trans-unit id="728">
-        <source>Dates of creation, revision and deletion</source>
-        <target>&#x62A;&#x627;&#x631;&#x64A;&#x62E; &#x627;&#x64A;&#x62C;&#x627;&#x62F;/&#x628;&#x627;&#x632;&#x646;&#x6AF;&#x631;&#x64A;/&#x62D;&#x630;&#x641;</target>
-      </trans-unit>
-      <trans-unit id="745">
-        <source>Conditions governing access</source>
-        <target>&#x634;&#x631;&#x627;&#x64A;&#x637; &#x62F;&#x633;&#x62A;&#x64A;&#x627;&#x628;&#x64A;</target>
-      </trans-unit>
-      <trans-unit id="766">
-        <source>Format</source>
-        <target>&#x642;&#x627;&#x644;&#x628;</target>
-      </trans-unit>
-      <trans-unit id="767">
-        <source>Description</source>
-        <target>&#x62A;&#x648;&#x636;&#x64A;&#x62D;</target>
       </trans-unit>
       <trans-unit id="771">
         <source>Type of resource</source>
@@ -240,6 +112,18 @@
       </trans-unit>
       <trans-unit id="842">
         <source>Identifies the institution or repository holding the resource. Search for an existing repository name by typing the first few letters of the name. ALternatively, type a new name to create and link to a new repository record.</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="843">
+        <source>Rights area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="844">
+        <source>Edit rights area</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="845">
+        <source>Accession area</source>
         <target/>
       </trans-unit>
     </body>

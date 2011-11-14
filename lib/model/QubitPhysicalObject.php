@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -39,7 +39,7 @@ class QubitPhysicalObject extends BasePhysicalObject
   {
     if (!isset($this->slug))
     {
-      $this->slug = QubitSlug::slugify($this->name);
+      $this->slug = QubitSlug::slugify($this->__get('name', array('sourceCulture' => true)));
     }
 
     return parent::insert($connection);
@@ -51,12 +51,12 @@ class QubitPhysicalObject extends BasePhysicalObject
 
     if ($this->type)
     {
-      $label .= ' '.$this->type.': ';
+      $label .= $this->type.': ';
     }
 
-    $label .= $this;
+    $label .= $this->__toString();
 
-    if (1 > strlen($location = $this->getLocation()))
+    if (0 == strlen($location = $this->getLocation()))
     {
       $location = $this->getLocation(array('sourceCulture' => true));
     }

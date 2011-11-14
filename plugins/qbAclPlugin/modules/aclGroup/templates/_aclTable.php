@@ -11,7 +11,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($actions as $key => $item): ?>
-      <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
+      <tr class="<?php echo (0 == @++$row % 2) ? 'even' : 'odd' ?>">
         <td><?php echo __($item) ?></td>
         <td id="<?php echo $module.'_'.$object->id.'_'.$key ?>">
           <ul class="radio inline">

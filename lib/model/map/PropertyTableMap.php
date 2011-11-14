@@ -39,8 +39,6 @@ class PropertyTableMap extends TableMap {
 		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
 		$this->addColumn('SCOPE', 'scope', 'VARCHAR', false, 255, null);
 		$this->addColumn('NAME', 'name', 'VARCHAR', false, 255, null);
-		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
 		$this->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null, 0);

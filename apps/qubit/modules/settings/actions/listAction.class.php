@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -69,16 +69,19 @@ class SettingsListAction extends sfAction
     // Handle POST data (form submit)
     if ($request->isMethod('post'))
     {
+      // Clean cache
+      $cache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
+      $cache->clean();
+
       // Global settings form submission
       if (null !== $request->global_settings)
       {
-        // Hack to populate "version" and "upload_dir" fields so they display
+        // Hack to populate "version" field so it displays
         // if validation fails. By default, their values are not included in
         // $request->parameterHolder (and thus are not bound) because their
         // <input> field is disabled.
         $version = (null !== $setting = QubitSetting::getSettingByName('version')) ? $setting->getValue(array('sourceCulture'=>true)) : null;
-        $uploadDir = (null !== $setting = QubitSetting::getSettingByName('upload_dir')) ? $setting->getValue(array('sourceCulture'=>true)) : null;
-        $this->globalForm->bind(array_merge($request->global_settings, array('version'=>$version, 'upload_dir'=>$uploadDir)));
+        $this->globalForm->bind(array_merge($request->global_settings, array('version'=>$version)));
         if ($this->globalForm->isValid())
         {
           // Do update and redirect to avoid repeat submit wackiness
@@ -135,11 +138,11 @@ class SettingsListAction extends sfAction
         }
       }
 
-      if (null !== $language_code = $request->language_code)
+      if (null !== $languageCode = $request->languageCode)
       {
         try
         {
-          format_language($language_code, $language_code);
+          format_language($languageCode, $languageCode);
         }
         catch (Exception $e)
         {
@@ -147,9 +150,9 @@ class SettingsListAction extends sfAction
         }
 
         $setting = new QubitSetting;
-        $setting->name = $language_code;
+        $setting->name = $languageCode;
         $setting->scope = 'i18n_languages';
-        $setting->value = $language_code;
+        $setting->value = $languageCode;
         $setting->deleteable = true;
         $setting->editable = true;
         $setting->getCurrentSettingI18n()->setCulture('en');
@@ -169,8 +172,8 @@ class SettingsListAction extends sfAction
     // Last symfony 1.0 forms holdout
     $this->i18nLanguages = QubitSetting::getByScope('i18n_languages');
 
-    $this->form->setValidator('language_code', new sfValidatorI18nChoiceLanguage);
-    $this->form->setWidget('language_code', new sfWidgetFormI18nChoiceLanguage(array('add_empty' => true, 'culture' => $this->context->user->getCulture())));
+    $this->form->setValidator('languageCode', new sfValidatorI18nChoiceLanguage);
+    $this->form->setWidget('languageCode', new sfWidgetFormI18nChoiceLanguage(array('add_empty' => true, 'culture' => $this->context->user->getCulture())));
 
     // make vars available to template
     $this->availableLanguages = self::$availableLanguges;
@@ -189,12 +192,15 @@ class SettingsListAction extends sfAction
     }
 
     $checkForUpdates = QubitSetting::getSettingByName('check_for_updates');
-    $uploadDir = QubitSetting::getSettingByName('upload_dir');
     $refImageMaxWidth = QubitSetting::getSettingByName('reference_image_maxwidth');
     $hitsPerPage = QubitSetting::getSettingByName('hits_per_page');
+    $accessionMask = QubitSetting::getSettingByName('accession_mask');
+    $accessionCounter = QubitSetting::getSettingByName('accession_counter');
+    $separatorCharacter = QubitSetting::getSettingByName('separator_character');
     $inheritCodeInformationObject = QubitSetting::getSettingByName('inherit_code_informationobject');
     $sortTreeviewInformationObject = QubitSetting::getSettingByName('sort_treeview_informationobject');
     $multiRepository = QubitSetting::getSettingByName('multi_repository');
+    $repositoryQuota = QubitSetting::getSettingByName('repository_quota');
     $explodeMultipageFiles = QubitSetting::getSettingByName('explode_multipage_files');
     $showTooltips = QubitSetting::getSettingByName('show_tooltips');
     $defaultPubStatus = QubitSetting::getSettingByName('defaultPubStatus');
@@ -203,12 +209,15 @@ class SettingsListAction extends sfAction
     $this->globalForm->setDefaults(array(
       'version' => $version,
       'check_for_updates' => (isset($checkForUpdates)) ? intval($checkForUpdates->getValue(array('sourceCulture'=>true))) : 1,
-      'upload_dir' => (isset($uploadDir)) ? $uploadDir->getValue(array('sourceCulture'=>true)) : null,
       'reference_image_maxwidth' => (isset($refImageMaxWidth)) ? $refImageMaxWidth->getValue(array('sourceCulture'=>true)) : null,
       'hits_per_page' => (isset($hitsPerPage)) ? $hitsPerPage->getValue(array('sourceCulture'=>true)) : null,
+      'accession_mask' => (isset($accessionMask)) ? $accessionMask->getValue(array('sourceCulture'=>true)) : null,
+      'accession_counter' => (isset($accessionCounter)) ? intval($accessionCounter->getValue(array('sourceCulture'=>true))) : 1,
+      'separator_character' => (isset($separatorCharacter)) ? $separatorCharacter->getValue(array('sourceCulture'=>true)) : null,
       'inherit_code_informationobject' => (isset($inheritCodeInformationObject)) ? intval($inheritCodeInformationObject->getValue(array('sourceCulture'=>true))) : 1,
       'sort_treeview_informationobject' => (isset($sortTreeviewInformationObject)) ? $sortTreeviewInformationObject->getValue(array('sourceCulture'=>true)) : 0,
       'multi_repository' => (isset($multiRepository)) ? intval($multiRepository->getValue(array('sourceCulture'=>true))) : 1,
+      'repository_quota' => (isset($repositoryQuota)) ? $repositoryQuota->getValue(array('sourceCulture'=>true)) : 0,
       'explode_multipage_files' => (isset($explodeMultipageFiles)) ? intval($explodeMultipageFiles->getValue(array('sourceCulture'=>true))) : 1,
       'show_tooltips' => (isset($showTooltips)) ? intval($showTooltips->getValue(array('sourceCulture'=>true))) : 1,
       'defaultPubStatus' => (isset($defaultPubStatus)) ? $defaultPubStatus->getValue(array('sourceCulture'=>true)) : QubitTerm::PUBLICATION_STATUS_DRAFT_ID
@@ -258,6 +267,39 @@ class SettingsListAction extends sfAction
       }
     }
 
+    // Accession mask
+    if (null !== $accessionMask = $thisForm->getValue('accession_mask'))
+    {
+      $setting = QubitSetting::getSettingByName('accession_mask');
+
+      // Force sourceCulture update to prevent discrepency in settings between cultures
+      $setting->setValue($accessionMask, array('sourceCulture' => true));
+      $setting->save();
+    }
+
+    // Accession counter
+    if (null !== $accessionCounter = $thisForm->getValue('accession_counter'))
+    {
+      if (intval($accessionCounter) && $accessionCounter > -1)
+      {
+        $setting = QubitSetting::getSettingByName('accession_counter');
+
+        // Force sourceCulture update to prevent discrepency in settings between cultures
+        $setting->setValue($accessionCounter, array('sourceCulture' => true));
+        $setting->save();
+      }
+    }
+
+    // Separator character
+    if (null !== $separatorCharacter = $thisForm->getValue('separator_character'))
+    {
+      $setting = QubitSetting::getSettingByName('separator_character');
+
+      // Force sourceCulture update to prevent discrepency in settings between cultures
+      $setting->setValue($separatorCharacter, array('sourceCulture' => true));
+      $setting->save();
+    }
+
     // Inherit Code (Information Object)
     if (null !== $inheritCodeInformationObjectValue = $thisForm->getValue('inherit_code_informationobject'))
     {
@@ -288,6 +330,23 @@ class SettingsListAction extends sfAction
       if (null === $setting)
       {
         $setting = QubitSetting::createNewSetting('multi_repository', null, array('deleteable'=>false));
+      }
+
+      // Force sourceCulture update to prevent discrepency in settings between cultures
+      $setting->setValue($multiRepositoryValue, array('sourceCulture'=>true));
+      $setting->save();
+    }
+
+    // Repository upload quota
+    if (null !== $multiRepositoryValue = $thisForm->getValue('repository_quota'))
+    {
+      $setting = QubitSetting::getSettingByName('repository_quota');
+
+      // Add setting if it's not already in the sampleData.yml file for
+      // backwards compatiblity with v1.0.3 sampleData.yml file
+      if (null === $setting)
+      {
+        $setting = QubitSetting::createNewSetting('repository_quota', null, array('deleteable'=>false));
       }
 
       // Force sourceCulture update to prevent discrepency in settings between cultures

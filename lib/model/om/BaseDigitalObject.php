@@ -17,7 +17,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     SEQUENCE = 'digital_object.SEQUENCE',
     BYTE_SIZE = 'digital_object.BYTE_SIZE',
     CHECKSUM = 'digital_object.CHECKSUM',
-    CHECKSUM_TYPE_ID = 'digital_object.CHECKSUM_TYPE_ID',
+    CHECKSUM_TYPE = 'digital_object.CHECKSUM_TYPE',
     PARENT_ID = 'digital_object.PARENT_ID',
     LFT = 'digital_object.LFT',
     RGT = 'digital_object.RGT';
@@ -38,7 +38,7 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     $criteria->addSelectColumn(QubitDigitalObject::SEQUENCE);
     $criteria->addSelectColumn(QubitDigitalObject::BYTE_SIZE);
     $criteria->addSelectColumn(QubitDigitalObject::CHECKSUM);
-    $criteria->addSelectColumn(QubitDigitalObject::CHECKSUM_TYPE_ID);
+    $criteria->addSelectColumn(QubitDigitalObject::CHECKSUM_TYPE);
     $criteria->addSelectColumn(QubitDigitalObject::PARENT_ID);
     $criteria->addSelectColumn(QubitDigitalObject::LFT);
     $criteria->addSelectColumn(QubitDigitalObject::RGT);
@@ -122,11 +122,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       return true;
     }
 
-    if ('placeMapRelations' == $name)
-    {
-      return true;
-    }
-
     if ('ancestors' == $name)
     {
       return true;
@@ -173,23 +168,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       }
 
       return $this->refFkValues['digitalObjectsRelatedByparentId'];
-    }
-
-    if ('placeMapRelations' == $name)
-    {
-      if (!isset($this->refFkValues['placeMapRelations']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['placeMapRelations'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['placeMapRelations'] = self::getplaceMapRelationsById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['placeMapRelations'];
     }
 
     if ('ancestors' == $name)
@@ -260,7 +238,14 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -346,13 +331,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
     return $criteria;
   }
 
-  public static function addJoinchecksumTypeCriteria(Criteria $criteria)
-  {
-    $criteria->addJoin(QubitDigitalObject::CHECKSUM_TYPE_ID, QubitTerm::ID);
-
-    return $criteria;
-  }
-
   public static function addJoinparentCriteria(Criteria $criteria)
   {
     $criteria->addJoin(QubitDigitalObject::PARENT_ID, QubitDigitalObject::ID);
@@ -378,26 +356,6 @@ abstract class BaseDigitalObject extends QubitObject implements ArrayAccess
   public function adddigitalObjectsRelatedByparentIdCriteria(Criteria $criteria)
   {
     return self::adddigitalObjectsRelatedByparentIdCriteriaById($criteria, $this->id);
-  }
-
-  public static function addplaceMapRelationsCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitPlaceMapRelation::MAP_ICON_IMAGE_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getplaceMapRelationsById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addplaceMapRelationsCriteriaById($criteria, $id);
-
-    return QubitPlaceMapRelation::get($criteria, $options);
-  }
-
-  public function addplaceMapRelationsCriteria(Criteria $criteria)
-  {
-    return self::addplaceMapRelationsCriteriaById($criteria, $this->id);
   }
 
   public function addAncestorsCriteria(Criteria $criteria)

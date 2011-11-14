@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -471,10 +471,12 @@ class QubitMigrate107 extends QubitMigrate
     // Assign root term as parent for orphan terms
     foreach ($this->data['QubitTerm'] as $key => $term)
     {
-      if (!isset($term['parent_id']) && '<?php echo QubitTerm::ROOT_ID."\n" ?>' != $term['id'])
+      if (isset($term['parent_id']) || (isset($term['id']) && '<?php echo QubitTerm::ROOT_ID."\n" ?>' == $term['id']))
       {
-        $this->data['QubitTerm'][$key]['parent_id'] = 'QubitTerm_root';
+        continue;
       }
+
+      $this->data['QubitTerm'][$key]['parent_id'] = 'QubitTerm_root';
     }
 
     return $this;
@@ -927,12 +929,12 @@ class QubitMigrate107 extends QubitMigrate
     // Identify QubitInformationObject Root
     $rootKey = $this->getRowKey('QubitInformationObject', 'lft', '1');
 
-    foreach ($this->data['QubitInformationObject'] as $key => $value)
+    foreach ($this->data['QubitInformationObject'] as $key => $item)
     {
       // Assume all pre-existing information objects are published
       // Publication status is inherited by descendants so we only need to set it for
       // collection roots and orphans
-      if ($value['parent_id'] == $rootKey)
+      if (isset($item['parent_id']) && $item['parent_id'] == $rootKey)
       {
         $this->data['QubitStatus']['QubitStatus_publication_'.$key] = array(
           'object_id' => $key,
@@ -1126,11 +1128,11 @@ class QubitMigrate107 extends QubitMigrate
     $qubitTermArray = $this->data['QubitTerm'];
     foreach ($qubitTermConstantIds as $key => $constantName)
     {
-      foreach ($qubitTermArray as $key => $term)
+      foreach ($qubitTermArray as $key => $item)
       {
-        if ($term['id'] == '<?php echo QubitTerm::'.$constantName.'."\n" ?>')
+        if (isset($item['id']) && $item['id'] == '<?php echo QubitTerm::'.$constantName.'."\n" ?>')
         {
-          $newTermArray[$key] = $term;
+          $newTermArray[$key] = $item;
           unset($qubitTermArray[$key]);
           break;
         }

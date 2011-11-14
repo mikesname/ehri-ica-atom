@@ -19,7 +19,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($informationObjects as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>
           <?php echo link_to(render_title($item), array($item, 'module' => 'informationobject')) ?><?php if (QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $item->getPublicationStatus()->status->id): ?> <span class="publicationStatus"><?php echo $item->getPublicationStatus()->status ?></span><?php endif; ?>
         </td><td>

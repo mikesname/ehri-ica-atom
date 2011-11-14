@@ -19,7 +19,7 @@
           <li><?php echo link_to(__('Cancel'), array($resource, 'module' => 'digitalobject', 'action' => 'edit')) ?></li>
         <?php endif; ?>
 
-        <li><input class="form-submit" type="submit" value="<?php echo __('Confirm') ?>"/></li>
+        <li><input class="form-submit danger" type="submit" value="<?php echo __('Delete') ?>"/></li>
 
       </ul>
     </div>

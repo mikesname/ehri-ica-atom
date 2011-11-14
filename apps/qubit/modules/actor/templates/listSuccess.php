@@ -15,16 +15,15 @@
       <tr>
         <th>
           <?php echo __('Name') ?>
-        </th>
-        <th>
+        </th><th>
           <?php echo __('Type') ?>
         </th>
       </tr>
     </thead><tbody>
       <?php foreach ($actors as $item): ?>
-        <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+        <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
           <td>
-            <?php echo link_to(render_title($item), $item) ?>
+            <?php echo link_to(render_title($item), array($item, 'module' => 'actor')) ?>
           </td><td>
             <?php echo $item->entityType ?>
           </td>

@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -29,15 +29,13 @@ class PhysicalObjectBoxListAction extends sfAction
     $this->resource = $this->getRoute()->resource;
 
     $criteria = new Criteria;
-    $criteria->add(QubitRelation::SUBJECT_ID, $request->id);
+    $criteria->add(QubitRelation::SUBJECT_ID, $this->resource->id);
     $criteria->add(QubitRelation::TYPE_ID, QubitTerm::HAS_PHYSICAL_OBJECT_ID);
     $criteria->addJoin(QubitRelation::OBJECT_ID, QubitInformationObject::ID);
 
-    $this->pager = new QubitPager('QubitInformationObject');
-    $this->pager->setCriteria($criteria);
-    $this->pager->setMaxPerPage($request->limit);
-    $this->pager->setPage($request->page);
+    $this->informationObjects = QubitInformationObject::get($criteria);
 
-    $this->informationObjects = $this->pager->getResults();
+    $c2 = clone $criteria;
+    $this->foundcount = BasePeer::doCount($c2)->fetchColumn(0);
   }
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="de" datatype="plaintext" original="messages" date="2010-11-12T09:27:54Z" product-name="messages">
+  <file source-language="EN" target-language="de" datatype="plaintext" original="messages" date="2011-11-07T09:58:32Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
@@ -20,24 +20,20 @@
         <source>Import</source>
         <target>importieren</target>
       </trans-unit>
-      <trans-unit id="5">
-        <source>Import complete</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="6">
-        <source>The following top-level terms were imported</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="7">
-        <source>A total of %1% terms were imported in %2%s</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="8">
         <source>View %1%</source>
         <target>Ansicht %1%</target>
       </trans-unit>
       <trans-unit id="9">
         <source>Import more %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Import successful</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>%1% terms imported in %2%s</source>
         <target/>
       </trans-unit>
     </body>

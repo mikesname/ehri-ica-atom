@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -37,21 +37,7 @@ class QubitAsset
   {
     $this->name = $assetName;
     $this->contents = $assetContents;
-
-    if (isset($options['checksumAlgorithm']))
-    {
-      $this->setChecksumAlgorithm($options['checksumAlgorithm']);
-    }
-
-    // Only allow user to set checksum if an algorithm is specified
-    if (isset($options['checksum']) && isset($this->checksumAlgorithm))
-    {
-      $this->checksum = $options['checksum'];
-    }
-    else
-    {
-      $this->generateChecksum();
-    }
+    $this->generateChecksum('sha256');
   }
 
   public function setName($value)
@@ -112,17 +98,16 @@ class QubitAsset
     return $this->checksumAlgorithm;
   }
 
-  public function generateChecksum()
+  public function generateChecksum($algorithm)
   {
-    switch($this->checksumAlgorithm)
+    if (!in_array($algorithm, hash_algos()))
     {
-      case 'sha1':
-        $this->checksum = sha1($this->contents);
-        break;
-      case 'md5':
-      default:
-        $this->checksum = md5($this->contents);
-        $this->checksumAlgorithm = 'md5';
+      throw new Exception('Invalid checksum algorithm');
     }
+
+    $this->checksum = hash($algorithm, $this->contents);
+    $this->checksumAlgorithm = $algorithm;
+
+    return $this->checksum;
   }
 }

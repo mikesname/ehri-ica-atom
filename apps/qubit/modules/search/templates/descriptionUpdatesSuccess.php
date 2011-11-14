@@ -1,6 +1,6 @@
 <h1><?php echo __('Description updates') ?></h1>
 
-<?php echo $form->renderFormTag(url_for(array('module' => 'search', 'action' => 'descriptionUpdates'))) ?>
+<?php echo $form->renderFormTag(url_for(array('module' => 'search', 'action' => 'descriptionUpdates')), array('method' => 'get')) ?>
 
   <?php echo $form->renderHiddenFields() ?>
 
@@ -32,7 +32,11 @@
         ->label(__('Publication status <span class="note2">(%1% only)</span>', array('%1%' => sfConfig::get('app_ui_label_informationobject'))))
         ->renderRow() ?>
 
-      <input class="form-submit" type="submit" value="<?php echo __('Search') ?>"/>
+      <div class="section actions">
+        <div class="content">
+          <input class="form-submit" type="submit" value="<?php echo __('Search') ?>"/>
+        </div>
+      </div>
 
     </div>
 
@@ -60,14 +64,14 @@
     </thead><tbody>
       <?php foreach ($pager->getResults() as $result): ?>
 
-        <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+        <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
 
           <td>
             <?php if ('QubitInformationObject' == $className): ?>
               <?php $title = render_title($result->getTitle(array('cultureFallback' => true))) ?>
               <?php echo link_to($title, array($result, 'module' => 'informationobject')) ?>
               <?php $status = $result->getPublicationStatus() ?>
-              <?php if ($status->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID): ?><span class="note2"><?php echo ' ('.$status->status.')' ?></span><?php endif; ?>
+              <?php if (isset($status) && $status->statusId == QubitTerm::PUBLICATION_STATUS_DRAFT_ID): ?><span class="note2"><?php echo ' ('.$status->status.')' ?></span><?php endif; ?>
             <?php elseif ('QubitActor' == $className): ?>
               <?php $name = render_title($result->getAuthorizedFormOfName(array('cultureFallback' => true))) ?>
               <?php echo link_to($name, array($result, 'module' => 'actor')) ?>

@@ -97,11 +97,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return true;
     }
 
-    if ('systemEvents' == $name)
-    {
-      return true;
-    }
-
     throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
@@ -174,23 +169,6 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
       return $this->refFkValues['notes'];
     }
 
-    if ('systemEvents' == $name)
-    {
-      if (!isset($this->refFkValues['systemEvents']))
-      {
-        if (!isset($this->id))
-        {
-          $this->refFkValues['systemEvents'] = QubitQuery::create();
-        }
-        else
-        {
-          $this->refFkValues['systemEvents'] = self::getsystemEventsById($this->id, array('self' => $this) + $options);
-        }
-      }
-
-      return $this->refFkValues['systemEvents'];
-    }
-
     throw new sfException("Unknown record property \"$name\" on \"".get_class($this).'"');
   }
 
@@ -252,25 +230,5 @@ abstract class BaseUser extends QubitActor implements ArrayAccess
   public function addnotesCriteria(Criteria $criteria)
   {
     return self::addnotesCriteriaById($criteria, $this->id);
-  }
-
-  public static function addsystemEventsCriteriaById(Criteria $criteria, $id)
-  {
-    $criteria->add(QubitSystemEvent::USER_ID, $id);
-
-    return $criteria;
-  }
-
-  public static function getsystemEventsById($id, array $options = array())
-  {
-    $criteria = new Criteria;
-    self::addsystemEventsCriteriaById($criteria, $id);
-
-    return QubitSystemEvent::get($criteria, $options);
-  }
-
-  public function addsystemEventsCriteria(Criteria $criteria)
-  {
-    return self::addsystemEventsCriteriaById($criteria, $this->id);
   }
 }

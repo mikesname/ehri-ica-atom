@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -38,25 +38,26 @@ class DigitalObjectImageflowComponent extends sfComponent
     }
 
     // Add thumbs
-    foreach ($this->resource->descendants as $item)
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitInformationObject::ID, QubitDigitalObject::INFORMATION_OBJECT_ID);
+    $criteria->add(QubitInformationObject::LFT, $this->resource->lft, Criteria::GREATER_THAN);
+    $criteria->add(QubitInformationObject::RGT, $this->resource->rgt, Criteria::LESS_THAN);
+    if (isset($this->limit))
     {
-      if (null !== $digitalObject = $item->getDigitalObject())
+      $criteria->setLimit($this->limit);
+    }
+
+    foreach (QubitDigitalObject::get($criteria) as $item)
+    {
+      $thumbnail = $item->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
+
+      if (!$thumbnail)
       {
-        $thumbnail = $digitalObject->getRepresentationByUsage(QubitTerm::THUMBNAIL_ID);
-
-        if (!$thumbnail)
-        {
-          $thumbnail = QubitDigitalObject::getGenericRepresentation($digitalObject->mimeType, QubitTerm::THUMBNAIL_ID);
-          $thumbnail->setParent($digitalObject);
-        }
-
-        $this->thumbnails[] = $thumbnail;
-
-        if (isset($this->limit) && $this->limit <= count($this->thumbnails))
-        {
-          break;
-        }
+        $thumbnail = QubitDigitalObject::getGenericRepresentation($item->mimeType, QubitTerm::THUMBNAIL_ID);
+        $thumbnail->setParent($item);
       }
+
+      $this->thumbnails[] = $thumbnail;
     }
 
     // Get total number of descendant digital objects

@@ -4,8 +4,6 @@ editSuccess:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
     /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
 
-uploadFormSuccess:
+browseSuccess:
   javascripts:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/jquery.once.js:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/collapse:
-    /plugins/sfDrupalPlugin/vendor/drupal/misc/form:
+    /vendor/jquery.hoverIntent.js:

@@ -1,180 +1,180 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2010-11-12T09:28:01Z" product-name="messages">
+  <file source-language="EN" target-language="nl" datatype="plaintext" original="messages" date="2011-11-04T15:08:30Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
+        <source>View permissions</source>
+        <target>Bekijk permissies</target>
+      </trans-unit>
+      <trans-unit id="2">
+        <source>Edit group</source>
+        <target>Bewerken groep</target>
+      </trans-unit>
+      <trans-unit id="3">
         <source>All %1%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="2">
-        <source>Action</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="3">
-        <source>Permission</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="4">
-        <source>Grant</source>
-        <target/>
+        <source>All privileges</source>
+        <target>Alle rechten</target>
       </trans-unit>
       <trans-unit id="5">
-        <source>Deny</source>
-        <target/>
+        <source>Actions</source>
+        <target>Handelingen</target>
       </trans-unit>
       <trans-unit id="6">
+        <source>Edit</source>
+        <target>Bewerken</target>
+      </trans-unit>
+      <trans-unit id="7">
+        <source>Delete</source>
+        <target>Verwijderen</target>
+      </trans-unit>
+      <trans-unit id="8">
+        <source>Add new</source>
+        <target>Nieuw toevoegen</target>
+      </trans-unit>
+      <trans-unit id="9">
+        <source>Permissions for all %1%</source>
+        <target>Toestemmingen voor alle 1%1</target>
+      </trans-unit>
+      <trans-unit id="10">
+        <source>Action</source>
+        <target>Handeling</target>
+      </trans-unit>
+      <trans-unit id="11">
+        <source>Permission</source>
+        <target>Toestemming</target>
+      </trans-unit>
+      <trans-unit id="12">
+        <source>Grant</source>
+        <target>Toestaan</target>
+      </trans-unit>
+      <trans-unit id="13">
+        <source>Deny</source>
+        <target>Annuleer</target>
+      </trans-unit>
+      <trans-unit id="14">
         <source>Inherit</source>
         <target/>
       </trans-unit>
-      <trans-unit id="7">
-        <source>Add %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="8">
-        <source>%1% name</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="9">
-        <source>Permissions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="10">
-        <source>Actions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="11">
-        <source>Edit</source>
-        <target>bewerken</target>
-      </trans-unit>
-      <trans-unit id="12">
-        <source>Delete</source>
-        <target>verwijderen</target>
-      </trans-unit>
-      <trans-unit id="13">
-        <source>Add new</source>
-        <target>nieuw toevoegen</target>
-      </trans-unit>
-      <trans-unit id="14">
-        <source>Groups ACL</source>
-        <target/>
-      </trans-unit>
       <trans-unit id="15">
-        <source>Permissions for all %1%</source>
-        <target/>
+        <source>Permissions by taxonomy</source>
+        <target>Toestemmingen taxonomie</target>
       </trans-unit>
       <trans-unit id="16">
-        <source>Permissions by taxonomy</source>
-        <target/>
+        <source>Permissions</source>
+        <target>Toestemmingen</target>
       </trans-unit>
       <trans-unit id="17">
         <source>Taxonomy name</source>
-        <target/>
+        <target>Taxonie naam</target>
       </trans-unit>
       <trans-unit id="18">
         <source>Add permissions by taxonomy</source>
-        <target/>
+        <target>Voeg toestemming aan taxonomie toe</target>
       </trans-unit>
       <trans-unit id="19">
         <source>Add taxonomy</source>
-        <target/>
+        <target>Voeg taxonomie toe</target>
       </trans-unit>
       <trans-unit id="20">
         <source>Cancel</source>
-        <target>annuleren</target>
+        <target>Verwijderen</target>
       </trans-unit>
       <trans-unit id="21">
         <source>Save</source>
         <target>bewaren</target>
       </trans-unit>
       <trans-unit id="22">
-        <source>Are you sure you want to delete %1%?</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="23">
-        <source>Confirm</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="24">
-        <source>Edit %1% permissions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="25">
-        <source>Add permissions by %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="26">
-        <source>Permissions by %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="27">
-        <source>Edit group</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="28">
-        <source>Add new group</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="29">
-        <source>Create</source>
-        <target>aanmaken</target>
-      </trans-unit>
-      <trans-unit id="30">
-        <source>View permissions</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="31">
-        <source>All privileges</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="32">
         <source>%1%: %2%</source>
         <target/>
       </trans-unit>
-      <trans-unit id="33">
-        <source>View group</source>
+      <trans-unit id="23">
+        <source>Are you sure you want to delete %1%?</source>
         <target/>
+      </trans-unit>
+      <trans-unit id="24">
+        <source>Confirm</source>
+        <target>Bevestig</target>
+      </trans-unit>
+      <trans-unit id="25">
+        <source>Add new group</source>
+        <target>Voeg nieuwe groep toe</target>
+      </trans-unit>
+      <trans-unit id="26">
+        <source>Create</source>
+        <target>Aanmaken</target>
+      </trans-unit>
+      <trans-unit id="27">
+        <source>Edit %1% permissions</source>
+        <target>Bewerk %1% toestemmingen,</target>
+      </trans-unit>
+      <trans-unit id="28">
+        <source>Permissions by %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="29">
+        <source>%1% name</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="30">
+        <source>Add permissions by %1%</source>
+        <target>Voeg toestemming aan %1% toe</target>
+      </trans-unit>
+      <trans-unit id="31">
+        <source>Add %1%</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="32">
+        <source>View group</source>
+        <target>Bekijk groep</target>
+      </trans-unit>
+      <trans-unit id="33">
+        <source>Name</source>
+        <target>Naam</target>
       </trans-unit>
       <trans-unit id="34">
-        <source>Name</source>
-        <target>naam</target>
+        <source>Description</source>
+        <target>Beschrijving</target>
       </trans-unit>
       <trans-unit id="35">
-        <source>Description</source>
-        <target>beschrijving</target>
+        <source>Translate</source>
+        <target>Vertaal</target>
       </trans-unit>
       <trans-unit id="36">
-        <source>Translate</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="37">
-        <source>Taxonomy: %1%</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="38">
-        <source>List groups</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="39">
-        <source>Group</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="40">
-        <source>Members</source>
-        <target/>
-      </trans-unit>
-      <trans-unit id="41">
         <source>Sorry, this group is locked and cannot be deleted</source>
         <target/>
       </trans-unit>
-      <trans-unit id="42">
+      <trans-unit id="37">
         <source>This group is required by the application to operate correctly</source>
         <target/>
       </trans-unit>
-      <trans-unit id="43">
+      <trans-unit id="38">
         <source>Back to previous page</source>
-        <target>terug naar vorige pagina</target>
+        <target>Terug naar vorige pagina</target>
+      </trans-unit>
+      <trans-unit id="39">
+        <source>List groups</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="40">
+        <source>Groups ACL</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="41">
+        <source>Group</source>
+        <target>Groep</target>
+      </trans-unit>
+      <trans-unit id="42">
+        <source>Members</source>
+        <target/>
+      </trans-unit>
+      <trans-unit id="43">
+        <source>Taxonomy: %1%</source>
+        <target>Taxonomie: %1%</target>
       </trans-unit>
     </body>
   </file>

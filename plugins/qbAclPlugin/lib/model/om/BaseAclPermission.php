@@ -387,7 +387,14 @@ abstract class BaseAclPermission implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -422,7 +429,10 @@ abstract class BaseAclPermission implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;
@@ -435,7 +445,7 @@ abstract class BaseAclPermission implements ArrayAccess
         if ($this->tables[0] == $table)
         {
           $columns = $table->getPrimaryKeyColumns();
-          $this->values[$columns[0]->getPhpName()] = $id;
+          $this->values[$columns[0]->getPhpName()] = $this->keys[$columns[0]->getPhpName()] = $id;
         }
       }
     }

@@ -22,7 +22,7 @@
           </tr>
         </thead><tbody>
           <?php foreach ($termActions as $key => $item): ?>
-            <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
+            <tr class="<?php echo (0 == @++$row % 2) ? 'even' : 'odd' ?>">
               <td><?php echo __($item) ?></td>
               <td>
                 <ul class="radio inline">
@@ -66,7 +66,7 @@
               </tr>
             </thead><tbody>
               <?php foreach ($termActions as $action => $label): ?>
-                <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
+                <tr class="<?php echo (0 == @++$row % 2) ? 'even' : 'odd' ?>">
                   <td><?php echo __($label) ?></td>
                   <td id="<?php echo 'repo_'.$key.'_'.$action ?>">
                     <ul class="radio inline">
@@ -109,7 +109,7 @@ $tableTemplate .= '<tbody>';
 $row = 0;
 foreach ($termActions as $key => $item)
 {
-  $tableTemplate .= '<tr class="'.((0 == $row++ % 2) ? 'even' : 'odd').'">';
+  $tableTemplate .= '<tr class="'.((0 == @++$row % 2) ? 'even' : 'odd').'">';
   $tableTemplate .= '<td>'.__($item).'</th>';
   $tableTemplate .= '<td><ul class="radio inline">';
   $tableTemplate .= '<li><input type="radio" name="acl['.$key.'_{objectId}]" value="'.QubitAcl::GRANT.'"/>'.__('Grant').'</li>';

@@ -14,7 +14,17 @@
 
 <?php echo render_show(__('Taxonomy'), link_to(render_title($resource->taxonomy), array($resource->taxonomy, 'module' => 'taxonomy'))) ?>
 
-<?php echo render_show(__('Code'), render_value($resource->code)) ?>
+<div class="field">
+  <h3><?php echo __('Code') ?></h3>
+  <div>
+    <?php echo $resource->code; ?>
+
+    <?php if (!empty($resource->code) && QubitTaxonomy::PLACE_ID == $resource->taxonomy->id): ?>
+          <?php echo image_tag('http://maps.googleapis.com/maps/api/staticmap?zoom=13&size=300x300&sensor=false&center='.$resource->code, array('alt' => __('Home'), 'absolute' => true)) ?>
+    <?php endif; ?>
+
+  </div>
+</div>
 
 <div class="field">
   <h3><?php echo __('Scope note(s)') ?></h3>
@@ -119,7 +129,7 @@
       <?php endif; ?>
 
       <?php if (QubitAcl::check($resource, 'delete') && !$resource->isProtected()): ?>
-        <li><?php echo link_to (__('Delete'), array($resource, 'module' => 'term', 'action' => 'delete')) ?></li>
+        <li><?php echo link_to (__('Delete'), array($resource, 'module' => 'term', 'action' => 'delete'), array('class' => 'delete')) ?></li>
       <?php endif; ?>
 
       <?php if (QubitAcl::check($resource->taxonomy, 'createTerm')): ?>

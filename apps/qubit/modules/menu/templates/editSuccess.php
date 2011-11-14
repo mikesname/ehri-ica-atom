@@ -51,8 +51,8 @@
 
         <li><?php echo link_to(__('Cancel'), array('module' => 'menu', 'action' => 'list')) ?></li>
 
-        <?php if (!$menu->isProtected()): ?>
-          <li><?php echo link_to(__('Delete'), array($menu, 'module' => 'menu', 'action' => 'delete')) ?></li>
+        <?php if (!$menu->isProtected() && isset($menu->id)): ?>
+          <li><?php echo link_to(__('Delete'), array($menu, 'module' => 'menu', 'action' => 'delete'), array('class' => 'delete')) ?></li>
         <?php endif; ?>
 
         <li><input class="form-submit" type="submit" value="<?php echo __('Save') ?>"/></li>

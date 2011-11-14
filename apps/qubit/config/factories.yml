@@ -43,7 +43,7 @@ all:
     class: sfTranslateI18N
 
   routing:
-    class: sfPatternRouting
+    class: QubitPatternRouting
     param:
       generate_shortest_url:            true
       extra_parameters_as_query_string: true
@@ -53,3 +53,8 @@ all:
     param:
       cache_key_use_vary_headers: true
       cache_key_use_host_name:    true
+
+  user:
+    class: myUser
+    param:
+      timeout: 1800 # Session timeout in seconds

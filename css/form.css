@@ -11,22 +11,19 @@
                 LANGUAGE - SELECTBOX
 **********************************************************/
 
-#language-selector table
-{
-border: 0;
-border-collapse: collapse;
-margin: 0;
-padding: 0;
+#language-selector table {
+  border: 0;
+  border-collapse: collapse;
+  margin: 0;
+  padding: 0;
 }
 
-#language-selector td
-{
- border: 0;
- vertical-align: center;
+#language-selector td {
+  border: 0;
+  vertical-align: center;
 }
 
-#language-selector select
-{
+#language-selector select {
   background-color: #FFFFFF;
   border: 1px solid #a3a3a3;
   width: 153px;
@@ -37,33 +34,29 @@ padding: 0;
   color: #000000;
 }
 
-#language-selector select:focus
-{
-background: #cccccc;
+#language-selector select:focus {
+  background: #cccccc;
 }
 
-#language-selector .form-submit
-{
-font: 11px Verdana, Arial, Sans-Serif;
-margin: 5px 0 0 5px;
-width: auto;
-min-width: 130px;
+#language-selector .form-submit {
+  font: 11px Verdana, Arial, Sans-Serif;
+  margin: 5px 0 0 5px;
+  width: auto;
+  min-width: 130px;
 }
 
-#language-selector .form-submit:hover
-{
-font: 11px Verdana, Arial, Sans-Serif;
-margin: 5px 0 0 5px;
-width: auto;
-min-width: 130px;
+#language-selector .form-submit:hover {
+  font: 11px Verdana, Arial, Sans-Serif;
+  margin: 5px 0 0 5px;
+  width: auto;
+  min-width: 130px;
 }
 
 /*********************************************************
                EDIT FORM TRANSLATION BOXES
 **********************************************************/
 
-.default-translation
-{
+.default-translation {
   padding: 0.2em;
   margin-bottom: 1em;
   margin-right: 1em;
@@ -72,44 +65,21 @@ min-width: 130px;
   border: 1px dashed #FFD700;
 }
 
-.form-item li:hover
-{
+.form-item li:hover {
   list-style-image: url(../images/delete.png);
 }
 
-/*********************************************************
-                ADMIN INFO
-**********************************************************/
-
-.admin-info
-{
-  background-color: #A0A9BC;
-  border: 3px solid #999;
-  width: 500px;
-  padding: 4px;
-}
-
-.admin-info table
-{
-  border-collapse: separate;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.admin-info .form-item label
-{
-  color: #494949;
-}
-
-.admin-info .form-item
-{
-  margin: 0;
-}
-
-span.form-required
-{
+span.form-required {
   /* Reset garland style */
 
   color: #f00;
+}
+
+/*********************************************************
+                FIELDSETS UNDER YUI PANELS
+**********************************************************/
+
+.yui-panel fieldset {
+  background: none;
+  border: 1px solid #ccc;
 }

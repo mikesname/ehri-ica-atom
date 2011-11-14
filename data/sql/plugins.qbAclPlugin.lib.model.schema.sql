@@ -26,7 +26,7 @@ CREATE TABLE `acl_group`
 		FOREIGN KEY (`parent_id`)
 		REFERENCES `acl_group` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- acl_group_i18n
@@ -46,7 +46,7 @@ CREATE TABLE `acl_group_i18n`
 		FOREIGN KEY (`id`)
 		REFERENCES `acl_group` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- acl_permission
@@ -84,7 +84,7 @@ CREATE TABLE `acl_permission`
 		FOREIGN KEY (`object_id`)
 		REFERENCES `object` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
 #-- acl_user_group
@@ -110,7 +110,7 @@ CREATE TABLE `acl_user_group`
 		FOREIGN KEY (`group_id`)
 		REFERENCES `acl_group` (`id`)
 		ON DELETE CASCADE
-)Type=InnoDB;
+)Engine=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;

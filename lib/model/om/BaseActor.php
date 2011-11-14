@@ -137,7 +137,7 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       return true;
     }
 
-    if ('rightsActorRelations' == $name)
+    if ('rightss' == $name)
     {
       return true;
     }
@@ -254,21 +254,21 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       return $this->refFkValues['events'];
     }
 
-    if ('rightsActorRelations' == $name)
+    if ('rightss' == $name)
     {
-      if (!isset($this->refFkValues['rightsActorRelations']))
+      if (!isset($this->refFkValues['rightss']))
       {
         if (!isset($this->id))
         {
-          $this->refFkValues['rightsActorRelations'] = QubitQuery::create();
+          $this->refFkValues['rightss'] = QubitQuery::create();
         }
         else
         {
-          $this->refFkValues['rightsActorRelations'] = self::getrightsActorRelationsById($this->id, array('self' => $this) + $options);
+          $this->refFkValues['rightss'] = self::getrightssById($this->id, array('self' => $this) + $options);
         }
       }
 
-      return $this->refFkValues['rightsActorRelations'];
+      return $this->refFkValues['rightss'];
     }
 
     try
@@ -410,7 +410,14 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -583,24 +590,24 @@ abstract class BaseActor extends QubitObject implements ArrayAccess
     return self::addeventsCriteriaById($criteria, $this->id);
   }
 
-  public static function addrightsActorRelationsCriteriaById(Criteria $criteria, $id)
+  public static function addrightssCriteriaById(Criteria $criteria, $id)
   {
-    $criteria->add(QubitRightsActorRelation::ACTOR_ID, $id);
+    $criteria->add(QubitRights::RIGHTS_HOLDER_ID, $id);
 
     return $criteria;
   }
 
-  public static function getrightsActorRelationsById($id, array $options = array())
+  public static function getrightssById($id, array $options = array())
   {
     $criteria = new Criteria;
-    self::addrightsActorRelationsCriteriaById($criteria, $id);
+    self::addrightssCriteriaById($criteria, $id);
 
-    return QubitRightsActorRelation::get($criteria, $options);
+    return QubitRights::get($criteria, $options);
   }
 
-  public function addrightsActorRelationsCriteria(Criteria $criteria)
+  public function addrightssCriteria(Criteria $criteria)
   {
-    return self::addrightsActorRelationsCriteriaById($criteria, $this->id);
+    return self::addrightssCriteriaById($criteria, $this->id);
   }
 
   public function getCurrentactorI18n(array $options = array())

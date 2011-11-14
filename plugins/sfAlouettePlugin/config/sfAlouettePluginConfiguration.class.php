@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -27,14 +27,10 @@ class sfAlouettePluginConfiguration extends sfPluginConfiguration
   {
     $context = $event->getSubject();
 
-    $context->response->addStylesheet('/plugins/sfClassicPlugin/css/main', 'last', array('media' => 'all'));
+    $context->response->addStylesheet('/css/classic', 'last', array('media' => 'all'));
     $context->response->addStylesheet('/plugins/sfCaribouPlugin/css/style', 'last', array('media' => 'all'));
     $context->response->addStylesheet('/plugins/sfColumbiaPlugin/css/style', 'last', array('media' => 'all'));
     $context->response->addStylesheet('/plugins/sfAlouettePlugin/css/style', 'last', array('media' => 'all'));
-
-    $context->response->addStylesheet('/plugins/sfCaribouPlugin/css/print', 'last', array('media' => 'print'));
-
-    $context->response->addStylesheet('/plugins/sfCaribouPlugin/css/print-ie', 'last', array('condition' => 'IE', 'media' => 'print'));
 
     $context->response->addJavaScript('/plugins/sfCaribouPlugin/js/navigation', 'last');
   }

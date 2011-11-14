@@ -16,19 +16,16 @@
     </thead><tbody>
       <tr>
         <td>
-          <input name="updateChildLevels[0][identifier]"/>
+          <input type="text" name="updateChildLevels[0][identifier]"/>
         </td><td>
           <select name="updateChildLevels[0][levelOfDescription]" id="updateChildLevels_0_levelOfDescription">
-
             <option value="">&nbsp;</option>
-
             <?php foreach (QubitTerm::getLevelsOfDescription() as $item): ?>
               <option value="<?php echo $item->id ?>"><?php echo $item->__toString() ?></option>
             <?php endforeach; ?>
-
           </select>
         </td><td>
-          <input name="updateChildLevels[0][title]"/>
+          <input type="text" name="updateChildLevels[0][title]"/>
         </td>
       </tr>
     </tbody>

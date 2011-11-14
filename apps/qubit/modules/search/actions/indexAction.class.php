@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -21,30 +21,37 @@ class SearchIndexAction extends sfAction
 {
   public function execute($request)
   {
+    $this->timer = new QubitTimer;
+
+    if ('print' == $request->getGetParameter('media'))
+    {
+      $this->getResponse()->addStylesheet('print-preview', 'last');
+    }
+
     if (!isset($request->limit))
     {
       $request->limit = sfConfig::get('app_hits_per_page');
     }
 
-    if (isset($this->getRoute()->resource) && $this->getRoute()->resource instanceof QubitRepository)
+    // Simple search
+    if (isset($request->query))
     {
-      $request->query .= " and repository:\"{$this->getRoute()->resource->authorizedFormOfName}\"";
+      $this->title = $this->context->i18n->__('Search for [%1%]', array('%1%' => $request->query));
+      $this->response->setTitle("{$this->title} - {$this->response->getTitle()}");
     }
 
-    $this->response->setTitle("{$this->context->i18n->__('Search for [%1%]', array('%1%' => $request->query))} - {$this->response->getTitle()}");
+    $query = $this->parseQuery();
 
-    xfLuceneZendManager::load();
-    Zend_Search_Lucene_Analysis_Analyzer::setDefault(SearchIndex::getIndexAnalyzer());
-    Zend_Search_Lucene_Search_QueryParser::setDefaultEncoding('utf-8');
+    if (!empty($this->error))
+    {
+      return;
+    }
 
-    $search = new QubitSearch;
-
-    $query = new Zend_Search_Lucene_Search_Query_Boolean;
+    $query = $this->filterQuery($query);
 
     try
     {
-      // Parse query string
-      $query->addSubquery(Zend_Search_Lucene_Search_QueryParser::parse($request->query, 'UTF-8'), true);
+      $hits = QubitSearch::getInstance()->getEngine()->getIndex()->find($query);
     }
     catch (Exception $e)
     {
@@ -53,37 +60,65 @@ class SearchIndexAction extends sfAction
       return;
     }
 
-    $culture = $this->context->user->getCulture();
-    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($culture, 'culture')), true);
+    if (!empty($hits))
+    {
+      $this->pager = new QubitArrayPager;
+
+      if ('print' != $request->getGetParameter('media'))
+      {
+        $this->pager->setMaxPerPage($request->limit);
+      }
+      else
+      {
+        $this->pager->setMaxPerPage(500); // force for print
+      }
+
+      $this->pager->hits = $hits;
+      $this->pager->setPage($request->page);
+    }
+    else if (empty($this->error))
+    {
+      // no error, must be empty result set
+      $this->error = $this->context->i18n->__('No results found.');
+    }
+  }
+
+  public function parseQuery()
+  {
+    try
+    {
+      // Parse query string
+      $queryParsed = QubitSearch::getInstance()->parse($this->request->query);
+    }
+    catch (Exception $e)
+    {
+      $this->error = $e->getMessage();
+
+      return null;
+    }
+
+    $query = new Zend_Search_Lucene_Search_Query_Boolean();
+    $query->addSubquery($queryParsed, true);
+
+    return $query;
+  }
+
+  public function filterQuery($query)
+  {
+    // Limit search to current culture and info. objects
+    $query->addSubquery(QubitSearch::getInstance()->addTerm('QubitInformationObject', 'className'), true);
+    $query->addSubquery(QubitSearch::getInstance()->addTerm($this->context->user->getCulture(), 'culture'), true);
 
     $query = QubitAcl::searchFilterByRepository($query, 'read');
     $query = QubitAcl::searchFilterDrafts($query);
 
-    $this->pager = new QubitArrayPager;
-
-    try
+    // Limit to a repository if in context
+    if (isset($this->getRoute()->resource) && $this->getRoute()->resource instanceof QubitRepository)
     {
-      $this->pager->hits = $search->getEngine()->getIndex()->find($query);
-    }
-    catch (Exception $e)
-    {
-      $this->error = $e->getMessage();
-
-      return;
+      $query->addSubquery(QubitSearch::getInstance()->addTerm($this->getRoute()->resource->id, 'repositoryId'), true);
+      $this->title .= $this->context->i18n->__(' in %1%', array('%1%' => $this->getRoute()->resource->authorizedFormOfName));
     }
 
-    $this->pager->setMaxPerPage($request->limit);
-    $this->pager->setPage($request->page);
-
-    $ids = array();
-    foreach ($this->pager->getResults() as $hit)
-    {
-      $ids[] = $hit->getDocument()->id;
-    }
-
-    $criteria = new Criteria;
-    $criteria->add(QubitInformationObject::ID, $ids, Criteria::IN);
-
-    $this->informationObjects = QubitInformationObject::get($criteria);
+    return $query;
   }
 }

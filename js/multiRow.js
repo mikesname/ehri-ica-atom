@@ -60,58 +60,6 @@
           .first().children("input").focus();
       }
 
-    Qubit.multiRow.removeRow = function (sender)
-      {
-        var table = $(sender).parents('table:first');
-        var rows = table.find('tbody tr');
-        var row = $(sender).parents('tr:first');
-
-        if (1 < rows.length)
-        {
-          if (0 < row.children('div.animateNicely').length)
-          {
-            row.find('td').each(function(i)
-              {
-                if (0 == $(this).find('div.animateNicely').length)
-                {
-                  $(this).wrapInner('<div class="animateNicely"></div>');
-                }
-              });
-          }
-
-          row.find('div').hide('normal', function()
-            {
-              row.remove();
-            });
-
-          var rowNumber = parseInt(row.find("select, input").filter(":first").attr("name").match(/\d+/).shift());
-
-          rowNumber--;
-
-          row.nextAll().each(function()
-            {
-              rowNumber++;
-              $(this).find('input, select').each(function()
-                {
-                  var newName = $(this).attr('name').replace(/\[\d+\]/, '[' + rowNumber + ']');
-                  $(this).attr('name', newName);
-                });
-            });
-        }
-        else
-        {
-          row.find('input, select').each(function()
-            {
-              $(this).val('');
-
-              if ($(this).is('select'))
-              {
-                $(this)[0].selectedIndex = 0;
-              }
-            });
-        }
-      }
-
     /**
      * On page load, "multiRow" tables are prepared to add as many rows as users want
      */
@@ -122,11 +70,12 @@
 
           // Add delete button to existing rows
           $('thead tr:first', tables).append('<th>&nbsp;</th>');
-          $('tbody tr:first', tables).append('<td><button name="delete" class="delete-small" onclick="Qubit.multiRow.removeRow(this); return false;"/></td>');
+          $('tbody tr', tables).append('<td><button name="delete" class="delete-small" /></td>');
 
           tables
-
+          
             // Add tfoot new row button
+            // TODO: use append + live or delegate, embed addNewRow
             .each(function()
               {
                 $('<tfoot><tr><td colspan=' + ($(this).find('tbody tr:first td').length + 1) + '><a href="#" onclick="Qubit.multiRow.addNewRow(this); return false;">Add new</a></td></tr></tfoot>').appendTo(this);
@@ -145,6 +94,61 @@
                   }
 
                   return false;
+                }
+              })
+
+            .end().find('.delete-small').live('click', function(event)
+              {
+                event.preventDefault();
+
+                $this = $(this);
+                table = $this.closest('table');
+                rows = table.find('tbody tr');
+                row = $this.closest('tr');
+
+                if (1 < rows.length)
+                {
+                  if (1 > row.children('div.animateNicely').length)
+                  { 
+                    row.find('td').each(function(i)
+                      {
+                        if (0 == $(this).find('div.animateNicely').length)
+                        {
+                          $(this).wrapInner('<div class="animateNicely"></div>');
+                        }
+                      });
+                  }
+
+                  row.find('div').hide('normal', function()
+                    {
+                      row.remove();
+                    });
+
+                  var rowNumber = parseInt(row.find("select, input").filter(":first").attr("name").match(/\d+/).shift());
+
+                  rowNumber--;
+
+                  row.nextAll().each(function()
+                    {
+                      rowNumber++;
+                      $(this).find('input, select').each(function()
+                        {
+                          var newName = $(this).attr('name').replace(/\[\d+\]/, '[' + rowNumber + ']');
+                          $(this).attr('name', newName);
+                        });
+                    });
+                }
+                else
+                {
+                  row.find('input, select').each(function()
+                    {
+                      $(this).val('');
+
+                      if ($(this).is('select'))
+                      {
+                        $(this)[0].selectedIndex = 0;
+                      }
+                    });
                 }
               });
         }};

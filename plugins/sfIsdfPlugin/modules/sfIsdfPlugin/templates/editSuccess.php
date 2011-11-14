@@ -76,7 +76,7 @@
 
     <?php echo render_field($form->descriptionIdentifier
       ->help(__('"Record a unique description identifier in accordance with local and/or national conventions. If the description is to be used internationally, record the code of the country in which the description was created in accordance with the latest version of ISO 3166 Codes for the representation of names of countries. Where the creator of the description is an international organisation, give the organisational identifier in place of the country code." (ISDF 5.4.1)'))
-      ->label(__('Description identifier').'<span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource) ?>
+      ->label(__('Description identifier').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource) ?>
 
     <?php echo render_field($form->institutionIdentifier
       ->help(__('"Record the full authorised form of name(s) of agency(ies) responsible for creating, modifying or disseminating the description or, alternatively, record a recognized code for the agency." (ISDF 5.4.2)'))

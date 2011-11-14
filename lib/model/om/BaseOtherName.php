@@ -9,8 +9,8 @@ abstract class BaseOtherName implements ArrayAccess
 
     OBJECT_ID = 'other_name.OBJECT_ID',
     TYPE_ID = 'other_name.TYPE_ID',
-    CREATED_AT = 'other_name.CREATED_AT',
-    UPDATED_AT = 'other_name.UPDATED_AT',
+    START_DATE = 'other_name.START_DATE',
+    END_DATE = 'other_name.END_DATE',
     SOURCE_CULTURE = 'other_name.SOURCE_CULTURE',
     ID = 'other_name.ID',
     SERIAL_NUMBER = 'other_name.SERIAL_NUMBER';
@@ -19,8 +19,8 @@ abstract class BaseOtherName implements ArrayAccess
   {
     $criteria->addSelectColumn(QubitOtherName::OBJECT_ID);
     $criteria->addSelectColumn(QubitOtherName::TYPE_ID);
-    $criteria->addSelectColumn(QubitOtherName::CREATED_AT);
-    $criteria->addSelectColumn(QubitOtherName::UPDATED_AT);
+    $criteria->addSelectColumn(QubitOtherName::START_DATE);
+    $criteria->addSelectColumn(QubitOtherName::END_DATE);
     $criteria->addSelectColumn(QubitOtherName::SOURCE_CULTURE);
     $criteria->addSelectColumn(QubitOtherName::ID);
     $criteria->addSelectColumn(QubitOtherName::SERIAL_NUMBER);
@@ -451,7 +451,14 @@ abstract class BaseOtherName implements ArrayAccess
       // separator plus one or more zeros
       if (!preg_match('/^\d+[-\/]0*(?:1[0-2]|\d)[-\/]0+$/', $value))
       {
-        $value = new DateTime($value);
+        try
+        {
+          $value = new DateTime($value);
+        }
+        catch (Exception $e)
+        {
+          return null;
+        }
       }
     }
 
@@ -486,7 +493,10 @@ abstract class BaseOtherName implements ArrayAccess
 
         if (array_key_exists($column->getPhpName(), $this->values))
         {
-          $criteria->add($column->getFullyQualifiedName(), $this->param($column));
+          if (null !== $param = $this->param($column))
+          {
+            $criteria->add($column->getFullyQualifiedName(), $param);
+          }
         }
 
         $offset++;

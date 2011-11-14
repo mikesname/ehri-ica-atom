@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -123,12 +123,24 @@ class QubitTerm extends BaseTerm
     STANDARDIZED_FORM_OF_NAME_ID = 165,
 
     // External URI
-    EXTERNAL_URI_ID = 166;
+    EXTERNAL_URI_ID = 166,
+
+    // Relation types
+    ACCESSION_ID = 167,
+    RIGHT_ID = 168,
+    DONOR_ID = 169,
+
+    // Rights basis
+    RIGHT_BASIS_COPYRIGHT_ID = 170,
+    RIGHT_BASIS_LICENSE_ID = 171,
+    RIGHT_BASIS_STATUTE_ID = 172,
+    RIGHT_BASIS_POLICY_ID = 173;
 
   public function isProtected()
   {
     // The following terms cannot be edited by users because their values are used in application logic
     return in_array($this->id, array(
+      QubitTerm::ACCESSION_ID,
       QubitTerm::ACCUMULATION_ID,
       QubitTerm::ALTERNATIVE_LABEL_ID,
       QubitTerm::ARCHIVAL_MATERIAL_ID,
@@ -170,6 +182,9 @@ class QubitTerm extends BaseTerm
       QubitTerm::REFERENCE_ID,
       QubitTerm::RELATION_NOTE_DATE_ID,
       QubitTerm::RELATION_NOTE_DESCRIPTION_ID,
+      QubitTerm::RIGHT_BASIS_COPYRIGHT_ID,
+      QubitTerm::RIGHT_BASIS_LICENSE_ID,
+      QubitTerm::RIGHT_BASIS_STATUTE_ID,
       QubitTerm::ROOT_ID,
       QubitTerm::SCOPE_NOTE_ID,
       QubitTerm::SOURCE_NOTE_ID,
@@ -198,7 +213,7 @@ class QubitTerm extends BaseTerm
   {
     if (!isset($this->slug))
     {
-      $this->slug = QubitSlug::slugify($this->name);
+      $this->slug = QubitSlug::slugify($this->__get('name', array('sourceCulture' => true)));
     }
 
     return parent::insert($connection);
@@ -302,6 +317,11 @@ class QubitTerm extends BaseTerm
   public static function getNoteTypes($options = array())
   {
     return QubitTaxonomy::getTermsById(QubitTaxonomy::NOTE_TYPE_ID, $options);
+  }
+
+  public function getSourceNotes()
+  {
+    return $this->getNotesByType(array('noteTypeId' => QubitTerm::SOURCE_NOTE_ID));
   }
 
   public static function getSubjects($options = array())
@@ -559,7 +579,6 @@ class QubitTerm extends BaseTerm
     $sql = 'SELECT COUNT(*) FROM '.QubitDigitalObject::TABLE_NAME;
     $sql .= ' WHERE '.QubitDigitalObject::USAGE_ID.' = '.$this->id;
     $sql .= ' OR '.QubitDigitalObject::MEDIA_TYPE_ID.' = '.$this->id;
-    $sql .= ' OR '.QubitDigitalObject::CHECKSUM_TYPE_ID.' = '.$this->id;
 
     return self::executeCount($sql);
   }
@@ -987,7 +1006,7 @@ class QubitTerm extends BaseTerm
         $node['parentId'] = $item['parentId'];
         $node['href'] = '#';
         $node['isLeaf'] = 'true';
-        $node['style'] = 'seeAllNode';
+        $node['style'] = 'seeAllNode XmlHttpRequest';
       }
 
       $yuiTree[] = $node;

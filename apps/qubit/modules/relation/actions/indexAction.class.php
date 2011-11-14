@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -33,20 +33,10 @@ class RelationIndexAction extends sfAction
 
     $value = array();
 
-    $note = $this->resource->getNoteByTypeId(QubitTerm::RELATION_NOTE_DATE_ID);
-    if (isset($note))
-    {
-      $value['date'] = $note->content;
-    }
-
+    $value['date'] = $this->resource->date;
     $value['endDate'] = Qubit::renderDate($this->resource->endDate);
     $value['startDate'] = Qubit::renderDate($this->resource->startDate);
-
-    $note = $this->resource->getNoteByTypeId(QubitTerm::RELATION_NOTE_DESCRIPTION_ID);
-    if (isset($note))
-    {
-      $value['description'] = $note->content;
-    }
+    $value['description'] = $this->resource->description;
 
     if (isset($this->resource->object))
     {
@@ -61,6 +51,11 @@ class RelationIndexAction extends sfAction
     if (isset($this->resource->type))
     {
       $value['type'] = $this->context->routing->generate(null, array($this->resource->type, 'module' => 'term'));
+    }
+
+    if (method_exists($this, 'extraQueries'))
+    {
+      $value = $this->extraQueries($value);
     }
 
     return $this->renderText(json_encode($value));

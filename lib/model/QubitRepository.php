@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -25,51 +25,24 @@
  */
 class QubitRepository extends BaseRepository
 {
-  public function save($connection = null)
+  /**
+   * Add repository specific logic to the insert action
+   *
+   * @param mixed $connection The database connection object
+   * @return QubitRepository self-reference
+   */
+  protected function insert($connection = null)
   {
-    if (self::ROOT_ID != $this->id && !isset($this->parentId) && 'QubitRepository' == $this->className)
+    // When creating a new repository, set the upload_limit to the default
+    // value (app_repository_quota)
+    if (null == $this->__get('uploadLimit'))
     {
-      $this->parentId = self::ROOT_ID;
+      $this->__set('uploadLimit', sfConfig::get('app_repository_quota'));
     }
 
-    parent::save($connection);
-  }
+    parent::insert($connection);
 
-  /**
-   * Save new link to a term.
-   *
-   * @param integer $termId QubitTerm primary key
-   * @param string $relationNote DEPRECATED
-   */
-  public function setTermRelation($termId, $relationNote = null)
-  {
-    $newTermRelation = new QubitObjectTermRelation;
-    $newTermRelation->setTermId($termId);
-
-    //TODO: move to QubitNote
-    //  $newTermRelation->setRelationNote($relationNote);
-    $newTermRelation->setObjectId($this->id);
-    $newTermRelation->save();
-  }
-
-  /**
-   * Get many-to-many links to QubitTerm objects
-   *
-   * @param mixed $taxonomyId  Limit results by taxonomy type
-   * @return QubitQuery collection of QubitObjectTermRelation objects
-   */
-  public function getTermRelations($taxonomyId = 'all')
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitObjectTermRelation::OBJECT_ID, $this->id);
-
-    if ($taxonomyId != 'all')
-    {
-      $criteria->addJoin(QubitObjectTermRelation::TERM_ID, QubitTERM::ID);
-      $criteria->add(QubitTerm::TAXONOMY_ID, $taxonomyId);
-    }
-
-    return QubitObjectTermRelation::get($criteria);
+    return $this;
   }
 
   /**
@@ -189,28 +162,81 @@ class QubitRepository extends BaseRepository
     return options_for_select($selectOptions, $default, $options);
   }
 
+  /**
+   * Get disk space used by digital objects in this repository
+   *
+   * @return integer disk usage in bytes
+   */
+  public function getDiskUsage($options = array())
+  {
+    $du = 0;
+    $repoDir = sfConfig::get('app_upload_dir').'/r/'.$this->slug;
+
+    if (!file_exists($repoDir))
+    {
+      return 0;
+    }
+
+    // Derived from http://www.php.net/manual/en/function.filesize.php#94566
+    $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($repoDir));
+    foreach ($iterator as $item)
+    {
+      $du += $item->getSize();
+    }
+
+    // Set metric units for return value
+    if (isset($options['units']))
+    {
+      switch (strtolower($options['units']))
+      {
+        case 'g':
+          $du /= pow(10, 3);
+        case 'm':
+          $du /= pow(10, 3);
+        case 'k':
+          $du /= pow(10, 3);
+      }
+
+      $du = round($du, 2);
+    }
+
+    return $du;
+  }
+
+
   /**************
   Import methods
   ***************/
 
-  public function setTypeByName($term)
+  public function setTypeByName($name)
   {
-    // see if type term already exists
+    // See if type term already exists
     $criteria = new Criteria;
     $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
     $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::REPOSITORY_TYPE_ID);
-    $criteria->add(QubitTermI18n::NAME, $term);
-    if ($existingTerm = QubitTerm::getOne($criteria))
+    $criteria->add(QubitTermI18n::NAME, $name);
+
+    if (null === $term = QubitTerm::getOne($criteria))
     {
-      $this->setTypeId($existingTerm->id);
+      $term = new QubitTerm;
+      $term->setTaxonomyId(QubitTaxonomy::REPOSITORY_TYPE_ID);
+      $term->setName($name);
+      $term->setRoot();
+      $term->save();
     }
-    else
+
+    foreach (self::getTermRelations(QubitTaxonomy::REPOSITORY_TYPE_ID) as $item)
     {
-      $newTerm = new QubitTerm;
-      $newTerm->setTaxonomyId(QubitTaxonomy::REPOSITORY_TYPE_ID);
-      $newTerm->setName($term);
-      $newTerm->save();
-      $this->setTypeId($newTerm->id);
+      // Faster than $item->term == $term
+      if ($item->termId == $term->id)
+      {
+        return;
+      }
     }
+
+    $relation = new QubitObjectTermRelation;
+    $relation->term = $term;
+
+    $this->objectTermRelationsRelatedByobjectId[] = $relation;
   }
 }

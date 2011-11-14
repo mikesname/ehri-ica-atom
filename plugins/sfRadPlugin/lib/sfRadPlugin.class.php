@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -157,7 +157,7 @@ class sfRadPlugin implements ArrayAccess
               $identifier[] = $item->identifier;
             }
           }
-          $identifier = implode('-', $identifier);
+          $identifier = implode(sfConfig::get('app_separator_character', '-'), $identifier);
 
           return "$countryCode$repositoryCode$identifier";
         }

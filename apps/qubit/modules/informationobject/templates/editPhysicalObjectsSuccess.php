@@ -34,9 +34,9 @@
     </table>
   <?php endif; ?>
 
-  <div class="section">
+  <fieldset class="collapsible">
 
-    <h2><?php echo __('Add container links (duplicate links will be ignored)') ?></h2>
+    <legend><?php echo __('Add container links (duplicate links will be ignored)') ?></legend>
 
     <div class="form-item">
       <?php echo $form->containers->renderLabel() ?>
@@ -45,11 +45,11 @@
       <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'physicalobject', 'action' => 'autocomplete')) ?>"/>
     </div>
 
-  </div>
+  </fieldset>
 
-  <div class="section">
+  <fieldset class="collapsible">
 
-    <h2><?php echo __('Or, create a new container') ?></h2>
+    <legend><?php echo __('Or, create a new container') ?></legend>
 
     <?php echo $form->name->renderRow() ?>
 
@@ -57,7 +57,7 @@
 
     <?php echo $form->type->renderRow() ?>
 
-  </div>
+  </fieldset>
 
   <div class="actions section">
 

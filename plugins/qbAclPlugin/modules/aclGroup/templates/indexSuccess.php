@@ -28,7 +28,7 @@
         <?php endif; ?>
 
         <?php if (QubitAcl::check($group, 'delete')): ?>
-          <li><?php echo link_to (__('Delete'), array($group, 'module' => 'aclGroup', 'action' => 'delete')) ?></li>
+          <li><?php echo link_to (__('Delete'), array($group, 'module' => 'aclGroup', 'action' => 'delete'), array('class' => 'delete')) ?></li>
         <?php endif; ?>
 
         <?php if (QubitAcl::check($group, 'create')): ?>

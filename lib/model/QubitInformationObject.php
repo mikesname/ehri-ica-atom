@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -141,7 +141,7 @@ class QubitInformationObject extends BaseInformationObject
   {
     if (!isset($this->slug))
     {
-      $this->slug = QubitSlug::slugify($this->title);
+      $this->slug = QubitSlug::slugify($this->__get('title', array('sourceCulture' => true)));
     }
 
     return parent::insert($connection);
@@ -215,7 +215,7 @@ class QubitInformationObject extends BaseInformationObject
       $item->save($connection);
     }
 
-    SearchIndex::updateTranslatedLanguages($this);
+    QubitSearch::updateInformationObject($this);
 
     return $this;
   }
@@ -259,7 +259,7 @@ class QubitInformationObject extends BaseInformationObject
 
     parent::delete($connection);
 
-    SearchIndex::deleteTranslatedLanguages($this);
+    QubitSearch::deleteInformationObject($this);
   }
 
   /**
@@ -500,7 +500,13 @@ class QubitInformationObject extends BaseInformationObject
 
   public function getCreationEvents()
   {
-    return $this->getActorEvents($options = array('eventTypeId' => QubitTerm::CREATION_ID));
+    $criteria = new Criteria;
+    $criteria->add(QubitEvent::INFORMATION_OBJECT_ID, $this->id);
+    $criteria->add(QubitEvent::TYPE_ID, QubitTerm::CREATION_ID);
+
+    $criteria->addDescendingOrderByColumn(QubitEvent::START_DATE);
+
+    return QubitEvent::get($criteria);
   }
 
   /**
@@ -852,15 +858,15 @@ class QubitInformationObject extends BaseInformationObject
   {
     $nameAccessPointString = '';
 
-    $names = $this->getActors();
-    if ($names)
-    {
-      $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->user->getCulture();
+    $criteria = new Criteria;
+    $criteria->add(QubitRelation::SUBJECT_ID, $this->id);
+    $criteria->add(QubitRelation::TYPE_ID, QubitTerm::NAME_ACCESS_POINT_ID);
 
-      foreach ($names as $name)
-      {
-        $nameAccessPointString .= $name->getAuthorizedFormOfName(array('culture' => $culture)).' ';
-      }
+    $culture = (isset($options['culture'])) ? $options['culture'] : sfContext::getInstance()->user->getCulture();
+
+    foreach ($this->nameAccessPoints = QubitRelation::get($criteria) as $name)
+    {
+      $nameAccessPointString .= $name->object->getAuthorizedFormOfName(array('culture' => $culture)).' ';
     }
 
     return $nameAccessPointString;
@@ -914,7 +920,7 @@ class QubitInformationObject extends BaseInformationObject
    */
   public function getPhysicalObjects()
   {
-    $relatedPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->id, array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    $relatedPhysicalObjects = QubitRelation::getRelatedSubjectsByObjectId('QubitPhysicalObject', $this->id, array('typeId' => QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
     return $relatedPhysicalObjects;
   }
@@ -925,8 +931,7 @@ class QubitInformationObject extends BaseInformationObject
    */
   protected function deletePhysicalObjectRelations()
   {
-    $relations = QubitRelation::getRelationsByObjectId($this->id,
-    array('typeId'=>QubitTerm::HAS_PHYSICAL_OBJECT_ID));
+    $relations = QubitRelation::getRelationsByObjectId($this->id, array('typeId' => QubitTerm::HAS_PHYSICAL_OBJECT_ID));
 
     foreach ($relations as $relation)
     {
@@ -1093,15 +1098,46 @@ class QubitInformationObject extends BaseInformationObject
     }
   }
 
+  /**
+   * Import access points (only subjects and places)
+   */
+  public function setAccessPointByName($name, $options = array())
+  {
+    // Only create an linked access point if the type is indicated
+    if (!isset($options['type_id']))
+    {
+      return;
+    }
+
+    // See if the access point record already exists, if not create it
+    $criteria = new Criteria;
+    $criteria->addJoin(QubitTerm::ID, QubitTermI18n::ID);
+    $criteria->add(QubitTermI18n::NAME, $name);
+    $criteria->add(QubitTerm::TAXONOMY_ID, $options['type_id']);
+
+    if (null === $accessPoint = QubitTerm::getOne($criteria))
+    {
+      $accessPoint = new QubitTerm;
+      $accessPoint->setName($name);
+      $accessPoint->setTaxonomyId($options['type_id']);
+      $accessPoint->save();
+    }
+
+    $relation = new QubitObjectTermRelation;
+    $relation->term = $accessPoint;
+
+    $this->objectTermRelationsRelatedByobjectId[] = $relation;
+  }
+
   public function setActorByName($name, $options)
   {
-    // only create an linked Actor if the event or relation type is indicated
+    // Only create an linked Actor if the event or relation type is indicated
     if (!isset($options['event_type_id']) && !isset($options['relation_type_id']))
     {
       return;
     }
 
-    // see if the Actor record already exists, if not create it
+    // See if the Actor record already exists, if not create it
     $criteria = new Criteria;
     $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
     $criteria->add(QubitActorI18n::AUTHORIZED_FORM_OF_NAME, $name);
@@ -1437,9 +1473,21 @@ class QubitInformationObject extends BaseInformationObject
   {
     $newNote = new QubitNote;
     $newNote->setScope('QubitInformationObject');
-    $newNote->setUserId($options['userId']);
-    $newNote->setContent($options['note']);
-    $newNote->setTypeId($options['noteTypeId']);
+
+    if (isset($options['userId']))
+    {
+      $newNote->setUserId($options['userId']);
+    }
+
+    if (isset($options['note']))
+    {
+      $newNote->setContent($options['note']);
+    }
+
+    if (isset($options['noteTypeId']))
+    {
+      $newNote->setTypeId($options['noteTypeId']);
+    }
 
     $this->notes[] = $newNote;
   }
@@ -1509,16 +1557,12 @@ class QubitInformationObject extends BaseInformationObject
   *****************************************************/
   public function getPublicationStatus()
   {
-    // Ascend up object hierarchy until a publication status is found
-    // right up to the root object if necessary (which is set to 'draft' by default)
-    foreach ($this->ancestors->andSelf()->orderBy('rgt') as $ancestor)
-    {
-      $status = $ancestor->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
-      if (isset($status) && null !== $status->statusId)
-      {
-        return $status;
-      }
-    }
+    return $this->getStatus($options = array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
+  }
+
+  public function setPublicationStatus($value)
+  {
+    return $this->setStatus($options = array('statusId' => $value, 'typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID));
   }
 
   /*****************************************************
@@ -1734,7 +1778,7 @@ class QubitInformationObject extends BaseInformationObject
 
         $node['label'] = sfContext::getInstance()->i18n->__('+%1% ...', array('%1%' => $count));
         $node['parentId'] = $item['parentId'];
-        $node['href'] = '#';
+        $node['href'] = sfContext::getInstance()->routing->generate(null, array(QubitInformationObject::getById($item['parentId']), 'module' => 'informationobject', 'action' => 'browse')); 
         $node['isLeaf'] = 'true';
         $node['style'] = 'seeAllNode';
       }

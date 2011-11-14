@@ -221,7 +221,7 @@
 
       <tr>
         <td colspan="2">
-          <?php echo $form->language_code->renderRow() ?>
+          <?php echo $form->languageCode->renderRow() ?>
         </td>
         <td>
           <div style="float: right; margin: 3px 8px 0 0;">

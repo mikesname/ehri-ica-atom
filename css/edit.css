@@ -33,3 +33,17 @@ form .section,
   left: 100%;
   margin-left: 3em;
 }
+
+div.description-dialog {
+
+  position: absolute;
+  color: #444;
+  left: -200px;
+  width: 156px;
+  padding: 4px 8px;
+  background-color: #def;
+  border-radius: 4px;
+  -moz-border-radius: 4px;
+  -webkit-border-radius: 4px;
+  z-index: 10750;
+}

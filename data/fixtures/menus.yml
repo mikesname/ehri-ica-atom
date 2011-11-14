@@ -1,25 +1,30 @@
 QubitMenu:
   QubitMenu_root:
-    id: <?php echo QubitMenu::ROOT_ID."\n" ?>
+    id: 1
   QubitMenu_mainmenu:
-    id: <?php echo QubitMenu::MAIN_MENU_ID."\n" ?>
+    id: 2
     parent_id: QubitMenu_root
     source_culture: en
     name: mainMenu
   QubitMenu_quicklinks:
-    id: <?php echo QubitMenu::QUICK_LINKS_ID."\n" ?>
+    id: 3
     parent_id: QubitMenu_root
     source_culture: en
     name: quickLinks
   QubitMenu_browse:
-    id: <?php echo QubitMenu::BROWSE_ID."\n" ?>
+    id: 4
     parent_id: QubitMenu_root
     source_culture: en
     name: browse
     label:
       en: Browse
+      es: Navegar
+      fr: Naviguer
+      nl: Blader
+      pl: Przeglądaj
+      sl: Brskaj
   QubitMenu_mainmenu_addedit:
-    id: <?php echo QubitMenu::ADD_EDIT_ID."\n" ?>
+    id: 5
     parent_id: QubitMenu_mainmenu
     source_culture: en
     name: add
@@ -33,17 +38,77 @@ QubitMenu:
       nl: toevoegen
       pt: adicionar
       sl: uporabniški
-    path: informationobject/add
-  QubitMenu_mainmenu_taxonomies:
-    id: <?php echo QubitMenu::TAXONOMY_ID."\n" ?>
+    path: accession/add
+  QubitMenu_mainmenu_manage:
+    id: 10
     parent_id: QubitMenu_mainmenu
+    source_culture: en
+    name: manage
+    label:
+      en: Manage
+      es: Administrar
+      fr: Gérer
+      pl: Zarządzanie
+      sl: Upravljaj
+    path: accession/browse
+  QubitMenu_mainmenu_manage_accessions:
+    parent_id: QubitMenu_mainmenu_manage
+    source_culture: en
+    name: accessions
+    label:
+      en: Accessions
+    path: accession/browse
+  QubitMenu_mainmenu_manage_donors:
+    parent_id: QubitMenu_mainmenu_manage
+    source_culture: en
+    name: donors
+    label:
+      en: Donors
+      es: Donantes
+      fr: Donateurs
+      nl: Schenkers
+      pl: 'Przekazujący (materiały archiwalne)'
+      sl: Donatorji
+    path: donor/browse
+  QubitMenu_mainmenu_manage_physicalobject:
+    parent_id: QubitMenu_mainmenu_manage
+    source_culture: en
+    name: browsePhysicalObjects
+    label:
+      en: 'Physical storage'
+      es: 'Almacenamiento físico'
+      fr: 'Localisation physique'
+      nl: Bergplaats
+      pl: 'Składowanie w ujęciu fizycznym'
+      sl: 'Fizična hramba'
+    path: physicalobject/browse
+  QubitMenu_mainmenu_manage_rightsholders:
+    parent_id: QubitMenu_mainmenu_manage
+    source_culture: en
+    name: rightsholders
+    label:
+      en: 'Rights holders'
+      es: 'Titulares de derechos'
+      fr: 'Détenteurs de droits'
+      nl: 'Houders van rechten'
+      pl: 'Posiadacze praw'
+      sl: 'Imetniki pravic'
+    path: rightsholder/browse
+  QubitMenu_mainmenu_manage_taxonomies:
+    id: 6
+    parent_id: QubitMenu_mainmenu_manage
     source_culture: en
     name: taxonomies
     label:
       en: Taxonomies
+      es: Taxonomías
+      fr: Référentiels
+      nl: Taxonomieën
+      pl: Taksonomie
+      sl: Taksonomije
     path: taxonomy/list
   QubitMenu_mainmenu_import:
-    id: <?php echo QubitMenu::IMPORT_ID."\n" ?>
+    id: 7
     parent_id: QubitMenu_mainmenu
     source_culture: en
     name: import
@@ -58,7 +123,7 @@ QubitMenu:
       sl: uvoz
     path: object/importSelect
   QubitMenu_mainmenu_admin:
-    id: <?php echo QubitMenu::ADMIN_ID."\n" ?>
+    id: 9
     parent_id: QubitMenu_mainmenu
     source_culture: en
     name: admin
@@ -67,10 +132,22 @@ QubitMenu:
       en: Admin
       es: administrador
       fa: مدير
-      fr: administrer
+      fr: Administrateur
       it: amministra
-      sl: administrator
+      pl: Administrator
+      sl: Administrator
     path: user/list
+  QubitMenu_mainmenu_addedit_accessionrecord:
+    parent_id: QubitMenu_mainmenu_addedit
+    source_culture: en
+    name: addAccessionRecord
+    label:
+      en: 'Accession records'
+      es: 'Registros de adhesiones'
+      fr: 'Registre des entrées'
+      pl: Nabytki
+      sl: 'Zapisi o prevzemu'
+    path: accession/add
   QubitMenu_mainmenu_addedit_informationobject:
     parent_id: QubitMenu_mainmenu_addedit
     source_culture: en
@@ -135,20 +212,34 @@ QubitMenu:
     name: importXml
     label:
       en: XML
-    path: object/importSelect
+      fr: XML
+      pl: XML
+      sl: XML
+    path: 'object/importSelect?type=xml'
+  QubitMenu_mainmenu_import_csv:
+    parent_id: QubitMenu_mainmenu_import
+    source_culture: en
+    name: importCsv
+    label:
+      en: CSV
+      fr: CSV
+      pl: CSV
+      sl: CSV
+    path: 'object/importSelect?type=csv'
   QubitMenu_mainmenu_admin_users:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
     name: users
     label:
       en: Users
-      es: usuarios
+      es: Usuarios
       fa: كاربران
-      fr: utilisateurs
+      fr: Utilisateur
       it: utenti
-      nl: gebruikers
+      nl: Gebruikers
+      pl: Użytkownicy
       pt: usuários
-      sl: uporabniki
+      sl: Uporabniki
     path: user/list
   QubitMenu_mainmenu_admin_users_profile:
     parent_id: QubitMenu_mainmenu_admin_users
@@ -157,7 +248,10 @@ QubitMenu:
     source_culture: en
     label:
       en: Profile
+      es: Perfil
       fr: Profil
+      pl: Profil
+      sl: Profil
   QubitMenu_mainmenu_admin_users_infoObjectAcl:
     parent_id: QubitMenu_mainmenu_admin_users
     name: userInformationObjectAcl
@@ -179,12 +273,20 @@ QubitMenu:
     source_culture: en
     label:
       en: 'Taxonomy permissions'
+      es: 'Permisos de taxonomías'
+      fr: 'Droits sur les référentiels'
+      pl: 'Uprawnienia w zakresie taksonomii'
+      sl: 'Dovoljenja za taksonomijo'
   QubitMenu_mainmenu_admin_groups:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
     name: groups
     label:
       en: Groups
+      es: Grupos
+      fr: Groupes
+      pl: Grupy
+      sl: Skupine
     path: aclGroup/list
   QubitMenu_mainmenu_admin_groups_profile:
     parent_id: QubitMenu_mainmenu_admin_groups
@@ -193,7 +295,10 @@ QubitMenu:
     source_culture: en
     label:
       en: Profile
+      es: Perfil
       fr: Profil
+      pl: Profil
+      sl: Profil
   QubitMenu_mainmenu_admin_groups_infoObjectAcl:
     parent_id: QubitMenu_mainmenu_admin_groups
     name: groupInformationObjectAcl
@@ -215,19 +320,24 @@ QubitMenu:
     source_culture: en
     label:
       en: 'Taxonomy permissions'
+      es: 'Permisos de taxonomías'
+      fr: 'Droits sur les référentiels'
+      pl: 'Uprawnienia w zakresie taksonomii'
+      sl: 'Dovoljenja za taksonomijo'
   QubitMenu_mainmenu_admin_staticpages:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
     name: staticPages
     label:
       en: 'Static pages'
-      es: 'páginas estáticas'
+      es: 'Páginas estáticas'
       fa: 'صفحات ايستا'
-      fr: 'pages statiques'
+      fr: 'Pages statiques'
       it: 'pagine statiche'
       nl: 'statische pagina''s'
+      pl: 'Strony statyczne'
       pt: 'páginas estáticas'
-      sl: 'statična stran'
+      sl: 'Statične strani'
     path: staticpage/list
   QubitMenu_mainmenu_admin_menu:
     parent_id: QubitMenu_mainmenu_admin
@@ -235,7 +345,9 @@ QubitMenu:
     name: menu
     label:
       en: Menus
-      fr: menus
+      fr: Menus
+      pl: 'Listy menu'
+      sl: Meniji
     path: menu/list
   QuitMenu_mainmenu_admin_plugins:
     parent_id: QubitMenu_mainmenu_admin
@@ -243,7 +355,22 @@ QubitMenu:
     name: plugins
     label:
       en: Plugins
-    path: sfPluginAdminPlugin/index
+      fr: Extension
+      pl: Wtyczki/pluginy
+      sl: Vtičniki
+    path: sfPluginAdminPlugin/plugins
+  QuitMenu_mainmenu_admin_themes:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: themes
+    label:
+      en: Themes
+      es: Temas
+      fr: Thèmes
+      nl: 'Thema''s'
+      pl: Motywy
+      sl: Teme
+    path: sfPluginAdminPlugin/themes
   QubitMenu_mainmenu_admin_settings:
     parent_id: QubitMenu_mainmenu_admin
     source_culture: en
@@ -251,13 +378,14 @@ QubitMenu:
     label:
       de: Einstellungen
       en: Settings
-      es: configuración
+      es: Configuraciones
       fa: تنظيمات
-      fr: paramètres
+      fr: Paramétrages
       it: impostazioni
-      nl: instellingen
+      nl: Instellingen
+      pl: Ustawienia
       pt: configurações
-      sl: nastavitve
+      sl: Nastavitve
     path: settings/list
   QubitMenu_mainmenu_admin_descriptionUpdates:
     parent_id: QubitMenu_mainmenu_admin
@@ -265,7 +393,19 @@ QubitMenu:
     name: descriptionUpdates
     label:
       en: 'Description updates'
+      es: 'Actualizaciones de descripción'
+      fr: 'Mise à jour des descriptions'
+      nl: 'Beschrijving aanpassingen'
+      pl: 'Uaktualnienia opisu'
+      sl: 'Posodobitve popisa'
     path: search/descriptionUpdates
+  QubitMenu_mainmenu_admin_globalReplace:
+    parent_id: QubitMenu_mainmenu_admin
+    source_culture: en
+    name: globalReplace
+    label:
+      en: 'Global search/replace'
+    path: search/globalReplace
   QubitMenu_quicklinks_home:
     parent_id: QubitMenu_quicklinks
     source_culture: en
@@ -288,13 +428,14 @@ QubitMenu:
     label:
       de: Über
       en: About
-      es: acerca
+      es: Acerca
       fa: 'درباره ما'
-      fr: 'à propos'
+      fr: 'À propos'
       it: 'informazioni su'
-      nl: over
+      nl: Over
+      pl: O...
       pt: sobre
-      sl: 'o tem'
+      sl: 'O tem'
     path: 'staticpage/index?slug=about'
   QubitMenu_quicklinks_help:
     parent_id: QubitMenu_quicklinks
@@ -303,13 +444,14 @@ QubitMenu:
     label:
       de: Hilfe
       en: Help
-      es: ayuda
+      es: Ayuda
       fa: راهنما
-      fr: aide
+      fr: Aide
       it: aiuto
-      nl: help
+      nl: Help
+      pl: Pomoc
       pt: ajuda
-      sl: pomoč
+      sl: Pomoč
     path: 'http://ica-atom.org/doc/index.php?title=User_manual'
   QubitMenu_quicklinks_myProfile:
     parent_id: QubitMenu_quicklinks
@@ -317,7 +459,11 @@ QubitMenu:
     name: myProfile
     label:
       en: 'My profile'
-      fr: 'mon profil'
+      es: 'Mi perfil'
+      fr: 'Mon profil'
+      nl: 'Mijn profiel'
+      pl: 'Mój profil'
+      sl: 'Moj profil'
     path: '%profile%'
   QubitMenu_quicklinks_login:
     parent_id: QubitMenu_quicklinks
@@ -382,14 +528,14 @@ QubitMenu:
     name: browseSubjects
     label:
       en: Subjects
-    path: 'taxonomy/browse?id=<?php echo QubitTaxonomy::SUBJECT_ID ?>'
+    path: 'taxonomy/browse?id=35'
   QubitMenu_browse_places:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browsePlaces
     label:
       en: Places
-    path: 'taxonomy/browse?id=<?php echo QubitTaxonomy::PLACE_ID ?>'
+    path: 'taxonomy/browse?id=42'
   QubitMenu_browse_digital_objects:
     parent_id: QubitMenu_browse
     source_culture: en

@@ -279,6 +279,19 @@
               // Layers for current upload
               var thumbnailLayer = $('#thumbnail-' + event.id);
 
+              if ('error' in upload)
+              {
+                var uploadDiv = $('#upload-' + event.id);
+
+                // Add error message
+                uploadDiv.prepend('<div class="error">' + upload.error + '</div>');
+
+                // Remove thumbnail box
+                thumbnailLayer.remove();
+
+                return;
+              }
+
               thumbnailLayer
                 // Render img tag
                 .html('<img src="' + Qubit.multiFileUpload.uploadTmpDir + '/' + upload.thumb + '"/>')

@@ -27,7 +27,7 @@
       </tr>
     </thead><tbody>
       <?php foreach ($resource->getEvents() as $item): ?>
-        <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>" id="<?php echo url_for(array($item, 'module' => 'event')) ?>">
+        <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?> related_obj_<?php echo $item->id ?>" id="<?php echo url_for(array($item, 'module' => 'event')) ?>">
           <td>
             <?php echo render_title($item->informationObject) ?>
           </td><td>

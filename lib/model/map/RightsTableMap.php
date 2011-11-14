@@ -34,15 +34,20 @@ class RightsTableMap extends TableMap {
 		$this->setPhpName('rights');
 		$this->setClassname('QubitRights');
 		$this->setPackage('lib.model');
-		$this->setUseIdGenerator(true);
+		$this->setUseIdGenerator(false);
 		// columns
-		$this->addForeignKey('OBJECT_ID', 'objectId', 'INTEGER', 'object', 'ID', true, null, null);
-		$this->addForeignKey('PERMISSION_ID', 'permissionId', 'INTEGER', 'term', 'ID', false, null, null);
-		$this->addColumn('CREATED_AT', 'createdAt', 'TIMESTAMP', true, null, null);
-		$this->addColumn('UPDATED_AT', 'updatedAt', 'TIMESTAMP', true, null, null);
+		$this->addForeignPrimaryKey('ID', 'id', 'INTEGER' , 'object', 'ID', true, null, null);
+		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
+		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);
+		$this->addColumn('RESTRICTION', 'restriction', 'BOOLEAN', false, null, true);
+		$this->addForeignKey('BASIS_ID', 'basisId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('ACT_ID', 'actId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addForeignKey('RIGHTS_HOLDER_ID', 'rightsHolderId', 'INTEGER', 'actor', 'ID', false, null, null);
+		$this->addForeignKey('COPYRIGHT_STATUS_ID', 'copyrightStatusId', 'INTEGER', 'term', 'ID', false, null, null);
+		$this->addColumn('COPYRIGHT_STATUS_DATE', 'copyrightStatusDate', 'DATE', false, null, null);
+		$this->addColumn('COPYRIGHT_JURISDICTION', 'copyrightJurisdiction', 'VARCHAR', false, 255, null);
+		$this->addColumn('STATUTE_DETERMINATION_DATE', 'statuteDeterminationDate', 'DATE', false, null, null);
 		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
-		$this->addPrimaryKey('ID', 'id', 'INTEGER', true, null, null);
-		$this->addColumn('SERIAL_NUMBER', 'serialNumber', 'INTEGER', true, null, 0);
 		// validators
 	} // initialize()
 
@@ -51,11 +56,12 @@ class RightsTableMap extends TableMap {
 	 */
 	public function buildRelations()
 	{
-    $this->addRelation('object', 'object', RelationMap::MANY_TO_ONE, array('object_id' => 'id', ), 'CASCADE', null);
-    $this->addRelation('term', 'term', RelationMap::MANY_TO_ONE, array('permission_id' => 'id', ), null, null);
+    $this->addRelation('object', 'object', RelationMap::MANY_TO_ONE, array('id' => 'id', ), 'CASCADE', null);
+    $this->addRelation('termRelatedBybasisId', 'term', RelationMap::MANY_TO_ONE, array('basis_id' => 'id', ), 'SET NULL', null);
+    $this->addRelation('termRelatedByactId', 'term', RelationMap::MANY_TO_ONE, array('act_id' => 'id', ), 'SET NULL', null);
+    $this->addRelation('actor', 'actor', RelationMap::MANY_TO_ONE, array('rights_holder_id' => 'id', ), 'SET NULL', null);
+    $this->addRelation('termRelatedBycopyrightStatusId', 'term', RelationMap::MANY_TO_ONE, array('copyright_status_id' => 'id', ), 'SET NULL', null);
     $this->addRelation('rightsI18n', 'rightsI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null);
-    $this->addRelation('rightsActorRelation', 'rightsActorRelation', RelationMap::ONE_TO_MANY, array('id' => 'rights_id', ), 'CASCADE', null);
-    $this->addRelation('rightsTermRelation', 'rightsTermRelation', RelationMap::ONE_TO_MANY, array('id' => 'rights_id', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // RightsTableMap

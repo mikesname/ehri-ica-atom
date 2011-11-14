@@ -4,14 +4,14 @@
   <thead>
     <tr>
       <th>
-        <?php echo __('Name') ?>
+        <?php echo __('Media type') ?>
       </th><th>
         <?php echo __('Results') ?>
       </th>
     </tr>
   </thead><tbody>
     <?php foreach ($terms as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>
           <div style="padding-left: 17px;">
             <?php echo link_to($item->getName(array('cultureFallback'=>true)), array('module' => 'digitalobject', 'action' => 'browse', 'mediatype' => $item->id)) ?>

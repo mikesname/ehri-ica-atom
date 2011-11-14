@@ -13,7 +13,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($users as $item): ?>
-      <tr class="<?php echo (0 == $row++ % 2) ? 'even' : 'odd' ?>">
+      <tr class="<?php echo (0 == @++$row % 2) ? 'even' : 'odd' ?>">
         <td>
           <?php echo link_to($item->username, array($item, 'module' => 'user')) ?>
         </td><td>

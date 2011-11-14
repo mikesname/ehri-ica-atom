@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -447,9 +447,6 @@ modRewriteContents;
       $settingsYml['notWritable'] = 'notWritable';
     }
 
-    $dispatcher = sfContext::getInstance()->getEventDispatcher();
-    $formatter = new sfAnsiColorFormatter;
-
     chdir(sfConfig::get('sf_root_dir'));
 
     // TODO By instantiating a new application configuration the cache clear
@@ -460,7 +457,7 @@ modRewriteContents;
 
     // TODO We do not want to cache anything during install, but currently we
     // must clear the cache after adding enabling sfInstallPlugin : (
-    $cacheClear = new sfCacheClearTask($dispatcher, $formatter);
+    $cacheClear = new sfCacheClearTask(sfContext::getInstance()->getEventDispatcher(), new sfFormatter());
     $cacheClear->run();
 
     sfConfig::set('sf_debug', $saveDebug);
@@ -582,6 +579,11 @@ modRewriteContents;
 
   public static function addSymlinks()
   {
+    if (!function_exists('symlink'))
+    {
+      return;
+    }
+
     $symlinks = array('sf' => sfConfig::get('sf_root_dir').'/vendor/symfony/data/web/sf');
 
     foreach ($symlinks as $name => $path)

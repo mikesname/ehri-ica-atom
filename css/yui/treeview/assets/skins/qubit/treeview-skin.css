@@ -134,6 +134,7 @@ a.ygtvspacer:hover, a.ygtvspacer:focus {
   background-color: transparent;
   margin: 0;
   display: inline;
+  outline: none;
 }
 
 .ygtvspacer {
@@ -141,7 +142,7 @@ a.ygtvspacer:hover, a.ygtvspacer:focus {
   width: 12px;
 }
 
-/*top node */
+/* top node */
 .ygtvlp {
   width: 18px;
   height: 22px;

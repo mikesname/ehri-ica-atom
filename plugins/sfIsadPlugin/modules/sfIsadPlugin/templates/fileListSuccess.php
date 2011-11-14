@@ -17,7 +17,7 @@
     </tr>
   </thead><tbody>
     <?php foreach ($informationObjects as $item): ?>
-      <tr class="<?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
+      <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>
           <?php $isad = new sfIsadPlugin($item); echo render_value($isad->referenceCode) ?>
         </td><td>

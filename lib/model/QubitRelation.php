@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -52,22 +52,22 @@ class QubitRelation extends BaseRelation
     {
       if ($this->objectId != $cleanObjectId && null !== QubitInformationObject::getById($cleanObjectId))
       {
-        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanObjectId));
+        QubitSearch::updateInformationObject(QubitInformationObject::getById($cleanObjectId));
       }
 
       if ($this->subjectId != $cleanSubjectId && null != QubitInformationObject::getById($cleanSubjectId))
       {
-        SearchIndex::updateTranslatedLanguages(QubitInformationObject::getById($cleanSubjectId));
+        QubitSearch::updateInformationObject(QubitInformationObject::getById($cleanSubjectId));
       }
 
       if ($this->object instanceof QubitInformationObject)
       {
-        SearchIndex::updateTranslatedLanguages($this->object);
+        QubitSearch::updateInformationObject($this->object);
       }
 
       if ($this->subject instanceof QubitInformationObject)
       {
-        SearchIndex::updateTranslatedLanguages($this->subject);
+        QubitSearch::updateInformationObject($this->subject);
       }
     }
 
@@ -115,14 +115,14 @@ class QubitRelation extends BaseRelation
   {
     parent::delete($connection);
 
-    if ($this->getObject() instanceof QubitInformationObject)
+    if ($this->object instanceof QubitInformationObject)
     {
-      SearchIndex::updateTranslatedLanguages($this->getObject());
+      QubitSearch::updateInformationObject($this->object);
     }
 
-    if ($this->getSubject() instanceof QubitInformationObject)
+    if ($this->subject instanceof QubitInformationObject)
     {
-      SearchIndex::updateTranslatedLanguages($this->getSubject());
+      QubitSearch::updateInformationObject($this->subject);
     }
   }
 
@@ -155,7 +155,7 @@ class QubitRelation extends BaseRelation
    * @param array   $options optional parameters
    * @return QubitQuery collection of QubitRelation objects
    */
-  public static function getRelationsBySubjectId($id, $options=array())
+  public static function getRelationsBySubjectId($id, $options = array())
   {
     $criteria = new Criteria;
     $criteria->add(QubitRelation::SUBJECT_ID, $id);
@@ -175,7 +175,7 @@ class QubitRelation extends BaseRelation
    * @param array   $options optional parameters
    * @return QubitQuery collection of QubitRelation objects
    */
-  public static function getBySubjectOrObjectId($id, $options=array())
+  public static function getBySubjectOrObjectId($id, $options = array())
   {
     $criteria = new Criteria;
 
@@ -204,7 +204,7 @@ class QubitRelation extends BaseRelation
    * @param array   $options list of options to pass to QubitQuery
    * @return QubitQuery collection of QubitObjects
    */
-  public static function getRelatedSubjectsByObjectId($className, $objectId, $options=array())
+  public static function getRelatedSubjectsByObjectId($className, $objectId, $options = array())
   {
     $criteria = new Criteria;
     $criteria->add(QubitRelation::OBJECT_ID, $objectId);
@@ -227,7 +227,7 @@ class QubitRelation extends BaseRelation
    * @param array   $options list of options to pass to QubitQuery
    * @return QubitQuery collection of QubitObjects
    */
-  public static function getRelatedObjectsBySubjectId($className, $subjectId, $options=array())
+  public static function getRelatedObjectsBySubjectId($className, $subjectId, $options = array())
   {
     $criteria = new Criteria;
     $criteria->add(QubitRelation::SUBJECT_ID, $subjectId);
@@ -266,89 +266,9 @@ class QubitRelation extends BaseRelation
     }
     else if ($this->objectId == $refid)
     {
-     $opposite = $this->getSubject();
+      $opposite = $this->getSubject();
     }
 
     return $opposite;
-  }
-
-  /**
-   * Add a related note for this object
-   *
-   * @param string $note text of note
-   * @param integer $noteTypeId QubitTerm constant describing note
-   * @return QubitNote new note object
-   */
-  public function addNote($text, $noteTypeId)
-  {
-    // Don't create a note with a blank text or a null noteTypeId
-    if (0 < strlen($text) && 0 !== intval($noteTypeId))
-    {
-      $newNote = new QubitNote;
-      $newNote->setScope('QubitRelation');
-      $newNote->setContent($text);
-      $newNote->setTypeId($noteTypeId);
-
-      $this->notes[] = $newNote;
-    }
-
-    return $this;
-  }
-
-  /**
-   * Update an related note
-   *
-   * @param string $note text of note
-   * @param integer $noteTypeId QubitTerm constant describing note
-   * @return QubitNote note object
-   */
-  public function updateNote($text, $noteTypeId)
-  {
-    $existingNote = false;
-    foreach ($this->notes as $key => $note)
-    {
-      if ($note->typeId == $noteTypeId)
-      {
-        if (0 == strlen($text))
-        {
-          // If $text is blank, then delete note object
-          $note->delete();
-          unset($this->notes[$key]);
-        }
-        else
-        {
-          // Update existing note
-          $note->setContent($text);
-        }
-
-        $existingNote = true;
-        break;
-      }
-    }
-
-    if (false === $existingNote)
-    {
-      // Add new note
-      return $this->addNote($text, $noteTypeId);
-    }
-    else
-    {
-      return $this;
-    }
-  }
-
-  /**
-   * Get a note related to this object filtered by TYPE_ID column
-   *
-   * @param integer $noteTypeId note type
-   * @return QubitNote found note
-   */
-  public function getNoteByTypeId($noteTypeId)
-  {
-    $criteria = new Criteria;
-    $criteria->add(QubitNote::OBJECT_ID, $this->id);
-    $criteria->add(QubitNote::TYPE_ID, $noteTypeId);
-
-    return QubitNote::getOne($criteria);
   }
 }

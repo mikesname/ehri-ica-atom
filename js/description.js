@@ -8,7 +8,7 @@
           $('.description', context).hide();
 
           $(':has(> .description)', context)
-            .focusin(function ()
+            .focusin(window.description_focusin ? window.description_focusin : function ()
               {
                 var $this = $(this);
                 var $description = $('.description', this);
@@ -26,8 +26,12 @@
                         // Remove position relative to align with respect to the dialog
                         .closest('.form-item').css('position', 'static').end()
 
+                        .addClass('description-dialog')
+                        
+                        .clone().prependTo($dialog)
+
                         // Show tooltip
-                        .addClass('description-right').show();
+                        .show();
                     };
 
                   positionateDialog();
@@ -64,12 +68,14 @@
                 // Show the tooltip
                 $description.show();
               })
-            .focusout(function ()
+            .focusout(window.description_focusout ? window.description_focusout : function ()
               {
                 $('.description', this)
                   .removeClass('description-left')
                   .removeClass('description-right')
                   .hide();
+
+                $('div.yui-panel > .description-dialog').remove();
               });
         } };
   })(jQuery);

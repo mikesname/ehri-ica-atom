@@ -21,9 +21,10 @@
       ->label(__('Identifier').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
-    <?php echo render_field($form->authorizedFormOfName
+    <?php echo $form->authorizedFormOfName
       ->help(__('"Record the standardised form of name of the institution, adding appropriate qualifiers (for instance dates, place, etc.), if necessary. Specify separately in the Rules and/or conventions used element (5.6.3) which set of rules has been applied for this element." (ISDIAH 5.1.2)'))
-      ->label(link_to_if(isset($sf_request->getAttribute('sf_route')->resource), __('Authorized form of name'), array($resource, 'module' => 'actor', 'action' => 'edit', 'repositoryReroute' => $resource->id)).' <span class="form-required" title="'.__('This is a mandatory element').'">*</span>'), $resource) ?>
+      ->label(__('Authorized form of name').' <span class="form-required" title="'.__('This is a mandatory element').'">*</span>')
+      ->renderRow() ?>
 
     <?php echo $form->parallelName
       ->help(__('"Purpose: To indicate the various forms in which the authorised form of name of an institution occurs in other languages or script form(s). Rule: Record the parallel form(s) of name of the institution in accordance with any relevant national or international conventions or rules applied by the agency that created the description, including any necessary sub elements and/or qualifiers required by those conventions or rules. Specify in the Rules and/or conventions used element (5.6.3) which rules have been applied." (ISDIAH 5.1.3)'))
@@ -41,123 +42,11 @@
 
   </fieldset>
 
- <fieldset class="collapsible collapsed" id="contactArea">
+  <fieldset class="collapsible collapsed" id="contactArea">
 
-   <legend><?php echo __('Contact area') ?></legend>
+    <legend><?php echo __('Contact area') ?></legend>
 
-   <div class="section">
-
-      <h3><?php echo __('Contact information') ?> <span class="form-required" title="<?php echo __('This is a mandatory element.') ?>">*</span></h3>
-
-      <?php foreach ($resource->contactInformations as $item): ?>
-
-        <table>
-          <tr>
-            <th style="margin-top: 5px; border-top: 2px solid #999999; width: 90%">
-              <?php echo $item->getContactType(array('cultureFallback' => true)) ?><?php if ($item->getPrimaryContact()): ?> (<?php echo __('Primary contact') ?>)<?php endif; ?>
-            </th><td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc">
-              <?php echo link_to(image_tag('pencil'), array($item, 'module' => 'actor', 'action' => 'editContactInformation')) ?>
-            </td><td style="width: 20px; border-top: 2px solid #cccccc; border-bottom: 1px solid #cccccc">
-              <?php echo link_to(image_tag('delete'), array($item, 'module' => 'actor', 'action' => 'deleteContactInformation')) ?>
-            </td>
-          </tr>
-        </table>
-
-        <?php echo get_partial('repository/contactInformation', array('contactInformation' => $item)) ?>
-
-      <?php endforeach; ?>
-
-      <table>
-        <tr>
-          <th colspan="4" style="margin-top: 5px; border-top: 2px solid #999999; width: 95%">
-            <?php echo __('Add new contact information') ?>
-          </th>
-        </tr><tr>
-          <th>
-            <?php echo __('Street address') ?>
-          </th><td>
-            <textarea name="street_address"></textarea>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('City') ?>
-          </th><td>
-            <input name="city"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Region/province') ?>
-          </th><td>
-            <input name="region"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Country') ?>
-          </th><td>
-            <?php echo $form->country_code->render() ?>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Postal code') ?>
-          </th><td>
-            <input name="postal_code"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Telephone') ?>
-          </th><td>
-            <input name="telephone"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Fax') ?>
-          </th><td>
-            <input name="fax"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Email') ?>
-          </th><td>
-            <input name="email"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Website') ?>
-          </th><td>
-            <input name="website"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Contact person') ?>
-          </th><td>
-            <input name="contact_person"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Primary contact') ?>
-          </th><td>
-            <input type="checkbox" name="primary_contact"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Contact type') ?>
-          </th><td>
-            <input name="contact_type"/>
-          </td>
-        </tr><tr>
-          <th>
-            <?php echo __('Note') ?>
-          </th><td>
-            <textarea name="contact_information_note" class="resizable" size="30x3"></textarea>
-          </td>
-        </tr>
-      </table>
-
-      <div class="description">
-        <?php echo __('See ISDIAH 5.2 for contact area information and examples.') ?>
-      </div>
-
-    </div>
+    <?php echo get_partial('contactinformation/edit', $contactInformationEditComponent->getVarHolder()->getAll()) ?>
 
   </fieldset>
 

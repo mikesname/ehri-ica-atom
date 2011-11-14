@@ -1,52 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE xliff PUBLIC "-//XLIFF//DTD XLIFF//EN" "http://www.oasis-open.org/committees/xliff/documents/xliff.dtd">
 <xliff version="1.0">
-  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2010-11-11T15:18:23Z" product-name="messages">
+  <file source-language="EN" target-language="fr" datatype="plaintext" original="messages" date="2011-11-08T09:42:59Z" product-name="messages">
     <header/>
     <body>
       <trans-unit id="1">
         <source>Password strength:</source>
-        <target/>
+        <target>Fiabilité du mot de passe :</target>
       </trans-unit>
       <trans-unit id="2">
         <source>To make your password stronger:</source>
-        <target/>
+        <target>Pour renforcer votre mot de passe :</target>
       </trans-unit>
       <trans-unit id="3">
         <source>Make it at least six characters</source>
-        <target/>
+        <target>Six caractères au minimum sont requis</target>
       </trans-unit>
       <trans-unit id="4">
         <source>Add lowercase letters</source>
-        <target/>
+        <target>Ajouter des lettres en minuscule</target>
       </trans-unit>
       <trans-unit id="5">
         <source>Add uppercase letters</source>
-        <target/>
+        <target>Ajouter des lettres majuscules</target>
       </trans-unit>
       <trans-unit id="6">
         <source>Add numbers</source>
-        <target/>
+        <target>Ajouter des nombres</target>
       </trans-unit>
       <trans-unit id="7">
         <source>Add punctuation</source>
-        <target/>
+        <target>Ajouter une ponctuation</target>
       </trans-unit>
       <trans-unit id="8">
         <source>Make it different from your username</source>
-        <target/>
+        <target>Il doit être différent de votre nom d'utilisateur</target>
       </trans-unit>
       <trans-unit id="9">
-        <source>yes</source>
-        <target/>
+        <source>Yes</source>
+        <target>Oui</target>
       </trans-unit>
       <trans-unit id="10">
-        <source>no</source>
-        <target/>
+        <source>No</source>
+        <target>Non</target>
       </trans-unit>
       <trans-unit id="11">
         <source>Passwords match:</source>
-        <target/>
+        <target>Concordance des mots de passe :</target>
       </trans-unit>
     </body>
   </file>

@@ -42,6 +42,7 @@ class RelationTableMap extends TableMap {
 		$this->addForeignKey('TYPE_ID', 'typeId', 'INTEGER', 'term', 'ID', false, null, null);
 		$this->addColumn('START_DATE', 'startDate', 'DATE', false, null, null);
 		$this->addColumn('END_DATE', 'endDate', 'DATE', false, null, null);
+		$this->addColumn('SOURCE_CULTURE', 'sourceCulture', 'VARCHAR', true, 7, null);
 		// validators
 	} // initialize()
 
@@ -54,6 +55,7 @@ class RelationTableMap extends TableMap {
     $this->addRelation('objectRelatedBysubjectId', 'object', RelationMap::MANY_TO_ONE, array('subject_id' => 'id', ), null, null);
     $this->addRelation('objectRelatedByobjectId', 'object', RelationMap::MANY_TO_ONE, array('object_id' => 'id', ), null, null);
     $this->addRelation('term', 'term', RelationMap::MANY_TO_ONE, array('type_id' => 'id', ), null, null);
+    $this->addRelation('relationI18n', 'relationI18n', RelationMap::ONE_TO_MANY, array('id' => 'id', ), 'CASCADE', null);
 	} // buildRelations()
 
 } // RelationTableMap

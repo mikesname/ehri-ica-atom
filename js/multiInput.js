@@ -42,16 +42,16 @@
                         event.preventDefault();
                       }
 
-                      var $ul = $(this).prev('ul.multInput');
+                      var $ul = $(this).prev('ul.multiInput');
                       if (!$ul.length)
                       {
                         // Add <ul/> element, if it doesn't exist already (new
                         // object)
-                        $ul = $('<ul class="multInput"/>').insertBefore(this);
+                        $ul = $('<ul class="multiInput"/>').insertBefore(this);
                       }
 
-                      // Add input value to multInput
-                      var $li = $('<li><input name="' + name + '[new' + index++ + ']" value="' + this.value + '"/></li>')
+                      // Add input value to multiInput
+                      var $li = $('<li><input type="text" name="' + name + '[new' + index++ + ']" value="' + this.value + '"/></li>')
 
                         // Bind click event to new list item
                         .click(function (event)

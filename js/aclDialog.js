@@ -71,7 +71,7 @@ function QubitAclDialog(dialogId, tableTemplate, $)
 
   this.config = {
     width: "480px",
-    zIndex: "100",
+    zIndex: 20000,
     fixedcenter: true,
     draggable: true,
     visible: false,

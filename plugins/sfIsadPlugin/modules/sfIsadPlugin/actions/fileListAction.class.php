@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -34,10 +34,7 @@ class sfIsadPluginFileListAction extends sfAction
       $this->forward404();
     }
 
-    $search = new QubitSearch;
-
-    $query = new Zend_Search_Lucene_Search_Query_Boolean;
-    $query->addSubquery(new Zend_Search_Lucene_Search_Query_Term(new Zend_Search_Lucene_Index_Term($this->resource->id, 'parentId')), true);
+    $query = QubitSearch::getInstance()->addTerm($this->resource->id, 'parentId');
 
     if (isset($request->query))
     {
@@ -48,7 +45,7 @@ class sfIsadPluginFileListAction extends sfAction
     $query = QubitAcl::searchFilterDrafts($query);
 
     $this->pager = new QubitArrayPager;
-    $this->pager->hits = $search->getEngine()->getIndex()->find($query);
+    $this->pager->hits = QubitSearch::getInstance()->getEngine()->getIndex()->find($query);
     $this->pager->setMaxPerPage($request->limit);
     $this->pager->setPage($request->page);
 

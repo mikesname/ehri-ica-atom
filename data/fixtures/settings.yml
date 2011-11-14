@@ -3,7 +3,7 @@ QubitSetting:
     name: version
     editable: 0
     deleteable: 0
-    value: 62
+    value: 74
   QubitSetting_2:
     name: upload_dir
     editable: 0
@@ -33,7 +33,7 @@ QubitSetting:
     name: defaultPubStatus
     editable: 1
     deleteable: 0
-    value: <?php echo QubitTerm::PUBLICATION_STATUS_DRAFT_ID."\n" ?>
+    value: 159
   QubitSetting_8:
     name: informationobject
     scope: default_template
@@ -77,12 +77,13 @@ QubitSetting:
     value:
       de: Urheber/Bestandsbildner
       en: Creator
-      es: Produtor
+      es: Creador
       fr: Producteur
       it: 'Soggetto produttore'
       nl: Archiefvormer
+      pl: Twórca
       pt: Produtor
-      sl: Ustvarjalci
+      sl: Ustvarjalec
   QubitSetting_14:
     name: repository
     scope: ui_label
@@ -101,7 +102,10 @@ QubitSetting:
       en: Function
       es: Función
       fr: Fonction
+      nl: Functie
+      pl: Funkcja
       pt: Funçao
+      sl: Funkcija
   QubitSetting_16:
     name: term
     scope: ui_label
@@ -112,11 +116,12 @@ QubitSetting:
       de: Begriff
       en: Term
       es: Término
-      fr: Descripteur
+      fr: Terme
       it: Termine
       nl: Term
+      pl: Termin
       pt: Termo
-      sl: Deskriptorji
+      sl: Izraz
   QubitSetting_17:
     name: subject
     scope: ui_label
@@ -126,12 +131,13 @@ QubitSetting:
     value:
       de: Gegenstand
       en: Subject
-      es: Termo
-      fr: Sujet
+      es: Tema
+      fr: Mot-matière
       it: Soggetto
       nl: Onderwerp
+      pl: Temat
       pt: Assunto
-      sl: Osebe
+      sl: Subjekt
   QubitSetting_18:
     name: collection
     scope: ui_label
@@ -156,12 +162,13 @@ QubitSetting:
     value:
       de: Bestand
       en: Holdings
-      es: Coleções
+      es: Fondos
       fr: Collections
       it: Patrimoni
-      nl: Collecties
+      nl: Bestanden
+      pl: 'Zbiory posiadane'
       pt: Acervo
-      sl: Fondi
+      sl: 'Arhivsko gradivo'
   QubitSetting_20:
     name: place
     scope: ui_label
@@ -171,12 +178,13 @@ QubitSetting:
     value:
       de: Ort
       en: Place
-      es: Place
+      es: Lugar
       fr: Lieu
       it: Luogo
       nl: Plaats
+      pl: Miejsce
       pt: Local
-      sl: Kraji
+      sl: Kraj
   QubitSetting_21:
     name: name
     scope: ui_label
@@ -186,12 +194,13 @@ QubitSetting:
     value:
       de: Name
       en: Name
-      es: Name
+      es: Nombre
       fr: Nom
       it: Nome
       nl: Naam
+      pl: Nazwa
       pt: Nome
-      sl: Imena
+      sl: Ime
   QubitSetting_22:
     name: digitalobject
     scope: ui_label
@@ -201,12 +210,13 @@ QubitSetting:
     value:
       de: 'Digitales Objekt'
       en: 'Digital object'
-      es: 'Digital object'
+      es: 'Objeto digital'
       fr: 'Objet numérique'
       it: 'Oggetto digitale'
       nl: 'Digitaal object'
+      pl: 'Obiekt cyfrowy'
       pt: 'Objeto digital'
-      sl: 'Digitalni objekti'
+      sl: 'Digitalni objekt'
   QubitSetting_23:
     name: physicalobject
     scope: ui_label
@@ -216,12 +226,13 @@ QubitSetting:
     value:
       de: 'Physisches Objekt'
       en: 'Physical storage'
-      es: 'Physical storage'
-      fr: 'Objet physique'
+      es: 'Almacenamiento físico'
+      fr: 'Localisation physique'
       it: 'Oggetto fisico'
-      nl: 'Fysieke opslag'
+      nl: Bergplaats
+      pl: 'Składowanie w ujęciu fizycznym'
       pt: 'Objeto físico'
-      sl: Skladišča
+      sl: 'Fizična hramba'
   QubitSetting_24:
     name: mediatype
     scope: ui_label
@@ -231,12 +242,13 @@ QubitSetting:
     value:
       de: Medientyp
       en: 'Media type'
-      es: 'Media type'
+      es: 'Tipo de medio'
       fr: 'Type de support'
       it: 'Tipo di media'
-      nl: Bestandsformaat
+      nl: 'Soort drager'
+      pl: 'Typ medium'
       pt: 'Tipo de mídia'
-      sl: 'Tip medija'
+      sl: 'Vrsta nosilca zapisa'
   QubitSetting_25:
     name: materialtype
     scope: ui_label
@@ -246,10 +258,13 @@ QubitSetting:
     value:
       de: Materialart
       en: 'Material type'
+      es: 'Tipo de material'
       fr: 'Type de document'
       it: 'Tipo di materiale'
+      nl: 'Soort materiaal'
+      pl: 'Typ materiału'
       pt: 'Gênero documental'
-      sl: 'Tip materiala'
+      sl: 'Vrsta materialov'
   QubitSetting_26:
     name: en
     scope: i18n_languages
@@ -321,3 +336,16 @@ QubitSetting:
   QubitSetting_showTooltips:
     name: show_tooltips
     value: 1
+  QubitSetting_accessionMask:
+    name: accession_mask
+    value: '%Y-%m-%d/#i'
+  QubitSetting_accessionCounter:
+    name: accession_counter
+    value: 0
+  QubitSetting_separatorCharacter:
+    name: separator_character
+    value: -
+  QubitSetting_perRepositoryAssetPath:
+    name: repository_quota
+    value: -1
+    editable: 1

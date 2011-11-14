@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -44,6 +44,12 @@ class InformationObjectEditPhysicalObjectsAction extends DefaultEditAction
     if (!isset($this->resource->parent))
     {
       $this->forward404();
+    }
+
+    // Check user authorization
+    if (!QubitAcl::check($this->resource, 'update'))
+    {
+      QubitAcl::forwardUnauthorized();
     }
   }
 
@@ -84,11 +90,10 @@ class InformationObjectEditPhysicalObjectsAction extends DefaultEditAction
       $this->resource->addPhysicalObject($params['_sf_route']->resource);
     }
 
-    $value = $this->form->getValue('name');
-    if (isset($value))
+    if (null !== $this->form->getValue('name') || null !== $this->form->getValue('location'))
     {
       $physicalObject = new QubitPhysicalObject;
-      $physicalObject->name = $value;
+      $physicalObject->name = $this->form->getValue('name');
       $physicalObject->location = $this->form->getValue('location');
 
       $params = $this->context->routing->parse(Qubit::pathInfo($this->form->getValue('type')));

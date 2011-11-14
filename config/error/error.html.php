@@ -20,7 +20,7 @@
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/modules/system/system.css"/>
 <link rel="stylesheet" type="text/css" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/style.css"/>
 <link rel="stylesheet" type="text/css" media="print" href="<?php echo $path ?>/plugins/sfDrupalPlugin/vendor/drupal/themes/garland/print.css"/>
-<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/plugins/sfClassicPlugin/css/main.css"/>
+<link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/css/classic.css"/>
 <link rel="stylesheet" type="text/css" media="screen" href="<?php echo $path ?>/css/main.css"/>
 
 </head>

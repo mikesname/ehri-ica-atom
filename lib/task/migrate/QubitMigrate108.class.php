@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -27,14 +27,19 @@
  */
 class QubitMigrate108 extends QubitMigrate
 {
+  const
+    MILESTONE = '1.0.8',
+    INIT_VERSION = 0,
+    FINAL_VERSION = 39;
+
   /**
    * Controller for calling methods to alter data
    *
    * @return QubitMigrate108 this object
    */
-  protected function alterData($version)
+  protected function alterData()
   {
-    switch ($version)
+    switch ($this->version)
     {
       default:
         $this->updateStaticPageVersionNumber();
@@ -208,7 +213,7 @@ class QubitMigrate108 extends QubitMigrate
         $this->updateEnMenuLabels();
     }
 
-    // Delete "stub" objects
+    // Delete "stub" object
     $this->deleteStubObjects();
 
     return $this;
@@ -229,31 +234,6 @@ class QubitMigrate108 extends QubitMigrate
     $this->sortClasses();
 
     return $this;
-  }
-
-  public function execute()
-  {
-    // Find version
-    foreach ($this->data['QubitSetting'] as $key => $value)
-    {
-      if ('version' == $value['name'])
-      {
-        $version = $value['value'][$value['source_culture']];
-        break;
-      }
-    }
-
-    $this->alterData($version);
-
-    $parser = new sfYamlParser;
-    $data = $parser->parse(file_get_contents(sfConfig::get('sf_data_dir').'/fixtures/settings.yml'));
-
-    // Update version to 39 (last version for 1.0.8)
-    $this->data['QubitSetting'][$key]['value'][$this->data['QubitSetting'][$key]['source_culture']] = 39;
-
-    $this->sortData();
-
-    return $this->getData();
   }
 
   /**
@@ -504,32 +484,35 @@ class QubitMigrate108 extends QubitMigrate
     // Replace QubitAclAction::ACTION_ID constant with string
     $pattern = '/QubitAclAction::([A-Z_]+)_ID/';
 
-    foreach ($this->data['QubitAclPermission'] as $key => $row)
+    if (isset($this->data['QubitAclPermission']))
     {
-      if (0 < preg_match($pattern, $row['action_id'], $matches))
+      foreach ($this->data['QubitAclPermission'] as $key => $row)
       {
-        // Direct match in acl_permission.action_id column
-        $action = strtolower($matches[1]);
-      }
-      else if (isset($this->data['QubitAclAction'][$row['action_id']]) && 0 < preg_match($pattern, $this->data['QubitAclAction'][$row['action_id']]['id'], $matches))
-      {
-        // Follow action_id row alias to QubitAclAction row, and match constant
-        $action = strtolower($matches[1]);
-      }
-      else
-      {
-        continue;
-      }
+        if (0 < preg_match($pattern, $row['action_id'], $matches))
+        {
+          // Direct match in acl_permission.action_id column
+          $action = strtolower($matches[1]);
+        }
+        else if (isset($this->data['QubitAclAction'][$row['action_id']]) && 0 < preg_match($pattern, $this->data['QubitAclAction'][$row['action_id']]['id'], $matches))
+        {
+          // Follow action_id row alias to QubitAclAction row, and match constant
+          $action = strtolower($matches[1]);
+        }
+        else
+        {
+          continue;
+        }
 
-      // Switch 'view_draft' string to camelCase
-      if ('view_draft' == $action)
-      {
-        $action = 'viewDraft';
-      }
+        // Switch 'view_draft' string to camelCase
+        if ('view_draft' == $action)
+        {
+          $action = 'viewDraft';
+        }
 
-      // Change name of `action_id` column to `action`
-      $this->data['QubitAclPermission'][$key]['action'] = $action;
-      unset($this->data['QubitAclPermission'][$key]['action_id']);
+        // Change name of `action_id` column to `action`
+        $this->data['QubitAclPermission'][$key]['action'] = $action;
+        unset($this->data['QubitAclPermission'][$key]['action_id']);
+      }
     }
 
     // Drop QubitAclAction table data
@@ -573,7 +556,7 @@ class QubitMigrate108 extends QubitMigrate
         $nextKey = $key;
         break;
       }
-      else if ('users' == $row['name'])
+      else if (isset($row['name']) && 'users' == $row['name'])
       {
         // Find the 'users' menu that is a child of the admin menu
         if (strpos($row['parent_id'], 'QubitMenu::ADMIN_ID') ||
@@ -583,9 +566,9 @@ class QubitMigrate108 extends QubitMigrate
           $userMenuKey = $key;
 
           // Delete all children of user menu (users and groups)
-          foreach ($this->data['QubitMenu'] as $key2 => $row2)
+          foreach ($this->data['QubitMenu'] as $key2 => $item)
           {
-            if ($userMenuKey == $this->data['QubitMenu'][$key2]['parent_id'])
+            if (isset($item['parent_id']) && $userMenuKey == $item['parent_id'])
             {
               unset($this->data['QubitMenu'][$key2]);
             }
@@ -974,12 +957,18 @@ class QubitMigrate108 extends QubitMigrate
     // Delete existing admin permissions
     foreach ($this->data['QubitAclPermission'] as $key => $row)
     {
-      $group = $this->data['QubitAclGroup'][$row['group_id']];
+      $group_id = $row['group_id'];
+
+      // If group_id points to a QubitAclGroup row, then use `id` column from 
+      // that row
+      if (isset($this->data['QubitAclGroup'][$row['group_id']]))
+      {
+        $group_id = $this->data['QubitAclGroup'][$row['group_id']]['id'];
+      }
+
       if (
-       '<?php echo QubitAclGroup::ADMINISTRATOR_ID."\n" ?>' == $row['group_id'] ||
-       '<?php echo QubitAclGroup::ADMIN_ID."\n" ?>' == $row['group_id'] ||
-       '<?php echo QubitAclGroup::ADMINISTRATOR_ID."\n" ?>' == $group['id'] ||
-       '<?php echo QubitAclGroup::ADMIN_ID."\n" ?>' == $group['id']
+        '<?php echo QubitAclGroup::ADMINISTRATOR_ID."\n" ?>' == $group_id ||
+        '<?php echo QubitAclGroup::ADMIN_ID."\n" ?>' == $group_id
       )
       {
         unset($this->data['QubitAclPermission'][$key]);
@@ -1005,7 +994,7 @@ class QubitMigrate108 extends QubitMigrate
     // Delete existing admin permissions
     foreach ($this->data['QubitAclPermission'] as $key => $row)
     {
-      if ('read' == $row['action'])
+      if (isset($row['action']) && 'read' == $row['action'])
       {
         unset($this->data['QubitAclPermission'][$key]);
       }
@@ -1085,7 +1074,7 @@ class QubitMigrate108 extends QubitMigrate
       // Switch from linking list pages to linking create pages
       foreach ($this->data['QubitMenu'] as $key => $row)
       {
-        if ($addMenuKey == $row['parent_id'] || '<?php echo QubitMenu::ADD_EDIT_ID."\n" ?>' == $row['parent_id'])
+        if (isset($row['parent_id']) && ($addMenuKey == $row['parent_id'] || '<?php echo QubitMenu::ADD_EDIT_ID."\n" ?>' == $row['parent_id']))
         {
           $this->data['QubitMenu'][$key]['path'] = str_replace('list', 'create', $row['path']);
         }
@@ -1104,7 +1093,7 @@ class QubitMigrate108 extends QubitMigrate
   {
     foreach ($this->data['QubitMenu'] as $key => $row)
     {
-      if (false !== strpos($row['path'], 'show'))
+      if (isset($row['path']) && false !== strpos($row['path'], 'show'))
       {
         $this->data['QubitMenu'][$key]['path'] = str_replace('show', 'index', $row['path']);
       }
@@ -1383,7 +1372,7 @@ class QubitMigrate108 extends QubitMigrate
           if (false !== strpos($name, ' '))
           {
             $name = strtolower(trim($row['name']));
-            $name = preg_replace('/ (.)/e', 'strtoupper($1)', $name);
+            $name = preg_replace('/ (.)/e', 'strtoupper(\'$1\')', $name);
           }
       }
 
@@ -1435,7 +1424,7 @@ class QubitMigrate108 extends QubitMigrate
   {
     foreach ($this->data['QubitMenu'] as $key => $row)
     {
-      if (!isset($row['label']))
+      if (!isset($row['label']) || !isset($row['label']['en']))
       {
         continue;
       }
@@ -1597,7 +1586,7 @@ class QubitMigrate108 extends QubitMigrate
     {
       foreach ($qubitTermArray as $key => $term)
       {
-        if ($term['id'] == '<?php echo QubitTerm::'.$constantName.'."\n" ?>')
+        if (isset($term['id']) && $term['id'] == '<?php echo QubitTerm::'.$constantName.'."\n" ?>')
         {
           $newTermArray[$key] = $term;
           unset($qubitTermArray[$key]);

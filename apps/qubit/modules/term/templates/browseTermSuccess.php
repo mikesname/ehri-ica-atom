@@ -4,9 +4,9 @@
 
 <div class="section">
   <?php foreach ($informationObjects as $item): ?>
-    <div class="clearfix <?php echo 0 == ++$row % 2 ? 'even' : 'odd' ?>">
-
-      <?php if (isset($item->digitalObjects[0])): ?>
+    <div class="clearfix <?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
+    
+      <?php if (isset($item->digitalObjects[0]) && null !== $item->digitalObjects[0]->thumbnail): ?>
         <?php echo link_to(image_tag(public_path($item->digitalObjects[0]->thumbnail->getFullPath()), array('alt' => render_title($item))), array($item, 'module' => 'informationobject')) ?>
       <?php endif; ?>
 

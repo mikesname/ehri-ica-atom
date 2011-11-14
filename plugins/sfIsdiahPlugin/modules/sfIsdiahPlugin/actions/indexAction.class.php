@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -34,7 +34,7 @@ class sfIsdiahPluginIndexAction extends RepositoryIndexAction
 
     $this->isdiah = new sfIsdiahPlugin($this->resource);
 
-    if (1 > strlen($title = $this->resource))
+    if (1 > strlen($title = $this->resource->__toString()))
     {
       $title = $this->context->i18n->__('Untitled');
     }
@@ -44,7 +44,7 @@ class sfIsdiahPluginIndexAction extends RepositoryIndexAction
     if (QubitAcl::check($this->resource, 'update'))
     {
       $validatorSchema = new sfValidatorSchema;
-      $valuess = array();
+      $values = array();
 
       $validatorSchema->authorizedFormOfName = new sfValidatorString(array(
         'required' => true), array(

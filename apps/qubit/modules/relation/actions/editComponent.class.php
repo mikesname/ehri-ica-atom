@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -70,16 +70,6 @@ class RelationEditComponent extends sfComponent
   {
     switch ($field->getName())
     {
-      case 'date':
-        $this->relation->updateNote($this->form->getValue('date'), QubitTerm::RELATION_NOTE_DATE_ID);
-
-        break;
-
-      case 'description':
-        $this->relation->updateNote($this->form->getValue('description'), QubitTerm::RELATION_NOTE_DESCRIPTION_ID);
-
-        break;
-
       case 'resource':
         unset($this->relation->object);
 
@@ -111,7 +101,7 @@ class RelationEditComponent extends sfComponent
 
   public function processForm()
   {
-    // HACK For now, parameter name and action name are the same.  Should
+    // HACK For now, parameter name and action name are the same. Should
     // really be configurable, ideally by interpreting
     // $form->getWidgetSchema()->getNameFormat()?
     $params = array($this->request[$this->actionName]);
@@ -166,10 +156,7 @@ class RelationEditComponent extends sfComponent
     $this->form = new sfForm;
     $this->form->getValidatorSchema()->setOption('allow_extra_fields', true);
 
-    // HACK Use static::$NAMES in PHP 5.3,
-    // http://php.net/oop5.late-static-bindings
-    $class = new ReflectionClass($this);
-    foreach ($class->getStaticPropertyValue('NAMES') as $name)
+    foreach ($this::$NAMES as $name)
     {
       $this->addField($name);
     }

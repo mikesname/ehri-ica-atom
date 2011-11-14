@@ -25,25 +25,25 @@
     <?php echo render_show(__('Reference code'), $isad->referenceCode) ?>
 
     <?php echo $form->identifier
-      ->help(__('Provide a specific local reference code, control number, or other unique identifier. The country and repository code will be automatically added from the linked repository record to form a full reference code.'))
+      ->help(__('Provide a specific local reference code, control number, or other unique identifier. The country and repository code will be automatically added from the linked repository record to form a full reference code. (ISAD 3.1.1)'))
       ->label(__('Identifier').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
     <?php echo render_field($form->title
-      ->help(__('Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.'))
+      ->help(__('Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions. (ISAD 3.1.2)'))
       ->label(__('Title').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource) ?>
 
     <?php echo get_partial('event', $eventComponent->getVarHolder()->getAll()) ?>
 
     <?php echo $form->levelOfDescription
-      ->help(__('Record the level of this unit of description.'))
+      ->help(__('Record the level of this unit of description. (ISAD 3.1.4)'))
       ->label(__('Level of description').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
       ->renderRow() ?>
 
     <?php echo get_partial('informationobject/childLevels', array('help' => __('<strong>Identifier:</strong> Provide a specific local reference code, control number, or other unique identifier.<br/><strong>Level of description:</strong> Record the level of this unit of description.<br/><strong>Title:</strong> Provide either a formal title or a concise supplied title in accordance with the rules of multilevel description and national conventions.'))) ?>
 
     <?php echo render_field($form->extentAndMedium
-      ->help(__('Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description. Seperate multiple extents with a linebreak.'))
+      ->help(__('Record the extent of the unit of description by giving the number of physical or logical units in arabic numerals and the unit of measurement. Give the specific medium (media) of the unit of description. Separate multiple extents with a linebreak. (ISAD 3.1.5)'))
       ->label(__('Extent and medium').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>'), $resource, array('class' => 'resizable')) ?>
 
   </fieldset> <!-- /#identityArea -->
@@ -58,7 +58,7 @@
         ->renderLabel() ?>
       <?php echo $form->creators->render(array('class' => 'form-autocomplete')) ?>
       <?php echo $form->creators
-        ->help(__('Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. Search for an existing name in the authority records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new authority record.'))
+        ->help(__('Record the name of the organization(s) or the individual(s) responsible for the creation, accumulation and maintenance of the records in the unit of description. Search for an existing name in the authority records by typing the first few characters of the name. Alternatively, type a new name to create and link to a new authority record. (ISAD 3.2.1)'))
         ->renderHelp() ?>
       <input class="add" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'add')) ?> #authorizedFormOfName"/>
       <input class="list" type="hidden" value="<?php echo url_for(array('module' => 'actor', 'action' => 'autocomplete')) ?>"/>
@@ -75,10 +75,10 @@
     </div>
 
     <?php echo render_field($form->archivalHistory
-      ->help(__('Record the successive transfers of ownership, responsibility and/or custody of the unit of description and indicate those actions, such as history of the arrangement, production of contemporary finding aids, re-use of the records for other purposes or software migrations, that have contributed to its present structure and arrangement. Give the dates of these actions, insofar as they can be ascertained. If the archival history is unknown, record that information.')), $resource, array('class' => 'resizable')) ?>
+      ->help(__('Record the successive transfers of ownership, responsibility and/or custody of the unit of description and indicate those actions, such as history of the arrangement, production of contemporary finding aids, re-use of the records for other purposes or software migrations, that have contributed to its present structure and arrangement. Give the dates of these actions, insofar as they can be ascertained. If the archival history is unknown, record that information. (ISAD 3.2.3)')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->acquisition
-      ->help(__('Record the source from which the unit of description was acquired and the date and/or method of acquisition if any or all of this information is not confidential. If the source is unknown, record that information. Optionally, add accession numbers or codes.'))
+      ->help(__('Record the source from which the unit of description was acquired and the date and/or method of acquisition if any or all of this information is not confidential. If the source is unknown, record that information. Optionally, add accession numbers or codes. (ISAD 3.2.4)'))
       ->label(__('Immediate source of acquisition or transfer')), $resource, array('class' => 'resizable')) ?>
 
   </fieldset> <!-- /#contextArea -->
@@ -88,17 +88,17 @@
     <legend><?php echo __('Content and structure area') ?></legend>
 
     <?php echo render_field($form->scopeAndContent
-      ->help(__('Give a summary of the scope (such as, time periods, geography) and content, (such as documentary forms, subject matter, administrative processes) of the unit of description, appropriate to the level of description.')), $resource, array('class' => 'resizable')) ?>
+      ->help(__('Give a summary of the scope (such as, time periods, geography) and content, (such as documentary forms, subject matter, administrative processes) of the unit of description, appropriate to the level of description. (ISAD 3.3.1)')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->appraisal
-      ->help(__('Record appraisal, destruction and scheduling actions taken on or planned for the unit of description, especially if they may affect the interpretation of the material.'))
+      ->help(__('Record appraisal, destruction and scheduling actions taken on or planned for the unit of description, especially if they may affect the interpretation of the material. (ISAD 3.3.2)'))
       ->label(__('Appraisal, destruction and scheduling')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->accruals
-      ->help(__('Indicate if accruals are expected. Where appropriate, give an estimate of their quantity and frequency.')), $resource, array('class' => 'resizable')) ?>
+      ->help(__('Indicate if accruals are expected. Where appropriate, give an estimate of their quantity and frequency. (ISAD 3.3.3)')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->arrangement
-      ->help(__('Specify the internal structure, order and/or the system of classification of the unit of description. Note how these have been treated by the archivist. For electronic records, record or reference information on system design.'))
+      ->help(__('Specify the internal structure, order and/or the system of classification of the unit of description. Note how these have been treated by the archivist. For electronic records, record or reference information on system design. (ISAD 3.3.4)'))
       ->label(__('System of arrangement')), $resource, array('class' => 'resizable')) ?>
 
   </fieldset> <!-- /#contentAndStructureArea -->
@@ -108,19 +108,19 @@
     <legend><?php echo __('Conditions of access and use area') ?></legend>
 
     <?php echo render_field($form->accessConditions
-      ->help(__('Specify the law or legal status, contract, regulation or policy that affects access to the unit of description. Indicate the extent of the period of closure and the date at which the material will open when appropriate.'))
+      ->help(__('Specify the law or legal status, contract, regulation or policy that affects access to the unit of description. Indicate the extent of the period of closure and the date at which the material will open when appropriate. (ISAD 3.4.1)'))
       ->label(__('Conditions governing access')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->reproductionConditions
-      ->help(__('Give information about conditions, such as copyright, governing the reproduction of the unit of description after access has been provided. If the existence of such conditions is unknown, record this. If there are no conditions, no statement is necessary.'))
+      ->help(__('Give information about conditions, such as copyright, governing the reproduction of the unit of description after access has been provided. If the existence of such conditions is unknown, record this. If there are no conditions, no statement is necessary. (ISAD 3.4.3)'))
       ->label(__('Conditions governing reproduction')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo $form->language
-      ->help(__('Record the language(s) of the materials comprising the unit of description'))
+      ->help(__('Record the language(s) of the materials comprising the unit of description. (ISAD 3.4.3)'))
       ->renderRow(array('class' => 'form-autocomplete')) ?>
 
     <?php echo $form->script
-      ->help(__('Record the script(s) of the materials comprising the unit of description'))
+      ->help(__('Record the script(s) of the materials comprising the unit of description. (ISAD 3.4.4)'))
       ->renderRow(array('class' => 'form-autocomplete')) ?>
 
     <?php echo render_field($form->physicalCharacteristics
@@ -128,7 +128,7 @@
       ->label(__('Physical characteristics and technical requirements')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->findingAids
-      ->help(__('Give information about any finding aids that the repository or records creator may have that provide information relating to the context and contents of the unit of description. If appropriate, include information on where to obtain a copy.')), $resource, array('class' => 'resizable')) ?>
+      ->help(__('Give information about any finding aids that the repository or records creator may have that provide information relating to the context and contents of the unit of description. If appropriate, include information on where to obtain a copy. (ISAD 3.4.5)')), $resource, array('class' => 'resizable')) ?>
 
  </fieldset> <!-- /#conditionsOfAccessAndUseArea -->
 
@@ -137,15 +137,15 @@
     <legend><?php echo __('Allied materials area') ?></legend>
 
     <?php echo render_field($form->locationOfOriginals
-      ->help(__('If the original of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. If the originals no longer exist, or their location is unknown, give that information.'))
+      ->help(__('If the original of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. If the originals no longer exist, or their location is unknown, give that information. (ISAD 3.5.1)'))
       ->label(__('Existence and location of originals')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->locationOfCopies
-      ->help(__('If the copy of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers.'))
+      ->help(__('If the copy of the unit of description is available (either in the institution or elsewhere) record its location, together with any significant control numbers. (ISAD 3.5.2)'))
       ->label(__('Existence and location of copies')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo render_field($form->relatedUnitsOfDescription
-      ->help(__('Record information about units of description in the same repository or elsewhere that are related by provenance or other association(s). Use appropriate introductory wording and explain the nature of the relationship . If the related unit of description is a finding aid, use the finding aids element of description (3.4.5) to make the reference to it.'))
+      ->help(__('Record information about units of description in the same repository or elsewhere that are related by provenance or other association(s). Use appropriate introductory wording and explain the nature of the relationship . If the related unit of description is a finding aid, use the finding aids element of description (3.4.5) to make the reference to it. (ISAD 3.5.3)'))
       ->label(__('Related units of description')), $resource, array('class' => 'resizable')) ?>
 
     <div class="form-item">
@@ -187,7 +187,7 @@
       </table>
 
       <div class="description">
-        <?php echo __('Record a citation to, and/or information about a publication that is about or based on the use, study, or analysis of the unit of description. Include references to published facsimiles or transcriptions.') ?>
+        <?php echo __('Record a citation to, and/or information about a publication that is about or based on the use, study, or analysis of the unit of description. Include references to published facsimiles or transcriptions. (ISAD 3.5.4)') ?>
       </div>
 
     </div>
@@ -237,7 +237,7 @@
       </table>
 
       <div class="description">
-        <?php echo __('Record specialized or other important information not accommodated by any of the defined elements of description.') ?>
+        <?php echo __('Record specialized or other important information not accommodated by any of the defined elements of description. (ISAD 3.6.1)') ?>
       </div>
 
     </div>
@@ -272,7 +272,7 @@
 
     <div class="form-item">
       <?php echo $form->nameAccessPoints
-        ->label(__('Name access points'))
+        ->label(__('Name access points (subjects)'))
         ->renderLabel() ?>
       <?php echo $form->nameAccessPoints->render(array('class' => 'form-autocomplete')) ?>
       <?php if (QubitAcl::check(QubitActor::getRoot(), 'create')): ?>
@@ -297,7 +297,7 @@
       ->label(__('Institution identifier')), $resource) ?>
 
     <?php echo render_field($form->rules
-      ->help(__('Record the international, national and/or local rules or conventions followed in preparing the description.'))
+      ->help(__('Record the international, national and/or local rules or conventions followed in preparing the description. (ISAD 3.7.2)'))
       ->label(__('Rules or conventions')), $resource, array('class' => 'resizable')) ?>
 
     <?php echo $form->descriptionStatus
@@ -363,12 +363,20 @@
       </table>
 
       <div class="description">
-        <?php echo __('Record notes on sources consulted in preparing the description and who prepared it.') ?>
+        <?php echo __('Record notes on sources consulted in preparing the description and who prepared it. (ISAD 3.7.1)') ?>
       </div>
 
     </div>
 
   </fieldset> <!-- /#descriptionControlArea -->
+
+  <fieldset class="collapsible collapsed" id="rightsArea">
+
+    <legend><?php echo __('Rights area') ?></legend>
+
+    <?php echo get_partial('right/edit', $rightEditComponent->getVarHolder()->getAll()) ?>
+
+  </fieldset>
 
   <?php echo get_partial('informationobject/adminInfo', array('form' => $form, 'resource' => $resource)) ?>
 

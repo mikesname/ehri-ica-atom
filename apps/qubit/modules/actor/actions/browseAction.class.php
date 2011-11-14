@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -24,6 +24,7 @@
  * @subpackage actor
  * @author     Peter Van Garderen <peter@artefactual.com>
  * @author     David Juhasz <david@artefactual.com>
+ * @author     Wu Liu <wu.liu@usask.ca>
  * @version    svn:$Id$
  */
 class ActorBrowseAction extends sfAction
@@ -53,7 +54,7 @@ class ActorBrowseAction extends sfAction
       case 'nameUp':
         $criteria->addAscendingOrderByColumn('authorized_form_of_name');
 
-        break;
+      break;
 
       case 'typeDown':
         $fallbackTable = 'QubitTerm';
@@ -70,7 +71,6 @@ class ActorBrowseAction extends sfAction
         break;
 
       case 'updatedDown':
-      default:
         $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
 
         break;
@@ -79,6 +79,16 @@ class ActorBrowseAction extends sfAction
         $criteria->addAscendingOrderByColumn(QubitObject::UPDATED_AT);
 
         break;
+
+      default:
+        if (!$this->getUser()->isAuthenticated())
+        {
+          $criteria->addAscendingOrderByColumn('authorized_form_of_name');
+        }
+        else
+        {
+          $criteria->addDescendingOrderByColumn(QubitObject::UPDATED_AT);
+        }
     }
 
     // Do source culture fallback

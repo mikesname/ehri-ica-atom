@@ -131,6 +131,14 @@
     ->help(__('Information about rights held in and over the resource (e.g. copyright, access conditions, etc.).'))
     ->label(__('Rights')), $resource, array('class' => 'resizable')) ?>
 
+  <fieldset class="collapsible collapsed" id="rightsArea">
+
+    <legend><?php echo __('Rights area') ?></legend>
+
+    <?php echo get_partial('right/edit', $rightEditComponent->getVarHolder()->getAll()) ?>
+
+  </fieldset>
+
   <?php echo get_partial('informationobject/adminInfo', array('form' => $form, 'resource' => $resource)) ?>
 
   <?php echo get_partial('informationobject/editActions', array('resource' => $resource)) ?>

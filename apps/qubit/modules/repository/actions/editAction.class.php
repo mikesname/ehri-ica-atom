@@ -4,8 +4,8 @@
  * This file is part of Qubit Toolkit.
  *
  * Qubit Toolkit is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 2 of the License, or
+ * it under the terms of the GNU Affero General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
  * Qubit Toolkit is distributed in the hope that it will be useful,
@@ -39,12 +39,6 @@ class RepositoryEditAction extends DefaultEditAction
     {
       $this->resource = $this->getRoute()->resource;
 
-      // Check that this isn't the root
-      if (!isset($this->resource->parent))
-      {
-        $this->forward404();
-      }
-
       // Check user authorization
       if (!QubitAcl::check($this->resource, 'update'))
       {
@@ -64,6 +58,10 @@ class RepositoryEditAction extends DefaultEditAction
         QubitAcl::forwardUnauthorized();
       }
     }
+
+    $this->contactInformationEditComponent = new ContactInformationEditComponent($this->context, 'contactinformation', 'editContactInformation');
+    $this->contactInformationEditComponent->resource = $this->resource;
+    $this->contactInformationEditComponent->execute($this->request);
   }
 
   protected function addField($name)
@@ -163,12 +161,6 @@ class RepositoryEditAction extends DefaultEditAction
     }
   }
 
-  /**
-   * Process form fields
-   *
-   * @param $field mixed symfony form widget
-   * @return void
-   */
   protected function processField($field)
   {
     switch ($field->getName())
@@ -227,62 +219,73 @@ class RepositoryEditAction extends DefaultEditAction
   {
     parent::execute($request);
 
-    $this->form->setValidator('country_code', new sfValidatorI18nChoiceCountry);
-    $this->form->setWidget('country_code', new sfWidgetFormI18nChoiceCountry(array('add_empty' => true, 'culture' => $this->context->user->getCulture())));
-
-    if ($request->isMethod('post'))
+    if ($request->hasParameter('csvimport'))
     {
-      $this->form->bind($request->getPostParameters());
+      $this->form->bind($request->getParameterHolder()->getAll());
       if ($this->form->isValid())
       {
         $this->processForm();
 
+        $type = $request->getParameter('type');
+        if (!empty($type))
+        {
+          $this->resource->setTypeByName($type);
+        }
+
         $this->resource->save();
 
-        $this->updateContactInformation();
+        if ($this->request->contact_type
+            || $this->request->contactPerson
+            || $this->request->streetAddress
+            || $this->request->city
+            || $this->request->region
+            || $this->request->countryCode
+            || $this->request->postalCode
+            || $this->request->telephone
+            || $this->request->fax
+            || $this->request->email
+            || $this->request->website)
+        {
+          $contactInformation = new QubitContactInformation;
+          $contactInformation->actor = $this->resource;
+          $contactInformation->contactType = $this->request->contactType;
+          $contactInformation->contactPerson = $this->request->contactPerson;
+          $contactInformation->streetAddress = $this->request->streetAddress;
+          $contactInformation->city = $this->request->city;
+          $contactInformation->region = $this->request->region;
+          $contactInformation->countryCode = $this->request->countryCode;
+          $contactInformation->postalCode = $this->request->postalCode;
+          $contactInformation->telephone = $this->request->telephone;
+          $contactInformation->fax = $this->request->fax;
+          $contactInformation->email = $this->request->email;
+          $contactInformation->website = $this->request->website;
+          $contactInformation->note = $this->request->contactInformationNote;
+
+          $contactInformation->save();
+
+          if ($this->request->primaryContact)
+          {
+            $contactInformation->makePrimaryContact();
+          }
+        }
+      }
+
+    }
+    elseif ($request->isMethod('post'))
+    {
+      $this->form->bind($request->getPostParameters());
+      if ($this->form->isValid())
+      {
+        $this->contactInformationEditComponent->processForm();
+
+        $this->processForm();
+
+        $this->resource->save();
 
         $this->redirect(array($this->resource, 'module' => 'repository'));
       }
     }
 
     QubitDescription::addAssets($this->response);
-  }
-
-  protected function updateContactInformation()
-  {
-    if ($this->request->contact_type
-        || $this->request->contact_person
-        || $this->request->street_address
-        || $this->request->city
-        || $this->request->region
-        || $this->request->country_code
-        || $this->request->postal_code
-        || $this->request->telephone
-        || $this->request->fax
-        || $this->request->email
-        || $this->request->website)
-    {
-      $contactInformation = new QubitContactInformation;
-      $contactInformation->actor = $this->resource;
-      $contactInformation->contactType = $this->request->contact_type;
-      $contactInformation->contactPerson = $this->request->contact_person;
-      $contactInformation->streetAddress = $this->request->street_address;
-      $contactInformation->city = $this->request->city;
-      $contactInformation->region = $this->request->region;
-      $contactInformation->countryCode = $this->request->country_code;
-      $contactInformation->postalCode = $this->request->postal_code;
-      $contactInformation->telephone = $this->request->telephone;
-      $contactInformation->fax = $this->request->fax;
-      $contactInformation->email = $this->request->email;
-      $contactInformation->website = $this->request->website;
-      $contactInformation->note = $this->request->contact_information_note;
-
-      $contactInformation->save();
-
-      if ($this->request->primary_contact)
-      {
-        $contactInformation->makePrimaryContact();
-      }
-    }
   }
 }
