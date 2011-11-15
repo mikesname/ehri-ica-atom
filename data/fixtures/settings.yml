@@ -59,7 +59,15 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: 'Archivische Beschreibung'
       en: 'Archival description'
+      es: 'Descripción archivística'
+      fr: 'Description archivistique'
+      it: 'Descrizione archivistica'
+      nl: 'Archivistische beschrijving'
+      pl: 'Opis archiwalny'
+      pt: 'Descrição arquivística'
+      sl: 'Arhivski popis'
   QubitSetting_12:
     name: actor
     scope: ui_label
@@ -68,6 +76,12 @@ QubitSetting:
     source_culture: en
     value:
       en: 'Authority record'
+      es: 'Registro de aurtoridad'
+      fr: 'Notice d''autorité'
+      nl: 'Geauthoriseerde beschrijving'
+      pl: 'Hasło wzorcowe'
+      pt: 'Registro de autoridade'
+      sl: 'Zapis o ustvarjalcu'
   QubitSetting_13:
     name: creator
     scope: ui_label
@@ -91,7 +105,15 @@ QubitSetting:
     deleteable: 0
     source_culture: en
     value:
+      de: Archiv
       en: 'Archival institution'
+      es: 'Institución archivística'
+      fr: 'Service d''archives'
+      it: 'Istituzione archivistica'
+      nl: Archiefinstelling
+      pl: 'Instytucja archiwalna'
+      pt: 'Instituição arquivística'
+      sl: Arhiv
   QubitSetting_15:
     name: function
     scope: ui_label
