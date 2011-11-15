@@ -10,7 +10,8 @@ QubitStaticPage:
       it: Benvenuti
       ko: 환영합니다
       nl: Welkom
-      pt: 'Bem vindo(a)'
+      pl: Witamy
+      pt: 'Bem-vindo'
       sl: Dobrodošli
     content:
       de: "Das ist die standardmäßige Homepage von ICA-AtoM. Dabei handelt es sich um eine Beta-Version, die nach wie vor weiter entwickelt und getestet wird.\n\nICA-AtoM ist eine vollständig webbasierte Anwendung zur Archiverschließung. Sie basiert auf den Standards des <a href=\"http://www.ica.org/\">Internationalen Archivrats</a> (ICA). <i>AtoM</i> ist ein Akronym für <i>Access to Memory</i>.\n\nDer ICA und seine <a href=\"http://ica-atom.org/about#partners\">Projekpartner</a> machen diese Anwendung als Open-Source-Software zugänglich, um archivischen Institutionen eine frei zugänglichen und einfach zu benutzende Möglichkeit anzubieten, ihre Bestände online vorzustellen. Auf der Seite <a href=\"about\">Über ICA-Atom</a> erfahren Sie Näheres zum Projekt.\n\n<h2>Hilfe</h2>\n\nBenützen Sie das online <a href=\"http://ica-atom.org/docs\">Benützerhandbuch</a> um mehr über die Funktionen dieses Programms zu erfahren oder wählen Sie die Schaltfläche\n<i>blättern</i>, um einige Beispieldaten zu sehen."
