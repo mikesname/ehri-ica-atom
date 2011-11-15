@@ -22,7 +22,7 @@
         <?php if ($sf_user->isAuthenticated()): ?>
           <div id="navigation">
             <div class="section">
-              <?php echo get_component('menu', 'mainMenu', array('sf_cache_key' => 'settings')) ?>
+              <?php echo get_component('menu', 'mainMenu', array('sf_cache_key' => $sf_user->getCulture())) ?>
             </div> <!-- /.section -->
           </div> <!-- /#navigation -->
         <?php endif; ?>

@@ -211,11 +211,11 @@ QubitMenu:
     label:
       de: Funktion
       en: Function
-      es: Función
-      fr: Fonction
-      nl: Functie
+      es: Funciones
+      fr: Fonctions
+      nl: Functies
       pl: Funkcja
-      sl: Funkcija
+      sl: Funkcij
     path: function/add
   QubitMenu_mainmenu_import_xml:
     parent_id: QubitMenu_mainmenu_import
