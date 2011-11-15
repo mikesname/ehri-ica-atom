@@ -204,7 +204,13 @@ QubitMenu:
     source_culture: en
     name: addFunction
     label:
-      en: Functions
+      de: Funktion
+      en: Function
+      es: Función
+      fr: Fonction
+      nl: Functie
+      pl: Funkcja
+      sl: Funkcija
     path: function/add
   QubitMenu_mainmenu_import_xml:
     parent_id: QubitMenu_mainmenu_import
@@ -500,6 +506,12 @@ QubitMenu:
     name: browseInformationObjects
     label:
       en: 'Archival descriptions'
+      es: 'Descripción archivística'
+      fr: 'description archivistique'
+      it: 'descrizione archivistica'
+      nl: 'archivistische beschrijving'
+      pt: 'descrição arquivística'
+      sl: 'arhivski opisi'
     path: informationobject/browse
   QubitMenu_browse_actors:
     parent_id: QubitMenu_browse
@@ -507,6 +519,12 @@ QubitMenu:
     name: browseActors
     label:
       en: 'Authority records'
+      es: 'Registro de autoridad'
+      fr: 'fichier d''autorité'
+      it: 'record di autorità'
+      nl: 'geautoriseerd bestand'
+      pt: 'registro de autoridade'
+      sl: 'normativni zapisi'
     path: actor/browse
   QubitMenu_browse_repositories:
     parent_id: QubitMenu_browse
@@ -514,32 +532,66 @@ QubitMenu:
     name: browseRepositories
     label:
       en: 'Archival institutions'
+      es: 'Institución archivística'
+      fr: institution
+      it: 'istituzione archivistica'
+      nl: archiefinstelling
+      pt: 'instituição arquivística'
+      sl: 'arhivske ustanove'
     path: repository/browse
   QubitMenu_browse_functions:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browseFunctions
     label:
+      de: Funktionen
       en: Functions
+      es: Funciones
+      fr: Fonctions
+      nl: Functies
+      pl: Funkcja
+      sl: Funkcij
     path: function/browse
   QubitMenu_browse_subjects:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browseSubjects
     label:
+      de: Themen
       en: Subjects
+      es: Materias
+      fr: Sujets
+      it: soggetti
+      nl: Onderwerpen
+      pt: Assuntos
+      sl: osebe
     path: 'taxonomy/browse?id=35'
   QubitMenu_browse_places:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browsePlaces
     label:
+      de: Orte
       en: Places
+      es: Lugares
+      fr: Lieux
+      it: luoghi
+      nl: Plaatsen
+      pt: Locais
+      sl: kraji
     path: 'taxonomy/browse?id=42'
   QubitMenu_browse_digital_objects:
     parent_id: QubitMenu_browse
     source_culture: en
     name: browseDigitalObjects
     label:
+      de: 'Digitales Objekt'
       en: 'Digital objects'
+      es: 'Objeto digital'
+      fr: 'Objet numérique'
+      it: 'Oggetto digitale'
+      nl: 'Digitaal object'
+      pl: 'Obiekt cyfrowy'
+      pt: 'Objeto digital'
+      sl: 'Digitalni objekt'
     path: digitalobject/list
