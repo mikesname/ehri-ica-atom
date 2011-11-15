@@ -154,24 +154,25 @@ QubitMenu:
     name: addInformationObject
     label:
       de: 'Archivische Beschreibung'
-      en: 'Archival description'
+      en: 'Archival descriptions'
       es: 'Descripción archivística'
       fr: 'Description archivistique'
       it: 'Descrizione archivistica'
       nl: 'Archivistische beschrijving'
       pl: 'Opis archiwalny'
       pt: 'Descrição arquivística'
-      sl: 'Arhivski popis'
+      sl: 'Arhivski opisi'
     path: informationobject/add
   QubitMenu_mainmenu_addedit_actor:
     parent_id: QubitMenu_mainmenu_addedit
     source_culture: en
     name: addActor
     label:
-      en: 'Authority record'
-      es: 'Registro de aurtoridad'
+      en: 'Authority records'
+      es: 'Registro de autoridad'
       fr: 'Notice d''autorité'
-      nl: 'Geauthoriseerde beschrijving'
+      it: 'Record di autorità'
+      nl: 'Geautoriseerd bestand'
       pl: 'Hasło wzorcowe'
       pt: 'Registro de autoridade'
       sl: 'Zapis o ustvarjalcu'
@@ -182,14 +183,14 @@ QubitMenu:
     name: addRepository
     label:
       de: Archiv
-      en: 'Archival institution'
+      en: 'Archival institutions'
       es: 'Institución archivística'
       fr: 'Service d''archives'
       it: 'Istituzione archivistica'
       nl: Archiefinstelling
       pl: 'Instytucja archiwalna'
       pt: 'Instituição arquivística'
-      sl: Arhiv
+      sl: 'Arhivske ustanove'
     path: repository/add
   QubitMenu_mainmenu_addedit_term:
     parent_id: QubitMenu_mainmenu_addedit
@@ -197,11 +198,11 @@ QubitMenu:
     name: addTerm
     label:
       en: Terms
-      fr: descripteurs
-      it: termine
-      nl: term
-      pt: termo
-      sl: izraz
+      fr: Descripteurs
+      it: Termine
+      nl: Term
+      pt: Termo
+      sl: Izraz
     path: term/add
   QubitMenu_mainmenu_addedit_functions:
     parent_id: QubitMenu_mainmenu_addedit
@@ -248,7 +249,7 @@ QubitMenu:
       it: utenti
       nl: Gebruikers
       pl: Użytkownicy
-      pt: usuários
+      pt: Usuários
       sl: Uporabniki
     path: user/list
   QubitMenu_mainmenu_admin_users_profile:
