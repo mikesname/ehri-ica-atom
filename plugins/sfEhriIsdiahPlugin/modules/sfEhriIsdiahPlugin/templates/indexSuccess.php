@@ -129,7 +129,7 @@
 
 <?php echo render_show(__('Maintenance notes'), render_value($isdiah->maintenanceNotes)) ?>
 
-<?php echo render_show(__('Priority'), render_value($isdiah->ehriPriority)) ?>
+<?php echo render_show(__('Priority'), render_value($isdiah->priorities[$isdiah->ehriPriority])) ?>
 
 <div class="field">
   <h3><?php echo __('Copyright Issue') ?></h3>
