@@ -98,12 +98,18 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
     {
       $this->resource->descriptionIdentifier = "EHRI";
     }
+    if (!$this->resource->institutionResponsibleIdentifier)
+    {
+      $this->resource->institutionResponsibleIdentifier = "EHRI";
+    }
     if (!$this->resource->rules)
     {
       $this->resource->rules = "ISAD(G)";
     }
-
-
+    if (!$this->resource->scriptOfDescription)
+    {
+      $this->resource->scriptOfDescription = "Latn";
+    }
   }
 
   protected function addField($name)
@@ -126,9 +132,7 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
         $this->form->setDefault('ehriPriority', $this->isad->ehriPriority);
         $this->form->setValidator('ehriPriority', new sfValidatorString);
         $this->form->setWidget('ehriPriority', new sfWidgetFormSelect(
-            array("choices" => array(
-                null => "", "High" =>"High", "Medium" => "Medium",
-                "Low" => "Low", "Reject" => "Reject"))));
+            array("choices" => $this->isad->priorities)));
         break;
 
       case 'otherName':

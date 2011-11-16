@@ -32,6 +32,16 @@ class sfEhriIsadPlugin extends sfIsadPlugin
   private
     $_meta;
 
+  public $priorities = array(
+    null => "",
+    5 =>"5",
+    4 => "4",
+    3 => "3",
+    2 => "2",
+    1 => "1",
+    0 => "Reject"
+  );
+
   public function __get($name)
   {
     switch ($name)

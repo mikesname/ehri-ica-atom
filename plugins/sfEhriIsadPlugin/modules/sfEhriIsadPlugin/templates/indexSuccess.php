@@ -219,7 +219,7 @@
   <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('EHRI Metadata').'</h2>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'ehriMetadata', 'title' => __('Edit EHRI Metadata'))) ?>
 
   <?php echo render_show(__('Scope'), render_value($isad->ehriScope)) ?>
-  <?php echo render_show(__('Priority'), render_value($isad->ehriPriority)) ?>
+  <?php echo render_show(__('Priority'), render_value($isad->priorities[$isad->ehriPriority])) ?>
   <?php echo render_show(__('Copyright Issue'), render_value($isad->ehriCopyrightIssue ? "Yes" : "No")) ?>
   
 
