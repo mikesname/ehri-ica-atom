@@ -25,6 +25,16 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
       'Basic description',
       'Search services',
   );
+  // Ditto
+  public $priorities = array(
+    null => "",
+    5 =>"5",
+    4 => "4",
+    3 => "3",
+    2 => "2",
+    1 => "1",
+    0 => "Reject"
+  );
 
   public function __get($name)
   {
