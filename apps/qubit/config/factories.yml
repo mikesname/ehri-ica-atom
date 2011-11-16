@@ -1,6 +1,15 @@
 # You can find more information about this file on the symfony website:
 # http://www.symfony-project.org/reference/1_4/en/05-Factories
 
+default:
+  # overriding the default 30-minute timeout
+  # for 1 week
+  user:
+    class: myUser
+    param:
+      timeout:         604800
+
+
 prod:
   logger:
     class:   sfNoLogger
@@ -53,3 +62,4 @@ all:
     param:
       cache_key_use_vary_headers: true
       cache_key_use_host_name:    true
+
