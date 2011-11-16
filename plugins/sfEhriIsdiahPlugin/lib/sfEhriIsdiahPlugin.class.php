@@ -13,11 +13,12 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
   // require jumping through some unpleasant
   // hoops elsewhere in the code.
   public $commonSources = array(
-      'Yad Vashem',
+      'Archival Guide',
+      'Bibliography',
+      'Claims Conference',      
       'Mémorial de la Shoah',
       'USHMM',
-      'Archival Guide',
-      'Bibliography',        
+      'Yad Vashem',
   );
   // FIXME: Ditto, should be static
   public $researchServices = array(
