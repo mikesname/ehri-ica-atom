@@ -87,9 +87,17 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
     {
       $this->resource->descIdentifier = "EHRI";
     }
+    if (!$this->resource->descInstitutionIdentifier)
+    {
+      $this->resource->descInstitutionIdentifier = "EHRI";
+    }
     if (!$this->resource->descRules)
     {
       $this->resource->descRules = "ISDIAH";
+    }
+    if (!$this->resource->script)
+    {
+      $this->resource->script = "Latn";
     }
   }
 
@@ -107,8 +115,8 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
         $this->form->setValidator('ehriPriority', new sfValidatorString);
         $this->form->setWidget('ehriPriority', new sfWidgetFormSelect(
             array("choices" => array(
-                null => "", "High" =>"High", "Medium" => "Medium",
-                "Low" => "Low", "Reject" => "Reject"))));
+                null => "", 5 =>"5", 4 => "4", 3 => "3", 2 => "2",
+                1 => "1", 0 => "Reject"))));
         break;
 
       default:
