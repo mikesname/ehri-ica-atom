@@ -90,7 +90,7 @@ class QubitCsvImport
         $action = new sfRadPluginEditAction($this->context, 'sfRadPlugin', 'edit');
         break;
       case 'isad':
-        $action = new sfIsadPluginEditAction($this->context, 'sfRadPlugin', 'edit');
+        $action = new sfIsadPluginEditAction($this->context, 'sfIsadPlugin', 'edit');
         break;
     }
 
@@ -317,6 +317,11 @@ class QubitCsvImport
     $n = 0;
     foreach (explode('|', $parameters['subjectAccessPoints']) as $new_subjectAccessPoint)
     {
+      if (0 == strlen(trim($new_subjectAccessPoint)))
+      {
+        continue;
+      }
+
       // if the subject does not exist, create it
       if (!in_array($new_subjectAccessPoint, $this->subjects) && !empty($new_subjectAccessPoint))
       {
@@ -345,6 +350,11 @@ class QubitCsvImport
     $n = 0;
     foreach (explode('|', $parameters['placeAccessPoints']) as $new_placeAccessPoint)
     {
+      if (0 == strlen(trim($new_placeAccessPoint)))
+      {
+        continue;
+      }
+
       // if the place does not exist, create it
       if (!in_array($new_placeAccessPoint, $this->places) && !empty($new_placeAccessPoint))
       {
@@ -362,28 +372,26 @@ class QubitCsvImport
     $parameters['placeAccessPoints'] = $new_placeAccessPoints;
 
     // name access points
-    if (!isset($this->names))
-    {
-      foreach (QubitActor::getOnlyActors() as $name)
-      {
-        $this->names[$name->__toString()] = $name;
-      }
-    }
-
     $n = 0;
+    $this->getActors();
     foreach (explode('|', $parameters['nameAccessPoints']) as $new_nameAccessPoint)
     {
+      if (0 == strlen(trim($new_nameAccessPoint)))
+      {
+        continue;
+      }
+
       // if the name does not exist, create it
-      if (!in_array($new_nameAccessPoint, $this->names) && !empty($new_nameAccessPoint))
+      if (!isset($this->actors[$new_nameAccessPoint]))
       {
         $name = new QubitActor();
         $name->authorizedFormOfName = $new_nameAccessPoint;
         $name->save();
 
-        $this->names[$name->__toString()] = $name;
+        $this->actors[$name->__toString()] = $name;
       }
 
-      $new_nameAccessPoints['new'.$n] = $this->context->routing->generate(null, array($this->names[$new_nameAccessPoint], 'module' => 'actor'));
+      $new_nameAccessPoints['new'.$n] = $this->context->routing->generate(null, array($this->actors[$new_nameAccessPoint], 'module' => 'actor'));
       $n++;
     }
     $parameters['nameAccessPoints'] = $new_nameAccessPoints;
@@ -393,6 +401,30 @@ class QubitCsvImport
 
   protected function mapRad($parameters)
   {
+    $creationTerm = new QubitTerm();
+    $creationTerm->id = QubitTerm::CREATION_ID;
+    $creationUrl = $this->context->routing->generate(null, array($creationTerm, 'module' => 'term'));
+
+    // Creation dates
+    foreach (explode('|', $parameters['datesOfCreation']) as $date)
+    {
+      if (0 < strlen($date))
+      {
+        $parameters['editEvents'][] = array(
+          'type' => $creationUrl,
+          'date' => $date
+        );
+      }
+    }
+
+    // Link creators
+    foreach ($this->addCreatorsAndHistory($parameters) as $creator)
+    {
+      $parameters['editEvents'][] = array(
+        'type' => $creationUrl,
+        'actor' => $this->context->routing->generate(null, array($creator, 'module' => 'actor')));
+    }
+
     if (!isset($this->materialTypes))
     {
       foreach (QubitTerm::getMaterialTypes() as $term)
@@ -471,28 +503,10 @@ class QubitCsvImport
     $parameters['datesOfCreation'] = $new_dates;
 
     // name access points
-    if (!isset($this->names))
-    {
-      foreach (QubitActor::getOnlyActors() as $name)
-      {
-        $this->names[$name->__toString()] = $name;
-      }
-    }
-
     $n = 0;
-    foreach (explode('|', $parameters['creators']) as $new_creator)
+    foreach ($this->addCreatorsAndHistory($parameters) as $creator)
     {
-      // if the name does not exist, create it
-      if (!in_array($new_creator, $this->names) && !empty($new_creator))
-      {
-        $name = new QubitActor();
-        $name->authorizedFormOfName = $new_creator;
-        $name->save();
-
-        $this->names[$name->__toString()] = $name;
-      }
-
-      $new_creators['new'.$n] = $this->context->routing->generate(null, array($this->names[$new_creator], 'module' => 'actor'));
+      $new_creators['new'.$n] = $this->context->routing->generate(null, array($creator, 'module' => 'actor'));
       $n++;
     }
     $parameters['creators'] = $new_creators;
@@ -598,4 +612,69 @@ class QubitCsvImport
     return $this->rootObject;
   }
 
+  public function getActors()
+  {
+    if (!isset($this->actors))
+    {
+      foreach (QubitActor::getOnlyActors() as $item)
+      {
+        $this->actors[$item->__toString()] = $item;
+      }
+    }
+
+    return $this->actors;
+  }
+
+  public function addCreatorsAndHistory($parameters)
+  {
+    $creators = $histories = array();
+    $i = 0;
+    $updated = false;
+
+    // Get array of existing actors
+    $this->getActors();
+
+    if (isset($parameters['creatorHistory']))
+    {
+      $histories = explode('|', $parameters['creatorHistory']);
+    }
+
+    foreach (explode('|', $parameters['creators']) as $creator)
+    {
+      if (0 == strlen(trim($creator)))
+      {
+        continue;
+      }
+
+      if (isset($this->actors[$creator]))
+      {
+        $actor = $this->actors[$creator];
+      }
+      else
+      {
+        $actor = new QubitActor;
+        $actor->authorizedFormOfName = $creator;
+        $updated = true;
+
+        // Add to array of existing actors
+        $this->actors[$creator] = $actor;
+      }
+
+      if (isset($histories[$i]))
+      {
+        $actor->history = $histories[$i];
+        $updated = true;
+      }
+
+      if ($updated)
+      {
+        $actor->save();
+      }
+
+      $creators[] = $actor;
+      $i++;
+    }
+
+    return $creators;
+  }
 }

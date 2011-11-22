@@ -29,6 +29,7 @@ class RightsHolderAutocompleteAction extends sfAction
     $criteria = new Criteria;
     $criteria->addJoin(QubitActor::ID, QubitActorI18n::ID);
     $criteria->add(QubitActorI18n::CULTURE, $this->context->user->getCulture());
+    $criteria->add(QubitActor::CLASS_NAME, 'QubitRightsHolder');
 
     if (isset($request->query))
     {

@@ -152,8 +152,8 @@ class MenuEditAction extends sfAction
         // Remove cache
         if ($this->context->getViewCacheManager() !== null)
         {
-          $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_browseMenu&sf_cache_key='.$this->context->getUser()->getCulture());
-          $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_mainMenu&sf_cache_key='.$this->context->getUser()->getCulture());
+          $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_browseMenu&sf_cache_key=*');
+          $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_mainMenu&sf_cache_key=*');
         }
 
         $this->redirect(array('module' => 'menu', 'action' => 'list'));

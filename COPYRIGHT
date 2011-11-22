@@ -4,9 +4,8 @@ COPYRIGHTS
 Qubit Toolkit
 -------------
 Url:       http://qubit-toolkit.org/
-Copyright: 2006-2011, Peter Van Garderen <peter@artefactual.com> and other
-           original authors as attributed in each file
-License:   GPL version 2 or any later version - see LICENSE file
+Copyright: 2006-2011, Artefactual Systems Inc. <info@artefactual.com>
+License:   Affero GPL version 3 or any later version - see LICENSE file
 
 Qubit Logo
 ----------
@@ -18,13 +17,6 @@ also made available under the GFDL.
 URL:       http://commons.wikimedia.org/wiki/Image:Blochsphere.svg
 Copyright: http://en.wikipedia.org/wiki/User:MuncherOfSpleens
 License:   GNU Free Documentation License
-
-Installer
----------
-Url:       http://www.carl-abrc.ca/
-Author:    Mark Jordan
-Copyright: Canadian Association of Research Libraries
-License:   GPL version 2
 
 symfony
 -------
@@ -39,21 +31,6 @@ vendor/symfony/licenses
 
 Qubit Toolkit also uses the following symfony plugins:
 
-sfAuditPlugin
--------------
-Copyright: Jack Bates
-License:   MIT
-
-sfHistoryPlugin
----------------
-Copyright: Jack Bates
-License:   MIT
-
-sfInstallPlugin
----------------
-Copyright: Jack Bates
-License:   GPL version 2
-
 sfLucenePlugin
 --------------
 Copyright: Carl Vondrick
@@ -67,11 +44,6 @@ License:   MIT
 sfThumbnailPlugin
 -----------------
 Copyright: Fabien Potencer
-License:   MIT
-
-sfTranslatePlugin
------------------
-Copyright: Jack Bates
 License:   MIT
 
 sfWebBrowserPlugin
@@ -149,3 +121,15 @@ printer-icon.png
 Url: http://www.fatcow.com/free-icons
 Copyright: Fatcow Web Hosting
 License: CC Attribution 3.0
+
+Twitter Bootstrap
+-----------------
+Url: http://twitter.github.com/bootstrap/
+Copyright: Twitter, Inc.
+License: Apache 2.0
+
+Less CSS
+--------
+Url: http://lesscss.org/
+Copyright: 2009-2011 Alexis Sellier
+License: Apache 2.0
