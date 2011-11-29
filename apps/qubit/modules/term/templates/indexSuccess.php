@@ -90,7 +90,7 @@
       <div>
         <ul>
           <?php foreach ($resource->otherNames as $item): ?>
-            <li><?php echo __('UF %1%', array('%1%' => render_title($item->getName(array('cultureFallback' => true))))) ?></li>
+            <li><?php echo __('UF %1%', array('%1%' => render_title($item))) ?></li>
           <?php endforeach; ?>
         </ul>
       </div>

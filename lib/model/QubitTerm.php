@@ -956,7 +956,7 @@ class QubitTerm extends BaseTerm
       {
         if (QubitTerm::ROOT_ID != $item->id)
         {
-          $label = render_title($item->getName(array('cultureFallback' => true)));
+          $label = render_title($item);
 
           $node['label'] = truncate_text($label, 50);
 
@@ -974,7 +974,7 @@ class QubitTerm extends BaseTerm
         }
         else
         {
-          $label = render_title($options['currentNode']->taxonomy->getName(array('cultureFallback' => true)));
+          $label = render_title($options['currentNode']->taxonomy);
 
           $node['label'] = truncate_text($label, 50);
 
