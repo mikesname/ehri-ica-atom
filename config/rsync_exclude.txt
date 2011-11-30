@@ -13,6 +13,7 @@
 /patches
 /test
 
+/.htaccess
 /index.php
 /config/ProjectConfiguration.class.php
 /apps/qubit/config/qubitConfiguration.class.php

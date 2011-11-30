@@ -85,6 +85,9 @@ class QubitMigrate110 extends QubitMigrate
 
       case 73:
         $this->addGlobalReplaceMenu();
+
+      case 74:
+        $this->ensurePublicationStatus();
     }
 
     // Delete "stub" objects
@@ -802,6 +805,56 @@ class QubitMigrate110 extends QubitMigrate
 
         break;
       }
+    }
+
+    return $this;
+  }
+
+  /**
+   * Ensure all information objects get an explicit publication status
+   *
+   * @return QubitMigrate110 SELF
+   */
+  protected function ensurePublicationStatus()
+  {
+    foreach ($this->data['QubitInformationObject'] as $key => &$item)
+    {
+      // Ignore ROOT
+      if ('<?php echo QubitInformationObject::ROOT_ID."\n" ?>' == $item['id'])
+      {
+        continue;
+      }
+
+      // Don't do anything if this node already has a publication status
+      if ($this->findRowKeyForColumnValue($this->data['QubitStatus'], 'object_id', $key) ||
+        $this->findRowKeyForColumnValue($this->data['QubitStatus'], 'object_id', $item['id']))
+      {
+        continue;
+      }
+
+      // Search up hierarchy for ancestor with status
+      $inheritedStatusKey = null;
+      $node = $item;
+
+      while (!isset($inheritedStatusKey))
+      {
+        $parentKey = $node['parent_id'];
+        $statusKey = $this->findRowKeyForColumnValue($this->data['QubitStatus'], 'object_id', $parentKey);
+
+        if ($statusKey)
+        {
+          $inheritedStatusKey = $statusKey;
+        }
+        else
+        {
+          $node = $this->data['QubitInformationObject'][$parentKey];
+        }
+      }
+
+      $this->data['QubitStatus']['QubitStatus_'.$key] = array(
+        'object_id' => $key,
+        'type_id' => $this->data['QubitStatus'][$inheritedStatusKey]['type_id'],
+        'status_id' => $this->data['QubitStatus'][$inheritedStatusKey]['status_id']);
     }
 
     return $this;
