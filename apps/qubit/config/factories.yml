@@ -62,11 +62,3 @@ all:
     param:
       cache_key_use_vary_headers: true
       cache_key_use_host_name:    true
-
-<<<<<<< HEAD
-  user:
-    class: myUser
-    param:
-      timeout: 1800 # Session timeout in seconds
-=======
->>>>>>> 6137400a75ce95172723275ff93e3b2b37eb9fc1
