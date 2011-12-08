@@ -1,0 +1,415 @@
+body
+{
+  margin: 0;
+}
+
+#page
+{
+  width: auto;
+}
+
+#header > *,
+#main
+{
+  margin-left: auto;
+  margin-right: auto;
+  width: 770px;
+}
+
+#content .section .section
+{
+  margin: 1em 0;
+}
+
+tbody tr:hover
+{
+  background: #ffe;
+}
+
+#languageMenu,
+#userMenu
+{
+  padding: 0.3em 1em;
+  background: #36114f;
+  border-bottom: 1px solid #036;
+}
+
+#languageMenu
+{
+  left: 0;
+  width: 100%;
+}
+
+#languageMenu :link,
+#languageMenu :visited,
+#userMenu :link,
+#userMenu :visited
+{
+  color: #FFF;
+}
+
+#page .browse :link,
+#page .browse :visited
+{
+  color: #36114f;
+
+  /* Reset */
+
+  display: inline;
+}
+
+#name-and-slogan,
+#logo
+{
+  margin: 0em 0.4em 0em 0.4em;
+}
+
+#page .search
+{
+  width: 100%;
+  float: none;
+  margin-top: 0.5em;
+  padding: 1em 0 0.3em 0;
+  margin-top: 0;
+  background: #EDF5FA;
+  border-top: 1px solid #D3E7F4;
+}
+
+#page .search > *
+{
+  position: relative;
+}
+
+#page .search form
+{
+  width: 540px;
+  margin-left: auto;
+  margin-right: auto;
+  position: relative;
+}
+
+#page .search .form-submit
+{
+  background: #bcd url(../images/search.png) no-repeat left;
+  border: 0;
+
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+
+  height: 27px;
+  margin: 4px;
+  position: absolute;
+  top: 0;
+  right: 0; /* LTR */
+  text-indent: -32767px;
+  width: 27px;
+}
+
+#page .search .form-submit:focus,
+#page .search .form-submit:hover
+{
+  background-color: #abc;
+}
+
+#page [name=query]
+{
+  border-radius: 3px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+
+  /* Use consistent box model if possible */
+
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+
+  font-size: 24px;
+  margin: 0; /* Only needed in WebKit */
+  width: 100%;
+}
+
+#page .browse
+{
+  padding: 0.4em 0 1em 0;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size:90%;
+  line-height:normal;
+  background: #EDF5FA;
+  border-bottom: 1px solid #D3E7F4;
+  width: 100%;
+}
+
+#page .browse .content
+{
+  text-transform: lowercase;
+}
+
+#navigation
+{
+  background: #36114f;
+  border-radius: 0;
+  -moz-border-radius: 0;
+  -webkit-border-radius: 0;
+  border-bottom: 1px solid #036;
+  border-top: 1px solid #036;
+  font-size: 110%;
+  /*margin: 0 0 3em 0;*/
+  width: 100%;
+}
+
+#navigation .section
+{
+  width: 770px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#navigation :link,
+#navigation :visited
+{
+  background: url('../images/arrow.png') no-repeat right;
+  color: #fff;
+  display: block;
+  padding: 4px 1em;
+  padding-right: 24px;
+}
+
+#navigation li
+{
+  border-right: 1px solid #036;
+  float: left;
+  margin: 0;
+  padding: 0;
+  list-style-image: none; /* IE7 */
+}
+
+#navigation ul:first-child
+{
+  border-left: 1px solid #036;
+}
+
+#navigation li:hover :link,
+#navigation li:hover :visited,
+#navigation .active :link,
+#navigation .active :visited,
+#navigation .links .links
+{
+  background-color: #36114f;
+}
+
+#navigation li:hover :link:focus,
+#navigation li:hover :link:hover,
+#navigation li:hover :visited:focus,
+#navigation li:hover :visited:hover,
+#navigation .active :link:focus,
+#navigation .active :visited:focus
+{
+  background-color: #7c28b7;
+}
+
+#navigation .leaf :link,
+#navigation .leaf :visited
+{
+  background-image: none;
+  padding: 4px 1em;
+}
+
+#navigation .links .links
+{
+  box-shadow: 2px 2px .5em rgba(0, 0, 0, .5);
+  -moz-box-shadow: 2px 2px .5em rgba(0, 0, 0, .5);
+  -webkit-box-shadow: 2px 2px .5em rgba(0, 0, 0, .5);
+
+  display: none;
+  font-size: 90%;
+  position: absolute;
+  z-index: 1;
+}
+
+#navigation .links .links :link,
+#navigation .links .links :visited
+{
+  background-image: none;
+}
+
+#navigation .links li .links li
+{
+  border: none;
+  display: block;
+  float: none;
+}
+
+#content .search
+{
+  background:#FF9933 none repeat scroll 0 0;
+  padding: 4px;
+  border-top: 3px solid #999999;
+}
+
+#content .search .form-submit
+{
+  background:#000000 none repeat scroll 0 0;
+  text-indent: 0;
+  border-color:-moz-use-text-color #999999 #999999 -moz-use-text-color;
+  border-style:none solid solid none;
+  border-width:0 3px 3px 0;
+  display: block;
+  margin: 0 0 0 auto;
+  width:auto;
+  position: relative;
+}
+
+#content [name=query]
+{
+  font-size: 1em;
+  width: 50%;
+}
+
+#content .search .form-submit:focus,
+#content .search .form-submit:hover
+{
+  background-color: #FFF;
+  color: #000;
+}
+
+.actions, .label, #content .search, .admin-info {
+    background: #F3F3F3;
+    color: #6c003b;
+    box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.25);
+    -moz-box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.25);
+    -webkit-box-shadow: -1px 1px 4px rgba(0, 0, 0, 0.25);
+    border: 1px solid #D3D3D3;
+    width: 100%;
+}
+
+.actions, #content .search {
+}
+
+#page .section .form-submit,
+.actions :link,
+.actions :visited,
+.form-submit,
+.form-submit:focus {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #D0D0D0;
+    padding: 0.4em 1em 0.4em 1em;
+    color: #666;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #efefef 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#efefef));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#efefef 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#efefef 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#efefef 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#efefef',GradientType=0 );
+    background: linear-gradient(top, #ffffff 0%,#efefef 100%);
+
+}
+
+.actions :link:focus,
+.actions :link:hover,
+.actions :visited:focus,
+.actions :visited:hover,
+.form-submit:focus,
+.form-submit:hover {
+    text-decoration: none;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #f3f3f3 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#f3f3f3));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#f3f3f3 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#f3f3f3 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#f3f3f3 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#f3f3f3',GradientType=0 );
+    background: linear-gradient(top, #ffffff 0%,#f3f3f3 100%);    
+}
+
+a:link, a:visited, h2 {
+    color: #6c003b;
+}
+
+#site-name {
+    color: #6c003b;
+    font-size: 1em;
+    float: left;
+    font-style: italic;
+}
+
+#logo, #name-and-slogan {
+    float: none;
+}
+
+#logo, #name-and-slogan {
+    display: none;
+}
+
+#site-slogan {
+    clear: left;
+}
+
+.section fieldset {
+    border: 1px solid #D0D0D0;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    background: #ffffff;
+    background: -moz-linear-gradient(top, #ffffff 0%, #fefefe 47%, #fcfcfc 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(47%,#fefefe), color-stop(100%,#fcfcfc));
+    background: -webkit-linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+    background: -o-linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+    background: -ms-linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#fcfcfc',GradientType=0 );
+    background: linear-gradient(top, #ffffff 0%,#fefefe 47%,#fcfcfc 100%);
+}
+
+.section fieldset.collapsed {
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.admin-info {
+    margin-top: 10px;
+}
+
+thead th {
+    color: #FFF;
+    background-color: #6c003b;
+}
+
+:link:hover h2, :visited:hover h2,
+:link:hover h3, :visited:hover h3 {
+    background-color: #FFF;
+    color: #6c003b;
+}
+
+.page h1, .sidebar > .section > div > h2, .sidebar > .section > div > h3 {
+    background: #36114f;
+    color: white;
+    font-size: 160%;
+}
+
+a.currentTextNode {
+    background-color: #FFE;
+}
+
+a.currentTextNode:hover {
+    color: #FFE;
+    background-color: #6c003b;
+}
+
+#page .search .form-submit {
+    background: #BCD url(../images/search.png) no-repeat left;
+}
+
+#header {
+    height: 100px;
+    cursor: pointer;
+    background-image: url("../images/logo.png");
+    background-position: center;
+    background-repeat: no-repeat;
+}
+

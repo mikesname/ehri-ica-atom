@@ -1,0 +1,7 @@
+
+*.old
+*.swp
+*.swo
+log/*
+cache/*
+plugins/.*
