@@ -1,6 +1,16 @@
+<?php echo get_partial('informationobject/printPreviewBar', array('resource' => $resource)) ?>
+
 <h1><?php echo __('View archival description') ?></h1>
 
-<?php echo link_to_if(QubitAcl::check($resource, 'update'), '<h1 class="label">'.render_title($isad).'</h1>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('title' => __('Edit archival description'))) ?>
+<h1 class="label">
+  <?php echo link_to_if(QubitAcl::check($resource, 'update'), render_title($isad), array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('title' => __('Edit archival description'))) ?>
+
+  <?php echo get_partial('informationobject/actionIcons') ?>
+</h1>
+
+<?php if (QubitInformationObject::ROOT_ID != $resource->parentId): ?>
+<h1 class="part-of"><?php echo __('Part of %1%', array('%1%' => $resource->getCollectionRoot()->__toString())) ?></h1>
+<?php endif; ?>
 
 <?php if (isset($errorSchema)): ?>
   <div class="messages error">
@@ -24,16 +34,16 @@
 
   <?php echo render_show(__('Title'), render_value($resource->getTitle(array('cultureFallback' => true)))) ?>
 
-<div class="field">
-  <h3><?php echo __('Other form(s) of title') ?></h3>
-  <div>
-    <ul>
-      <?php foreach ($resource->getOtherNames(array('typeId' => QubitTerm::OTHER_FORM_OF_NAME_ID)) as $item): ?>
-        <li><?php echo render_value($item->__toString()) ?></li>
-      <?php endforeach; ?>
-    </ul>
+  <div class="field">
+    <h3><?php echo __('Other form(s) of title') ?></h3>
+    <div>
+      <ul>
+        <?php foreach ($resource->getOtherNames(array('typeId' => QubitTerm::OTHER_FORM_OF_NAME_ID)) as $item): ?>
+          <li><?php echo render_value($item->__toString()) ?></li>
+        <?php endforeach; ?>
+      </ul>
+    </div>
   </div>
-</div>
 
   <div class="field">
     <h3><?php echo __('Date(s)') ?></h3>
@@ -214,20 +224,40 @@
 
 </div> <!-- /.section#descriptionControlArea -->
 
-<div class="section" id="ehriMetadata">
 
-  <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('EHRI Metadata').'</h2>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'ehriMetadata', 'title' => __('Edit EHRI Metadata'))) ?>
+  <div class="section" id="ehriMetadata">
 
-  <?php echo render_show(__('Scope'), render_value($isad->ehriScope)) ?>
-  <?php echo render_show(__('Priority'), render_value($isad->priorities[$isad->ehriPriority])) ?>
-  <?php echo render_show(__('Copyright Issue'), render_value($isad->ehriCopyrightIssue ? "Yes" : "No")) ?>
-  
+    <?php echo link_to_if(SecurityPriviliges::editCredentials($sf_user, 'informationObject'), '<h2>'.__('EHRI Metadata').'</h2>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'ehriMetadata', 'title' => __('Edit EHRI Metadata'))) ?>
 
-</div>  <!-- /.section#ehriMetadata -->
+    <?php echo render_show(__('Scope'), render_value($isad->ehriScope)) ?>
+    <?php echo render_show(__('Priority'), render_value($isad->priorities[$isad->ehriPriority])) ?>
+    <?php echo render_show(__('Copyright Issue'), render_value($isad->ehriCopyrightIssue ? "Yes" : "No")) ?>
+    
 
+  </div>  <!-- /.section#ehriMetadata -->
+
+<div class="section" id="rightsArea">
+
+  <?php echo link_to_if(QubitAcl::check($resource, 'update'), '<h2>'.__('Rights area').'</h2>', array($resource, 'module' => 'informationobject', 'action' => 'edit'), array('anchor' => 'rightsArea', 'title' => __('Edit rights area'))) ?>
+
+  <?php echo get_component('right', 'relatedRights', array('resource' => $resource)) ?>
+
+</div> <!-- /.section#rightsArea -->
 
 <?php if (0 < count($resource->digitalObjects)): ?>
+
   <?php echo get_partial('digitalobject/metadata', array('resource' => $resource->digitalObjects[0])) ?>
+
+  <?php echo get_partial('digitalobject/rights', array('resource' => $resource->digitalObjects[0])) ?>
+
 <?php endif; ?>
+
+<div class="section" id="accessionArea">
+
+  <h2><?php echo __('Accession area') ?></h2>
+
+  <?php echo get_component('informationobject', 'accessions', array('resource' => $resource)) ?>
+
+</div> <!-- /.section#accessionArea -->
 
 <?php echo get_partial('informationobject/actions', array('resource' => $resource)) ?>
