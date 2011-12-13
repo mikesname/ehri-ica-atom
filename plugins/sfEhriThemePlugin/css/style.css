@@ -61,7 +61,7 @@ tbody tr:hover
 #name-and-slogan,
 #logo
 {
-  margin: 0em 0.4em 0em 0.4em;
+  margin: 2em 0.4em 5em 0.4em;
 }
 
 #page .search
@@ -69,7 +69,7 @@ tbody tr:hover
   width: 100%;
   float: none;
   margin-top: 0.5em;
-  padding: 1em 0 0.3em 0;
+  padding: 0.5em 0 0.3em 0;
   margin-top: 0;
   background: #EDF5FA;
   border-top: 1px solid #D3E7F4;
@@ -90,7 +90,7 @@ tbody tr:hover
 
 #page .search .form-submit
 {
-  background: #bcd url(../images/search.png) no-repeat left;
+  background: #bcd url(../images/search.png) no-repeat center;
   border: 0;
 
   border-radius: 3px;
@@ -128,6 +128,41 @@ tbody tr:hover
   margin: 0; /* Only needed in WebKit */
   width: 100%;
 }
+
+#page .search .advanced-search
+{
+  text-align: right;
+  width: 540px;
+  font-size: 90%;
+}
+
+#page .search .advanced-search a
+{
+  color: #36114f;
+}
+
+/* START: align browser/search layers to left */
+
+#page > .search .content,
+#page > .browse .content
+{
+  width: 770px;
+  margin: 0 auto;
+}
+
+#page > .search form
+{
+  width: 550px;
+  margin: 0;
+}
+
+#page > .browse ul
+{
+  text-align: left;
+  margin-left: 1em;
+}
+
+/* END: align browser/search layers to left */
 
 #page .browse
 {
@@ -197,7 +232,7 @@ tbody tr:hover
 #navigation .active :visited,
 #navigation .links .links
 {
-  background-color: #36114f;
+  background-color: #069;
 }
 
 #navigation li:hover :link:focus,
@@ -207,7 +242,7 @@ tbody tr:hover
 #navigation .active :link:focus,
 #navigation .active :visited:focus
 {
-  background-color: #7c28b7;
+  background-color: #000;
 }
 
 #navigation .leaf :link,
@@ -274,6 +309,45 @@ tbody tr:hover
   background-color: #FFF;
   color: #000;
 }
+
+/* Format date with extended properties */
+.date dl
+{
+  margin: 0 0 0 1em;
+}
+
+.date dl dt:after
+{
+  content: ':';
+}
+
+.date dl dt
+{
+  clear: both;
+}
+
+.date dl dt,
+.date dl dd
+{
+  float: left;
+  margin: 0 1px;
+}
+
+.field ul,
+.field ol
+{
+  margin: 0;
+}
+
+.field ul li,
+.field ol li
+{
+  margin: 0;
+}
+
+
+/* EHRI CHANGES */
+
 
 .actions, .label, #content .search, .admin-info {
     background: #F3F3F3;
@@ -412,4 +486,5 @@ a.currentTextNode:hover {
     background-position: center;
     background-repeat: no-repeat;
 }
+
 
