@@ -35,7 +35,7 @@
       }
 
       setupCheckFields($("#descSources"), $("#otherSources"), $(".ehri-common-source"));
-      setupCheckFields($("#researchServices"), $("#otherServices"), $(".ehri-res-service"));
+      //setupCheckFields($("#researchServices"), $("#otherServices"), $(".ehri-res-service"));
 });
 </script>
 
