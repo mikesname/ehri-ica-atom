@@ -232,7 +232,7 @@ tbody tr:hover
 #navigation .active :visited,
 #navigation .links .links
 {
-  background-color: #069;
+  background-color: #7f45a7;
 }
 
 #navigation li:hover :link:focus,
