@@ -338,6 +338,7 @@ CREATE TABLE `information_object`
 	`rgt` INTEGER  NOT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
+    UNIQUE KEY `identifier` (`identifier`),
 	UNIQUE KEY `information_object_U_1` (`oai_local_identifier`),
 	CONSTRAINT `information_object_FK_1`
 		FOREIGN KEY (`id`)
@@ -839,6 +840,7 @@ CREATE TABLE `repository`
 	`upload_limit` FLOAT,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
+    UNIQUE KEY `identifier` (`identifier`),
 	CONSTRAINT `repository_FK_1`
 		FOREIGN KEY (`id`)
 		REFERENCES `actor` (`id`)
