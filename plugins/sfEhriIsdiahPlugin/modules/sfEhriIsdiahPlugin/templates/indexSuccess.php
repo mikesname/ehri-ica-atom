@@ -173,6 +173,9 @@
         <?php if (QubitAcl::check($resource, 'create')): ?>
         <li><?php echo link_to(__('Add new'), array('module' => 'repository', 'action' => 'add'), array('title' => __('Add new'))) ?></li>
         <?php endif; ?>
+        <?php if (QubitAcl::check($resource, 'create')): ?>
+        <li><?php echo link_to(__('Add collection'), array('module' => 'add', 'action' => 'isad', 'repository' => $resource->slug), array('title' => __('Add collection'))) ?></li>
+        <?php endif; ?>
       </ul>
     </div>
 

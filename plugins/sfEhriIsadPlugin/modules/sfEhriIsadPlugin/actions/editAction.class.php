@@ -76,6 +76,12 @@ class sfEhriIsadPluginEditAction extends sfIsadPluginEditAction
 
     $this->isad = new sfEhriIsadPlugin($this->resource);
 
+    if (isset($this->request->repository))
+    {
+      $params = $this->context->routing->parse(Qubit::pathInfo($this->request->repository));
+      $this->resource->repository = $params['_sf_route']->resource;
+    }
+
     $title = $this->context->i18n->__('Add new EHRI archival description');
     if (isset($this->getRoute()->resource))
     {
