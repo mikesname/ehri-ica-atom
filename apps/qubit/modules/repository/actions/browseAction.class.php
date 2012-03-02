@@ -38,6 +38,16 @@ class RepositoryBrowseAction extends sfAction
     // Do source culture fallback
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
 
+    // don't let ananymous users see records with draft status
+    if (!$this->getUser()->isAuthenticated())
+    {
+      $criteria->addJoin(QubitRepository::ID, QubitStatus::OBJECT_ID, Criteria::LEFT_JOIN);
+      $ct1 = $criteria->getNewCriterion(QubitStatus::TYPE_ID, QubitTerm::STATUS_TYPE_PUBLICATION_ID);
+      $ct2 = $criteria->getNewCriterion(QubitStatus::STATUS_ID, QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID);
+      $ct1->addAnd($ct2);
+      $criteria->addAnd($ct1);
+    }
+
     switch ($request->sort)
     {
       case 'nameDown':
