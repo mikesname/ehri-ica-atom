@@ -13,8 +13,11 @@
 
     <div class="content">
 
+      <?php if ($pager->getPage() != $pager->getFirstPage()): ?>
+        <?php echo link_to(__('First'), array('page' => $pager->getFirstPage()) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'prev', 'title' => __('Go to first page'))) ?>
+      <?php endif; ?>
       <?php if (1 < $pager->getPage()): ?>
-        <?php echo link_to(__('Previous'), array('page' => $pager->getPage() - 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'prev', 'title' => __('Go to previous page'))) ?>
+        <?php echo link_to(__('Prev'), array('page' => $pager->getPage() - 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'prev', 'title' => __('Go to previous page'))) ?>
       <?php endif; ?>
 
       <ol>
@@ -30,6 +33,10 @@
       <?php if ($pager->getLastPage() > $pager->getPage()): ?>
         <?php echo link_to(__('Next'), array('page' => $pager->getPage() + 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'next', 'title' => __('Go to next page'))) ?>
       <?php endif; ?>
+      <?php if ($pager->getLastPage() != $pager->getPage()): ?>
+        <?php echo link_to(__('Last'), array('page' => $pager->getLastPage()) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'next', 'title' => __('Go to last page'))) ?>
+      <?php endif; ?>
+
 
     </div>
 
