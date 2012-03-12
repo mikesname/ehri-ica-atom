@@ -40,6 +40,8 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
   {
     switch ($name)
     {
+      case 'identifier':
+        return $this->resource->id;
       case '_ehriMeta':
 
         if (!isset($this->_meta))
@@ -85,5 +87,4 @@ class sfEhriIsdiahPlugin extends sfIsaarPlugin
       return parent::__set($name, $value);
     }
   }
-
 }

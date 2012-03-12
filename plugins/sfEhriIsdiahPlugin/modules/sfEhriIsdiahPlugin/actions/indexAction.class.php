@@ -51,11 +51,6 @@ class sfEhriIsdiahPluginIndexAction extends RepositoryIndexAction
         'required' => $this->context->i18n->__('%1%Authorized form of name%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-3#5.1.2">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-3#4.7">', '%4%' => '</a>'))));
       $values['authorizedFormOfName'] = $this->resource->getAuthorizedFormOfName(array('culltureFallback' => true));
 
-      $validatorSchema->identifier = new sfValidatorString(array(
-        'required' => true), array(
-        'required' => $this->context->i18n->__('%1%Identifier%2% - This is a %3%mandatory%4% element.', array('%1%' => '<a href="http://ica-atom.org/doc/RS-3#5.1.1">', '%2%' => '</a>', '%3%' => '<a href="http://ica-atom.org/doc/RS-3#4.7">', '%4%' => '</a>'))));
-      $values['identifier'] = $this->resource->identifier;
-
       $validatorSchema->primaryContact = new sfValidatorAnd(array(
         new QubitValidatorCountable,
         new sfValidatorOr(array(

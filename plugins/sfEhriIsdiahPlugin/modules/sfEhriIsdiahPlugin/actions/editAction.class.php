@@ -31,7 +31,6 @@ class sfEhriIsdiahPluginEditAction extends sfIsdiahPluginEditAction
   // Arrays not allowed in class constants
   public static
     $NAMES = array(
-      'identifier',
       'authorizedFormOfName',
       'parallelName',
       'otherName',

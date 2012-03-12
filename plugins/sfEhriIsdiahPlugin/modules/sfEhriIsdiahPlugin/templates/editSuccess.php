@@ -17,11 +17,6 @@
 
     <legend><?php echo __('Identity area') ?></legend>
 
-    <?php echo $form->identifier
-      ->help(__('"Record the numeric or alpha-numeric code identifying the institution in accordance with the relevant international and national standards." (ISDIAH 5.1.1)'))
-      ->label(__('Identifier').' <span class="form-required" title="'.__('This is a mandatory element.').'">*</span>')
-      ->renderRow() ?>
-
     <?php echo $form->authorizedFormOfName
       ->help(__('"Record the standardised form of name of the institution, adding appropriate qualifiers (for instance dates, place, etc.), if necessary. Specify separately in the Rules and/or conventions used element (5.6.3) which set of rules has been applied for this element." (ISDIAH 5.1.2)'))
       ->label(__('Authorized form of name').' <span class="form-required" title="'.__('This is a mandatory element').'">*</span>')
