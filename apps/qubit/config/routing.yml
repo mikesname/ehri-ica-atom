@@ -172,6 +172,20 @@ edit/isdiah:
     action: edit
     repository_template: isdiah
 
+list/isdiah:
+  url: /;repository/list
+  param:
+    module: sfEhriIsdiahPlugin
+    action: list
+    repository_template: isdiah
+
+browse/isdiah:
+  url: /;repository/browse
+  param:
+    module: sfEhriIsdiahPlugin
+    action: browse
+    repository_template: isdiah
+
 mods:
   url: /:slug;mods
   class: QubitResourceRoute
