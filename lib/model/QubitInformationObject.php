@@ -301,10 +301,9 @@ class QubitInformationObject extends BaseInformationObject
       }
     }
 
-    // Delete from search index
-    QubitSearch::deleteInformationObject($this);
-
     parent::delete($connection);
+
+    QubitSearch::deleteInformationObject($this);
   }
 
   /**
