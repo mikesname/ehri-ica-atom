@@ -38,6 +38,13 @@ class RepositoryBrowseAction extends sfAction
     // Do source culture fallback
     $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitActor');
 
+    if (isset($request->countryCode))
+    {
+      $criteria->addJoin(QubitRepository::ID, QubitContactInformation::ACTOR_ID, Criteria::LEFT_JOIN);
+      $ct1 = $criteria->getNewCriterion(QubitContactInformation::COUNTRY_CODE, $request->countryCode);
+      $criteria->addAnd($ct1);
+    }
+
     // don't let ananymous users see records with draft status
     if (!$this->getUser()->isAuthenticated())
     {
@@ -47,6 +54,25 @@ class RepositoryBrowseAction extends sfAction
       $ct1->addAnd($ct2);
       $criteria->addAnd($ct1);
     }
+
+    $conn = Propel::getConnection();
+    $stmt = $conn->prepare("SELECT DISTINCT country_code from ".QubitContactInformation::TABLE_NAME." where country_code is not null order by country_code;");
+    $stmt->execute();
+    $res = $stmt->fetchAll();
+    $countries = array_map(function($a) { return $a["country_code"];}, $res);
+    $stmt->closeCursor();
+    $conn->clearStatementCache();
+
+    $this->form = new sfForm();
+    $this->form->setValidator('countryCode', new sfValidatorI18nChoiceCountry);
+    $this->form->setWidget('countryCode', new sfWidgetFormI18nChoiceCountry(array('countries' => $countries, 'add_empty' => true, 'culture' => $this->context->user->getCulture())));
+    $this->form->setDefault('countryCode', $request->countryCode);
+    $this->form->setValidator('limit', new sfValidatorInteger);
+    $this->form->setWidget('limit', new sfWidgetFormInputHidden);
+    $this->form->setDefault('limit', $request->limit);
+    $this->form->setValidator('page', new sfValidatorInteger);
+    $this->form->setWidget('page', new sfWidgetFormInputHidden);
+    $this->form->setDefault('page', $request->page);
 
     switch ($request->sort)
     {

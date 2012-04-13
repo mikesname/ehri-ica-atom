@@ -20,6 +20,23 @@
 
 <h1><?php echo __('Browse %1%', array('%1%' => sfConfig::get('app_ui_label_repository'))) ?></h1>
 
+<div>
+  <form id="filter-form" method="GET">
+    <?php echo $form->countryCode
+    ->help(__('Filter repositories by country'))
+    ->label('Filter Countries')
+    ->renderRow() ?>
+
+    <?php echo $form->limit->render() ?>
+    <?php echo $form->page->render() ?>
+  </form>
+  <script type="application/javascript">
+    jQuery("#countryCode").change(function(e) {
+      jQuery(this).closest("form").submit();
+    }); 
+  </script>
+</div>
+
 <table class="sticky-enabled">
   <thead>
     <tr>
@@ -43,11 +60,12 @@
           <?php endif; ?>
         <?php endif; ?> 
       </th>
+      <th>
+        <?php echo __('Country') ?>
+      </th> 
       <?php if ('nameDown' == $sf_request->sort || 'nameUp' == $sf_request->sort || (!$sf_user->isAuthenticated() && 'updatedDown' != $sf_request->sort && 'updatedUp' != $sf_request->sort) ): ?>
         <th>
           <?php echo __('Type') ?>
-        </th><th>
-          <?php echo __('Country') ?>
         </th>
       <?php else: ?>
         <th>
@@ -79,6 +97,9 @@
         <td>
           <?php echo link_to(render_title($item), array($item, 'module' => 'repository')) ?>
         </td>
+        <td>
+          <?php echo $item->getCountry() ?>
+        </td>
         <?php if ('nameDown' == $sf_request->sort || 'nameUp' == $sf_request->sort || (!$sf_user->isAuthenticated() && 'updatedDown' != $sf_request->sort && 'updatedUp' != $sf_request->sort) ): ?>
           <td>
             <ul>
@@ -86,8 +107,6 @@
                 <li><?php echo $relation->term ?></li>
               <?php endforeach; ?>
             </ul>
-          </td><td>
-            <?php echo $item->getCountry() ?>
           </td>
         <?php else: ?>
           <td>
