@@ -7,13 +7,11 @@
 
 <?php endif; ?>
 
-<div class="form-item form-item-identifier">
-  <table class="multiRow" style="white-space: nowrap;">
-    <tbody>
-      <?php echo get_partial('search/searchFields') ?>
-    </tbody>
-  </table>
-</div>
+<table class="multiRow" style="white-space: nowrap; min-width: 660px;">
+  <tbody>
+    <?php echo get_partial('search/searchFields') ?>
+  </tbody>
+</table>
 
 <fieldset class="collapsible <?php echo ($form->getValue('repository') . $form->getValue('media') . $form->getValue('hasDigitalObject') ? '' : 'collapsed'); ?>" id="filterLimit">
 

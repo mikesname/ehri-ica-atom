@@ -119,7 +119,7 @@ class ContactInformationEditComponent extends sfComponent
       {
         if (isset($item['id']))
         {
-          $this->contactInformation = QubitContactInformation::getById(preg_replace('/^(.*?)(\d+)$/', '$2', $item['id']));
+          $this->contactInformation = QubitContactInformation::getById(preg_replace('/^.*\/(\d+)$/', '$1', $item['id']));
         }
         else
         {

@@ -1,7 +1,7 @@
 <div id="header">
   <div class="section clearfix">
 
-    <?php echo get_component('menu', 'browseMenu') ?>
+    <?php echo get_component('menu', 'browseMenu', array('sf_cache_key' => $sf_user->getCulture())) ?>
 
     <?php if (sfConfig::get('app_toggleLogo')): ?>
       <?php echo link_to(image_tag('logo', array('alt' => __('Home'))), '@homepage', array('id' => 'logo', 'rel' => 'home', 'title' => __('Home'))) ?>

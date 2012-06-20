@@ -17,6 +17,7 @@
 /index.php
 /config/ProjectConfiguration.class.php
 /apps/qubit/config/qubitConfiguration.class.php
+/images/logo.png
 
 # security hardening / cleanup
 /COPYRIGHT

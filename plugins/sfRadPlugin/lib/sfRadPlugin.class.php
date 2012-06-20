@@ -45,7 +45,7 @@ class sfRadPlugin implements ArrayAccess
 
     if (isset($this->resource->levelOfDescription))
     {
-      $levelOfDescriptionAndIdentifier[] = $this->resource->levelOfDescription;
+      $levelOfDescriptionAndIdentifier[] = $this->resource->levelOfDescription->__toString();
     }
 
     if (isset($this->resource->identifier))
@@ -60,9 +60,9 @@ class sfRadPlugin implements ArrayAccess
 
     $resourceAndPublicationStatus = array();
 
-    if (0 < strlen($this->resource))
+    if (0 < strlen($title = $this->resource->__toString()))
     {
-      $resourceAndPublicationStatus[] = $this->resource;
+      $resourceAndPublicationStatus[] = $title;
     }
 
     $publicationStatus = $this->resource->getPublicationStatus();

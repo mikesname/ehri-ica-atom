@@ -15,10 +15,13 @@
 
       <ul>
 
+        <?php $lft = isset($small) && true === $small ? '&laquo;' : __('&laquo; Previous'); ?>
+        <?php $rgt = isset($small) && true === $small ? '&raquo;' : __('Next &raquo;'); ?>
+
         <?php if (1 < $pager->getPage()): ?>
-          <li class="prev"><?php echo link_to(__('&laquo; Previous'), array('page' => $pager->getPage() - 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'prev', 'title' => __('Go to previous page'))) ?></li>
+          <li class="prev"><?php echo link_to($lft, array('page' => $pager->getPage() - 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'prev', 'title' => __('Go to previous page'))) ?></li>
         <?php else: ?>
-          <li class="prev disabled"><a href="#" onclick="return false;"><?php echo __('&laquo; Previous') ?></a></li>
+          <li class="prev disabled"><a href="#" onclick="return false;"><?php echo $lft ?></a></li>
         <?php endif; ?>
 
         <?php foreach ($pager->getLinks(10) as $page): ?>
@@ -30,9 +33,9 @@
         <?php endforeach ?>
 
         <?php if ($pager->getLastPage() > $pager->getPage()): ?>
-          <li class="next"><?php echo link_to(__('Next &raquo;'), array('page' => $pager->getPage() + 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'next', 'title' => __('Go to next page'))) ?></li>
+          <li class="next"><?php echo link_to($rgt, array('page' => $pager->getPage() + 1) + $sf_request->getParameterHolder()->getAll(), array('rel' => 'next', 'title' => __('Go to next page'))) ?></li>
         <?php else: ?>
-          <li class="next disabled"><a href="#" onclick="return false;"><?php echo __('Next &raquo;') ?></a></li>
+          <li class="next disabled"><a href="#" onclick="return false;"><?php echo $rgt ?></a></li>
         <?php endif; ?>
 
       </ul>

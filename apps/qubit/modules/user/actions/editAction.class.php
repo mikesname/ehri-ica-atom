@@ -249,6 +249,13 @@ class UserEditAction extends DefaultEditAction
 
         $this->resource->save();
 
+        if ($this->context->getViewCacheManager() !== null)
+        {
+          // We just need to remove the cache for this user but sf_cache_key
+          // contents also the culture code, it worth the try? I don't think so
+          $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_mainMenu&sf_cache_key=*');
+        }
+
         $this->redirect(array($this->resource, 'module' => 'user'));
       }
     }

@@ -53,8 +53,8 @@
 
                   <?php echo $date['rendered'] ?> (<?php echo $date['type'] ?>)
 
-                  <?php if (isset($date['actor'])): ?>
-                    <?php echo link_to($date['actor'], array($date['actor'], 'module' => 'actor')) ?>
+                  <?php if (isset($date['actor']) && null !== $event = QubitEvent::getById($date['id'])): ?>
+                    <?php echo link_to($date['actor'], array($event->actor, 'module' => 'actor')) ?>
                   <?php endif; ?>
 
                 </li>

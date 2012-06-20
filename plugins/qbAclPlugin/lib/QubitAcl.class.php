@@ -662,7 +662,7 @@ class QubitAcl
         }
 
         // Filter rule should look like "+(id:(356 357 358) status:published)"
-        $query->addSubquery(QubitSearch::getInstance()->addTerm(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId'), true);
+        $query->addSubquery(QubitSearch::getInstance()->addTerm(QubitTerm::PUBLICATION_STATUS_PUBLISHED_ID, 'publicationStatusId'), null);
       }
     }
 

@@ -155,28 +155,26 @@
 
 </div>
 
-<?php if (QubitAcl::check($resource, 'create') || QubitAcl::check($resource, 'delete') || QubitAcl::check($resource, 'update')): ?>
-  <div class="actions section">
+<div class="actions section">
 
-    <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
+  <h2 class="element-invisible"><?php echo __('Actions') ?></h2>
 
-    <div class="content">
-      <ul class="clearfix links">
+  <div class="content">
+    <ul class="clearfix links">
 
-        <?php if (QubitAcl::check($resource, 'update')): ?>
-          <li><?php echo link_to(__('Edit'), array($resource, 'module' => 'actor', 'action' => 'edit'), array('title' => __('Edit'))) ?></li>
-        <?php endif; ?>
+      <?php if (QubitAcl::check($resource, 'update') || (QubitAcl::check($resource, 'translate'))): ?>
+        <li><?php echo link_to(__('Edit'), array($resource, 'module' => 'actor', 'action' => 'edit'), array('title' => __('Edit'))) ?></li>
+      <?php endif; ?>
 
-        <?php if (QubitAcl::check($resource, 'delete')): ?>
-          <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'actor', 'action' => 'delete'), array('class' => 'delete', 'title' => __('Delete'))) ?></li>
-        <?php endif; ?>
+      <?php if (QubitAcl::check($resource, 'delete')): ?>
+        <li><?php echo link_to(__('Delete'), array($resource, 'module' => 'actor', 'action' => 'delete'), array('class' => 'delete', 'title' => __('Delete'))) ?></li>
+      <?php endif; ?>
 
-        <?php if (QubitAcl::check($resource, 'create')): ?>
-          <li><?php echo link_to(__('Add new'), array('module' => 'actor', 'action' => 'add'), array('title' => __('Add new'))) ?></li>
-        <?php endif; ?>
+      <?php if (QubitAcl::check($resource, 'create')): ?>
+        <li><?php echo link_to(__('Add new'), array('module' => 'actor', 'action' => 'add'), array('title' => __('Add new'))) ?></li>
+      <?php endif; ?>
 
-      </ul>
-    </div>
-
+    </ul>
   </div>
-<?php endif; ?>
+
+</div>

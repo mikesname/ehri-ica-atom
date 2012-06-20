@@ -72,7 +72,7 @@ class TermEditAction extends DefaultEditAction
       $this->form->setValidator('serialNumber', new sfValidatorInteger);
       $this->form->setWidget('serialNumber', new sfWidgetFormInputHidden);
 
-      if (1 > strlen($title = $this->resource))
+      if (1 > strlen($title = $this->resource->__toString()))
       {
         $title = $this->context->i18n->__('Untitled');
       }

@@ -10,7 +10,8 @@
 /* Reset.less
  * Props to Eric Meyer (meyerweb.com) for his CSS reset file. We're using an adapted version here	that cuts out some of the reset HTML elements we will never need here (i.e., dfn, samp, etc).
  * ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- */
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
 }
@@ -75,7 +76,8 @@ table {
   border-collapse: collapse;
   border-spacing: 0;
 }
-ol, ul {
+ol,
+ul {
   list-style: none;
 }
 q:before,
@@ -105,7 +107,9 @@ nav,
 section {
   display: block;
 }
-audio, canvas, video {
+audio,
+canvas,
+video {
   display: inline-block;
   *display: inline;
   *zoom: 1;
@@ -113,7 +117,8 @@ audio, canvas, video {
 audio:not([controls]) {
   display: none;
 }
-sub, sup {
+sub,
+sup {
   font-size: 75%;
   line-height: 0;
   position: relative;
@@ -138,11 +143,13 @@ textarea {
   vertical-align: baseline;
   *vertical-align: middle;
 }
-button, input {
+button,
+input {
   line-height: normal;
   *overflow: visible;
 }
-button::-moz-focus-inner, input::-moz-focus-inner {
+button::-moz-focus-inner,
+input::-moz-focus-inner {
   border: 0;
   padding: 0;
 }
@@ -176,7 +183,8 @@ table {
 .clearfix {
   zoom: 1;
 }
-.clearfix:before, .clearfix:after {
+.clearfix:before,
+.clearfix:after {
   display: table;
   content: "";
 }
@@ -192,9 +200,9 @@ table {
   margin: 0 auto;
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
 }
-.container:before, .container:after {
+.container:before,
+.container:after {
   display: table;
   content: "";
 }
@@ -236,7 +244,8 @@ table {
   border-color: #c43c35 #c43c35 #882a25;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.btn.success, .alert-message.success {
+.btn.success,
+.alert-message.success {
   background-color: #57a957;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#62c462), to(#57a957));
@@ -250,7 +259,8 @@ table {
   border-color: #57a957 #57a957 #3d773d;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.btn.info, .alert-message.info {
+.btn.info,
+.alert-message.info {
   background-color: #339bb9;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#5bc0de), to(#339bb9));
@@ -271,10 +281,10 @@ table {
 .row {
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
   margin-left: -20px;
 }
-.row:before, .row:after {
+.row:before,
+.row:after {
   display: table;
   content: "";
 }
@@ -385,7 +395,8 @@ table {
 .row .offset12 {
   margin-left: 740px;
 }
-html, body {
+html,
+body {
   background-color: #fff;
 }
 body {
@@ -404,9 +415,9 @@ body {
   padding: 0 20px;
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
 }
-.container-fluid:before, .container-fluid:after {
+.container-fluid:before,
+.container-fluid:after {
   display: table;
   content: "";
 }
@@ -535,7 +546,8 @@ a:hover {
   -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
+button.btn::-moz-focus-inner,
+input[type=submit].btn::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
@@ -610,7 +622,8 @@ h6 {
   color: #bfbfbf;
   text-transform: uppercase;
 }
-ul, ol {
+ul,
+ol {
   margin: 0 0 18px 25px;
 }
 ul ul,
@@ -636,7 +649,8 @@ ul.unstyled {
 dl {
   margin-bottom: 18px;
 }
-dl dt, dl dd {
+dl dt,
+dl dd {
   line-height: 18px;
 }
 dl dt {
@@ -689,7 +703,8 @@ address {
   line-height: 18px;
   margin-bottom: 18px;
 }
-code, pre {
+code,
+pre {
   padding: 0 3px 2px;
   font-family: Monaco, Andale Mono, Courier New, monospace;
   font-size: 12px;
@@ -765,7 +780,8 @@ label {
 div.input {
   margin-left: 150px;
 }
-input[type=checkbox], input[type=radio] {
+input[type=checkbox],
+input[type=radio] {
   cursor: pointer;
 }
 input[type=text],
@@ -785,7 +801,8 @@ select,
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-select, input[type=file] {
+select,
+input[type=file] {
   height: 27px;
   line-height: 27px;
 }
@@ -817,7 +834,9 @@ textarea {
   -moz-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
 }
-input[type=text]:focus, input[type=password]:focus, textarea:focus {
+input[type=text]:focus,
+input[type=password]:focus,
+textarea:focus {
   outline: none;
   border-color: rgba(82, 168, 236, 0.8);
   -webkit-box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1), 0 0 8px rgba(82, 168, 236, 0.6);
@@ -832,22 +851,29 @@ form div.error {
   -moz-border-radius: 4px;
   border-radius: 4px;
 }
-form div.error > label, form div.error span.help-inline, form div.error span.help-block {
+form div.error > label,
+form div.error span.help-inline,
+form div.error span.help-block {
   color: #9d261d;
 }
-form div.error input[type=text], form div.error input[type=password], form div.error textarea {
+form div.error input[type=text],
+form div.error input[type=password],
+form div.error textarea {
   border-color: #c87872;
   -webkit-box-shadow: 0 0 3px rgba(171, 41, 32, 0.25);
   -moz-box-shadow: 0 0 3px rgba(171, 41, 32, 0.25);
   box-shadow: 0 0 3px rgba(171, 41, 32, 0.25);
 }
-form div.error input[type=text]:focus, form div.error input[type=password]:focus, form div.error textarea:focus {
+form div.error input[type=text]:focus,
+form div.error input[type=password]:focus,
+form div.error textarea:focus {
   border-color: #b9554d;
   -webkit-box-shadow: 0 0 6px rgba(171, 41, 32, 0.5);
   -moz-box-shadow: 0 0 6px rgba(171, 41, 32, 0.5);
   box-shadow: 0 0 6px rgba(171, 41, 32, 0.5);
 }
-form div.error .input-prepend span.add-on, form div.error .input-append span.add-on {
+form div.error .input-prepend span.add-on,
+form div.error .input-append span.add-on {
   background: #f4c8c5;
   border-color: #c87872;
   color: #b9554d;
@@ -891,7 +917,9 @@ select.xxlarge {
 textarea.xxlarge {
   overflow-y: scroll;
 }
-input[readonly]:focus, textarea[readonly]:focus, input.disabled {
+input[readonly]:focus,
+textarea[readonly]:focus,
+input.disabled {
   background: #f5f5f5;
   border-color: #ddd;
   -webkit-box-shadow: none;
@@ -917,7 +945,8 @@ input[readonly]:focus, textarea[readonly]:focus, input.disabled {
 .actions .secondary-action a:hover {
   text-decoration: underline;
 }
-.help-inline, .help-block {
+.help-inline,
+.help-block {
   font-size: 12px;
   line-height: 18px;
   color: #bfbfbf;
@@ -938,7 +967,8 @@ input[readonly]:focus, textarea[readonly]:focus, input.disabled {
 .inline-inputs {
   color: #808080;
 }
-.inline-inputs span, .inline-inputs input[type=text] {
+.inline-inputs span,
+.inline-inputs input[type=text] {
   display: inline-block;
 }
 .inline-inputs input.mini {
@@ -958,7 +988,8 @@ input[readonly]:focus, textarea[readonly]:focus, input.disabled {
   -moz-border-radius: 0 3px 3px 0;
   border-radius: 0 3px 3px 0;
 }
-.input-prepend .add-on, .input-append .add-on {
+.input-prepend .add-on,
+.input-append .add-on {
   background: #f5f5f5;
   float: left;
   display: block;
@@ -977,7 +1008,8 @@ input[readonly]:focus, textarea[readonly]:focus, input.disabled {
   -moz-border-radius: 3px 0 0 3px;
   border-radius: 3px 0 0 3px;
 }
-.input-prepend .active, .input-append .active {
+.input-prepend .active,
+.input-append .active {
   background: #a9dba9;
   border-color: #46a546;
 }
@@ -986,7 +1018,8 @@ input[readonly]:focus, textarea[readonly]:focus, input.disabled {
   /* IE6-7 */
 
 }
-.input-append input[type=text], .input-append input[type=password] {
+.input-append input[type=text],
+.input-append input[type=password] {
   float: left;
   -webkit-border-radius: 3px 0 0 3px;
   -moz-border-radius: 3px 0 0 3px;
@@ -1032,7 +1065,8 @@ input[readonly]:focus, textarea[readonly]:focus, input.disabled {
 .inputs-list li:first-child {
   padding-top: 5px;
 }
-.inputs-list input[type=radio], .inputs-list input[type=checkbox] {
+.inputs-list input[type=radio],
+.inputs-list input[type=checkbox] {
   margin-bottom: 0;
 }
 .form-stacked {
@@ -1091,7 +1125,8 @@ table {
   border-collapse: separate;
   font-size: 13px;
 }
-table th, table td {
+table th,
+table td {
   padding: 10px 10px 9px;
   line-height: 13.5px;
   text-align: left;
@@ -1121,7 +1156,8 @@ table th {
   border-color: #000 transparent;
   visibility: hidden;
 }
-.zebra-striped .headerSortUp, .zebra-striped .headerSortDown {
+.zebra-striped .headerSortUp,
+.zebra-striped .headerSortDown {
   background-color: rgba(141, 192, 219, 0.25);
   text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
   -webkit-border-radius: 3px 3px 0 0;
@@ -1131,7 +1167,8 @@ table th {
 .zebra-striped .header:hover:after {
   visibility: visible;
 }
-.zebra-striped .headerSortDown:after, .zebra-striped .headerSortDown:hover:after {
+.zebra-striped .headerSortDown:after,
+.zebra-striped .headerSortDown:hover:after {
   visibility: visible;
   filter: alpha(opacity=60);
   -khtml-opacity: 0.6;
@@ -1156,42 +1193,48 @@ table .blue {
   color: #049cdb;
   border-bottom-color: #049cdb;
 }
-table .headerSortUp.blue, table .headerSortDown.blue {
+table .headerSortUp.blue,
+table .headerSortDown.blue {
   background-color: #ade6fe;
 }
 table .green {
   color: #46a546;
   border-bottom-color: #46a546;
 }
-table .headerSortUp.green, table .headerSortDown.green {
+table .headerSortUp.green,
+table .headerSortDown.green {
   background-color: #cdeacd;
 }
 table .red {
   color: #9d261d;
   border-bottom-color: #9d261d;
 }
-table .headerSortUp.red, table .headerSortDown.red {
+table .headerSortUp.red,
+table .headerSortDown.red {
   background-color: #f4c8c5;
 }
 table .yellow {
   color: #ffc40d;
   border-bottom-color: #ffc40d;
 }
-table .headerSortUp.yellow, table .headerSortDown.yellow {
+table .headerSortUp.yellow,
+table .headerSortDown.yellow {
   background-color: #fff6d9;
 }
 table .orange {
   color: #f89406;
   border-bottom-color: #f89406;
 }
-table .headerSortUp.orange, table .headerSortDown.orange {
+table .headerSortUp.orange,
+table .headerSortDown.orange {
   background-color: #fee9cc;
 }
 table .purple {
   color: #7a43b6;
   border-bottom-color: #7a43b6;
 }
-table .headerSortUp.purple, table .headerSortDown.purple {
+table .headerSortUp.purple,
+table .headerSortDown.purple {
   background-color: #e2d5f0;
 }
 /* Patterns.less
@@ -1225,7 +1268,8 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   color: #bfbfbf;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
-.topbar a:hover, .topbar ul li.active a {
+.topbar a:hover,
+.topbar ul li.active a {
   background-color: #333;
   background-color: rgba(255, 255, 255, 0.05);
   color: #ffffff;
@@ -1286,7 +1330,8 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   background-color: rgba(255, 255, 255, 0.5);
   color: #fff;
 }
-.topbar form input:focus, .topbar form input.focused {
+.topbar form input:focus,
+.topbar form input.focused {
   outline: none;
   background-color: #fff;
   color: #404040;
@@ -1354,7 +1399,8 @@ table .headerSortUp.purple, table .headerSortDown.purple {
   -moz-opacity: 0.5;
   opacity: 0.5;
 }
-.topbar ul li.menu.open a.menu, .topbar ul li.menu.open a:hover {
+.topbar ul li.menu.open a.menu,
+.topbar ul li.menu.open a:hover {
   background-color: #444;
   background-color: rgba(255, 255, 255, 0.1);
   *background-color: #444;
@@ -1555,7 +1601,8 @@ footer {
   padding: 7px 9px 7px;
   font-size: 11px;
 }
-button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
+button.btn::-moz-focus-inner,
+input[type=submit].btn::-moz-focus-inner {
   padding: 0;
   border: 0;
 }
@@ -1636,7 +1683,9 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
 .alert-message.block-message .alert-actions {
   margin-top: 5px;
 }
-.alert-message.block-message.error, .alert-message.block-message.success, .alert-message.block-message.info {
+.alert-message.block-message.error,
+.alert-message.block-message.success,
+.alert-message.block-message.info {
   color: #404040;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -1652,12 +1701,12 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   background-color: #ddf4fb;
   border-color: #c6edf9;
 }
-.tabs, .pills {
+.tabs,
+.pills {
   margin: 0 0 20px;
   padding: 0;
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
 }
 .tabs:before,
 .pills:before,
@@ -1666,13 +1715,16 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   display: table;
   content: "";
 }
-.tabs:after, .pills:after {
+.tabs:after,
+.pills:after {
   clear: both;
 }
-.tabs li, .pills li {
+.tabs li,
+.pills li {
   display: inline;
 }
-.tabs li a, .pills li a {
+.tabs li a,
+.pills li a {
   float: left;
   width: auto;
 }
@@ -1751,10 +1803,12 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
 
   text-decoration: none;
 }
-.pagination ul li a:hover, .pagination ul li.active a {
+.pagination ul li a:hover,
+.pagination ul li.active a {
   background-color: #c7eefe;
 }
-.pagination ul li.disabled a, .pagination ul li.disabled a:hover {
+.pagination ul li.disabled a,
+.pagination ul li.disabled a:hover {
   background-color: transparent;
   color: #bfbfbf;
 }
@@ -1834,10 +1888,10 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   box-shadow: inset 0 1px 0 #ffffff;
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
   margin-bottom: 0;
 }
-.modal .modal-footer:before, .modal .modal-footer:after {
+.modal .modal-footer:before,
+.modal .modal-footer:after {
   display: table;
   content: "";
 }
@@ -1988,13 +2042,16 @@ button.btn::-moz-focus-inner, input[type=submit].btn::-moz-focus-inner {
   -moz-background-clip: padding-box;
   background-clip: padding-box;
 }
-.popover .content p, .popover .content ul, .popover .content ol {
+.popover .content p,
+.popover .content ul,
+.popover .content ol {
   margin-bottom: 0;
 }
 /*
  * qtTrilliumPlugin
  */
-html, body {
+html,
+body {
   background-color: White;
   background-image: url(../../images/bg.png);
   background-repeat: repeat-y;
@@ -2018,7 +2075,8 @@ html, body {
   float: left;
   display: inline;
 }
-#page-wrapper #page #main-wrapper #main .sidebar, #page-wrapper #page #main-wrapper #main #sidebar-first {
+#page-wrapper #page #main-wrapper #main .sidebar,
+#page-wrapper #page #main-wrapper #main #sidebar-first {
   width: 280px;
 }
 #page-wrapper #page #main-wrapper #main #content {
@@ -2026,10 +2084,12 @@ html, body {
   margin-left: 20px;
 }
 @media only screen and (min-width: 768px) and (max-width: 940px) {
-  html, body {
+  html,
+  body {
     background-position: -60px 0%;
   }
-  #header, #main-wrapper {
+  #header,
+  #main-wrapper {
     min-width: 768px !important;
   }
   #second-level input[name=query] {
@@ -2041,7 +2101,8 @@ html, body {
   #main-wrapper {
     width: 768px;
   }
-  .sidebar, #sidebar_first {
+  .sidebar,
+  #sidebar_first {
     width: 220px !important;
   }
   #content {
@@ -2052,10 +2113,12 @@ html, body {
   }
 }
 @media only screen and (max-width: 767px) {
-  html, body {
+  html,
+  body {
     background-position: 200px 0%;
   }
-  #header, #main-wrapper {
+  #header,
+  #main-wrapper {
     min-width: 480px !important;
   }
   #page-wrapper {
@@ -2079,7 +2142,8 @@ html, body {
   #logo-and-name {
     margin-left: 10px;
   }
-  .sidebar, #sidebar_first {
+  .sidebar,
+  #sidebar_first {
     width: 480px !important;
     clear: both;
   }
@@ -2156,9 +2220,9 @@ html, body {
 #header > div > #second-level > div {
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
 }
-#header > div > #second-level > div:before, #header > div > #second-level > div:after {
+#header > div > #second-level > div:before,
+#header > div > #second-level > div:after {
   display: table;
   content: "";
 }
@@ -2231,7 +2295,8 @@ html, body {
 #header > div > #second-level > div .search form input[name="query"]:hover {
   background-color: #f0f0f0;
 }
-#header > div > #second-level > div .search form input[name="query"]:focus, #header > div > #second-level > div .search form input[name="query"].focused {
+#header > div > #second-level > div .search form input[name="query"]:focus,
+#header > div > #second-level > div .search form input[name="query"].focused {
   outline: none;
   background-color: #f0f0f0;
   color: #404040;
@@ -2324,7 +2389,8 @@ html, body {
   background-color: #333;
   background-color: rgba(255, 255, 255, 0.05);
 }
-#header ul li.open a.menu, #header ul li.open a:hover {
+#header ul li.open a.menu,
+#header ul li.open a:hover {
   background-color: #444;
   background-color: rgba(255, 255, 255, 0.1);
   color: #fff;
@@ -2410,7 +2476,8 @@ h1 + h1.label {
   border-radius: 0 0 3px 3px;
   padding-left: 20px;
 }
-.actions input[type=submit], .actions button[type=submit] {
+.actions input[type=submit],
+.actions button[type=submit] {
   display: inline-block;
   background-color: #e6e6e6;
   background-repeat: no-repeat;
@@ -2511,7 +2578,8 @@ h1 + h1.label {
   border-color: #c43c35 #c43c35 #882a25;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.actions input[type=submit].success, .actions button[type=submit].success {
+.actions input[type=submit].success,
+.actions button[type=submit].success {
   background-color: #57a957;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#62c462), to(#57a957));
@@ -2525,7 +2593,8 @@ h1 + h1.label {
   border-color: #57a957 #57a957 #3d773d;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.actions input[type=submit].info, .actions button[type=submit].info {
+.actions input[type=submit].info,
+.actions button[type=submit].info {
   background-color: #339bb9;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#5bc0de), to(#339bb9));
@@ -2539,33 +2608,39 @@ h1 + h1.label {
   border-color: #339bb9 #339bb9 #22697d;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.actions input[type=submit]:hover, .actions button[type=submit]:hover {
+.actions input[type=submit]:hover,
+.actions button[type=submit]:hover {
   background-position: 0 -15px;
   color: #333;
   text-decoration: none;
 }
-.actions input[type=submit].primary, .actions button[type=submit].primary {
+.actions input[type=submit].primary,
+.actions button[type=submit].primary {
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.actions input[type=submit].primary:hover, .actions button[type=submit].primary:hover {
+.actions input[type=submit].primary:hover,
+.actions button[type=submit].primary:hover {
   color: #fff;
 }
-.actions input[type=submit].large, .actions button[type=submit].large {
+.actions input[type=submit].large,
+.actions button[type=submit].large {
   font-size: 16px;
   line-height: 28px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
-.actions input[type=submit].small, .actions button[type=submit].small {
+.actions input[type=submit].small,
+.actions button[type=submit].small {
   padding-right: 9px;
   padding-left: 9px;
   font-size: 11px;
 }
-.actions input[type=submit].disabled, .actions button[type=submit].disabled {
+.actions input[type=submit].disabled,
+.actions button[type=submit].disabled {
   background-image: none;
   filter: alpha(opacity=65);
   -khtml-opacity: 0.65;
@@ -2576,7 +2651,8 @@ h1 + h1.label {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.actions input[type=submit]:disabled, .actions button[type=submit]:disabled {
+.actions input[type=submit]:disabled,
+.actions button[type=submit]:disabled {
   background-image: none;
   filter: alpha(opacity=65);
   -khtml-opacity: 0.65;
@@ -2587,24 +2663,24 @@ h1 + h1.label {
   -moz-box-shadow: none;
   box-shadow: none;
 }
-.actions input[type=submit]:disabled.primary, .actions button[type=submit]:disabled.primary {
+.actions input[type=submit]:disabled.primary,
+.actions button[type=submit]:disabled.primary {
   color: #fff;
 }
-.actions input[type=submit]:active, .actions button[type=submit]:active {
+.actions input[type=submit]:active,
+.actions button[type=submit]:active {
   -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-.actions input[type=submit]::-moz-focus-inner, .actions button[type=submit]::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-.actions input[type=submit]:hover, .actions button[type=submit]:hover {
+.actions input[type=submit]:hover,
+.actions button[type=submit]:hover {
   background-position: 0 -15px;
   color: #333;
   text-decoration: none;
 }
-.actions input[type=submit].primary, .actions button[type=submit].primary {
+.actions input[type=submit].primary,
+.actions button[type=submit].primary {
   color: #fff;
   background-color: #0064cd;
   background-repeat: repeat-x;
@@ -2619,7 +2695,8 @@ h1 + h1.label {
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-.actions input[type=submit].disabled, .actions button[type=submit].disabled {
+.actions input[type=submit].disabled,
+.actions button[type=submit].disabled {
   cursor: default;
   background-image: none;
   filter: alpha(opacity=65);
@@ -2627,7 +2704,8 @@ h1 + h1.label {
   -moz-opacity: 0.65;
   opacity: 0.65;
 }
-.actions input[type=submit]:disabled, .actions button[type=submit]:disabled {
+.actions input[type=submit]:disabled,
+.actions button[type=submit]:disabled {
   cursor: default;
   background-image: none;
   filter: alpha(opacity=65);
@@ -2635,12 +2713,14 @@ h1 + h1.label {
   -moz-opacity: 0.65;
   opacity: 0.65;
 }
-.actions input[type=submit]:active, .actions button[type=submit]:active {
+.actions input[type=submit]:active,
+.actions button[type=submit]:active {
   -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-.actions input[type=submit].large, .actions button[type=submit].large {
+.actions input[type=submit].large,
+.actions button[type=submit].large {
   font-size: 16px;
   line-height: normal;
   padding: 9px 14px 9px;
@@ -2648,15 +2728,13 @@ h1 + h1.label {
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
-.actions input[type=submit].small, .actions button[type=submit].small {
+.actions input[type=submit].small,
+.actions button[type=submit].small {
   padding: 7px 9px 7px;
   font-size: 11px;
 }
-.actions input[type=submit]::-moz-focus-inner, .actions button[type=submit]::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-.actions input[type=submit]:hover, .actions button[type=submit]:hover {
+.actions input[type=submit]:hover,
+.actions button[type=submit]:hover {
   color: #fff;
 }
 .actions .delete {
@@ -2743,7 +2821,8 @@ h1 + h1.label {
 .actions a.info:hover {
   color: #ffffff;
 }
-.actions a.danger, .actions a.error {
+.actions a.danger,
+.actions a.error {
   background-color: #c43c35;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#ee5f5b), to(#c43c35));
@@ -2841,10 +2920,6 @@ h1 + h1.label {
   -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-.actions a::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
 .actions a:hover {
   background-position: 0 -15px;
   color: #333;
@@ -2898,10 +2973,6 @@ h1 + h1.label {
   padding: 7px 9px 7px;
   font-size: 11px;
 }
-.actions a::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
 .actions ul {
   margin: 0;
   padding: 0;
@@ -2927,7 +2998,7 @@ body.index #content .section .editLink {
   height: 20px;
   text-indent: -10000em;
   border: 1px solid #e6e6e6;
-  background: white url(../../../../images/pencil.png) no-repeat 50% 50%;
+  background: #ffffff url(../../../../images/pencil.png) no-repeat 50% 50%;
 }
 body.index #content .section .editLink h2 {
   display: inline;
@@ -2936,7 +3007,9 @@ body.index #content .section .editLink h2 {
 body.index #content .section .editLink:hover {
   background-color: #eee;
 }
-body.index #content .section > h2, body.index #content .section > a > h2, body.index #content .section > span > h2 {
+body.index #content .section > h2,
+body.index #content .section > a > h2,
+body.index #content .section > span > h2 {
   border-bottom: 1px solid #e6e6e6;
   color: #bfbfbf;
   font-weight: normal;
@@ -2993,6 +3066,7 @@ body.advanced #content .section .section {
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   border-color: #ffffff #ffffff #d9d9d9;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+  background-color: #eee;
   margin-bottom: 18px;
   padding: 7px 14px;
   color: #404040;
@@ -3056,7 +3130,7 @@ form input[type="text"],
 form input[type="password"],
 form .yui-ac-input {
   height: 26px;
-  line-height: 26px;
+  line-height: 16px;
 }
 form textarea {
   resize: none;
@@ -3073,27 +3147,31 @@ form .section {
 form .section:first-child {
   margin-top: 0px !important;
 }
-form .section, form .field {
+form .section,
+form .field {
   margin-bottom: 8px;
 }
-form .section h3, form .field h3 {
+form .section h3,
+form .field h3 {
   font-size: inherit;
   line-height: inherit;
   font-weight: normal;
   margin-bottom: 4px;
 }
-form ul.multiInput, form div.yui-ac > ul {
+form ul.multiInput,
+form div.yui-ac > ul {
   margin-top: 9px;
 }
-form ul.multiInput li, form div.yui-ac > ul li {
+form ul.multiInput li,
+form div.yui-ac > ul li {
   margin-bottom: 9px;
 }
 form .form-item {
   zoom: 1;
   margin-bottom: 18px;
-  content: normal;
 }
-form .form-item:before, form .form-item:after {
+form .form-item:before,
+form .form-item:after {
   display: table;
   content: "";
 }
@@ -3136,7 +3214,8 @@ form .form-item table {
 .yui-dialog .form-item > label input[type=checkbox] {
   margin-right: 4px;
 }
-.yui-dialog .form-item.form-item-startDate, .yui-dialog .form-item.form-item-endDate {
+.yui-dialog .form-item.form-item-startDate,
+.yui-dialog .form-item.form-item-endDate {
   width: 49%;
   margin-right: 1%;
   float: left;
@@ -3175,7 +3254,8 @@ table caption {
   margin-top: -20px !important;
   padding-right: 20px;
 }
-.tabs ul.clearfix:before, .tabs ul.clearfix:after {
+.tabs ul.clearfix:before,
+.tabs ul.clearfix:after {
   content: normal;
 }
 /*
@@ -3186,7 +3266,9 @@ table caption {
   margin-right: 10px;
   padding-bottom: 10px;
 }
-#treeView table, #treeView th, #treeView td {
+#treeView table,
+#treeView th,
+#treeView td {
   margin: 0;
   padding: 0;
   border: 0;
@@ -3212,7 +3294,7 @@ table caption {
 html.js input.yui-ac-input {
   padding: 4px;
   font-size: 13px;
-  line-height: 26px;
+  line-height: 16px;
   height: 26px;
   color: #808080;
   border: 1px solid #ccc;
@@ -3269,7 +3351,8 @@ fieldset legend {
 html.js fieldset.collapsed * {
   display: none;
 }
-html.js fieldset.collapsed legend, html.js fieldset.collapsed legend a span.element-invisible {
+html.js fieldset.collapsed legend,
+html.js fieldset.collapsed legend a span.element-invisible {
   display: block;
   overflow: hidden;
 }
@@ -3278,6 +3361,7 @@ html.js fieldset.collapsed legend {
 }
 html.js fieldset.collapsible legend {
   padding-left: 28px;
+  margin-bottom: 4px;
   background: transparent url(../../../sfDrupalPlugin/vendor/drupal/themes/garland/images/menu-expanded.gif) no-repeat 10px 50%;
 }
 html.js fieldset.collapsible legend a {
@@ -3292,13 +3376,14 @@ html.js fieldset.collapsible legend span.summary {
 /*
  *  Password strength indicator
  */
-.password-parent label, .password-parent input {
+.password-parent label,
+.password-parent input {
   width: 50% !important;
 }
 .password-parent > #password-strength {
-  width: 180px;
+  width: 40%;
   float: right;
-  margin: 20px 120px 0 0;
+  margin: 20px 0 0 20px;
 }
 .password-parent > #password-strength > .password-strength-title {
   display: inline;
@@ -3316,7 +3401,8 @@ html.js fieldset.collapsible legend span.summary {
   width: 0%;
   background-color: #47C965;
 }
-.confirm-parent label, .confirm-parent input {
+.confirm-parent label,
+.confirm-parent input {
   width: 50% !important;
 }
 .confirm-parent > div.password-confirm {
@@ -3334,7 +3420,8 @@ html.js fieldset.collapsible legend span.summary {
 .sidebar {
   border-color: #666;
 }
-.sidebar h2, .sidebar h3 {
+.sidebar h2,
+.sidebar h3 {
   height: auto;
   overflow: visible;
   position: static;
@@ -3347,7 +3434,8 @@ html.js fieldset.collapsible legend span.summary {
 .sidebar ul {
   margin-left: 30px;
 }
-.sidebar .field, .sidebar > .section > .section {
+.sidebar .field,
+.sidebar > .section > .section {
   margin-bottom: 10px;
 }
 .sidebar .search input[name="query"] {
@@ -3381,7 +3469,8 @@ html.js fieldset.collapsible legend span.summary {
 .sidebar .search input[name="query"]:hover {
   background-color: #f0f0f0;
 }
-.sidebar .search input[name="query"]:focus, .sidebar .search input[name="query"].focused {
+.sidebar .search input[name="query"]:focus,
+.sidebar .search input[name="query"].focused {
   outline: none;
   background-color: #f0f0f0;
   color: #404040;
@@ -3475,7 +3564,8 @@ html.js fieldset.collapsible legend span.summary {
 /*
  * Contact information
  */
-.vcard > h3, .vcard > .agent {
+.vcard > h3,
+.vcard > .agent {
   font-weight: bold;
   color: #404040;
   line-height: 18px;
@@ -3496,7 +3586,8 @@ html.js fieldset.collapsible legend span.summary {
   padding-top: 18px;
   padding-left: 18px;
 }
-#content .search input[name="query"], #content .search input[name="subquery"] {
+#content .search input[name="query"],
+#content .search input[name="subquery"] {
   background-color: #fff;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
@@ -3518,13 +3609,16 @@ html.js fieldset.collapsible legend span.summary {
   display: block;
   float: left;
 }
-#content .search input[name="query"]:-moz-placeholder, #content .search input[name="subquery"]:-moz-placeholder {
+#content .search input[name="query"]:-moz-placeholder,
+#content .search input[name="subquery"]:-moz-placeholder {
   color: #e6e6e6;
 }
-#content .search input[name="query"]::-webkit-input-placeholder, #content .search input[name="subquery"]::-webkit-input-placeholder {
+#content .search input[name="query"]::-webkit-input-placeholder,
+#content .search input[name="subquery"]::-webkit-input-placeholder {
   color: #e6e6e6;
 }
-#content .search input[name="query"]:hover, #content .search input[name="subquery"]:hover {
+#content .search input[name="query"]:hover,
+#content .search input[name="subquery"]:hover {
   background-color: #f0f0f0;
 }
 #content .search input[name="query"]:focus,
@@ -3639,7 +3733,7 @@ body.login #content > .section > form > fieldset > .form-item .messages {
 }
 body.login #content > .section > form > fieldset > .form-item input {
   font-size: 20px;
-  line-height: 36px;
+  line-height: 26px;
   height: 36px;
 }
 body.login #content > .section > form > fieldset > .actions {
@@ -3704,7 +3798,8 @@ div.description-overlay {
 /*
  * Error404,
  */
-body.error404 #content > .section > .section, body.secure #content > .section > .section {
+body.error404 #content > .section > .section,
+body.secure #content > .section > .section {
   width: 460px;
   margin: 40px auto 0 auto;
   padding-bottom: 20px;
@@ -3717,7 +3812,8 @@ body.error404 #content > .section > .section, body.secure #content > .section > 
   border-radius: 5px;
   position: relative;
 }
-body.error404 #content > .section > .section h2.capitalize, body.secure #content > .section > .section h2.capitalize {
+body.error404 #content > .section > .section h2.capitalize,
+body.secure #content > .section > .section h2.capitalize {
   margin-bottom: 20px;
   padding: 4px 20px 4px 50px;
   border-bottom: 1px solid #ddd;
@@ -3731,7 +3827,8 @@ body.error404 #content > .section > .section h2.capitalize, body.secure #content
   background-image: -o-linear-gradient(top, #ffffff, #f4f4f4);
   background-image: linear-gradient(top, #ffffff, #f4f4f4);
 }
-body.error404 #content > .section > .section img:first-child, body.secure #content > .section > .section img:first-child {
+body.error404 #content > .section > .section img:first-child,
+body.secure #content > .section > .section img:first-child {
   position: absolute;
   top: 8px;
   left: 8px;
@@ -3789,12 +3886,49 @@ ul.inline li input {
 /*
  * Pagination
  */
+.pager {
+  margin-top: 8px !important;
+}
+.pager h2 {
+  display: none;
+}
+.pager .pagination {
+  margin-top: 8px;
+  height: 28px;
+  text-align: center;
+}
+.pager .pagination ul {
+  float: none;
+  display: inline-block;
+  text-align: center;
+}
+.pager .pagination ul li {
+  margin-left: -4px;
+}
+.pager .pagination ul li a {
+  float: none;
+  display: inline-block;
+}
+.pager .pagination ul li.disabled {
+  background-color: transparent;
+}
+.pager .pagination ul li a:hover,
+.pager .pagination ul li.active a {
+  background-color: #eee;
+}
+.itemsPerPage {
+  margin-top: 8px !important;
+  text-align: center;
+  color: #999;
+}
 .itemsPerPage ul {
-  float: left;
+  display: inline;
   margin-right: 6px;
+  margin-left: 0;
 }
 .itemsPerPage ul li {
   display: inline;
+  color: #999;
 }
 .itemsPerPage ul li:after {
   content: ' |';
@@ -3802,13 +3936,28 @@ ul.inline li input {
 .itemsPerPage ul li:last-child:after {
   content: '';
 }
+.sidebar .pager .pagination {
+  height: 12px;
+}
+.sidebar .pager .pagination ul {
+  margin-left: 0;
+}
+.sidebar .pager .pagination ul li a {
+  line-height: 18px;
+  padding: 0 8px;
+  font-size: 11px;
+}
+.sidebar .itemsPerPage ul {
+  margin-right: 2px;
+}
 /*
  * Search results
  */
 .search-results {
   border: 0;
 }
-.search-results.odd, .search-results.even {
+.search-results.odd,
+.search-results.even {
   background-color: White;
 }
 .search-results > a > img {
@@ -3857,7 +4006,8 @@ ul.inline li input {
 body.settings #content table tr td:first-child {
   width: 180px;
 }
-body.settings #content table input[type=submit], body.settings #content table button[type=submit] {
+body.settings #content table input[type=submit],
+body.settings #content table button[type=submit] {
   display: inline-block;
   background-color: #e6e6e6;
   background-repeat: no-repeat;
@@ -3958,7 +4108,8 @@ body.settings #content table button[type=submit].error {
   border-color: #c43c35 #c43c35 #882a25;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-body.settings #content table input[type=submit].success, body.settings #content table button[type=submit].success {
+body.settings #content table input[type=submit].success,
+body.settings #content table button[type=submit].success {
   background-color: #57a957;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#62c462), to(#57a957));
@@ -3972,7 +4123,8 @@ body.settings #content table input[type=submit].success, body.settings #content 
   border-color: #57a957 #57a957 #3d773d;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-body.settings #content table input[type=submit].info, body.settings #content table button[type=submit].info {
+body.settings #content table input[type=submit].info,
+body.settings #content table button[type=submit].info {
   background-color: #339bb9;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#5bc0de), to(#339bb9));
@@ -3986,33 +4138,39 @@ body.settings #content table input[type=submit].info, body.settings #content tab
   border-color: #339bb9 #339bb9 #22697d;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-body.settings #content table input[type=submit]:hover, body.settings #content table button[type=submit]:hover {
+body.settings #content table input[type=submit]:hover,
+body.settings #content table button[type=submit]:hover {
   background-position: 0 -15px;
   color: #333;
   text-decoration: none;
 }
-body.settings #content table input[type=submit].primary, body.settings #content table button[type=submit].primary {
+body.settings #content table input[type=submit].primary,
+body.settings #content table button[type=submit].primary {
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-body.settings #content table input[type=submit].primary:hover, body.settings #content table button[type=submit].primary:hover {
+body.settings #content table input[type=submit].primary:hover,
+body.settings #content table button[type=submit].primary:hover {
   color: #fff;
 }
-body.settings #content table input[type=submit].large, body.settings #content table button[type=submit].large {
+body.settings #content table input[type=submit].large,
+body.settings #content table button[type=submit].large {
   font-size: 16px;
   line-height: 28px;
   -webkit-border-radius: 6px;
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
-body.settings #content table input[type=submit].small, body.settings #content table button[type=submit].small {
+body.settings #content table input[type=submit].small,
+body.settings #content table button[type=submit].small {
   padding-right: 9px;
   padding-left: 9px;
   font-size: 11px;
 }
-body.settings #content table input[type=submit].disabled, body.settings #content table button[type=submit].disabled {
+body.settings #content table input[type=submit].disabled,
+body.settings #content table button[type=submit].disabled {
   background-image: none;
   filter: alpha(opacity=65);
   -khtml-opacity: 0.65;
@@ -4023,7 +4181,8 @@ body.settings #content table input[type=submit].disabled, body.settings #content
   -moz-box-shadow: none;
   box-shadow: none;
 }
-body.settings #content table input[type=submit]:disabled, body.settings #content table button[type=submit]:disabled {
+body.settings #content table input[type=submit]:disabled,
+body.settings #content table button[type=submit]:disabled {
   background-image: none;
   filter: alpha(opacity=65);
   -khtml-opacity: 0.65;
@@ -4034,24 +4193,24 @@ body.settings #content table input[type=submit]:disabled, body.settings #content
   -moz-box-shadow: none;
   box-shadow: none;
 }
-body.settings #content table input[type=submit]:disabled.primary, body.settings #content table button[type=submit]:disabled.primary {
+body.settings #content table input[type=submit]:disabled.primary,
+body.settings #content table button[type=submit]:disabled.primary {
   color: #fff;
 }
-body.settings #content table input[type=submit]:active, body.settings #content table button[type=submit]:active {
+body.settings #content table input[type=submit]:active,
+body.settings #content table button[type=submit]:active {
   -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-body.settings #content table input[type=submit]::-moz-focus-inner, body.settings #content table button[type=submit]::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-body.settings #content table input[type=submit]:hover, body.settings #content table button[type=submit]:hover {
+body.settings #content table input[type=submit]:hover,
+body.settings #content table button[type=submit]:hover {
   background-position: 0 -15px;
   color: #333;
   text-decoration: none;
 }
-body.settings #content table input[type=submit].primary, body.settings #content table button[type=submit].primary {
+body.settings #content table input[type=submit].primary,
+body.settings #content table button[type=submit].primary {
   color: #fff;
   background-color: #0064cd;
   background-repeat: repeat-x;
@@ -4066,7 +4225,8 @@ body.settings #content table input[type=submit].primary, body.settings #content 
   border-color: #0064cd #0064cd #003f81;
   border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 }
-body.settings #content table input[type=submit].disabled, body.settings #content table button[type=submit].disabled {
+body.settings #content table input[type=submit].disabled,
+body.settings #content table button[type=submit].disabled {
   cursor: default;
   background-image: none;
   filter: alpha(opacity=65);
@@ -4074,7 +4234,8 @@ body.settings #content table input[type=submit].disabled, body.settings #content
   -moz-opacity: 0.65;
   opacity: 0.65;
 }
-body.settings #content table input[type=submit]:disabled, body.settings #content table button[type=submit]:disabled {
+body.settings #content table input[type=submit]:disabled,
+body.settings #content table button[type=submit]:disabled {
   cursor: default;
   background-image: none;
   filter: alpha(opacity=65);
@@ -4082,12 +4243,14 @@ body.settings #content table input[type=submit]:disabled, body.settings #content
   -moz-opacity: 0.65;
   opacity: 0.65;
 }
-body.settings #content table input[type=submit]:active, body.settings #content table button[type=submit]:active {
+body.settings #content table input[type=submit]:active,
+body.settings #content table button[type=submit]:active {
   -webkit-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
   -moz-box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
   box-shadow: inset 0 3px 7px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.05);
 }
-body.settings #content table input[type=submit].large, body.settings #content table button[type=submit].large {
+body.settings #content table input[type=submit].large,
+body.settings #content table button[type=submit].large {
   font-size: 16px;
   line-height: normal;
   padding: 9px 14px 9px;
@@ -4095,15 +4258,13 @@ body.settings #content table input[type=submit].large, body.settings #content ta
   -moz-border-radius: 6px;
   border-radius: 6px;
 }
-body.settings #content table input[type=submit].small, body.settings #content table button[type=submit].small {
+body.settings #content table input[type=submit].small,
+body.settings #content table button[type=submit].small {
   padding: 7px 9px 7px;
   font-size: 11px;
 }
-body.settings #content table input[type=submit]::-moz-focus-inner, body.settings #content table button[type=submit]::-moz-focus-inner {
-  padding: 0;
-  border: 0;
-}
-body.settings #content table input[type=submit]:hover, body.settings #content table button[type=submit]:hover {
+body.settings #content table input[type=submit]:hover,
+body.settings #content table button[type=submit]:hover {
   color: #fff;
 }
 body.settings #content table tr:last-child td {

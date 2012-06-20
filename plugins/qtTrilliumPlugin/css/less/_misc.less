@@ -222,6 +222,7 @@ body.advanced #content .section .section
 .messages {
 
   .gradientBar(#eee, #fff);
+  background-color: #eee;
   margin-bottom: @baseline;
   padding: 7px 14px;
   color: @grayDark;
@@ -300,7 +301,7 @@ form {
   .yui-ac-input {
 
     height: 26px;
-    line-height: 26px;
+    line-height: 16px;
 
   }
 
@@ -542,8 +543,8 @@ html.js {
 
     padding: 4px;
     font-size: 13px;
-    line-height: @baseline + 8px;
-    height: @baseline + 8px;
+    line-height: 16px;
+    height: 26px;
     color: @gray;
     border: 1px solid #ccc;
     .border-radius(3px);
@@ -595,7 +596,6 @@ html.js .resizable-textarea textarea {
 /*
  * Fieldset
  */
-
 fieldset {
 
   margin: 1em 0 1em 0;
@@ -651,6 +651,7 @@ html.js {
     legend {
 
       padding-left: 28px;
+      margin-bottom: 4px;
       background: transparent url(../../../sfDrupalPlugin/vendor/drupal/themes/garland/images/menu-expanded.gif) no-repeat 10px 50%;
 
       a {
@@ -689,9 +690,9 @@ html.js {
 
   > #password-strength {
 
-    width: 180px;
+    width: 40%;
     float: right;
-    margin: 20px 120px 0 0;
+    margin: 20px 0 0 20px;
 
 
     > .password-strength-title {
@@ -1136,7 +1137,7 @@ body.login {
             input {
 
               font-size: 20px;
-              line-height: 36px;
+              line-height: 26px;
               height: 36px;
 
             }
@@ -1335,16 +1336,72 @@ ul.inline {
  * Pagination
  */
 
+.pager {
+
+  margin-top: 8px !important;
+
+  h2 { display: none; }
+
+  .pagination {
+
+    margin-top: 8px;
+    height: 28px;
+    text-align: center;
+
+    ul {
+
+      float: none;
+      display: inline-block;
+      text-align: center;
+
+      li {
+
+        margin-left: -4px;
+
+        a {
+
+          float: none;
+          display: inline-block;
+
+        }
+
+        &.disabled {
+
+          background-color: transparent;
+
+        }
+
+      }
+
+      li a:hover,
+      li.active a {
+
+        background-color: #eee;
+
+      }
+
+    }
+
+  }
+
+}
+
 .itemsPerPage {
+
+  margin-top: 8px !important;
+  text-align: center;
+  color: #999;
 
   ul {
 
-    float: left;
+    display: inline;
     margin-right: 6px;
+    margin-left: 0;
 
     li {
 
       display: inline;
+      color: #999;
 
       &:after {
 
@@ -1359,6 +1416,32 @@ ul.inline {
       }
 
     }
+
+  }
+
+}
+
+.sidebar {
+
+  .pager {
+
+    .pagination { height: 12px; }
+
+    .pagination ul { margin-left: 0; }
+
+    .pagination ul li a {
+
+      line-height: 18px;
+      padding: 0 8px;
+      font-size: 11px;
+
+    }
+
+  }
+
+  .itemsPerPage ul {
+
+    margin-right: 2px;
 
   }
 

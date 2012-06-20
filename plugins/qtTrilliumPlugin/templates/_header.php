@@ -8,7 +8,7 @@
 
         <?php if ($sf_user->isAuthenticated()): ?>
           <ul>
-            <?php echo get_component('menu', 'mainMenu', array('sf_cache_key' => 'settings')) ?>
+            <?php echo get_component('menu', 'mainMenu', array('sf_cache_key' => $sf_user->getCulture().$sf_user->getUserID())) ?>
           </ul>
         <?php endif; ?>
 

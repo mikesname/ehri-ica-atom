@@ -32,14 +32,12 @@ class SettingsDeleteAction extends sfAction
     }
     // TODO: else populate an error?
 
-    $this->refreshSettings();
-    $this->redirect('settings/list');
-  }
+    if ($this->context->getViewCacheManager() !== null)
+    {
+      $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_browseMenu&sf_cache_key=*');
+      $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_mainMenu&sf_cache_key=*');
+    }
 
-  protected function refreshSettings()
-  {
-    // clear the file cache containing the settings
-    $fileCache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
-    $fileCache->clean();
+    $this->redirect('settings/list');
   }
 }

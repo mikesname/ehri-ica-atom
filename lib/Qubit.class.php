@@ -84,7 +84,7 @@ class Qubit
   public static function saveTemporaryFile($name, $contents)
   {
     // Set temporary directory path
-    $tmpDir = sfConfig::get('sf_upload_dir').'/tmp';
+    $tmpDir = sys_get_temp_dir();
 
     // Create temporary directory unless exists
     if (!is_writable($tmpDir))
@@ -101,7 +101,7 @@ class Qubit
     while (file_exists($tmpFileName) || null == $tmpFileName)
     {
       $uniqueString = substr(md5(time()), 0, 8);
-      $tmpFileName = $tmpDir.'/TMP'.$uniqueString.'.'.$extension;
+      $tmpFileName = $tmpDir.'/QUBIT'.$uniqueString.'.'.$extension;
     }
 
     return false != file_put_contents($tmpFileName, $contents) ? $tmpFileName : false;

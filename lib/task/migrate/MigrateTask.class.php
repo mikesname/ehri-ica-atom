@@ -204,6 +204,8 @@ EOF;
     $dir = dirname($originalFileName);
     $migratedFileName = $dir.DIRECTORY_SEPARATOR.$migratedFileName;
 
+    $this->setDataVersion();
+
     $yamlDumper = new sfYamlDumper();
     $yamlData = sfYaml::dump($this->data, 3);
 

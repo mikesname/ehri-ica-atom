@@ -21,7 +21,7 @@
       <?php endforeach; ?>
     </ul>
 
-    <?php echo get_partial('default/pager', array('pager' => $pager)) ?>
+    <?php echo get_partial('default/pager', array('pager' => $pager, 'small' => true)) ?>
 
   </div>
 

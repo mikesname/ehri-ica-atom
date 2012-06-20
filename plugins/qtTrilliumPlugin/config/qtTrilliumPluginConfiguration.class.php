@@ -20,20 +20,33 @@
 class qtTrilliumPluginConfiguration extends sfPluginConfiguration
 {
   public static
-    $summary = 'New theme plugin made from scratch. JavaScript is necessary. Tested in Internet Explorer 9, Safari 5, Chrome 10 and Firefox 4.',
+    $summary = 'Theme plugin made from scratch with some JavaScript magic. Cross-browser compatibility tested. Based in Twitter Bootstrap 1.4, 940px two-column layout, slightly responsive.',
     $version = '1.0.0';
 
   public function contextLoadFactories(sfEvent $event)
   {
     $context = $event->getSubject();
 
-    // Development
-    // $context->response->addJavaScript('/plugins/qtTrilliumPlugin/vendor/less/dist/less-1.1.4.js');
-    // $context->response->addStylesheet('/plugins/qtTrilliumPlugin/css/main.less', 'last', array('rel' => 'stylesheet/less', 'type' => '', 'media' => ''));
+    // Set to true when you are writing new CSS code in Trillium
+    // Remember to avoid localStorage caching when dev machine is not localhost
+    $dev = false;
 
-    // Trillium CSS file generated with lessc
-    $context->response->addJavaScript('/plugins/qtTrilliumPlugin/js/trillium');
-    $context->response->addStylesheet('/plugins/qtTrilliumPlugin/css/less/main.css', 'last', array('media' => 'all'));
+    // Runtime less interpreter will be loaded
+    if ($dev)
+    {
+      $context->response->addJavaScript('/plugins/qtTrilliumPlugin/vendor/less/dist/less-1.2.2.js');
+      $context->response->addStylesheet('/plugins/qtTrilliumPlugin/css/main.less', 'last', array('rel' => 'stylesheet/less', 'type' => '', 'media' => ''));
+    }
+    else
+    {
+      $context->response->addStylesheet('/plugins/qtTrilliumPlugin/css/less/main.css', 'last', array('media' => 'all'));
+    }
+
+    // Add Trillium specific JavaScript behaviours
+    $context->response->addJavaScript('/plugins/qtTrilliumPlugin/js/trillium', 'last');
+
+    // Try to avoid the compatibility view, use always the last engine version
+    $context->response->addHttpMeta('X-UA-Compatible', 'IE=edge');
   }
 
   public function initialize()

@@ -125,6 +125,8 @@
                     // items
                     var dataSource = new YAHOO.util.LocalDataSource();
 
+                    // See http://bugs.jquery.com/ticket/11872
+                    // :enabled was broken in Chrome but it does now
                     $('option:enabled', this).each(function ()
                       {
                         if ($(this).val())

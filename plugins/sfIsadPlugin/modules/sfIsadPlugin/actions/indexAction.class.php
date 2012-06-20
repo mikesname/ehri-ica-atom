@@ -34,7 +34,7 @@ class sfIsadPluginIndexAction extends InformationObjectIndexAction
 
     $this->isad = new sfIsadPlugin($this->resource);
 
-    if (1 > strlen($title = $this->resource))
+    if (1 > strlen($title = $this->resource->__toString()))
     {
       $title = $this->context->i18n->__('Untitled');
     }

@@ -47,23 +47,32 @@ class QubitSetting extends BaseSetting
    */
   public static function getSettingsArray()
   {
-    // load all settings from the settings table
+    $sql = 'SELECT
+        setting.*,
+        (CASE WHEN (current.VALUE IS NOT NULL AND current.VALUE <> "") THEN current.VALUE ELSE source.VALUE END) AS value,
+        (CASE WHEN (current.CULTURE IS NOT NULL AND current.CULTURE <> "") THEN current.CULTURE ELSE source.CULTURE END) AS culture
+      FROM '.QubitSetting::TABLE_NAME.'
+      LEFT JOIN '.QubitSettingI18n::TABLE_NAME.' current
+        ON (setting.ID = current.id AND current.CULTURE = "'.sfContext::getInstance()->user->getCulture().'")
+      LEFT JOIN '.QubitSettingI18n::TABLE_NAME.' source
+        ON (setting.ID = source.id AND source.CULTURE = setting.SOURCE_CULTURE AND source.CULTURE <> "'.sfContext::getInstance()->user->getCulture().'")';
+
     $settings = array();
-    foreach (QubitSetting::getAll() as $qubitSetting)
+    foreach (QubitPdo::fetchAll($sql) as $qubitSetting)
     {
-      if ($qubitSetting->getScope())
+      if ($qubitSetting->scope)
       {
-        $key = 'app_'.$qubitSetting->getScope().'_'.$qubitSetting->getName();
+        $key = 'app_'.$qubitSetting->scope.'_'.$qubitSetting->name;
       }
       else
       {
-        $key = 'app_'.$qubitSetting->getName();
+        $key = 'app_'.$qubitSetting->name;
       }
 
-      $settings[$key] = $qubitSetting->getValue(array('cultureFallback' => true));
+      $settings[$key] = $qubitSetting->value;
     }
 
-    return $settings;
+    return $settings;  
   }
 
   public function getCulture(array $options = array())

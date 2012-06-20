@@ -17,7 +17,7 @@
                 .closest('.form-item').css('position', 'static').end()
 
                 .addClass('description-dialog')
-                
+
                 .clone().prependTo($dialog)
 
                 // Show tooltip
@@ -47,10 +47,6 @@
 
     $(document).ready(function()
       {
-        // Header font size
-        // var $heading = $('#logo-and-name td:eq(1) h1');
-        // $heading.css('font-size', (1 / $heading.text().length * 1500) + 'px');
-
         // Menu
         $(document.body).bind('click', function (e)
           {

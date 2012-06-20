@@ -211,7 +211,7 @@ class SearchAdvancedAction extends SearchIndexAction
     if (!empty($this->request->mediatype))
     {
       $query->addSubquery(QubitSearch::getInstance()->addTerm($this->request->mediatype, 'do_mediaTypeId'), true);
-      $this->queryTerms[] = array('term' => 'mediatype: '.QubitTerm::getById($this->request->mediatyp)->__toString(), 'operator' => 'and');
+      $this->queryTerms[] = array('term' => 'mediatype: '.QubitTerm::getById($this->request->mediatype)->__toString(), 'operator' => 'and');
     }
 
     $query = parent::filterQuery($query);

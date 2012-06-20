@@ -63,6 +63,9 @@ class QubitWidgetFormInputMany extends sfWidgetFormInput
       $defaults = $defaults->call();
     }
 
+    // http://trac.symfony-project.org/ticket/7208
+    $null = $this->renderTag('input', array('name' => $name, 'type' => 'hidden'));
+
     if (is_array($defaults) && 0 < count($defaults))
     {
       $inputStr .= '<ul class="multiInput" id="'.$name."\">\n";
@@ -83,8 +86,10 @@ EOF;
     }
 
     $attributes['class'] = (isset($attributes['class'])) ? $attributes['class'] + ' multiInput' : 'multiInput';
-    $inputStr .= $this->renderTag('input', array_merge(array('name' => $name.'[new]', 'type' => $this->getOption('type')), $attributes));
 
-    return $inputStr;
+    // Add a new value
+    $new = $this->renderTag('input', array_merge(array('name' => $name.'[new]', 'type' => $this->getOption('type')), $attributes));
+
+    return $null.$inputStr.$new;
   }
 }

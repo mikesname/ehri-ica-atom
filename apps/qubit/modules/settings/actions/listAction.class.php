@@ -69,9 +69,11 @@ class SettingsListAction extends sfAction
     // Handle POST data (form submit)
     if ($request->isMethod('post'))
     {
-      // Clean cache
-      $cache = new sfFileCache(array('cache_dir' => sfConfig::get('sf_app_cache_dir').'/settings'));
-      $cache->clean();
+      if ($this->context->getViewCacheManager() !== null)
+      {
+        $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_browseMenu&sf_cache_key=*');
+        $this->context->getViewCacheManager()->remove('@sf_cache_partial?module=menu&action=_mainMenu&sf_cache_key=*');
+      }
 
       // Global settings form submission
       if (null !== $request->global_settings)

@@ -44,7 +44,7 @@ class sfModsPlugin implements ArrayAccess
 
     if (isset($this->resource->levelOfDescription))
     {
-      $levelOfDescriptionAndIdentifier[] = $this->resource->levelOfDescription;
+      $levelOfDescriptionAndIdentifier[] = $this->resource->levelOfDescription->__toString();
     }
 
     if (isset($this->resource->identifier))
@@ -59,15 +59,15 @@ class sfModsPlugin implements ArrayAccess
 
     $resourceAndPublicationStatus = array();
 
-    if (0 < strlen($this->resource))
+    if (0 < strlen($title = $this->resource->__toString()))
     {
-      $resourceAndPublicationStatus[] = $this->resource;
+      $resourceAndPublicationStatus[] = $title;
     }
 
     $publicationStatus = $this->resource->getPublicationStatus();
     if (isset($publicationStatus) && QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $publicationStatus->statusId)
     {
-      $resourceAndPublicationStatus[] = "($publicationStatus->status)";
+      $resourceAndPublicationStatus[] = "({$publicationStatus->status->__toString()})";
     }
 
     if (0 < count($resourceAndPublicationStatus))

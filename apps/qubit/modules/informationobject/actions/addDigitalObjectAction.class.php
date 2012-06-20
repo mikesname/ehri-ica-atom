@@ -54,6 +54,9 @@ class InformationObjectAddDigitalObjectAction extends sfAction
 
     $this->resource = $this->getRoute()->resource;
 
+    // Get repository to test upload limits
+    $this->repository = $this->resource->getRepository(array('inherit' => true));
+
     // Check that object exists and that it is not the root
     if (!isset($this->resource) || !isset($this->resource->parent))
     {
@@ -70,15 +73,6 @@ class InformationObjectAddDigitalObjectAction extends sfAction
     if (!QubitAcl::check($this->resource, 'update'))
     {
       QubitAcl::forwardUnauthorized();
-    }
-
-    // Check repository file upload limit
-    $repo = $this->resource->getRepository(array('inherit' => true));
-    if (null !== $repo
-      && $repo->uploadLimit != -1
-      && $repo->getDiskUsage(array('units' => 'G')) >= floatval($repo->uploadLimit))
-    {
-      $this->redirect(array($repo, 'module' => 'repository', 'action' => 'uploadLimitExceeded'));
     }
 
     // Add form fields

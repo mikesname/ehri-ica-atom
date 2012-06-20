@@ -72,7 +72,7 @@ class DigitalObjectImageflowComponent extends sfComponent
       $this->total = BasePeer::doCount($criteria)->fetchColumn(0);
     }
 
-    if (2 > count($this->thumbnails))
+    if (1 > count($this->thumbnails))
     {
       return sfView::NONE;
     }

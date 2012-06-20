@@ -255,16 +255,19 @@ class QubitMigrate110 extends QubitMigrate
     // New type of relations: accession and right
     $this->data['QubitTerm']['QubitTerm_accession'] = array(
       'id' => '<?php echo QubitTerm::ACCESSION_ID."\n" ?>',
+      'parent_id' => '<?php echo QubitTerm::ROOT_ID."\n" ?>',
       'name' => array('en' => 'Accession'),
       'source_culture' => 'en',
       'taxonomy_id' => '<?php echo QubitTaxonomy::RELATION_TYPE_ID."\n" ?>');
-    $this->data['QubitTerm']['QubitTerm_accession'] = array(
+    $this->data['QubitTerm']['QubitTerm_right'] = array(
       'id' => '<?php echo QubitTerm::RIGHT_ID."\n" ?>',
+      'parent_id' => '<?php echo QubitTerm::ROOT_ID."\n" ?>',
       'name' => array('en' => 'Right'),
       'source_culture' => 'en',
       'taxonomy_id' => '<?php echo QubitTaxonomy::RELATION_TYPE_ID."\n" ?>');
-    $this->data['QubitTerm']['QubitTerm_accession'] = array(
+    $this->data['QubitTerm']['QubitTerm_donor'] = array(
       'id' => '<?php echo QubitTerm::DONOR_ID."\n" ?>',
+      'parent_id' => '<?php echo QubitTerm::ROOT_ID."\n" ?>',
       'name' => array('en' => 'Donor'),
       'source_culture' => 'en',
       'taxonomy_id' => '<?php echo QubitTaxonomy::RELATION_TYPE_ID."\n" ?>');

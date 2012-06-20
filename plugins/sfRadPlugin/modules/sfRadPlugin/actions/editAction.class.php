@@ -91,7 +91,7 @@ class sfRadPluginEditAction extends InformationObjectEditAction
     $title = $this->context->i18n->__('Add new archival description');
     if (isset($this->getRoute()->resource))
     {
-      if (1 > strlen($title = $this->resource))
+      if (1 > strlen($title = $this->resource->__toString()))
       {
         $title = $this->context->i18n->__('Untitled');
       }

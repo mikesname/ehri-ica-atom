@@ -1,5 +1,4 @@
 all:
-
   stylesheets:
     # -*
     -/plugins/sfDrupalPlugin/vendor/drupal/modules/system/system:
@@ -12,3 +11,4 @@ all:
     form:
     graphic:
     main:
+    /plugins/qtTrilliumPlugin/css/ie: { condition: IE, position: last }

@@ -8,13 +8,15 @@
 
   <?php echo $form->renderHiddenFields() ?>
 
-  <fieldset class="collapsible" id="singleFileUpload">
+  <?php if (null == $repository || -1 == $repository->uploadLimit || $repository->getDiskUsage(array('units' => 'G')) < floatval($repository->uploadLimit)): ?>
+    <fieldset class="collapsible" id="singleFileUpload">
 
-    <legend><?php echo __('Upload a digital object') ?></legend>
+      <legend><?php echo __('Upload a digital object') ?></legend>
 
-    <?php echo $form->file->renderRow() ?>
+      <?php echo $form->file->renderRow() ?>
 
-  </fieldset>
+    </fieldset>
+  <?php endif; // Test upload limit ?>
 
   <fieldset class="collapsible" id="externalFileLink">
 

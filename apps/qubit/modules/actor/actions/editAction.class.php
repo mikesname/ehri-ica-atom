@@ -49,7 +49,7 @@ class ActorEditAction extends DefaultEditAction
       }
 
       // Check user authorization
-      if (!QubitAcl::check($this->resource, 'update'))
+      if (!QubitAcl::check($this->resource, 'update') && !QubitAcl::check($this->resource, 'translate'))
       {
         QubitAcl::forwardUnauthorized();
       }

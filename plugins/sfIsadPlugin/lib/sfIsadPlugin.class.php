@@ -60,9 +60,9 @@ class sfIsadPlugin implements ArrayAccess
 
     $titleAndPublicationStatus = array();
 
-    if (0 < strlen($this->resource->__toString()))
+    if (0 < strlen($title = $this->resource->__toString()))
     {
-      $titleAndPublicationStatus[] = $this->resource->__toString();
+      $titleAndPublicationStatus[] = $title;
     }
 
     $publicationStatus = $this->resource->getPublicationStatus();

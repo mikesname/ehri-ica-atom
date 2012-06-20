@@ -103,9 +103,10 @@ class InformationObjectMultiFileUploadAction extends sfAction
         $informationObject->title = $title;
       }
 
-      if (0 != intval($levelOfDescriptionId = $this->form->getValue('level_of_description_id')))
+      if (null !== $levelOfDescription = $this->form->getValue('levelOfDescription'))
       {
-        $informationObject->levelOfDescriptionId = $levelOfDescriptionId;
+        $params = $this->context->routing->parse(Qubit::pathInfo($levelOfDescription));
+        $informationObject->levelOfDescription = $params['_sf_route']->resource;
       }
 
       $informationObject->setStatus(array('typeId' => QubitTerm::STATUS_TYPE_PUBLICATION_ID, 'statusId' => sfConfig::get('app_defaultPubStatus')));
