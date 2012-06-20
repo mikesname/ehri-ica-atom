@@ -125,9 +125,9 @@
                     // items
                     var dataSource = new YAHOO.util.LocalDataSource();
 
-                    // See http://bugs.jquery.com/ticket/11872
-                    // :enabled was broken in Chrome but it does now
-                    $('option:enabled', this).each(function ()
+                    // :enabled removed, it is broken in Chrome, see issue 2348
+                    // See also http://bugs.jquery.com/ticket/11872
+                    $('option', this).each(function ()
                       {
                         if ($(this).val())
                         {
@@ -164,6 +164,9 @@
                     })
 
                   var autoComplete = new YAHOO.widget.AutoComplete($input[0], $('<div/>').insertAfter(this)[0], dataSource);
+
+                  // Display up to 20 results in the container
+                  autoComplete.maxResultsDisplayed = 20;
 
                   // Show some items even if user types nothing,
                   // http://developer.yahoo.com/yui/autocomplete/#minquery
