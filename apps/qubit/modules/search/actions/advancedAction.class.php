@@ -86,7 +86,7 @@ class SearchAdvancedAction extends SearchIndexAction
       case 'mediatype':
         // Get list of media types
         $criteria = new Criteria;
-        $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MATERIAL_TYPE_ID);
+        $criteria->add(QubitTerm::TAXONOMY_ID, QubitTaxonomy::MEDIA_TYPE_ID);
 
         // Do source culture fallback
         $criteria = QubitCultureFallback::addFallbackCriteria($criteria, 'QubitTerm');
