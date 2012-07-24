@@ -336,6 +336,7 @@ CREATE TABLE `information_object`
 	`source_standard` VARCHAR(255),
 	`lft` INTEGER  NOT NULL,
 	`rgt` INTEGER  NOT NULL,
+    `priority` TINYINT UNSIGNED NULL DEFAULT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
     UNIQUE KEY `identifier` (`identifier`),
@@ -370,7 +371,8 @@ CREATE TABLE `information_object`
 	CONSTRAINT `information_object_FK_7`
 		FOREIGN KEY (`description_detail_id`)
 		REFERENCES `term` (`id`)
-		ON DELETE SET NULL
+		ON DELETE SET NULL,
+	INDEX `information_object_FI_8` (`priority`)
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
@@ -838,6 +840,7 @@ CREATE TABLE `repository`
 	`desc_detail_id` INTEGER,
 	`desc_identifier` VARCHAR(255),
 	`upload_limit` FLOAT,
+    `priority` TINYINT UNSIGNED NULL DEFAULT NULL,
 	`source_culture` VARCHAR(7)  NOT NULL,
 	PRIMARY KEY (`id`),
     UNIQUE KEY `identifier` (`identifier`),
@@ -854,7 +857,8 @@ CREATE TABLE `repository`
 	CONSTRAINT `repository_FK_3`
 		FOREIGN KEY (`desc_detail_id`)
 		REFERENCES `term` (`id`)
-		ON DELETE SET NULL
+		ON DELETE SET NULL,
+    INDEX `repository_FI_4` (`priority`)
 )Engine=InnoDB;
 
 #-----------------------------------------------------------------------------
