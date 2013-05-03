@@ -88,9 +88,10 @@
     </tr>
   </thead><tbody>
     <?php foreach ($pager->getResults() as $item): ?>
+      <?php $isad = new sfEadPlugin($item); ?>
       <tr class="<?php echo 0 == @++$row % 2 ? 'even' : 'odd' ?>">
         <td>
-          <?php echo link_to(render_title($item), array($item, 'module' => 'informationobject')) ?><?php if (QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $item->getPublicationStatus()->status->id): ?> <span class="publicationStatus"><?php echo $item->getPublicationStatus()->status ?></span><?php endif; ?>
+          <?php echo link_to(render_title($item), array($item, 'module' => 'informationobject'), array('data-repository' => $isad->agencyCode() )) ?><?php if (QubitTerm::PUBLICATION_STATUS_DRAFT_ID == $item->getPublicationStatus()->status->id): ?> <span class="publicationStatus"><?php echo $item->getPublicationStatus()->status ?></span><?php endif; ?>
         </td><td>
           <?php if ($sf_user->isAuthenticated()): ?>
             <?php if ('titleUp' == $sf_request->sort || 'titleDown' == $sf_request->sort): ?>

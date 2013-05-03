@@ -33,18 +33,34 @@ class sfEadPlugin
     $this->resource = $resource;
   }
 
+  public function agencyCode()
+  {
+    if (null !== $this->resource->getRepository(array('inherit' => true)))
+    {
+      $country = $this->resource->getRepository(array('inherit' => true))->getCountryCode();
+      $agency = $this->resource->getRepository(array('inherit' => true))->id;
+
+      if (isset($country) && isset($agency))
+      {
+        return sprintf("%s-%06d", strToLower($country), $agency);
+      }
+    }
+    return '';
+  }
+
   public function renderEadId()
   {
     $countryCode = $mainAgencyCode = '';
 
     if (null !== $this->resource->getRepository(array('inherit' => true)))
     {
-      if (null !== $country = $this->resource->getRepository(array('inherit' => true))->getCountryCode())
+      if (null !== $country = strToLower($this->resource->getRepository(array('inherit' => true))->getCountryCode()))
       {
         $countryCode = " countrycode=\"$country\"";
       }
 
-      if (null !== $agency = $this->resource->getRepository(array('inherit' => true))->getIdentifier())
+      //if (null !== $agency = $this->resource->getRepository(array('inherit' => true))->getIdentifier())
+      if (null !== $agency = sprintf("%06d", $this->resource->getRepository(array('inherit' => true))->id))
       {
         if (isset($country))
         {
