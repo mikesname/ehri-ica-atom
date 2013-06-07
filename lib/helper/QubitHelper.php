@@ -137,6 +137,28 @@ function render_value($value)
   return $value;
 }
 
+function render_markdown($value)
+{
+  ProjectConfiguration::getActive()->loadHelpers('Text');
+
+  $value = auto_link_text($value);
+
+  // Simple lists
+  $value = preg_replace('/(?:^\*.*\r?\n)*(?:^\*.*)/m', "\n\n", $value);
+  $value = preg_replace('/(?:^-.*\r?\n)*(?:^-.*)/m', "\n\n", $value);
+  $value = preg_replace('/^(?:\*|-)\s*(.*)(?:\r?\n)?/m', " - $1\n\n", $value);
+
+  $value = preg_replace('/(?:\r?\n){2,}/', "\n\n", $value, -1, $count);
+  if (0 < $count)
+  {
+    $value = "\n\n$value\n\n";
+  }
+
+  $value = preg_replace('/\r?\n/', "\n", $value);
+
+  return $value;
+}
+
 /**
  * Return a human readable file size, using the appropriate SI prefix
  *
