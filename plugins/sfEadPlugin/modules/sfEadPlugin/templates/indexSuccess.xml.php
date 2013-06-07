@@ -155,10 +155,19 @@
   <scopecontent encodinganalog="3.3.1"><p><?php echo esc_specialchars($value) ?></p></scopecontent><?php endif; ?>
 <?php if (0 < strlen($value = $resource->getArrangement(array('cultureFallback' => true)))): ?>
   <arrangement encodinganalog="3.3.4"><p><?php echo esc_specialchars($value) ?></p></arrangement><?php endif; ?>
-<?php if ((0 < count($materialtypes = $resource->getMaterialTypes())) ||
-            (0 < count($subjects = $resource->getSubjectAccessPoints())) ||
-            (0 < count($places = $resource->getPlaceAccessPoints())) ||
-            (0 < count($resource->getActors()))): ?>
+
+<?php
+  $materialtypes = $resource->getMaterialTypes();
+  $subjects = $resource->getSubjectAccessPoints();
+//  $names = $resource->getNameAccessPoints();
+  $places = $resource->getPlaceAccessPoints();
+
+  if ((0 < count($materialtypes)) ||
+     (0 < count($subjects)) ||
+  //   (0 < count($names)) ||
+     (0 < count($places)) ||
+     (0 < count($resource->getActors()))): ?>
+
   <controlaccess>
 <?php foreach ($resource->getActorEvents() as $event): ?>
 <?php if ($event->getActor()->getEntityTypeId() == QubitTerm::PERSON_ID): ?>
@@ -168,6 +177,9 @@
 <?php else: ?>
     <corpname role="<?php echo $event->getType()->getRole(array('cultureFallback' => true)) ?>"><?php echo esc_specialchars(render_title($event->getActor())) ?></corpname>
 <?php endif; ?>
+<?php endforeach; ?>
+ <?php foreach ($names as $name): ?>
+    <persname role="subject"><?php echo escape_dc(esc_specialchars($name->getObject())) ?></persname>
 <?php endforeach; ?>
 <?php foreach ($materialtypes as $materialtype): ?>
     <genreform><?php echo esc_specialchars($materialtype->getTerm()) ?></genreform>
@@ -298,10 +310,21 @@
       <scopecontent encodinganalog="3.3.1"><p><?php echo esc_specialchars($value) ?></p></scopecontent><?php endif; ?>
 <?php if (0 < strlen($value = $descendant->getArrangement(array('cultureFallback' => true)))): ?>
       <arrangement encodinganalog="3.3.4"><p><?php echo esc_specialchars($value) ?></p></arrangement><?php endif; ?>
-<?php if ((0 < count($materialtypes = $descendant->getMaterialTypes())) ||
-            (0 < count($subjects = $descendant->getSubjectAccessPoints())) ||
-            (0 < count($places = $descendant->getPlaceAccessPoints())) ||
+
+
+<?php
+      $materialtypes = $descendant->getMaterialTypes();
+      $subjects = $descendant->getSubjectAccessPoints();
+     // $names = $descendant->getNameAccessPoints();
+      $places = $descendant->getPlaceAccessPoints();
+
+      if ((0 < count($materialtypes)) ||
+            (0 < count($subjects)) ||
+     //       (0 < count($names)) ||
+            (0 < count($places)) ||
             (0 < count($descendant->getActors()))): ?>
+
+
       <controlaccess>
 <?php foreach ($descendant->getActorEvents() as $event): ?>
 <?php if ($event->getActor()->getEntityTypeId() == QubitTerm::PERSON_ID): ?>
@@ -311,6 +334,9 @@
 <?php else: ?>
         <corpname role="<?php echo $event->getType()->getRole() ?>"><?php echo esc_specialchars(render_title($event->getActor(array('cultureFallback' => true)))) ?> </corpname>
 <?php endif; ?>
+<?php endforeach; ?>
+<?php foreach ($names as $name): ?>
+      <persname role="subject"><?php echo escape_dc(esc_specialchars($name->getObject())) ?></persname>
 <?php endforeach; ?>
 <?php foreach ($materialtypes as $materialtype): ?>
         <genreform><?php echo esc_specialchars($materialtype->getTerm()) ?></genreform>
